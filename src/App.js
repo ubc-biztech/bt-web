@@ -1,13 +1,11 @@
 import React from 'react';
-import Home from './components/Home'
-import { Button } from 'carbon-components-react';
+import Router from './components/Router'
 import './app.scss';
 
 function App() {
   return (
     <div className="App">
-      <Home />
-      
+      <Router />
     </div>
   );
 }

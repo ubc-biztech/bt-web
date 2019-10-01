@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class Home extends Component {
+export default class EventSelector extends Component {
   constructor(props) {
     super(props);
 
@@ -25,11 +25,11 @@ export default class Home extends Component {
     createDropdownItems(){
       let items = [];
       if (this.state.events != null) {
-          items.push(<option key={"-1"} 
+          items.push(<option key={"-1"}
                         value={-1}>{" "}
                     </option>)
           for (let i = 0; i < this.state.events.length; i++) {
-              items.push(<option key={i} 
+              items.push(<option key={i}
                                  value={i}>{this.state.events[i].ename}
                           </option>);
           }
@@ -56,11 +56,11 @@ export default class Home extends Component {
       else if (index === -1) {
         return (
           <div>
-            <h1>Events Check-in</h1>     
+            <h1>Events Check-in</h1>
 
-        <form> 
+        <form>
         <label>
-            Select Event:  
+            Select Event:
             <select onChange={this.handleChange}>
             {this.createDropdownItems()}
             </select>
@@ -72,11 +72,11 @@ export default class Home extends Component {
       } else {
         return (
           <div>
-            <h1>Events Check-in</h1>     
+            <h1>Events Check-in</h1>
 
-        <form> 
+        <form>
         <label>
-            Select Event:  
+            Select Event:
             <select value={this.state.selected} onChange={this.handleChange}>
             {this.createDropdownItems()}
             </select>
