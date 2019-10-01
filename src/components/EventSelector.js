@@ -5,8 +5,7 @@ export default class EventSelector extends Component {
     super(props);
 
     this.state = {
-      events: null,
-      selected: -1,
+      events: null
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -18,7 +17,6 @@ export default class EventSelector extends Component {
         this.setState({
           events: response
         })
-        console.log(response)
         console.log(this.state.events)
       })
     }
@@ -39,13 +37,13 @@ export default class EventSelector extends Component {
 
     handleChange(event) {
       if (event.target.value != -1) {
-        this.setState({selected: event.target.value});
+        // this.setState({selected: event.target.value});
+        window.location = '/?event=' + this.state.events[event.target.value].id
       }
     }
 
     render() {
       let events = this.state.events;
-      let index = this.state.selected;
 
       if (events === null){
         return (
@@ -53,38 +51,20 @@ export default class EventSelector extends Component {
             <p>Loading...</p>
           </div>
       )}
-      else if (index === -1) {
+      else {
         return (
           <div>
             <h1>Events Check-in</h1>
 
         <form>
         <label>
-            Select Event:
+            Select Event: 
             <select onChange={this.handleChange}>
             {this.createDropdownItems()}
             </select>
         </label>
         </form>
 
-        </div>
-        );
-      } else {
-        return (
-          <div>
-            <h1>Events Check-in</h1>
-
-        <form>
-        <label>
-            Select Event:
-            <select value={this.state.selected} onChange={this.handleChange}>
-            {this.createDropdownItems()}
-            </select>
-        </label>
-        </form>
-        <p># Registered: {events[index].regNum}</p>
-        <p># Checked In: {events[index].checkedNum}</p>
-        <p># Waitlisted: {events[index].waitNum}</p>
         </div>
         );
       }
