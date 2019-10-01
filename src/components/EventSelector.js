@@ -5,21 +5,10 @@ export default class EventSelector extends Component {
     super(props);
 
     this.state = {
-      events: null
+      events: this.props.events
     }
     this.handleChange = this.handleChange.bind(this);
 }
-    componentDidMount() {
-      fetch(process.env.REACT_APP_AMAZON_API+"/events/get", {
-      })
-      .then((response) => response.json())
-      .then((response) => {
-        this.setState({
-          events: response
-        })
-        console.log(this.state.events)
-      })
-    }
     createDropdownItems(){
       let items = [];
       if (this.state.events != null) {
@@ -58,7 +47,7 @@ export default class EventSelector extends Component {
 
         <form>
         <label>
-            Select Event: 
+            Select Event:
             <select onChange={this.handleChange}>
             {this.createDropdownItems()}
             </select>
