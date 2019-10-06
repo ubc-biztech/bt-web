@@ -7,6 +7,7 @@
     "carbon-components-react": "^7.6.4",
     "carbon-icons": "^7.0.7",
     "node-sass": "^4.12.0",
+    "query-string": "^6.8.3",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.2"
