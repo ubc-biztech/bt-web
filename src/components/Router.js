@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import Event from './Event'
+import Nav from './Nav'
 const queryString = require('query-string');
 
 export default class Router extends Component {
@@ -24,6 +25,7 @@ export default class Router extends Component {
       console.log(this.state.events)
 
       let eventId = queryString.parse(window.location.search)['event']
+      this.setState({eventSelected: eventId})
       if (eventId) {
         response.forEach(event => {
           if (event.id === eventId)
@@ -35,14 +37,27 @@ export default class Router extends Component {
   }
 
   render (){
-    let events = this.state.events
-    let event = this.state.event
-    if (event) {
-      return <Event event={event}/>
-    } else if (!events) {
-      return <p>Loading...</p>
-    } else {
-      return <EventSelector events={events}/>
-    }
+    return (
+      <div>
+        {ChooseBody(this.state)}
+      </div>
+    )
   }
+}
+
+function ChooseBody(state){
+  let events = state.events
+  let event = state.event
+  if (event) {
+    return (
+      <div>
+        <Nav events={events} eventSelected={state.eventSelected}/>
+        <Event event={event}/>
+      </div>
+    )
+  } else if (!events) 
+      return <p>Loading...</p>
+    else 
+      return <EventSelector events={events}/>
+  
 }

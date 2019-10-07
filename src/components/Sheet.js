@@ -1,21 +1,16 @@
 import React, { Component } from 'react'
 import { DataTable, Table, TableRow, TableBody, TableCell, TableHead, TableHeader, TableContainer } from 'carbon-components-react';
-import './Home.scss';
 
 export default class Sheet extends Component {
   constructor(props) {
     super(props)
-    console.log(this.props.users)
-    let users = Object.keys(this.props.users);
-    let rowData = [];
-    users.forEach(thing => {
-      rowData[thing] = {
-        id: thing,
-        status: 'something'
-      }
-    })
     this.state = {
-      users: rowData
+      users: [
+        {
+          id: '81233',
+          name: 'ian mah'
+        }
+      ]
     }
     console.log(this.state)
   }
@@ -23,11 +18,11 @@ export default class Sheet extends Component {
   render() {
     return (
       <div>
-        <p>hi</p>
         <DataTable
         rows={this.state.users}
         headers={[
-          {key: 'id',header: 'Name'},
+          {key: 'id',header: 'Student ID'},
+          {key: 'name',header: 'Name'},
           {key: 'status',header: 'Status'},
         ]}
         useZebraStyles={false}
