@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Sheet from './Sheet'
 
 export default class Event extends Component {
   constructor(props){
@@ -15,6 +16,7 @@ export default class Event extends Component {
         <p># Registered: {event.regNum}</p>
         <p># Checked In: {event.checkedNum}</p>
         <p># Waitlisted: {event.waitNum}</p>
+        <Sheet users={event.users}/>
       </div>
     )
   }
