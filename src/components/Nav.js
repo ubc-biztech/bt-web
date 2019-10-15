@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { ChevronLeft, Menu } from '@material-ui/icons';
 
-export default function Router(props) {
+export default function Nav(props) {
 
   const events = props.events
 
@@ -39,7 +39,7 @@ export default function Router(props) {
             <Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            BizTech App
+            {props.eventSelected}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -52,7 +52,14 @@ export default function Router(props) {
         <Divider />
         <List>
           {events.map((event) => (
-            <ListItem button key={event.ename}>
+            <ListItem
+              button
+              selected={event.id === props.eventSelected}
+              key={event.ename}
+              component="a"
+              href={"/?event=" + event.id}
+              onClick={handleDrawerClose}
+            >
               <ListItemText primary={event.ename} />
             </ListItem>
           ))}

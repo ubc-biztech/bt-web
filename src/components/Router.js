@@ -3,6 +3,7 @@ import EventSelector from './EventSelector'
 import Event from './Event'
 import Nav from './Nav'
 import './Router.scss';
+import CircularProgress from '@material-ui/core/CircularProgress';
 const queryString = require('query-string');
 
 export default class Router extends Component {
@@ -59,7 +60,7 @@ function ChooseBody(state){
       </div>
     )
   } else if (!events) 
-      return <p>Loading...</p>
+      return <CircularProgress/>
     else 
       return <EventSelector events={events}/>
   
