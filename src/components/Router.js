@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import Event from './Event'
 import Nav from './Nav'
+import './Router.scss';
 const queryString = require('query-string');
 
 export default class Router extends Component {
@@ -52,7 +53,9 @@ function ChooseBody(state){
     return (
       <div>
         <Nav events={events} eventSelected={state.eventSelected}/>
-        <Event event={event}/>
+        <div className="content">
+          <Event event={event}/>
+        </div>
       </div>
     )
   } else if (!events) 
