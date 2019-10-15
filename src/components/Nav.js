@@ -10,6 +10,7 @@ import {
   Typography,
   AppBar
 } from '@material-ui/core';
+import './Nav.scss';
 import { ChevronLeft, Menu } from '@material-ui/icons';
 
 export default function Nav(props) {
@@ -50,6 +51,17 @@ export default function Nav(props) {
           </IconButton>
         </div>
         <Divider />
+        <ListItem
+            button
+            selected={!props.eventSelected}
+            component="a"
+            href={"/"}
+            onClick={handleDrawerClose}
+          >
+            <ListItemText primary="Home" />
+          </ListItem>
+        <br></br>
+        <Typography className="menu-tag" variant="h6" noWrap>Events</Typography>
         <List>
           { events ? events.map((event) => (
             <ListItem
