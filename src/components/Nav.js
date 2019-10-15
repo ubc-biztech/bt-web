@@ -39,7 +39,7 @@ export default function Nav(props) {
             <Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {props.eventSelected}
+            BizTech Admin Dashboard { props.eventSelected ? '- ' + props.eventSelected : '' }
           </Typography>
         </Toolbar>
       </AppBar>
@@ -51,7 +51,7 @@ export default function Nav(props) {
         </div>
         <Divider />
         <List>
-          {events.map((event) => (
+          { events ? events.map((event) => (
             <ListItem
               button
               selected={event.id === props.eventSelected}
@@ -62,7 +62,7 @@ export default function Nav(props) {
             >
               <ListItemText primary={event.ename} />
             </ListItem>
-          ))}
+          )) : 'Loading...'}
         </List>
       </Drawer>
     </div>
