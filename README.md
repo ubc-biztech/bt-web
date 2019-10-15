@@ -2,7 +2,7 @@
 
 In the project directory, you can run:
 
-### `npm isntall`
+### `npm install`
 
 Installs dependencies (node_modules)
 Use this command if anyone adds a new dependency. You don't need to add each new dependency on its own.
