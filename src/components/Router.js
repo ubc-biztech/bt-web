@@ -29,7 +29,6 @@ class Router extends Component {
       console.log(this.state.events)
 
       let eventId = queryString.parse(window.location.search)['event']
-      this.setState({eventSelected: eventId})
       if (eventId) {
         response.forEach(event => {
           if (event.id === eventId)

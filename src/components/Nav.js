@@ -58,7 +58,7 @@ function Nav(props) {
         <Divider />
         <ListItem
             button
-            selected={!props.eventSelected}
+            selected={!props.event}
             component="a"
             onClick={handleDrawerClose}
           >
@@ -70,7 +70,7 @@ function Nav(props) {
           { events ? events.map((event) => (
             <ListItem
               button
-              selected={event.id === props.eventSelected}
+              selected={props.event ? event.id === props.event.id : false }
               key={event.ename}
               component="a"
               onClick={handleDrawerClose.bind(this, event)}
