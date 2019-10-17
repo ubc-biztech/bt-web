@@ -4,7 +4,7 @@ import Event from './Event'
 import Nav from './Nav'
 import './Router.scss';
 import { CircularProgress } from '@material-ui/core';
-import { setPage } from "../actions/indexActions";
+import { setPage, setEvent } from "../actions/indexActions";
 import { connect } from "react-redux";
 
 const queryString = require('query-string');
@@ -14,8 +14,7 @@ class Router extends Component {
     super(props)
 
     this.state = {
-      events: null,
-      event: null
+      events: null
     }
   }
 
@@ -34,7 +33,7 @@ class Router extends Component {
       if (eventId) {
         response.forEach(event => {
           if (event.id === eventId)
-            this.setState({ event })
+            this.props.setEvent( event )
         })
       }
     })
@@ -46,22 +45,19 @@ class Router extends Component {
       <div>
         <Nav events={this.state.events} eventSelected={this.state.eventSelected}/>
         <div className="content">
-          { this.state.events ? ChooseBody(this.state, this.props.page) : <CircularProgress/> }
+          { this.state.events ? ChooseBody(this.state.events, this.props.page, this.props.event ) : <CircularProgress/> }
         </div>
       </div>
     )
   }
 }
 
-function ChooseBody(state, page){
-  let events = state.events
-  let event = state.event
-
-  if (event)
-    return <Event event={event}/>
-  else switch(page) {
+function ChooseBody(events, page, event){
+  switch(page) {
     case 'home':
       return <EventSelector events={events}/>
+    case 'event':
+      return <Event event={event}/>
     default:
       return <p>Loading!</p>
   }
@@ -71,7 +67,8 @@ function ChooseBody(state, page){
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
+    event: state.pageState.event
   };
 };
 
-export default connect(mapStateToProps, { setPage })(Router);
+export default connect(mapStateToProps, { setPage, setEvent })(Router);

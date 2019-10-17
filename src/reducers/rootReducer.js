@@ -12,6 +12,12 @@ function pageReducer(state = initialState, action) {
         ...state,
         page: action.page
       }
+    case "SET_EVENT":
+      return {
+        ...state,
+        page: 'event',
+        event: action.event
+      }
     default:
       return state;
   }
