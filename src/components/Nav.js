@@ -45,7 +45,7 @@ function Nav(props) {
             <Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            BizTech Admin Dashboard { props.eventSelected ? '- ' + props.eventSelected : '' }
+            BizTech Admin Dashboard { props.event ? '- ' + props.event.ename : '' }
           </Typography>
         </Toolbar>
       </AppBar>
@@ -84,4 +84,10 @@ function Nav(props) {
   );
 }
 
-export default connect(null, { setEvent })(Nav);
+const mapStateToProps = state => {
+  return {
+    event: state.pageState.event
+  };
+};
+
+export default connect(mapStateToProps, { setEvent })(Nav);

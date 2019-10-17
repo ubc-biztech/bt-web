@@ -10,7 +10,8 @@ function pageReducer(state = initialState, action) {
     case "SET_PAGE":
       return {
         ...state,
-        page: action.page
+        page: action.page,
+        event: null
       }
     case "SET_EVENT":
       return {

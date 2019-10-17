@@ -43,7 +43,7 @@ class Router extends Component {
   render (){
     return (
       <div>
-        <Nav events={this.state.events} eventSelected={this.state.eventSelected}/>
+        <Nav events={this.state.events}/>
         <div className="content">
           { this.state.events ? ChooseBody(this.state.events, this.props.page, this.props.event ) : <CircularProgress/> }
         </div>
