@@ -4,9 +4,12 @@ import Event from './Event'
 import Nav from './Nav'
 import './Router.scss';
 import { CircularProgress } from '@material-ui/core';
+import { setPage } from "../actions/indexActions";
+import { connect } from "react-redux";
+
 const queryString = require('query-string');
 
-export default class Router extends Component {
+class Router extends Component {
   constructor(props) {
     super(props)
 
@@ -57,9 +60,17 @@ function ChooseBody(state){
         <Event event={event}/>
       </div>
     )
-  } else if (!events) 
+  } else if (!events)
       return <CircularProgress/>
-    else 
+    else
       return <EventSelector events={events}/>
-  
+
 }
+
+const mapStateToProps = state => {
+  return {
+    page: state.pageState.page,
+  };
+};
+
+export default connect(mapStateToProps, { setPage })(Router);
