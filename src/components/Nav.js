@@ -60,7 +60,6 @@ function Nav(props) {
             button
             selected={!props.eventSelected}
             component="a"
-            href={"/"}
             onClick={handleDrawerClose}
           >
             <ListItemText primary="Home" />
