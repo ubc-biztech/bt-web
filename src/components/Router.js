@@ -26,7 +26,6 @@ class Router extends Component {
       this.setState({
         events: response
       })
-      console.log(this.state.events)
 
       let eventId = queryString.parse(window.location.search)['event']
       if (eventId) {
@@ -56,7 +55,7 @@ function ChooseBody(events, page, event){
     case 'home':
       return <EventSelector events={events}/>
     case 'event':
-      return <Event event={event}/>
+      return <Event />
     default:
       return <p>Loading!</p>
   }

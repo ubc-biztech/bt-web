@@ -6,8 +6,6 @@ export function setPage(page) {
 }
 
 export function setEvent(event) {
-  console.log(event)
-
   if (!event.id) {
       return {
         type: 'SET_PAGE',
