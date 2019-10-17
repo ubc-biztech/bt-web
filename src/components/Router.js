@@ -55,18 +55,11 @@ class Router extends Component {
 
 function ChooseBody(state, page){
   let events = state.events
-  // let event = state.event
-  // if (event) {
-  //   return (
-  //     <div className="content">
-  //       <Event event={event}/>
-  //     </div>
-  //   )
-  // } else if (!events)
-  //     return <CircularProgress/>
-  //   else
-  //     return <EventSelector events={events}/>
-  switch(page) {
+  let event = state.event
+
+  if (event)
+    return <Event event={event}/>
+  else switch(page) {
     case 'home':
       return <EventSelector events={events}/>
     default:
