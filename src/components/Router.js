@@ -45,25 +45,33 @@ class Router extends Component {
     return (
       <div>
         <Nav events={this.state.events} eventSelected={this.state.eventSelected}/>
-        {ChooseBody(this.state)}
+        <div className="content">
+          { this.state.events ? ChooseBody(this.state, this.props.page) : <CircularProgress/> }
+        </div>
       </div>
     )
   }
 }
 
-function ChooseBody(state){
+function ChooseBody(state, page){
   let events = state.events
-  let event = state.event
-  if (event) {
-    return (
-      <div className="content">
-        <Event event={event}/>
-      </div>
-    )
-  } else if (!events)
-      return <CircularProgress/>
-    else
+  // let event = state.event
+  // if (event) {
+  //   return (
+  //     <div className="content">
+  //       <Event event={event}/>
+  //     </div>
+  //   )
+  // } else if (!events)
+  //     return <CircularProgress/>
+  //   else
+  //     return <EventSelector events={events}/>
+  switch(page) {
+    case 'home':
       return <EventSelector events={events}/>
+    default:
+      return <p>Loading!</p>
+  }
 
 }
 
