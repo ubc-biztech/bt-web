@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Auth } from "aws-amplify";
 import { TextField, Button } from '@material-ui/core';
 import { string, object } from 'yup';
+import { useFormFields } from "../libs/hooks";
 
 export default function SignUp() {
 
@@ -14,8 +15,11 @@ export default function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     function validate() {
+        setIsLoading(true);
+
         schema
             .validate({
                 email,
@@ -29,6 +33,7 @@ export default function SignUp() {
             .catch(err => {
                 console.log(err)
                 alert(err.errors[0]);
+                setIsLoading(false);
             });
     }
 
@@ -38,6 +43,20 @@ export default function SignUp() {
             <TextField
                 label="Email"
                 autoComplete="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                onKeyPress={e => handleKey(e)} />
+            <br />
+            <TextField
+                label="First Name"
+                autoComplete="given-name"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                onKeyPress={e => handleKey(e)} />
+            <br />
+            <TextField
+                label="Last Name"
+                autoComplete="family-name"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 onKeyPress={e => handleKey(e)} />
@@ -58,19 +77,24 @@ export default function SignUp() {
                 onKeyPress={e => handleKey(e)} />
             <br />
             <br />
-            <Button variant="contained" onClick={validate} >Login</Button>
+            <Button variant="contained" disabled={isLoading} onClick={validate} >Login</Button>
         </form>
     )
 
     async function signIn() {
-        if (validate() === true) {
-            try {
-                await Auth.signIn(email, password);
-                alert("Logged in");
-            } catch (e) {
-                alert(e.message);
-            }
+
+        try {
+            await Auth.signUp({
+                username: email,
+                password,
+            });
+            alert("Signed up");
+            setIsLoading(false);
+        } catch (e) {
+            alert(e.message);
+            setIsLoading(false);
         }
+
     }
 
     function handleKey(e) {
