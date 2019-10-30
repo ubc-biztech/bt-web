@@ -12,8 +12,10 @@ import {
 } from '@material-ui/core';
 import './Nav.scss';
 import { ChevronLeft, Menu } from '@material-ui/icons';
+import { setEvent } from "../actions/indexActions";
+import { connect } from "react-redux";
 
-export default function Nav(props) {
+function Nav(props) {
 
   const events = props.events
 
@@ -23,7 +25,8 @@ export default function Nav(props) {
     setOpen(true);
   };
 
-  const handleDrawerClose = () => {
+  const handleDrawerClose = (event) => {
+    props.setEvent(event)
     setOpen(false);
   };
 
@@ -40,7 +43,7 @@ export default function Nav(props) {
             <Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            BizTech Admin Dashboard { props.eventSelected ? '- ' + props.eventSelected : '' }
+            BizTech Admin Dashboard {props.event ? '- ' + props.event.ename : ''}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -52,25 +55,23 @@ export default function Nav(props) {
         </div>
         <Divider />
         <ListItem
-            button
-            selected={!props.eventSelected}
-            component="a"
-            href={"/"}
-            onClick={handleDrawerClose}
-          >
-            <ListItemText primary="Home" />
-          </ListItem>
+          button
+          selected={!props.event}
+          component="a"
+          onClick={handleDrawerClose}
+        >
+          <ListItemText primary="Home" />
+        </ListItem>
         <br></br>
         <Typography className="menu-tag" variant="h6" noWrap>Events</Typography>
         <List>
-          { events ? events.map((event) => (
+          {events ? events.map((event) => (
             <ListItem
               button
-              selected={event.id === props.eventSelected}
+              selected={props.event ? event.id === props.event.id : false}
               key={event.ename}
               component="a"
-              href={"/?event=" + event.id}
-              onClick={handleDrawerClose}
+              onClick={handleDrawerClose.bind(this, event)}
             >
               <ListItemText primary={event.ename} />
             </ListItem>
@@ -80,3 +81,11 @@ export default function Nav(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    event: state.pageState.event
+  };
+};
+
+export default connect(mapStateToProps, { setEvent })(Nav);
