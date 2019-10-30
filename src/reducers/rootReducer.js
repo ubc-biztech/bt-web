@@ -1,19 +1,20 @@
 import { combineReducers } from "redux";
+import { SET_PAGE, SET_EVENT } from '../constants/Constants';
 
 const initialState = {
-    events: null,
-    page: 'home'
+  events: null,
+  page: 'home'
 }
 
 function pageReducer(state = initialState, action) {
   switch (action.type) {
-    case "SET_PAGE":
+    case SET_PAGE:
       return {
         ...state,
         page: action.page,
         event: null
       }
-    case "SET_EVENT":
+    case SET_EVENT:
       return {
         ...state,
         page: 'event',

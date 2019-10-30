@@ -19,8 +19,6 @@ function Nav(props) {
 
   const events = props.events
 
-  // const setEvent = props.setEvent
-
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -45,7 +43,7 @@ function Nav(props) {
             <Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            BizTech Admin Dashboard { props.event ? '- ' + props.event.ename : '' }
+            BizTech Admin Dashboard {props.event ? '- ' + props.event.ename : ''}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -57,20 +55,20 @@ function Nav(props) {
         </div>
         <Divider />
         <ListItem
-            button
-            selected={!props.event}
-            component="a"
-            onClick={handleDrawerClose}
-          >
-            <ListItemText primary="Home" />
-          </ListItem>
+          button
+          selected={!props.event}
+          component="a"
+          onClick={handleDrawerClose}
+        >
+          <ListItemText primary="Home" />
+        </ListItem>
         <br></br>
         <Typography className="menu-tag" variant="h6" noWrap>Events</Typography>
         <List>
-          { events ? events.map((event) => (
+          {events ? events.map((event) => (
             <ListItem
               button
-              selected={props.event ? event.id === props.event.id : false }
+              selected={props.event ? event.id === props.event.id : false}
               key={event.ename}
               component="a"
               onClick={handleDrawerClose.bind(this, event)}
