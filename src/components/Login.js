@@ -14,14 +14,16 @@ export default function Login(props) {
                 label="Email"
                 autocomplete="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)} />
+                onChange={e => setEmail(e.target.value)}
+                onKeyPress={e => handleKey(e)} />
             <br />
             <TextField
                 label="Password"
                 type="password"
                 autocomplete="password"
                 value={password}
-                onChange={e => setPassword(e.target.value)} />
+                onChange={e => setPassword(e.target.value)}
+                onKeyPress={e => handleKey(e)} />
             <br />
             <br />
             <Button variant="contained" onClick={handleSubmit} >Login</Button>
@@ -35,5 +37,10 @@ export default function Login(props) {
         } catch (e) {
             alert(e.message);
         }
+    }
+
+    function handleKey(e) {
+        if (e.key === 'Enter')
+            handleSubmit()
     }
 }

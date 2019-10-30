@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Login from './Login'
+import SignUp from './SignUp'
 
 export default class EventSelector extends Component {
   constructor(props) {
@@ -56,7 +56,7 @@ export default class EventSelector extends Component {
             </label>
           </form>
 
-          <Login />
+          <SignUp />
 
         </div>
       );

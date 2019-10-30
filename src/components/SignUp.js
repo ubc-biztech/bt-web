@@ -12,16 +12,18 @@ export default function SignUp(props) {
             <h1> Sign Up </h1>
             <TextField
                 label="Email"
-                autocomplete="email"
+                autoComplete="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)} />
+                onChange={e => setEmail(e.target.value)}
+                onKeyPress={e => handleKey(e)} />
             <br />
             <TextField
                 label="Password"
                 type="password"
-                autocomplete="password"
+                autoComplete="password"
                 value={password}
-                onChange={e => setPassword(e.target.value)} />
+                onChange={e => setPassword(e.target.value)}
+                onKeyPress={e => handleKey(e)} />
             <br />
             <br />
             <Button variant="contained" onClick={handleSubmit} >Login</Button>
@@ -35,5 +37,10 @@ export default function SignUp(props) {
         } catch (e) {
             alert(e.message);
         }
+    }
+
+    function handleKey(e) {
+        if (e.key === 'Enter')
+            handleSubmit()
     }
 }
