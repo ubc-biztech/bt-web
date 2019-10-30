@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { Auth } from "aws-amplify";
 import { TextField, Button } from '@material-ui/core';
 
-export default function Login(props) {
+export default function SignUp(props) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     return (
         <form>
-            <h1> Login </h1>
+            <h1> Sign Up </h1>
             <TextField
                 label="Email"
                 autocomplete="email"
