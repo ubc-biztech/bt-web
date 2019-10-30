@@ -1,20 +1,30 @@
 import React, { useState } from 'react'
 import { Auth } from "aws-amplify";
-import { TextField, Button } from '@material-ui/core';
-import { string, object } from 'yup';
+import { object, string, number } from 'yup';
 import { useFormFields } from "../libs/hooks";
+import Form from './Form'
 
 export default function SignUp() {
 
     const schema = object().shape({
         passwordConfirm: string().min(6).required("Please confirm your password"),
         password: string().min(6).required(),
+        id: number('Valid Student ID required')
+            .min(9999999, 'Valid Student ID required')
+            .max(100000000, 'Valid Student ID required')
+            .required(),
+        name: string().required(),
         email: string().email().required()
     });
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [fields, handleFieldChange] = useFormFields({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        name: "",
+        id: ""
+    });
+
     const [isLoading, setIsLoading] = useState(false);
 
     function validate() {
@@ -22,12 +32,14 @@ export default function SignUp() {
 
         schema
             .validate({
-                email,
-                password,
-                passwordConfirm
+                email: fields.email,
+                password: fields.password,
+                passwordConfirm: fields.passwordConfirm,
+                name: fields.name,
+                id: fields.id
             })
-            .then(valid => {
-                if (password === passwordConfirm)
+            .then(() => {
+                if (fields.password === fields.passwordConfirm)
                     signIn()
             })
             .catch(err => {
@@ -38,55 +50,20 @@ export default function SignUp() {
     }
 
     return (
-        <form>
-            <h1> Sign Up </h1>
-            <TextField
-                label="Email"
-                autoComplete="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                onKeyPress={e => handleKey(e)} />
-            <br />
-            <TextField
-                label="First Name"
-                autoComplete="given-name"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                onKeyPress={e => handleKey(e)} />
-            <br />
-            <TextField
-                label="Last Name"
-                autoComplete="family-name"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                onKeyPress={e => handleKey(e)} />
-            <br />
-            <TextField
-                label="Password"
-                type="password"
-                autoComplete="new-password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                onKeyPress={e => handleKey(e)} />
-            <br />
-            <TextField
-                label="Confirm Password"
-                type="password"
-                value={passwordConfirm}
-                onChange={e => setPasswordConfirm(e.target.value)}
-                onKeyPress={e => handleKey(e)} />
-            <br />
-            <br />
-            <Button variant="contained" disabled={isLoading} onClick={validate} >Login</Button>
-        </form>
+        <Form />
     )
 
     async function signIn() {
 
         try {
             await Auth.signUp({
-                username: email,
-                password,
+                username: fields.email,
+                password: fields.password,
+                attributes: {
+                    email: fields.email,
+                    name: fields.fname,
+                    nickname: fields.id
+                }
             });
             alert("Signed up");
             setIsLoading(false);
