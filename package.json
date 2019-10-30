@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
+    "aws-amplify": "^1.2.4",
     "node-sass": "^4.12.0",
     "query-string": "^6.8.3",
     "react": "^16.9.0",

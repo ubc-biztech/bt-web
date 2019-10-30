@@ -1,51 +1,53 @@
 import React, { Component } from 'react'
-import { setPage } from "../actions/indexActions";
-import { connect } from "react-redux";
+import { Auth } from "aws-amplify";
+import { TextField, Button } from '@material-ui/core';
 
-export class Login extends Component {
+export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            pw: '',
-            verified: false
-        }
-    }
-
-    handleChange = (e) => {
-        this.setState({ pw: e.target.value });
-    }
-
-    handleSubmit = (e) => {
-        /* replace the value of v with backend function*/
-        const isVerified = this.state.pw === 'password';
-        this.setState({ verified: isVerified });
-        this.setState({ pw: '' })
-        if (isVerified) {
-            this.props.setPage('home');
-        }
-        e.preventDefault();
-    }
+            email: '',
+            password: ''
+        };
+    };
 
     render() {
         return (
-            <div>
-                <form onSubmit={this.handleSubmit}>
-                    Enter Password<br />
-                    <input type='password' onChange={this.handleChange} value={this.state.pw} />
-                    <input type='submit' value='Submit' />
-                    {/* following paragraph element can be deleted - it's just used to demonstrate that verified is being changed*/}
-                    <p>{this.state.verified.toString()}</p>
-                </form>
-            </div>
+            <form>
+                <TextField
+                    label="Email"
+                    value={this.state.email}
+                    onChange={this.handleChangeUser.bind(this)}
+                    name="username" />
+                <br />
+                <TextField
+                    label="Password"
+                    type="password"
+                    value={this.state.password}
+                    onChange={this.handleChangePw.bind(this)}
+                    name="username" />
+                <br />
+                <br />
+                <Button variant="contained" onClick={this.handleSubmit.bind(this)} >Login</Button>
+            </form>
         )
     }
+
+
+    handleChangeUser(event) {
+        this.setState({ email: event.target.value });
+    }
+
+    handleChangePw(event) {
+        this.setState({ password: event.target.value });
+    }
+
+    async handleSubmit(event) {
+        try {
+            await Auth.signIn(this.state.email, this.state.password);
+            alert("Logged in");
+        } catch (e) {
+            alert(e.message);
+        }
+    }
 }
-
-const mapStateToProps = state => {
-    return {
-        page: state.pageState.page
-    };
-};
-
-export default connect(mapStateToProps, { setPage })(Login);
-
