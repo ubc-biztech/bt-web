@@ -7,29 +7,46 @@ import Form from './Form'
 export default function SignUp() {
 
     const validationSchema = Yup.object({
-        confirmPassword: Yup.string().min(6).required("Please confirm your password"),
-        password: Yup.string().min(6).required(),
+        email: Yup.string().email().required(),
+        name: Yup.string().required(),
         id: Yup.number('Valid Student ID required')
             .min(9999999, 'Valid Student ID required')
             .max(100000000, 'Valid Student ID required')
             .required(),
-        name: Yup.string().required(),
-        email: Yup.string().email().required()
+        password: Yup.string().min(6).required(),
+        confirmPassword: Yup.string()
+            .oneOf([Yup.ref('password'), null], "Password must match")
+            .required("Please confirm your password")
     });
 
-    const values = { email: "", name: "", confirmPassword: "", password: "", id: "" };
+    const initialValues = { email: "", name: "", id: "", password: "", confirmPassword: "" };
 
     return (
         <Formik
             render={props => <Form {...props} />}
-            initialValues={values}
+            initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={submitValues}
         />
     )
 
-    function submitValues(e) {
-        console.log(e)
+    async function submitValues(values) {
+        const { email, name, id, password } = values;
+
+        try {
+            await Auth.signUp({
+                username: email,
+                password,
+                attributes: {
+                    email,
+                    name,
+                    nickname: id
+                },
+            })
+            alert("Signed Up");
+        } catch (e) {
+            alert(e.message);
+        }
     }
 
 }

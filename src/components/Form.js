@@ -3,7 +3,7 @@ import { Button, TextField } from "@material-ui/core";
 
 export default function Form(props) {
     const {
-        values: { name, email, password, confirmPassword, id },
+        values: { email, name, id, password, confirmPassword },
         errors,
         touched,
         handleSubmit,
@@ -19,9 +19,7 @@ export default function Form(props) {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-        >
+        <form onSubmit={handleSubmit}>
             <TextField
                 label="Email"
                 autoComplete="email"
@@ -86,6 +84,6 @@ export default function Form(props) {
 
     function handleKey(e) {
         if (e.key === 'Enter')
-            console.log('hi')
+            handleSubmit()
     }
 }
