@@ -25,7 +25,7 @@ export default class EventSelector extends Component {
   }
 
     handleChange(event) {
-      if (event.target.value != -1) {
+      if (event.target.value !== -1) {
         // this.setState({selected: event.target.value});
         window.location = '/?event=' + this.state.events[event.target.value].id
       }
