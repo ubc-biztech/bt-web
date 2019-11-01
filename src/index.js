@@ -6,7 +6,7 @@ import App from './App';
 import rootReducer from './reducers/rootReducer'
 import * as serviceWorker from './serviceWorker';
 import Amplify from 'aws-amplify';
-import aws_exports from './aws_exports';
+import aws_exports from './aws-exports';
 import './index.scss';
 
 Amplify.configure(aws_exports);

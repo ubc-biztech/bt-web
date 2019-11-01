@@ -1,6 +1,25 @@
 import React, { useState } from 'react'
 import { Auth } from "aws-amplify";
 import { TextField, Button } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: '#ffffff' },
+        secondary: { main: '#3b5998' }
+    },
+});
+
+const styles = {
+    left: {
+        float: 'left'
+    },
+    socialIcon: {
+        marginTop: '5px',
+        marginRight: '8px',
+        width: '19px'
+    }
+};
 
 export default function Login() {
 
@@ -10,6 +29,23 @@ export default function Login() {
     return (
         <form>
             <h1> Login </h1>
+            <ThemeProvider
+                theme={theme}
+            >
+                <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' })} variant="contained" color="primary">
+                    <div style={styles.left}>
+                        <img style={styles.socialIcon} alt="Google" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                    </div>
+                    Sign In with Google
+                </Button>
+                <Button onClick={() => Auth.federatedSignIn({ provider: 'Facebook' })} variant="contained" color="secondary">
+                    <div style={styles.left}>
+                        <img style={styles.socialIcon} alt="Google" src="/fb.png" />
+                    </div>
+                    Sign In with Facebook
+                </Button>
+            </ThemeProvider>
+            <br />
             <TextField
                 label="Email"
                 autocomplete="email"
@@ -27,7 +63,7 @@ export default function Login() {
             <br />
             <br />
             <Button variant="contained" onClick={handleSubmit} >Login</Button>
-        </form>
+        </form >
     )
 
     async function handleSubmit() {
