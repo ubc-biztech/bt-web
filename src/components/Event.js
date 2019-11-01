@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import Sheet from './Sheet'
+import { connect } from "react-redux";
 
-export default class Event extends Component {
-  constructor(props){
-    super(props)
+class Event extends Component {
 
-    this.state = {}
-  }
   render(){
     let event = this.props.event
 
@@ -21,3 +18,11 @@ export default class Event extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    event: state.pageState.event
+  };
+};
+
+export default connect(mapStateToProps, null)(Event);

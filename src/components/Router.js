@@ -4,15 +4,17 @@ import Event from './Event'
 import Nav from './Nav'
 import './Router.scss';
 import { CircularProgress } from '@material-ui/core';
+import { setPage, setEvent } from "../actions/indexActions";
+import { connect } from "react-redux";
+
 const queryString = require('query-string');
 
-export default class Router extends Component {
+class Router extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      events: null,
-      event: null
+      events: null
     }
   }
 
@@ -24,14 +26,12 @@ export default class Router extends Component {
       this.setState({
         events: response
       })
-      console.log(this.state.events)
 
       let eventId = queryString.parse(window.location.search)['event']
-      this.setState({eventSelected: eventId})
       if (eventId) {
         response.forEach(event => {
           if (event.id === eventId)
-            this.setState({ event })
+            this.props.setEvent( event )
         })
       }
     })
@@ -41,25 +41,32 @@ export default class Router extends Component {
   render (){
     return (
       <div>
-        <Nav events={this.state.events} eventSelected={this.state.eventSelected}/>
-        {ChooseBody(this.state)}
+        <Nav events={this.state.events}/>
+        <div className="content">
+          { this.state.events ? ChooseBody(this.state.events, this.props.page, this.props.event ) : <CircularProgress/> }
+        </div>
       </div>
     )
   }
 }
 
-function ChooseBody(state){
-  let events = state.events
-  let event = state.event
-  if (event) {
-    return (
-      <div className="content">
-        <Event event={event}/>
-      </div>
-    )
-  } else if (!events) 
-      return <CircularProgress/>
-    else 
+function ChooseBody(events, page, event){
+  switch(page) {
+    case 'home':
       return <EventSelector events={events}/>
-  
+    case 'event':
+      return <Event />
+    default:
+      return <p>Loading!</p>
+  }
+
 }
+
+const mapStateToProps = state => {
+  return {
+    page: state.pageState.page,
+    event: state.pageState.event
+  };
+};
+
+export default connect(mapStateToProps, { setPage, setEvent })(Router);
