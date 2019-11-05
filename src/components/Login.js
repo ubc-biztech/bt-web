@@ -15,7 +15,7 @@ export class Login extends Component {
 
     handleSubmit = (e) => {
         /* replace the value of v with backend function*/
-        const v = this.state.pw === 'password' ? true : false;
+        const v = this.state.pw === 'password';
         this.setState({ verified: v })
         e.preventDefault();
     }
