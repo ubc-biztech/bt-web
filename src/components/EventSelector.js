@@ -10,55 +10,56 @@ class EventSelector extends Component {
       events: this.props.events
     }
     this.handleChange = this.handleChange.bind(this);
-}
-    createDropdownItems(){
-      let items = [];
-      if (this.state.events != null) {
-          items.push(<option key={"-1"}
-                        value={-1}>{" "}
-                    </option>)
-          for (let i = 0; i < this.state.events.length; i++) {
-              items.push(<option key={i}
-                                 value={i}>{this.state.events[i].ename}
-                          </option>);
-          }
-      }
-      return items;
   }
-
-    handleChange(event) {
-      // eslint-disable-next-line
-      if (event.target.value != -1) {
-        this.props.setEvent(this.state.events[event.target.value])
+  createDropdownItems() {
+    let items = [];
+    if (this.state.events != null) {
+      items.push(<option key={"-1"}
+        value={-1}>{" "}
+      </option>)
+      for (let i = 0; i < this.state.events.length; i++) {
+        items.push(<option key={i}
+          value={i}>{this.state.events[i].ename}
+        </option>);
       }
     }
+    return items;
+  }
 
-    render() {
-      let events = this.state.events;
+  handleChange(event) {
+    // eslint-disable-next-line
+    if (event.target.value != -1) {
+      this.props.setEvent(this.state.events[event.target.value])
+    }
+  }
 
-      if (events === null){
-        return (
-          <div>
-            <p>Loading...</p>
-          </div>
-      )}
-      else {
-        return (
-          <div>
-            <h1>Events Check-in</h1>
+  render() {
+    let events = this.state.events;
 
-        <form>
-        <label>
-            Select Event:
+    if (events === null) {
+      return (
+        <div>
+          <p>Loading...</p>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div>
+          <h1>Events Check-in</h1>
+
+          <form>
+            <label>
+              Select Event:
             <select onChange={this.handleChange}>
-            {this.createDropdownItems()}
-            </select>
-        </label>
-        </form>
+                {this.createDropdownItems()}
+              </select>
+            </label>
+          </form>
 
         </div>
-        );
-      }
+      );
+    }
   }
 }
 
