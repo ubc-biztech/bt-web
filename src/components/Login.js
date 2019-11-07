@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Auth } from "aws-amplify";
-import { TextField, Button } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({

@@ -11,10 +11,10 @@ import {
   AppBar
 } from '@material-ui/core';
 import './Nav.scss';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import Menu from '@material-ui/icons/Menu';
 import { setEvent } from "../actions/indexActions";
 import { connect } from "react-redux";
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import Menu from '@material-ui/icons/Menu';
 
 function Nav(props) {
 

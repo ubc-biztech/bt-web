@@ -1,6 +1,7 @@
 import React from "react"
 import { Auth } from "aws-amplify";
-import { Button, TextField } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 export default function Form(props) {
     const {
