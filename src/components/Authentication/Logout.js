@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 export default function Logout() {
 
     return (        
-        <Button variant="contained" onClick={() => {
+        <Button variant="contained" color="primary" onClick={() => {
             Auth.signOut()
             .then(data => console.log(data))
             .catch(err => console.log(err));

@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { setEvent } from "../actions/indexActions";
 import { connect } from "react-redux";
-import Login from './Login'
-import Logout from './Logout'
-import SignUp from './SignUp'
+import { Login, Logout, SignUp } from './Authentication'
 
 class EventSelector extends Component {
   constructor(props) {

@@ -61,7 +61,7 @@ export default function Login() {
                 onKeyPress={e => handleKey(e)} />
             <br />
             <br />
-            <Button variant="contained" onClick={handleSubmit} >Login</Button>
+            <Button variant="contained" color="primary" onClick={handleSubmit} >Login</Button>
         </form >
     )
 
