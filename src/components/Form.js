@@ -1,5 +1,4 @@
 import React from "react"
-import { Auth } from "aws-amplify";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
@@ -22,8 +21,6 @@ export default function Form(props) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <button onClick={() =>
-                Auth.federatedSignIn()}>Sign In all</button>
             <TextField
                 label="Email"
                 autoComplete="email"

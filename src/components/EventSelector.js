@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { setEvent } from "../actions/indexActions";
 import { connect } from "react-redux";
 import Login from './Login'
+import Logout from './Logout'
 import SignUp from './SignUp'
-import Login from './Login'
 
 class EventSelector extends Component {
   constructor(props) {
@@ -62,6 +62,7 @@ class EventSelector extends Component {
 
           <SignUp />
           <Login />
+          <Logout />
 
         </div>
       );

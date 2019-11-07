@@ -30,9 +30,7 @@ export default function Login() {
     return (
         <form>
             <h1> Login </h1>
-            <ThemeProvider
-                theme={theme}
-            >
+            <ThemeProvider theme={theme} >
                 <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' })} variant="contained" color="primary">
                     <div style={styles.left}>
                         <img style={styles.socialIcon} alt="Google" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
