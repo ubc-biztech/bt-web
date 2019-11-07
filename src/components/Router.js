@@ -3,7 +3,7 @@ import EventSelector from './EventSelector'
 import Event from './Event'
 import Nav from './Nav'
 import './Router.scss';
-import { CircularProgress } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { setPage, setEvent } from "../actions/indexActions";
 import { connect } from "react-redux";
 
