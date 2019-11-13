@@ -11,13 +11,8 @@ import Paper from "@material-ui/core/Paper";
 // e.g. > 200 users and want a scrollable window instead of expanding whole screen with scroll
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%"
-  },
-  paper: {
-    marginTop: theme.spacing(3),
     width: "100%",
-    overflowX: "auto",
-    marginBottom: theme.spacing(2)
+    overflowX: "auto"
   },
   table: {
     minWidth: 650
@@ -68,35 +63,29 @@ export default function EventUserTable() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Table
-          className={classes.table}
-          size="small"
-          aria-label="a dense table"
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell>Full Name</TableCell>
-              <TableCell>Student Number</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Checked In</TableCell>
+    <Paper className={classes.root}>
+      <Table className={classes.table} size="small" aria-label="a dense table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Full Name</TableCell>
+            <TableCell>Student Number</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Checked In</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {users.map(user => (
+            <TableRow key={user.name}>
+              <TableCell component="th" scope="row">
+                {user.name}
+              </TableCell>
+              <TableCell>{user.studentNumber}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.checkedIn.toString()}</TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map(user => (
-              <TableRow key={user.name}>
-                <TableCell component="th" scope="row">
-                  {user.name}
-                </TableCell>
-                <TableCell>{user.studentNumber}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.checkedIn.toString()}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    </div>
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
   );
 }
