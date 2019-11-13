@@ -67,10 +67,10 @@ export default function EventUserTable() {
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
-            <TableCell>Full Name</TableCell>
-            <TableCell>Student Number</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Checked In</TableCell>
+            <TableCell style={{ fontWeight: "bold" }}>Full Name</TableCell>
+            <TableCell style={{ fontWeight: "bold" }}>Student Number</TableCell>
+            <TableCell style={{ fontWeight: "bold" }}>Email</TableCell>
+            <TableCell style={{ fontWeight: "bold" }}>Checked In</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
