@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import Sheet from './Sheet'
+import React, { Component } from "react";
+// import Sheet from "./Sheet";
+import EventUserTable from "./EventUserTable";
 import { connect } from "react-redux";
 
 class Event extends Component {
-
-  render(){
-    let event = this.props.event
+  render() {
+    let event = this.props.event;
 
     return (
       <div>
@@ -13,9 +13,9 @@ class Event extends Component {
         <p># Registered: {event.regNum}</p>
         <p># Checked In: {event.checkedNum}</p>
         <p># Waitlisted: {event.waitNum}</p>
-        <Sheet users={event.users}/>
+        <EventUserTable />
       </div>
-    )
+    );
   }
 }
 
@@ -25,4 +25,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, null)(Event);
+export default connect(
+  mapStateToProps,
+  null
+)(Event);
