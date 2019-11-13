@@ -47,7 +47,7 @@ export default function Login() {
             <br />
             <TextField
                 label="Email"
-                autocomplete="email"
+                autoComplete="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 onKeyPress={e => handleKey(e)} />
@@ -55,7 +55,7 @@ export default function Login() {
             <TextField
                 label="Password"
                 type="password"
-                autocomplete="password"
+                autoComplete="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 onKeyPress={e => handleKey(e)} />

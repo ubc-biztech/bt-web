@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { setEvent } from "../actions/indexActions";
 import { connect } from "react-redux";
-import { Login, Logout, SignUp } from './Authentication'
+import { Authenticate } from './Authentication'
 
 class EventSelector extends Component {
   constructor(props) {
@@ -58,9 +58,7 @@ class EventSelector extends Component {
             </label>
           </form>
 
-          <SignUp />
-          <Login />
-          <Logout />
+          <Authenticate />
 
         </div>
       );
