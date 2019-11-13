@@ -2,7 +2,7 @@
 
 .env
 aws_exports.js
-aws-exports.js
+src/aws-exports.js
 
 # dependencies
 /node_modules
