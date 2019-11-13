@@ -24,11 +24,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function createData(name, studentNumber, email, checkedIn) {
-  return { name, studentNumber, email, checkedIn };
-}
-
-// could modify to be an array of user objects with properties
 // current sample data, but will get from Events.js in the future
 let users = [
   {
@@ -69,17 +64,6 @@ let users = [
   }
 ];
 
-const rows = [];
-
-// random for now
-// TODO replace constraint with size of array from database
-for (var obj in users) {
-  let user = users[obj];
-  rows.push(
-    createData(user.name, user.studentNumber, user.email, user.checkedIn)
-  );
-}
-
 export default function EventUserTable() {
   const classes = useStyles();
 
@@ -100,14 +84,14 @@ export default function EventUserTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
-              <TableRow key={row.name}>
+            {users.map(user => (
+              <TableRow key={user.name}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {user.name}
                 </TableCell>
-                <TableCell>{row.studentNumber}</TableCell>
-                <TableCell>{row.email}</TableCell>
-                <TableCell>{row.checkedIn}</TableCell>
+                <TableCell>{user.studentNumber}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.checkedIn}</TableCell>
               </TableRow>
             ))}
           </TableBody>
