@@ -31,21 +31,53 @@ function createData(name, studentNumber, email, checkedIn) {
 // could modify to be an array of user objects with properties
 // current sample data, but will get from Events.js in the future
 let users = [
-  ["Ian Mah", 159, 6.0, true],
-  ["Adin Kwok", 237, 9.0, false],
-  ["Andy Lu", 262, 16.0, false],
-  ["Derek Chen", 305, 3.7, false],
-  ["Jacques Chen", 356, 16.0, true],
-  ["Cris Mihailescu", 356, 16.0, true]
+  {
+    name: "Ian Mah",
+    studentNumber: 159,
+    email: "1@gmail.com",
+    checkedIn: true
+  },
+  {
+    name: "Derek Chen",
+    studentNumber: 152,
+    email: "2@gmail.com",
+    checkedIn: false
+  },
+  {
+    name: "Jacques Chen",
+    studentNumber: 512,
+    email: "3@gmail.com",
+    checkedIn: true
+  },
+  {
+    name: "Cris Mihailescu",
+    studentNumber: 214,
+    email: "4@gmail.com",
+    checkedIn: true
+  },
+  {
+    name: "Adin Kwok",
+    studentNumber: 859,
+    email: "5@gmail.com",
+    checkedIn: false
+  },
+  {
+    name: "Andy Luu",
+    studentNumber: 104,
+    email: "6@gmail.com",
+    checkedIn: false
+  }
 ];
 
 const rows = [];
 
 // random for now
 // TODO replace constraint with size of array from database
-for (let i = 0; i < 10; i += 1) {
-  const randomSelection = users[Math.floor(Math.random() * users.length)];
-  rows.push(createData(...randomSelection));
+for (var obj in users) {
+  let user = users[obj];
+  rows.push(
+    createData(user.name, user.studentNumber, user.email, user.checkedIn)
+  );
 }
 
 export default function EventUserTable() {
