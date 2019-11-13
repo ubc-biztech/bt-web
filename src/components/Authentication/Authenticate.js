@@ -6,34 +6,20 @@ import Logout from './Logout';
 
 export default class Authenticate extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            user: null
-        }
-    }
-
     componentDidMount() {
-        Auth.currentAuthenticatedUser()
-            .then(user => {
-                console.log(user)
-                this.setState({
-                    user
-                })
-            })
-            .catch(err => console.log(err));
+        setTimeout(() => {
+            Auth.currentAuthenticatedUser()
+                .then(user => console.log(user))
+                .catch(() => console.log("Not signed in"));
+        }, 500)
     }
 
     render() {
-        if (this.state.user == null)
-            return (
-                <div>
-                    <SignUp />
-                    <Login />
-                </div>
-            )
-        else return (
-            <Logout />
+        return (
+            <div>
+                <Login />
+                <Logout />
+            </div>
         )
     }
 

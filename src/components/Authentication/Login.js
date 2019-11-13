@@ -37,12 +37,6 @@ export default function Login() {
                     </div>
                     Sign In with Google
                 </Button>
-                <Button onClick={() => Auth.federatedSignIn({ provider: 'Facebook' })} variant="contained" color="secondary">
-                    <div style={styles.left}>
-                        <img style={styles.socialIcon} alt="Google" src="/fb.png" />
-                    </div>
-                    Sign In with Facebook
-                </Button>
             </ThemeProvider>
             <br />
             <TextField
