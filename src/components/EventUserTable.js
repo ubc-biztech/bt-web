@@ -91,7 +91,7 @@ export default function EventUserTable() {
                 </TableCell>
                 <TableCell>{user.studentNumber}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{user.checkedIn}</TableCell>
+                <TableCell>{user.checkedIn.toString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
