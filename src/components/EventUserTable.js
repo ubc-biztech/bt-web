@@ -8,7 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 // Can use virtualized window if concerned about efficiency in scaling
-// e.g. > 200 users and want a
+// e.g. > 200 users and want a scrollable window instead of expanding whole screen with scroll
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%"
@@ -29,18 +29,20 @@ function createData(name, studentNumber, email, checkedIn) {
 }
 
 // could modify to be an array of user objects with properties
+// current sample data, but will get from Events.js in the future
 let users = [
-  ["Ian Mah", 159, 6.0, 24, true],
-  ["Adin Kwok", 237, 9.0, 37, false],
-  ["Andy Lu", 262, 16.0, 24, false],
-  ["Derek Chen", 305, 3.7, 67, false],
-  ["Jacques Chen", 356, 16.0, 49, true],
-  ["Cris Mihailescu", 356, 16.0, 49, true]
+  ["Ian Mah", 159, 6.0, true],
+  ["Adin Kwok", 237, 9.0, false],
+  ["Andy Lu", 262, 16.0, false],
+  ["Derek Chen", 305, 3.7, false],
+  ["Jacques Chen", 356, 16.0, true],
+  ["Cris Mihailescu", 356, 16.0, true]
 ];
 
 const rows = [];
 
-// replace 10 with users.length from database
+// random for now
+// TODO replace constraint with size of array from database
 for (let i = 0; i < 10; i += 1) {
   const randomSelection = users[Math.floor(Math.random() * users.length)];
   rows.push(createData(...randomSelection));
