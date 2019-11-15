@@ -3,7 +3,7 @@ import { SET_PAGE, SET_EVENT } from '../constants/Constants';
 
 const initialState = {
   events: null,
-  page: 'home'
+  page: 'login'
 }
 
 function pageReducer(state = initialState, action) {
