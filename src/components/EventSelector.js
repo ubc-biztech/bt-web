@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import SignUp from './SignUp'
+import { setEvent } from "../actions/indexActions";
+import { connect } from "react-redux";
 
-export default class EventSelector extends Component {
+class EventSelector extends Component {
   constructor(props) {
     super(props);
 
@@ -26,9 +27,9 @@ export default class EventSelector extends Component {
   }
 
   handleChange(event) {
+    // eslint-disable-next-line
     if (event.target.value != -1) {
-      // this.setState({selected: event.target.value});
-      window.location = '/?event=' + this.state.events[event.target.value].id
+      this.props.setEvent(this.state.events[event.target.value])
     }
   }
 
@@ -56,10 +57,10 @@ export default class EventSelector extends Component {
             </label>
           </form>
 
-          <SignUp />
-
         </div>
       );
     }
   }
 }
+
+export default connect(null, { setEvent })(EventSelector);

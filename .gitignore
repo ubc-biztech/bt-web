@@ -2,6 +2,10 @@
 
 .env
 aws_exports.js
+<<<<<<< HEAD
+=======
+aws-exports.js
+>>>>>>> origin/master
 
 # dependencies
 /node_modules
@@ -24,3 +28,4 @@ aws_exports.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+debug.log
