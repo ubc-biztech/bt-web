@@ -2,10 +2,6 @@
 
 .env
 aws_exports.js
-<<<<<<< HEAD
-=======
-aws-exports.js
->>>>>>> origin/master
 
 # dependencies
 /node_modules
