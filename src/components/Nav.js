@@ -20,6 +20,8 @@ function Nav(props) {
 
   const events = props.events
 
+  // console.log(props.events)
+
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -63,7 +65,7 @@ function Nav(props) {
         >
           <ListItemText primary="Home" />
         </ListItem>
-        <br></br>
+        {/* <br></br>
         <ListItem
             button
             selected={!props.eventSelected}
@@ -72,7 +74,7 @@ function Nav(props) {
             onClick={handleDrawerClose}
           >
             <ListItemText primary="Andy's Dev Spot" />
-          </ListItem>
+          </ListItem> */}
         <br></br>
         <Typography className="menu-tag" variant="h6" noWrap>Events</Typography>
         <List>

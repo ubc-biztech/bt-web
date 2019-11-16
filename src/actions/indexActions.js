@@ -3,7 +3,7 @@ import { SET_PAGE, SET_EVENT } from '../constants/Constants';
 export function setPage(page) {
   return {
     type: SET_PAGE,
-    page
+    page: page
   };
 }
 

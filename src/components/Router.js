@@ -7,6 +7,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { setPage, setEvent } from "../actions/indexActions";
 import { connect } from "react-redux";
 
+import CFN_GoogleForm from './EventForms/GoogleForm_CFN/MyForm';
+
 const queryString = require('query-string');
 
 class Router extends Component {
@@ -19,6 +21,7 @@ class Router extends Component {
   }
 
   componentDidMount() {
+    // console.log(this.props)
     fetch(process.env.REACT_APP_AMAZON_API+"/events/get", {
     })
     .then((response) => response.json())
@@ -43,6 +46,7 @@ class Router extends Component {
       <div>
         <Nav events={this.state.events}/>
         <div className="content">
+          {/* {console.log(this.props)} */}
           { this.state.events ? ChooseBody(this.state.events, this.props.page, this.props.event ) : <CircularProgress/> }
         </div>
       </div>
@@ -54,6 +58,7 @@ function ChooseBody(events, page, event){
   switch(page) {
     case 'home':
       return <EventSelector events={events}/>
+      // return <CFN_GoogleForm/> //TODO: Ian I tried but can't seem to figure out exactly how you're importing the home page and what states you're changing. My form is here - Andy
     case 'event':
       return <Event />
     default:
