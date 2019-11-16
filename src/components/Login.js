@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { setEvent, setPage } from "../actions/indexActions";
+import { setPage } from "../actions/indexActions";
 import { connect } from "react-redux";
 
 export class Login extends Component {
@@ -17,10 +17,10 @@ export class Login extends Component {
 
     handleSubmit = (e) => {
         /* replace the value of v with backend function*/
-        const v = this.state.pw === 'password';
-        this.setState({ verified: v });
+        const isVerified = this.state.pw === 'password';
+        this.setState({ verified: isVerified });
         this.setState({ pw: '' })
-        if (v) {
+        if (isVerified) {
             this.props.setPage('home');
         }
         e.preventDefault();
