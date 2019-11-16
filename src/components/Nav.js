@@ -61,6 +61,16 @@ export default function Nav(props) {
             <ListItemText primary="Home" />
           </ListItem>
         <br></br>
+        <ListItem
+            button
+            selected={!props.eventSelected}
+            component="a"
+            href={"/andydev"}
+            onClick={handleDrawerClose}
+          >
+            <ListItemText primary="Andy's Dev Spot" />
+          </ListItem>
+        <br></br>
         <Typography className="menu-tag" variant="h6" noWrap>Events</Typography>
         <List>
           { events ? events.map((event) => (
