@@ -47,5 +47,5 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { setEvent, setPage })(Login);
+export default connect(mapStateToProps, { setPage })(Login);
 
