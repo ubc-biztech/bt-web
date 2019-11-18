@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import Event from './Event'
 import Nav from './Nav'
-import Login from './Login'
+import Authenticate from './Authentication/Authenticate'
 import './Router.scss';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { setPage, setEvent } from "../actions/indexActions";
+import { setPage, setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 
 const queryString = require('query-string');
@@ -54,7 +54,7 @@ class Router extends Component {
 function ChooseBody(events, page, event) {
   switch (page) {
     case 'login':
-      return <Login />
+      return <Authenticate />
     case 'home':
       return <EventSelector events={events} />
     case 'event':

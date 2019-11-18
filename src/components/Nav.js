@@ -11,7 +11,7 @@ import {
   AppBar
 } from '@material-ui/core';
 import './Nav.scss';
-import { setEvent } from "../actions/indexActions";
+import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Menu from '@material-ui/icons/Menu';

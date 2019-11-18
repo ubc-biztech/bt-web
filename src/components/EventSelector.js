@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { setEvent } from "../actions/indexActions";
+import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import { Authenticate } from './Authentication'
 
