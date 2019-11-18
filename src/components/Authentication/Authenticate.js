@@ -1,26 +1,31 @@
 import React, { Component } from 'react'
 import { Auth } from "aws-amplify";
-import SignUp from './SignUp';
 import Login from './Login';
 import Logout from './Logout';
+import { setUser } from '../../actions/UserActions'
+import { connect } from "react-redux";
 
-export default class Authenticate extends Component {
+export class Authenticate extends Component {
 
     componentDidMount() {
-        setTimeout(() => {
-            Auth.currentAuthenticatedUser()
-                .then(user => console.log(user))
-                .catch(() => console.log("Not signed in"));
-        }, 500)
+        Auth.currentAuthenticatedUser()
+            .then(user => this.props.setUser(user))
+            .catch(() => console.log("Not signed in"));
     }
 
     render() {
-        return (
-            <div>
-                <Login />
-                <Logout />
-            </div>
-        )
+        return this.props.user
+        ? <Logout />
+        : <Login />
     }
 
 }
+
+const mapStateToProps = state => {
+    return {
+      user: state.userState.user,
+    };
+  };
+  
+  export default connect(mapStateToProps, { setUser })(Authenticate);
+  

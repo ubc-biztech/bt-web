@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { SET_PAGE, SET_EVENT, SET_USER } from '../constants/Constants';
+import { SET_PAGE, SET_EVENT, SET_USER, LOGOUT } from '../constants/Constants';
 
 const initialState = {
   events: null,
@@ -30,8 +30,12 @@ function userReducer(state = initialState, action) {
     case SET_USER:
       return {
         ...state,
-        user: action.user,
-        event: null
+        user: action.user
+      }
+    case LOGOUT:
+      return {
+        ...state,
+        user: null
       }
     default:
       return state;
@@ -40,5 +44,5 @@ function userReducer(state = initialState, action) {
 
 export default combineReducers({
   pageState: pageReducer,
-  user: userReducer
+  userState: userReducer
 });

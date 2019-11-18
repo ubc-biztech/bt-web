@@ -42,7 +42,7 @@ class Router extends Component {
   render() {
     return (
       <div>
-        {this.props.page === 'login' ? "" : <Nav events={this.state.events} />}
+        {this.props.user ? <Nav events={this.state.events} /> : null }
         <div className="content">
           {this.state.events ? ChooseBody(this.state.events, this.props.page, this.props.event) : <CircularProgress />}
         </div>
@@ -68,7 +68,8 @@ function ChooseBody(events, page, event) {
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
-    event: state.pageState.event
+    event: state.pageState.event,
+    user: state.userState.user
   };
 };
 

@@ -15,6 +15,7 @@ import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Menu from '@material-ui/icons/Menu';
+import Logout from './Authentication/Logout'
 
 function Nav(props) {
 
@@ -77,6 +78,7 @@ function Nav(props) {
               <ListItemText primary={event.ename} />
             </ListItem>
           )) : 'Loading...'}
+          <Logout/>
         </List>
       </Drawer>
     </div>
