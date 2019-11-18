@@ -2,14 +2,6 @@ import React, { useState } from 'react'
 import { Auth } from "aws-amplify";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-
-const theme = createMuiTheme({
-    palette: {
-        primary: { main: '#ffffff' },
-        secondary: { main: '#3b5998' }
-    },
-});
 
 const styles = {
     left: {
@@ -30,14 +22,12 @@ export default function Login() {
     return (
         <form>
             <h1> Login </h1>
-            <ThemeProvider theme={theme} >
-                <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' })} variant="contained" color="primary">
-                    <div style={styles.left}>
-                        <img style={styles.socialIcon} alt="Google" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-                    </div>
-                    Sign In with Google
-                </Button>
-            </ThemeProvider>
+            <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' })} variant="contained" color="primary">
+                <div style={styles.left}>
+                    <img style={styles.socialIcon} alt="Google" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                </div>
+                Sign In with Google
+            </Button>
             <br />
             <TextField
                 label="Email"

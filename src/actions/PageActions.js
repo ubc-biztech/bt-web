@@ -9,6 +9,8 @@ export function setPage(page) {
 
 export function setEvent(event) {
   if (!event.id) {
+    let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+    window.history.pushState({ path: newurl }, '', newurl);
     return {
       type: SET_PAGE,
       page: 'home'

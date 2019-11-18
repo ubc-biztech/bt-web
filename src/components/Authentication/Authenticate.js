@@ -7,10 +7,19 @@ import { connect } from "react-redux";
 
 export class Authenticate extends Component {
 
-    componentDidMount() {
+    getAuthenticatedUser(){
         Auth.currentAuthenticatedUser()
             .then(user => this.props.setUser(user))
-            .catch(() => console.log("Not signed in"));
+            .catch(() => console.log("Not signed in"))
+    }
+
+    componentDidMount() {
+        if (window.location.pathname === '/login/'){
+            setTimeout(() => this.getAuthenticatedUser(), 700)
+            let newurl = window.location.protocol + "//" + window.location.host;
+            window.history.pushState({ path: newurl }, '', newurl);
+        }
+        else this.getAuthenticatedUser()
     }
 
     render() {

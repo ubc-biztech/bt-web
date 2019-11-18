@@ -51,7 +51,7 @@ function Nav(props) {
       </AppBar>
       <Drawer variant="persistent" open={open} anchor="left">
         <div>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={() => setOpen(false)}>
             <ChevronLeft />
           </IconButton>
         </div>

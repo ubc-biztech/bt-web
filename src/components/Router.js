@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import Event from './Event'
 import Nav from './Nav'
-import Authenticate from './Authentication/Authenticate'
+import { Authenticate } from './Authentication'
 import './Router.scss';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { setPage, setEvent } from "../actions/PageActions";
