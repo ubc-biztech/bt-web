@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { setPage } from "../actions/indexActions";
+import { connect } from "react-redux";
 
 export class Login extends Component {
     constructor(props) {
@@ -15,8 +17,12 @@ export class Login extends Component {
 
     handleSubmit = (e) => {
         /* replace the value of v with backend function*/
-        const v = this.state.pw === 'password';
-        this.setState({ verified: v })
+        const isVerified = this.state.pw === 'password';
+        this.setState({ verified: isVerified });
+        this.setState({ pw: '' })
+        if (isVerified) {
+            this.props.setPage('home');
+        }
         e.preventDefault();
     }
 
@@ -35,4 +41,11 @@ export class Login extends Component {
     }
 }
 
-export default Login
+const mapStateToProps = state => {
+    return {
+        page: state.pageState.page
+    };
+};
+
+export default connect(mapStateToProps, { setPage })(Login);
+
