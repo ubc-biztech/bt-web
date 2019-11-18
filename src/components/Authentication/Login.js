@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Auth } from "aws-amplify";
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 const styles = {
@@ -16,8 +16,8 @@ const styles = {
 
 export default function Login() {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
 
     return (
         <form>
@@ -28,14 +28,12 @@ export default function Login() {
                 </div>
                 Sign In with Google
             </Button>
-            <br />
-            <TextField
+            {/* <TextField
                 label="Email"
                 autoComplete="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 onKeyPress={e => handleKey(e)} />
-            <br />
             <TextField
                 label="Password"
                 type="password"
@@ -43,23 +41,21 @@ export default function Login() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 onKeyPress={e => handleKey(e)} />
-            <br />
-            <br />
-            <Button variant="contained" color="primary" onClick={handleSubmit} >Login</Button>
+            <Button variant="contained" color="primary" onClick={handleSubmit} >Login</Button> */}
         </form >
     )
 
-    async function handleSubmit() {
-        try {
-            await Auth.signIn(email, password);
-            alert("Logged in");
-        } catch (e) {
-            alert(e.message);
-        }
-    }
+    // async function handleSubmit() {
+    //     try {
+    //         await Auth.signIn(email, password);
+    //         alert("Logged in");
+    //     } catch (e) {
+    //         alert(e.message);
+    //     }
+    // }
 
-    function handleKey(e) {
-        if (e.key === 'Enter')
-            handleSubmit()
-    }
+    // function handleKey(e) {
+    //     if (e.key === 'Enter')
+    //         handleSubmit()
+    // }
 }

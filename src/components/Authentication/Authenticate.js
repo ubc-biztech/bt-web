@@ -9,7 +9,16 @@ export class Authenticate extends Component {
 
     getAuthenticatedUser(){
         Auth.currentAuthenticatedUser()
-            .then(user => this.props.setUser(user))
+            .then(user => {
+                const email = user.attributes.email
+                if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
+                    this.props.setUser(user)
+                }
+                else {
+                    Auth.signOut()
+                    alert('You must use a ubcbiztech.com email')
+                }
+            })
             .catch(() => console.log("Not signed in"))
     }
 
