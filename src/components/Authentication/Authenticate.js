@@ -23,8 +23,11 @@ export class Authenticate extends Component {
     }
 
     componentDidMount() {
+        // Check if there is an authenticated user
+        // After authenticating with Google, Auth redirects to localhost:3000/login/ 
+        // There is a time delay where Auth.currentAuthenticatedUser() returns the wrong value. Hence setTimeout()
         if (window.location.pathname === '/login/'){
-            setTimeout(() => this.getAuthenticatedUser(), 700)
+            setTimeout(() => this.getAuthenticatedUser(), 600)
             let newurl = window.location.protocol + "//" + window.location.host;
             window.history.pushState({ path: newurl }, '', newurl);
         }

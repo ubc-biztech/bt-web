@@ -1,8 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 .env
-aws_exports.js
-src/aws-exports.js
 
 # dependencies
 /node_modules
@@ -37,4 +35,6 @@ build/
 dist/
 node_modules/
 aws-exports.js
+aws_exports.js
+src/aws-exports.js
 awsconfiguration.json
