@@ -88,22 +88,22 @@ export class MyFormBody extends Component {
           {/* TODO: make required for my custom radio group. TODO: make other field in radio buttons */}
           <Grid item xs={12} sm={6}>
             <RadioGroupButtons 
-              buttonOptions={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry", "Other"]}
+              buttonOptions={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry", "Other:"]}
               radioGroupTitle={"Faculty"}/>  
           </Grid>
           <Grid item xs={12} sm={6}>
             <RadioGroupButtons 
-              buttonOptions={["1st Year","2nd Year","3rd Year","4th Year","5+ Year", "Other"]}
+              buttonOptions={["1st Year","2nd Year","3rd Year","4th Year","5+ Year", "Other:"]}
               radioGroupTitle={"Year"}/>  
           </Grid>
           <Grid item xs={12} sm={6}>
             <RadioGroupButtons 
-              buttonOptions={["Facebook","Boothing","Friends","BizTech_Newsletter","Faculty_Newsletter","Other"]}
+              buttonOptions={["Facebook","Boothing","Friends","BizTech_Newsletter","Faculty_Newsletter","Other:"]}
               radioGroupTitle={"How did you hear about this event?"}/>  
           </Grid>
           <Grid item xs={12} sm={6}>
             <RadioGroupButtons 
-              buttonOptions={["No","Other"]}
+              buttonOptions={["No","Other:"]}
               radioGroupTitle={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}/>  
           </Grid>
 

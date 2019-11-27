@@ -4,6 +4,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import TextField from '@material-ui/core/TextField';
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles'
 
@@ -24,9 +25,19 @@ const theme = createMuiTheme({
 export class RadioGroupButtons extends Component {
 
   createButtons(optionsArr) {
-    return optionsArr.map((option) => (
-      <FormControlLabel value={option} control={<Radio/>} label={option}/>
-      ));
+    
+    return optionsArr.map((option) => (option==='Other:') ?
+        <React.Fragment>
+          <FormControlLabel value={option} control={<Radio/>} label={option} /> 
+          <TextField
+                required
+                id="otherOption"
+                name="otherOption"
+                label=""
+          />
+        </React.Fragment> :
+        <FormControlLabel value={option} control={<Radio/>} label={option} />
+      );
     }
     
     
