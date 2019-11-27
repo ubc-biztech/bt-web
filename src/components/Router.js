@@ -7,6 +7,7 @@ import './Router.scss';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { setPage, setEvent } from "../actions/indexActions";
 import { connect } from "react-redux";
+import EventForm from "./EventForm/EventForm";
 
 const queryString = require('query-string');
 
@@ -56,7 +57,9 @@ function ChooseBody(events, page, event) {
     case 'login':
       return <Login />
     case 'home':
-      return <EventSelector events={events} />
+      // return <EventSelector events={events} />
+      return <EventForm/>
+
     case 'event':
       return <Event />
     default:
