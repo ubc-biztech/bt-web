@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - node
+notifications:
+  email: false
+cache:
+  directories:
+  - node_modules
+install:
+  - npm install
+jobs:
+  include:
+    - stage: "Build"
+      script: npm run build
+    - stage: "Deploy"
+      deploy:
+        provider: firebase
+        skip_cleanup: true
+        token:
+          secure: "R2n0G+jPNwKRE7XQcjg6dat+Dm129a3GU6anrP2sa+qviM2EfTawhS75fjA9Xllzwkxxtk2qmdk3oiqKm/9lg4W4N3Mjy1/P/g4zXz1+Jux7Q1ayCSHfslYSgi2NUWt0K802gIVkmzOifV2R/6ZJTKpZnOGUDvKj7WcEBoptk+ht7stHSRhRw6Oc3GvyL1p0YtIhAD6BMxjApgBVQmfH1fUf6xurFSXI3YDWdizA/sY8upLJuzxySjV61+Xu7pReGtOZNJaC4BZqp9boVvOy1fe9yb/eV/S49g1IxDYEjQJKtfhY24U7MLehClQbk0ZI2shAnR4AxvrYBjT/bTPNd+AU/C/xTxn8eqGdwwkDTkTZQuOBRwyTS0MVv72KhwUIGi+2Pk5FyICrBlSdG0VmsMTQWWfFgOKvnLZ2RYkwkzpx/IqOEJcN/6oXGZEAbuSzXg6B3dElEhq/xW8XTGjuA8+rghj/zxb+I1JrQZI8vvHyKEByQ8zxEOVb+7/yHq0Y8YOg1/pYCLdrbw9jWQIK9ej7TKYDhGRkjEjgbbc6xOMIIEg1+fcWI+lTvTqdB32ozycbXhxACS6W7Zx1lw9YqPticDLkuL1vWDzraNGwD4u9bNpF6V2EuKN9K7UMLQ7qfvHUw3ppvwIfON3jzRsMvUECabQySldFREDuNzjwPqE="
+stages:
+  - "Build"
+  - name: "Deploy"
+    if: branch = master
