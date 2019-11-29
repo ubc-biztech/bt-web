@@ -6,12 +6,10 @@ notifications:
 cache:
   directories:
   - node_modules
-install:
-  - npm install
 jobs:
   include:
-    - stage: "Build"
-      script: npm run build
+    - stage: "Install & Build"
+      script: npm install && npm run build
     - stage: "Deploy"
       deploy:
         provider: firebase
