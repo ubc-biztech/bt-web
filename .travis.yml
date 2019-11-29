@@ -17,6 +17,6 @@ jobs:
         token:
           secure: $PROD_FIREBASE_TOKEN
 stages:
-  - "Build"
+  - "Install & Build"
   - name: "Deploy"
     if: branch = master
