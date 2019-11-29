@@ -10,15 +10,16 @@ install:
   - npm install
 jobs:
   include:
-    - stage: "Build"
-      script: npm run build
-    - stage: "Deploy"
+    - stage: "Test & Build"
+      script: npm run test && npm run build
+    - stage: "Build & Deploy Production"
+      script: npm run generate:prod
       deploy:
         provider: firebase
         skip_cleanup: true
         token:
           secure: $PROD_FIREBASE_TOKEN
 stages:
-  - "Build"
-  - name: "Deploy"
+  - "Test & Build"
+  - name: "Build & Deploy Production"
     if: branch = master
