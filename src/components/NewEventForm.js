@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react'
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import DateFnsUtils from '@date-io/date-fns';
@@ -8,17 +8,19 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import Paper from "@material-ui/core/Paper";
+import Typogrpahy from "@material-ui/core/Typography"
 
+export class NewEventForm extends Component {
+    state = {
+        selectedDate: new Date(),
+        todaysDate: ""
+    }
 
-export const NewEventForm = (props) => {
-    const [selectedDate, setSelectedDate] = React.useState(new Date());
-    const [todaysDate, setTodaysDate] = React.useState("");
+    handleDateChange = date => {
+        this.setState({ selectedDate: date })
+    }
 
-    const handleDateChange = date => {
-        setSelectedDate(date);
-    };
-
-    const handleTodaysDate = () => {
+    handleTodaysDate = () => {
         let today = new Date();
         let year = today.getFullYear();
 
@@ -27,86 +29,89 @@ export const NewEventForm = (props) => {
 
         let day = today.getDate() + "";
         day = day.padStart(2, '0');
-        setTodaysDate(month + "-" + day + "-" + year);
+        this.setState({ todaysDate: month + "-" + day + "-" + year });
     }
 
+    render() {
+        return (
+            <React.Fragment>
+                <Typogrpahy component="h4" variant="h3">New Event Form</Typogrpahy>
+                <form onSubmit={() => { }}>
+                    <Paper>
+                        <TextField
+                            id="name"
+                            label="Event Name"
+                            fullWidth
+
+                        />
+                        <TextField
+                            id="description"
+                            label="Description"
+                            multiline="true"
+                            fullWidth
+                        />
+                        <TextField
+                            id="capacity"
+                            label="Capacity"
+                            type="number"
+                            min="0"
+                        />
+                        <TextField
+                            id="partners"
+                            label="Partners & Sponsors"
+                            fullWidth
+                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                                disableToolbar
+                                format="MM/dd/yyyy"
+                                margin="normal"
+                                id="date-picker-inline"
+                                label="Date"
+                                onClick={this.handleTodaysDate}
+                                minDate={this.state.todaysDate}
+                                value={this.state.selectedDate}
+                                onChange={this.handleDateChange.bind(this)}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                            />
+                            <KeyboardTimePicker
+                                margin="normal"
+                                id="time-picker"
+                                label="Time"
+                                value={this.state.selectedDate}
+                                onChange={this.handleDateChange.bind(this)}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change time',
+                                }}
+                            />
+                        </MuiPickersUtilsProvider>
+
+                        <TextField
+                            id="location"
+                            label="Location"
+                            fullWidth
+                        />
+
+                        <TextField
+                            id="image"
+                            label="Image URL"
+                            fullWidth />
 
 
-    return (
-        <form onSubmit={() => { }}>
-            <Paper>
-                <TextField
-                    id="name"
-                    name="name"
-                    label="Event Name"
-                    fullWidth
+                    </Paper>
 
-                />
-                <TextField
-                    id="description"
-                    name="description"
-                    label="Description"
-                    fullWidth
-                />
-                <TextField
-                    id="capacity"
-                    name="capacity"
-                    label="Capacity"
-                    type="number"
-                    min="0"
-                    float="left"
-                />
-                <TextField
-                    id="partners"
-                    name="partners"
-                    label="Partners & Sponsors"
-                    fullWidth
-                />
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                        disableToolbar
-                        format="MM/dd/yyyy"
-                        margin="normal"
-                        id="date-picker-inline"
-                        label="Date"
-                        onClick={handleTodaysDate}
-                        minDate={todaysDate}
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-                    <KeyboardTimePicker
-                        margin="normal"
-                        id="time-picker"
-                        label="Time"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change time',
-                        }}
-                    />
-                </MuiPickersUtilsProvider>
+                    <Button
+                        type="submit"
+                        variant="raised"
+                    >
+                        Submit
+                    </Button>
+                </form>
+            </React.Fragment>
+        )
+    }
+}
 
-                <TextField
-                    id="location"
-                    name="location"
-                    label="Location"
-                    fullWidth
-                />
-
-
-            </Paper>
-
-            <Button
-                type="submit"
-                fullWidth
-                variant="raised"
-                color="primary"
-            >
-                Submit
-     </Button>
-        </form>
-    );
-};
+export default NewEventForm
