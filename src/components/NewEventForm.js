@@ -12,15 +12,14 @@ import Typogrpahy from "@material-ui/core/Typography"
 
 export class NewEventForm extends Component {
     state = {
-        selectedDate: new Date(),
-        todaysDate: ""
+        selectedDate: new Date()
     }
 
     handleDateChange = date => {
         this.setState({ selectedDate: date })
     }
 
-    handleTodaysDate = () => {
+    todaysDate = () => {
         let today = new Date();
         let year = today.getFullYear();
 
@@ -29,7 +28,7 @@ export class NewEventForm extends Component {
 
         let day = today.getDate() + "";
         day = day.padStart(2, '0');
-        this.setState({ todaysDate: month + "-" + day + "-" + year });
+        return month + "-" + day + "-" + year;
     }
 
     render() {
@@ -69,7 +68,7 @@ export class NewEventForm extends Component {
                                 id="date-picker-inline"
                                 label="Date"
                                 onClick={this.handleTodaysDate}
-                                minDate={this.state.todaysDate}
+                                minDate={this.todaysDate}
                                 value={this.state.selectedDate}
                                 onChange={this.handleDateChange.bind(this)}
                                 KeyboardButtonProps={{
