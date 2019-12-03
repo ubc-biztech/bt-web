@@ -8,7 +8,7 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import Paper from "@material-ui/core/Paper";
-import Typogrpahy from "@material-ui/core/Typography"
+import Typography from "@material-ui/core/Typography"
 
 export class NewEventForm extends Component {
     state = {
@@ -34,7 +34,7 @@ export class NewEventForm extends Component {
     render() {
         return (
             <React.Fragment>
-                <Typogrpahy component="h4" variant="h3">New Event Form</Typogrpahy>
+                <Typography component="h4" variant="h3">New Event Form</Typography>
                 <form onSubmit={() => { }}>
                     <Paper>
                         <TextField
