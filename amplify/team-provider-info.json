@@ -1,0 +1,21 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "bt-web-dev-20191030013405-authRole",
+            "UnauthRoleArn": "arn:aws:iam::432714361962:role/bt-web-dev-20191030013405-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::432714361962:role/bt-web-dev-20191030013405-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "bt-web-dev-20191030013405-deployment",
+            "UnauthRoleName": "bt-web-dev-20191030013405-unauthRole",
+            "StackName": "bt-web-dev-20191030013405",
+            "StackId": "arn:aws:cloudformation:us-west-2:432714361962:stack/bt-web-dev-20191030013405/08e5be40-faf0-11e9-9afe-0af3380f813e"
+        },
+        "categories": {
+            "auth": {
+                "btweb0aa335ef": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"562952724202-glsbn1of5t177orbidrioilnsbefurlo.apps.googleusercontent.com\",\"client_secret\":\"_935iGbu0kTImnp3dOhhn_7r\"}]"
+                }
+            }
+        }
+    }
+}

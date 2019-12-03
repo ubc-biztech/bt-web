@@ -1,0 +1,25 @@
+language: node_js
+node_js:
+  - node
+notifications:
+  email: false
+cache:
+  directories:
+  - node_modules
+install:
+  - npm install
+jobs:
+  include:
+    - stage: "Test & Build"
+      script: npm run test && npm run build
+    - stage: "Build & Deploy Production"
+      script: npm run generate:prod
+      deploy:
+        provider: firebase
+        skip_cleanup: true
+        token:
+          secure: $PROD_FIREBASE_TOKEN
+stages:
+  - "Test & Build"
+  - name: "Build & Deploy Production"
+    if: branch = master
