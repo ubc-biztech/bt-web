@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // import Sheet from "./Sheet";
 import EventUserTable from "./EventUserTable";
 import { connect } from "react-redux";
-import NewEventForm from "./NewEventForm";
+import { NewEventForm } from "./Forms";
 
 class Event extends Component {
   render() {

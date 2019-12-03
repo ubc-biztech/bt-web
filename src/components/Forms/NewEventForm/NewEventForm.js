@@ -1,7 +1,7 @@
 import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import Form from './Form'
+import NewEventFormComponent from './NewEventFormComponent'
 
 export default function NewEventForm() {
 
@@ -20,11 +20,12 @@ export default function NewEventForm() {
 
     return (
         <Formik
-            render={props => <Form {...props} />}
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={submitValues}
-        />
+        >
+            {props => <NewEventFormComponent {...props} />}
+        </Formik>
     )
 
     async function submitValues(values) {
