@@ -3,10 +3,11 @@ import EventSelector from './EventSelector'
 import Event from './Event'
 import Nav from './Nav'
 import Login from './Login'
-import './Router.scss';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { setPage, setEvent } from "../actions/indexActions";
-import { connect } from "react-redux";
+import './Router.scss'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { setPage, setEvent } from '../actions/indexActions'
+import { connect } from 'react-redux'
+import { API_URL } from '../utils'
 
 const queryString = require('query-string');
 
@@ -20,7 +21,7 @@ class Router extends Component {
   }
 
   componentDidMount() {
-    fetch(process.env.REACT_APP_AMAZON_API + "/events/get", {
+    fetch(API_URL + "/events/get", {
     })
       .then((response) => response.json())
       .then((response) => {
