@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import Sheet from "./Sheet";
 import EventUserTable from "./EventUserTable";
 import { connect } from "react-redux";
+import NewEventForm from "./NewEventForm";
 
 class Event extends Component {
   render() {
@@ -9,6 +10,7 @@ class Event extends Component {
 
     return (
       <div>
+        <NewEventForm />
         <h1>Event: {event.ename}</h1>
         <p># Registered: {event.regNum}</p>
         <p># Checked In: {event.checkedNum}</p>

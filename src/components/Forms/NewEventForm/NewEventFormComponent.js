@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography"
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography"
 
-export class NewEventForm extends Component {
+export class NewEventFormComponent extends Component {
     state = {
         selectedDate: new Date()
     }
@@ -31,22 +31,26 @@ export class NewEventForm extends Component {
         return month + "-" + day + "-" + year;
     }
 
+    handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(e)
+    }
+
     render() {
         return (
-            <React.Fragment>
-                <Typography component="h4" variant="h3">New Event Form</Typography>
-                <form onSubmit={() => { }}>
+            <div>
+                <Typography variant="h3">New Event Form</Typography>
+                <form onSubmit={(e) => { this.handleSubmit(e) }}>
                     <Paper>
                         <TextField
                             id="name"
                             label="Event Name"
                             fullWidth
-
                         />
                         <TextField
                             id="description"
                             label="Description"
-                            multiline="true"
+                            multiline
                             fullWidth
                         />
                         <TextField
@@ -86,31 +90,24 @@ export class NewEventForm extends Component {
                                 }}
                             />
                         </MuiPickersUtilsProvider>
-
                         <TextField
                             id="location"
                             label="Location"
                             fullWidth
                         />
-
                         <TextField
-                            id="image"
+                            id="imageUrl"
                             label="Image URL"
-                            fullWidth />
-
-
+                            fullWidth
+                        />
                     </Paper>
-
-                    <Button
-                        type="submit"
-                        variant="raised"
-                    >
+                    <Button type="submit" variant="raised">
                         Submit
                     </Button>
                 </form>
-            </React.Fragment>
+            </div>
         )
     }
 }
 
-export default NewEventForm
+export default NewEventFormComponent
