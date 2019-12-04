@@ -2,11 +2,16 @@ import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import Event from './Event'
 import Nav from './Nav'
-import { Authenticate } from './Authentication'
+import { Login, LoginRedirect, Logout } from './Authentication'
 import './Router.scss';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { setPage, setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 
 const queryString = require('query-string');
 
@@ -41,28 +46,28 @@ class Router extends Component {
 
   render() {
     return (
-      <div>
-        {this.props.user ? <Nav events={this.state.events} /> : null }
-        <div className="content">
-          {this.state.events ? ChooseBody(this.state.events, this.props.page, this.props.event) : <CircularProgress />}
-        </div>
-      </div>
+      <BrowserRouter>
+        {this.props.user ? <Nav /> : null}
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/logout">
+            <Logout />
+          </Route>
+          <Route path="/event">
+            <Event />
+          </Route>
+          <Route path="/login-redirect">
+            <LoginRedirect />
+          </Route>
+          <Route path="/">
+            {this.props.user ? <EventSelector /> : <Redirect to="/login" />}
+          </Route>
+        </Switch>
+      </BrowserRouter>
     )
   }
-}
-
-function ChooseBody(events, page, event) {
-  switch (page) {
-    case 'login':
-      return <Authenticate />
-    case 'home':
-      return <EventSelector events={events} />
-    case 'event':
-      return <Event />
-    default:
-      return <p>Loading!</p>
-  }
-
 }
 
 const mapStateToProps = state => {

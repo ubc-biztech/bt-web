@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { Auth } from "aws-amplify";
-import Login from './Login';
-import Logout from './Logout';
 import { setUser } from '../../actions/UserActions'
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-export class Authenticate extends Component {
+export class LoginRedirect extends Component {
 
-    getAuthenticatedUser(){
+    getAuthenticatedUser() {
         Auth.currentAuthenticatedUser()
             .then(user => {
                 const email = user.attributes.email
@@ -26,27 +26,21 @@ export class Authenticate extends Component {
         // Check if there is an authenticated user
         // After authenticating with Google, Auth redirects to localhost:3000/login/ 
         // There is a time delay where Auth.currentAuthenticatedUser() returns the wrong value. Hence setTimeout()
-        if (window.location.pathname === '/login/'){
-            setTimeout(() => this.getAuthenticatedUser(), 600)
-            let newurl = window.location.protocol + "//" + window.location.host;
-            window.history.pushState({ path: newurl }, '', newurl);
-        }
-        else this.getAuthenticatedUser()
+        setTimeout(() => this.getAuthenticatedUser(), 800)
     }
 
     render() {
         return this.props.user
-        ? <Logout />
-        : <Login />
+            ? <Redirect to="/" />
+            : <CircularProgress />
     }
 
 }
 
 const mapStateToProps = state => {
     return {
-      user: state.userState.user,
+        user: state.userState.user,
     };
-  };
-  
-  export default connect(mapStateToProps, { setUser })(Authenticate);
-  
+};
+
+export default connect(mapStateToProps, { setUser })(LoginRedirect);

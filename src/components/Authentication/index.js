@@ -1,4 +1,5 @@
+import Login from './Login'
 import Logout from './Logout'
-import Authenticate from './Authenticate'
+import LoginRedirect from './LoginRedirect'
 
-export { Logout, Authenticate }
+export { Login, Logout, LoginRedirect }
