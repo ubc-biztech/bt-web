@@ -2,7 +2,6 @@ import { combineReducers } from "redux";
 import { SET_PAGE, SET_EVENT, SET_EVENTS, SET_USER, LOGOUT } from '../constants/Constants';
 
 const initialState = {
-  events: null,
   page: 'login'
 }
 
