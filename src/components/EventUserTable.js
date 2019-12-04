@@ -1,24 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-
-// Can use virtualized window if concerned about efficiency in scaling
-// e.g. > 200 users and want a scrollable window instead of expanding whole screen with scroll
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100%",
-    overflowX: "auto"
-  },
-  table: {
-    minWidth: 650
-  }
-}));
-
+import MaterialTable from "material-table";
 // current sample data, but will get from Events.js in the future
 let users = [
   {
@@ -59,33 +40,51 @@ let users = [
   }
 ];
 
-export default function EventUserTable() {
-  const classes = useStyles();
+// generate more rows to test speed of table search
+function createData(name, studentNumber, email, checkedIn) {
+  return { name, studentNumber, email, checkedIn };
+}
 
+const rows = [];
+
+for (let i = 0; i < 200; i += 1) {
+  const randomSelection = users[Math.floor(Math.random() * users.length)];
+  rows.push(
+    createData(
+      randomSelection.name,
+      Math.floor(Math.random() * 90000) + 10000,
+      randomSelection.email,
+      randomSelection.checkedIn
+    )
+  );
+}
+
+export default function EventUserTable() {
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell style={{ fontWeight: "bold" }}>Full Name</TableCell>
-            <TableCell style={{ fontWeight: "bold" }}>Student Number</TableCell>
-            <TableCell style={{ fontWeight: "bold" }}>Email</TableCell>
-            <TableCell style={{ fontWeight: "bold" }}>Checked In</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map(user => (
-            <TableRow key={user.name}>
-              <TableCell component="th" scope="row">
-                {user.name}
-              </TableCell>
-              <TableCell>{user.studentNumber}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.checkedIn.toString()}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+    <MaterialTable
+      title="Members Attendance"
+      columns={[
+        { title: "Full Name", field: "name" },
+        {
+          title: "Student Number",
+          field: "studentNumber",
+          type: "numeric",
+          sorting: false
+        },
+        { title: "Email", field: "email", sorting: false },
+        { title: "CheckedIn", field: "checkedIn", type: "boolean" }
+      ]}
+      data={rows}
+      options={{
+        search: true,
+        draggable: false,
+        padding: "dense",
+        pageSize: 20,
+        pageSizeOptions: [20, 50, 100],
+        headerStyle: {
+          fontWeight: "bold"
+        }
+      }}
+    />
   );
 }
