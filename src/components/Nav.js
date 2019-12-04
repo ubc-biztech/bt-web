@@ -27,7 +27,7 @@ function Nav(props) {
     setOpen(true);
   };
 
-  const handleDrawerClose = (event) => {
+  const handleItemClick = (event) => {
     props.setEvent(event)
     setOpen(false);
   };
@@ -60,7 +60,7 @@ function Nav(props) {
           button
           selected={!props.event}
           component="a"
-          onClick={handleDrawerClose}
+          onClick={handleItemClick}
         >
           <ListItemText primary="Home" />
         </ListItem>
@@ -73,12 +73,12 @@ function Nav(props) {
               selected={props.event ? event.id === props.event.id : false}
               key={event.ename}
               component="a"
-              onClick={handleDrawerClose.bind(this, event)}
+              onClick={handleItemClick.bind(this, event)}
             >
               <ListItemText primary={event.ename} />
             </ListItem>
           )) : 'Loading...'}
-          <Logout/>
+          <Logout />
         </List>
       </Drawer>
     </div>
