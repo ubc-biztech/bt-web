@@ -1,23 +1,12 @@
-import { SET_PAGE, SET_EVENT, SET_EVENTS } from '../constants/Constants';
-
-export function setPage(page) {
-  return {
-    type: SET_PAGE,
-    page
-  };
-}
+import { SET_EVENT, SET_EVENTS } from '../constants/Constants';
 
 export function setEvent(event) {
-  if (!event.id) {
+  if (event.id) {
     return {
-      type: SET_PAGE,
-      page: 'home'
+      type: SET_EVENT,
+      event
     };
   }
-  else return {
-    type: SET_EVENT,
-    event
-  };
 }
 
 export function setEvents(events) {
