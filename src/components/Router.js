@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import EventSelector from './EventSelector'
-import Event from './Event'
+import ConnectedEvent from '../containers/ConnectedEvent'
 import Nav from './Nav'
 import { Login, LoginRedirect, Logout } from './Authentication'
 import './Router.scss';
@@ -47,7 +47,7 @@ class Router extends Component {
   render() {
     return (
       <BrowserRouter>
-        {this.props.user ? <Nav /> : null}
+        {this.props.user ? <Nav events={this.state.events} /> : null}
         <Switch>
           <Route path="/login">
             <Login />
@@ -56,13 +56,13 @@ class Router extends Component {
             <Logout />
           </Route>
           <Route path="/event">
-            <Event />
+            <ConnectedEvent />
           </Route>
           <Route path="/login-redirect">
             <LoginRedirect />
           </Route>
           <Route path="/">
-            {this.props.user ? <EventSelector /> : <Redirect to="/login" />}
+            {this.props.user ? <EventSelector events={this.state.events} /> : <Redirect to="/login" />}
           </Route>
         </Switch>
       </BrowserRouter>

@@ -15,9 +15,12 @@ import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Menu from '@material-ui/icons/Menu';
-import Logout from './Authentication/Logout';
+import { Logout } from './Authentication';
+import { useHistory } from "react-router-dom";
 
 function Nav(props) {
+
+  const history = useHistory();
 
   const events = props.events
 
@@ -29,6 +32,10 @@ function Nav(props) {
 
   const handleItemClick = (event) => {
     props.setEvent(event)
+    console.log(event)
+    if (event.id)
+      history.push("/event");
+    else history.push("/");
     setOpen(false);
   };
 
