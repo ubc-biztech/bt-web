@@ -13,6 +13,8 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import './Router.scss'
+import { API_URL } from '../utils'
 
 const queryString = require('query-string');
 
@@ -41,8 +43,7 @@ class Router extends Component {
   }
 
   componentDidMount() {
-    this.getAuthenticatedUser()
-    fetch(process.env.REACT_APP_AMAZON_API + "/events/get", {
+    fetch(API_URL + "/events/get", {
     })
       .then((response) => response.json())
       .then((response) => {

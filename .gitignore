@@ -25,6 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 debug.log
 
+<<<<<<< HEAD
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -38,3 +39,7 @@ src/aws_exports.js
 aws-exports.js
 aws_exports.js
 awsconfiguration.json
+=======
+# jetbeans
+.idea/
+>>>>>>> master
