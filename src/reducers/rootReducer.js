@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { SET_PAGE, SET_EVENT, SET_USER, LOGOUT } from '../constants/Constants';
+import { SET_PAGE, SET_EVENT, SET_EVENTS, SET_USER, LOGOUT } from '../constants/Constants';
 
 const initialState = {
   events: null,
@@ -19,6 +19,11 @@ function pageReducer(state = initialState, action) {
         ...state,
         page: 'event',
         event: action.event
+      }
+    case SET_EVENTS:
+      return {
+        ...state,
+        events: action.events.events
       }
     default:
       return state;

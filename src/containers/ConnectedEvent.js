@@ -1,9 +1,18 @@
 import React, { Component } from "react";
-// import Sheet from "./Sheet";
 import Event from "../components/Event";
 import { connect } from "react-redux";
+import queryString from 'query-string'
+import { setEvent } from "../actions/PageActions";
 
 class ConnectedEvent extends Component {
+
+    componentDidUpdate() {
+        const params = queryString.parse(this.props.location.search)
+        const events = this.props.events
+        if (events) {
+            this.props.setEvent(events.find(event => event.id === params.id))
+        }
+    }
 
     render() {
         return (
@@ -14,11 +23,9 @@ class ConnectedEvent extends Component {
 
 const mapStateToProps = state => {
     return {
-        event: state.pageState.event
+        event: state.pageState.event,
+        events: state.pageState.events
     };
 };
 
-export default connect(
-    mapStateToProps,
-    null
-)(ConnectedEvent);
+export default connect(mapStateToProps, { setEvent })(ConnectedEvent);

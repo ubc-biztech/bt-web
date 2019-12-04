@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import ConnectedEvent from '../containers/ConnectedEvent'
 import Nav from './Nav'
-import { Login, LoginRedirect, Logout } from './Authentication'
+import { Auth } from "aws-amplify";
+import { Login, LoginRedirect } from './Authentication'
 import './Router.scss';
-import { setPage, setEvent } from "../actions/PageActions";
+import { setEvent, setEvents } from "../actions/PageActions";
+import { setUser } from "../actions/UserActions";
 import { connect } from "react-redux";
 import {
   BrowserRouter,
   Switch,
-  Route,
-  Redirect
+  Route
 } from "react-router-dom";
 
 const queryString = require('query-string');
@@ -24,12 +25,28 @@ class Router extends Component {
     }
   }
 
+  getAuthenticatedUser() {
+    Auth.currentAuthenticatedUser()
+      .then(user => {
+        const email = user.attributes.email
+        if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
+          this.props.setUser(user)
+        }
+        else {
+          Auth.signOut()
+          alert('You must use a ubcbiztech.com email')
+        }
+      })
+      .catch(() => console.log("Not signed in"))
+  }
+
   componentDidMount() {
+    this.getAuthenticatedUser()
     fetch(process.env.REACT_APP_AMAZON_API + "/events/get", {
     })
       .then((response) => response.json())
       .then((response) => {
-        this.setState({
+        this.props.setEvents({
           events: response
         })
 
@@ -46,26 +63,32 @@ class Router extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        {this.props.user ? <Nav events={this.state.events} /> : null}
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/logout">
-            <Logout />
-          </Route>
-          <Route path="/event">
-            <ConnectedEvent />
-          </Route>
-          <Route path="/login-redirect">
-            <LoginRedirect />
-          </Route>
-          <Route path="/">
-            {this.props.user ? <EventSelector events={this.state.events} /> : <Redirect to="/login" />}
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      this.props.user
+        ? <BrowserRouter>
+          <Nav events={this.props.events} />
+          <Switch>
+            <Route
+              path="/event"
+              render={props => <ConnectedEvent {...props} />} />
+            <Route
+              path="/login-redirect"
+              component={LoginRedirect} />
+            <Route
+              path="/"
+              render={() => <EventSelector events={this.props.events} />}
+            />
+          </Switch>
+        </BrowserRouter>
+        : <BrowserRouter>
+          <Switch>
+            <Route
+              path="/login-redirect"
+              component={LoginRedirect} />
+            <Route
+              path="/"
+              component={Login} />
+          </Switch>
+        </BrowserRouter >
     )
   }
 }
@@ -74,8 +97,9 @@ const mapStateToProps = state => {
   return {
     page: state.pageState.page,
     event: state.pageState.event,
-    user: state.userState.user
+    user: state.userState.user,
+    events: state.pageState.events
   };
 };
 
-export default connect(mapStateToProps, { setPage, setEvent })(Router);
+export default connect(mapStateToProps, { setUser, setEvent, setEvents })(Router);
