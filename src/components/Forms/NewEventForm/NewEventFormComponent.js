@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
@@ -6,18 +6,17 @@ import Typography from "@material-ui/core/Typography"
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
-    KeyboardTimePicker,
-    KeyboardDatePicker,
+    KeyboardDateTimePicker
 } from '@material-ui/pickers';
 
 export default function NewEventFormComponent(props) {
     const {
-        values: { name, description, capacity, partners, location, imageUrl, selectedDate },
+        values: { name, description, capacity, partners, location, imageUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
         handleChange,
-        isValid,
+        setFieldValue,
         setFieldTouched
     } = props;
 
@@ -27,27 +26,13 @@ export default function NewEventFormComponent(props) {
         setFieldTouched(name, true, false);
     };
 
-    const handleDateChange = date => {
-        console.log(date)
+    const handleStartDateChange = (date) => {
+        setFieldValue("startDate", date)
     }
 
-    const todaysDate = () => {
-        let today = new Date();
-        let year = today.getFullYear();
-
-        let month = (today.getMonth() + 1) + "";
-        month = month.padStart(2, '0');
-
-        let day = today.getDate() + "";
-        day = day.padStart(2, '0');
-        return month + "-" + day + "-" + year;
+    const handleEndDateChange = (date) => {
+        setFieldValue("endDate", date)
     }
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault()
-    //     console.log(e)
-    //     onSubmit()
-    // }
 
     return (
         <div>
@@ -92,31 +77,22 @@ export default function NewEventFormComponent(props) {
                         value={partners}
                         onChange={change.bind(null, "partners")}
                     />
-                    {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                            disableToolbar
-                            format="MM/dd/yyyy"
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDateTimePicker 
                             margin="normal"
-                            id="date-picker-inline"
-                            label="Date"
-                            minDate={todaysDate}
-                            value={selectedDate}
-                            onChange={handleDateChange()}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
+                            label="Start Date"
+                            minDate={new Date()}
+                            value={startDate}
+                            onChange={handleStartDateChange}
                         />
-                        <KeyboardTimePicker
+                        <KeyboardDateTimePicker 
                             margin="normal"
-                            id="time-picker"
-                            label="Time"
-                            value={selectedDate}
-                            onChange={handleDateChange()}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change time',
-                            }}
+                            label="End Date"
+                            minDate={startDate}
+                            value={endDate}
+                            onChange={handleEndDateChange}
                         />
-                    </MuiPickersUtilsProvider> */}
+                    </MuiPickersUtilsProvider>
                     <TextField
                         id="location"
                         label="Location"

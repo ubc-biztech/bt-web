@@ -29,7 +29,7 @@ export default function NewEventForm() {
     )
 
     async function submitValues(values) {
-        const { name, description, capacity, partners, location, imageUrl } = values;
+        // const { name, description, capacity, partners, location, imageUrl } = values;
 
         console.log(values)
     }
