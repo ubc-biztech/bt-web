@@ -35,7 +35,7 @@ export default function Form(props) {
         <form
             onSubmit={handleSubmit}
         >
-            <TextField
+            {/* <TextField
                 label="Email"
                 autoComplete="email"
                 helperText={touched.email ? errors.email : ""}
@@ -94,7 +94,7 @@ export default function Form(props) {
             >
                 Sign up
             </Button>
-            
+             */}
 
 
 

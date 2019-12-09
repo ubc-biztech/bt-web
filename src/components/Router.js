@@ -55,12 +55,9 @@ class Router extends Component {
 function ChooseBody(events, page, event) {
   switch (page) {
     case 'login':
-      // return <Login /> TODO: uncomment this (and the homepage below)
-      return <EventForm/>
+      return <Login /> 
     case 'home':
-      // return <EventSelector events={events} />
-      return <EventForm/>
-
+      return <EventSelector events={events} />
     case 'event':
       return <Event />
     default:
