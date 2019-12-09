@@ -10,6 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import FormBody from './FormBody';
 //TODO: import props and require the correct type
 
+// import { Auth } from "aws-amplify";
+import * as Yup from "yup"
+import { Formik } from "formik";
 
 
 function Copyright() {
@@ -63,8 +66,39 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export default function MyForm() {
   const classes = useStyles();
+
+
+  const validationSchema = Yup.object({
+    email: Yup.string().email().required(),
+    name: Yup.string().required(),
+    id: Yup.number('Valid Student ID required')
+        .min(9999999, 'Valid Student ID required')
+        .max(100000000, 'Valid Student ID required')
+        .required(),
+    password: Yup.string().min(6).required(),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], "Password must match")
+        .required("Please confirm your password")
+  });
+
+  const initialValues = { email: "", name: "", id: "", password: "", confirmPassword: "" };
+
 
   return (
     <React.Fragment>
@@ -85,7 +119,13 @@ export default function MyForm() {
           </Typography>
           <br></br>
 
-          <FormBody/>
+          {/* <FormBody/> */}
+          <Formik
+            render={props => <FormBody {...props} />}
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={submitValues}
+          />
           <Button
             variant="contained"
             color="primary"
@@ -100,4 +140,24 @@ export default function MyForm() {
       </main>
     </React.Fragment>
   );
+  async function submitValues(values) {
+      const { email, name, id, password } = values;
+  
+      try {
+          // await Auth.MyForm({
+          //     username: email,
+          //     password,
+          //     attributes: {
+          //         email,
+          //         name,
+          //         nickname: id
+          //     },
+          // })
+          console.log(values);
+          alert("Signed Up");
+      } catch (e) {
+          alert(e.message);
+      }
+  }
 }
+
