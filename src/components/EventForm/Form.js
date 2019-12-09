@@ -105,12 +105,18 @@ export default function Form(props) {
 
 
 
-
-
-
-
-
-        
+            <Typography variant="h6" gutterBottom>
+                Ever wanted to learn how to code, but don't know where to start? Ready to gain practical skills and level-up your technical understanding? UBC BizTech and Lighthouse Labs invite you to join the beginner-friendly Python coding lesson - Coding For Noobs! 
+                📲 Please bring your Mac or PC to participate in the workshop.
+                Event Details:
+                😁 Who: YOU, any students of any faculty who are interested in learning Python, and professional instructors from Lighthouse Labs
+                🏢 Where: Henry Angus Building, Room 295
+                📅 When: Monday, November 6th from 5:30 - 8:30pm
+                💸 Cost: This event is FREE for BizTech Members. Non-members can purchase membership upon sign-in at the event.
+            </Typography>
+            <h4 style={{color: 'red'}}>
+                *Required
+            </h4>
             <Grid container spacing={3}>
           
                 <Grid item xs={12} sm={6}>
