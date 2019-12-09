@@ -11,8 +11,9 @@ import FormBody from './FormBody';
 //TODO: import props and require the correct type
 
 // import { Auth } from "aws-amplify";
-import * as Yup from "yup"
+import * as Yup from "yup" //TODO: avoid *, figure out what functions are actually used
 import { Formik } from "formik";
+import Form from './Form'; //ian's example form
 
 
 function Copyright() {
@@ -68,18 +69,6 @@ const useStyles = makeStyles(theme => ({
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 export default function MyForm() {
   const classes = useStyles();
 
@@ -94,10 +83,12 @@ export default function MyForm() {
     password: Yup.string().min(6).required(),
     confirmPassword: Yup.string()
         .oneOf([Yup.ref('password'), null], "Password must match")
-        .required("Please confirm your password")
+        .required("Please confirm your password"),
+    firstname: Yup.string().required("First name is required"),
+    lastname: Yup.string().required("Last name is required"),
   });
 
-  const initialValues = { email: "", name: "", id: "", password: "", confirmPassword: "" };
+  const initialValues = { email: "", name: "", id: "", password: "", confirmPassword: "", firstname: "", lastname: "" };
 
 
   return (
@@ -121,7 +112,7 @@ export default function MyForm() {
 
           {/* <FormBody/> */}
           <Formik
-            render={props => <FormBody {...props} />}
+            render={props => <Form {...props} />}
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={submitValues}

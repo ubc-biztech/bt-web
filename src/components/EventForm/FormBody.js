@@ -11,14 +11,15 @@ import RadioGroupButtons from './formParts/RadioGroupButtons';
 
 const textFieldLabelFontSize = "17px";
 
-export class MyFormBody extends Component {
-  state = {
+export default function MyFormBody(props) {
+  var state = {
     textFields: {
       firstName: '',
       lastName: '',
       emailAddress: ''
     }
   }
+  
 
   // onSubmit = (e) => {
   //     e.preventDefault(); //prevent default submission to a file
@@ -26,14 +27,14 @@ export class MyFormBody extends Component {
   //     this.setState({title: ''});
   // }
 
-  onChange = (e) => {
+  const onChange = (e) => {
     console.log(e.target.name);
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
-  render() { 
+  // render() { 
     return (
       <React.Fragment>
           <Typography variant="h6" gutterBottom>
@@ -110,8 +111,8 @@ export class MyFormBody extends Component {
         </Grid>
       </React.Fragment>
     );
-  }
+  // }
 } 
 
-export default MyFormBody
+// export default MyFormBody
 
