@@ -86,9 +86,10 @@ export default function MyForm() {
         .required("Please confirm your password"),
     firstname: Yup.string().required("First name is required"),
     lastname: Yup.string().required("Last name is required"),
+    other_option: Yup.string().required("Please enter a response"),
   });
 
-  const initialValues = { email: "", name: "", id: "", password: "", confirmPassword: "", firstname: "", lastname: "" };
+  const initialValues = { email: "", name: "", id: "", password: "", confirmPassword: "", firstname: "", lastname: "", other_option: "" };
 
 
   return (

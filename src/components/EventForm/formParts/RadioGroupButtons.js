@@ -45,7 +45,6 @@ export class RadioGroupButtons extends Component {
     <ThemeProvider theme={theme}>
       <FormControl component="fieldset">
         <FormLabel component="legend" style={{fontSize: radioGroupLabelFontSize}}>{this.props.radioGroupTitle}</FormLabel>
-        {/* <RadioGroup defaultValue={this.buttonOptions[0]} aria-label={this.radioGroupTitle} name={this.radioGroupTitle}> */}
         <RadioGroup defaultValue={this.props.buttonOptions[0]}>
           {this.createButtons(this.props.buttonOptions)}
         </RadioGroup>

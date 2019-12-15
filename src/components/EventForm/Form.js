@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import { Button, TextField } from "@material-ui/core";
-
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -16,7 +17,7 @@ const textFieldLabelFontSize = "17px";
 
 export default function Form(props) {
     const {
-        values: { name, email, password, confirmPassword, id, firstname, lastname },
+        values: { name, email, password, confirmPassword, id, firstname, lastname, other_option },
         errors,
         touched,
         handleSubmit,
@@ -30,6 +31,8 @@ export default function Form(props) {
         handleChange(e);
         setFieldTouched(name, true, false);
     };
+
+    const [otherButtDisabled, setOtherButtDisabled] = useState(true)
 
     return (
         <form
@@ -140,9 +143,9 @@ export default function Form(props) {
                         helperText={touched.lastname ? errors.lastname : ""}
                         error={touched.lastname && Boolean(errors.lastname)}
                         id="lastname"
-                        value={lastname}
+                        // value={lastname}
                         onChange={change.bind(null, "lastname")}
-                        onKeyPress={e => handleKey(e)} 
+                        // onKeyPress={e => handleKey(e)} 
                         InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
                         fullWidth
                     />       
@@ -165,7 +168,11 @@ export default function Form(props) {
                 <Grid item xs={12} sm={6}>
                     <RadioGroupButtons 
                     buttonOptions={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry", "Other:"]}
-                    radioGroupTitle={"Faculty"}/>  
+                    radioGroupTitle={"Faculty"}
+                    {...props}/>  
+                    <RadioGroup onChange={(e) => {toggleOtherState(e)}}>
+                        {createButtons(["ANDYSTEST","Commerce","Science","Forestry", "Other:"])}
+                    </RadioGroup>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <RadioGroupButtons 
@@ -186,6 +193,44 @@ export default function Form(props) {
             </Grid>
         </form>
     )
+
+    function toggleOtherState(e) {
+        e.preventDefault()
+        console.log(e.target.value);
+        const buttonSelected = e.target.value;
+        if (buttonSelected === "Other:"){
+            setOtherButtDisabled(false)
+            console.log("BUTTON IS NOW ENABLED.")
+        }
+        else {
+            setOtherButtDisabled(true)
+            console.log("BUTTON IS NOW DISABLED.")
+        }
+        console.log(otherButtDisabled)
+    }
+
+    function createButtons(optionsArr) {
+    
+        return optionsArr.map((option) => (option==='Other:') ?
+            <React.Fragment>
+              <FormControlLabel value={option} control={<Radio/>} label={option} /> 
+              <TextField
+                    // required
+                    id="other_option"
+                    name="other_option"
+                    label=""
+                    onChange={change.bind(null, "other_option")}                    
+                    helperText={touched.other_option ? errors.other_option : ""}
+                    error={touched.other_option && Boolean(errors.other_option)}
+                    // value={other_option}
+                    disabled={otherButtDisabled}
+
+
+              />
+            </React.Fragment> :
+            <FormControlLabel value={option} control={<Radio/>} label={option} />
+          );
+        }
 
     function handleKey(e) {
         if (e.key === 'Enter')
