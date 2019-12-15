@@ -174,7 +174,7 @@ export default function Form(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <RadioGroupButtons 
-                    buttonOptions={["Facebook","Boothing","Friends","BizTech_Newsletter","Faculty_Newsletter","Other:"]}
+                    buttonOptions={["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter","Other:"]}
                     radioGroupTitle={"How did you hear about this event?"}/>  
                 </Grid>
                 <Grid item xs={12} sm={6}>

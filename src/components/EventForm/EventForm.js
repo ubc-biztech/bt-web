@@ -120,7 +120,7 @@ export default function MyForm() {
           <Button
             variant="contained"
             color="primary"
-            onClick="TODO"
+            // onClick="TODO"
             className={classes.button}
           >
             Submit
@@ -133,22 +133,8 @@ export default function MyForm() {
   );
   async function submitValues(values) {
       const { email, name, id, password } = values;
-  
-      try {
-          // await Auth.MyForm({
-          //     username: email,
-          //     password,
-          //     attributes: {
-          //         email,
-          //         name,
-          //         nickname: id
-          //     },
-          // })
-          console.log(values);
-          alert("Signed Up");
-      } catch (e) {
-          alert(e.message);
-      }
+      console.log(values);
+      alert("Signed Up");
   }
 }
 
