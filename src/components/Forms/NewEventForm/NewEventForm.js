@@ -2,6 +2,7 @@ import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import NewEventFormComponent from './NewEventFormComponent'
+import { API_URL, API_KEY } from '../../../utils'
 
 export default function NewEventForm() {
 
@@ -29,9 +30,30 @@ export default function NewEventForm() {
     )
 
     async function submitValues(values) {
-        // const { name, description, capacity, partners, location, imageUrl } = values;
+        const { name, description, capacity, partners, location, imageUrl } = values;
 
-        console.log(values)
+        const body = JSON.stringify({
+            name,
+            description,
+            capacity,
+            partners,
+            location,
+            imageUrl
+          })
+
+        const response = fetch(API_URL + "/events/create", {
+            method: 'POST',
+            headers: {
+                'x-api-key': API_KEY,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body
+        })
+          .then((response) => response.json())
+          .then((response) => {
+            console.log(response)
+          })
     }
 
 }
