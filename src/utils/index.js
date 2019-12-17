@@ -11,3 +11,6 @@ export const API_URL = process.env.REACT_APP_STAGE === 'production'
 //     : aws_exports
 
 export const AWS_CONFIG = aws_config
+export const API_KEY = process.env.REACT_APP_STAGE === 'production'
+? process.env.REACT_APP_PROD_API_KEY
+: process.env.REACT_APP_STAGING_API_KEY
