@@ -1,6 +1,6 @@
 {
 	"auth": {
-		"btweb0aa335ef": {
+		"btweb52cc4abb": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation"
 		}

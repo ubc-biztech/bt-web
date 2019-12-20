@@ -1,0 +1,81 @@
+{
+    "identityPoolName": "btweb52cc4abb_identitypool_52cc4abb",
+    "allowUnauthenticatedIdentities": false,
+    "lambdaLogPolicy": "btweb5_52cc4abb_lambda_log_policy",
+    "openIdLambdaRoleName": "btweb5_52cc4abb_openid_lambda_role",
+    "openIdRolePolicy": "btweb5_52cc4abb_openid_pass_role_policy",
+    "openIdLambdaIAMPolicy": "btweb5_52cc4abb_openid_lambda_iam_policy",
+    "openIdLogPolicy": "btweb5_52cc4abb_openid_lambda_log_policy",
+    "userPoolName": "btweb52cc4abb_userpool_52cc4abb",
+    "autoVerifiedAttributes": [
+        "email"
+    ],
+    "mfaConfiguration": "OFF",
+    "mfaTypes": [
+        "SMS Text Message"
+    ],
+    "roleName": "btweb552cc4abb_sns-role",
+    "roleExternalId": "btweb552cc4abb_role_external_id",
+    "policyName": "btweb552cc4abb-sns-policy",
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [],
+    "requiredAttributes": [
+        "email",
+        "name"
+    ],
+    "userpoolClientName": "btweb552cc4abb_app_client",
+    "userpoolClientGenerateSecret": true,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "mfaLambdaRole": "btweb552cc4abb_totp_lambda_role",
+    "mfaLambdaLogPolicy": "btweb552cc4abb_totp_lambda_log_policy",
+    "mfaPassRolePolicy": "btweb552cc4abb_totp_pass_role_policy",
+    "mfaLambdaIAMPolicy": "btweb552cc4abb_totp_lambda_iam_policy",
+    "userpoolClientLambdaRole": "btweb552cc4abb_userpoolclient_lambda_role",
+    "userpoolClientLogPolicy": "btweb552cc4abb_userpoolclient_lambda_log_policy",
+    "userpoolClientLambdaPolicy": "btweb552cc4abb_userpoolclient_lambda_iam_policy",
+    "userpoolClientSetAttributes": false,
+    "resourceName": "btweb52cc4abb",
+    "authSelections": "identityPoolAndUserPool",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "unauthRoleArn": {
+        "Fn::GetAtt": [
+            "UnauthRole",
+            "Arn"
+        ]
+    },
+    "useDefault": "defaultSocial",
+    "hostedUI": true,
+    "usernameAttributes": [
+        "email"
+    ],
+    "hostedUIDomainName": "bt-web",
+    "authProvidersUserPool": [
+        "Google"
+    ],
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"sub\"}}]",
+    "addCallbackOnUpdate": false,
+    "addLogoutOnUpdate": false,
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/login-redirect/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}"
+}
