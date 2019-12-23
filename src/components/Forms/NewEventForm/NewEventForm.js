@@ -13,12 +13,22 @@ export default function NewEventForm() {
         capacity: Yup.number('Valid number required')
             .min(0, 'Valid capacity required')
             .required(),
-        partners: Yup.string().required(),
+        // partners: Yup.string().required(),
         location: Yup.string().required(),
         imageUrl: Yup.string().url().required(),
     });
 
-    const initialValues = { ename: "", slug: "", description: "", capacity: "", partners: "", location: "", imageUrl: "" };
+    const initialValues = {
+        ename: "",
+        slug: "",
+        description: "",
+        capacity: "",
+        partners: "",
+        location: "",
+        imageUrl: "",
+        startDate: new Date(),
+        endDate: new Date()
+    };
 
     return (
         <Formik
@@ -31,17 +41,16 @@ export default function NewEventForm() {
     )
 
     async function submitValues(values) {
-        const { ename, slug, description, capacity, partners, location, imageUrl } = values;
-
         const body = JSON.stringify({
-            ename,
-            id: slug,
-            description,
-            capac: capacity,
-            partners,
-            location,
-            img: imageUrl
-          })
+            ename: values.ename,
+            id: values.slug,
+            description: values.description,
+            capacity: values.capacity,
+            location: values.location,
+            imageUrl: values.imageUrl,
+            startDate: values.startDate,
+            endDate: values.endDate
+        })
 
         fetch(API_URL + "/events/create", {
             method: 'POST',
@@ -52,10 +61,10 @@ export default function NewEventForm() {
             },
             body
         })
-          .then((response) => response.json())
-          .then((response) => {
-            console.log(response)
-          })
+            .then((response) => response.json())
+            .then((response) => {
+                console.log(response)
+            })
     }
 
 }

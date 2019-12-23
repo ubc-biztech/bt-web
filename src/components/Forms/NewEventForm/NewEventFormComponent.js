@@ -12,7 +12,7 @@ const slugify = require('slugify')
 
 export default function NewEventFormComponent(props) {
     const {
-        values: { ename, slug, description, capacity, partners, location, imageUrl, startDate, endDate },
+        values: { ename, slug, description, capacity, location, imageUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
@@ -29,9 +29,9 @@ export default function NewEventFormComponent(props) {
 
     const handleEventNameChange = (name, e) => {
         e.persist();
-        handleChange(e);
-        const newSlug = slugify(e.target.value, {lower: true});
+        const newSlug = slugify(e.target.value, { lower: true });
         setFieldValue('slug', newSlug)
+        handleChange(e);
         setFieldTouched(name, true, false);
     }
 
@@ -86,7 +86,7 @@ export default function NewEventFormComponent(props) {
                         value={capacity}
                         onChange={change.bind(null, "capacity")}
                     />
-                    <TextField
+                    {/* <TextField
                         id="partners"
                         label="Partners & Sponsors"
                         fullWidth
@@ -94,16 +94,16 @@ export default function NewEventFormComponent(props) {
                         error={touched.partners && Boolean(errors.partners)}
                         value={partners}
                         onChange={change.bind(null, "partners")}
-                    />
+                    /> */}
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDateTimePicker 
+                        <KeyboardDateTimePicker
                             margin="normal"
                             label="Start Date"
                             minDate={new Date()}
                             value={startDate}
                             onChange={handleStartDateChange}
                         />
-                        <KeyboardDateTimePicker 
+                        <KeyboardDateTimePicker
                             margin="normal"
                             label="End Date"
                             minDate={startDate}
