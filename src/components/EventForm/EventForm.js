@@ -7,7 +7,6 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import FormBody from './FormBody';
 //TODO: import props and require the correct type
 
 // import { Auth } from "aws-amplify";

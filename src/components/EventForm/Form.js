@@ -171,7 +171,8 @@ export default function Form(props) {
                     radioGroupTitle={"Faculty"}
                     {...props}/>  
                     <RadioGroup onChange={(e) => {toggleOtherState(e)}}>
-                        {createButtons(["ANDYSTEST","Commerce","Science","Forestry", "Other:"])}
+                        {createButtons(["ANDYSTEST","Commerce","Science","Forestry"])}
+                        {createOtherOption(true)}
                     </RadioGroup>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -211,26 +212,34 @@ export default function Form(props) {
 
     function createButtons(optionsArr) {
     
-        return optionsArr.map((option) => (option==='Other:') ?
-            <React.Fragment>
-              <FormControlLabel value={option} control={<Radio/>} label={option} /> 
-              <TextField
-                    // required
-                    id="other_option"
-                    name="other_option"
-                    label=""
-                    onChange={change.bind(null, "other_option")}                    
-                    helperText={touched.other_option ? errors.other_option : ""}
-                    error={touched.other_option && Boolean(errors.other_option)}
-                    // value={other_option}
-                    disabled={otherButtDisabled}
-
-
-              />
-            </React.Fragment> :
+        return optionsArr.map((option) => 
             <FormControlLabel value={option} control={<Radio/>} label={option} />
           );
         }
+
+    function createOtherOption(addOtherOption){
+        var option = "Other:"
+        if (addOtherOption) {
+            return (
+                <React.Fragment>
+                    <FormControlLabel value={option} control={<Radio/>} label={option} /> 
+                    <TextField
+                        // required
+                        id="other_option"
+                        name="other_option"
+                        label=""
+                        onChange={change.bind(null, "other_option")}                    
+                        helperText={touched.other_option ? errors.other_option : ""}
+                        error={touched.other_option && Boolean(errors.other_option)}
+                        // value={other_option}
+                        disabled={otherButtDisabled}
+
+
+                    />
+                </React.Fragment>
+            )
+        };
+    }
 
     function handleKey(e) {
         if (e.key === 'Enter')
