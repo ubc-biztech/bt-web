@@ -1,7 +1,6 @@
 import React from 'react'
 import { Auth } from "aws-amplify";
 import Button from '@material-ui/core/Button';
-import { NewEventForm } from "../Forms";
 
 const styles = {
     left: {
@@ -19,7 +18,6 @@ export default function Login() {
     return (
         <div>
             <h1> Login </h1>
-      <NewEventForm/>
             <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' })} variant="contained" color="primary">
                 <div style={styles.left}>
                     <img style={styles.socialIcon} alt="Google" src="./google.png" />

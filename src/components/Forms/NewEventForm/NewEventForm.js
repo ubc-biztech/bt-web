@@ -45,7 +45,7 @@ export default function NewEventForm() {
             ename: values.ename,
             id: values.slug,
             description: values.description,
-            capacity: values.capacity,
+            capac: values.capacity,
             location: values.location,
             imageUrl: values.imageUrl,
             startDate: values.startDate,
