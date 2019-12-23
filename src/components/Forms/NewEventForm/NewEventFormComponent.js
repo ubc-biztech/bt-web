@@ -8,10 +8,11 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDateTimePicker
 } from '@material-ui/pickers';
+const slugify = require('slugify')
 
 export default function NewEventFormComponent(props) {
     const {
-        values: { name, description, capacity, partners, location, imageUrl, startDate, endDate },
+        values: { ename, slug, description, capacity, partners, location, imageUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
@@ -25,6 +26,14 @@ export default function NewEventFormComponent(props) {
         handleChange(e);
         setFieldTouched(name, true, false);
     };
+
+    const handleEventNameChange = (name, e) => {
+        e.persist();
+        handleChange(e);
+        const newSlug = slugify(e.target.value, {lower: true});
+        setFieldValue('slug', newSlug)
+        setFieldTouched(name, true, false);
+    }
 
     const handleStartDateChange = (date) => {
         setFieldValue("startDate", date)
@@ -40,13 +49,22 @@ export default function NewEventFormComponent(props) {
             <form onSubmit={handleSubmit}>
                 <Paper>
                     <TextField
-                        id="name"
+                        id="ename"
                         label="Event Name"
                         fullWidth
-                        helperText={touched.name ? errors.name : ""}
-                        error={touched.name && Boolean(errors.name)}
-                        value={name}
-                        onChange={change.bind(null, "name")}
+                        helperText={touched.ename ? errors.ename : ""}
+                        error={touched.ename && Boolean(errors.ename)}
+                        value={ename}
+                        onChange={handleEventNameChange.bind(null, "ename")}
+                    />
+                    <TextField
+                        id="slug"
+                        label="Slug"
+                        fullWidth
+                        helperText={touched.slug ? errors.slug : ""}
+                        error={touched.slug && Boolean(errors.slug)}
+                        value={slug}
+                        onChange={change.bind(null, "slug")}
                     />
                     <TextField
                         id="description"

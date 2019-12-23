@@ -7,7 +7,8 @@ import { API_URL, API_KEY } from '../../../utils'
 export default function NewEventForm() {
 
     const validationSchema = Yup.object({
-        name: Yup.string().required(),
+        ename: Yup.string().required(),
+        slug: Yup.string().matches(/^[a-z\-0-9]*$/, "Slug must be lowercase and have no whitespace").required(),
         description: Yup.string().required(),
         capacity: Yup.number('Valid number required')
             .min(0, 'Valid capacity required')
@@ -17,7 +18,7 @@ export default function NewEventForm() {
         imageUrl: Yup.string().url().required(),
     });
 
-    const initialValues = { name: "", description: "", capacity: "", partners: "", location: "", imageUrl: "" };
+    const initialValues = { ename: "", slug: "", description: "", capacity: "", partners: "", location: "", imageUrl: "" };
 
     return (
         <Formik
@@ -30,18 +31,19 @@ export default function NewEventForm() {
     )
 
     async function submitValues(values) {
-        const { name, description, capacity, partners, location, imageUrl } = values;
+        const { ename, slug, description, capacity, partners, location, imageUrl } = values;
 
         const body = JSON.stringify({
-            name,
+            ename,
+            id: slug,
             description,
-            capacity,
+            capac: capacity,
             partners,
             location,
-            imageUrl
+            img: imageUrl
           })
 
-        const response = fetch(API_URL + "/events/create", {
+        fetch(API_URL + "/events/create", {
             method: 'POST',
             headers: {
                 'x-api-key': API_KEY,
