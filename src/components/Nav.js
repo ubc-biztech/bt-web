@@ -11,11 +11,16 @@ import {
   AppBar
 } from '@material-ui/core';
 import './Nav.scss';
-import { ChevronLeft, Menu } from '@material-ui/icons';
-import { setEvent } from "../actions/indexActions";
+import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import Menu from '@material-ui/icons/Menu';
+import { Logout } from './Authentication';
+import { useHistory } from "react-router-dom";
 
 function Nav(props) {
+
+  const history = useHistory();
 
   const events = props.events
 
@@ -25,8 +30,11 @@ function Nav(props) {
     setOpen(true);
   };
 
-  const handleDrawerClose = (event) => {
+  const handleItemClick = (event) => {
     props.setEvent(event)
+    if (event.id)
+      history.push({ pathname: "/event", search: '?id=' + event.id });
+    else history.push("/");
     setOpen(false);
   };
 
@@ -49,7 +57,7 @@ function Nav(props) {
       </AppBar>
       <Drawer variant="persistent" open={open} anchor="left">
         <div>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={() => setOpen(false)}>
             <ChevronLeft />
           </IconButton>
         </div>
@@ -58,7 +66,7 @@ function Nav(props) {
           button
           selected={!props.event}
           component="a"
-          onClick={handleDrawerClose}
+          onClick={handleItemClick}
         >
           <ListItemText primary="Home" />
         </ListItem>
@@ -71,11 +79,12 @@ function Nav(props) {
               selected={props.event ? event.id === props.event.id : false}
               key={event.ename}
               component="a"
-              onClick={handleDrawerClose.bind(this, event)}
+              onClick={handleItemClick.bind(this, event)}
             >
               <ListItemText primary={event.ename} />
             </ListItem>
           )) : 'Loading...'}
+          <Logout />
         </List>
       </Drawer>
     </div>
