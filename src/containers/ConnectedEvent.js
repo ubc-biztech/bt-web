@@ -1,31 +1,28 @@
-import React, { Component } from "react";
-import Event from "../components/Event";
-import { connect } from "react-redux";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import queryString from 'query-string'
-import { setEvent } from "../actions/PageActions";
+import Event from '../components/Event'
+import { setEvent } from '../actions/PageActions'
 
 class ConnectedEvent extends Component {
-
     componentDidUpdate() {
         const params = queryString.parse(this.props.location.search)
-        const events = this.props.events
+        const { events } = this.props
         if (events) {
-            this.props.setEvent(events.find(event => event.id === params.id))
+            this.props.setEvent(events.find((event) => event.id === params.id))
         }
     }
 
     render() {
-        return (
-            <Event event={this.props.event} />
-        );
+        return <Event event={this.props.event} />
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         event: state.pageState.event,
-        events: state.pageState.events
-    };
-};
+        events: state.pageState.events,
+    }
+}
 
-export default connect(mapStateToProps, { setEvent })(ConnectedEvent);
+export default connect(mapStateToProps, { setEvent })(ConnectedEvent)
