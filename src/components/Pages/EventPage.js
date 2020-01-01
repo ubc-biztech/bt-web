@@ -12,9 +12,9 @@ export class EventPage extends Component {
             <div>
                 <Typography>Event Page</Typography>
                 <ul>
-                    {events.map(({ name, id }) => {
-                        <li key={id}>
-                            <Link to={`/eventpage/${id}`}>{name}</Link>
+                    {events.map((event) => {
+                        <li key={event.id}>
+                            <Link to={`/eventpage/${event.id}`}>{event.name}</Link>
                         </li>
                     })}
                 </ul>
