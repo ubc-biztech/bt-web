@@ -133,6 +133,15 @@ export default function Form(props) {
                 </Grid>
 
             </Grid>
+
+            <Button
+            variant="contained"
+            color="primary"
+            // onClick="TODO"
+            // className={classes.button} //ignore styling for now
+            >
+                Submit
+          </Button>
         </form>
     )
 

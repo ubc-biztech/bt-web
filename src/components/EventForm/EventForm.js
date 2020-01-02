@@ -107,14 +107,7 @@ export default function MyForm() {
             validationSchema={validationSchema}
             onSubmit={submitValues}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            // onClick="TODO"
-            className={classes.button}
-          >
-            Submit
-          </Button>
+
 
         </Paper>
         <Copyright />
