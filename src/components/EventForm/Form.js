@@ -106,7 +106,7 @@ export default function Form(props) {
                     />
                 </Grid>
                 {/* TODO: make required for my custom radio group. TODO: make other field in radio buttons */}
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <RadioGroupButtons 
                     buttonOptions={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry", "Other:"]}
                     radioGroupTitle={"Faculty"}
@@ -116,17 +116,17 @@ export default function Form(props) {
                         {createOtherOption(true)}
                     </RadioGroup>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <RadioGroupButtons 
                     buttonOptions={["1st Year","2nd Year","3rd Year","4th Year","5+ Year", "Other:"]}
                     radioGroupTitle={"Year"}/>  
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <RadioGroupButtons 
                     buttonOptions={["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter","Other:"]}
                     radioGroupTitle={"How did you hear about this event?"}/>  
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12}>
                     <RadioGroupButtons 
                     buttonOptions={["No","Other:"]}
                     radioGroupTitle={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}/>  
