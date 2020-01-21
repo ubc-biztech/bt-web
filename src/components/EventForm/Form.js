@@ -6,14 +6,17 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 
 // form parts
 import RadioGroupButtons from './formParts/RadioGroupButtons';
+import RadioGroupButtons2 from './formParts/RadioGroupButtons2';
 
 const textFieldLabelFontSize = "17px";
-
+const radioButtonFontSize = '15px'
+const radioGroupLabelFontSize = '17px'
 
 export default function Form(props) {
     const {
@@ -108,13 +111,23 @@ export default function Form(props) {
                 {/* TODO: make required for my custom radio group. TODO: make other field in radio buttons */}
                 <Grid item xs={12}>
                     <RadioGroupButtons 
-                    buttonOptions={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry", "Other:"]}
+                    buttonOptions={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry (BEFORE TEST)", "Other:"]}
                     radioGroupTitle={"Faculty"}
-                    {...props}/>  
+                    {...props}/>
+                    
+                    <FormLabel component="legend" style={{fontSize: radioGroupLabelFontSize}}>{"THIS IS A LABEL"}</FormLabel>  
                     <RadioGroup onChange={(e) => {toggleOtherState(e)}}>
-                        {createButtons(["ANDYSTEST","Commerce","Science","Forestry"])}
+                        {createButtons(["ANDYSTEST-POSTTEST","Commerce","Science","Forestry"])}
                         {createOtherOption(true)}
                     </RadioGroup>
+
+
+                    <RadioGroupButtons2
+                        otherOptionRequired={true}
+                        optionsArray={["ANDYSTEST-COMPONENTIZED","Commerce","Science","Forestry"]}
+                        groupName={"test"}
+                    />
+                    
                 </Grid>
                 <Grid item xs={12}>
                     <RadioGroupButtons 
@@ -183,8 +196,6 @@ export default function Form(props) {
                         error={touched.other_option && Boolean(errors.other_option)}
                         // value={other_option}
                         disabled={otherButtDisabled}
-
-
                     />
                 </React.Fragment>
             )
