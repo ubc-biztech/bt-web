@@ -122,7 +122,7 @@ export default function Form(props) {
                     {...props}/>
 
                 </Grid>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <FormControl component="fieldset"> 
                         <FormLabel component="legend" style={{fontSize: radioGroupLabelFontSize}}>{"THIS IS A LABEL"}</FormLabel>  
                         <RadioGroup onChange={(e) => {toggleOtherState(e)}}>
@@ -130,14 +130,14 @@ export default function Form(props) {
                             {createOtherOption(true)}
                         </RadioGroup>
                     </FormControl>
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12}>
                     <RadioGroupButtons2
                         {...props}
-                        // otherOptionRequired={true}
-                        // optionsArray={["ANDYSTEST-COMPONENTIZED","Commerce","Science","Forestry"]}
-                        // groupName={"test"}
+                        otherOptionRequired={true}
+                        optionsArray={["ANDYSTEST-COMPONENTIZED","Commerce","Science","Forestry"]}
+                        groupName={"test"}
                     />
 
                 </Grid>

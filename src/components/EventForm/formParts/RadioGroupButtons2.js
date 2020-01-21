@@ -23,7 +23,7 @@ export default function Form(props) {
       handleSubmit,
       handleChange,
       isValid,
-      setFieldTouched,
+      setFieldTouched, 
       groupName, optionsArray, otherOptionRequired
   } = props;
 
@@ -38,9 +38,9 @@ export default function Form(props) {
   console.log(optionsArray);
   console.log(otherOptionRequired);
   
-  // var otherOptionRequired = true;
-  // var optionsArray = ["1st Year","2nd Year","3rd Year","4th Year","5+ Yearrhae -  FROM DA COMP"];
-  // var groupName = "FROM THE COMP";
+  // let otherOptionRequired = true;
+  // let optionsArray = ["1st Year","2nd Year","3rd Year","4th Year","5+ Yearrhae -  FROM DA COMP"];
+  // let groupName = "FROM THE COMP";
   
   // console.log(props);
   // console.log(groupName);
