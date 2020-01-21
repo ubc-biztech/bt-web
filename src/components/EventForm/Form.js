@@ -13,7 +13,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 // form parts
 import RadioGroupButtons from './formParts/RadioGroupButtons';
-// import RadioGroupButtons2 from './formParts/RadioGroupButtons2';
+import RadioGroupButtons2 from './formParts/RadioGroupButtons2';
 
 const textFieldLabelFontSize = "17px";
 const radioButtonFontSize = '15px'
@@ -130,6 +130,16 @@ export default function Form(props) {
                             {createOtherOption(true)}
                         </RadioGroup>
                     </FormControl>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <RadioGroupButtons2
+                        {...props}
+                        otherOptionRequired={true}
+                        optionsArray={["ANDYSTEST-COMPONENTIZED","Commerce","Science","Forestry"]}
+                        groupName={"test"}
+                    />
+
                 </Grid>
 
 
