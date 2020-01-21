@@ -136,8 +136,8 @@ export default function Form(props) {
                     <RadioGroupButtons2
                         {...props}
                         otherOptionRequired={true}
-                        optionsArray={["ANDYSTEST-COMPONENTIZED","Commerce","Science","Forestry"]}
-                        groupName={"test"}
+                        optionsArray={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry"]}
+                        groupName={"Faculty"}
                     />
 
                 </Grid>
@@ -145,8 +145,26 @@ export default function Form(props) {
                     <RadioGroupButtons2
                         {...props}
                         otherOptionRequired={true}
-                        optionsArray={["ANDYSTEST-COMPONENTIZED2","Commer2ce","Scie2nce","Fo2restry"]}
-                        groupName={"tes2t"}
+                        optionsArray={["1st Year","2nd Year","3rd Year","4th Year","5+ Year"]}
+                        groupName={"Year"}
+                    />
+
+                </Grid>
+                <Grid item xs={12}>
+                    <RadioGroupButtons2
+                        {...props}
+                        otherOptionRequired={true}
+                        optionsArray={["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter"]}
+                        groupName={"How did you hear about this event?"}
+                    />
+
+                </Grid>
+                <Grid item xs={12}>
+                    <RadioGroupButtons2
+                        {...props}
+                        otherOptionRequired={true}
+                        optionsArray={["No"]}
+                        groupName={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}
                     />
 
                 </Grid>
