@@ -10,7 +10,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 
-export default function Form(props, groupName, optionsArray, otherOptionRequired) {
+export default function Form(props) {
   
   const [otherButtDisabled, setOtherButtDisabled] = useState(true)
 
@@ -23,7 +23,8 @@ export default function Form(props, groupName, optionsArray, otherOptionRequired
       handleSubmit,
       handleChange,
       isValid,
-      setFieldTouched
+      setFieldTouched,
+      groupName, optionsArray, otherOptionRequired
   } = props;
 
   const change = (name, e) => {
@@ -37,14 +38,14 @@ export default function Form(props, groupName, optionsArray, otherOptionRequired
   console.log(optionsArray);
   console.log(otherOptionRequired);
   
-  var otherOptionRequired = true;
-  var optionsArray = ["1st Year","2nd Year","3rd Year","4th Year","5+ Yearrhae -  FROM DA COMP"];
-  var groupName = "FROM THE COMP";
+  // var otherOptionRequired = true;
+  // var optionsArray = ["1st Year","2nd Year","3rd Year","4th Year","5+ Yearrhae -  FROM DA COMP"];
+  // var groupName = "FROM THE COMP";
   
-  console.log(props);
-  console.log(groupName);
-  console.log(optionsArray);
-  console.log(otherOptionRequired);
+  // console.log(props);
+  // console.log(groupName);
+  // console.log(optionsArray);
+  // console.log(otherOptionRequired);
 
   return (
     <React.Fragment>

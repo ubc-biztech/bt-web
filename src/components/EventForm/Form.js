@@ -135,9 +135,9 @@ export default function Form(props) {
                 <Grid item xs={12}>
                     <RadioGroupButtons2
                         {...props}
-                        otherOptionRequired={true}
-                        optionsArray={["ANDYSTEST-COMPONENTIZED","Commerce","Science","Forestry"]}
-                        groupName={"test"}
+                        // otherOptionRequired={true}
+                        // optionsArray={["ANDYSTEST-COMPONENTIZED","Commerce","Science","Forestry"]}
+                        // groupName={"test"}
                     />
 
                 </Grid>
