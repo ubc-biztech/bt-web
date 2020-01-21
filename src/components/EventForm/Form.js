@@ -116,23 +116,6 @@ export default function Form(props) {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <RadioGroupButtons 
-                    buttonOptions={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry (BEFORE TEST)", "Other:"]}
-                    radioGroupTitle={"Faculty"}
-                    {...props}/>
-
-                </Grid>
-                {/* <Grid item xs={12}>
-                    <FormControl component="fieldset"> 
-                        <FormLabel component="legend" style={{fontSize: radioGroupLabelFontSize}}>{"THIS IS A LABEL"}</FormLabel>  
-                        <RadioGroup onChange={(e) => {toggleOtherState(e)}}>
-                            {createButtons(["ANDYSTEST-POSTTEST","Commerce","Science","Forestry"])}
-                            {createOtherOption(true)}
-                        </RadioGroup>
-                    </FormControl>
-                </Grid> */}
-
-                <Grid item xs={12}>
                     <RadioGroupButtons2
                         {...props}
                         otherOptionRequired={true}
