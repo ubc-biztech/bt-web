@@ -7,12 +7,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
 import Checkbox from '@material-ui/core/Checkbox';
 
 
 // form parts
 import RadioGroupButtons from './formParts/RadioGroupButtons';
-import RadioGroupButtons2 from './formParts/RadioGroupButtons2';
+// import RadioGroupButtons2 from './formParts/RadioGroupButtons2';
 
 const textFieldLabelFontSize = "17px";
 const radioButtonFontSize = '15px'
@@ -36,6 +37,11 @@ export default function Form(props) {
     };
 
     const [otherButtDisabled, setOtherButtDisabled] = useState(true)
+
+    const radioButtonFields = { "Faculty": ["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry"],
+                                "Year": ["1st Year","2nd Year","3rd Year","4th Year","5+ Year"],
+                                "How did you hear about this event?": ["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter","Other:"],
+                                "Do you have any dietary restrictions? If yes, please specify in 'Other'": ["No","Other:"]}
 
     return (
         <form
@@ -108,45 +114,27 @@ export default function Form(props) {
                         fullWidth
                     />
                 </Grid>
-                {/* TODO: make required for my custom radio group. TODO: make other field in radio buttons */}
+
                 <Grid item xs={12}>
                     <RadioGroupButtons 
                     buttonOptions={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry (BEFORE TEST)", "Other:"]}
                     radioGroupTitle={"Faculty"}
                     {...props}/>
-                    
-                    <FormLabel component="legend" style={{fontSize: radioGroupLabelFontSize}}>{"THIS IS A LABEL"}</FormLabel>  
-                    <RadioGroup onChange={(e) => {toggleOtherState(e)}}>
-                        {createButtons(["ANDYSTEST-POSTTEST","Commerce","Science","Forestry"])}
-                        {createOtherOption(true)}
-                    </RadioGroup>
 
+                </Grid>
+                <Grid item xs={12}>
+                    <FormControl component="fieldset"> 
+                        <FormLabel component="legend" style={{fontSize: radioGroupLabelFontSize}}>{"THIS IS A LABEL"}</FormLabel>  
+                        <RadioGroup onChange={(e) => {toggleOtherState(e)}}>
+                            {createButtons(["ANDYSTEST-POSTTEST","Commerce","Science","Forestry"])}
+                            {createOtherOption(true)}
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
 
-                    <RadioGroupButtons2
-                        otherOptionRequired={true}
-                        optionsArray={["ANDYSTEST-COMPONENTIZED","Commerce","Science","Forestry"]}
-                        groupName={"test"}
-                    />
-                    
-                </Grid>
-                <Grid item xs={12}>
-                    <RadioGroupButtons 
-                    buttonOptions={["1st Year","2nd Year","3rd Year","4th Year","5+ Year", "Other:"]}
-                    radioGroupTitle={"Year"}/>  
-                </Grid>
-                <Grid item xs={12}>
-                    <RadioGroupButtons 
-                    buttonOptions={["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter","Other:"]}
-                    radioGroupTitle={"How did you hear about this event?"}/>  
-                </Grid>
-                <Grid item xs={12}>
-                    <RadioGroupButtons 
-                    buttonOptions={["No","Other:"]}
-                    radioGroupTitle={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}/>  
-                </Grid>
 
             </Grid>
-
+            <br></br>
             <Button
             variant="contained"
             color="primary"
@@ -207,3 +195,20 @@ export default function Form(props) {
             console.log('hi')
     }
 }
+
+
+                // <Grid item xs={12}>
+                //     <RadioGroupButtons 
+                //     buttonOptions={["1st Year","2nd Year","3rd Year","4th Year","5+ Year", "Other:"]}
+                //     radioGroupTitle={"Year"}/>  
+                // </Grid>
+                // <Grid item xs={12}>
+                //     <RadioGroupButtons 
+                //     buttonOptions={["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter","Other:"]}
+                //     radioGroupTitle={"How did you hear about this event?"}/>  
+                // </Grid>
+                // <Grid item xs={12}>
+                //     <RadioGroupButtons 
+                //     buttonOptions={["No","Other:"]}
+                //     radioGroupTitle={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}/>  
+                // </Grid>

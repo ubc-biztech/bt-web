@@ -100,14 +100,13 @@ export default function MyForm() {
             Coding for Noobs 1 with Lighthouse Labs
           </Typography>
           <br></br>
-
           <Formik
-            render={props => <Form {...props} />}
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={submitValues}
-          />
-
+            >
+              {props => <Form {...props}/>}
+          </Formik>
 
         </Paper>
         <Copyright />
