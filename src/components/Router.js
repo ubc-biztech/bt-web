@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import ConnectedEvent from '../containers/ConnectedEvent'
 import Nav from './Nav'
+import EventPage from './Pages/EventPage';
 import { Auth } from "aws-amplify";
 import { Login, LoginRedirect } from './Authentication'
 import './Router.scss';
@@ -13,7 +14,8 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import './Router.scss'
+import './Router.scss';
+
 import { API_URL } from '../utils'
 
 const queryString = require('query-string');
@@ -68,6 +70,9 @@ class Router extends Component {
         ? <BrowserRouter>
           <Nav events={this.props.events} />
           <Switch>
+            <Route
+              path="/eventpage"
+              render={EventPage} />
             <Route
               path="/event"
               render={props => <ConnectedEvent {...props} />} />
