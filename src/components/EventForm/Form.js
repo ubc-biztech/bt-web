@@ -81,7 +81,6 @@ export default function Form(props) {
                         id="firstname"
                         value={firstname}
                         onChange={change.bind(null, "firstname")}
-                        onKeyPress={e => handleKey(e)} 
                         InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
                         fullWidth
                     />       
@@ -93,9 +92,8 @@ export default function Form(props) {
                         helperText={touched.lastname ? errors.lastname : ""}
                         error={touched.lastname && Boolean(errors.lastname)}
                         id="lastname"
-                        // value={lastname}
+                        value={lastname}
                         onChange={change.bind(null, "lastname")}
-                        // onKeyPress={e => handleKey(e)} 
                         InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
                         fullWidth
                     />       
@@ -109,7 +107,6 @@ export default function Form(props) {
                         id="email"
                         value={email}
                         onChange={change.bind(null, "email")}
-                        onKeyPress={e => handleKey(e)} 
                         InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
                         fullWidth
                     />
