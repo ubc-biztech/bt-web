@@ -15,19 +15,6 @@ import { Formik } from "formik";
 import Form from './Form'; //ian's example form
 
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        UBC BizTech
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles(theme => ({
   appBar: {
     position: 'relative',
@@ -109,7 +96,6 @@ export default function MyForm() {
           </Formik>
 
         </Paper>
-        <Copyright />
       </main>
     </React.Fragment>
   );
