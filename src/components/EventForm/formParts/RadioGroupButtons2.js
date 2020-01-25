@@ -49,7 +49,7 @@ export default function Form(props) {
 
   return (
     <React.Fragment>
-      <FormLabel component="legend" style={{fontSize: radioGroupLabelFontSize}}>{groupName}</FormLabel>  
+      <FormLabel style={{fontSize: radioGroupLabelFontSize}}>{groupName}</FormLabel>  
       <RadioGroup onChange={(e) => {toggleOtherState(e)}}>
           {createButtons(optionsArray)}
           {createOtherOption(otherOptionRequired)}
