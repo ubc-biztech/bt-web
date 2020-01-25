@@ -12,7 +12,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 
 // form parts
-import RadioGroupButtons from './formParts/RadioGroupButtons';
 import RadioGroupButtons2 from './formParts/RadioGroupButtons2';
 
 const textFieldLabelFontSize = "17px";
@@ -212,20 +211,3 @@ export default function Form(props) {
             console.log('hi')
     }
 }
-
-
-                // <Grid item xs={12}>
-                //     <RadioGroupButtons 
-                //     buttonOptions={["1st Year","2nd Year","3rd Year","4th Year","5+ Year", "Other:"]}
-                //     radioGroupTitle={"Year"}/>  
-                // </Grid>
-                // <Grid item xs={12}>
-                //     <RadioGroupButtons 
-                //     buttonOptions={["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter","Other:"]}
-                //     radioGroupTitle={"How did you hear about this event?"}/>  
-                // </Grid>
-                // <Grid item xs={12}>
-                //     <RadioGroupButtons 
-                //     buttonOptions={["No","Other:"]}
-                //     radioGroupTitle={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}/>  
-                // </Grid>
