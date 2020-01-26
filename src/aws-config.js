@@ -4,7 +4,7 @@
 export const CLIENT_URL = process.env.REACT_APP_STAGE === 'production'
     ? "https://app.ubcbiztech.com/"
     : "http://localhost:3000/"
-    
+
 const awsmobile = {
     "aws_project_region": "us-west-2",
     "aws_cognito_identity_pool_id": process.env.REACT_APP_AWS_COGNITO_POOL_ID,
@@ -20,8 +20,8 @@ const awsmobile = {
             "profile",
             "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "http://localhost:3000/login-redirect/",
-        "redirectSignOut": "http://localhost:3000/",
+        "redirectSignIn": CLIENT_URL + "login-redirect/",
+        "redirectSignOut": CLIENT_URL,
         "responseType": "code"
     },
     "federationTarget": "COGNITO_USER_POOLS"
