@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import './Router.scss'
 import { API_URL } from '../utils'
+import EventPage from '../pages/EventPage';
 
 const queryString = require('query-string');
 
@@ -82,6 +83,13 @@ class Router extends Component {
         </BrowserRouter>
         : <BrowserRouter>
           <Switch>
+            <Route
+              path="/page"
+              render={props => <EventPage />} />
+            {/* Route for Andy's form
+            <Route 
+              path="/eventform"
+              render={() => <EventForm event={this.props.events}/>} /> */}
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
