@@ -11,6 +11,7 @@ import {
   AppBar
 } from '@material-ui/core';
 import './Nav.scss';
+import NewEventFormComponent from './Forms/NewEventForm/NewEventFormComponent'
 import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -69,6 +70,13 @@ function Nav(props) {
           onClick={handleItemClick}
         >
           <ListItemText primary="Home" />
+        </ListItem>
+        <ListItem
+          button
+          component={NewEventFormComponent}
+          to="/test"
+        >
+          <ListItemText primary="Events" />
         </ListItem>
         <br></br>
         <Typography className="menu-tag" variant="h6" noWrap>Events</Typography>
