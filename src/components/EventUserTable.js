@@ -1,10 +1,13 @@
 import React from "react";
 import MaterialTable from "material-table";
-import { connect } from "react-redux"
-//
+import { connect } from "react-redux";
+import { API_URL, API_KEY } from '../utils';
+
 function EventUserTable(props) {
   // current sample data, but will get from Events.js in the future
   let users = props.userData
+  const eventID = props.eventID
+  console.log(props.eventID)
 
   // generate more rows to test speed of table search
   function createData(name, studentNumber, email, checkedIn) {
@@ -13,20 +16,15 @@ function EventUserTable(props) {
 
   const rows = [];
 
-  function updateUser(studentNumber){
-    let userToUpdateIndex = rows.findIndex((user => user.studentNumber === studentNumber));
-    rows[userToUpdateIndex].checkedIn = !rows[userToUpdateIndex].checkedIn
-  }
-
   function displayAction(checkedIn){
     let displayRegister = {
       icon: 'check',
       tooltip: 'Check-in member to event to confirm attendance',
       onClick: (event, rowData) => {
-        // Do sign-in operation 
+        // Do check-in operation 
         if (window.confirm("You want to check-in " + rowData.name + "?")){
-        console.log("update table for " + rowData.studentNumber)
-        updateUser(rowData.studentNumber)
+          const registrationStatus = true;
+          registerUser(rowData.studentNumber, registrationStatus)
         }
       }
     }
@@ -34,27 +32,17 @@ function EventUserTable(props) {
       icon: 'remove',
       tooltip: 'Undo member check-in',
       onClick: (event, rowData) => {
-        // Do sign-in operation 
+        // Do undo check-in operation 
         if (window.confirm("You want to undo check-in " + rowData.name + "?")){
-          console.log("update table for " + rowData.studentNumber)
-          updateUser(rowData.studentNumber)
+          const registrationStatus = false;
+          registerUser(rowData.studentNumber, registrationStatus)
         }
       }
     }
     return checkedIn ? displayDeregister : displayRegister
   }
 
-  // let currentCheckedIn = 0
-  // let notCheckedIn = 0
-  // let total = currentCheckedIn - notCheckedIn
-  // let description = "Total Registered: " + total + " | Checked In: " + currentCheckedIn + " | Not Checked In: " + notCheckedIn
-
   for (let i = 0; i < users.length ; i += 1) {
-    // if (users[i].checkedIn === true){
-    //   currentCheckedIn++
-    // } else {
-    //   notCheckedIn++
-    // }
     rows.push(
       createData(
         users[i].name,
@@ -63,6 +51,28 @@ function EventUserTable(props) {
         users[i].checkedIn
       )
     );
+  }
+
+  async function registerUser(id, status) {
+    const body = JSON.stringify({
+        eventID: eventID,
+        id: id,
+        status: status
+    })
+  
+    fetch(API_URL + "/registration/create", {
+        method: 'POST',
+        headers: {
+            'x-api-key': API_KEY,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body
+    })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response)
+        })
   }
 
   return (

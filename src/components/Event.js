@@ -5,11 +5,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default function Event(props) {
   const event = props.event
-
   return event
     ? <div>
       <h1>Event: {event.ename}</h1>
-      <EventUserTable />
+      <EventUserTable eventID={event.id} />
     </div>
     : <CircularProgress />
 
