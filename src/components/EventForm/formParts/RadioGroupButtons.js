@@ -10,7 +10,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
 
-export default function Form(props) {
+export default function RadioGroupButtons(props) {
   
   const [otherButtDisabled, setOtherButtDisabled] = useState(true)
 
@@ -50,7 +50,7 @@ export default function Form(props) {
   return (
     <React.Fragment>
       <FormLabel style={{fontSize: radioGroupLabelFontSize}}>{groupName}</FormLabel>  
-      <RadioGroup onChange={(e) => {toggleOtherState(e)}}>
+      <RadioGroup onChange={(e) => {handleRadioChange(e)}}>
           {createButtons(optionsArray)}
           {createOtherOption(otherOptionRequired)}
       </RadioGroup>
@@ -89,7 +89,7 @@ export default function Form(props) {
       };
   }
 
-  function toggleOtherState(e) {
+  function handleRadioChange(e) {
     e.preventDefault()
     console.log(e.target.value);
     const buttonSelected = e.target.value;
