@@ -53,11 +53,11 @@ function EventUserTable(props) {
     );
   }
 
-  async function registerUser(id, status) {
+  async function registerUser(id, registrationStatus) {
     const body = JSON.stringify({
         eventID: eventID,
         id: id,
-        status: status
+        registrationStatus: registrationStatus
     })
   
     fetch(API_URL + "/registration/create", {
