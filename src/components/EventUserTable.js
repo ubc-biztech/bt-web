@@ -16,8 +16,35 @@ function EventUserTable(props) {
   function updateUser(studentNumber){
     let userToUpdateIndex = rows.findIndex((user => user.studentNumber === studentNumber));
     rows[userToUpdateIndex].name = "BIZTECH"
-
     console.log(rows[userToUpdateIndex].studentNumber + "'s name is now " + rows[userToUpdateIndex].name)
+  }
+
+  function displayAction(checkedIn){
+    let displayRegister = {
+      icon: 'check',
+      tooltip: 'Sign-in member to event to confirm attendance',
+      onClick: (event, rowData) => {
+        // Do sign-in operation 
+        if (window.confirm("You want to register " + rowData.name + "?")){
+        console.log("update table for " + rowData.studentNumber)
+        updateUser(rowData.studentNumber)
+        }
+      }
+    }
+
+    let displayDeregister = {
+      icon: 'save',
+      tooltip: 'Sign-in member to event to confirm attendance',
+      onClick: (event, rowData) => {
+        // Do sign-in operation 
+        if (window.confirm("You want to register " + rowData.name + "?")){
+          console.log("update table for " + rowData.studentNumber)
+          updateUser(rowData.studentNumber)
+        }
+      }
+    }
+
+    return checkedIn ? displayDeregister : displayRegister
   }
 
   for (let i = 0; i < users.length; i += 1) {
@@ -60,18 +87,7 @@ function EventUserTable(props) {
         }
       }}
       actions={[
-        {
-          icon: 'check',
-          tooltip: 'Sign-in member to event to confirm attendance',
-          disabled: false,
-          onClick: (event, rowData) => {
-            // Do sign-in operation 
-            if (window.confirm("You want to register " + rowData.name + "?")){
-              console.log("update table for " + rowData.studentNumber)
-              updateUser(rowData.studentNumber)
-            }
-          }
-        }
+        rowData => displayAction(rowData.checkedIn)
       ]}
     />
   );
