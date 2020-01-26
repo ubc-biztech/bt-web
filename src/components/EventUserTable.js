@@ -1,7 +1,7 @@
 import React from "react";
 import MaterialTable from "material-table";
 import { connect } from "react-redux"
-
+//
 function EventUserTable(props) {
   // current sample data, but will get from Events.js in the future
   let users = props.userData
@@ -15,46 +15,52 @@ function EventUserTable(props) {
 
   function updateUser(studentNumber){
     let userToUpdateIndex = rows.findIndex((user => user.studentNumber === studentNumber));
-    rows[userToUpdateIndex].name = "BIZTECH"
-    console.log(rows[userToUpdateIndex].studentNumber + "'s name is now " + rows[userToUpdateIndex].name)
+    rows[userToUpdateIndex].checkedIn = !rows[userToUpdateIndex].checkedIn
   }
 
   function displayAction(checkedIn){
     let displayRegister = {
       icon: 'check',
-      tooltip: 'Sign-in member to event to confirm attendance',
+      tooltip: 'Check-in member to event to confirm attendance',
       onClick: (event, rowData) => {
         // Do sign-in operation 
-        if (window.confirm("You want to register " + rowData.name + "?")){
+        if (window.confirm("You want to check-in " + rowData.name + "?")){
         console.log("update table for " + rowData.studentNumber)
         updateUser(rowData.studentNumber)
         }
       }
     }
-
     let displayDeregister = {
-      icon: 'save',
-      tooltip: 'Sign-in member to event to confirm attendance',
+      icon: 'remove',
+      tooltip: 'Undo member check-in',
       onClick: (event, rowData) => {
         // Do sign-in operation 
-        if (window.confirm("You want to register " + rowData.name + "?")){
+        if (window.confirm("You want to undo check-in " + rowData.name + "?")){
           console.log("update table for " + rowData.studentNumber)
           updateUser(rowData.studentNumber)
         }
       }
     }
-
     return checkedIn ? displayDeregister : displayRegister
   }
 
-  for (let i = 0; i < users.length; i += 1) {
-    const randomSelection = users[Math.floor(Math.random() * users.length)];
+  // let currentCheckedIn = 0
+  // let notCheckedIn = 0
+  // let total = currentCheckedIn - notCheckedIn
+  // let description = "Total Registered: " + total + " | Checked In: " + currentCheckedIn + " | Not Checked In: " + notCheckedIn
+
+  for (let i = 0; i < users.length ; i += 1) {
+    // if (users[i].checkedIn === true){
+    //   currentCheckedIn++
+    // } else {
+    //   notCheckedIn++
+    // }
     rows.push(
       createData(
-        randomSelection.name,
-        randomSelection.studentNumber,
-        randomSelection.email,
-        randomSelection.checkedIn
+        users[i].name,
+        users[i].studentNumber,
+        users[i].email,
+        users[i].checkedIn
       )
     );
   }
@@ -63,7 +69,7 @@ function EventUserTable(props) {
     <MaterialTable
       title="Event Attendance"
       columns={[
-        { title: "Full Name", field: "name" },
+        { title: "Full Name", field: "name"},
         {
           title: "Student Number",
           field: "studentNumber",
@@ -84,7 +90,10 @@ function EventUserTable(props) {
         exportButton: true,
         headerStyle: {
           fontWeight: "bold"
-        }
+        },
+        rowStyle: rowData => ({
+            backgroundColor: (rowData.checkedIn === true) ? '#54D26E' : '#FFF'
+        })
       }}
       actions={[
         rowData => displayAction(rowData.checkedIn)

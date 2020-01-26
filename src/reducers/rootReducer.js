@@ -20,13 +20,13 @@ const initialState = {
       name: "Jacques Chen",
       studentNumber: 512,
       email: "3@gmail.com",
-      checkedIn: true
+      checkedIn: false
     },
     {
       name: "Cris Mihailescu",
       studentNumber: 214,
       email: "4@gmail.com",
-      checkedIn: true
+      checkedIn: false
     },
     {
       name: "Adin Kwok",
