@@ -1,68 +1,40 @@
 import React from "react";
 import MaterialTable from "material-table";
-// current sample data, but will get from Events.js in the future
-let users = [
-  {
-    name: "Ian Mah",
-    studentNumber: 159,
-    email: "1@gmail.com",
-    checkedIn: true
-  },
-  {
-    name: "Derek Chen",
-    studentNumber: 152,
-    email: "2@gmail.com",
-    checkedIn: false
-  },
-  {
-    name: "Jacques Chen",
-    studentNumber: 512,
-    email: "3@gmail.com",
-    checkedIn: true
-  },
-  {
-    name: "Cris Mihailescu",
-    studentNumber: 214,
-    email: "4@gmail.com",
-    checkedIn: true
-  },
-  {
-    name: "Adin Kwok",
-    studentNumber: 859,
-    email: "5@gmail.com",
-    checkedIn: false
-  },
-  {
-    name: "Andy Luu",
-    studentNumber: 104,
-    email: "6@gmail.com",
-    checkedIn: false
+import { connect } from "react-redux"
+
+function EventUserTable(props) {
+  // current sample data, but will get from Events.js in the future
+  let users = props.userData
+
+  // generate more rows to test speed of table search
+  function createData(name, studentNumber, email, checkedIn) {
+    return { name, studentNumber, email, checkedIn };
   }
-];
 
-// generate more rows to test speed of table search
-function createData(name, studentNumber, email, checkedIn) {
-  return { name, studentNumber, email, checkedIn };
-}
+  const rows = [];
 
-const rows = [];
+  function updateUser(studentNumber){
+    let userToUpdateIndex = rows.findIndex((user => user.studentNumber === studentNumber));
+    rows[userToUpdateIndex].name = "BIZTECH"
 
-for (let i = 0; i < 200; i += 1) {
-  const randomSelection = users[Math.floor(Math.random() * users.length)];
-  rows.push(
-    createData(
-      randomSelection.name,
-      Math.floor(Math.random() * 90000) + 10000,
-      randomSelection.email,
-      randomSelection.checkedIn
-    )
-  );
-}
+    console.log(rows[userToUpdateIndex].studentNumber + "'s name is now " + rows[userToUpdateIndex].name)
+  }
 
-export default function EventUserTable() {
+  for (let i = 0; i < users.length; i += 1) {
+    const randomSelection = users[Math.floor(Math.random() * users.length)];
+    rows.push(
+      createData(
+        randomSelection.name,
+        randomSelection.studentNumber,
+        randomSelection.email,
+        randomSelection.checkedIn
+      )
+    );
+  }
+
   return (
     <MaterialTable
-      title="Members Attendance"
+      title="Event Attendance"
       columns={[
         { title: "Full Name", field: "name" },
         {
@@ -71,8 +43,8 @@ export default function EventUserTable() {
           type: "numeric",
           sorting: false
         },
-        { title: "Email", field: "email", sorting: false },
-        { title: "CheckedIn", field: "checkedIn", type: "boolean" }
+        { title: "Email", field: "email", sorting: false }
+        // { title: "CheckedIn", field: "checkedIn", type: "boolean" }
       ]}
       data={rows}
       options={{
@@ -81,10 +53,37 @@ export default function EventUserTable() {
         padding: "dense",
         pageSize: 20,
         pageSizeOptions: [20, 50, 100],
+        actionsColumnIndex: 4,
+        exportButton: true,
         headerStyle: {
           fontWeight: "bold"
         }
       }}
+      actions={[
+        {
+          icon: 'check',
+          tooltip: 'Sign-in member to event to confirm attendance',
+          disabled: false,
+          onClick: (event, rowData) => {
+            // Do sign-in operation 
+            if (window.confirm("You want to register " + rowData.name + "?")){
+              console.log("update table for " + rowData.studentNumber)
+              updateUser(rowData.studentNumber)
+            }
+          }
+        }
+      ]}
     />
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    userData: state.pageState.eventUserList
+  }
+}
+
+export default connect(
+  mapStateToProps, 
+  null
+)(EventUserTable);
