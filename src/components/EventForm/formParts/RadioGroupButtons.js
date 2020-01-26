@@ -34,22 +34,6 @@ export default function RadioGroupButtons(props) {
       setFieldTouched(name, true, false);
   };
 
-  // console.log(props);
-  // console.log(groupName);
-  // console.log(optionsArray);
-  // console.log(otherOptionRequired);
-
-
-  
-  // let otherOptionRequired = true;
-  // let optionsArray = ["1st Year","2nd Year","3rd Year","4th Year","5+ Yearrhae -  FROM DA COMP"];
-  // let groupName = "FROM THE COMP";
-  
-  // console.log(props);
-  // console.log(groupName);
-  // console.log(optionsArray);
-  // console.log(otherOptionRequired);
-
   return (
     <React.Fragment>
       <FormLabel style={{fontSize: radioGroupLabelFontSize}}>{groupName}</FormLabel>  
@@ -82,7 +66,7 @@ export default function RadioGroupButtons(props) {
                       onChange={change.bind(null, "other_option")}                    
                       helperText={touched.other_option ? errors.other_option : ""}
                       error={touched.other_option && Boolean(errors.other_option)}
-                      // value={other_option}
+                      value={other_option}
                       disabled={otherButtDisabled}
 
 
@@ -96,14 +80,8 @@ export default function RadioGroupButtons(props) {
     e.preventDefault()
     let valueName = group;
     let value = e.target.value;
-    // console.log(group);
-    // console.log(e.target.value);
-    // console.log(valueName);
-    // console.log(value);
+
     setFieldValue(valueName, value);
-    // if (e.target.value){
-    //   setFieldValue(group. e.target.value);
-    // }
     
     const buttonSelected = e.target.value;
     if (buttonSelected === "Other:"){

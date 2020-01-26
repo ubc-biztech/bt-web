@@ -43,17 +43,7 @@ export default function Form(props) {
     return (
         <form
             onSubmit={handleSubmit}
-        >
-            {/* <br />
-            <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                disabled={!isValid}
-            >
-                Sign up
-            </Button> */}
-             
+        >    
 
             <Typography variant="h6" gutterBottom>
                 Ever wanted to learn how to code, but don't know where to start? Ready to gain practical skills and level-up your technical understanding? UBC BizTech and Lighthouse Labs invite you to join the beginner-friendly Python coding lesson - Coding For Noobs! 
@@ -199,7 +189,7 @@ export default function Form(props) {
                         onChange={change.bind(null, "other_option")}                    
                         helperText={touched.other_option ? errors.other_option : ""}
                         error={touched.other_option && Boolean(errors.other_option)}
-                        // value={other_option}
+                        value={other_option}
                         disabled={otherButtDisabled}
                     />
                 </React.Fragment>
