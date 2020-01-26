@@ -77,7 +77,7 @@ export default function EventFormWrapper() {
         .required("Please confirm your password"),
     firstname: Yup.string().required("First name is required"),
     lastname: Yup.string().required("Last name is required"),
-    // other_option: Yup.string().required("Please enter a response"),
+    // other_option: Yup.string().required("Please enter a response"), //TODO: get other option validation working along with radio button validation 
   });
 
   const initialValues = { email: "", name: "", id: "", password: "", confirmPassword: "", firstname: "", lastname: "", other_option: "" };
@@ -106,6 +106,7 @@ export default function EventFormWrapper() {
   );
   async function submitValues(values) {
       const { email, name, id, password } = values;
+      console.log("YOU HAVE HIT THE SUBMIT BUTTON - MSG FROM FORMIK AND EVENTWRAPPER")
       console.log(values);
       alert("Signed Up");
   }

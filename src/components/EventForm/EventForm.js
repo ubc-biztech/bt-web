@@ -153,14 +153,16 @@ export default function Form(props) {
             variant="contained"
             color="primary"
             type="submit"
-            // onClick={handleSubmit}
+            onClick={testSubmit}
             // className={classes.button} //ignore styling for now
             >
                 Submit
           </Button>
         </form>
     )
-
+    function testSubmit(){
+        console.log(props.values)
+    }
     function toggleOtherState(e) {
         e.preventDefault()
         console.log(e.target.value);

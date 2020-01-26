@@ -100,7 +100,7 @@ export default function RadioGroupButtons(props) {
     // console.log(e.target.value);
     // console.log(valueName);
     // console.log(value);
-    setFieldValue(valueName. value);
+    setFieldValue(valueName, value);
     // if (e.target.value){
     //   setFieldValue(group. e.target.value);
     // }
