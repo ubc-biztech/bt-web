@@ -26,8 +26,11 @@ export default function Form(props) {
         handleSubmit,
         handleChange,
         isValid,
+        setFieldValue,
         setFieldTouched
     } = props;
+
+    let eventForm
 
     const change = (name, e) => {
         e.persist();
@@ -149,7 +152,8 @@ export default function Form(props) {
             <Button
             variant="contained"
             color="primary"
-            // onClick="TODO"
+            type="submit"
+            // onClick={handleSubmit}
             // className={classes.button} //ignore styling for now
             >
                 Submit

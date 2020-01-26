@@ -14,6 +14,11 @@ import * as Yup from "yup" //TODO: avoid *, figure out what functions are actual
 import { Formik } from "formik";
 import EventForm from './EventForm'; //ian's example form
 
+//Unused but should use down the road (TODO)
+// const radioButtonFields = { "Faculty": ["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry"],
+//                             "Year": ["1st Year","2nd Year","3rd Year","4th Year","5+ Year"],
+//                             "How did you hear about this event?": ["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter","Other:"],
+//                             "Do you have any dietary restrictions? If yes, please specify in 'Other'": ["No","Other:"]}
 
 const useStyles = makeStyles(theme => ({
   appBar: {
