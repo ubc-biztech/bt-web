@@ -13,7 +13,9 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import './Router.scss'
+import EventPage from "../pages/EventPage"
+import './Router.scss';
+
 import { API_URL } from '../utils'
 import EventPage from '../pages/EventPage';
 
@@ -69,6 +71,9 @@ class Router extends Component {
         ? <BrowserRouter>
           <Nav events={this.props.events} />
           <Switch>
+            <Route
+              path="/eventpage"
+              render={EventPage} />
             <Route
               path="/event"
               render={props => <ConnectedEvent {...props} />} />
