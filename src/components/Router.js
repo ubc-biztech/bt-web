@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import ConnectedEvent from '../containers/ConnectedEvent'
 import Nav from './Nav'
-import EventPage from './Pages/EventPage';
 import { Auth } from "aws-amplify";
 import { Login, LoginRedirect } from './Authentication'
 import './Router.scss';
@@ -14,6 +13,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import EventPage from "../pages/EventPage"
 import './Router.scss';
 
 import { API_URL } from '../utils'
@@ -87,6 +87,13 @@ class Router extends Component {
         </BrowserRouter>
         : <BrowserRouter>
           <Switch>
+            <Route
+              path="/page"
+              render={props => <EventPage />} />
+            {/* Route for Andy's form
+            <Route 
+              path="/eventform"
+              render={() => <EventForm event={this.props.events}/>} /> */}
             <Route
               path="/login-redirect"
               component={LoginRedirect} />

@@ -11,7 +11,6 @@ import {
   AppBar
 } from '@material-ui/core';
 import './Nav.scss';
-import EventPage from './Pages/EventPage';
 import NewEventFormComponent from './Forms/NewEventForm/NewEventFormComponent'
 import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
