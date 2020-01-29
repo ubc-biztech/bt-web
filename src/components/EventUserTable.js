@@ -12,8 +12,11 @@ function EventUserTable(props) {
   // current sample data, but will get from Events.js in the future
   let users = props.userData;
   const eventID = props.eventID;
-  console.log(props.eventID);
 
+  getEventTableData(eventID);
+
+  //TODO: potentially remove
+  const rows = [];
   for (let i = 0; i < users.length; i += 1) {
     rows.push(
       createData(
@@ -24,12 +27,9 @@ function EventUserTable(props) {
       )
     );
   }
-
   function createData(name, studentNumber, email, checkedIn) {
     return { name, studentNumber, email, checkedIn };
   }
-
-  const rows = [];
 
   /**
    * Helper function to determine whether to display action for check-in or undo check-in
@@ -76,6 +76,27 @@ function EventUserTable(props) {
         "Content-Type": "application/json"
       },
       body
+    })
+      .then(response => response.json())
+      .then(response => {
+        // getEventTableData(eventID);
+        console.log(response);
+      });
+  }
+
+  async function getEventTableData(eventID) {
+    const params = new URLSearchParams({
+      id: eventID
+    });
+
+    fetch(API_URL + "events/getUsers?" + params, {
+      method: "GET",
+      headers: {
+        "x-api-key": API_KEY,
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+      // body
     })
       .then(response => response.json())
       .then(response => {
