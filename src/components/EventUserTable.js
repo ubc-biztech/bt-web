@@ -89,7 +89,7 @@ function EventUserTable(props) {
       id: eventID
     });
 
-    fetch(API_URL + "events/getUsers?" + params, {
+    fetch(API_URL + "/events/getUsers?" + params, {
       method: "GET",
       headers: {
         "x-api-key": API_KEY,
