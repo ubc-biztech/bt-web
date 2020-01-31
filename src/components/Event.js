@@ -1,31 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 // import Sheet from "./Sheet";
 import EventUserTable from "./EventUserTable";
-import { connect } from "react-redux";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-class Event extends Component {
-  render() {
-    let event = this.props.event;
+export default function Event(props) {
+  const event = props.event
 
-    return (
-      <div>
-        <h1>Event: {event.ename}</h1>
-        <p># Registered: {event.regNum}</p>
-        <p># Checked In: {event.checkedNum}</p>
-        <p># Waitlisted: {event.waitNum}</p>
-        <EventUserTable />
-      </div>
-    );
-  }
+  return event
+    ? <div>
+      <h1>Event: {event.ename}</h1>
+      <EventUserTable />
+    </div>
+    : <CircularProgress />
+
 }
-
-const mapStateToProps = state => {
-  return {
-    event: state.pageState.event
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(Event);
