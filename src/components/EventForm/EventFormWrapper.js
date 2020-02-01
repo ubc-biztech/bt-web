@@ -1,11 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 //TODO: import props and require the correct type
 
@@ -105,7 +100,6 @@ export default function EventFormWrapper() {
     </React.Fragment>
   );
   async function submitValues(values) {
-      const { email, name, id, password } = values;
       console.log("YOU HAVE HIT THE SUBMIT BUTTON - MSG FROM FORMIK AND EVENTWRAPPER")
       console.log(values);
       alert("Signed Up");

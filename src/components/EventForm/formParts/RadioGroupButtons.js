@@ -1,13 +1,10 @@
-import React, { useState, component } from "react"
-import { Button, TextField } from "@material-ui/core";
+import React, { useState } from "react"
+import { TextField } from "@material-ui/core";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 
 
 export default function RadioGroupButtons(props) {
@@ -17,12 +14,10 @@ export default function RadioGroupButtons(props) {
   const radioGroupLabelFontSize = '17px'
 
   const {
-      values: { name, email, password, confirmPassword, id, firstname, lastname, other_option },
+      values: { other_option },
       errors,
       touched,
-      handleSubmit,
       handleChange,
-      isValid,
       setFieldValue,
       setFieldTouched, 
       groupName, optionsArray, otherOptionRequired
