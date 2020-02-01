@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import ConnectedEvent from '../containers/ConnectedEvent'
-import Event from './Event'
+//import Event from './Event'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
 import { Login, LoginRedirect } from './Authentication'
