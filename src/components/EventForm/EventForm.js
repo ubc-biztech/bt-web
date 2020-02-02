@@ -13,7 +13,7 @@ const textFieldLabelFontSize = "17px";
 
 export default function Form(props) {
     const {
-        values: { email, firstname, lastname, other_option },
+        values: { email, firstname, lastname, id},
         errors,
         touched,
         handleSubmit,
@@ -21,6 +21,7 @@ export default function Form(props) {
         setFieldTouched
     } = props;
 
+    console.log(props);
 
     const change = (name, e) => {
         e.persist();
@@ -29,21 +30,11 @@ export default function Form(props) {
     };
 
     const [otherButtDisabled, setOtherButtDisabled] = useState(true)
-
     return (
         <form
             onSubmit={handleSubmit}
         >    
 
-            <Typography variant="h6" gutterBottom>
-                Ever wanted to learn how to code, but don't know where to start? Ready to gain practical skills and level-up your technical understanding? UBC BizTech and Lighthouse Labs invite you to join the beginner-friendly Python coding lesson - Coding For Noobs! 
-                📲 Please bring your Mac or PC to participate in the workshop.
-                Event Details:
-                😁 Who: YOU, any students of any faculty who are interested in learning Python, and professional instructors from Lighthouse Labs
-                🏢 Where: Henry Angus Building, Room 295
-                📅 When: Monday, November 6th from 5:30 - 8:30pm
-                💸 Cost: This event is FREE for BizTech Members. Non-members can purchase membership upon sign-in at the event.
-            </Typography>
             <h4 style={{color: 'red'}}>
                 *Required
             </h4>
@@ -88,13 +79,26 @@ export default function Form(props) {
                         fullWidth
                     />
                 </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        label="Student Number*"
+                        helperText={touched.id ? errors.id : ""}
+                        error={touched.id && Boolean(errors.id)}
+                        id="id"
+                        value={id}
+                        onChange={change.bind(null, "id")}
+                        InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
+                        fullWidth
+                    />
+                </Grid>
 
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
                         otherOptionRequired={true}
                         optionsArray={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry"]}
-                        groupName={"Faculty"}
+                        groupName={"faculty"}
+                        displayName = {"Faculty"}
                     />
 
                 </Grid>
@@ -103,7 +107,8 @@ export default function Form(props) {
                         {...props}
                         otherOptionRequired={true}
                         optionsArray={["1st Year","2nd Year","3rd Year","4th Year","5+ Year"]}
-                        groupName={"Year"}
+                        groupName={"year"}
+                        displayName = {"Year"}
                     />
 
                 </Grid>
@@ -112,7 +117,8 @@ export default function Form(props) {
                         {...props}
                         otherOptionRequired={true}
                         optionsArray={["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter"]}
-                        groupName={"How did you hear about this event?"}
+                        groupName={"heardFrom"}
+                        displayName = {"How did you hear about this event?"}
                     />
 
                 </Grid>
@@ -121,7 +127,8 @@ export default function Form(props) {
                         {...props}
                         otherOptionRequired={true}
                         optionsArray={["No"]}
-                        groupName={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}
+                        groupName={"diet"}
+                        displayName={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}
                     />
 
                 </Grid>
@@ -133,16 +140,12 @@ export default function Form(props) {
             variant="contained"
             color="primary"
             type="submit"
-            onClick={testSubmit}
             // className={classes.button} //ignore styling for now
             >
                 Submit
           </Button>
         </form>
     )
-    function testSubmit(){
-        console.log(props.values)
-    }
     //TODO: Uncomment these once they are used.
     // function toggleOtherState(e) {
     //     e.preventDefault()

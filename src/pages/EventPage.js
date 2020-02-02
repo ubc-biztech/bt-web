@@ -4,6 +4,7 @@ import { Typography, List } from '@material-ui/core';
 import Link from '@material-ui/core/Link'
 import { setEvent } from "../actions/PageActions";
 import Button from '@material-ui/core/Button';
+import EventFormWrapper from '../components/EventForm/EventFormWrapper';
 
 const queryString = require('query-string');
 
@@ -37,7 +38,8 @@ function loadEvent(event) {
     if (event) {
         return (
             <div>
-                <Button variant="contained" color="primary" href="/eventform">Register!</Button>
+                <Button variant="contained" color="primary" href="/eventform">Registssser!</Button>
+                <EventFormWrapper event={event}> </EventFormWrapper>
                 <img src={event.img} alt="Event"></img>
                 <Typography>{event.ename}</Typography>
                 <Typography>{event.tagline}</Typography>

@@ -20,7 +20,7 @@ export default function RadioGroupButtons(props) {
       handleChange,
       setFieldValue,
       setFieldTouched, 
-      groupName, optionsArray, otherOptionRequired
+      groupName, displayName, optionsArray, otherOptionRequired
   } = props;
 
   const change = (name, e) => {
@@ -31,7 +31,7 @@ export default function RadioGroupButtons(props) {
 
   return (
     <React.Fragment>
-      <FormLabel style={{fontSize: radioGroupLabelFontSize}}>{groupName}</FormLabel>  
+      <FormLabel style={{fontSize: radioGroupLabelFontSize}}>{displayName}</FormLabel>  
       <RadioGroup onChange={(e) => {handleRadioChange(e, groupName)}}>
           {createButtons(optionsArray)}
           {createOtherOption(otherOptionRequired)}

@@ -55,36 +55,38 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function EventFormWrapper() {
+const EventFormWrapper = (event) => {
   const classes = useStyles();
-
+  const eventInfo = event.event;
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
-    name: Yup.string().required(),
     id: Yup.number('Valid Student ID required')
         .min(9999999, 'Valid Student ID required')
         .max(100000000, 'Valid Student ID required')
         .required(),
-    password: Yup.string().min(6).required(),
-    confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], "Password must match")
-        .required("Please confirm your password"),
     firstname: Yup.string().required("First name is required"),
     lastname: Yup.string().required("Last name is required"),
     // other_option: Yup.string().required("Please enter a response"), //TODO: get other option validation working along with radio button validation 
   });
 
-  const initialValues = { email: "", name: "", id: "", password: "", confirmPassword: "", firstname: "", lastname: "", other_option: "" };
+  const initialValues = { email: "", firstname: "", lastname: "", id: "", faculty: "", year: "", heardFrom: "", diet: ""};
 
 
   return (
     <React.Fragment>
-
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
-            Coding for Noobs 1 with Lighthouse Labs
+          {eventInfo.ename}
+
+          </Typography>
+          <div>
+          <img src={eventInfo.imageUrl} alt="Event" height="500" align="middle"></img>
+          {/* TODO: fix image scaling */}
+          </div>
+          <Typography variant="h6" gutterBottom>
+                {eventInfo.description}
           </Typography>
           <br></br>
           <Formik
@@ -101,8 +103,11 @@ export default function EventFormWrapper() {
   );
   async function submitValues(values) {
       console.log("YOU HAVE HIT THE SUBMIT BUTTON - MSG FROM FORMIK AND EVENTWRAPPER")
-      console.log(values);
+      console.log(values.year);
+      console.log(values.heardFrom);
+      console.log(values.faculty);
       alert("Signed Up");
   }
 }
 
+export default EventFormWrapper;
