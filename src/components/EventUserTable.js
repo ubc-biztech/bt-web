@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import MaterialTable from "material-table";
-import { setEventTableUserData } from "../actions/PageActions";
-import { connect } from "react-redux";
 import { API_URL, API_KEY } from "../utils";
 
 /**
@@ -9,39 +7,101 @@ import { API_URL, API_KEY } from "../utils";
  * When a user check-in status is changed, the backend is updated and it fetches new data
  * @param {*} props userData from redux store; eventID from parent Events page
  */
-function EventUserTable(props) {
-  let rows = props.userData;
+export default function EventUserTable(props) {
   const eventID = props.eventID;
-  if (!rows) getEventTableData(eventID)
-
+  const [rows, setRows] = useState();
+  if (!rows) getEventTableData(eventID);
+  const REGISTRATION_STATUS = {
+    REGISTERED: "registered",
+    CHECKED_IN: "checkedIn",
+    WAITLISTED: "waitlist",
+    CANCELLED: "cancelled"
+  };
+  // const rows = [
+  //   {
+  //     fname: "user",
+  //     updatedAt: 1580373971522,
+  //     year: 3,
+  //     diet: "none",
+  //     createdAt: 1580373971522,
+  //     lname: "last",
+  //     id: 777,
+  //     email: "testmail@mail.com",
+  //     faculty: "science",
+  //     registrationStatus: "cancelled"
+  //   }
+  // ];
   /**
    * Helper function to determine whether to display action for check-in or undo check-in
-   * @param {*} checkedIn current status of user
+   * @param {*} status current status of user
    */
-  function displayAction(checkedIn) {
-    const displayRegister = {
-      icon: "check",
-      tooltip: "Check-in member to event to confirm attendance",
-      onClick: (rowData) => {
-        // Do check-in operation
-        if (window.confirm("You want to check-in " + rowData.name + "?")) {
-          const registrationStatus = true;
-          registerUser(rowData.studentNumber, registrationStatus);
-        }
-      }
-    };
-    const displayDeregister = {
-      icon: "remove",
-      tooltip: "Undo member check-in",
-      onClick: (rowData) => {
-        // Do undo check-in operation
-        if (window.confirm("You want to undo check-in " + rowData.name + "?")) {
-          const registrationStatus = false;
-          registerUser(rowData.studentNumber, registrationStatus);
-        }
-      }
-    };
-    return checkedIn ? displayDeregister : displayRegister;
+  function displayAction(rowData) {
+    switch (rowData.registrationStatus) {
+      case REGISTRATION_STATUS.REGISTERED:
+        return {
+          icon: "check",
+          tooltip: "Check-in member to event to confirm attendance",
+          onClick: (event, rowData) => {
+            // Do check-in operation
+            if (
+              window.confirm(
+                "You want to check-in " +
+                  rowData.fname +
+                  " " +
+                  rowData.lname +
+                  "?"
+              )
+            ) {
+              const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
+              registerUser(rowData.id, registrationStatus);
+            }
+          }
+        };
+      case REGISTRATION_STATUS.CHECKED_IN:
+        return {
+          icon: "remove",
+          tooltip: "Undo member check-in",
+          onClick: (event, rowData) => {
+            // Do undo check-in operation
+            if (
+              window.confirm(
+                "You want to undo check-in " + rowData.fullName + "?"
+              )
+            ) {
+              const registrationStatus = REGISTRATION_STATUS.REGISTERED;
+              registerUser(rowData.id, registrationStatus);
+            }
+          }
+        };
+      case REGISTRATION_STATUS.WAITLISTED:
+        return {
+          icon: "queue",
+          tooltip: "Take member off waitlist and check them in",
+          onClick: (event, rowData) => {
+            // Do check-in operation
+            if (
+              window.confirm(
+                "You want to take " +
+                  rowData.fullName +
+                  " off of waitlist and check-in?"
+              )
+            ) {
+              const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
+              registerUser(rowData.studentNumber, registrationStatus);
+            }
+          }
+        };
+      case REGISTRATION_STATUS.CANCELLED:
+        return {
+          icon: "remove",
+          tooltip: "Member cancelled registration"
+        };
+      default:
+        return {
+          icon: "close",
+          tooltip: "it's broken"
+        };
+    }
   }
 
   async function registerUser(id, registrationStatus) {
@@ -63,7 +123,8 @@ function EventUserTable(props) {
       .then(response => response.json())
       .then(response => {
         console.log(response);
-      });
+      })
+      .finally(getEventTableData(eventID));
   }
 
   async function getEventTableData(eventID) {
@@ -82,7 +143,7 @@ function EventUserTable(props) {
       .then(response => response.json())
       .then(response => {
         console.log(response);
-        props.setEventTableUserData(response)
+        setRows(response);
       });
   }
   /**
@@ -92,14 +153,20 @@ function EventUserTable(props) {
     <MaterialTable
       title="Event Attendance"
       columns={[
-        { title: "Full Name", field: "fname" },
+        { title: "First Name", field: "fname" },
+        { title: "Last Name", field: "lname" },
         {
           title: "Student Number",
-          field: "studentNumber",
+          field: "id",
           type: "numeric",
           sorting: false
         },
-        { title: "Email", field: "email", sorting: false }
+        { title: "Email", field: "email", sorting: false },
+        {
+          title: "Registration Status",
+          field: "registrationStatus",
+          sorting: false
+        }
       ]}
       data={rows}
       // Configure options for the table
@@ -109,24 +176,19 @@ function EventUserTable(props) {
         padding: "dense",
         pageSize: 20,
         pageSizeOptions: [20, 50, 100],
-        actionsColumnIndex: 4,
+        actionsColumnIndex: 5,
         exportButton: true,
         headerStyle: {
           fontWeight: "bold"
         },
         rowStyle: rowData => ({
-          backgroundColor: rowData.checkedIn === true ? "#54D26E" : "#FFF"
+          backgroundColor:
+            rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
+              ? "#54D26E"
+              : "#FFF"
         })
       }}
-      actions={[rowData => displayAction(rowData.checkedIn)]}
+      actions={[rowData => displayAction(rowData)]}
     />
   );
 }
-
-const mapStateToProps = state => {
-  return {
-    userData: state.userState.eventTableUserData
-  };
-};
-
-export default connect(mapStateToProps, { setEventTableUserData })(EventUserTable);
