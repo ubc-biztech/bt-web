@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Menu from '@material-ui/icons/Menu';
 import { Logout } from './Authentication';
-import { useHistory } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 
 function Nav(props) {
 
@@ -37,6 +37,12 @@ function Nav(props) {
     else history.push("/");
     setOpen(false);
   };
+
+  const handleNewEventClick = () => {
+    history.push({ pathname: "/new-event-form" })
+    setOpen(false);
+    // return <Redirect to={"/new-event-form"} />
+  }
 
   return (
     <div>
@@ -70,6 +76,15 @@ function Nav(props) {
         >
           <ListItemText primary="Home" />
         </ListItem>
+        <ListItem
+          button
+          component="a"
+          // href="/new-event-form"
+          onClick={handleNewEventClick}
+        >
+          <ListItemText primary="Create New Event" />
+        </ListItem>
+
         <br></br>
         <Typography className="menu-tag" variant="h6" noWrap>Events</Typography>
         <List>
@@ -78,7 +93,7 @@ function Nav(props) {
               button
               selected={props.event ? event.id === props.event.id : false}
               key={event.ename}
-              component="a"
+
               onClick={handleItemClick.bind(this, event)}
             >
               <ListItemText primary={event.ename} />
@@ -97,4 +112,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(Nav);
+export default connect(mapStateToProps, { setEvent })(withRouter(Nav));

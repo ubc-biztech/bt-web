@@ -13,11 +13,11 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import EventPage from "../pages/EventPage"
 import './Router.scss';
 
 import { API_URL } from '../utils'
 import EventPage from '../pages/EventPage';
+import { NewEventForm } from './Forms/NewEventForm/';
 
 const queryString = require('query-string');
 
@@ -72,18 +72,24 @@ class Router extends Component {
           <Nav events={this.props.events} />
           <Switch>
             <Route
-              path="/eventpage"
-              render={EventPage} />
-            <Route
               path="/event"
               render={props => <ConnectedEvent {...props} />} />
+          </Switch>
+          <Switch>
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
+          </Switch>
+          <Switch>
             <Route
               path="/"
               render={() => <EventSelector events={this.props.events} />}
             />
+          </Switch>
+          <Switch>
+            <Route
+              path="/new-event-form"
+              component={NewEventForm} />
           </Switch>
         </BrowserRouter>
         : <BrowserRouter>
