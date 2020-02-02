@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
+import CardMedia from '@material-ui/core/CardMedia';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,6 +14,8 @@ import { Divider } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 
 import { Auth } from "aws-amplify";
+
+// import BackgroundImage from "./black_stars_background.jpg";
 
 const styles = {
     left: {
@@ -27,14 +30,15 @@ const styles = {
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(10),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    // backgroundImage: `url(${BackgroundImage})`
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: '#54D260',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
