@@ -1,19 +1,13 @@
 import React, { useState } from "react"
 import { Button, TextField } from "@material-ui/core";
-import Radio from '@material-ui/core/Radio';
-
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-
-// form parts
 import RadioGroupButtons from './formParts/RadioGroupButtons';
 
 const textFieldLabelFontSize = "17px";
 
 export default function Form(props) {
     const {
-        values: { email, fname, lname, id},
+        values: { email, fname, lname, id },
         errors,
         touched,
         handleSubmit,
@@ -33,13 +27,13 @@ export default function Form(props) {
     return (
         <form
             onSubmit={handleSubmit}
-        >    
+        >
 
-            <h4 style={{color: 'red'}}>
+            <h4 style={{ color: 'red' }}>
                 *Required
             </h4>
             <Grid container spacing={3}>
-          
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         label="First Name*"
@@ -49,9 +43,9 @@ export default function Form(props) {
                         id="fname"
                         value={fname}
                         onChange={change.bind(null, "fname")}
-                        InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
+                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
-                    />       
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField
@@ -62,9 +56,9 @@ export default function Form(props) {
                         id="lname"
                         value={lname}
                         onChange={change.bind(null, "lname")}
-                        InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
+                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
-                    />       
+                    />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
@@ -75,7 +69,7 @@ export default function Form(props) {
                         id="email"
                         value={email}
                         onChange={change.bind(null, "email")}
-                        InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
+                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
@@ -87,7 +81,7 @@ export default function Form(props) {
                         id="id"
                         value={id}
                         onChange={change.bind(null, "id")}
-                        InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
+                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
@@ -96,9 +90,9 @@ export default function Form(props) {
                     <RadioGroupButtons
                         {...props}
                         otherOptionRequired={true}
-                        optionsArray={["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry"]}
+                        optionsArray={["Arts", "Commerce", "Science", "Engineering", "Kineseology", "Land and Food Systems", "Forestry"]}
                         groupName={"faculty"}
-                        displayName = {"Faculty"}
+                        displayName={"Faculty"}
                     />
 
                 </Grid>
@@ -106,9 +100,9 @@ export default function Form(props) {
                     <RadioGroupButtons
                         {...props}
                         otherOptionRequired={true}
-                        optionsArray={["1st Year","2nd Year","3rd Year","4th Year","5+ Year"]}
+                        optionsArray={["1st Year", "2nd Year", "3rd Year", "4th Year", "5+ Year"]}
                         groupName={"yr"}
-                        displayName = {"Year"}
+                        displayName={"Year"}
                     />
 
                 </Grid>
@@ -116,9 +110,9 @@ export default function Form(props) {
                     <RadioGroupButtons
                         {...props}
                         otherOptionRequired={true}
-                        optionsArray={["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter"]}
+                        optionsArray={["Facebook", "Boothing", "Friends", "BizTech Newsletter", "Faculty Newsletter"]}
                         groupName={"heardFrom"}
-                        displayName = {"How did you hear about this event?"}
+                        displayName={"How did you hear about this event?"}
                     />
 
                 </Grid>
@@ -137,62 +131,13 @@ export default function Form(props) {
             </Grid>
             <br></br>
             <Button
-            variant="contained"
-            color="primary"
-            type="submit"
+                variant="contained"
+                color="primary"
+                type="submit"
             // className={classes.button} //ignore styling for now
             >
                 Submit
           </Button>
         </form>
     )
-    //TODO: Uncomment these once they are used.
-    // function toggleOtherState(e) {
-    //     e.preventDefault()
-    //     console.log(e.target.value);
-    //     const buttonSelected = e.target.value;
-    //     if (buttonSelected === "Other:"){
-    //         setOtherButtDisabled(false)
-    //         console.log("BUTTON IS NOW ENABLED.")
-    //     }
-    //     else {
-    //         setOtherButtDisabled(true)
-    //         console.log("BUTTON IS NOW DISABLED.")
-    //     }
-    //     console.log(otherButtDisabled)
-    // }
-
-    // function createButtons(optionsArr) {
-    
-    //     return optionsArr.map((option) => 
-    //         <FormControlLabel value={option} control={<Radio/>} label={option} />
-    //       );
-    //     }
-
-    // function createOtherOption(addOtherOption){
-    //     var option = "Other:"
-    //     if (addOtherOption) {
-    //         return (
-    //             <React.Fragment>
-    //                 <FormControlLabel value={option} control={<Radio/>} label={option} /> 
-    //                 <TextField
-    //                     // required
-    //                     id="other_option"
-    //                     name="other_option"
-    //                     label=""
-    //                     onChange={change.bind(null, "other_option")}                    
-    //                     helperText={touched.other_option ? errors.other_option : ""}
-    //                     error={touched.other_option && Boolean(errors.other_option)}
-    //                     value={other_option}
-    //                     disabled={otherButtDisabled}
-    //                 />
-    //             </React.Fragment>
-    //         )
-    //     };
-    // }
-
-    // function handleKey(e) {
-    //     if (e.key === 'Enter')
-    //         console.log('hi')
-    // }
 }
