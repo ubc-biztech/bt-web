@@ -18,6 +18,7 @@ import './Router.scss';
 import { API_URL } from '../utils'
 import EventPage from '../pages/EventPage';
 import { NewEventForm } from './Forms/NewEventForm/';
+import EditEventForm from './Forms/EditEventForm/EditEventForm'
 
 const queryString = require('query-string');
 
@@ -82,21 +83,26 @@ class Router extends Component {
           </Switch>
           <Switch>
             <Route
-              path="/"
-              render={() => <EventSelector events={this.props.events} />}
-            />
+              path="/new-event-form"
+              component={NewEventForm} />
           </Switch>
           <Switch>
             <Route
-              path="/new-event-form"
-              component={NewEventForm} />
+              path="/edit-event-form"
+              component={EditEventForm} />
+          </Switch>
+          <Switch>
+            <Route
+              path="/"
+              render={() => <EventSelector events={this.props.events} />}
+            />
           </Switch>
         </BrowserRouter>
         : <BrowserRouter>
           <Switch>
             <Route
               path="/page"
-              render={props => <EventPage />} />
+              render={() => <EventPage />} />
             {/* Route for Andy's form
             <Route 
               path="/eventform"

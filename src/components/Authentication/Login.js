@@ -1,7 +1,6 @@
 import React from 'react'
 import { Auth } from "aws-amplify";
 import Button from '@material-ui/core/Button';
-import { setUser } from '../../actions/UserActions'
 import { connect } from "react-redux";
 
 const styles = {
@@ -38,4 +37,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { setUser })(Login);
+export default connect(mapStateToProps)(Login);

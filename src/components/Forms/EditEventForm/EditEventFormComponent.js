@@ -8,11 +8,12 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDateTimePicker
 } from '@material-ui/pickers';
+import { connect } from "react-redux";
 const slugify = require('slugify')
 
-export default function NewEventFormComponent(props) {
+function EditEventFormComponent(props) {
     const {
-        values: { ename, slug, description, capacity, location, imageUrl, startDate, endDate },
+        values: { ename, slug, description, capacity, location, imageUrl, startDate },
         errors,
         touched,
         handleSubmit,
@@ -25,11 +26,11 @@ export default function NewEventFormComponent(props) {
         e.persist();
         handleChange(e);
         setFieldTouched(name, true, false);
-        console.log(props.event)
     };
 
     const handleEventNameChange = (name, e) => {
         e.persist();
+        console.log(props.event)
         const newSlug = slugify(e.target.value, { lower: true });
         setFieldValue('slug', newSlug)
         handleChange(e);
@@ -51,7 +52,7 @@ export default function NewEventFormComponent(props) {
                 <Paper>
                     <TextField
                         id="ename"
-                        label="Event Name"
+                        label={props.event.ename}
                         fullWidth
                         helperText={touched.ename ? errors.ename : ""}
                         error={touched.ename && Boolean(errors.ename)}
@@ -60,7 +61,7 @@ export default function NewEventFormComponent(props) {
                     />
                     <TextField
                         id="slug"
-                        label="Slug"
+                        label={props.event.id}
                         fullWidth
                         helperText={touched.slug ? errors.slug : ""}
                         error={touched.slug && Boolean(errors.slug)}
@@ -69,7 +70,7 @@ export default function NewEventFormComponent(props) {
                     />
                     <TextField
                         id="description"
-                        label="Description"
+                        label={props.event.description}
                         multiline
                         fullWidth
                         helperText={touched.description ? errors.description : ""}
@@ -79,7 +80,7 @@ export default function NewEventFormComponent(props) {
                     />
                     <TextField
                         id="capacity"
-                        label="Capacity"
+                        label={props.event.capac}
                         type="number"
                         min="0"
                         helperText={touched.capacity ? errors.capacity : ""}
@@ -101,20 +102,20 @@ export default function NewEventFormComponent(props) {
                             margin="normal"
                             label="Start Date"
                             minDate={new Date()}
-                            value={startDate}
+                            value={props.event.startDate}
                             onChange={handleStartDateChange}
                         />
                         <KeyboardDateTimePicker
                             margin="normal"
                             label="End Date"
                             minDate={startDate}
-                            value={endDate}
+                            value={props.event.endDate}
                             onChange={handleEndDateChange}
                         />
                     </MuiPickersUtilsProvider>
                     <TextField
                         id="location"
-                        label="Location"
+                        label={props.event.location}
                         fullWidth
                         helperText={touched.location ? errors.location : ""}
                         error={touched.location && Boolean(errors.location)}
@@ -123,7 +124,7 @@ export default function NewEventFormComponent(props) {
                     />
                     <TextField
                         id="imageUrl"
-                        label="Image URL"
+                        label={props.event.img}
                         fullWidth
                         helperText={touched.imageUrl ? errors.imageUrl : ""}
                         error={touched.imageUrl && Boolean(errors.imageUrl)}
@@ -138,3 +139,11 @@ export default function NewEventFormComponent(props) {
         </div>
     )
 }
+
+const mapStateToProps = state => {
+    return {
+        event: state.pageState.event,
+    };
+};
+
+export default connect(mapStateToProps)(EditEventFormComponent);

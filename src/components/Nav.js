@@ -41,7 +41,6 @@ function Nav(props) {
   const handleNewEventClick = () => {
     history.push({ pathname: "/new-event-form" })
     setOpen(false);
-    // return <Redirect to={"/new-event-form"} />
   }
 
   return (
@@ -79,7 +78,6 @@ function Nav(props) {
         <ListItem
           button
           component="a"
-          // href="/new-event-form"
           onClick={handleNewEventClick}
         >
           <ListItemText primary="Create New Event" />

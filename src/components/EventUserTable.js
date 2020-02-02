@@ -1,5 +1,7 @@
 import React from "react";
 import MaterialTable from "material-table";
+import { Link } from "@material-ui/core";
+import { useHistory, withRouter } from "react-router-dom";
 // current sample data, but will get from Events.js in the future
 let users = [
   {
@@ -40,12 +42,15 @@ let users = [
   }
 ];
 
+
+
 // generate more rows to test speed of table search
 function createData(name, studentNumber, email, checkedIn) {
   return { name, studentNumber, email, checkedIn };
 }
 
 const rows = [];
+
 
 for (let i = 0; i < 200; i += 1) {
   const randomSelection = users[Math.floor(Math.random() * users.length)];
@@ -59,32 +64,46 @@ for (let i = 0; i < 200; i += 1) {
   );
 }
 
-export default function EventUserTable() {
+
+
+function EventUserTable() {
+
+  const history = useHistory();
+  function handleEditEventClick() {
+    history.push({ pathname: "/edit-event-form" });
+  }
+
   return (
-    <MaterialTable
-      title="Members Attendance"
-      columns={[
-        { title: "Full Name", field: "name" },
-        {
-          title: "Student Number",
-          field: "studentNumber",
-          type: "numeric",
-          sorting: false
-        },
-        { title: "Email", field: "email", sorting: false },
-        { title: "CheckedIn", field: "checkedIn", type: "boolean" }
-      ]}
-      data={rows}
-      options={{
-        search: true,
-        draggable: false,
-        padding: "dense",
-        pageSize: 20,
-        pageSizeOptions: [20, 50, 100],
-        headerStyle: {
-          fontWeight: "bold"
-        }
-      }}
-    />
+    <div>
+      <Link onClick={handleEditEventClick}>Edit Event</Link>
+      <MaterialTable
+        title="Members Attendance"
+        columns={[
+          { title: "Full Name", field: "name" },
+          {
+            title: "Student Number",
+            field: "studentNumber",
+            type: "numeric",
+            sorting: false
+          },
+          { title: "Email", field: "email", sorting: false },
+          { title: "CheckedIn", field: "checkedIn", type: "boolean" }
+        ]}
+        data={rows}
+        options={{
+          search: true,
+          draggable: false,
+          padding: "dense",
+          pageSize: 20,
+          pageSizeOptions: [20, 50, 100],
+          headerStyle: {
+            fontWeight: "bold"
+          }
+        }}
+      />
+    </div>
+
   );
 }
+
+export default withRouter(EventUserTable);
