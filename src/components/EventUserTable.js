@@ -1,5 +1,6 @@
 import React from "react";
 import MaterialTable from "material-table";
+import { setEventTableUserData } from "../actions/PageActions";
 import { connect } from "react-redux";
 import { API_URL, API_KEY } from "../utils";
 
@@ -9,27 +10,9 @@ import { API_URL, API_KEY } from "../utils";
  * @param {*} props userData from redux store; eventID from parent Events page
  */
 function EventUserTable(props) {
-  // current sample data, but will get from Events.js in the future
-  let users = props.userData;
+  let rows = props.userData;
   const eventID = props.eventID;
-
-  getEventTableData(eventID);
-
-  //TODO: potentially remove
-  const rows = [];
-  for (let i = 0; i < users.length; i += 1) {
-    rows.push(
-      createData(
-        users[i].name,
-        users[i].studentNumber,
-        users[i].email,
-        users[i].checkedIn
-      )
-    );
-  }
-  function createData(name, studentNumber, email, checkedIn) {
-    return { name, studentNumber, email, checkedIn };
-  }
+  if (!rows) getEventTableData(eventID)
 
   /**
    * Helper function to determine whether to display action for check-in or undo check-in
@@ -39,7 +22,7 @@ function EventUserTable(props) {
     const displayRegister = {
       icon: "check",
       tooltip: "Check-in member to event to confirm attendance",
-      onClick: (event, rowData) => {
+      onClick: (rowData) => {
         // Do check-in operation
         if (window.confirm("You want to check-in " + rowData.name + "?")) {
           const registrationStatus = true;
@@ -50,7 +33,7 @@ function EventUserTable(props) {
     const displayDeregister = {
       icon: "remove",
       tooltip: "Undo member check-in",
-      onClick: (event, rowData) => {
+      onClick: (rowData) => {
         // Do undo check-in operation
         if (window.confirm("You want to undo check-in " + rowData.name + "?")) {
           const registrationStatus = false;
@@ -79,7 +62,6 @@ function EventUserTable(props) {
     })
       .then(response => response.json())
       .then(response => {
-        // getEventTableData(eventID);
         console.log(response);
       });
   }
@@ -96,14 +78,13 @@ function EventUserTable(props) {
         Accept: "application/json",
         "Content-Type": "application/json"
       }
-      // body
     })
       .then(response => response.json())
       .then(response => {
         console.log(response);
+        props.setEventTableUserData(response)
       });
   }
-
   /**
    * Creates event table using MaterialTable library
    */
@@ -111,7 +92,7 @@ function EventUserTable(props) {
     <MaterialTable
       title="Event Attendance"
       columns={[
-        { title: "Full Name", field: "name" },
+        { title: "Full Name", field: "fname" },
         {
           title: "Student Number",
           field: "studentNumber",
@@ -144,8 +125,8 @@ function EventUserTable(props) {
 
 const mapStateToProps = state => {
   return {
-    userData: state.pageState.eventUserList
+    userData: state.userState.eventTableUserData
   };
 };
 
-export default connect(mapStateToProps, null)(EventUserTable);
+export default connect(mapStateToProps, { setEventTableUserData })(EventUserTable);

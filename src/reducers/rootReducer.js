@@ -1,46 +1,8 @@
 import { combineReducers } from "redux";
-import { SET_EVENT, SET_EVENTS, SET_USER, LOGOUT } from '../constants/Constants';
+import { SET_EVENT, SET_EVENTS, SET_USER, LOGOUT, SET_EVENT_TABLE_USER_DATA } from '../constants/Constants';
 
 const initialState = {
   page: 'login',
-  eventUserList: [
-    {
-      name: "Ian Mah",
-      studentNumber: 159,
-      email: "1@gmail.com",
-      checkedIn: true
-    },
-    {
-      name: "Derek Chen",
-      studentNumber: 152,
-      email: "2@gmail.com",
-      checkedIn: false
-    },
-    {
-      name: "Jacques Chen",
-      studentNumber: 512,
-      email: "3@gmail.com",
-      checkedIn: false
-    },
-    {
-      name: "Cris Mihailescu",
-      studentNumber: 214,
-      email: "4@gmail.com",
-      checkedIn: false
-    },
-    {
-      name: "Adin Kwok",
-      studentNumber: 859,
-      email: "5@gmail.com",
-      checkedIn: false
-    },
-    {
-      name: "Andy Luu",
-      studentNumber: 104,
-      email: "6@gmail.com",
-      checkedIn: false
-    }
-  ]
 }
 
 function pageReducer(state = initialState, action) {
@@ -73,12 +35,32 @@ function userReducer(state = initialState, action) {
         ...state,
         user: null
       }
+    case SET_EVENT_TABLE_USER_DATA:
+      console.log(action.userData)
+      return {
+        ...state,
+        eventTableUserData: action.userData
+      }
     default:
       return state;
   }
 }
 
+// function eventTableReducer(state = initialState, action) {
+//   switch (action.type) {
+//     case SET_EVENT_TABLE_USER_DATA:
+//       console.log(action.userData)
+//       return {
+//         ...state,
+//         eventTableUserData: action.userData
+//       }
+//     default:
+//       return state;
+//   }
+// }
+
 export default combineReducers({
   pageState: pageReducer,
-  userState: userReducer
+  userState: userReducer,
+  // eventTableState: eventTableReducer,
 });
