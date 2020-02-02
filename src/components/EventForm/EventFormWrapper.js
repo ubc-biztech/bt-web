@@ -2,9 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { API_URL, API_KEY } from '../../utils'
 //TODO: import props and require the correct type
 
-// import { Auth } from "aws-amplify";
 import * as Yup from "yup" //TODO: avoid *, figure out what functions are actually used
 import { Formik } from "formik";
 import EventForm from './EventForm'; //ian's example form
@@ -58,6 +58,7 @@ const useStyles = makeStyles(theme => ({
 const EventFormWrapper = (event) => {
   const classes = useStyles();
   const eventInfo = event.event;
+  console.log(eventInfo);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -65,12 +66,12 @@ const EventFormWrapper = (event) => {
         .min(9999999, 'Valid Student ID required')
         .max(100000000, 'Valid Student ID required')
         .required(),
-    firstname: Yup.string().required("First name is required"),
-    lastname: Yup.string().required("Last name is required"),
+    fname: Yup.string().required("First name is required"),
+    lname: Yup.string().required("Last name is required"),
     // other_option: Yup.string().required("Please enter a response"), //TODO: get other option validation working along with radio button validation 
   });
 
-  const initialValues = { email: "", firstname: "", lastname: "", id: "", faculty: "", year: "", heardFrom: "", diet: ""};
+  const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", yr: "", heardFrom: "", diet: ""};
 
 
   return (
@@ -102,12 +103,89 @@ const EventFormWrapper = (event) => {
     </React.Fragment>
   );
   async function submitValues(values) {
-      console.log("YOU HAVE HIT THE SUBMIT BUTTON - MSG FROM FORMIK AND EVENTWRAPPER")
-      console.log(values.year);
-      console.log(values.heardFrom);
-      console.log(values.faculty);
+    const { email, fname, lname, id, faculty, year, diet, heardFrom} = values;
+    const eventID = eventInfo.id;
+    //TODO: pass heardFrom to backend.
+    //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+    console.log(heardFrom);
+    console.log(values);
+    fetch(process.env.REACT_APP_AMAZON_API + "/users/get?id=" + values.id, {
+    })
+    .then((response) => response.json())
+    .then((response) => {
+      console.log(response);
+      if (response == "User not found.") {
+        // Need to create new user
+        console.log("User not found, creating user");
+        const body = JSON.stringify({
+          id,
+          fname,
+          lname,
+          email,
+          year,
+          faculty,
+          diet
+        });
+        fetch(process.env.REACT_APP_AMAZON_API + "/users/create", {
+          method: "POST",
+          headers: {
+            'x-api-key': API_KEY,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: body
+        })
+        .then((userResponse) => userResponse.json())
+        .then((userResponse) => {
+          if (userResponse.message == "Created!") {
+            registerUser(id, eventID);
+          } else {
+            alert("Signup failed");
+          }
+        })
+      } else {
+        registerUser(id, eventID);
+      }
+    })
+    .catch(err => {
+      console.log("registration error");
+      alert("Signup failed");
+    });
+}
+
+async function registerUser(id, eventID) {
+  console.log(id)
+  console.log(eventID);
+  const body = JSON.stringify({
+    id: id,
+    eventID: eventID,
+    registrationStatus: "registered"
+  })
+  //TODO: pass the headFrom field as well
+  fetch(process.env.REACT_APP_AMAZON_API + "/registration/create", {
+    method: "POST",
+    headers: {
+      'x-api-key': API_KEY,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body
+  })
+  .then((regResponse) => regResponse.json())
+  .then((regResponse) => {
+    if (regResponse.message == "Update succeeded") {
       alert("Signed Up");
-  }
+    } else {
+      console.log("registration error");
+      console.log(regResponse.message);
+      alert("Signup failed");
+    }
+  })
+  .catch(err => {
+    console.log("registration error");
+    alert("Signup failed");
+  });
+}
 }
 
 export default EventFormWrapper;

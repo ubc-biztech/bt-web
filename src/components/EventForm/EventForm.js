@@ -13,7 +13,7 @@ const textFieldLabelFontSize = "17px";
 
 export default function Form(props) {
     const {
-        values: { email, firstname, lastname, id},
+        values: { email, fname, lname, id},
         errors,
         touched,
         handleSubmit,
@@ -46,9 +46,9 @@ export default function Form(props) {
                         autoComplete="given-name"
                         helperText={touched.firstname ? errors.firstname : ""}
                         error={touched.firstname && Boolean(errors.firstname)}
-                        id="firstname"
-                        value={firstname}
-                        onChange={change.bind(null, "firstname")}
+                        id="fname"
+                        value={fname}
+                        onChange={change.bind(null, "fname")}
                         InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
                         fullWidth
                     />       
@@ -59,9 +59,9 @@ export default function Form(props) {
                         autoComplete="family-name"
                         helperText={touched.lastname ? errors.lastname : ""}
                         error={touched.lastname && Boolean(errors.lastname)}
-                        id="lastname"
-                        value={lastname}
-                        onChange={change.bind(null, "lastname")}
+                        id="lname"
+                        value={lname}
+                        onChange={change.bind(null, "lname")}
                         InputLabelProps={{style: {fontSize: textFieldLabelFontSize}}}
                         fullWidth
                     />       
@@ -107,7 +107,7 @@ export default function Form(props) {
                         {...props}
                         otherOptionRequired={true}
                         optionsArray={["1st Year","2nd Year","3rd Year","4th Year","5+ Year"]}
-                        groupName={"year"}
+                        groupName={"yr"}
                         displayName = {"Year"}
                     />
 
