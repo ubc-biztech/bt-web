@@ -1,6 +1,8 @@
 import React from 'react'
 import { Auth } from "aws-amplify";
 import Button from '@material-ui/core/Button';
+import { setUser } from '../../actions/UserActions'
+import { connect } from "react-redux";
 
 const styles = {
     left: {
@@ -13,7 +15,21 @@ const styles = {
     }
 };
 
-export default function Login() {
+function Login(props) {
+
+    Auth.currentAuthenticatedUser()
+        .then(user => {
+            const email = user.attributes.email
+            if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
+                props.setUser(user)
+            }
+            else {
+                Auth.signOut()
+                alert('You must use a ubcbiztech.com email')
+            }
+        })
+        .catch((err) => console.log("Not signed in", err))
+
     return (
         <div>
             <h1> Login </h1>
@@ -27,3 +43,11 @@ export default function Login() {
     )
 
 }
+
+const mapStateToProps = state => {
+    return {
+        user: state.userState.user,
+    };
+};
+
+export default connect(mapStateToProps, { setUser })(Login);
