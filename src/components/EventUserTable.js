@@ -11,7 +11,6 @@ import { REGISTRATION_STATUS } from "../constants/Constants";
 export default class EventUserTable extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.eventID);
     this.state = {
       eventID: this.props.eventID
     };
@@ -45,13 +44,17 @@ export default class EventUserTable extends Component {
         };
       case REGISTRATION_STATUS.CHECKED_IN:
         return {
-          icon: "remove",
+          icon: "close",
           tooltip: "Undo member check-in",
           onClick: (event, rowData) => {
             // Do undo check-in operation
             if (
               window.confirm(
-                "You want to undo check-in " + rowData.fullName + "?"
+                "You want to undo check-in for " +
+                  rowData.fname +
+                  " " +
+                  rowData.lname +
+                  "?"
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.REGISTERED;
@@ -68,7 +71,9 @@ export default class EventUserTable extends Component {
             if (
               window.confirm(
                 "You want to take " +
-                  rowData.fullName +
+                  rowData.fname +
+                  " " +
+                  rowData.lname +
                   " off of waitlist and check-in?"
               )
             ) {
@@ -80,12 +85,13 @@ export default class EventUserTable extends Component {
       case REGISTRATION_STATUS.CANCELLED:
         return {
           icon: "remove",
-          tooltip: "Member cancelled registration"
+          tooltip: "Member cancelled registration",
+          disabled: true
         };
       default:
         return {
-          icon: "close",
-          tooltip: "it's broken"
+          icon: "blank",
+          hidden: true
         };
     }
   }
@@ -97,7 +103,7 @@ export default class EventUserTable extends Component {
       registrationStatus: registrationStatus
     });
 
-    fetch(API_URL + "/registration/create", {
+    let response = await fetch(API_URL + "/registration/create", {
       method: "POST",
       headers: {
         "x-api-key": API_KEY,
@@ -105,13 +111,12 @@ export default class EventUserTable extends Component {
         "Content-Type": "application/json"
       },
       body
-    })
-      .then(response => response.json())
-      .then(response => {
-        console.log(response);
-      })
-      .catch(window.alert("Failed to update member registration status."))
-      .finally(this.getEventTableData(this.state.eventID));
+    });
+
+    let updatedUser = await response.json();
+    console.log(updatedUser);
+
+    this.getEventTableData(this.state.eventID);
   }
 
   async getEventTableData(eventID) {
@@ -137,6 +142,14 @@ export default class EventUserTable extends Component {
   componentDidMount() {
     this.getEventTableData(this.state.eventID);
   }
+
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.eventID !== this.props.eventID) {
+  //     // this.setState({ eventID: this.props.eventID });
+  //     console.log(this.props.eventID);
+  //     this.getEventTableData(this.props.eventID);
+  //   }
+  // }
 
   render() {
     /**
