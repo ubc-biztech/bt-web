@@ -39,7 +39,7 @@ function Nav(props) {
   };
 
   const handleNewEventClick = () => {
-    history.push({ pathname: "/new-event-form" })
+    history.push({ pathname: "/new-event" })
     setOpen(false);
   }
 

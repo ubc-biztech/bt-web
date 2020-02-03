@@ -52,7 +52,7 @@ export default function NewEventForm() {
             endDate: values.endDate
         })
 
-        fetch(API_URL + "/events/create", {
+        fetch(API_URL + "/events/update", {
             method: 'POST',
             headers: {
                 'x-api-key': API_KEY,

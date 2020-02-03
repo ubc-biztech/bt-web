@@ -70,7 +70,7 @@ function EventUserTable() {
 
   const history = useHistory();
   function handleEditEventClick() {
-    history.push({ pathname: "/edit-event-form" });
+    history.push({ pathname: "/edit-event" });
   }
 
   return (
