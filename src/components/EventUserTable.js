@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import MaterialTable from "material-table";
 import { API_URL, API_KEY } from "../utils";
 import { REGISTRATION_STATUS } from "../constants/Constants";
@@ -8,11 +9,11 @@ import { REGISTRATION_STATUS } from "../constants/Constants";
  * When a user check-in status is changed, the backend is updated and it fetches new data
  * @param {*} props userData from redux store; eventID from parent Events page
  */
-export default class EventUserTable extends Component {
+export class EventUserTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      eventID: this.props.eventID
+      eventID: this.props.event.id
     };
   }
 
@@ -199,3 +200,10 @@ export default class EventUserTable extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  console.log(state.pageState.event.id);
+  return {
+    event: state.pageState.event
+  };
+};
+export default connect(mapStateToProps, null)(EventUserTable);
