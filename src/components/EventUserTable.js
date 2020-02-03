@@ -36,7 +36,7 @@ export class EventUserTable extends Component {
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
-              this.registerUser(rowData.id, registrationStatus);
+              this.updateUserRegistrationStatus(rowData.id, registrationStatus);
             }
           }
         };
@@ -56,7 +56,7 @@ export class EventUserTable extends Component {
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.REGISTERED;
-              this.registerUser(rowData.id, registrationStatus);
+              this.updateUserRegistrationStatus(rowData.id, registrationStatus);
             }
           }
         };
@@ -76,7 +76,10 @@ export class EventUserTable extends Component {
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
-              this.registerUser(rowData.studentNumber, registrationStatus);
+              this.updateUserRegistrationStatus(
+                rowData.studentNumber,
+                registrationStatus
+              );
             }
           }
         };
@@ -94,14 +97,14 @@ export class EventUserTable extends Component {
     }
   }
 
-  async registerUser(id, registrationStatus) {
+  async updateUserRegistrationStatus(id, registrationStatus) {
     const body = JSON.stringify({
       eventID: this.props.event.id,
       id: id,
       registrationStatus: registrationStatus
     });
 
-    let response = await fetch(API_URL + "/registration/create", {
+    await fetch(API_URL + "/registration/create", {
       method: "POST",
       headers: {
         "x-api-key": API_KEY,
@@ -110,9 +113,6 @@ export class EventUserTable extends Component {
       },
       body
     });
-
-    let updatedUser = await response.json();
-    console.log(updatedUser);
 
     this.getEventTableData(this.props.event.id);
   }
