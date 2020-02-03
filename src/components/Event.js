@@ -7,12 +7,6 @@ export default function Event(props) {
   const event = props.event;
   return event ? (
     <div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
       <h1>Event: {event.ename}</h1>
       <EventUserTable eventID={event.id} />
     </div>
