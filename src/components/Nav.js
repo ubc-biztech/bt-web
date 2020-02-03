@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Drawer,
   IconButton,
@@ -9,20 +9,19 @@ import {
   Toolbar,
   Typography,
   AppBar
-} from '@material-ui/core';
-import './Nav.scss';
+} from "@material-ui/core";
+import "./Nav.scss";
 import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import Menu from '@material-ui/icons/Menu';
-import { Logout } from './Authentication';
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import Menu from "@material-ui/icons/Menu";
+import { Logout } from "./Authentication";
 import { useHistory } from "react-router-dom";
 
 function Nav(props) {
-
   const history = useHistory();
 
-  const events = props.events
+  const events = props.events;
 
   const [open, setOpen] = React.useState(false);
 
@@ -30,10 +29,10 @@ function Nav(props) {
     setOpen(true);
   };
 
-  const handleItemClick = (event) => {
-    props.setEvent(event)
+  const handleItemClick = event => {
+    props.setEvent(event);
     if (event.id)
-      history.push({ pathname: "/event", search: '?id=' + event.id });
+      history.push({ pathname: "/event", search: "?id=" + event.id });
     else history.push("/");
     setOpen(false);
   };
@@ -51,7 +50,8 @@ function Nav(props) {
             <Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            BizTech Admin Dashboard {props.event ? '- ' + props.event.ename : ''}
+            BizTech Admin Dashboard{" "}
+            {props.event ? "- " + props.event.ename : ""}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -71,19 +71,23 @@ function Nav(props) {
           <ListItemText primary="Home" />
         </ListItem>
         <br></br>
-        <Typography className="menu-tag" variant="h6" noWrap>Events</Typography>
+        <Typography className="menu-tag" variant="h6" noWrap>
+          Events
+        </Typography>
         <List>
-          {events ? events.map((event) => (
-            <ListItem
-              button
-              selected={props.event ? event.id === props.event.id : false}
-              key={event.ename}
-              component="a"
-              onClick={handleItemClick.bind(this, event)}
-            >
-              <ListItemText primary={event.ename} />
-            </ListItem>
-          )) : 'Loading...'}
+          {events
+            ? events.map(event => (
+                <ListItem
+                  button
+                  selected={props.event ? event.id === props.event.id : false}
+                  key={event.ename}
+                  component="a"
+                  onClick={handleItemClick.bind(this, event)}
+                >
+                  <ListItemText primary={event.ename} />
+                </ListItem>
+              ))
+            : "Loading..."}
           <Logout />
         </List>
       </Drawer>
