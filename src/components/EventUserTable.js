@@ -5,21 +5,18 @@ import { API_URL, API_KEY } from "../utils";
 import { REGISTRATION_STATUS } from "../constants/Constants";
 
 /**
- * Functional component that displays event user table populated from the backend
+ * Class component that displays event user table populated from the backend
  * When a user check-in status is changed, the backend is updated and it fetches new data
- * @param {*} props userData from redux store; eventID from parent Events page
  */
 export class EventUserTable extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      eventID: this.props.event.id
-    };
+    this.state = {};
   }
 
   /**
    * Helper function to determine whether to display action for check-in or undo check-in
-   * @param {*} status current status of user
+   * @param {*} rowData data about the current row
    */
   displayAction(rowData) {
     switch (rowData.registrationStatus) {
@@ -48,7 +45,7 @@ export class EventUserTable extends Component {
           icon: "close",
           tooltip: "Undo member check-in",
           onClick: (event, rowData) => {
-            // Do undo check-in operation
+            // Undo check-in operation
             if (
               window.confirm(
                 "You want to undo check-in for " +
@@ -99,7 +96,7 @@ export class EventUserTable extends Component {
 
   async registerUser(id, registrationStatus) {
     const body = JSON.stringify({
-      eventID: this.state.eventID,
+      eventID: this.props.event.id,
       id: id,
       registrationStatus: registrationStatus
     });
@@ -117,7 +114,7 @@ export class EventUserTable extends Component {
     let updatedUser = await response.json();
     console.log(updatedUser);
 
-    this.getEventTableData(this.state.eventID);
+    this.getEventTableData(this.props.event.id);
   }
 
   async getEventTableData(eventID) {
@@ -141,16 +138,14 @@ export class EventUserTable extends Component {
   }
 
   componentDidMount() {
-    this.getEventTableData(this.state.eventID);
+    this.getEventTableData(this.props.event.id);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.eventID !== this.props.eventID) {
-  //     // this.setState({ eventID: this.props.eventID });
-  //     console.log(this.props.eventID);
-  //     this.getEventTableData(this.props.eventID);
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    if (prevProps.event.id !== this.props.event.id) {
+      this.getEventTableData(this.props.event.id);
+    }
+  }
 
   render() {
     /**
@@ -201,7 +196,6 @@ export class EventUserTable extends Component {
   }
 }
 const mapStateToProps = state => {
-  console.log(state.pageState.event.id);
   return {
     event: state.pageState.event
   };
