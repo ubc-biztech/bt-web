@@ -17,7 +17,7 @@ export default function Login() {
     return (
         <div>
             <h1> Login </h1>
-            <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' })} variant="contained" color="primary">
+            <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' }).then(() => Auth.currentAuthenticatedUser({ bypassCache: true }))} variant="contained" color="primary">
                 <div style={styles.left}>
                     <img style={styles.socialIcon} alt="Google" src="./google.png" />
                 </div>
