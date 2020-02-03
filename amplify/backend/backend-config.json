@@ -1,8 +1,9 @@
 {
-	"auth": {
-		"btweb52cc4abb": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation"
-		}
-	}
+    "auth": {
+        "btweb52cc4abb": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": []
+        }
+    }
 }
