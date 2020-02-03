@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Event from "../components/Event";
+import Event from "./Event";
 import { connect } from "react-redux";
 import queryString from "query-string";
 import { setEvent } from "../actions/PageActions";

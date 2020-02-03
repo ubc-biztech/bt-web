@@ -1,5 +1,4 @@
 import aws_config from '../aws-config';
-// import aws_exports from '../aws-exports';
 
 export const API_URL = process.env.REACT_APP_STAGE  === 'production'
     ? process.env.REACT_APP_PROD_API

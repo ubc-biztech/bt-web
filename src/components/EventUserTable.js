@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import MaterialTable from "material-table";
-import { API_URL, API_KEY } from "../utils";
+import { fetchBackend } from "../utils";
 import { REGISTRATION_STATUS } from "../constants/Constants";
 
 /**
@@ -104,15 +104,7 @@ export class EventUserTable extends Component {
       registrationStatus: registrationStatus
     });
 
-    await fetch(API_URL + "/registration/create", {
-      method: "POST",
-      headers: {
-        "x-api-key": API_KEY,
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body
-    });
+    await fetchBackend('/registration/create', 'POST', body);
 
     this.getEventTableData(this.props.event.id);
   }
@@ -122,14 +114,7 @@ export class EventUserTable extends Component {
       id: eventID
     });
 
-    fetch(API_URL + "/events/getUsers?" + params, {
-      method: "GET",
-      headers: {
-        "x-api-key": API_KEY,
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    })
+    fetchBackend('/events/getUsers?' + params, 'GET')
       .then(response => response.json())
       .then(response => {
         console.log(response);
