@@ -23,7 +23,6 @@ export default function Form(props) {
         setFieldTouched(name, true, false);
     };
 
-    const [otherButtDisabled, setOtherButtDisabled] = useState(true)
     return (
         <form
             onSubmit={handleSubmit}
@@ -101,7 +100,7 @@ export default function Form(props) {
                         {...props}
                         otherOptionRequired={true}
                         optionsArray={["1st Year", "2nd Year", "3rd Year", "4th Year", "5+ Year"]}
-                        groupName={"yr"}
+                        groupName={"year"}
                         displayName={"Year"}
                     />
 

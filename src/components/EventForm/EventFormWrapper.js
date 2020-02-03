@@ -71,7 +71,7 @@ const EventFormWrapper = (event) => {
     // other_option: Yup.string().required("Please enter a response"), //TODO: get other option validation working along with radio button validation 
   });
 
-  const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", yr: "", heardFrom: "", diet: "" };
+  const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", heardFrom: "", diet: "" };
 
 
   return (
@@ -114,7 +114,7 @@ const EventFormWrapper = (event) => {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        if (response == "User not found.") {
+        if (response === "User not found.") {
           // Need to create new user
           console.log("User not found, creating user");
           const body = JSON.stringify({
@@ -137,7 +137,7 @@ const EventFormWrapper = (event) => {
           })
             .then((userResponse) => userResponse.json())
             .then((userResponse) => {
-              if (userResponse.message == "Created!") {
+              if (userResponse.message === "Created!") {
                 registerUser(id, eventID);
               } else {
                 alert("Signup failed");
@@ -173,7 +173,7 @@ const EventFormWrapper = (event) => {
     })
       .then((regResponse) => regResponse.json())
       .then((regResponse) => {
-        if (regResponse.message == "Update succeeded") {
+        if (regResponse.message === "Update succeeded") {
           alert("Signed Up");
         } else {
           console.log("registration error");
