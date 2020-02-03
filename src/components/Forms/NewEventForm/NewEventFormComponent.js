@@ -25,7 +25,6 @@ export default function NewEventFormComponent(props) {
         e.persist();
         handleChange(e);
         setFieldTouched(name, true, false);
-        console.log(props.event)
     };
 
     const handleEventNameChange = (name, e) => {

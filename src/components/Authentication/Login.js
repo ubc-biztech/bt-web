@@ -1,7 +1,6 @@
 import React from 'react'
 import { Auth } from "aws-amplify";
 import Button from '@material-ui/core/Button';
-import { connect } from "react-redux";
 
 const styles = {
     left: {
@@ -14,7 +13,7 @@ const styles = {
     }
 };
 
-function Login() {
+export default function Login() {
     return (
         <div>
             <h1> Login </h1>
@@ -28,13 +27,3 @@ function Login() {
     )
 
 }
-
-
-
-const mapStateToProps = state => {
-    return {
-        user: state.userState.user,
-    };
-};
-
-export default connect(mapStateToProps)(Login);

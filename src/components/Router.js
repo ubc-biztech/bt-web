@@ -83,12 +83,12 @@ class Router extends Component {
           </Switch>
           <Switch>
             <Route
-              path="/new-event-form"
+              path="/new-event"
               component={NewEventForm} />
           </Switch>
           <Switch>
             <Route
-              path="/edit-event-form"
+              path="/edit-event"
               component={EditEventForm} />
           </Switch>
           <Switch>

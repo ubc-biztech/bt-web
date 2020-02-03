@@ -91,7 +91,6 @@ function Nav(props) {
               button
               selected={props.event ? event.id === props.event.id : false}
               key={event.ename}
-
               onClick={handleItemClick.bind(this, event)}
             >
               <ListItemText primary={event.ename} />
