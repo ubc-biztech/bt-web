@@ -11,29 +11,11 @@ import { REGISTRATION_STATUS } from "../constants/Constants";
 export default class EventUserTable extends Component {
   constructor(props) {
     super(props);
-
+    console.log(this.props.eventID);
     this.state = {
       eventID: this.props.eventID
     };
   }
-
-  // const [rows, setRows] = useState();
-  // if (!rows) getEventTableData(eventID);
-
-  // const rows = [
-  //   {
-  //     fname: "user",
-  //     updatedAt: 1580373971522,
-  //     year: 3,
-  //     diet: "none",
-  //     createdAt: 1580373971522,
-  //     lname: "last",
-  //     id: 777,
-  //     email: "testmail@mail.com",
-  //     faculty: "science",
-  //     registrationStatus: "cancelled"
-  //   }
-  // ];
 
   /**
    * Helper function to determine whether to display action for check-in or undo check-in
@@ -110,7 +92,7 @@ export default class EventUserTable extends Component {
 
   async registerUser(id, registrationStatus) {
     const body = JSON.stringify({
-      eventID: this.eventID,
+      eventID: this.state.eventID,
       id: id,
       registrationStatus: registrationStatus
     });
@@ -128,7 +110,8 @@ export default class EventUserTable extends Component {
       .then(response => {
         console.log(response);
       })
-      .finally(this.getEventTableData(this.eventID));
+      .catch(window.alert("Failed to update member registration status."))
+      .finally(this.getEventTableData(this.state.eventID));
   }
 
   async getEventTableData(eventID) {
@@ -147,14 +130,12 @@ export default class EventUserTable extends Component {
       .then(response => response.json())
       .then(response => {
         console.log(response);
-        // setRows(response);
+        this.setState({ rows: response });
       });
   }
 
   componentDidMount() {
-    this.setState({
-      rows: this.getEventTableData(this.eventID)
-    });
+    this.getEventTableData(this.state.eventID);
   }
 
   render() {
@@ -180,7 +161,7 @@ export default class EventUserTable extends Component {
             sorting: false
           }
         ]}
-        data={this.rows}
+        data={this.state.rows}
         // Configure options for the table
         options={{
           search: true,
