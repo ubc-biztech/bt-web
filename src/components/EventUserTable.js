@@ -1,22 +1,25 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import MaterialTable from "material-table";
 import { API_URL, API_KEY } from "../utils";
+import { REGISTRATION_STATUS } from "../constants/Constants";
 
 /**
  * Functional component that displays event user table populated from the backend
  * When a user check-in status is changed, the backend is updated and it fetches new data
  * @param {*} props userData from redux store; eventID from parent Events page
  */
-export default function EventUserTable(props) {
-  const eventID = props.eventID;
-  const [rows, setRows] = useState();
-  if (!rows) getEventTableData(eventID);
-  const REGISTRATION_STATUS = {
-    REGISTERED: "registered",
-    CHECKED_IN: "checkedIn",
-    WAITLISTED: "waitlist",
-    CANCELLED: "cancelled"
-  };
+export default class EventUserTable extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      eventID: this.props.eventID
+    };
+  }
+
+  // const [rows, setRows] = useState();
+  // if (!rows) getEventTableData(eventID);
+
   // const rows = [
   //   {
   //     fname: "user",
@@ -31,11 +34,12 @@ export default function EventUserTable(props) {
   //     registrationStatus: "cancelled"
   //   }
   // ];
+
   /**
    * Helper function to determine whether to display action for check-in or undo check-in
    * @param {*} status current status of user
    */
-  function displayAction(rowData) {
+  displayAction(rowData) {
     switch (rowData.registrationStatus) {
       case REGISTRATION_STATUS.REGISTERED:
         return {
@@ -53,7 +57,7 @@ export default function EventUserTable(props) {
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
-              registerUser(rowData.id, registrationStatus);
+              this.registerUser(rowData.id, registrationStatus);
             }
           }
         };
@@ -69,7 +73,7 @@ export default function EventUserTable(props) {
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.REGISTERED;
-              registerUser(rowData.id, registrationStatus);
+              this.registerUser(rowData.id, registrationStatus);
             }
           }
         };
@@ -87,7 +91,7 @@ export default function EventUserTable(props) {
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
-              registerUser(rowData.studentNumber, registrationStatus);
+              this.registerUser(rowData.studentNumber, registrationStatus);
             }
           }
         };
@@ -104,9 +108,9 @@ export default function EventUserTable(props) {
     }
   }
 
-  async function registerUser(id, registrationStatus) {
+  async registerUser(id, registrationStatus) {
     const body = JSON.stringify({
-      eventID: eventID,
+      eventID: this.eventID,
       id: id,
       registrationStatus: registrationStatus
     });
@@ -124,10 +128,10 @@ export default function EventUserTable(props) {
       .then(response => {
         console.log(response);
       })
-      .finally(getEventTableData(eventID));
+      .finally(this.getEventTableData(this.eventID));
   }
 
-  async function getEventTableData(eventID) {
+  async getEventTableData(eventID) {
     const params = new URLSearchParams({
       id: eventID
     });
@@ -143,52 +147,61 @@ export default function EventUserTable(props) {
       .then(response => response.json())
       .then(response => {
         console.log(response);
-        setRows(response);
+        // setRows(response);
       });
   }
-  /**
-   * Creates event table using MaterialTable library
-   */
-  return (
-    <MaterialTable
-      title="Event Attendance"
-      columns={[
-        { title: "First Name", field: "fname" },
-        { title: "Last Name", field: "lname" },
-        {
-          title: "Student Number",
-          field: "id",
-          type: "numeric",
-          sorting: false
-        },
-        { title: "Email", field: "email", sorting: false },
-        {
-          title: "Registration Status",
-          field: "registrationStatus",
-          sorting: false
-        }
-      ]}
-      data={rows}
-      // Configure options for the table
-      options={{
-        search: true,
-        draggable: false,
-        padding: "dense",
-        pageSize: 20,
-        pageSizeOptions: [20, 50, 100],
-        actionsColumnIndex: 5,
-        exportButton: true,
-        headerStyle: {
-          fontWeight: "bold"
-        },
-        rowStyle: rowData => ({
-          backgroundColor:
-            rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
-              ? "#54D26E"
-              : "#FFF"
-        })
-      }}
-      actions={[rowData => displayAction(rowData)]}
-    />
-  );
+
+  componentDidMount() {
+    this.setState({
+      rows: this.getEventTableData(this.eventID)
+    });
+  }
+
+  render() {
+    /**
+     * Creates event table using MaterialTable library
+     */
+    return (
+      <MaterialTable
+        title="Event Attendance"
+        columns={[
+          { title: "First Name", field: "fname" },
+          { title: "Last Name", field: "lname" },
+          {
+            title: "Student Number",
+            field: "id",
+            type: "numeric",
+            sorting: false
+          },
+          { title: "Email", field: "email", sorting: false },
+          {
+            title: "Registration Status",
+            field: "registrationStatus",
+            sorting: false
+          }
+        ]}
+        data={this.rows}
+        // Configure options for the table
+        options={{
+          search: true,
+          draggable: false,
+          padding: "dense",
+          pageSize: 20,
+          pageSizeOptions: [20, 50, 100],
+          actionsColumnIndex: 5,
+          exportButton: true,
+          headerStyle: {
+            fontWeight: "bold"
+          },
+          rowStyle: rowData => ({
+            backgroundColor:
+              rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
+                ? "#54D26E"
+                : "#FFF"
+          })
+        }}
+        actions={[rowData => this.displayAction(rowData)]}
+      />
+    );
+  }
 }
