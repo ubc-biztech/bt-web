@@ -8,7 +8,7 @@ export default function Event(props) {
   return event ? (
     <div>
       <h1>Event: {event.ename}</h1>
-      <EventUserTable eventID={event.id} />
+      <EventUserTable />
     </div>
   ) : (
     <CircularProgress />
