@@ -52,7 +52,7 @@ export default function NewEventForm() {
             endDate: values.endDate
         })
 
-        fetchBackend('/events/create', 'POST')
+        fetchBackend('/events/create', 'POST', body)
             .then((response) => response.json())
             .then((response) => {
                 console.log(response)
