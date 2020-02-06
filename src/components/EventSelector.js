@@ -1,29 +1,45 @@
 import React, { Component } from 'react'
 import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+
+const styles = ({
+  root: {
+    maxWidth: 350,
+    margin: 15,
+  },
+});
 
 class EventSelector extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      events: this.props.events
-    }
-    this.handleChange = this.handleChange.bind(this);
-  }
-  createDropdownItems() {
-    let items = [];
-    if (this.state.events != null) {
-      items.push(<option key={"-1"}
-        value={-1}>{" "}
-      </option>)
-      for (let i = 0; i < this.state.events.length; i++) {
-        items.push(<option key={i}
-          value={i}>{this.state.events[i].ename}
-        </option>);
-      }
-    }
-    return items;
+  createEventCards() {
+    const { classes } = this.props;
+
+    if (this.props.events)
+    return <div>
+    {this.props.events.map(event => {
+      console.log(event.imageUrl)
+      return (
+        <Card className={classes.root}>
+          <CardMedia
+            className={classes.media}
+            component="img"
+            image={event.imageUrl}
+            title="Event photo"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {event.ename}
+            </Typography>
+          </CardContent>
+      </Card>
+      )
+    })}
+    </div>
   }
 
   handleChange(event) {
@@ -34,7 +50,7 @@ class EventSelector extends Component {
   }
 
   render() {
-    let events = this.state.events;
+    let events = this.props.events;
 
     if (events === null) {
       return (
@@ -46,21 +62,12 @@ class EventSelector extends Component {
     else {
       return (
         <div>
-          <h1>Events Check-in</h1>
-
-          <form>
-            <label>
-              Select Event:
-            <select onChange={this.handleChange}>
-                {this.createDropdownItems()}
-              </select>
-            </label>
-          </form>
-
+          <h1>Events</h1>
+          {this.createEventCards()}
         </div>
       );
     }
   }
 }
 
-export default connect(null, { setEvent })(EventSelector);
+export default connect(null, { setEvent })(withStyles(styles)(EventSelector));
