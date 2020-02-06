@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,9 +10,11 @@ import CardMedia from '@material-ui/core/CardMedia';
 
 const styles = ({
   root: {
-    maxWidth: 350,
-    margin: 15,
+    width: '48%',
+    margin: 10,
   },
+  media: {
+  }
 });
 
 class EventSelector extends Component {
@@ -20,7 +23,7 @@ class EventSelector extends Component {
     const { classes } = this.props;
 
     if (this.props.events)
-    return <div>
+    return <Box flexWrap="wrap" display="flex">
     {this.props.events.map(event => {
       console.log(event.imageUrl)
       return (
@@ -39,7 +42,7 @@ class EventSelector extends Component {
       </Card>
       )
     })}
-    </div>
+    </Box>
   }
 
   handleChange(event) {
