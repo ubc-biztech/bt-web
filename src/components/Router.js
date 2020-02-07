@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import EventSelector from './EventSelector'
+import Home from './Home'
 import ConnectedEvent from './ConnectedEvent'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
@@ -15,7 +15,7 @@ import {
 } from "react-router-dom";
 import EventPage from "../pages/EventPage"
 import './Router.scss';
-
+import ScrollToTop from './ScrollToTop'
 import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');
@@ -67,6 +67,7 @@ class Router extends Component {
     return (
       this.props.user
         ? <BrowserRouter>
+          <ScrollToTop />
           <Nav events={this.props.events} />
           <Switch>
             <Route
@@ -80,11 +81,12 @@ class Router extends Component {
               component={LoginRedirect} />
             <Route
               path="/"
-              render={() => <EventSelector events={this.props.events} />}
+              render={() => <Home events={this.props.events} />}
             />
           </Switch>
         </BrowserRouter>
         : <BrowserRouter>
+          <ScrollToTop />
           <Switch>
             <Route
               path="/page"
