@@ -3,13 +3,14 @@ import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import { withRouter } from 'react-router-dom';
 import CircularProgress from "@material-ui/core/CircularProgress";
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const styles = ({
   root: {
@@ -41,16 +42,26 @@ class Home extends Component {
                   image={image}
                   title="Event photo"
                 />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {event.ename}
-                  </Typography>
-                </CardContent>
               </CardActionArea>
-            </Card>
+              <CardHeader
+                title={event.ename}
+                subheader={event.startDate ?
+                  new Date(event.startDate)
+                    .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' }) : ''}
+                action={
+                  <IconButton aria-label="more options"
+                    onClick={e => {
+                      console.log('Todo add delete event and edit event buttons')
+                    }}>
+                    <MoreVertIcon />
+                  </IconButton>
+                }>
+              </CardHeader>
+            </Card >
           )
-        })}
-      </Box>
+        })
+        }
+      </Box >
   }
 
   // handleChange(event) {
