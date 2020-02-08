@@ -13,13 +13,13 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const styles = ({
-  root: {
+  card: {
     width: '31%',
-    margin: '10px',
+    margin: '15px',
   },
   media: {
     height: 250
-  }
+  },
 });
 
 class Home extends Component {
@@ -32,7 +32,7 @@ class Home extends Component {
         {this.props.events.map(event => {
           const image = event.imageUrl || require("../assets/placeholder.jpg")
           return (
-            <Card className={classes.root}>
+            <Card className={classes.card}>
               <CardActionArea onClick={() => {
                 this.props.history.push("/event?id=" + event.id)
               }} >
@@ -64,13 +64,6 @@ class Home extends Component {
       </Box >
   }
 
-  // handleChange(event) {
-  //   // eslint-disable-next-line
-  //   if (event.target.value != -1) {
-  //     this.props.setEvent(this.state.events[event.target.value])
-  //   }
-  // }
-
   render() {
     let events = this.props.events;
 
@@ -81,10 +74,10 @@ class Home extends Component {
     }
     else {
       return (
-        <React.Fragment>
+        <div className="home">
           <h1>Home</h1>
           {this.createEventCards()}
-        </React.Fragment>
+        </div>
       );
     }
   }

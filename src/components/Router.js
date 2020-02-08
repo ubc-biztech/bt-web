@@ -4,7 +4,6 @@ import ConnectedEvent from './ConnectedEvent'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
 import { Login, LoginRedirect } from './Authentication'
-import './Router.scss';
 import { setEvent, setEvents } from "../actions/PageActions";
 import { setUser } from "../actions/UserActions";
 import { connect } from "react-redux";
@@ -69,21 +68,23 @@ class Router extends Component {
         ? <BrowserRouter>
           <ScrollToTop />
           <Nav events={this.props.events} />
-          <Switch>
-            <Route
-              path="/eventpage"
-              render={EventPage} />
-            <Route
-              path="/event"
-              render={props => <ConnectedEvent {...props} />} />
-            <Route
-              path="/login-redirect"
-              component={LoginRedirect} />
-            <Route
-              path="/"
-              render={() => <Home events={this.props.events} />}
-            />
-          </Switch>
+          <div className="content">
+            <Switch>
+              <Route
+                path="/eventpage"
+                render={EventPage} />
+              <Route
+                path="/event"
+                render={props => <ConnectedEvent {...props} />} />
+              <Route
+                path="/login-redirect"
+                component={LoginRedirect} />
+              <Route
+                path="/"
+                render={() => <Home events={this.props.events} />}
+              />
+            </Switch>
+          </div>
         </BrowserRouter>
         : <BrowserRouter>
           <ScrollToTop />
