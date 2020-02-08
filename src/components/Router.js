@@ -12,9 +12,11 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import EventPage from "../pages/EventPage"
 import './Router.scss';
 import ScrollToTop from './ScrollToTop'
+import EventPage from '../pages/EventPage';
+import { NewEventForm } from './Forms/NewEventForm/';
+import EditEventForm from './Forms/EditEventForm/EditEventForm'
 import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');
@@ -71,19 +73,31 @@ class Router extends Component {
           <div className="content">
             <Switch>
               <Route
-                path="/eventpage"
-                render={EventPage} />
-              <Route
                 path="/event"
                 render={props => <ConnectedEvent {...props} />} />
+            </Switch>
+            <Switch>
               <Route
                 path="/login-redirect"
                 component={LoginRedirect} />
+            </Switch>
+            <Switch>
+              <Route
+                path="/new-event"
+                component={NewEventForm} />
+            </Switch>
+            <Switch>
+              <Route
+                path="/edit-event"
+                component={EditEventForm} />
+            </Switch>
+            <Switch>
               <Route
                 path="/"
                 render={() => <Home events={this.props.events} />}
               />
             </Switch>
+
           </div>
         </BrowserRouter>
         : <BrowserRouter>
@@ -91,7 +105,7 @@ class Router extends Component {
           <Switch>
             <Route
               path="/page"
-              render={props => <EventPage />} />
+              render={() => <EventPage />} />
             {/* Route for Andy's form
             <Route 
               path="/eventform"

@@ -11,7 +11,8 @@ import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { useHistory } from "react-router-dom";
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import { useHistory, withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +40,10 @@ function Nav(props) {
     else history.push("/");
   };
 
+  const handleNewEventClick = () => {
+    history.push({ pathname: "/new-event" })
+  }
+
   return (
     <div>
       <Drawer variant="permanent" className={classes.drawer}>
@@ -46,6 +51,9 @@ function Nav(props) {
         <List>
           <ListItem onClick={handleItemClick} ariaLabekl="home" button>
             <HomeIcon />
+          </ListItem>
+          <ListItem onClick={handleNewEventClick} ariaLabekl="create event" button>
+            <AddBoxIcon />
           </ListItem>
           <Divider />
           <ListItem onClick={logout} ariaLabekl="logout" button>
@@ -83,4 +91,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(Nav);
+export default connect(mapStateToProps, { setEvent })(withRouter(Nav));
