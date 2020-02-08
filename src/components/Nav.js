@@ -13,10 +13,10 @@ import {
 import "./Nav.scss";
 import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import Menu from "@material-ui/icons/Menu";
-import { Logout } from "./Authentication";
-import { useHistory } from "react-router-dom";
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import Menu from '@material-ui/icons/Menu';
+import { Logout } from './Authentication';
+import { useHistory, withRouter } from "react-router-dom";
 
 function Nav(props) {
   const history = useHistory();
@@ -36,6 +36,11 @@ function Nav(props) {
     else history.push("/");
     setOpen(false);
   };
+
+  const handleNewEventClick = () => {
+    history.push({ pathname: "/new-event" })
+    setOpen(false);
+  }
 
   return (
     <div>
@@ -70,6 +75,14 @@ function Nav(props) {
         >
           <ListItemText primary="Home" />
         </ListItem>
+        <ListItem
+          button
+          component="a"
+          onClick={handleNewEventClick}
+        >
+          <ListItemText primary="Create New Event" />
+        </ListItem>
+
         <br></br>
         <Typography className="menu-tag" variant="h6" noWrap>
           Events
@@ -77,16 +90,16 @@ function Nav(props) {
         <List>
           {events
             ? events.map(event => (
-                <ListItem
-                  button
-                  selected={props.event ? event.id === props.event.id : false}
-                  key={event.ename}
-                  component="a"
-                  onClick={handleItemClick.bind(this, event)}
-                >
-                  <ListItemText primary={event.ename} />
-                </ListItem>
-              ))
+              <ListItem
+                button
+                selected={props.event ? event.id === props.event.id : false}
+                key={event.ename}
+                component="a"
+                onClick={handleItemClick.bind(this, event)}
+              >
+                <ListItemText primary={event.ename} />
+              </ListItem>
+            ))
             : "Loading..."}
           <Logout />
         </List>
@@ -101,4 +114,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(Nav);
+export default connect(mapStateToProps, { setEvent })(withRouter(Nav));

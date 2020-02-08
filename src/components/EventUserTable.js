@@ -29,10 +29,10 @@ export class EventUserTable extends Component {
             if (
               window.confirm(
                 "You want to check-in " +
-                  rowData.fname +
-                  " " +
-                  rowData.lname +
-                  "?"
+                rowData.fname +
+                " " +
+                rowData.lname +
+                "?"
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
@@ -49,10 +49,10 @@ export class EventUserTable extends Component {
             if (
               window.confirm(
                 "You want to undo check-in for " +
-                  rowData.fname +
-                  " " +
-                  rowData.lname +
-                  "?"
+                rowData.fname +
+                " " +
+                rowData.lname +
+                "?"
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.REGISTERED;
@@ -69,10 +69,10 @@ export class EventUserTable extends Component {
             if (
               window.confirm(
                 "You want to take " +
-                  rowData.fname +
-                  " " +
-                  rowData.lname +
-                  " off of waitlist and check-in?"
+                rowData.fname +
+                " " +
+                rowData.lname +
+                " off of waitlist and check-in?"
               )
             ) {
               const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
