@@ -10,8 +10,9 @@ import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
-import { Logout } from "./Authentication";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useHistory } from "react-router-dom";
+import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -21,6 +22,15 @@ const useStyles = makeStyles(theme => ({
 function Nav(props) {
   const history = useHistory();
   const classes = useStyles();
+
+  const logout = () => {
+    Auth.signOut()
+      .then(data => {
+        console.log(data)
+        props.logout()
+      })
+      .catch(err => console.log(err));
+  }
 
   const handleItemClick = event => {
     props.setEvent(event);
@@ -36,6 +46,10 @@ function Nav(props) {
         <List>
           <ListItem onClick={handleItemClick} ariaLabekl="home" button>
             <HomeIcon />
+          </ListItem>
+          <Divider />
+          <ListItem onClick={logout} ariaLabekl="logout" button>
+            <ExitToAppIcon />
           </ListItem>
         </List>
         {/* 
