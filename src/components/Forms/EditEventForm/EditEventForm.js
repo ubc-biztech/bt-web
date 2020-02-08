@@ -19,25 +19,6 @@ function EditEventForm(props) {
         imageUrl: Yup.string().url().required(),
     });
 
-
-    // componentDidUpdate() {
-    //     const event = props.event;
-    //     if (event) {
-    //         initialValues = {
-    //             ename: props.event.ename,
-    //             slug: props.event.id,
-    //             description: props.event.description,
-    //             capacity: props.event.capac,
-    //             partners: props.event.partners,
-    //             location: props.event.location,
-    //             imageUrl: props.event.imageUrl,
-    //             startDate: props.event.startDate,
-    //             endDate: props.event.endDate
-    //         }
-    //     };
-    // };
-
-
     const initialValues = props.event ? {
         ename: props.event.ename,
         slug: props.event.id,

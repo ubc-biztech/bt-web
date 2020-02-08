@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import EventSelector from './EventSelector'
-import ConnectedEvent from '../containers/ConnectedEvent'
+import ConnectedEvent from './ConnectedEvent'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
 import { Login, LoginRedirect } from './Authentication'
@@ -14,11 +14,10 @@ import {
   Route
 } from "react-router-dom";
 import './Router.scss';
-
-import { API_URL } from '../utils'
 import EventPage from '../pages/EventPage';
 import { NewEventForm } from './Forms/NewEventForm/';
 import EditEventForm from './Forms/EditEventForm/EditEventForm'
+import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');
 
@@ -47,8 +46,7 @@ class Router extends Component {
   }
 
   componentDidMount() {
-    fetch(API_URL + "/events/get", {
-    })
+    fetchBackend("/events/get", 'GET')
       .then((response) => response.json())
       .then((response) => {
         this.props.setEvents({

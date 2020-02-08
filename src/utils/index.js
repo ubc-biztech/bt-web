@@ -1,5 +1,4 @@
 import aws_config from '../aws-config';
-// import aws_exports from '../aws-exports';
 
 export const API_URL = process.env.REACT_APP_STAGE  === 'production'
     ? process.env.REACT_APP_PROD_API
@@ -15,3 +14,19 @@ export const AWS_CONFIG = aws_config
 export const API_KEY = process.env.REACT_APP_STAGE  === 'production'
     ? process.env.REACT_APP_PROD_API_KEY
     : process.env.REACT_APP_STAGING_API_KEY
+
+export function fetchBackend(endpoint, method, body){
+    let headers;
+    if (method === 'POST') {
+        headers = {
+            'x-api-key': API_KEY,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }
+    } else { // method === 'GET'
+        headers = {
+            'x-api-key': API_KEY
+        }
+    }
+    return fetch(API_URL + endpoint, {method, headers, body})
+}

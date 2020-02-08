@@ -2,7 +2,7 @@ import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import NewEventFormComponent from './NewEventFormComponent'
-import { API_URL, API_KEY } from '../../../utils'
+import { fetchBackend } from '../../../utils'
 
 export default function NewEventForm() {
 
@@ -52,15 +52,7 @@ export default function NewEventForm() {
             endDate: values.endDate
         })
 
-        fetch(API_URL + "/events/create", {
-            method: 'POST',
-            headers: {
-                'x-api-key': API_KEY,
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body
-        })
+        fetchBackend('/events/create', 'POST', body)
             .then((response) => response.json())
             .then((response) => {
                 console.log(response)
