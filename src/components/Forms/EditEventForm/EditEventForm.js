@@ -3,8 +3,9 @@ import * as Yup from "yup"
 import { Formik } from "formik";
 import EditEventFormComponent from './EditEventFormComponent'
 import { API_URL, API_KEY } from '../../../utils'
+import { connect } from "react-redux";
 
-export default function NewEventForm() {
+function EditEventForm(props) {
 
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
@@ -18,17 +19,46 @@ export default function NewEventForm() {
         imageUrl: Yup.string().url().required(),
     });
 
-    const initialValues = {
-        ename: "",
-        slug: "",
-        description: "",
-        capacity: "",
-        partners: "",
-        location: "",
-        imageUrl: "",
-        startDate: new Date(),
-        endDate: new Date()
-    };
+
+    // componentDidUpdate() {
+    //     const event = props.event;
+    //     if (event) {
+    //         initialValues = {
+    //             ename: props.event.ename,
+    //             slug: props.event.id,
+    //             description: props.event.description,
+    //             capacity: props.event.capac,
+    //             partners: props.event.partners,
+    //             location: props.event.location,
+    //             imageUrl: props.event.imageUrl,
+    //             startDate: props.event.startDate,
+    //             endDate: props.event.endDate
+    //         }
+    //     };
+    // };
+
+
+    const initialValues = props.event ? {
+        ename: props.event.ename,
+        slug: props.event.id,
+        description: props.event.description,
+        capacity: props.event.capac,
+        partners: props.event.partners,
+        location: props.event.location,
+        imageUrl: props.event.imageUrl,
+        startDate: props.event.startDate,
+        endDate: props.event.endDate
+    } : {
+            ename: "",
+            slug: "",
+            description: "",
+            capacity: "",
+            partners: "",
+            location: "",
+            imageUrl: "",
+            startDate: "",
+            endDate: ""
+        };
 
     return (
         <Formik
@@ -68,3 +98,10 @@ export default function NewEventForm() {
     }
 
 }
+const mapStateToProps = state => {
+    return {
+        event: state.pageState.event,
+    };
+};
+
+export default connect(mapStateToProps)(EditEventForm);

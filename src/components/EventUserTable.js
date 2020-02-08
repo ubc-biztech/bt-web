@@ -66,7 +66,7 @@ for (let i = 0; i < 200; i += 1) {
 
 
 
-function EventUserTable() {
+function EventUserTable(props) {
 
   const history = useHistory();
   function handleEditEventClick() {
@@ -76,6 +76,7 @@ function EventUserTable() {
   return (
     <div>
       <Link onClick={handleEditEventClick}>Edit Event</Link>
+      <Link href={"/page?id=" + props.event.id} key={props.event.id}>Public Event Page</Link>
       <MaterialTable
         title="Members Attendance"
         columns={[

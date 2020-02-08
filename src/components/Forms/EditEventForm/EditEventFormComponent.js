@@ -8,12 +8,11 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDateTimePicker
 } from '@material-ui/pickers';
-import { connect } from "react-redux";
 const slugify = require('slugify')
 
-function EditEventFormComponent(props) {
+export default function EditEventFormComponent(props) {
     const {
-        values: { ename, slug, description, capacity, location, imageUrl, startDate },
+        values: { ename, slug, description, capacity, location, imageUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
@@ -52,7 +51,7 @@ function EditEventFormComponent(props) {
                 <Paper>
                     <TextField
                         id="ename"
-                        label={props.event.ename}
+                        label="Event Name"
                         fullWidth
                         helperText={touched.ename ? errors.ename : ""}
                         error={touched.ename && Boolean(errors.ename)}
@@ -61,7 +60,7 @@ function EditEventFormComponent(props) {
                     />
                     <TextField
                         id="slug"
-                        label={props.event.id}
+                        label="Slug"
                         fullWidth
                         helperText={touched.slug ? errors.slug : ""}
                         error={touched.slug && Boolean(errors.slug)}
@@ -70,7 +69,7 @@ function EditEventFormComponent(props) {
                     />
                     <TextField
                         id="description"
-                        label={props.event.description}
+                        label="Description"
                         multiline
                         fullWidth
                         helperText={touched.description ? errors.description : ""}
@@ -80,7 +79,7 @@ function EditEventFormComponent(props) {
                     />
                     <TextField
                         id="capacity"
-                        label={props.event.capac}
+                        label="Capacity"
                         type="number"
                         min="0"
                         helperText={touched.capacity ? errors.capacity : ""}
@@ -102,20 +101,20 @@ function EditEventFormComponent(props) {
                             margin="normal"
                             label="Start Date"
                             minDate={new Date()}
-                            value={props.event.startDate}
+                            value={startDate}
                             onChange={handleStartDateChange}
                         />
                         <KeyboardDateTimePicker
                             margin="normal"
                             label="End Date"
                             minDate={startDate}
-                            value={props.event.endDate}
+                            value={endDate}
                             onChange={handleEndDateChange}
                         />
                     </MuiPickersUtilsProvider>
                     <TextField
                         id="location"
-                        label={props.event.location}
+                        label="Location"
                         fullWidth
                         helperText={touched.location ? errors.location : ""}
                         error={touched.location && Boolean(errors.location)}
@@ -124,7 +123,7 @@ function EditEventFormComponent(props) {
                     />
                     <TextField
                         id="imageUrl"
-                        label={props.event.img}
+                        label="Image URL"
                         fullWidth
                         helperText={touched.imageUrl ? errors.imageUrl : ""}
                         error={touched.imageUrl && Boolean(errors.imageUrl)}
@@ -140,10 +139,4 @@ function EditEventFormComponent(props) {
     )
 }
 
-const mapStateToProps = state => {
-    return {
-        event: state.pageState.event,
-    };
-};
 
-export default connect(mapStateToProps)(EditEventFormComponent);
