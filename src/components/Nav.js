@@ -49,14 +49,14 @@ function Nav(props) {
       <Drawer variant="permanent" className={classes.drawer}>
         <Divider />
         <List>
-          <ListItem onClick={handleItemClick} ariaLabekl="home" button>
+          <ListItem onClick={handleItemClick} aria-label="home" button>
             <HomeIcon />
           </ListItem>
-          <ListItem onClick={handleNewEventClick} ariaLabekl="create event" button>
+          <ListItem onClick={handleNewEventClick} aria-label="create event" button>
             <AddBoxIcon />
           </ListItem>
           <Divider />
-          <ListItem onClick={logout} ariaLabekl="logout" button>
+          <ListItem onClick={logout} aria-label="logout" button>
             <ExitToAppIcon />
           </ListItem>
         </List>

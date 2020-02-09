@@ -15,7 +15,7 @@ import {
 import './Router.scss';
 import ScrollToTop from './ScrollToTop'
 import EventPage from '../pages/EventPage';
-import { NewEventForm } from './Forms/NewEventForm/';
+import NewEventForm from './Forms/NewEventForm/NewEventForm';
 import EditEventForm from './Forms/EditEventForm/EditEventForm'
 import { fetchBackend } from '../utils'
 
@@ -75,29 +75,20 @@ class Router extends Component {
               <Route
                 path="/event"
                 render={props => <ConnectedEvent {...props} />} />
-            </Switch>
-            <Switch>
               <Route
                 path="/login-redirect"
                 component={LoginRedirect} />
-            </Switch>
-            <Switch>
               <Route
                 path="/new-event"
                 component={NewEventForm} />
-            </Switch>
-            <Switch>
               <Route
                 path="/edit-event"
                 component={EditEventForm} />
-            </Switch>
-            <Switch>
               <Route
                 path="/"
                 render={() => <Home events={this.props.events} />}
               />
             </Switch>
-
           </div>
         </BrowserRouter>
         : <BrowserRouter>
@@ -106,10 +97,6 @@ class Router extends Component {
             <Route
               path="/page"
               render={() => <EventPage />} />
-            {/* Route for Andy's form
-            <Route 
-              path="/eventform"
-              render={() => <EventForm event={this.props.events}/>} /> */}
             <Route
               path="/login-redirect"
               component={LoginRedirect} />

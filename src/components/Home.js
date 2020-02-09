@@ -11,11 +11,13 @@ import { withRouter } from 'react-router-dom';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ThemeProvider from './ThemeProvider'
+import Typography from '@material-ui/core/Typography';
 
 const styles = ({
   card: {
     width: '31%',
-    margin: '15px',
+    margin: '10px 20px 10px 0',
   },
   media: {
     height: 250
@@ -28,7 +30,7 @@ class Home extends Component {
     const { classes } = this.props;
 
     if (this.props.events)
-      return <Box flexWrap="wrap" display="flex" justifyContent="center">
+      return <Box flexWrap="wrap" display="flex">
         {this.props.events.map(event => {
           const image = event.imageUrl || require("../assets/placeholder.jpg")
           return (
@@ -74,10 +76,10 @@ class Home extends Component {
     }
     else {
       return (
-        <div className="home">
-          <h1>Home</h1>
+        <ThemeProvider>
+          <Typography variant="h1">BizTech Admins</Typography>
           {this.createEventCards()}
-        </div>
+        </ThemeProvider>
       );
     }
   }
