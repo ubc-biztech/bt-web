@@ -18,8 +18,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = ({
   card: {
-    width: '31%',
-    margin: '10px 20px 10px 0',
+    width: '30%',
+    margin: '15px 30px 15px 0',
   },
   media: {
     height: 250

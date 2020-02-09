@@ -10,12 +10,48 @@ const theme = createMuiTheme({
             'Arial',
             'sans-serif',
         ].join(','),
-        fontSize: 12,
+        fontSize: 14,
         h1: {
             fontWeight: 700,
-            fontSize: '1.4rem',
-        }
+            fontSize: '1.3rem',
+        },
+        h2: {
+            fontSize: '1.3rem',
+        },
+        h5: {
+            fontSize: '1.3rem',
+        },
     },
+    shape: {
+        borderRadius: 10
+    },
+    shadows: [
+        "none",
+        "0px 2px 10px rgba(34, 34, 34, 0.12)",
+        "0px 4px 10px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+        "0px 8px 12px rgba(34, 34, 34, 0.12)",
+    ]
 });
 
 function OverridesCss(props) {
