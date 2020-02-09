@@ -6,6 +6,7 @@ import { API_URL, API_KEY } from '../../../utils'
 import { connect } from "react-redux";
 
 function EditEventForm(props) {
+    console.log(props)
 
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
