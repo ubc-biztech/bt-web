@@ -12,7 +12,7 @@ const slugify = require('slugify')
 
 export default function EditEventFormComponent(props) {
     const {
-        values: { ename, slug, description, capacity, location, imageUrl, startDate, endDate },
+        values: { ename, slug, description, capacity, elocation, imageUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
@@ -100,7 +100,6 @@ export default function EditEventFormComponent(props) {
                         <KeyboardDateTimePicker
                             margin="normal"
                             label="Start Date"
-                            minDate={new Date()}
                             value={startDate}
                             onChange={handleStartDateChange}
                         />
@@ -113,13 +112,13 @@ export default function EditEventFormComponent(props) {
                         />
                     </MuiPickersUtilsProvider>
                     <TextField
-                        id="location"
+                        id="elocation"
                         label="Location"
                         fullWidth
-                        helperText={touched.location ? errors.location : ""}
-                        error={touched.location && Boolean(errors.location)}
-                        value={location}
-                        onChange={change.bind(null, "location")}
+                        helperText={touched.elocation ? errors.elocation : ""}
+                        error={touched.elocation && Boolean(errors.elocation)}
+                        value={elocation}
+                        onChange={change.bind(null, "elocation")}
                     />
                     <TextField
                         id="imageUrl"

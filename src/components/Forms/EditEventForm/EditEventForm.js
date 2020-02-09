@@ -6,7 +6,6 @@ import { API_URL, API_KEY } from '../../../utils'
 import { connect } from "react-redux";
 
 function EditEventForm(props) {
-
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
         slug: Yup.string().matches(/^[a-z\-0-9]*$/, "Slug must be lowercase and have no whitespace").required(),
@@ -15,7 +14,7 @@ function EditEventForm(props) {
             .min(0, 'Valid capacity required')
             .required(),
         // partners: Yup.string().required(),
-        location: Yup.string().required(),
+        elocation: Yup.string().required(),
         imageUrl: Yup.string().url().required(),
     });
 
@@ -25,7 +24,7 @@ function EditEventForm(props) {
         description: props.event.description,
         capacity: props.event.capac,
         partners: props.event.partners,
-        location: props.event.location,
+        elocation: props.event.elocation,
         imageUrl: props.event.imageUrl,
         startDate: props.event.startDate,
         endDate: props.event.endDate
@@ -35,7 +34,7 @@ function EditEventForm(props) {
             description: "",
             capacity: "",
             partners: "",
-            location: "",
+            elocation: "",
             imageUrl: "",
             startDate: "",
             endDate: ""
@@ -57,7 +56,7 @@ function EditEventForm(props) {
             id: values.slug,
             description: values.description,
             capac: values.capacity,
-            location: values.location,
+            elocation: values.elocation,
             imageUrl: values.imageUrl,
             startDate: values.startDate,
             endDate: values.endDate

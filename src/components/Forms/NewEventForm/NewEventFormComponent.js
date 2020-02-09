@@ -12,7 +12,7 @@ const slugify = require('slugify')
 
 export default function NewEventFormComponent(props) {
     const {
-        values: { ename, slug, description, capacity, location, imageUrl, startDate, endDate },
+        values: { ename, slug, description, capacity, elocation, imageUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
@@ -112,12 +112,12 @@ export default function NewEventFormComponent(props) {
                         />
                     </MuiPickersUtilsProvider>
                     <TextField
-                        id="location"
+                        id="elocation"
                         label="Location"
                         fullWidth
-                        helperText={touched.location ? errors.location : ""}
-                        error={touched.location && Boolean(errors.location)}
-                        value={location}
+                        helperText={touched.elocation ? errors.elocation : ""}
+                        error={touched.elocation && Boolean(errors.elocation)}
+                        value={elocation}
                         onChange={change.bind(null, "location")}
                     />
                     <TextField
