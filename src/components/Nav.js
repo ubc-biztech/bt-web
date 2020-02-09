@@ -45,19 +45,6 @@ function Nav(props) {
     history.push({ pathname: "/new-event" })
   }
 
-  const MenuItems = [
-    {
-      label: 'Home',
-      icon: <HomeIcon />,
-      onClick: handleItemClick
-    },
-    {
-      label: 'Create Event',
-      icon: <AddBoxIcon />,
-      onClick: handleNewEventClick
-    },
-  ]
-
   function MenuItem(props) {
     const { label, icon, onClick } = props;
     return (
