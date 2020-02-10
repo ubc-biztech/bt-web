@@ -14,7 +14,7 @@ export default function NewEventForm() {
             .min(0, 'Valid capacity required')
             .required(),
         // partners: Yup.string().required(),
-        location: Yup.string().required(),
+        elocation: Yup.string().required(),
         imageUrl: Yup.string().url().required(),
     });
 
@@ -24,7 +24,7 @@ export default function NewEventForm() {
         description: "",
         capacity: "",
         partners: "",
-        location: "",
+        elocation: "",
         imageUrl: "",
         startDate: new Date(),
         endDate: new Date()
@@ -46,7 +46,7 @@ export default function NewEventForm() {
             id: values.slug,
             description: values.description,
             capac: values.capacity,
-            location: values.location,
+            elocation: values.elocation,
             imageUrl: values.imageUrl,
             startDate: values.startDate,
             endDate: values.endDate
