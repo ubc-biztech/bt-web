@@ -51,12 +51,27 @@ export default function NewEventForm() {
             startDate: values.startDate,
             endDate: values.endDate
         })
-
-        fetchBackend('/events/create', 'POST', body)
+        fetchBackend('/events/get', 'GET')
             .then((response) => response.json())
             .then((response) => {
-                console.log(response)
+                const isDuplicate = response.find(event => event.id === values.slug)
+                if (isDuplicate) {
+                    alert('Event with that slug already exists!')
+                } else {
+                    fetchBackend('/events/create', 'POST', body)
+                        .then((response) => response.json())
+                        .then((response) => {
+                            console.log(response)
+                            alert('Event Created!')
+                            window.location.href = "/";
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            alert(err.message + ' Please contact a dev')
+                        })
+                }
             })
+
     }
 
 }
