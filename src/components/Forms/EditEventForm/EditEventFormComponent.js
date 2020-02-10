@@ -8,6 +8,7 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDateTimePicker
 } from '@material-ui/pickers';
+import ThemeProvider from '../../ThemeProvider'
 const slugify = require('slugify')
 
 export default function EditEventFormComponent(props) {
@@ -45,8 +46,8 @@ export default function EditEventFormComponent(props) {
     }
 
     return (
-        <div>
-            <Typography variant="h3">New Event Form</Typography>
+        <ThemeProvider>
+            <Typography variant="h1">Edit Event</Typography>
             <form onSubmit={handleSubmit}>
                 <Paper>
                     <TextField
@@ -130,11 +131,11 @@ export default function EditEventFormComponent(props) {
                         onChange={change.bind(null, "imageUrl")}
                     />
                 </Paper>
-                <Button type="submit" variant="raised">
+                <Button type="submit">
                     Submit
                 </Button>
             </form>
-        </div>
+        </ThemeProvider>
     )
 }
 

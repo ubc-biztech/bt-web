@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import EventSelector from './EventSelector'
+import Home from './Home'
 import ConnectedEvent from './ConnectedEvent'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
 import { Login, LoginRedirect } from './Authentication'
-import './Router.scss';
 import { setEvent, setEvents } from "../actions/PageActions";
 import { setUser } from "../actions/UserActions";
 import { connect } from "react-redux";
@@ -14,8 +13,9 @@ import {
   Route
 } from "react-router-dom";
 import './Router.scss';
+import ScrollToTop from './ScrollToTop'
 import EventPage from '../pages/EventPage';
-import { NewEventForm } from './Forms/NewEventForm/';
+import NewEventForm from './Forms/NewEventForm/NewEventForm';
 import EditEventForm from './Forms/EditEventForm/EditEventForm'
 import { fetchBackend } from '../utils'
 
@@ -68,43 +68,35 @@ class Router extends Component {
     return (
       this.props.user
         ? <BrowserRouter>
+          <ScrollToTop />
           <Nav events={this.props.events} />
-          <Switch>
-            <Route
-              path="/event"
-              render={props => <ConnectedEvent {...props} />} />
-          </Switch>
-          <Switch>
-            <Route
-              path="/login-redirect"
-              component={LoginRedirect} />
-          </Switch>
-          <Switch>
-            <Route
-              path="/new-event"
-              component={NewEventForm} />
-          </Switch>
-          <Switch>
-            <Route
-              path="/edit-event"
-              component={EditEventForm} />
-          </Switch>
-          <Switch>
-            <Route
-              path="/"
-              render={() => <EventSelector events={this.props.events} />}
-            />
-          </Switch>
+          <div className="content">
+            <Switch>
+              <Route
+                path="/event"
+                render={props => <ConnectedEvent {...props} />} />
+              <Route
+                path="/login-redirect"
+                component={LoginRedirect} />
+              <Route
+                path="/new-event"
+                component={NewEventForm} />
+              <Route
+                path="/edit-event"
+                component={EditEventForm} />
+              <Route
+                path="/"
+                render={() => <Home events={this.props.events} />}
+              />
+            </Switch>
+          </div>
         </BrowserRouter>
         : <BrowserRouter>
+          <ScrollToTop />
           <Switch>
             <Route
               path="/page"
               render={() => <EventPage />} />
-            {/* Route for Andy's form
-            <Route 
-              path="/eventform"
-              render={() => <EventForm event={this.props.events}/>} /> */}
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
