@@ -67,7 +67,7 @@ export default function NewEventForm() {
                         })
                         .catch(err => {
                             console.log(err)
-                            alert(err.message + 'Please contact a dev')
+                            alert(err.message + ' Please contact a dev')
                         })
                 }
             })

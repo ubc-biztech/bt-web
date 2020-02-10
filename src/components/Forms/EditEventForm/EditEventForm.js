@@ -2,7 +2,7 @@ import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import EditEventFormComponent from './EditEventFormComponent'
-import { API_URL, API_KEY } from '../../../utils'
+import { fetchBackend } from '../../../utils'
 import { connect } from "react-redux";
 
 function EditEventForm(props) {
@@ -63,15 +63,7 @@ function EditEventForm(props) {
             endDate: values.endDate
         })
 
-        fetch(API_URL + "/events/update", {
-            method: 'POST',
-            headers: {
-                'x-api-key': API_KEY,
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body
-        })
+        fetchBackend('/events/update', 'POST', body)
             .then((response) => response.json())
             .then((response) => {
                 console.log(response)
@@ -80,7 +72,7 @@ function EditEventForm(props) {
             })
             .catch(err => {
                 console.log(err)
-                alert(err.message + 'Please contact a dev')
+                alert(err.message + ' Please contact a dev')
             })
     }
 
