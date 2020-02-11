@@ -49,8 +49,8 @@ function Home(props) {
 
   const handleClickDeleteEvent = () => {
     const clickedEvent = props.events.find(event => event.id === eventMenuClicked)
-    alert(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)
-    fetchBackend(`/events/delete?id=${clickedEvent.id}`, 'DELETE')
+    if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {      
+      fetchBackend(`/events/delete?id=${clickedEvent.id}`, 'DELETE')
       .then(response => response.json())
       .then(response => {
         console.log(response)
@@ -61,6 +61,7 @@ function Home(props) {
           console.log(err)
           alert(err.message + ' Please contact a dev')
       })
+    }
     handleClose()
   };
 
