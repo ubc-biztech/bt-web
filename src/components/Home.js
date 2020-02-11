@@ -15,6 +15,7 @@ import ThemeProvider from './ThemeProvider'
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { fetchBackend } from '../utils'
 
 const styles = ({
   card: {
@@ -49,6 +50,17 @@ function Home(props) {
   const handleClickDeleteEvent = () => {
     const clickedEvent = props.events.find(event => event.id === eventMenuClicked)
     alert(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)
+    fetchBackend(`/events/delete?id=${clickedEvent.id}`, 'DELETE')
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+        alert(response.message)
+        window.location.href = "/";
+      })
+      .catch(err => {
+          console.log(err)
+          alert(err.message + ' Please contact a dev')
+      })
     handleClose()
   };
 
@@ -85,7 +97,6 @@ function Home(props) {
                   action={
                     <IconButton aria-label="more options"
                       onClick={e => {
-                        console.log('Todo add delete event and edit event buttons')
                         handleClick(e, event.id)
                       }}>
                       <MoreVertIcon />
