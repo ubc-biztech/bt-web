@@ -14,7 +14,7 @@ export default function NewEventForm() {
             .min(0, 'Valid capacity required')
             .required(),
         // partners: Yup.string().required(),
-        location: Yup.string().required(),
+        elocation: Yup.string().required(),
         imageUrl: Yup.string().url().required(),
     });
 
@@ -24,7 +24,7 @@ export default function NewEventForm() {
         description: "",
         capacity: "",
         partners: "",
-        location: "",
+        elocation: "",
         imageUrl: "",
         startDate: new Date(),
         endDate: new Date()
@@ -46,17 +46,32 @@ export default function NewEventForm() {
             id: values.slug,
             description: values.description,
             capac: values.capacity,
-            location: values.location,
+            elocation: values.elocation,
             imageUrl: values.imageUrl,
             startDate: values.startDate,
             endDate: values.endDate
         })
-
-        fetchBackend('/events/create', 'POST', body)
+        fetchBackend('/events/get', 'GET')
             .then((response) => response.json())
             .then((response) => {
-                console.log(response)
+                const isDuplicate = response.find(event => event.id === values.slug)
+                if (isDuplicate) {
+                    alert('Event with that slug already exists!')
+                } else {
+                    fetchBackend('/events/create', 'POST', body)
+                        .then((response) => response.json())
+                        .then((response) => {
+                            console.log(response)
+                            alert(response.message)
+                            window.location.href = "/";
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            alert(err.message + ' Please contact a dev')
+                        })
+                }
             })
+
     }
 
 }
