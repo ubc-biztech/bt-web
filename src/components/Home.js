@@ -77,34 +77,32 @@ function Home(props) {
         {props.events.map(event => {
           const image = event.imageUrl || require("../assets/placeholder.jpg")
           return (
-            <React.Fragment>
-              <Card className={classes.card} key={event.id}>
-                <CardActionArea onClick={() => {
-                  props.history.push("/event?id=" + event.id)
-                }} >
-                  <CardMedia
-                    className={classes.media}
-                    component="img"
-                    image={image}
-                    title="Event photo"
-                  />
-                </CardActionArea>
-                <CardHeader
-                  title={event.ename}
-                  subheader={event.startDate ?
-                    new Date(event.startDate)
-                      .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' }) : ''}
-                  action={
-                    <IconButton aria-label="more options"
-                      onClick={e => {
-                        handleClick(e, event.id)
-                      }}>
-                      <MoreVertIcon />
-                    </IconButton>
-                  }>
-                </CardHeader>
-              </Card >
-            </React.Fragment>
+            <Card className={classes.card} key={event.id}>
+              <CardActionArea onClick={() => {
+                props.history.push("/event?id=" + event.id)
+              }} >
+                <CardMedia
+                  className={classes.media}
+                  component="img"
+                  image={image}
+                  title="Event photo"
+                />
+              </CardActionArea>
+              <CardHeader
+                title={event.ename}
+                subheader={event.startDate ?
+                  new Date(event.startDate)
+                    .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' }) : ''}
+                action={
+                  <IconButton aria-label="more options"
+                    onClick={e => {
+                      handleClick(e, event.id)
+                    }}>
+                    <MoreVertIcon />
+                  </IconButton>
+                }>
+              </CardHeader>
+            </Card >
           )
         })
         }
