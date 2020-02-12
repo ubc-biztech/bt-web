@@ -1,26 +1,40 @@
 import React from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
+const fontFamily = [
+    'Gilroy',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+].join(',')
+
 const theme = createMuiTheme({
+    overrides: {
+        MuiTooltip: {
+            tooltip: {
+                fontFamily,
+                fontSize: '.7rem',
+            }
+        }
+    },
     typography: {
-        fontFamily: [
-            '"Proxima Nova"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-        ].join(','),
-        fontSize: 14,
+        fontFamily,
+        fontSize: 12,
         h1: {
             fontWeight: 700,
-            fontSize: '1.3rem',
+            fontSize: '1.5rem',
+            fontFamily,
         },
         h2: {
             fontSize: '1.3rem',
+            fontFamily,
         },
         h5: {
-            fontSize: '1.3rem',
+            fontSize: '1.2rem',
+            fontFamily,
         },
+
     },
     shape: {
         borderRadius: 10

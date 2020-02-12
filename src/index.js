@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
+import './index.scss';
 import App from './App';
 import rootReducer from './reducers/rootReducer'
 import * as serviceWorker from './serviceWorker';
 import Amplify from 'aws-amplify';
-import './index.scss';
 import { AWS_CONFIG } from './utils';
 
 Amplify.configure(AWS_CONFIG);

@@ -121,6 +121,7 @@ function Home(props) {
     return (
       <ThemeProvider>
         <Typography variant="h1">BizTech Admins</Typography>
+        <Typography>BizTech Admins</Typography>
         {createEventCards()}
         <Menu
           id="simple-menu"
