@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import EventSelector from './EventSelector'
 import ConnectedEvent from '../containers/ConnectedEvent'
-//import Event from './Event'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
 import { Login, LoginRedirect } from './Authentication'
@@ -9,7 +8,6 @@ import './Router.scss';
 import { setEvent, setEvents } from "../actions/PageActions";
 import { setUser } from "../actions/UserActions";
 import { connect } from "react-redux";
-//import EventFormWrapper from './EventForm/EventFormWrapper';
 import {
   BrowserRouter,
   Switch,
@@ -92,10 +90,6 @@ class Router extends Component {
             <Route
               path="/page"
               render={props => <EventPage />} />
-            {/* Route for Andy's form
-            <Route 
-              path="/eventform"
-              render={() => <EventForm event={this.props.events}/>} /> */}
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
@@ -107,21 +101,6 @@ class Router extends Component {
     )
   }
 }
-
-// function ChooseBody(events, page, event) {
-//   switch (page) {
-//     case 'login':
-//       return <Login /> 
-//       // return <EventFormWrapper/>
-//     case 'home':
-//       return <EventSelector events={events} />
-//     case 'event':
-//       return <Event />
-//     default:
-//       return <p>Loading!</p>
-//   }
-
-// }
 
 const mapStateToProps = state => {
   return {

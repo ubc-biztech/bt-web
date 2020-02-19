@@ -58,8 +58,6 @@ const useStyles = makeStyles(theme => ({
 const EventFormWrapper = (event) => {
   const classes = useStyles();
   const eventInfo = event.event;
-  console.log(eventInfo);
-
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     id: Yup.number('Valid Student ID required')
@@ -104,6 +102,7 @@ const EventFormWrapper = (event) => {
   );
   async function submitValues(values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom } = values;
+    console.log(diet);
     const eventID = eventInfo.id;
     //TODO: pass heardFrom to backend.
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)

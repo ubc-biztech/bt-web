@@ -47,7 +47,7 @@ export default function RadioGroupButtons(props) {
   }
 
   function createOtherOption(addOtherOption) {
-    var option = "Other:"
+    let option = "Other:"
     if (addOtherOption) {
       return (
         <React.Fragment>
@@ -62,8 +62,6 @@ export default function RadioGroupButtons(props) {
             error={touched.other_option && Boolean(errors.other_option)}
             value={other_option}
             disabled={otherButtDisabled}
-
-
           />
         </React.Fragment>
       )

@@ -15,8 +15,6 @@ export default function Form(props) {
         setFieldTouched
     } = props;
 
-    console.log(props);
-
     const change = (name, e) => {
         e.persist();
         handleChange(e);
@@ -29,7 +27,7 @@ export default function Form(props) {
         >
 
             <h4 style={{ color: 'red' }}>
-                *Required
+                *Required field
             </h4>
             <Grid container spacing={3}>
 
@@ -119,7 +117,7 @@ export default function Form(props) {
                     <RadioGroupButtons
                         {...props}
                         otherOptionRequired={true}
-                        optionsArray={["No"]}
+                        optionsArray={["No", "Vegetarian", "Vegan", "Gluten Free"]}
                         groupName={"diet"}
                         displayName={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}
                     />
