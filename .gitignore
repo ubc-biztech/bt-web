@@ -33,10 +33,12 @@ amplify/backend/awscloudformation
 build/
 dist/
 node_modules/
-src/aws-exports.js
-src/aws_exports.js
 aws-exports.js
 aws_exports.js
 awsconfiguration.json
+
 # jetbeans
 .idea/
+
+#firebase
+.firebase

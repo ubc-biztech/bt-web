@@ -1,11 +1,11 @@
 import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import NewEventFormComponent from './NewEventFormComponent'
+import EditEventFormComponent from './EditEventFormComponent'
 import { fetchBackend } from '../../../utils'
+import { connect } from "react-redux";
 
-export default function NewEventForm() {
-
+function EditEventForm(props) {
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
         slug: Yup.string().matches(/^[a-z\-0-9]*$/, "Slug must be lowercase and have no whitespace").required(),
@@ -18,17 +18,27 @@ export default function NewEventForm() {
         imageUrl: Yup.string().url().required(),
     });
 
-    const initialValues = {
-        ename: "",
-        slug: "",
-        description: "",
-        capacity: "",
-        partners: "",
-        elocation: "",
-        imageUrl: "",
-        startDate: new Date(),
-        endDate: new Date()
-    };
+    const initialValues = props.event ? {
+        ename: props.event.ename,
+        slug: props.event.id,
+        description: props.event.description,
+        capacity: props.event.capac,
+        partners: props.event.partners,
+        elocation: props.event.elocation,
+        imageUrl: props.event.imageUrl,
+        startDate: props.event.startDate,
+        endDate: props.event.endDate
+    } : {
+            ename: "",
+            slug: "",
+            description: "",
+            capacity: "",
+            partners: "",
+            elocation: "",
+            imageUrl: "",
+            startDate: "",
+            endDate: ""
+        };
 
     return (
         <Formik
@@ -36,7 +46,7 @@ export default function NewEventForm() {
             validationSchema={validationSchema}
             onSubmit={submitValues}
         >
-            {props => <NewEventFormComponent {...props} />}
+            {props => <EditEventFormComponent {...props} />}
         </Formik>
     )
 
@@ -51,27 +61,25 @@ export default function NewEventForm() {
             startDate: values.startDate,
             endDate: values.endDate
         })
-        fetchBackend('/events/get', 'GET')
+
+        fetchBackend('/events/update', 'POST', body)
             .then((response) => response.json())
             .then((response) => {
-                const isDuplicate = response.find(event => event.id === values.slug)
-                if (isDuplicate) {
-                    alert('Event with that slug already exists!')
-                } else {
-                    fetchBackend('/events/create', 'POST', body)
-                        .then((response) => response.json())
-                        .then((response) => {
-                            console.log(response)
-                            alert('Event Created!')
-                            window.location.href = "/";
-                        })
-                        .catch(err => {
-                            console.log(err)
-                            alert(err.message + ' Please contact a dev')
-                        })
-                }
+                console.log(response)
+                alert('Event Updated!')
+                window.location.href = "/";
             })
-
+            .catch(err => {
+                console.log(err)
+                alert(err.message + ' Please contact a dev')
+            })
     }
 
 }
+const mapStateToProps = state => {
+    return {
+        event: state.pageState.event,
+    };
+};
+
+export default connect(mapStateToProps)(EditEventForm);

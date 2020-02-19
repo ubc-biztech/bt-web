@@ -22,4 +22,4 @@ jobs:
 stages:
   - "Test & Build"
   - name: "Build & Deploy Production"
-    if: branch = master
+    if: (branch = master) AND (type = push)

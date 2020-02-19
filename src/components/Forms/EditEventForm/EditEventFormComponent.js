@@ -11,7 +11,7 @@ import {
 import ThemeProvider from '../../ThemeProvider'
 const slugify = require('slugify')
 
-export default function NewEventFormComponent(props) {
+export default function EditEventFormComponent(props) {
     const {
         values: { ename, slug, description, capacity, elocation, imageUrl, startDate, endDate },
         errors,
@@ -30,6 +30,7 @@ export default function NewEventFormComponent(props) {
 
     const handleEventNameChange = (name, e) => {
         e.persist();
+        console.log(props.event)
         const newSlug = slugify(e.target.value, { lower: true });
         setFieldValue('slug', newSlug)
         handleChange(e);
@@ -46,7 +47,7 @@ export default function NewEventFormComponent(props) {
 
     return (
         <ThemeProvider>
-            <Typography variant="h1">Create a New Event</Typography>
+            <Typography variant="h1">Edit Event</Typography>
             <form onSubmit={handleSubmit}>
                 <Paper>
                     <TextField
@@ -100,7 +101,6 @@ export default function NewEventFormComponent(props) {
                         <KeyboardDateTimePicker
                             margin="normal"
                             label="Start Date"
-                            minDate={new Date()}
                             value={startDate}
                             onChange={handleStartDateChange}
                         />
@@ -119,7 +119,7 @@ export default function NewEventFormComponent(props) {
                         helperText={touched.elocation ? errors.elocation : ""}
                         error={touched.elocation && Boolean(errors.elocation)}
                         value={elocation}
-                        onChange={change.bind(null, "location")}
+                        onChange={change.bind(null, "elocation")}
                     />
                     <TextField
                         id="imageUrl"
@@ -138,3 +138,5 @@ export default function NewEventFormComponent(props) {
         </ThemeProvider>
     )
 }
+
+
