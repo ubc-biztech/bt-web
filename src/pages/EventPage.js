@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { Typography, List } from '@material-ui/core';
+import { List } from '@material-ui/core';
 import Link from '@material-ui/core/Link'
 import { setEvent } from "../actions/PageActions";
-import Button from '@material-ui/core/Button';
+import EventFormWrapper from '../components/EventForm/EventFormWrapper';
 
 const queryString = require('query-string');
 
@@ -25,7 +25,6 @@ export class EventPage extends Component {
         const event = this.props.event;
         return (
             <div>
-                <Typography>Event Page</Typography>
                 {generateLinks(events)}
                 {loadEvent(event)}
             </div>
@@ -37,11 +36,7 @@ function loadEvent(event) {
     if (event) {
         return (
             <div>
-                <Button variant="contained" color="primary" href="/eventform">Register!</Button>
-                <img src={event.img} alt="Event"></img>
-                <Typography>{event.ename}</Typography>
-                <Typography>{event.tagline}</Typography>
-
+                <EventFormWrapper event={event}> </EventFormWrapper>
             </div>
         )
     } else {
