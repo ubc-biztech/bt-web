@@ -138,7 +138,7 @@ export class EventUserTable extends Component {
      */
     return (
       <MaterialTable
-        title="Event Attendance"
+        title={`${this.props.event.ename} Attendance`}
         columns={[
           { title: "First Name", field: "fname" },
           { title: "Last Name", field: "lname" },
@@ -161,8 +161,8 @@ export class EventUserTable extends Component {
           search: true,
           draggable: false,
           padding: "dense",
-          pageSize: 20,
-          pageSizeOptions: [20, 50, 100],
+          pageSize: 15,
+          pageSizeOptions: [15, 50, 100],
           actionsColumnIndex: 5,
           exportButton: true,
           headerStyle: {

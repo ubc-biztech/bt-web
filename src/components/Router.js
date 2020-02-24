@@ -85,6 +85,9 @@ class Router extends Component {
                 path="/edit-event"
                 component={EditEventForm} />
               <Route
+                path="/page"
+                render={() => <EventPage />} />
+              <Route
                 path="/"
                 render={() => <Home events={this.props.events} />}
               />

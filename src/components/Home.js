@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
@@ -13,30 +13,74 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ThemeProvider from './ThemeProvider'
 import Typography from '@material-ui/core/Typography';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { fetchBackend } from '../utils'
 
 const styles = ({
   card: {
-    width: '31%',
-    margin: '10px 20px 10px 0',
+    width: '30%',
+    margin: '15px 30px 15px 0',
   },
   media: {
     height: 250
   },
 });
 
-class Home extends Component {
+function Home(props) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [eventMenuClicked, setEventMenuClicked] = React.useState(null);
 
-  createEventCards() {
-    const { classes } = this.props;
+  const handleClick = (e, event) => {
+    setAnchorEl(e.currentTarget);
+    setEventMenuClicked(event);
+  };
 
-    if (this.props.events)
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClickEditEvent = () => {
+    const clickedEvent = props.events.find(event => event.id === eventMenuClicked)
+    props.setEvent(clickedEvent)
+    props.history.push({ pathname: "/edit-event" });
+    handleClose()
+  };
+
+  const handleClickDeleteEvent = () => {
+    const clickedEvent = props.events.find(event => event.id === eventMenuClicked)
+    if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {      
+      fetchBackend(`/events/delete?id=${clickedEvent.id}`, 'DELETE')
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+        alert(response.message)
+        window.location.href = "/";
+      })
+      .catch(err => {
+          console.log(err)
+          alert(err.message + ' Please contact a dev')
+      })
+    }
+    handleClose()
+  };
+
+  const handleClickViewEvent = () => {
+    props.history.push("/page?id=" + eventMenuClicked);
+    handleClose()
+  };
+
+  function createEventCards() {
+    const { classes } = props;
+
+    if (props.events)
       return <Box flexWrap="wrap" display="flex">
-        {this.props.events.map(event => {
+        {props.events.map(event => {
           const image = event.imageUrl || require("../assets/placeholder.jpg")
           return (
-            <Card className={classes.card}>
+            <Card className={classes.card} key={event.id}>
               <CardActionArea onClick={() => {
-                this.props.history.push("/event?id=" + event.id)
+                props.history.push("/event?id=" + event.id)
               }} >
                 <CardMedia
                   className={classes.media}
@@ -53,7 +97,7 @@ class Home extends Component {
                 action={
                   <IconButton aria-label="more options"
                     onClick={e => {
-                      console.log('Todo add delete event and edit event buttons')
+                      handleClick(e, event.id)
                     }}>
                     <MoreVertIcon />
                   </IconButton>
@@ -66,22 +110,32 @@ class Home extends Component {
       </Box >
   }
 
-  render() {
-    let events = this.props.events;
+  let events = props.events;
 
-    if (events === null) {
-      return (
-        <CircularProgress />
-      )
-    }
-    else {
-      return (
-        <ThemeProvider>
-          <Typography variant="h1">BizTech Admins</Typography>
-          {this.createEventCards()}
-        </ThemeProvider>
-      );
-    }
+  if (events === null) {
+    return (
+      <CircularProgress />
+    )
+  }
+  else {
+    return (
+      <ThemeProvider>
+        <Typography variant="h1">BizTech Admins</Typography>
+        <Typography>BizTech Admins</Typography>
+        {createEventCards()}
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleClickEditEvent}>Edit Event</MenuItem>
+          <MenuItem onClick={handleClickDeleteEvent}>Delete Event</MenuItem>
+          <MenuItem onClick={handleClickViewEvent}>View Event</MenuItem>
+        </Menu>
+      </ThemeProvider>
+    );
   }
 }
 

@@ -62,7 +62,7 @@ export default function NewEventForm() {
                         .then((response) => response.json())
                         .then((response) => {
                             console.log(response)
-                            alert('Event Created!')
+                            alert(response.message)
                             window.location.href = "/";
                         })
                         .catch(err => {

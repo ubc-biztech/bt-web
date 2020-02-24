@@ -9,6 +9,7 @@ import "./Nav.scss";
 import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -44,21 +45,26 @@ function Nav(props) {
     history.push({ pathname: "/new-event" })
   }
 
+  function MenuItem(props) {
+    const { label, icon, onClick } = props;
+    return (
+      <Tooltip title={label} aria-label={label} placement="right">
+        <ListItem onClick={onClick} aria-label={label} button>
+          {icon}
+        </ListItem>
+      </Tooltip>
+    )
+  }
+
   return (
     <div>
       <Drawer variant="permanent" className={classes.drawer}>
         <Divider />
         <List>
-          <ListItem onClick={handleItemClick} aria-label="home" button>
-            <HomeIcon />
-          </ListItem>
-          <ListItem onClick={handleNewEventClick} aria-label="create event" button>
-            <AddBoxIcon />
-          </ListItem>
+          <MenuItem label='Home' icon={<HomeIcon />} onClick={handleItemClick} />
+          <MenuItem label='Create Event' icon={<AddBoxIcon />} onClick={handleNewEventClick} />
           <Divider />
-          <ListItem onClick={logout} aria-label="logout" button>
-            <ExitToAppIcon />
-          </ListItem>
+          <MenuItem label='Logout' icon={<ExitToAppIcon />} onClick={logout} />
         </List>
         {/* 
         <Typography className="menu-tag" variant="h6" noWrap>

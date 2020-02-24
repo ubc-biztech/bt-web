@@ -66,7 +66,7 @@ function EditEventForm(props) {
             .then((response) => response.json())
             .then((response) => {
                 console.log(response)
-                alert('Event Updated!')
+                alert(response.message)
                 window.location.href = "/";
             })
             .catch(err => {
