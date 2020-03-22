@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { API_URL, API_KEY } from '../../utils'
+import { fetchBackend } from '../../utils'
 //TODO: import props and require the correct type
 
 import * as Yup from "yup" //TODO: avoid *, figure out what functions are actually used
@@ -108,8 +108,7 @@ const EventFormWrapper = (event) => {
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     console.log(heardFrom);
     console.log(values);
-    fetch(API_URL + "/users/get?id=" + values.id, {
-    })
+    fetchBackend(`/users/get?id=${values.id}`, 'GET')
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
@@ -125,15 +124,7 @@ const EventFormWrapper = (event) => {
             faculty,
             diet
           });
-          fetch(API_URL + "/users/create", {
-            method: "POST",
-            headers: {
-              'x-api-key': API_KEY,
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: body
-          })
+          fetchBackend("/users/create", "POST", body)
             .then((userResponse) => userResponse.json())
             .then((userResponse) => {
               if (userResponse.message === "Created!") {
@@ -161,15 +152,7 @@ const EventFormWrapper = (event) => {
       registrationStatus: "registered"
     })
     //TODO: pass the headFrom field as well
-    fetch(API_URL + "/registration/create", {
-      method: "POST",
-      headers: {
-        'x-api-key': API_KEY,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body
-    })
+    fetchBackend("/registration/create", "POST", body)
       .then((regResponse) => regResponse.json())
       .then((regResponse) => {
         if (regResponse.message === "Update succeeded") {
