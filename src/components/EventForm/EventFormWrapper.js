@@ -9,12 +9,6 @@ import * as Yup from "yup" //TODO: avoid *, figure out what functions are actual
 import { Formik } from "formik";
 import EventForm from './EventForm';
 
-//Unused but should use down the road (TODO)
-// const radioButtonFields = { "Faculty": ["Arts","Commerce","Science","Engineering","Kineseology","Land and Food Systems","Forestry"],
-//                             "Year": ["1st Year","2nd Year","3rd Year","4th Year","5+ Year"],
-//                             "How did you hear about this event?": ["Facebook","Boothing","Friends","BizTech Newsletter","Faculty Newsletter","Other:"],
-//                             "Do you have any dietary restrictions? If yes, please specify in 'Other'": ["No","Other:"]}
-
 const useStyles = makeStyles(theme => ({
   appBar: {
     position: 'relative',
@@ -41,7 +35,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
 const EventFormWrapper = (event) => {
   const classes = useStyles();
   const eventInfo = event.event;
@@ -53,6 +46,10 @@ const EventFormWrapper = (event) => {
       .required(),
     fname: Yup.string().required("First name is required"),
     lname: Yup.string().required("Last name is required"),
+    faculty: Yup.string().required("Faculty is required"),
+    year: Yup.string().required("Level of study is required"),
+    heardFrom: Yup.string().required("Field is required"),
+    diet: Yup.string().required("Dietary restiction is required"),
     // other_option: Yup.string().required("Please enter a response"), //TODO: get other option validation working along with radio button validation 
   });
 
@@ -89,7 +86,6 @@ const EventFormWrapper = (event) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom } = values;
     const eventID = eventInfo.id;
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    console.log(values);
     fetch(API_URL + "/users/get?id=" + values.id, {
     })
       .then((response) => response.json())

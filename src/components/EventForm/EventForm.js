@@ -1,7 +1,7 @@
 import React from "react"
 import { Button, TextField } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
-import RadioGroupButtons from './formParts/RadioGroupButtons';
+import RadioGroupButtons from './RadioGroupButtons';
 
 const textFieldLabelFontSize = "17px";
 
@@ -133,7 +133,6 @@ export default function Form(props) {
                 variant="contained"
                 color="primary"
                 type="submit"
-            // className={classes.button} //ignore styling for now
             >
                 Submit
           </Button>
