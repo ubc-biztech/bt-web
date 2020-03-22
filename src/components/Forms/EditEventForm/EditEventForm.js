@@ -65,8 +65,7 @@ function EditEventForm(props) {
         fetchBackend('/events/update', 'POST', body)
             .then((response) => response.json())
             .then((response) => {
-                console.log(response)
-                alert(response.message)
+                alert(response)
                 window.location.href = "/";
             })
             .catch(err => {
