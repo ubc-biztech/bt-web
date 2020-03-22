@@ -29,6 +29,7 @@ export default function Form(props) {
             <h4 style={{ color: 'red' }}>
                 * Indicates required field
             </h4>
+
             <Grid container spacing={3}>
 
                 <Grid item xs={12} sm={6}>
@@ -89,8 +90,8 @@ export default function Form(props) {
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
-                        otherOptionRequired={true}
-                        optionsArray={["Arts", "Commerce", "Science", "Engineering", "Kineseology", "Land and Food Systems", "Forestry"]}
+                        otherOption={true}
+                        options={["Arts", "Commerce", "Science", "Engineering", "Kineseology", "Land and Food Systems", "Forestry"]}
                         groupName={"faculty"}
                         displayName={"Faculty"}
                     />
@@ -99,8 +100,8 @@ export default function Form(props) {
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
-                        otherOptionRequired={true}
-                        optionsArray={["1st Year", "2nd Year", "3rd Year", "4th Year", "5+ Year"]}
+                        otherOption={true}
+                        options={["1st Year", "2nd Year", "3rd Year", "4th Year", "5+ Year"]}
                         groupName={"year"}
                         displayName={"Year"}
                     />
@@ -109,8 +110,8 @@ export default function Form(props) {
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
-                        otherOptionRequired={true}
-                        optionsArray={["Facebook", "Boothing", "Friends", "BizTech Newsletter", "Faculty Newsletter"]}
+                        otherOption={true}
+                        options={["Facebook", "Boothing", "Friends", "BizTech Newsletter", "Faculty Newsletter"]}
                         groupName={"heardFrom"}
                         displayName={"How did you hear about this event?"}
                     />
@@ -119,10 +120,10 @@ export default function Form(props) {
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
-                        otherOptionRequired={true}
-                        optionsArray={["No", "Vegetarian", "Vegan", "Gluten Free"]}
+                        otherOption={true}
+                        options={["No", "Vegetarian", "Vegan", "Gluten Free"]}
                         groupName={"diet"}
-                        displayName={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}
+                        displayName={"Do you have any dietary restrictions?"}
                     />
                 </Grid>
 

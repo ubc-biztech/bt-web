@@ -8,18 +8,21 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 export default function RadioGroupButtons(props) {
 
-  const [otherButtDisabled, setOtherButtDisabled] = useState(true)
+  const [otherDisabled, disableOther] = useState(true)
 
   const radioGroupLabelFontSize = '17px'
 
   const {
-    values: { other_option },
+    values: { otherOptionValue },
     errors,
     touched,
     handleChange,
     setFieldValue,
     setFieldTouched,
-    groupName, displayName, optionsArray, otherOptionRequired
+    groupName,
+    displayName,
+    options,
+    otherOption
   } = props;
 
   const change = (name, e) => {
@@ -32,40 +35,36 @@ export default function RadioGroupButtons(props) {
     <React.Fragment>
       <FormLabel style={{ fontSize: radioGroupLabelFontSize }}>{displayName}</FormLabel>
       <RadioGroup onChange={(e) => { handleRadioChange(e, groupName) }}>
-        {createButtons(optionsArray)}
-        {createOtherOption(otherOptionRequired)}
+        {createButtons(options)}
+        {otherOption ? createOtherOption() : ""}
       </RadioGroup>
     </React.Fragment>
   )
 
 
-  function createButtons(optionsArr) {
-
-    return optionsArr.map((option) =>
+  function createButtons(options) {
+    return options.map((option) =>
       <FormControlLabel value={option} control={<Radio />} label={option} />
     );
   }
 
-  function createOtherOption(addOtherOption) {
-    let option = "Other:"
-    if (addOtherOption) {
-      return (
-        <React.Fragment>
-          <FormControlLabel value={option} control={<Radio />} label={option} />
-          <TextField
-            // required
-            id="other_option"
-            name="other_option"
-            label=""
-            onChange={change.bind(null, "other_option")}
-            helperText={touched.other_option ? errors.other_option : ""}
-            error={touched.other_option && Boolean(errors.other_option)}
-            value={other_option}
-            disabled={otherButtDisabled}
-          />
-        </React.Fragment>
-      )
-    };
+  function createOtherOption() {
+    let optionId = "otherOption" + groupName
+    return (
+      <React.Fragment>
+        <FormControlLabel value="Other" control={<Radio />} label="Other" />
+        <TextField
+          // required
+          id={optionId}
+          name={optionId}
+          onChange={change.bind(null, optionId)}
+          helperText={touched.optionId ? errors.optionId : ""}
+          error={touched.optionId && Boolean(errors.optionId)}
+          value={otherOptionValue}
+          disabled={otherDisabled}
+        />
+      </React.Fragment>
+    )
   }
 
   function handleRadioChange(e, group) {
@@ -76,15 +75,12 @@ export default function RadioGroupButtons(props) {
     setFieldValue(valueName, value);
 
     const buttonSelected = e.target.value;
-    if (buttonSelected === "Other:") {
-      setOtherButtDisabled(false)
-      console.log("BUTTON IS NOW ENABLED.")
+    if (buttonSelected === "Other") {
+      disableOther(false)
     }
     else {
-      setOtherButtDisabled(true)
-      console.log("BUTTON IS NOW DISABLED.")
+      disableOther(true)
     }
-    console.log(otherButtDisabled)
   }
 
 
