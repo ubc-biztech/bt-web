@@ -72,8 +72,6 @@ const EventFormWrapper = (event) => {
             {eventInfo.description}
           </Typography>
 
-          <br></br>
-
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -86,14 +84,11 @@ const EventFormWrapper = (event) => {
       </main>
     </React.Fragment>
   );
-  
+
   async function submitValues(values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom } = values;
-    console.log(diet);
     const eventID = eventInfo.id;
-    //TODO: pass heardFrom to backend.
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    console.log(heardFrom);
     console.log(values);
     fetch(API_URL + "/users/get?id=" + values.id, {
     })
@@ -108,8 +103,9 @@ const EventFormWrapper = (event) => {
             fname,
             lname,
             email,
-            year,
             faculty,
+            year,
+            heardFrom,
             diet
           });
           fetch(API_URL + "/users/create", {
@@ -140,8 +136,6 @@ const EventFormWrapper = (event) => {
   }
 
   async function registerUser(id, eventID) {
-    console.log(id)
-    console.log(eventID);
     const body = JSON.stringify({
       id: id,
       eventID: eventID,

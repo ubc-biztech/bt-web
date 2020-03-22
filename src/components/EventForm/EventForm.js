@@ -91,7 +91,7 @@ export default function Form(props) {
                     <RadioGroupButtons
                         {...props}
                         otherOption={true}
-                        options={["Arts", "Commerce", "Science", "Engineering", "Kineseology", "Land and Food Systems", "Forestry"]}
+                        options={["Arts", "Commerce", "Science", "Engineering", "Kinesiology", "Land and Food Systems", "Forestry"]}
                         groupName={"faculty"}
                         displayName={"Faculty"}
                     />

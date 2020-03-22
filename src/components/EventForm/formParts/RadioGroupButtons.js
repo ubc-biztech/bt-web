@@ -5,11 +5,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 
-
 export default function RadioGroupButtons(props) {
-
   const [otherDisabled, disableOther] = useState(true)
-
   const radioGroupLabelFontSize = '17px'
 
   const {
@@ -35,31 +32,29 @@ export default function RadioGroupButtons(props) {
     <React.Fragment>
       <FormLabel style={{ fontSize: radioGroupLabelFontSize }}>{displayName}</FormLabel>
       <RadioGroup onChange={(e) => { handleRadioChange(e, groupName) }}>
-        {createButtons(options)}
+        {createButtons()}
         {otherOption ? createOtherOption() : ""}
       </RadioGroup>
     </React.Fragment>
   )
 
 
-  function createButtons(options) {
+  function createButtons() {
     return options.map((option) =>
       <FormControlLabel value={option} control={<Radio />} label={option} />
     );
   }
 
   function createOtherOption() {
-    let optionId = "otherOption" + groupName
     return (
       <React.Fragment>
         <FormControlLabel value="Other" control={<Radio />} label="Other" />
         <TextField
           // required
-          id={optionId}
-          name={optionId}
-          onChange={change.bind(null, optionId)}
-          helperText={touched.optionId ? errors.optionId : ""}
-          error={touched.optionId && Boolean(errors.optionId)}
+          id={groupName}
+          onChange={change.bind(null, groupName)}
+          helperText={touched.groupName ? errors.groupName : ""}
+          error={touched.groupName && Boolean(errors.groupName)}
           value={otherOptionValue}
           disabled={otherDisabled}
         />
@@ -69,19 +64,16 @@ export default function RadioGroupButtons(props) {
 
   function handleRadioChange(e, group) {
     e.preventDefault()
-    let valueName = group;
-    let value = e.target.value;
+    const valueName = group;
+    const value = e.target.value;
 
     setFieldValue(valueName, value);
-
-    const buttonSelected = e.target.value;
-    if (buttonSelected === "Other") {
+    if (value === "Other") {
       disableOther(false)
     }
     else {
       disableOther(true)
     }
   }
-
 
 }
