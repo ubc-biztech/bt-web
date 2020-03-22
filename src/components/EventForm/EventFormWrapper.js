@@ -38,21 +38,8 @@ const useStyles = makeStyles(theme => ({
       marginBottom: theme.spacing(6),
       padding: theme.spacing(3),
     },
-  },
-  stepper: {
-    padding: theme.spacing(3, 0, 5),
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-  button: {
-    marginTop: theme.spacing(3),
-    marginLeft: theme.spacing(1),
-  },
+  }
 }));
-
-
 
 
 const EventFormWrapper = (event) => {
@@ -71,23 +58,22 @@ const EventFormWrapper = (event) => {
 
   const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", heardFrom: "", diet: "" };
 
-
   return (
     <React.Fragment>
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
             {eventInfo.ename}
-
           </Typography>
-          <div>
-            <img src={eventInfo.imageUrl} alt="Event" height="500" align="middle"></img>
-            {/* TODO: fix image scaling */}
-          </div>
+
+          <img src={eventInfo.imageUrl} alt="Event" style={{'max-width': '100%'}} />
+          
           <Typography variant="h6" gutterBottom>
             {eventInfo.description}
           </Typography>
+
           <br></br>
+
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -100,6 +86,7 @@ const EventFormWrapper = (event) => {
       </main>
     </React.Fragment>
   );
+  
   async function submitValues(values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom } = values;
     console.log(diet);

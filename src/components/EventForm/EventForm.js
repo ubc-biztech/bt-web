@@ -27,7 +27,7 @@ export default function Form(props) {
         >
 
             <h4 style={{ color: 'red' }}>
-                *Required field
+                * Indicates required field
             </h4>
             <Grid container spacing={3}>
 
@@ -44,6 +44,7 @@ export default function Form(props) {
                         fullWidth
                     />
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         label="Last Name*"
@@ -57,6 +58,7 @@ export default function Form(props) {
                         fullWidth
                     />
                 </Grid>
+
                 <Grid item xs={12}>
                     <TextField
                         label="Email Address*"
@@ -70,6 +72,7 @@ export default function Form(props) {
                         fullWidth
                     />
                 </Grid>
+
                 <Grid item xs={12}>
                     <TextField
                         label="Student Number*"
@@ -91,8 +94,8 @@ export default function Form(props) {
                         groupName={"faculty"}
                         displayName={"Faculty"}
                     />
-
                 </Grid>
+
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
@@ -101,8 +104,8 @@ export default function Form(props) {
                         groupName={"year"}
                         displayName={"Year"}
                     />
-
                 </Grid>
+
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
@@ -111,8 +114,8 @@ export default function Form(props) {
                         groupName={"heardFrom"}
                         displayName={"How did you hear about this event?"}
                     />
-
                 </Grid>
+
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
@@ -121,9 +124,7 @@ export default function Form(props) {
                         groupName={"diet"}
                         displayName={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}
                     />
-
                 </Grid>
-
 
             </Grid>
             <br></br>
