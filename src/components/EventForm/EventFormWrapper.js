@@ -3,9 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { fetchBackend } from '../../utils'
-//TODO: import props and require the correct type
 
-import * as Yup from "yup" //TODO: avoid *, figure out what functions are actually used
+import * as Yup from "yup"
 import { Formik } from "formik";
 import EventForm from './EventForm';
 
@@ -49,7 +48,7 @@ const EventFormWrapper = (event) => {
     faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
     heardFrom: Yup.string().required("Field is required"),
-    diet: Yup.string().required("Dietary restiction is required"),
+    diet: Yup.string().required("Dietary restriction is required"),
     // other_option: Yup.string().required("Please enter a response"), //TODO: get other option validation working along with radio button validation 
   });
 
@@ -63,7 +62,7 @@ const EventFormWrapper = (event) => {
             {eventInfo.ename}
           </Typography>
 
-          <img src={eventInfo.imageUrl} alt="Event" style={{'max-width': '100%'}} />
+          <img src={eventInfo.imageUrl} alt="Event" style={{maxWidth: '100%'}} />
           
           <Typography variant="h6" gutterBottom>
             {eventInfo.description}
@@ -89,10 +88,10 @@ const EventFormWrapper = (event) => {
     fetchBackend(`/users/get?id=${values.id}`, 'GET')
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response === "User not found.") {
           // Need to create new user
-          console.log("User not found, creating user");
+          // console.log("User not found, creating user");
           const body = JSON.stringify({
             id,
             fname,
@@ -100,20 +99,19 @@ const EventFormWrapper = (event) => {
             email,
             faculty,
             year,
-            heardFrom,
             diet
           });
           fetchBackend("/users/create", "POST", body)
             .then((userResponse) => userResponse.json())
             .then((userResponse) => {
               if (userResponse.message === "Created!") {
-                registerUser(id, eventID);
+                registerUser(id, eventID, heardFrom);
               } else {
                 alert("Signup failed");
               }
             })
         } else {
-          registerUser(id, eventID);
+          registerUser(id, eventID, heardFrom);
         }
       })
       .catch(err => {
@@ -122,13 +120,13 @@ const EventFormWrapper = (event) => {
       });
   }
 
-  async function registerUser(id, eventID) {
+  async function registerUser(id, eventID, heardFrom) {
     const body = JSON.stringify({
-      id: id,
-      eventID: eventID,
+      id,
+      eventID,
+      heardFrom,
       registrationStatus: "registered"
     })
-    //TODO: pass the headFrom field as well
     fetchBackend("/registration/create", "POST", body)
       .then((regResponse) => regResponse.json())
       .then((regResponse) => {

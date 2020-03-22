@@ -100,7 +100,7 @@ export default function Form(props) {
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
-                        otherOption={true}
+                        otherOption={false}
                         options={["1st Year", "2nd Year", "3rd Year", "4th Year", "5+ Year"]}
                         groupName={"year"}
                         displayName={"Level of study"}

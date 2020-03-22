@@ -41,7 +41,7 @@ export default function RadioGroupButtons(props) {
 
   function createButtons() {
     return options.map((option) =>
-      <FormControlLabel value={option} control={<Radio />} label={option} />
+      <FormControlLabel key={option} value={option} control={<Radio />} label={option} />
     );
   }
 
