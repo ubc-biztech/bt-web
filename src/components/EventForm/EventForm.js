@@ -36,8 +36,8 @@ export default function Form(props) {
                     <TextField
                         label="First Name*"
                         autoComplete="given-name"
-                        helperText={touched.firstname ? errors.firstname : ""}
-                        error={touched.firstname && Boolean(errors.firstname)}
+                        helperText={touched.fname ? errors.fname : ""}
+                        error={touched.fname && Boolean(errors.fname)}
                         id="fname"
                         value={fname}
                         onChange={change.bind(null, "fname")}
@@ -50,8 +50,8 @@ export default function Form(props) {
                     <TextField
                         label="Last Name*"
                         autoComplete="family-name"
-                        helperText={touched.lastname ? errors.lastname : ""}
-                        error={touched.lastname && Boolean(errors.lastname)}
+                        helperText={touched.lname ? errors.lname : ""}
+                        error={touched.lname && Boolean(errors.lname)}
                         id="lname"
                         value={lname}
                         onChange={change.bind(null, "lname")}
@@ -103,7 +103,7 @@ export default function Form(props) {
                         otherOption={true}
                         options={["1st Year", "2nd Year", "3rd Year", "4th Year", "5+ Year"]}
                         groupName={"year"}
-                        displayName={"Year"}
+                        displayName={"Level of study"}
                     />
                 </Grid>
 
