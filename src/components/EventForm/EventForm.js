@@ -93,7 +93,7 @@ export default function Form(props) {
                         otherOption={true}
                         options={["Arts", "Commerce", "Science", "Engineering", "Kinesiology", "Land and Food Systems", "Forestry"]}
                         groupName={"faculty"}
-                        displayName={"Faculty"}
+                        displayName={"Faculty*"}
                     />
                 </Grid>
 
@@ -103,7 +103,17 @@ export default function Form(props) {
                         otherOption={false}
                         options={["1st Year", "2nd Year", "3rd Year", "4th Year", "5+ Year"]}
                         groupName={"year"}
-                        displayName={"Level of study"}
+                        displayName={"Level of study*"}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <RadioGroupButtons
+                        {...props}
+                        otherOption={true}
+                        options={["No", "Vegetarian", "Vegan", "Gluten Free"]}
+                        groupName={"diet"}
+                        displayName={"Do you have any dietary restrictions?*"}
                     />
                 </Grid>
 
@@ -114,16 +124,6 @@ export default function Form(props) {
                         options={["Facebook", "Boothing", "Friends", "BizTech Newsletter", "Faculty Newsletter"]}
                         groupName={"heardFrom"}
                         displayName={"How did you hear about this event?"}
-                    />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <RadioGroupButtons
-                        {...props}
-                        otherOption={true}
-                        options={["No", "Vegetarian", "Vegan", "Gluten Free"]}
-                        groupName={"diet"}
-                        displayName={"Do you have any dietary restrictions?"}
                     />
                 </Grid>
 

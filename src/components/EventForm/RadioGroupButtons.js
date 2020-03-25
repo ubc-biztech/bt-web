@@ -3,11 +3,11 @@ import { TextField } from "@material-ui/core";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 
 export default function RadioGroupButtons(props) {
   const [otherDisabled, disableOther] = useState(true)
-  const radioGroupLabelFontSize = '17px'
 
   const {
     values: { otherOptionValue },
@@ -21,6 +21,7 @@ export default function RadioGroupButtons(props) {
     options,
     otherOption
   } = props;
+  console.log(errors)
 
   const change = (name, e) => {
     e.persist();
@@ -30,7 +31,8 @@ export default function RadioGroupButtons(props) {
 
   return (
     <React.Fragment>
-      <FormLabel style={{ fontSize: radioGroupLabelFontSize }}>{displayName}</FormLabel>
+      <FormLabel error={Boolean(errors[groupName])}>{displayName}</FormLabel>
+      <FormHelperText error={true}>{errors[groupName]}</FormHelperText>
       <RadioGroup onChange={(e) => { handleRadioChange(e, groupName) }}>
         {createButtons()}
         {otherOption ? createOtherOption() : ""}
@@ -67,6 +69,7 @@ export default function RadioGroupButtons(props) {
     const valueName = group;
     const value = e.target.value;
 
+    setFieldTouched(valueName, true);
     setFieldValue(valueName, value);
     if (value === "Other") {
       disableOther(false)

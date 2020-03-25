@@ -47,7 +47,6 @@ const EventFormWrapper = (event) => {
     lname: Yup.string().required("Last name is required"),
     faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
-    heardFrom: Yup.string().required("Field is required"),
     diet: Yup.string().required("Dietary restriction is required"),
     // other_option: Yup.string().required("Please enter a response"), //TODO: get other option validation working along with radio button validation 
   });
