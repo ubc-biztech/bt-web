@@ -61,7 +61,7 @@ const EventFormWrapper = (event) => {
             {eventInfo.ename}
           </Typography>
 
-          <img src={eventInfo.imageUrl} alt="Event" style={{maxWidth: '100%'}} />
+          <img src={eventInfo.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
           
           <Typography variant="h6" gutterBottom>
             {eventInfo.description}

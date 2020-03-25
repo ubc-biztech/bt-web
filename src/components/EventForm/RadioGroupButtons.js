@@ -39,7 +39,6 @@ export default function RadioGroupButtons(props) {
     </React.Fragment>
   )
 
-
   function createButtons() {
     return options.map((option) =>
       <FormControlLabel key={option} value={option} control={<Radio />} label={option} />
