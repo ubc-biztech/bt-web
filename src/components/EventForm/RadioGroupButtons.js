@@ -10,19 +10,17 @@ export default function RadioGroupButtons(props) {
   const [otherDisabled, disableOther] = useState(true)
 
   const {
-    values: { otherOptionValue },
     errors,
-    touched,
     handleChange,
     setFieldValue,
     setFieldTouched,
+    submitCount,
     groupName,
     displayName,
     options,
     otherOption
   } = props;
-  console.log(errors)
-
+  
   const change = (name, e) => {
     e.persist();
     handleChange(e);
@@ -31,8 +29,8 @@ export default function RadioGroupButtons(props) {
 
   return (
     <React.Fragment>
-      <FormLabel error={Boolean(errors[groupName])}>{displayName}</FormLabel>
-      <FormHelperText error={true}>{errors[groupName]}</FormHelperText>
+      <FormLabel error={submitCount > 0 && Boolean(errors[groupName])}>{displayName}</FormLabel>
+      {submitCount > 0 ? <FormHelperText error={true}>{errors[groupName]}</FormHelperText> : ""}
       <RadioGroup onChange={(e) => { handleRadioChange(e, groupName) }}>
         {createButtons()}
         {otherOption ? createOtherOption() : ""}
@@ -52,12 +50,10 @@ export default function RadioGroupButtons(props) {
       <React.Fragment>
         <FormControlLabel value="Other" control={<Radio />} label="Other" />
         <TextField
-          // required
           id={groupName}
           onChange={change.bind(null, groupName)}
-          helperText={touched.groupName ? errors.groupName : ""}
-          error={touched.groupName && Boolean(errors.groupName)}
-          value={otherOptionValue}
+          helperText={otherOption ? "Field cannot be blank" : ""}
+          error={otherOption && Boolean(errors[groupName])}
           disabled={otherDisabled}
         />
       </React.Fragment>
@@ -69,7 +65,7 @@ export default function RadioGroupButtons(props) {
     const valueName = group;
     const value = e.target.value;
 
-    setFieldTouched(valueName, true);
+    setFieldTouched(valueName, true, false);
     setFieldValue(valueName, value);
     if (value === "Other") {
       disableOther(false)

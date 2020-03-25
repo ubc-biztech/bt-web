@@ -83,6 +83,7 @@ const EventFormWrapper = (event) => {
   async function submitValues(values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom } = values;
     const eventID = eventInfo.id;
+    console.log(values)
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/get?id=${values.id}`, 'GET')
       .then((response) => response.json())

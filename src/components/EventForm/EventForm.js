@@ -7,7 +7,6 @@ const textFieldLabelFontSize = "17px";
 
 export default function Form(props) {
     const {
-        values: { email, fname, lname, id },
         errors,
         touched,
         handleSubmit,
@@ -39,7 +38,6 @@ export default function Form(props) {
                         helperText={touched.fname ? errors.fname : ""}
                         error={touched.fname && Boolean(errors.fname)}
                         id="fname"
-                        value={fname}
                         onChange={change.bind(null, "fname")}
                         InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
@@ -53,7 +51,6 @@ export default function Form(props) {
                         helperText={touched.lname ? errors.lname : ""}
                         error={touched.lname && Boolean(errors.lname)}
                         id="lname"
-                        value={lname}
                         onChange={change.bind(null, "lname")}
                         InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
@@ -67,7 +64,6 @@ export default function Form(props) {
                         helperText={touched.email ? errors.email : ""}
                         error={touched.email && Boolean(errors.email)}
                         id="email"
-                        value={email}
                         onChange={change.bind(null, "email")}
                         InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
@@ -80,7 +76,6 @@ export default function Form(props) {
                         helperText={touched.id ? errors.id : ""}
                         error={touched.id && Boolean(errors.id)}
                         id="id"
-                        value={id}
                         onChange={change.bind(null, "id")}
                         InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
@@ -135,7 +130,7 @@ export default function Form(props) {
                 type="submit"
             >
                 Submit
-          </Button>
+            </Button>
         </form>
     )
 }
