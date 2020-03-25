@@ -10,6 +10,7 @@ export default function RadioGroupButtons(props) {
   const [otherDisabled, disableOther] = useState(true)
 
   const {
+    values,
     errors,
     handleChange,
     setFieldValue,
@@ -20,7 +21,7 @@ export default function RadioGroupButtons(props) {
     options,
     otherOption
   } = props;
-  
+
   const change = (name, e) => {
     e.persist();
     handleChange(e);
@@ -52,8 +53,8 @@ export default function RadioGroupButtons(props) {
         <TextField
           id={groupName}
           onChange={change.bind(null, groupName)}
-          helperText={otherOption ? "Field cannot be blank" : ""}
-          error={otherOption && Boolean(errors[groupName])}
+          helperText={values[groupName] === 'Other' ? "Field cannot be blank" : ""}
+          error={values[groupName] === 'Other' && Boolean(errors[groupName])}
           disabled={otherDisabled}
         />
       </React.Fragment>
