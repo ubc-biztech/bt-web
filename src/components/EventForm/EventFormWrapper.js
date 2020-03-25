@@ -47,8 +47,7 @@ const EventFormWrapper = (event) => {
     lname: Yup.string().required("Last name is required"),
     faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
-    diet: Yup.string().required("Dietary restriction is required"),
-    // other_option: Yup.string().required("Please enter a response"), //TODO: get other option validation working along with radio button validation 
+    diet: Yup.string().required("Dietary restriction is required"), 
   });
 
   const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", heardFrom: "", diet: "" };
@@ -83,12 +82,10 @@ const EventFormWrapper = (event) => {
   async function submitValues(values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom } = values;
     const eventID = eventInfo.id;
-    console.log(values)
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/get?id=${values.id}`, 'GET')
       .then((response) => response.json())
       .then((response) => {
-        // console.log(response);
         if (response === "User not found.") {
           // Need to create new user
           // console.log("User not found, creating user");
@@ -97,8 +94,8 @@ const EventFormWrapper = (event) => {
             fname,
             lname,
             email,
-            faculty,
             year,
+            faculty,
             diet
           });
           fetchBackend("/users/create", "POST", body)
