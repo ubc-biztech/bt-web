@@ -53,8 +53,8 @@ export default function RadioGroupButtons(props) {
         <TextField
           id={groupName}
           onChange={change.bind(null, groupName)}
-          helperText={values[groupName] === 'Other' ? "Field cannot be blank" : ""}
-          error={values[groupName] === 'Other' && Boolean(errors[groupName])}
+          helperText={submitCount > 0 && values[groupName] === 'Other' ? "Field cannot be blank" : ""}
+          error={submitCount > 0 && Boolean(errors[groupName])}
           disabled={otherDisabled}
         />
       </React.Fragment>
