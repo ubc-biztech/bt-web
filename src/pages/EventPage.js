@@ -4,6 +4,8 @@ import { setEvent } from "../actions/PageActions";
 import EventFormWrapper from '../components/EventForm/EventFormWrapper';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const queryString = require('query-string');
 
@@ -18,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('sm')]: {
       margin: theme.spacing(3),
     },
+  },
+  content: {
+    padding: theme.spacing(3),
   }
 }));
 
@@ -36,7 +41,7 @@ const EventPage = (props) => {
         }
     }, [props])
 
-    if (event) {
+    if (false) {
         return (
             <div className={classes.layout}>
                 <Paper className={classes.paper}>
@@ -48,7 +53,32 @@ const EventPage = (props) => {
         return (
             <div className={classes.layout}>
                 <Paper className={classes.paper}>
-                    <p>hi</p>
+                    <Skeleton animation="wave" variant="rect" width={'100%'} height={320} />
+                    <div className={classes.content}>
+
+                        <Grid container spacing={3}>
+
+                            <Grid item xs={12}>
+                                <Skeleton animation="wave" variant="rect" width={300} height={30} />
+                            </Grid>
+
+                            {[1, 2, 3].map((e) =>
+                            <Grid item container spacing={1} key={e}> 
+                                <Grid item xs={12}>
+                                    <Skeleton animation="wave" variant="rect" width={130} height={20} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Skeleton animation="wave" variant="rect" width={'100%'} height={20} />
+                                </Grid>
+                            </Grid>)
+                            }
+                            
+                            <Grid item xs={12}>
+                                <Skeleton animation="wave" variant="rect" width={90} height={36} />
+                            </Grid>
+
+                        </Grid>
+                    </div>
                 </Paper>
             </div>
         )
