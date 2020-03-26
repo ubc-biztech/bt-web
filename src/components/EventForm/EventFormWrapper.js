@@ -9,28 +9,19 @@ import { Formik } from "formik";
 import EventForm from './EventForm';
 
 const useStyles = makeStyles(theme => ({
-  appBar: {
-    position: 'relative',
-  },
   layout: {
-    width: 'auto',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+    [theme.breakpoints.up('sm')]: {
       width: 600,
-      marginLeft: 'auto',
-      marginRight: 'auto',
+      margin: 'auto',
     },
   },
   paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      padding: theme.spacing(3),
+    [theme.breakpoints.up('sm')]: {
+      margin: theme.spacing(3),
     },
+  },
+  content: {
+    padding: theme.spacing(3),
   }
 }));
 
@@ -53,14 +44,14 @@ const EventFormWrapper = (event) => {
   const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", heardFrom: "", diet: "" };
 
   return (
-    <React.Fragment>
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography component="h1" variant="h4" align="center">
+    <div className={classes.layout}>
+      <Paper className={classes.paper}>
+        <img src={eventInfo.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
+        
+        <div className={classes.content}>
+          <Typography variant="h4" align="center" gutterBottom>
             {eventInfo.ename}
           </Typography>
-
-          <img src={eventInfo.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
           
           <Typography variant="h6" gutterBottom>
             {eventInfo.description}
@@ -73,10 +64,9 @@ const EventFormWrapper = (event) => {
           >
             {props => <EventForm {...props} />}
           </Formik>
-
-        </Paper>
-      </main>
-    </React.Fragment>
+        </div>
+      </Paper>
+    </div>
   );
 
   async function submitValues(values) {

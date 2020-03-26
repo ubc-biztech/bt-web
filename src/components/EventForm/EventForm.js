@@ -1,9 +1,8 @@
 import React from "react"
 import { Button, TextField } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import RadioGroupButtons from './RadioGroupButtons';
-
-const textFieldLabelFontSize = "17px";
 
 export default function Form(props) {
     const {
@@ -21,16 +20,9 @@ export default function Form(props) {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-        >
-
-            <h4 style={{ color: 'red' }}>
-                * Indicates required field
-            </h4>
-
+        <form onSubmit={handleSubmit}>
+            <Typography variant="caption" color={'error'}>* Indicates required field</Typography>
             <Grid container spacing={3}>
-
                 <Grid item xs={12} sm={6}>
                     <TextField
                         label="First Name*"
@@ -39,7 +31,6 @@ export default function Form(props) {
                         error={touched.fname && Boolean(errors.fname)}
                         id="fname"
                         onChange={change.bind(null, "fname")}
-                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
@@ -52,7 +43,6 @@ export default function Form(props) {
                         error={touched.lname && Boolean(errors.lname)}
                         id="lname"
                         onChange={change.bind(null, "lname")}
-                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
@@ -65,7 +55,6 @@ export default function Form(props) {
                         error={touched.email && Boolean(errors.email)}
                         id="email"
                         onChange={change.bind(null, "email")}
-                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
@@ -77,7 +66,6 @@ export default function Form(props) {
                         error={touched.id && Boolean(errors.id)}
                         id="id"
                         onChange={change.bind(null, "id")}
-                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
