@@ -49,13 +49,14 @@ export default function RadioGroupButtons(props) {
     return (
       <React.Fragment>
         <FormControlLabel value="Other" control={<Radio />} label="Other" />
-        <TextField
-          id={groupName}
-          onChange={change.bind(null, groupName)}
-          helperText={submitCount > 0 && values[groupName] === 'Other' ? "Field cannot be blank" : ""}
-          error={submitCount > 0 && Boolean(errors[groupName])}
-          disabled={otherDisabled}
-        />
+        {otherDisabled ? "" : 
+          <TextField
+            id={groupName}
+            onChange={change.bind(null, groupName)}
+            helperText={submitCount > 0 && values[groupName] === 'Other' ? "Field cannot be blank" : ""}
+            error={submitCount > 0 && Boolean(errors[groupName])}
+          />
+        }
       </React.Fragment>
     )
   }
@@ -65,7 +66,6 @@ export default function RadioGroupButtons(props) {
     const valueName = group;
     const value = e.target.value;
 
-    setFieldTouched(valueName, true, false);
     setFieldValue(valueName, value);
     if (value === "Other") {
       disableOther(false)

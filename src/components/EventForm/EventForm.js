@@ -94,9 +94,19 @@ export default function Form(props) {
                     <RadioGroupButtons
                         {...props}
                         otherOption={true}
-                        options={["No", "Vegetarian", "Vegan", "Gluten Free"]}
+                        options={["None", "Vegetarian", "Vegan", "Gluten Free"]}
                         groupName={"diet"}
-                        displayName={"Do you have any dietary restrictions?*"}
+                        displayName={"Dietary restrictions*"}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <RadioGroupButtons
+                        {...props}
+                        otherOption={false}
+                        options={["Male", "Female", "Other/Prefer not to say"]}
+                        groupName={"gender"}
+                        displayName={"Gender"}
                     />
                 </Grid>
 

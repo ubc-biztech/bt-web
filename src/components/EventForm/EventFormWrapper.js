@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { fetchBackend } from '../../utils'
 
@@ -9,17 +8,6 @@ import { Formik } from "formik";
 import EventForm from './EventForm';
 
 const useStyles = makeStyles(theme => ({
-  layout: {
-    [theme.breakpoints.up('sm')]: {
-      width: 600,
-      margin: 'auto',
-    },
-  },
-  paper: {
-    [theme.breakpoints.up('sm')]: {
-      margin: theme.spacing(3),
-    },
-  },
   content: {
     padding: theme.spacing(3),
   }
@@ -41,36 +29,34 @@ const EventFormWrapper = (event) => {
     diet: Yup.string().required("Dietary restriction is required"), 
   });
 
-  const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", heardFrom: "", diet: "" };
+  const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", diet: "", gender: "", heardFrom: ""};
 
   return (
-    <div className={classes.layout}>
-      <Paper className={classes.paper}>
-        <img src={eventInfo.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
+    <React.Fragment>
+      <img src={eventInfo.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
+      
+      <div className={classes.content}>
+        <Typography variant="h4" align="center" gutterBottom>
+          {eventInfo.ename}
+        </Typography>
         
-        <div className={classes.content}>
-          <Typography variant="h4" align="center" gutterBottom>
-            {eventInfo.ename}
-          </Typography>
-          
-          <Typography variant="h6" gutterBottom>
-            {eventInfo.description}
-          </Typography>
+        <Typography variant="h6" gutterBottom>
+          {eventInfo.description}
+        </Typography>
 
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={submitValues}
-          >
-            {props => <EventForm {...props} />}
-          </Formik>
-        </div>
-      </Paper>
-    </div>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={submitValues}
+        >
+          {props => <EventForm {...props} />}
+        </Formik>
+      </div>
+    </React.Fragment>
   );
 
   async function submitValues(values) {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom } = values;
+    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
     const eventID = eventInfo.id;
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/get?id=${values.id}`, 'GET')
@@ -86,6 +72,7 @@ const EventFormWrapper = (event) => {
             email,
             year,
             faculty,
+            gender,
             diet
           });
           fetchBackend("/users/create", "POST", body)
