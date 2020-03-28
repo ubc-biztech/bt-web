@@ -41,7 +41,7 @@ const EventPage = (props) => {
         }
     }, [props])
 
-    if (false) {
+    if (event) {
         return (
             <div className={classes.layout}>
                 <Paper className={classes.paper}>
