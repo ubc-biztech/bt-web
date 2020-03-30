@@ -1,13 +1,11 @@
 import React from "react"
 import { Button, TextField } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
-import RadioGroupButtons from './formParts/RadioGroupButtons';
-
-const textFieldLabelFontSize = "17px";
+import Typography from '@material-ui/core/Typography';
+import RadioGroupButtons from './RadioGroupButtons';
 
 export default function Form(props) {
     const {
-        values: { email, fname, lname, id },
         errors,
         touched,
         handleSubmit,
@@ -22,41 +20,33 @@ export default function Form(props) {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-        >
-
-            <h4 style={{ color: 'red' }}>
-                *Required field
-            </h4>
+        <form onSubmit={handleSubmit}>
+            <Typography variant="caption" color={'error'}>* Indicates required field</Typography>
             <Grid container spacing={3}>
-
                 <Grid item xs={12} sm={6}>
                     <TextField
                         label="First Name*"
                         autoComplete="given-name"
-                        helperText={touched.firstname ? errors.firstname : ""}
-                        error={touched.firstname && Boolean(errors.firstname)}
+                        helperText={touched.fname ? errors.fname : ""}
+                        error={touched.fname && Boolean(errors.fname)}
                         id="fname"
-                        value={fname}
                         onChange={change.bind(null, "fname")}
-                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         label="Last Name*"
                         autoComplete="family-name"
-                        helperText={touched.lastname ? errors.lastname : ""}
-                        error={touched.lastname && Boolean(errors.lastname)}
+                        helperText={touched.lname ? errors.lname : ""}
+                        error={touched.lname && Boolean(errors.lname)}
                         id="lname"
-                        value={lname}
                         onChange={change.bind(null, "lname")}
-                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
+
                 <Grid item xs={12}>
                     <TextField
                         label="Email Address*"
@@ -64,21 +54,18 @@ export default function Form(props) {
                         helperText={touched.email ? errors.email : ""}
                         error={touched.email && Boolean(errors.email)}
                         id="email"
-                        value={email}
                         onChange={change.bind(null, "email")}
-                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
+
                 <Grid item xs={12}>
                     <TextField
                         label="Student Number*"
                         helperText={touched.id ? errors.id : ""}
                         error={touched.id && Boolean(errors.id)}
                         id="id"
-                        value={id}
                         onChange={change.bind(null, "id")}
-                        InputLabelProps={{ style: { fontSize: textFieldLabelFontSize } }}
                         fullWidth
                     />
                 </Grid>
@@ -86,44 +73,52 @@ export default function Form(props) {
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
-                        otherOptionRequired={true}
-                        optionsArray={["Arts", "Commerce", "Science", "Engineering", "Kineseology", "Land and Food Systems", "Forestry"]}
+                        otherOption={true}
+                        options={["Arts", "Commerce", "Science", "Engineering", "Kinesiology", "Land and Food Systems", "Forestry"]}
                         groupName={"faculty"}
-                        displayName={"Faculty"}
+                        displayName={"Faculty*"}
                     />
-
                 </Grid>
+
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
-                        otherOptionRequired={true}
-                        optionsArray={["1st Year", "2nd Year", "3rd Year", "4th Year", "5+ Year"]}
+                        otherOption={false}
+                        options={["1st Year", "2nd Year", "3rd Year", "4th Year", "5+ Year"]}
                         groupName={"year"}
-                        displayName={"Year"}
+                        displayName={"Level of study*"}
                     />
-
                 </Grid>
+
                 <Grid item xs={12}>
                     <RadioGroupButtons
                         {...props}
-                        otherOptionRequired={true}
-                        optionsArray={["Facebook", "Boothing", "Friends", "BizTech Newsletter", "Faculty Newsletter"]}
+                        otherOption={true}
+                        options={["None", "Vegetarian", "Vegan", "Gluten Free"]}
+                        groupName={"diet"}
+                        displayName={"Dietary restrictions*"}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <RadioGroupButtons
+                        {...props}
+                        otherOption={false}
+                        options={["Male", "Female", "Other/Prefer not to say"]}
+                        groupName={"gender"}
+                        displayName={"Gender"}
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <RadioGroupButtons
+                        {...props}
+                        otherOption={true}
+                        options={["Facebook", "Boothing", "Friends", "BizTech Newsletter", "Faculty Newsletter"]}
                         groupName={"heardFrom"}
                         displayName={"How did you hear about this event?"}
                     />
-
                 </Grid>
-                <Grid item xs={12}>
-                    <RadioGroupButtons
-                        {...props}
-                        otherOptionRequired={true}
-                        optionsArray={["No", "Vegetarian", "Vegan", "Gluten Free"]}
-                        groupName={"diet"}
-                        displayName={"Do you have any dietary restrictions? If yes, please specify in 'Other'"}
-                    />
-
-                </Grid>
-
 
             </Grid>
             <br></br>
@@ -131,10 +126,9 @@ export default function Form(props) {
                 variant="contained"
                 color="primary"
                 type="submit"
-            // className={classes.button} //ignore styling for now
             >
                 Submit
-          </Button>
+            </Button>
         </form>
     )
 }

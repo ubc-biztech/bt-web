@@ -1,68 +1,87 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from "react-redux";
-import { List } from '@material-ui/core';
-import Link from '@material-ui/core/Link'
 import { setEvent } from "../actions/PageActions";
 import EventFormWrapper from '../components/EventForm/EventFormWrapper';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const queryString = require('query-string');
 
-export class EventPage extends Component {
+const useStyles = makeStyles(theme => ({
+  layout: {
+    [theme.breakpoints.up('sm')]: {
+      width: 600,
+      margin: 'auto',
+    },
+  },
+  paper: {
+    [theme.breakpoints.up('sm')]: {
+      margin: theme.spacing(3),
+    },
+  },
+  content: {
+    padding: theme.spacing(3),
+  }
+}));
 
-    componentDidUpdate() {
+const EventPage = (props) => {
+    const classes = useStyles();
+    const { event } = props;
+
+    useEffect(() => {
         const params = queryString.parse(window.location.search);
         const eventID = params.id;
         if (eventID) {
-            const events = this.props.events
+            const events = props.events
             if (events) {
-                this.props.setEvent(events.find(event => event.id === params.id))
+                props.setEvent(events.find(event => event.id === params.id))
             }
         }
-    }
+    }, [props])
 
-    render() {
-        const events = this.props.events;
-        const event = this.props.event;
-        return (
-            <div>
-                {generateLinks(events)}
-                {loadEvent(event)}
-            </div>
-        )
-    }
-}
-
-function loadEvent(event) {
     if (event) {
         return (
-            <div>
-                <EventFormWrapper event={event}> </EventFormWrapper>
+            <div className={classes.layout}>
+                <Paper className={classes.paper}>
+                    <EventFormWrapper event={event} />
+                </Paper>
             </div>
         )
     } else {
         return (
-            <div>
+            <div className={classes.layout}>
+                <Paper className={classes.paper}>
+                    <Skeleton animation="wave" variant="rect" width={'100%'} height={320} />
+                    <div className={classes.content}>
 
+                        <Grid container spacing={3}>
+
+                            <Grid item xs={12}>
+                                <Skeleton animation="wave" variant="rect" width={300} height={30} />
+                            </Grid>
+
+                            {[1, 2, 3].map((e) =>
+                            <Grid item container spacing={1} key={e}> 
+                                <Grid item xs={12}>
+                                    <Skeleton animation="wave" variant="rect" width={130} height={20} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Skeleton animation="wave" variant="rect" width={'100%'} height={20} />
+                                </Grid>
+                            </Grid>)
+                            }
+                            
+                            <Grid item xs={12}>
+                                <Skeleton animation="wave" variant="rect" width={90} height={36} />
+                            </Grid>
+
+                        </Grid>
+                    </div>
+                </Paper>
             </div>
         )
-    }
-}
-
-function generateLinks(events) {
-    const params = queryString.parse(window.location.search);
-    const eventID = params.id;
-    if (!eventID) {
-        if (events) {
-            return (
-                <List>
-                    {events.map((event) => {
-                        const url = "/page?id=" + event.id;
-                        return <Link href={url} key={event.id}>{event.ename}</Link>
-                    })}
-                </List>
-
-            )
-        }
     }
 }
 

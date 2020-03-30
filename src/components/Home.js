@@ -66,7 +66,7 @@ function Home(props) {
   };
 
   const handleClickViewEvent = () => {
-    props.history.push("/page?id=" + eventMenuClicked);
+    window.location.href = "/page?id=" + eventMenuClicked;
     handleClose()
   };
 
