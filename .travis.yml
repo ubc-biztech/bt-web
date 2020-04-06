@@ -16,9 +16,9 @@ jobs:
       script: npm run generate:prod
       deploy:
         provider: firebase
+        edge: true
         skip_cleanup: true
-        token:
-          secure: $PROD_FIREBASE_TOKEN
+        token: $PROD_FIREBASE_TOKEN
 stages:
   - "Test & Build"
   - name: "Build & Deploy Production"
