@@ -141,15 +141,6 @@ Parameters:
       
   hostedUIProviderMeta:
     Type: String
-              
-  addCallbackOnUpdate:
-    Type: String
-            
-  addLogoutOnUpdate:
-    Type: String
-          
-  hostedUIProviderCreds:
-    Type: String
             
   oAuthMetadata:
     Type: String
@@ -301,7 +292,7 @@ Resources:
             - ' }'
             - '};'
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs10.x
       Timeout: '300'
       Role: !GetAtt 
         - UserPoolClientRole

@@ -1,6 +1,7 @@
 import React from 'react'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,6 +18,7 @@ import { Auth } from "aws-amplify";
 
 // import BackgroundImage from "./black_stars_background.jpg";
 
+
 const styles = {
     left: {
         float: 'left'
@@ -27,6 +29,7 @@ const styles = {
         width: '19px'
     }
 };
+
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -103,11 +106,5 @@ export default function Login() {
     </Container>
   );
 }
-
-
-
-
-
-
 
 

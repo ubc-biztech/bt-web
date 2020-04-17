@@ -1,93 +1,93 @@
-import React from 'react';
+import React from "react";
 import {
   Drawer,
-  IconButton,
   Divider,
   List,
   ListItem,
-  ListItemText,
-  Toolbar,
-  Typography,
-  AppBar
-} from '@material-ui/core';
-import './Nav.scss';
+} from "@material-ui/core";
+import "./Nav.scss";
 import { setEvent } from "../actions/PageActions";
 import { connect } from "react-redux";
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import Menu from '@material-ui/icons/Menu';
-import { Logout } from './Authentication';
-import { useHistory } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
+import HomeIcon from '@material-ui/icons/Home';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import { useHistory, withRouter } from "react-router-dom";
+import { Auth } from "aws-amplify";
+
+const useStyles = makeStyles(theme => ({
+  drawer: {
+  }
+}))
 
 function Nav(props) {
-
   const history = useHistory();
+  const classes = useStyles();
 
-  const events = props.events
+  const logout = () => {
+    Auth.signOut()
+      .then(data => {
+        console.log(data)
+        props.logout()
+      })
+      .catch(err => console.log(err));
+  }
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleItemClick = (event) => {
-    props.setEvent(event)
+  const handleItemClick = event => {
+    props.setEvent(event);
     if (event.id)
-      history.push({ pathname: "/event", search: '?id=' + event.id });
+      history.push({ pathname: "/event", search: "?id=" + event.id });
     else history.push("/");
-    setOpen(false);
   };
+
+  const handleNewEventClick = () => {
+    history.push({ pathname: "/new-event" })
+  }
+
+  function MenuItem(props) {
+    const { label, icon, onClick } = props;
+    return (
+      <Tooltip title={label} aria-label={label} placement="right">
+        <ListItem onClick={onClick} aria-label={label} button>
+          {icon}
+        </ListItem>
+      </Tooltip>
+    )
+  }
 
   return (
     <div>
-      <AppBar position="fixed">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-          >
-            <Menu />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            BizTech Admin Dashboard {props.event ? '- ' + props.event.ename : ''}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="persistent" open={open} anchor="left">
-        <div>
-          <IconButton onClick={() => setOpen(false)}>
-            <ChevronLeft />
-          </IconButton>
-        </div>
+      <Drawer variant="permanent" className={classes.drawer}>
         <Divider />
-        <ListItem
-          button
-          selected={!props.event}
-          component="a"
-          onClick={handleItemClick}
-        >
-          <ListItemText primary="Home" />
-        </ListItem>
-        <br></br>
-        <Typography className="menu-tag" variant="h6" noWrap>Events</Typography>
         <List>
-          {events ? events.map((event) => (
-            <ListItem
-              button
-              selected={props.event ? event.id === props.event.id : false}
-              key={event.ename}
-              component="a"
-              onClick={handleItemClick.bind(this, event)}
-            >
-              <ListItemText primary={event.ename} />
-            </ListItem>
-          )) : 'Loading...'}
-          <Logout />
+          <MenuItem label='Home' icon={<HomeIcon />} onClick={handleItemClick} />
+          <MenuItem label='Create Event' icon={<AddBoxIcon />} onClick={handleNewEventClick} />
+          <Divider />
+          <MenuItem label='Logout' icon={<ExitToAppIcon />} onClick={logout} />
         </List>
+        {/* 
+        <Typography className="menu-tag" variant="h6" noWrap>
+          Events
+        </Typography>
+        <List>
+          {events
+            ? events.map(event => (
+              <ListItem
+                button
+                selected={props.event ? event.id === props.event.id : false}
+                key={event.ename}
+                component="a"
+                onClick={handleItemClick.bind(this, event)}
+              >
+                <ListItemText primary={event.ename} />
+              </ListItem>
+            ))
+            : "Loading..."}
+          <Logout />
+        </List> */}
       </Drawer>
-    </div>
+    </div >
   );
 }
 
@@ -97,4 +97,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(Nav);
+export default connect(mapStateToProps, { setEvent })(withRouter(Nav));

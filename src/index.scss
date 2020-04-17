@@ -1,13 +1,23 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+	font-family: 'Gilroy';
+    src: url('./assets/font/Gilroy-Medium.eot') format('embedded-opentype'),
+        url('./assets/font/Gilroy-Medium.woff') format('woff'),
+        url('./assets/font/Gilroy-Medium.ttf') format('truetype');
+	font-weight: 400;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+@font-face {
+	font-family: 'Gilroy';
+    src: url('./assets/font/Gilroy-Regular.eot') format('embedded-opentype'),
+        url('./assets/font/Gilroy-Regular.woff') format('woff'),
+        url('./assets/font/Gilroy-Regular.ttf') format('truetype');
+	font-weight: 300;
+}
+
+@font-face {
+	font-family: 'Gilroy';
+    src: url('./assets/font/Gilroy-Bold.eot') format('embedded-opentype'),
+        url('./assets/font/Gilroy-Bold.woff') format('woff'),
+        url('./assets/font/Gilroy-Bold.ttf') format('truetype');
+	font-weight: 700;
 }

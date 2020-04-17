@@ -6,6 +6,11 @@ export function setEvent(event) {
       type: SET_EVENT,
       event
     };
+  } else {
+    return {
+      type: SET_EVENT,
+      event: null
+    };
   }
 }
 
