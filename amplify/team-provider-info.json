@@ -19,5 +19,25 @@
                 "btweb0aa335ef": {}
             }
         }
+    },
+    "staging": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-bt-web-staging-172134-authRole",
+            "UnauthRoleArn": "arn:aws:iam::432714361962:role/amplify-bt-web-staging-172134-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::432714361962:role/amplify-bt-web-staging-172134-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-bt-web-staging-172134-deployment",
+            "UnauthRoleName": "amplify-bt-web-staging-172134-unauthRole",
+            "StackName": "amplify-bt-web-staging-172134",
+            "StackId": "arn:aws:cloudformation:us-west-2:432714361962:stack/amplify-bt-web-staging-172134/905b4ca0-810a-11ea-9d24-06bedd0f3972",
+            "AmplifyAppId": "d3nofl98apmral"
+        },
+        "categories": {
+            "auth": {
+                "btweb52cc4abb": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"505989219189-61re31kb9s3thaiboqiaiv85mlen2hsc.apps.googleusercontent.com\",\"client_secret\":\"ni1qeNFoY99HybkRiftuFQZ8\"}]"
+                }
+            }
+        }
     }
 }
