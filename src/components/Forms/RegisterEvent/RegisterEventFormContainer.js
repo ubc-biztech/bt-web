@@ -5,7 +5,7 @@ import { fetchBackend } from '../../../utils'
 
 import * as Yup from "yup"
 import { Formik } from "formik";
-import EventForm from './EventRegistrationForm';
+import RegisterEventForm from './RegisterEventForm';
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -49,7 +49,7 @@ const EventFormContainer = (event) => {
           validationSchema={validationSchema}
           onSubmit={submitValues}
         >
-          {props => <EventForm {...props} />}
+          {props => <RegisterEventForm {...props} />}
         </Formik>
       </div>
     </React.Fragment>
