@@ -1,7 +1,7 @@
 import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import EditEventFormComponent from './EditEventFormComponent'
+import EditEventFormContainer from './EditEventFormContainer'
 import { fetchBackend } from '../../../utils'
 import { connect } from "react-redux";
 
@@ -46,7 +46,7 @@ function EditEventForm(props) {
             validationSchema={validationSchema}
             onSubmit={submitValues}
         >
-            {props => <EditEventFormComponent {...props} />}
+            {props => <EditEventFormContainer {...props} />}
         </Formik>
     )
 

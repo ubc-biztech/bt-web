@@ -11,7 +11,7 @@ import {
 import ThemeProvider from '../../ThemeProvider'
 const slugify = require('slugify')
 
-export default function EditEventFormComponent(props) {
+export default function EditEventFormContainer(props) {
     const {
         values: { ename, slug, description, capacity, elocation, imageUrl, startDate, endDate },
         errors,

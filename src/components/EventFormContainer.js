@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { fetchBackend } from '../../utils'
+import { fetchBackend } from '../utils'
 
 import * as Yup from "yup"
 import { Formik } from "formik";
@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const EventFormWrapper = (event) => {
+const EventFormContainer = (event) => {
   const classes = useStyles();
   const eventInfo = event.event;
   const validationSchema = Yup.object({
@@ -33,7 +33,7 @@ const EventFormWrapper = (event) => {
 
   return (
     <React.Fragment>
-      <img src={eventInfo.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
+      <img src={eventInfo.imageUrl || require("../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
       
       <div className={classes.content}>
         <Typography variant="h4" align="center" gutterBottom>
@@ -119,4 +119,4 @@ const EventFormWrapper = (event) => {
   }
 }
 
-export default EventFormWrapper;
+export default EventFormContainer;

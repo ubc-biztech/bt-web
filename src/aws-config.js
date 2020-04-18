@@ -7,12 +7,12 @@ const CLIENT_URL = process.env.REACT_APP_STAGE  === 'production'
 
 const awsmobile = {
     "aws_project_region": "us-west-2",
-    "aws_cognito_identity_pool_id": "us-west-2:19fd1364-9f5b-487b-b169-5db0cf6e5a23",
+    "aws_cognito_identity_pool_id": "us-west-2:0bfef155-88d4-40cb-9805-de9d366d6650",
     "aws_cognito_region": "us-west-2",
-    "aws_user_pools_id": "us-west-2_wfv5hw4OC",
-    "aws_user_pools_web_client_id": "hsnlooj9jf4mnh7m40dcufpg4",
+    "aws_user_pools_id": "us-west-2_w0R176hhp",
+    "aws_user_pools_web_client_id": "5tc2jshu03i3bmtl1clsov96dt",
     "oauth": {
-        "domain": "bt-web-dev.auth.us-west-2.amazoncognito.com",
+        "domain": "bt-web-staging.auth.us-west-2.amazoncognito.com",
         "scope": [
             "phone",
             "email",

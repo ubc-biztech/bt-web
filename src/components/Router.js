@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import Home from './Home'
-import ConnectedEvent from './ConnectedEvent'
+import EventContainer from './EventContainer'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
-import { Login, LoginRedirect } from './Authentication'
+import Login from './Authentication/Login'
+import LoginRedirect from './Authentication/LoginRedirect'
 import { setEvent, setEvents } from "../actions/PageActions";
 import { setUser } from "../actions/UserActions";
 import { connect } from "react-redux";
@@ -74,7 +75,7 @@ class Router extends Component {
             <Switch>
               <Route
                 path="/event"
-                render={props => <ConnectedEvent {...props} />} />
+                render={props => <EventContainer {...props} />} />
               <Route
                 path="/login-redirect"
                 component={LoginRedirect} />

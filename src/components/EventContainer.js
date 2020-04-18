@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import queryString from "query-string";
 import { setEvent } from "../actions/PageActions";
 
-class ConnectedEvent extends Component {
+class EventContainer extends Component {
   componentDidMount() {
     this.setEventFromQueryParams()
   }
@@ -33,4 +33,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(ConnectedEvent);
+export default connect(mapStateToProps, { setEvent })(EventContainer);

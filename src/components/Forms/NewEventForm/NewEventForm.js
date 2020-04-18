@@ -1,7 +1,7 @@
 import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import NewEventFormComponent from './NewEventFormComponent'
+import NewEventFormContainer from './NewEventFormContainer'
 import { fetchBackend } from '../../../utils'
 
 export default function NewEventForm() {
@@ -36,7 +36,7 @@ export default function NewEventForm() {
             validationSchema={validationSchema}
             onSubmit={submitValues}
         >
-            {props => <NewEventFormComponent {...props} />}
+            {props => <NewEventFormContainer {...props} />}
         </Formik>
     )
 
