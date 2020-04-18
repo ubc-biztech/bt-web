@@ -16,8 +16,8 @@ import {
 import './Router.scss';
 import ScrollToTop from './ScrollToTop'
 import EventPage from '../pages/EventPage';
-import NewEventForm from './Forms/NewEventForm/NewEventForm';
-import EditEventForm from './Forms/EditEventForm/EditEventForm'
+import NewEventFormContainer from './Forms/NewEventForm/NewEventFormContainer';
+import EditEventFormContainer from './Forms/EditEventForm/EditEventFormContainer'
 import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');
@@ -78,13 +78,13 @@ class Router extends Component {
                 render={props => <EventContainer {...props} />} />
               <Route
                 path="/login-redirect"
-                component={LoginRedirect} />
+                render={() => <LoginRedirect />} />
               <Route
                 path="/new-event"
-                component={NewEventForm} />
+                render={() => <NewEventFormContainer />} />
               <Route
                 path="/edit-event"
-                component={EditEventForm} />
+                render={() => <EditEventFormContainer />} />
               <Route
                 path="/page"
                 render={() => <EventPage />} />

@@ -1,84 +1,142 @@
 import React from 'react'
-import * as Yup from "yup"
-import { Formik } from "formik";
-import EditEventFormContainer from './EditEventFormContainer'
-import { fetchBackend } from '../../../utils'
-import { connect } from "react-redux";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography"
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDateTimePicker
+} from '@material-ui/pickers';
+import ThemeProvider from '../../ThemeProvider'
+const slugify = require('slugify')
 
-function EditEventForm(props) {
-    const validationSchema = Yup.object({
-        ename: Yup.string().required(),
-        slug: Yup.string().matches(/^[a-z\-0-9]*$/, "Slug must be lowercase and have no whitespace").required(),
-        description: Yup.string().required(),
-        capacity: Yup.number('Valid number required')
-            .min(0, 'Valid capacity required')
-            .required(),
-        // partners: Yup.string().required(),
-        elocation: Yup.string().required(),
-        imageUrl: Yup.string().url().required(),
-    });
+export default function EditEventForm(props) {
+    const {
+        values: { ename, slug, description, capacity, elocation, imageUrl, startDate, endDate },
+        errors,
+        touched,
+        handleSubmit,
+        handleChange,
+        setFieldValue,
+        setFieldTouched
+    } = props;
 
-    const initialValues = props.event ? {
-        ename: props.event.ename,
-        slug: props.event.id,
-        description: props.event.description,
-        capacity: props.event.capac,
-        partners: props.event.partners,
-        elocation: props.event.elocation,
-        imageUrl: props.event.imageUrl,
-        startDate: props.event.startDate,
-        endDate: props.event.endDate
-    } : {
-            ename: "",
-            slug: "",
-            description: "",
-            capacity: "",
-            partners: "",
-            elocation: "",
-            imageUrl: "",
-            startDate: "",
-            endDate: ""
-        };
+    const change = (name, e) => {
+        e.persist();
+        handleChange(e);
+        setFieldTouched(name, true, false);
+    };
 
-    return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={submitValues}
-        >
-            {props => <EditEventFormContainer {...props} />}
-        </Formik>
-    )
-
-    async function submitValues(values) {
-        const body = JSON.stringify({
-            ename: values.ename,
-            id: values.slug,
-            description: values.description,
-            capac: values.capacity,
-            elocation: values.elocation,
-            imageUrl: values.imageUrl,
-            startDate: values.startDate,
-            endDate: values.endDate
-        })
-
-        fetchBackend('/events/update', 'POST', body)
-            .then((response) => response.json())
-            .then((response) => {
-                alert(response)
-                window.location.href = "/";
-            })
-            .catch(err => {
-                console.log(err)
-                alert(err.message + ' Please contact a dev')
-            })
+    const handleEventNameChange = (name, e) => {
+        e.persist();
+        console.log(props.event)
+        const newSlug = slugify(e.target.value, { lower: true });
+        setFieldValue('slug', newSlug)
+        handleChange(e);
+        setFieldTouched(name, true, false);
     }
 
-}
-const mapStateToProps = state => {
-    return {
-        event: state.pageState.event,
-    };
-};
+    const handleStartDateChange = (date) => {
+        setFieldValue("startDate", date)
+    }
 
-export default connect(mapStateToProps)(EditEventForm);
+    const handleEndDateChange = (date) => {
+        setFieldValue("endDate", date)
+    }
+
+    return (
+        <ThemeProvider>
+            <Typography variant="h1">Edit Event</Typography>
+            <form onSubmit={handleSubmit}>
+                <Paper>
+                    <TextField
+                        id="ename"
+                        label="Event Name"
+                        fullWidth
+                        helperText={touched.ename ? errors.ename : ""}
+                        error={touched.ename && Boolean(errors.ename)}
+                        value={ename}
+                        onChange={handleEventNameChange.bind(null, "ename")}
+                    />
+                    <TextField
+                        id="slug"
+                        label="Slug"
+                        fullWidth
+                        helperText={touched.slug ? errors.slug : ""}
+                        error={touched.slug && Boolean(errors.slug)}
+                        value={slug}
+                        onChange={change.bind(null, "slug")}
+                    />
+                    <TextField
+                        id="description"
+                        label="Description"
+                        multiline
+                        fullWidth
+                        helperText={touched.description ? errors.description : ""}
+                        error={touched.description && Boolean(errors.description)}
+                        value={description}
+                        onChange={change.bind(null, "description")}
+                    />
+                    <TextField
+                        id="capacity"
+                        label="Capacity"
+                        type="number"
+                        min="0"
+                        helperText={touched.capacity ? errors.capacity : ""}
+                        error={touched.capacity && Boolean(errors.capacity)}
+                        value={capacity}
+                        onChange={change.bind(null, "capacity")}
+                    />
+                    {/* <TextField
+                        id="partners"
+                        label="Partners & Sponsors"
+                        fullWidth
+                        helperText={touched.partners ? errors.partners : ""}
+                        error={touched.partners && Boolean(errors.partners)}
+                        value={partners}
+                        onChange={change.bind(null, "partners")}
+                    /> */}
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDateTimePicker
+                            margin="normal"
+                            label="Start Date"
+                            value={startDate}
+                            onChange={handleStartDateChange}
+                        />
+                        <KeyboardDateTimePicker
+                            margin="normal"
+                            label="End Date"
+                            minDate={startDate}
+                            value={endDate}
+                            onChange={handleEndDateChange}
+                        />
+                    </MuiPickersUtilsProvider>
+                    <TextField
+                        id="elocation"
+                        label="Location"
+                        fullWidth
+                        helperText={touched.elocation ? errors.elocation : ""}
+                        error={touched.elocation && Boolean(errors.elocation)}
+                        value={elocation}
+                        onChange={change.bind(null, "elocation")}
+                    />
+                    <TextField
+                        id="imageUrl"
+                        label="Image URL"
+                        fullWidth
+                        helperText={touched.imageUrl ? errors.imageUrl : ""}
+                        error={touched.imageUrl && Boolean(errors.imageUrl)}
+                        value={imageUrl}
+                        onChange={change.bind(null, "imageUrl")}
+                    />
+                </Paper>
+                <Button type="submit">
+                    Submit
+                </Button>
+            </form>
+        </ThemeProvider>
+    )
+}
+
+
