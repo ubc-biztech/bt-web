@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
-import { setEvent } from "../actions/PageActions";
-import EventFormContainer from '../components/EventFormContainer';
+import { setEvent } from "../../actions/PageActions";
+import EventFormContainer from '../../components/Forms/EventRegistration/EventRegistrationFormContainer';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';

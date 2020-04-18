@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Home from './Home'
-import EventContainer from './EventContainer'
+import Home from '../pages/admin/Home'
+import EventContainer from '../pages/admin/Event'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
 import Login from './Authentication/Login'
@@ -15,9 +15,9 @@ import {
 } from "react-router-dom";
 import './Router.scss';
 import ScrollToTop from './ScrollToTop'
-import EventPage from '../pages/EventPage';
-import NewEventFormContainer from './Forms/NewEventForm/NewEventFormContainer';
-import EditEventFormContainer from './Forms/EditEventForm/EditEventFormContainer'
+import EventPage from '../pages/member/Event';
+import NewEventFormContainer from './Forms/NewEvent/NewEventFormContainer';
+import EditEventFormContainer from './Forms/EditEvent/EditEventFormContainer'
 import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Event from "./Event";
+import Event from "../../components/Event";
 import { connect } from "react-redux";
 import queryString from "query-string";
-import { setEvent } from "../actions/PageActions";
+import { setEvent } from "../../actions/PageActions";
 
 class EventContainer extends Component {
   componentDidMount() {
