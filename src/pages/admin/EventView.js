@@ -1,10 +1,18 @@
 import React,  { useEffect } from "react";
-import Event from "../../components/Event";
 import { connect } from "react-redux";
 import queryString from "query-string";
 import { setEvent } from "../../actions/PageActions";
+import { useHistory, withRouter } from "react-router-dom";
+import EventUserTable from "../../components/EventUserTable";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Link from "@material-ui/core/Link";
+import ThemeProvider from '../../components/ThemeProvider'
 
 function EventView(props) {
+  const history = useHistory();
+  const event = props.event;
+
+  // Like componentDidUpdate/DidMount
   useEffect(() => {
       const params = queryString.parse(props.location.search);
       const events = props.events;
@@ -13,7 +21,19 @@ function EventView(props) {
       }
   });
 
-  return <Event event={props.event} />;
+  function handleEditEventClick() {
+    history.push({ pathname: "/edit-event" });
+  }
+
+  return event ? (
+    <ThemeProvider>
+      <Link onClick={handleEditEventClick}>Edit Event</Link>
+      <Link href={"/page?id=" + event.id} key={event.id}>Public Event Page</Link>
+      <EventUserTable event={event} />
+    </ThemeProvider>
+  ) : (
+      <CircularProgress />
+    );
 }
 
 const mapStateToProps = state => {
@@ -23,4 +43,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(EventView);
+export default connect(mapStateToProps, { setEvent })(withRouter(EventView));
