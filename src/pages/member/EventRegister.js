@@ -11,6 +11,7 @@ import queryString from 'query-string';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { Helmet } from 'react-helmet';
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -62,29 +63,32 @@ const EventFormContainer = (props) => {
   if (event) {
     return (
         <div className={classes.layout}>
-            <Paper className={classes.paper}>
-              <React.Fragment>
-                <img src={event.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
+          <Helmet>
+            <title>{event.ename} - Register</title>
+          </Helmet>
+          <Paper className={classes.paper}>
+            <React.Fragment>
+              <img src={event.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
+              
+              <div className={classes.content}>
+                <Typography variant="h4" align="center" gutterBottom>
+                  {event.ename}
+                </Typography>
                 
-                <div className={classes.content}>
-                  <Typography variant="h4" align="center" gutterBottom>
-                    {event.ename}
-                  </Typography>
-                  
-                  <Typography variant="h6" gutterBottom>
-                    {event.description}
-                  </Typography>
+                <Typography variant="h6" gutterBottom>
+                  {event.description}
+                </Typography>
 
-                  <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={submitValues}
-                  >
-                    {props => <RegisterEvent {...props} />}
-                  </Formik>
-                </div>
-              </React.Fragment>
-            </Paper>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={submitValues}
+                >
+                  {props => <RegisterEvent {...props} />}
+                </Formik>
+              </div>
+            </React.Fragment>
+          </Paper>
         </div>
     )
   } else {
