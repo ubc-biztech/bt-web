@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Home from '../pages/admin/Home'
-import EventContainer from '../pages/admin/Event'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
 import Login from './Authentication/Login'
@@ -16,8 +15,9 @@ import {
 import './Router.scss';
 import ScrollToTop from './ScrollToTop'
 import EventPage from '../pages/member/Event';
-import NewEventFormContainer from '../pages/admin/NewEventFormContainer';
-import EditEventFormContainer from '../pages/admin/EditEventFormContainer'
+import EventView from '../pages/admin/EventView'
+import EventNew from '../pages/admin/EventNew';
+import EventEdit from '../pages/admin/EventEdit'
 import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');
@@ -75,16 +75,16 @@ class Router extends Component {
             <Switch>
               <Route
                 path="/event"
-                render={props => <EventContainer {...props} />} />
+                render={props => <EventView {...props} />} />
               <Route
                 path="/login-redirect"
                 render={() => <LoginRedirect />} />
               <Route
                 path="/new-event"
-                render={() => <NewEventFormContainer />} />
+                render={() => <EventNew />} />
               <Route
                 path="/edit-event"
-                render={() => <EditEventFormContainer />} />
+                render={() => <EventEdit />} />
               <Route
                 path="/page"
                 render={() => <EventPage />} />

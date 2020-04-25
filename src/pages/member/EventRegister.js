@@ -5,7 +5,7 @@ import { fetchBackend } from '../../utils'
 
 import * as Yup from "yup"
 import { Formik } from "formik";
-import RegisterEventForm from '../../components/Forms/RegisterEventForm';
+import RegisterEventForm from '../../components/Forms/RegisterEvent';
 
 const useStyles = makeStyles(theme => ({
   content: {
