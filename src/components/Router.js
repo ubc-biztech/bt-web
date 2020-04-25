@@ -16,8 +16,8 @@ import {
 import './Router.scss';
 import ScrollToTop from './ScrollToTop'
 import EventPage from '../pages/member/Event';
-import NewEventFormContainer from './Forms/NewEvent/NewEventFormContainer';
-import EditEventFormContainer from './Forms/EditEvent/EditEventFormContainer'
+import NewEventFormContainer from '../pages/admin/NewEventFormContainer';
+import EditEventFormContainer from '../pages/admin/EditEventFormContainer'
 import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');

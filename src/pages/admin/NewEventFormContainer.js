@@ -1,8 +1,8 @@
 import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import NewEventForm from './NewEventForm'
-import { fetchBackend } from '../../../utils'
+import NewEventForm from '../../components/Forms/NewEventForm'
+import { fetchBackend } from '../../utils'
 
 export default function NewEventFormContainer() {
 

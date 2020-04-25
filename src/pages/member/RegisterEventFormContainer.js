@@ -1,11 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { fetchBackend } from '../../../utils'
+import { fetchBackend } from '../../utils'
 
 import * as Yup from "yup"
 import { Formik } from "formik";
-import RegisterEventForm from './RegisterEventForm';
+import RegisterEventForm from '../../components/Forms/RegisterEventForm';
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -33,7 +33,7 @@ const EventFormContainer = (event) => {
 
   return (
     <React.Fragment>
-      <img src={eventInfo.imageUrl || require("../../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
+      <img src={eventInfo.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
       
       <div className={classes.content}>
         <Typography variant="h4" align="center" gutterBottom>

@@ -1,8 +1,8 @@
 import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import EditEventForm from './EditEventForm'
-import { fetchBackend } from '../../../utils'
+import EditEventForm from '../../components/Forms/EditEventForm'
+import { fetchBackend } from '../../utils'
 import { connect } from "react-redux";
 
 function EditEventFormContainer(props) {
