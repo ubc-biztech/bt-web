@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { fetchBackend } from '../../utils'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import RegisterEventForm from '../../components/Forms/RegisterEvent';
+import RegisterEvent from '../../components/Forms/RegisterEvent';
 import queryString from 'query-string';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -80,7 +80,7 @@ const EventFormContainer = (props) => {
                     validationSchema={validationSchema}
                     onSubmit={submitValues}
                   >
-                    {props => <RegisterEventForm {...props} />}
+                    {props => <RegisterEvent {...props} />}
                   </Formik>
                 </div>
               </React.Fragment>

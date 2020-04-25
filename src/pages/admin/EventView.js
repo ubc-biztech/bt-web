@@ -1,29 +1,19 @@
-import React, { Component } from "react";
+import React,  { useEffect } from "react";
 import Event from "../../components/Event";
 import { connect } from "react-redux";
 import queryString from "query-string";
 import { setEvent } from "../../actions/PageActions";
 
-class EventView extends Component {
-  componentDidMount() {
-    this.setEventFromQueryParams()
-  }
+function EventView(props) {
+  useEffect(() => {
+      const params = queryString.parse(props.location.search);
+      const events = props.events;
+      if (events) {
+        props.setEvent(events.find(event => event.id === params.id));
+      }
+  });
 
-  componentDidUpdate() {
-    this.setEventFromQueryParams()
-  }
-
-  render() {
-    return <Event event={this.props.event} />;
-  }
-
-  setEventFromQueryParams() {
-    const params = queryString.parse(this.props.location.search);
-    const events = this.props.events;
-    if (events) {
-      this.props.setEvent(events.find(event => event.id === params.id));
-    }
-  }
+  return <Event event={props.event} />;
 }
 
 const mapStateToProps = state => {
