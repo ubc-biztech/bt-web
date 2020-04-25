@@ -67,7 +67,6 @@ export default function EventNew() {
                     fetchBackend('/events/create', 'POST', body)
                         .then((response) => response.json())
                         .then((response) => {
-                            console.log(response)
                             alert(response.message)
                             window.location.href = "/";
                         })

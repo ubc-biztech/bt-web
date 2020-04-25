@@ -54,7 +54,6 @@ function Home(props) {
       fetchBackend(`/events/delete?id=${clickedEvent.id}`, 'DELETE')
       .then(response => response.json())
       .then(response => {
-        console.log(response)
         alert(response.message)
         window.location.href = "/";
       })
