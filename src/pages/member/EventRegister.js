@@ -1,21 +1,49 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from "react-redux";
+import { setEvent } from "../../actions/PageActions";
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { fetchBackend } from '../../utils'
-
 import * as Yup from "yup"
 import { Formik } from "formik";
 import RegisterEventForm from '../../components/Forms/RegisterEvent';
+import queryString from 'query-string';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles(theme => ({
+  layout: {
+    [theme.breakpoints.up('sm')]: {
+      width: 600,
+      margin: 'auto',
+    },
+  },
+  paper: {
+    [theme.breakpoints.up('sm')]: {
+      margin: theme.spacing(3),
+    },
+  },
   content: {
     padding: theme.spacing(3),
   }
 }));
 
-const EventFormContainer = (event) => {
+const EventFormContainer = (props) => {
   const classes = useStyles();
-  const eventInfo = event.event;
+  const { event } = props;
+
+  useEffect(() => {
+      const params = queryString.parse(window.location.search);
+      const eventID = params.id;
+      if (eventID) {
+          const events = props.events
+          if (events) {
+              props.setEvent(events.find(event => event.id === params.id))
+          }
+      }
+  }, [props])
+
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     id: Yup.number('Valid Student ID required')
@@ -31,33 +59,72 @@ const EventFormContainer = (event) => {
 
   const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", diet: "", gender: "", heardFrom: ""};
 
-  return (
-    <React.Fragment>
-      <img src={eventInfo.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
-      
-      <div className={classes.content}>
-        <Typography variant="h4" align="center" gutterBottom>
-          {eventInfo.ename}
-        </Typography>
-        
-        <Typography variant="h6" gutterBottom>
-          {eventInfo.description}
-        </Typography>
+  if (event) {
+    return (
+        <div className={classes.layout}>
+            <Paper className={classes.paper}>
+              <React.Fragment>
+                <img src={event.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
+                
+                <div className={classes.content}>
+                  <Typography variant="h4" align="center" gutterBottom>
+                    {event.ename}
+                  </Typography>
+                  
+                  <Typography variant="h6" gutterBottom>
+                    {event.description}
+                  </Typography>
 
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={submitValues}
-        >
-          {props => <RegisterEventForm {...props} />}
-        </Formik>
-      </div>
-    </React.Fragment>
-  );
+                  <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={submitValues}
+                  >
+                    {props => <RegisterEventForm {...props} />}
+                  </Formik>
+                </div>
+              </React.Fragment>
+            </Paper>
+        </div>
+    )
+  } else {
+      return (
+          <div className={classes.layout}>
+              <Paper className={classes.paper}>
+                  <Skeleton animation="wave" variant="rect" width={'100%'} height={320} />
+                  <div className={classes.content}>
+
+                      <Grid container spacing={3}>
+
+                          <Grid item xs={12}>
+                              <Skeleton animation="wave" variant="rect" width={300} height={30} />
+                          </Grid>
+
+                          {[1, 2, 3].map((e) =>
+                          <Grid item container spacing={1} key={e}> 
+                              <Grid item xs={12}>
+                                  <Skeleton animation="wave" variant="rect" width={130} height={20} />
+                              </Grid>
+                              <Grid item xs={12}>
+                                  <Skeleton animation="wave" variant="rect" width={'100%'} height={20} />
+                              </Grid>
+                          </Grid>)
+                          }
+                          
+                          <Grid item xs={12}>
+                              <Skeleton animation="wave" variant="rect" width={90} height={36} />
+                          </Grid>
+
+                      </Grid>
+                  </div>
+              </Paper>
+          </div>
+      )
+  }
 
   async function submitValues(values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
-    const eventID = eventInfo.id;
+    const eventID = event.id;
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/get?id=${values.id}`, 'GET')
       .then((response) => response.json())
@@ -119,4 +186,11 @@ const EventFormContainer = (event) => {
   }
 }
 
-export default EventFormContainer;
+const mapStateToProps = state => {
+  return {
+      events: state.pageState.events,
+      event: state.pageState.event
+  };
+};
+
+export default connect(mapStateToProps, { setEvent })(EventFormContainer);

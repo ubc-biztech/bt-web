@@ -14,7 +14,7 @@ import {
 } from "react-router-dom";
 import './Router.scss';
 import ScrollToTop from './ScrollToTop'
-import EventPage from '../pages/member/Event';
+import EventRegister from '../pages/member/EventRegister';
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew';
 import EventEdit from '../pages/admin/EventEdit'
@@ -87,7 +87,7 @@ class Router extends Component {
                 render={() => <EventEdit />} />
               <Route
                 path="/page"
-                render={() => <EventPage />} />
+                render={() => <EventRegister />} />
               <Route
                 path="/"
                 render={() => <Home events={this.props.events} />}
@@ -100,7 +100,7 @@ class Router extends Component {
           <Switch>
             <Route
               path="/page"
-              render={() => <EventPage />} />
+              render={() => <EventRegister />} />
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
