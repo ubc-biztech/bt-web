@@ -1,11 +1,11 @@
 import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import EditEventFormComponent from './EditEventFormComponent'
-import { fetchBackend } from '../../../utils'
+import EditEventForm from '../../components/Forms/EditEvent'
+import { fetchBackend } from '../../utils'
 import { connect } from "react-redux";
 
-function EditEventForm(props) {
+function EventEdit(props) {
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
         slug: Yup.string().matches(/^[a-z\-0-9]*$/, "Slug must be lowercase and have no whitespace").required(),
@@ -46,7 +46,7 @@ function EditEventForm(props) {
             validationSchema={validationSchema}
             onSubmit={submitValues}
         >
-            {props => <EditEventFormComponent {...props} />}
+            {props => <EditEventForm {...props} />}
         </Formik>
     )
 
@@ -81,4 +81,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(EditEventForm);
+export default connect(mapStateToProps)(EventEdit);

@@ -1,10 +1,10 @@
 import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import NewEventFormComponent from './NewEventFormComponent'
-import { fetchBackend } from '../../../utils'
+import NewEventForm from '../../components/Forms/NewEvent'
+import { fetchBackend } from '../../utils'
 
-export default function NewEventForm() {
+export default function EventNew() {
 
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
@@ -36,7 +36,7 @@ export default function NewEventForm() {
             validationSchema={validationSchema}
             onSubmit={submitValues}
         >
-            {props => <NewEventFormComponent {...props} />}
+            {props => <NewEventForm {...props} />}
         </Formik>
     )
 

@@ -8,10 +8,10 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDateTimePicker
 } from '@material-ui/pickers';
-import ThemeProvider from '../../ThemeProvider'
+import ThemeProvider from '../ThemeProvider'
 const slugify = require('slugify')
 
-export default function EditEventFormComponent(props) {
+export default function EditEventForm(props) {
     const {
         values: { ename, slug, description, capacity, elocation, imageUrl, startDate, endDate },
         errors,

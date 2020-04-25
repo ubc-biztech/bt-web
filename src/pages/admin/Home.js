@@ -1,5 +1,5 @@
 import React from 'react'
-import { setEvent } from "../actions/PageActions";
+import { setEvent } from "../../actions/PageActions";
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -11,11 +11,11 @@ import { withRouter } from 'react-router-dom';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ThemeProvider from './ThemeProvider'
+import ThemeProvider from '../../components/ThemeProvider'
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { fetchBackend } from '../utils'
+import { fetchBackend } from '../../utils'
 
 const styles = ({
   card: {
@@ -76,7 +76,7 @@ function Home(props) {
     if (props.events)
       return <Box flexWrap="wrap" display="flex">
         {props.events.map(event => {
-          const image = event.imageUrl || require("../assets/placeholder.jpg")
+          const image = event.imageUrl || require("../../assets/placeholder.jpg")
           return (
             <Card className={classes.card} key={event.id}>
               <CardActionArea onClick={() => {
