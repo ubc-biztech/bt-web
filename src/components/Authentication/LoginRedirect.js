@@ -2,30 +2,51 @@ import React, { Component } from 'react'
 import { Auth } from "aws-amplify";
 import { setUser } from '../../actions/UserActions'
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { log } from '../../utils'
+import { log, fetchBackend } from '../../utils'
 
 export class LoginRedirect extends Component {
 
     componentDidMount() {
         // Check if there is an authenticated user
         // After authenticating with Google, Auth redirects to localhost:3000/login/ 
+        if(this.props.user) {
+            this.props.history.push("/");
+        }
         // There is a time delay where Auth.currentAuthenticatedUser() returns the wrong value. Hence polling
         this.pollForAuthenticatedUser()
     }
     
     pollForAuthenticatedUser() {
         Auth.currentAuthenticatedUser()
-            .then(user => {
-                const email = user.attributes.email
+            .then(async user => {
+                const { email, name } = user.attributes
+
+                // If biztech email, assume admin
                 if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-                    this.props.setUser(user)
+
+                    this.props.setUser({ ...user, admin: true });
+                    this.props.history.push('/');
+
                 }
+                // If not biztech username
                 else {
-                    Auth.signOut()
-                    alert('You must use a ubcbiztech.com email')
+
+                    const nameSplitted = name.split(' ');
+                    const lname = nameSplitted.pop() || null;
+                    const fname = nameSplitted.join(' ');
+
+                    const results = await fetchBackend(`/users/get?email=${email}`, 'GET');
+                    const users = await results.json();
+                    
+                    this.props.setUser({ ...user, admin: false });
+
+                    // Check if the user exists
+                    if(users.length)  this.props.history.push('/user-home'); // Redirect to the 'user home' page
+                    else  this.props.history.push('/user-register'); // Redirect to the 'user register' form
                 }
+
             })
             .catch(() => {
                 log("Not signed in")
@@ -34,9 +55,7 @@ export class LoginRedirect extends Component {
     }
 
     render() {
-        return this.props.user
-            ? <Redirect to="/" />
-            : <div>if this is taking a long time please refresh<CircularProgress /></div>
+        return <div>if this is taking a long time please refresh<CircularProgress /></div>
     }
 
 }
@@ -47,4 +66,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { setUser })(LoginRedirect);
+export default connect(mapStateToProps, { setUser })(withRouter(LoginRedirect));
