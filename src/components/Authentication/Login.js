@@ -21,13 +21,11 @@ function Login(props) {
         .then(user => {
             const email = user.attributes.email
             if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-                user.admin = true;
-                this.props.setUser(user);
+                props.setUser({ ...user, admin: true });
             }
             else {
-                user.admin = false;
                 console.log('not using a biztech e-mail!');
-                this.props.setUser(user);
+                props.setUser({ ...user, admin: false });
             }
         })
         .catch((err) => console.log("Not signed in", err))

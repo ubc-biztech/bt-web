@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Auth } from "aws-amplify";
 import { setUser } from '../../actions/UserActions'
 import { connect } from "react-redux";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { log, fetchBackend } from '../../utils'
 
@@ -21,7 +21,7 @@ export class LoginRedirect extends Component {
     pollForAuthenticatedUser() {
         Auth.currentAuthenticatedUser()
             .then(async user => {
-                const { email, name } = user.attributes
+                const { email } = user.attributes
 
                 // If biztech email, assume admin
                 if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
@@ -33,9 +33,12 @@ export class LoginRedirect extends Component {
                 // If not biztech username
                 else {
 
-                    const nameSplitted = name.split(' ');
-                    const lname = nameSplitted.pop() || null;
-                    const fname = nameSplitted.join(' ');
+                    // TODO: Supply email and names as initial values to the form
+
+                    // const { name } = user.attributes
+                    // const nameSplitted = name.split(' ');
+                    // const lname = nameSplitted.pop() || null;
+                    // const fname = nameSplitted.join(' ');
 
                     const results = await fetchBackend(`/users/get?email=${email}`, 'GET');
                     const users = await results.json();
