@@ -21,11 +21,13 @@ function Login(props) {
         .then(user => {
             const email = user.attributes.email
             if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-                props.setUser(user)
+                user.admin = true;
+                this.props.setUser(user);
             }
             else {
-                Auth.signOut()
-                alert('You must use a ubcbiztech.com email')
+                user.admin = false;
+                console.log('not using a biztech e-mail!');
+                this.props.setUser(user);
             }
         })
         .catch((err) => console.log("Not signed in", err))
@@ -33,7 +35,7 @@ function Login(props) {
     return (
         <div>
             <h1> Login </h1>
-            <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' }).then(() => Auth.currentAuthenticatedUser({ bypassCache: true }))} variant="contained" color="primary">
+            <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' })} variant="contained" color="primary">
                 <div style={styles.left}>
                     <img style={styles.socialIcon} alt="Google" src="./google.png" />
                 </div>

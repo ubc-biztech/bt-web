@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import Home from '../pages/admin/Home'
+import AdminHome from '../pages/admin/AdminHome'
+import UserHome from '../pages/member/UserHome'
+import UserRegister from '../pages/member/UserRegister'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
 import Login from './Authentication/Login'
@@ -36,11 +38,11 @@ class Router extends Component {
       .then(user => {
         const email = user.attributes.email
         if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-          this.props.setUser(user)
+          this.props.setUser({ ...user, admin: true });
         }
         else {
-          Auth.signOut()
-          alert('You must use a ubcbiztech.com email')
+          console.log('not using a biztech e-mail!');
+          this.props.setUser({ ...user, admin: false });
         }
       })
       .catch(() => console.log("Not signed in"))
@@ -66,8 +68,12 @@ class Router extends Component {
   }
 
   render() {
+
+    const { user } = this.props;
+    // TODO: Use "user.admin" to decide whether to show user pages/host pages
+
     return (
-      this.props.user
+      user
         ? <BrowserRouter>
           <ScrollToTop />
           <Nav events={this.props.events} />
@@ -89,8 +95,14 @@ class Router extends Component {
                 path="/page"
                 render={() => <EventRegister />} />
               <Route
+                path="/user-register"
+                render={() => <UserRegister />} />
+              <Route
+                path="/user-home"
+                render={() => <UserHome />} />
+              <Route
                 path="/"
-                render={() => <Home events={this.props.events} />}
+                render={() => <AdminHome events={this.props.events} />}
               />
             </Switch>
           </div>

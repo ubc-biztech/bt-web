@@ -27,7 +27,7 @@ const styles = ({
   },
 });
 
-function Home(props) {
+function AdminHome(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [eventMenuClicked, setEventMenuClicked] = React.useState(null);
 
@@ -139,4 +139,4 @@ function Home(props) {
   }
 }
 
-export default connect(null, { setEvent })(withStyles(styles)(withRouter(Home)));
+export default connect(null, { setEvent })(withStyles(styles)(withRouter(AdminHome)));
