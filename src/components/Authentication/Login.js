@@ -125,11 +125,6 @@ function Login(props) {
             </Button>
           </CardContent>
           <Divider variant="middle" />
-          <CardActions className={classes.action}>
-            <Typography className={classes.textNotice} align="center">
-              Only @ubcbiztech gmails are valid
-            </Typography>
-          </CardActions>
         </Card>
       </div>
     </Container>
