@@ -68,9 +68,6 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "space-around"
   },
-  textNotice: {
-    fontSize: "12px"
-  }
 }));
 
 function Login(props) {
