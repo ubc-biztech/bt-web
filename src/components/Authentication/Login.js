@@ -6,10 +6,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardActions from "@material-ui/core/CardActions";
 //import CardMedia from '@material-ui/core/CardMedia';
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
@@ -68,6 +66,9 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "space-around"
   },
+  textNotice: {
+    fontSize: "12px"
+  }
 }));
 
 function Login(props) {
