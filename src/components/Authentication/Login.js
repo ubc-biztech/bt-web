@@ -65,9 +65,6 @@ const useStyles = makeStyles(theme => ({
   action: {
     display: "flex",
     justifyContent: "space-around"
-  },
-  textNotice: {
-    fontSize: "12px"
   }
 }));
 
