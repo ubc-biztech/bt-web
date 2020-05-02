@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import EditEventForm from '../../components/Forms/EditEvent'
 import { fetchBackend } from '../../utils'
 import { connect } from "react-redux";
+import { Helmet } from 'react-helmet';
 
 function EventEdit(props) {
     const validationSchema = Yup.object({
@@ -41,13 +42,18 @@ function EventEdit(props) {
         };
 
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={submitValues}
-        >
-            {props => <EditEventForm {...props} />}
-        </Formik>
+        <React.Fragment>
+            <Helmet>
+                <title>Edit {props.event.ename} - BizTech Admin</title>
+            </Helmet>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={submitValues}
+            >
+                {props => <EditEventForm {...props} />}
+            </Formik>
+        </React.Fragment>
     )
 
     async function submitValues(values) {

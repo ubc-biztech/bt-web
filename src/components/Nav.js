@@ -28,7 +28,6 @@ function Nav(props) {
   const logout = () => {
     Auth.signOut()
       .then(data => {
-        console.log(data)
         props.logout()
       })
       .catch(err => console.log(err));

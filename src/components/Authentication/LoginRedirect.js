@@ -36,7 +36,7 @@ export class LoginRedirect extends Component {
     render() {
         return this.props.user
             ? <Redirect to="/" />
-            : <div>if this is taking a long time please refresh<CircularProgress /></div>
+            : <CircularProgress />
     }
 
 }
