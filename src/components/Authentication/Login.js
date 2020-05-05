@@ -3,6 +3,7 @@ import { Auth } from "aws-amplify";
 import Button from '@material-ui/core/Button';
 import { setUser } from '../../actions/UserActions'
 import { connect } from "react-redux";
+import { Helmet } from 'react-helmet';
 
 const styles = {
     left: {
@@ -32,6 +33,9 @@ function Login(props) {
 
     return (
         <div>
+            <Helmet>
+                <title>UBC BizTech - Log In or Sign Up</title>
+            </Helmet>
             <h1> Login </h1>
             <Button onClick={() => Auth.federatedSignIn({ provider: 'Google' })} variant="contained" color="primary">
                 <div style={styles.left}>

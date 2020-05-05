@@ -12,7 +12,7 @@ const awsmobile = {
     "aws_user_pools_id": "us-west-2_w0R176hhp",
     "aws_user_pools_web_client_id": "5tc2jshu03i3bmtl1clsov96dt",
     "oauth": {
-        "domain": "bt-web-staging.auth.us-west-2.amazoncognito.com",
+        "domain": "auth.ubcbiztech.com",
         "scope": [
             "phone",
             "email",

@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { fetchBackend } from '../../utils'
+import { Helmet } from 'react-helmet';
 
 const styles = ({
   card: {
@@ -53,7 +54,6 @@ function AdminHome(props) {
       fetchBackend(`/events/delete?id=${clickedEvent.id}`, 'DELETE')
       .then(response => response.json())
       .then(response => {
-        console.log(response)
         alert(response.message)
         window.location.href = "/";
       })
@@ -120,6 +120,9 @@ function AdminHome(props) {
   else {
     return (
       <ThemeProvider>
+        <Helmet>
+            <title>BizTech Admin</title>
+        </Helmet>
         <Typography variant="h1">BizTech Admins</Typography>
         <Typography>BizTech Admins</Typography>
         {createEventCards()}

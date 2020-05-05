@@ -30,7 +30,6 @@ export default function EditEventForm(props) {
 
     const handleEventNameChange = (name, e) => {
         e.persist();
-        console.log(props.event)
         const newSlug = slugify(e.target.value, { lower: true });
         setFieldValue('slug', newSlug)
         handleChange(e);
