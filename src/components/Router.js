@@ -66,9 +66,6 @@ class Router extends Component {
   render() {
 
     const { user } = this.props;
-    // TODO: Use "user.admin" to decide whether to show user pages/host pages
-
-    console.log('route', { user })
 
     return (
       user
@@ -110,7 +107,7 @@ class Router extends Component {
               <AdminRoute
                 exact
                 path="/"
-                render={() => <AdminHome events={this.props.events} />}
+                render={() => <AdminHome />}
                 altRender={() => <UserHome />} />
 
             </Switch>

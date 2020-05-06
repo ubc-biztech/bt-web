@@ -2,12 +2,13 @@ import React from 'react'
 import { setEvent } from "../../actions/PageActions";
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
+import Button from "@material-ui/core/Button";
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -26,6 +27,18 @@ const styles = ({
   media: {
     height: 250
   },
+  row: {
+    display: 'flex'
+  },
+  columnLeft: {
+    flex: '50%',
+    textAlign: 'left'
+  },
+  columnRight: {
+    flex: '50%',
+    textAlign: 'right',
+    marginRight: '72px'
+  }
 });
 
 function AdminHome(props) {
@@ -118,8 +131,20 @@ function AdminHome(props) {
       <Helmet>
           <title>BizTech Admin</title>
       </Helmet>
-      <Typography variant="h1">BizTech Admins</Typography>
-      <Typography>BizTech Admins</Typography>
+
+      <div style={styles.row}>
+        <div style={styles.columnLeft}>
+          <Typography variant="h1">BizTech Admins</Typography>
+          <Typography>BizTech Admins</Typography>
+        </div>
+        <div style={styles.columnRight}>
+          {/* Link to user dashboard*/}
+          {user.admin && <Link to="/user-dashboard">
+            <Button variant="contained" color="primary">User Dashboard</Button>
+          </Link>}
+        </div>
+      </div>
+
       {createEventCards()}
       <Menu
         id="simple-menu"
