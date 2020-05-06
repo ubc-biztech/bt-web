@@ -29,6 +29,9 @@ const styles = ({
 });
 
 function AdminHome(props) {
+
+  const { user, events } = props;
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [eventMenuClicked, setEventMenuClicked] = React.useState(null);
 
@@ -42,14 +45,14 @@ function AdminHome(props) {
   };
 
   const handleClickEditEvent = () => {
-    const clickedEvent = props.events.find(event => event.id === eventMenuClicked)
+    const clickedEvent = events.find(event => event.id === eventMenuClicked)
     props.setEvent(clickedEvent)
-    props.history.push({ pathname: "/edit-event" });
+    props.history.push(`/event/${eventMenuClicked}/edit`);
     handleClose()
   };
 
   const handleClickDeleteEvent = () => {
-    const clickedEvent = props.events.find(event => event.id === eventMenuClicked)
+    const clickedEvent = events.find(event => event.id === eventMenuClicked)
     if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {      
       fetchBackend(`/events/delete?id=${clickedEvent.id}`, 'DELETE')
       .then(response => response.json())
@@ -73,9 +76,9 @@ function AdminHome(props) {
   function createEventCards() {
     const { classes } = props;
 
-    if (props.events)
+    if (events)
       return <Box flexWrap="wrap" display="flex">
-        {props.events.map(event => {
+        {events.map(event => {
           const image = event.imageUrl || require("../../assets/placeholder.jpg")
           return (
             <Card className={classes.card} key={event.id}>
@@ -110,36 +113,36 @@ function AdminHome(props) {
       </Box >
   }
 
-  let events = props.events;
-
-  if (events === null) {
-    return (
-      <CircularProgress />
-    )
-  }
-  else {
-    return (
-      <ThemeProvider>
-        <Helmet>
-            <title>BizTech Admin</title>
-        </Helmet>
-        <Typography variant="h1">BizTech Admins</Typography>
-        <Typography>BizTech Admins</Typography>
-        {createEventCards()}
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleClickEditEvent}>Edit Event</MenuItem>
-          <MenuItem onClick={handleClickDeleteEvent}>Delete Event</MenuItem>
-          <MenuItem onClick={handleClickViewEvent}>View Event</MenuItem>
-        </Menu>
-      </ThemeProvider>
-    );
-  }
+  return events !== null ? (
+    <ThemeProvider>
+      <Helmet>
+          <title>BizTech Admin</title>
+      </Helmet>
+      <Typography variant="h1">BizTech Admins</Typography>
+      <Typography>BizTech Admins</Typography>
+      {createEventCards()}
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClickEditEvent}>Edit Event</MenuItem>
+        <MenuItem onClick={handleClickDeleteEvent}>Delete Event</MenuItem>
+        <MenuItem onClick={handleClickViewEvent}>View Event</MenuItem>
+      </Menu>
+    </ThemeProvider>
+  ) : (
+    <CircularProgress />
+  );
 }
 
-export default connect(null, { setEvent })(withStyles(styles)(withRouter(AdminHome)));
+const mapStateToProps = state => {
+  return {
+    user: state.userState.user,
+    events: state.pageState.events
+  };
+};
+
+export default connect(mapStateToProps, { setEvent })(withStyles(styles)(withRouter(AdminHome)));

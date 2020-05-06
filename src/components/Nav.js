@@ -41,7 +41,7 @@ function Nav(props) {
   };
 
   const handleNewEventClick = () => {
-    history.push({ pathname: "/new-event" })
+    history.push('/event/new')
   }
 
   function MenuItem(props) {

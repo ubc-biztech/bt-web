@@ -1,7 +1,7 @@
 import { SET_EVENT, SET_EVENTS } from '../constants/Constants';
 
 export function setEvent(event) {
-  if (event.id) {
+  if (event && event.id) {
     return {
       type: SET_EVENT,
       event

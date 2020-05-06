@@ -33,7 +33,7 @@ export class LoginRedirect extends Component {
                 // If not biztech username
                 else {
 
-                    // TODO: Supply email and names as initial values to the form
+                    // TODO: Supply email and names as initial values to the form (preferrably through queries)
 
                     // const { name } = user.attributes
                     // const nameSplitted = name.split(' ');
@@ -47,7 +47,7 @@ export class LoginRedirect extends Component {
 
                     // Check if the user exists
                     if(users.length)  this.props.history.push('/'); // Redirect to the 'user home' page
-                    else  this.props.history.push('/user-register'); // Redirect to the 'user register' form
+                    else  this.props.history.push('/signup'); // Redirect to the 'user register' form
                 }
 
             })

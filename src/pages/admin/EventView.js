@@ -1,7 +1,6 @@
 import React,  { useEffect } from "react";
 import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
-import queryString from "query-string";
 import { setEvent } from "../../actions/PageActions";
 import { useHistory, withRouter } from "react-router-dom";
 import EventUserTable from "../../components/EventUserTable";
@@ -13,17 +12,17 @@ import { Helmet } from 'react-helmet';
 function EventView(props) {
   const history = useHistory();
   const { id: eventId } = useParams()
-  const { event, events } = props;
+  const { event, events, setEvent } = props;
 
   // Like componentDidUpdate/DidMount
   useEffect(() => {
-      if (events) {
-        props.setEvent(events.find(event => event.id === eventId));
+      if (events && eventId) {
+        setEvent(events.find(event => event.id === eventId));
       }
-  }, [props, events, event, eventId]);
+  }, [event, events, setEvent, eventId]);
 
   function handleEditEventClick() {
-    history.push({ pathname: "/edit-event" });
+    if(eventId) history.push(`/event/${eventId}/edit`);
   }
 
   return event ? (

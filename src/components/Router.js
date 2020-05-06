@@ -18,7 +18,7 @@ import LoginRedirect from './Authentication/LoginRedirect'
 
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
-import UserRegister from '../pages/member/UserRegister'
+import UserSignup from '../pages/member/UserSignup'
 import EventRegister from '../pages/member/EventRegister'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
@@ -27,8 +27,6 @@ import EventEdit from '../pages/admin/EventEdit'
 import { setEvent, setEvents } from "../actions/PageActions"
 import { setUser } from "../actions/UserActions"
 import { fetchBackend } from '../utils'
-
-const queryString = require('query-string');
 
 class Router extends Component {
   constructor(props) {
@@ -82,11 +80,11 @@ class Router extends Component {
     
               {/* COMMON ROUTES */}
               <Route
-                path="/login/redirect"
+                path="/login-redirect"
                 render={() => <LoginRedirect />} />
               <Route
-                path="/user-register"
-                render={() => <UserRegister />} />
+                path="/signup"
+                render={() => <UserSignup />} />
               <Route
                 path="/event/:id/register"
                 render={() => <EventRegister />} />
@@ -99,17 +97,18 @@ class Router extends Component {
                 path="/user-dashboard"
                 render={() => <UserHome />} />
               <AdminRoute
-                path="/event/:id"
-                render={props => <EventView {...props} />} />
-              <AdminRoute
-                path="/new-event"
+                path="/event/new"
                 render={() => <EventNew />} />
               <AdminRoute
-                path="/edit-event"
+                path="/event/:id/edit"
                 render={() => <EventEdit />} />
+              <AdminRoute
+                path="/event/:id" // Need to make sure that this comes after "new" and "edit"
+                render={props => <EventView {...props} />} />
 
               {/* HOME */}
               <AdminRoute
+                exact
                 path="/"
                 render={() => <AdminHome events={this.props.events} />}
                 altRender={() => <UserHome />} />
