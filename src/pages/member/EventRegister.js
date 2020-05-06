@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
 import { setEvent } from "../../actions/PageActions";
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +8,6 @@ import { fetchBackend } from '../../utils'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import RegisterEvent from '../../components/Forms/RegisterEvent';
-import queryString from 'query-string';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -32,18 +32,16 @@ const useStyles = makeStyles(theme => ({
 
 const EventFormContainer = (props) => {
   const classes = useStyles();
-  const { event } = props;
+  const { event, events } = props;
+  const { id: eventId } = useParams()
 
   useEffect(() => {
-      const params = queryString.parse(window.location.search);
-      const eventID = params.id;
-      if (eventID) {
-          const events = props.events
+      if (eventId) {
           if (events) {
-              props.setEvent(events.find(event => event.id === params.id))
+              props.setEvent(events.find(event => event.id === eventId))
           }
       }
-  }, [props])
+  }, [props, events, eventId])
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),

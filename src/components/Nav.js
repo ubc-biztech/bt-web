@@ -36,7 +36,7 @@ function Nav(props) {
   const handleItemClick = event => {
     props.setEvent(event);
     if (event.id)
-      history.push({ pathname: "/event", search: "?id=" + event.id });
+      history.push(`/event/${event.id}`);
     else history.push("/");
   };
 

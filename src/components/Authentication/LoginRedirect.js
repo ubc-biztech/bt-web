@@ -46,7 +46,7 @@ export class LoginRedirect extends Component {
                     this.props.setUser({ ...user, admin: false });
 
                     // Check if the user exists
-                    if(users.length)  this.props.history.push('/user-home'); // Redirect to the 'user home' page
+                    if(users.length)  this.props.history.push('/'); // Redirect to the 'user home' page
                     else  this.props.history.push('/user-register'); // Redirect to the 'user register' form
                 }
 

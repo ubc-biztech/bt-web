@@ -1,25 +1,31 @@
 import React, { Component } from 'react'
-import AdminHome from '../pages/admin/AdminHome'
-import UserHome from '../pages/member/UserHome'
-import UserRegister from '../pages/member/UserRegister'
-import Nav from './Nav'
-import { Auth } from "aws-amplify";
-import Login from './Authentication/Login'
-import LoginRedirect from './Authentication/LoginRedirect'
-import { setEvent, setEvents } from "../actions/PageActions";
-import { setUser } from "../actions/UserActions";
-import { connect } from "react-redux";
+import { connect } from "react-redux"
+import { Auth } from "aws-amplify"
 import {
   BrowserRouter,
   Switch,
   Route
-} from "react-router-dom";
-import './Router.scss';
+} from "react-router-dom"
+import './Router.scss'
+
+import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
-import EventRegister from '../pages/member/EventRegister';
+
+import Forbidden from './Forbidden'
+import AdminRoute from './Authentication/AdminRoute'
+import Login from './Authentication/Login'
+import LoginRedirect from './Authentication/LoginRedirect'
+
+import AdminHome from '../pages/admin/AdminHome'
+import UserHome from '../pages/member/UserHome'
+import UserRegister from '../pages/member/UserRegister'
+import EventRegister from '../pages/member/EventRegister'
 import EventView from '../pages/admin/EventView'
-import EventNew from '../pages/admin/EventNew';
+import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
+
+import { setEvent, setEvents } from "../actions/PageActions"
+import { setUser } from "../actions/UserActions"
 import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');
@@ -55,14 +61,6 @@ class Router extends Component {
         this.props.setEvents({
           events: response
         })
-
-        let eventId = queryString.parse(window.location.search)['event']
-        if (eventId) {
-          response.forEach(event => {
-            if (event.id === eventId)
-              this.props.setEvent(event)
-          })
-        }
       })
 
   }
@@ -72,6 +70,8 @@ class Router extends Component {
     const { user } = this.props;
     // TODO: Use "user.admin" to decide whether to show user pages/host pages
 
+    console.log('route', { user })
+
     return (
       user
         ? <BrowserRouter>
@@ -79,31 +79,41 @@ class Router extends Component {
           <Nav events={this.props.events} />
           <div className="content">
             <Switch>
+    
+              {/* COMMON ROUTES */}
               <Route
-                path="/event"
-                render={props => <EventView {...props} />} />
-              <Route
-                path="/login-redirect"
+                path="/login/redirect"
                 render={() => <LoginRedirect />} />
-              <Route
-                path="/new-event"
-                render={() => <EventNew />} />
-              <Route
-                path="/edit-event"
-                render={() => <EventEdit />} />
-              <Route
-                path="/page"
-                render={() => <EventRegister />} />
               <Route
                 path="/user-register"
                 render={() => <UserRegister />} />
               <Route
-                path="/user-home"
-                render={() => <UserHome />} />
+                path="/event/:id/register"
+                render={() => <EventRegister />} />
               <Route
+                path="/forbidden"
+                render={() => <Forbidden />} />
+
+              {/* ADMIN ROUTES */}
+              <AdminRoute
+                path="/user-dashboard"
+                render={() => <UserHome />} />
+              <AdminRoute
+                path="/event/:id"
+                render={props => <EventView {...props} />} />
+              <AdminRoute
+                path="/new-event"
+                render={() => <EventNew />} />
+              <AdminRoute
+                path="/edit-event"
+                render={() => <EventEdit />} />
+
+              {/* HOME */}
+              <AdminRoute
                 path="/"
                 render={() => <AdminHome events={this.props.events} />}
-              />
+                altRender={() => <UserHome />} />
+
             </Switch>
           </div>
         </BrowserRouter>
@@ -111,7 +121,7 @@ class Router extends Component {
           <ScrollToTop />
           <Switch>
             <Route
-              path="/page"
+              path="/event/:id/register"
               render={() => <EventRegister />} />
             <Route
               path="/login-redirect"

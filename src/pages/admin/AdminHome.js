@@ -55,7 +55,7 @@ function AdminHome(props) {
       .then(response => response.json())
       .then(response => {
         alert(response.message)
-        window.location.href = "/";
+        props.history.push('/');
       })
       .catch(err => {
           console.log(err)
@@ -66,7 +66,7 @@ function AdminHome(props) {
   };
 
   const handleClickViewEvent = () => {
-    window.location.href = "/page?id=" + eventMenuClicked;
+    props.history.push(`/event/${eventMenuClicked}/register`);
     handleClose()
   };
 
@@ -80,7 +80,7 @@ function AdminHome(props) {
           return (
             <Card className={classes.card} key={event.id}>
               <CardActionArea onClick={() => {
-                props.history.push("/event?id=" + event.id)
+                props.history.push(`/event/${event.id}`)
               }} >
                 <CardMedia
                   className={classes.media}

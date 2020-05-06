@@ -1,4 +1,5 @@
 import React,  { useEffect } from "react";
+import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
 import queryString from "query-string";
 import { setEvent } from "../../actions/PageActions";
@@ -11,16 +12,15 @@ import { Helmet } from 'react-helmet';
 
 function EventView(props) {
   const history = useHistory();
-  const event = props.event;
+  const { id: eventId } = useParams()
+  const { event, events } = props;
 
   // Like componentDidUpdate/DidMount
   useEffect(() => {
-      const params = queryString.parse(props.location.search);
-      const events = props.events;
       if (events) {
-        props.setEvent(events.find(event => event.id === params.id));
+        props.setEvent(events.find(event => event.id === eventId));
       }
-  });
+  }, [props, events, event, eventId]);
 
   function handleEditEventClick() {
     history.push({ pathname: "/edit-event" });
@@ -32,7 +32,7 @@ function EventView(props) {
           <title>{event.ename} - BizTech Admin</title>
       </Helmet>
       <Link onClick={handleEditEventClick}>Edit Event</Link>
-      <Link href={"/page?id=" + event.id} key={event.id}>Public Event Page</Link>
+      <Link onClick={() => { props.history.push(`/event/${event.id}/register`)}} key={event.id}>Public Event Page</Link>
       <EventUserTable event={event} />
     </ThemeProvider>
   ) : (
