@@ -53,7 +53,6 @@ class Router extends Component {
         this.props.setEvents({
           events: response
         })
-
         let eventId = queryString.parse(window.location.search)['event']
         if (eventId) {
           response.forEach(event => {
@@ -62,7 +61,6 @@ class Router extends Component {
           })
         }
       })
-
   }
 
   render() {

@@ -125,7 +125,7 @@ function Home(props) {
         </Helmet>
         <Typography variant="h1">BizTech Admins</Typography>
         <Typography>BizTech Admins</Typography>
-        {createEventCards()}
+        {/* {createEventCards()} */}
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}
