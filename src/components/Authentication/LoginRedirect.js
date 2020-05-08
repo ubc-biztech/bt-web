@@ -4,10 +4,18 @@ import { setUser } from '../../actions/UserActions'
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { log } from '../../utils'
 
 export class LoginRedirect extends Component {
 
-    getAuthenticatedUser() {
+    componentDidMount() {
+        // Check if there is an authenticated user
+        // After authenticating with Google, Auth redirects to localhost:3000/login/ 
+        // There is a time delay where Auth.currentAuthenticatedUser() returns the wrong value. Hence polling
+        this.pollForAuthenticatedUser()
+    }
+    
+    pollForAuthenticatedUser() {
         Auth.currentAuthenticatedUser()
             .then(user => {
                 const email = user.attributes.email
@@ -19,20 +27,16 @@ export class LoginRedirect extends Component {
                     alert('You must use a ubcbiztech.com email')
                 }
             })
-            .catch(() => console.log("Not signed in"))
-    }
-
-    componentDidMount() {
-        // Check if there is an authenticated user
-        // After authenticating with Google, Auth redirects to localhost:3000/login/ 
-        // There is a time delay where Auth.currentAuthenticatedUser() returns the wrong value. Hence setTimeout()
-        setTimeout(() => this.getAuthenticatedUser(), 800)
+            .catch(() => {
+                log("Not signed in")
+                setTimeout(() => this.pollForAuthenticatedUser(), 200)
+            })
     }
 
     render() {
         return this.props.user
             ? <Redirect to="/" />
-            : <div>if this is taking a long time please refresh<CircularProgress /></div>
+            : <CircularProgress />
     }
 
 }

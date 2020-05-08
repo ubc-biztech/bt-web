@@ -1,10 +1,11 @@
 import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
-import NewEventFormComponent from './NewEventFormComponent'
-import { fetchBackend } from '../../../utils'
+import NewEventForm from '../../components/Forms/NewEvent'
+import { fetchBackend } from '../../utils'
+import { Helmet } from 'react-helmet';
 
-export default function NewEventForm() {
+export default function EventNew() {
 
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
@@ -31,13 +32,18 @@ export default function NewEventForm() {
     };
 
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={submitValues}
-        >
-            {props => <NewEventFormComponent {...props} />}
-        </Formik>
+        <React.Fragment>
+            <Helmet>
+                <title>Create Event - BizTech Admin</title>
+            </Helmet>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={submitValues}
+            >
+                {props => <NewEventForm {...props} />}
+            </Formik>
+        </React.Fragment>
     )
 
     async function submitValues(values) {
@@ -61,7 +67,6 @@ export default function NewEventForm() {
                     fetchBackend('/events/create', 'POST', body)
                         .then((response) => response.json())
                         .then((response) => {
-                            console.log(response)
                             alert(response.message)
                             window.location.href = "/";
                         })

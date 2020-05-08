@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Home from './Home'
-import ConnectedEvent from './ConnectedEvent'
+import Home from '../pages/admin/Home'
 import Nav from './Nav'
 import { Auth } from "aws-amplify";
-import { Login, LoginRedirect } from './Authentication'
+import Login from './Authentication/Login'
+import LoginRedirect from './Authentication/LoginRedirect'
 import { setEvent, setEvents } from "../actions/PageActions";
 import { setUser } from "../actions/UserActions";
 import { connect } from "react-redux";
@@ -14,9 +14,10 @@ import {
 } from "react-router-dom";
 import './Router.scss';
 import ScrollToTop from './ScrollToTop'
-import EventPage from '../pages/EventPage';
-import NewEventForm from './Forms/NewEventForm/NewEventForm';
-import EditEventForm from './Forms/EditEventForm/EditEventForm'
+import EventRegister from '../pages/member/EventRegister';
+import EventView from '../pages/admin/EventView'
+import EventNew from '../pages/admin/EventNew';
+import EventEdit from '../pages/admin/EventEdit'
 import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');
@@ -74,19 +75,19 @@ class Router extends Component {
             <Switch>
               <Route
                 path="/event"
-                render={props => <ConnectedEvent {...props} />} />
+                render={props => <EventView {...props} />} />
               <Route
                 path="/login-redirect"
-                component={LoginRedirect} />
+                render={() => <LoginRedirect />} />
               <Route
                 path="/new-event"
-                component={NewEventForm} />
+                render={() => <EventNew />} />
               <Route
                 path="/edit-event"
-                component={EditEventForm} />
+                render={() => <EventEdit />} />
               <Route
                 path="/page"
-                render={() => <EventPage />} />
+                render={() => <EventRegister />} />
               <Route
                 path="/"
                 render={() => <Home events={this.props.events} />}
@@ -99,7 +100,7 @@ class Router extends Component {
           <Switch>
             <Route
               path="/page"
-              render={() => <EventPage />} />
+              render={() => <EventRegister />} />
             <Route
               path="/login-redirect"
               component={LoginRedirect} />

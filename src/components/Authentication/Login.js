@@ -15,7 +15,7 @@ import Container from "@material-ui/core/Container";
 import { Auth } from "aws-amplify";
 import { setUser } from '../../actions/UserActions'
 import { connect } from "react-redux";
-// import BackgroundImage from "./black_stars_background.jpg";
+import { Helmet } from 'react-helmet';
 
 const styles = {
   left: {
@@ -84,7 +84,6 @@ function Login(props) {
       }
     })
     .catch(err => console.log("Not signed in:", err));
-
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
