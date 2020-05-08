@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
+import { Helmet } from 'react-helmet';
 
 const styles = {
     container: {
@@ -17,6 +18,9 @@ const Forbidden = () => {
 
     return (     
         <div style={styles.container}>
+            <Helmet>
+                <title>UBC BizTech - Forbidden Route</title>
+            </Helmet>
             <h1>403: Forbidden</h1>
             <p>
                 Sorry! The current account does not have the necessary permissions to access the page.

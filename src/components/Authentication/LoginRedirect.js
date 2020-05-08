@@ -43,6 +43,7 @@ export class LoginRedirect extends Component {
                     const results = await fetchBackend(`/users/get?email=${email}`, 'GET');
                     const users = await results.json();
                     
+                    // TODO: Remove, this shouldn't be set until the user has officially "signed up" - do this in the "/signup" page
                     this.props.setUser({ ...user, admin: false });
 
                     // Check if the user exists

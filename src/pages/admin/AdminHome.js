@@ -126,7 +126,7 @@ function AdminHome(props) {
   return events !== null ? (
     <ThemeProvider>
       <Helmet>
-          <title>BizTech Admin</title>
+          <title>BizTech Admin Dashboard</title>
       </Helmet>
 
       <div style={styles.row}>

@@ -11,11 +11,11 @@ import './Router.scss'
 import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
 
-import Forbidden from './Forbidden'
 import AdminRoute from './Authentication/AdminRoute'
 import Login from './Authentication/Login'
 import LoginRedirect from './Authentication/LoginRedirect'
 
+import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
 import UserSignup from '../pages/member/UserSignup'
@@ -79,9 +79,12 @@ class Router extends Component {
               <Route
                 path="/login-redirect"
                 render={() => <LoginRedirect />} />
+
               <Route
                 path="/signup"
                 render={() => <UserSignup />} />
+              { /* ^^ NEED TO REMOVE FROM HERE - ROUTE SHOULD ONLY BE AVAILABLE IF USER NOT SIGNED IN YET ^^ */ }
+
               <Route
                 path="/event/:id/register"
                 render={() => <EventRegister />} />
@@ -119,6 +122,9 @@ class Router extends Component {
             <Route
               path="/event/:id/register"
               render={() => <EventRegister />} />
+            <Route
+              path="/signup"
+              render={() => <UserSignup />} />
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
