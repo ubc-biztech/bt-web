@@ -15,6 +15,7 @@ import Container from "@material-ui/core/Container";
 import { Auth } from "aws-amplify";
 import { setUser } from '../../actions/UserActions'
 import { connect } from "react-redux";
+import { Helmet } from 'react-helmet';
 
 const styles = {
   left: {
@@ -88,6 +89,9 @@ function Login(props) {
       <CssBaseline />
       <div className={classes.paper}>
         <Card className={classes.root} width="400px">
+          <Helmet>
+              <title>UBC BizTech - Log In or Sign Up</title>
+          </Helmet>
           <div
             style={{
               display: "flex",
