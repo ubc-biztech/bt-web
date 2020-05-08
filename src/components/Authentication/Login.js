@@ -15,7 +15,6 @@ import Container from "@material-ui/core/Container";
 import { Auth } from "aws-amplify";
 import { setUser } from '../../actions/UserActions'
 import { connect } from "react-redux";
-import { Helmet } from 'react-helmet';
 
 const styles = {
   left: {
