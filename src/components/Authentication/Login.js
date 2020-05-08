@@ -86,12 +86,13 @@ function Login(props) {
     .catch(err => console.log("Not signed in:", err));
   return (
     <Container component="main" maxWidth="xs">
+      <Helmet>
+        <title>UBC BizTech - Log In or Sign Up</title>
+      </Helmet>
       <CssBaseline />
       <div className={classes.paper}>
         <Card className={classes.root} width="400px">
-          <Helmet>
-              <title>UBC BizTech - Log In or Sign Up</title>
-          </Helmet>
+         
           <div
             style={{
               display: "flex",
