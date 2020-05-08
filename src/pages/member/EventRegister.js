@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
-import { setEvent } from "../../actions/PageActions";
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { fetchBackend } from '../../utils'
@@ -32,16 +31,16 @@ const useStyles = makeStyles(theme => ({
 
 const EventFormContainer = (props) => {
   const classes = useStyles();
-  const { event, events } = props;
+  const { events } = props;
   const { id: eventId } = useParams()
 
+  const [ event, setEvent ] = useState(null);
+
   useEffect(() => {
-      if (eventId) {
-          if (events) {
-              props.setEvent(events.find(event => event.id === eventId))
-          }
+      if (eventId && events) {
+        setEvent(events.find(event => event.id === eventId))
       }
-  }, [props, events, eventId])
+  }, [events, eventId])
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -190,9 +189,8 @@ const EventFormContainer = (props) => {
 
 const mapStateToProps = state => {
   return {
-      events: state.pageState.events,
-      event: state.pageState.event
+      events: state.pageState.events
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(EventFormContainer);
+export default connect(mapStateToProps, {})(EventFormContainer);

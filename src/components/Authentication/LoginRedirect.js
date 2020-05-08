@@ -58,7 +58,7 @@ export class LoginRedirect extends Component {
     }
 
     render() {
-        return <div>if this is taking a long time please refresh<CircularProgress /></div>
+        return <CircularProgress />
     }
 
 }

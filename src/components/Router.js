@@ -24,7 +24,7 @@ import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
 
-import { setEvent, setEvents } from "../actions/PageActions"
+import { setEvents } from "../actions/PageActions"
 import { setUser } from "../actions/UserActions"
 import { fetchBackend } from '../utils'
 
@@ -134,10 +134,9 @@ class Router extends Component {
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
-    event: state.pageState.event,
     user: state.userState.user,
     events: state.pageState.events
   };
 };
 
-export default connect(mapStateToProps, { setUser, setEvent, setEvents })(Router);
+export default connect(mapStateToProps, { setUser, setEvents })(Router);

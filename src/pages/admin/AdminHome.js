@@ -1,5 +1,4 @@
 import React from 'react'
-import { setEvent } from "../../actions/PageActions";
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
@@ -58,8 +57,6 @@ function AdminHome(props) {
   };
 
   const handleClickEditEvent = () => {
-    const clickedEvent = events.find(event => event.id === eventMenuClicked)
-    props.setEvent(clickedEvent)
     props.history.push(`/event/${eventMenuClicked}/edit`);
     handleClose()
   };
@@ -170,4 +167,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(withStyles(styles)(withRouter(AdminHome)));
+export default connect(mapStateToProps, {})(withStyles(styles)(withRouter(AdminHome)));

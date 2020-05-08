@@ -6,8 +6,6 @@ import {
   ListItem,
 } from "@material-ui/core";
 import "./Nav.scss";
-import { setEvent } from "../actions/PageActions";
-import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import HomeIcon from '@material-ui/icons/Home';
@@ -34,7 +32,6 @@ function Nav(props) {
   }
 
   const handleItemClick = event => {
-    props.setEvent(event);
     if (event.id)
       history.push(`/event/${event.id}`);
     else history.push("/");
@@ -90,10 +87,4 @@ function Nav(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    event: state.pageState.event
-  };
-};
-
-export default connect(mapStateToProps, { setEvent })(withRouter(Nav));
+export default withRouter(Nav);
