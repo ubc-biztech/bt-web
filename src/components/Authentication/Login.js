@@ -13,9 +13,9 @@ import { Divider } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 
 import { Auth } from "aws-amplify";
-import { setUser } from '../../actions/UserActions'
+import { setUser } from "../../actions/UserActions";
 import { connect } from "react-redux";
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 const styles = {
   left: {
@@ -25,6 +25,11 @@ const styles = {
     marginTop: "5px",
     marginRight: "8px",
     width: "19px"
+  },
+  facebookIconBtn: {
+    backgroundColor: "#3fb5a3",
+    paddingLeft: "10px",
+    paddingRight: "10px"
   }
 };
 
@@ -38,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: "#54D260"
+    backgroundColor: "#3fb5a3"
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -72,6 +77,7 @@ function Login(props) {
   const classes = useStyles();
   Auth.currentAuthenticatedUser()
     .then(user => {
+      console.log(user);
       const email = user.attributes.email;
       if (
         email.substring(email.indexOf("@") + 1, email.length) ===
@@ -82,6 +88,7 @@ function Login(props) {
         Auth.signOut();
         alert("You must use a ubcbiztech.com email");
       }
+      props.setUser(user);
     })
     .catch(err => console.log("Not signed in:", err));
   return (
@@ -92,7 +99,6 @@ function Login(props) {
       <CssBaseline />
       <div className={classes.paper}>
         <Card className={classes.root} width="400px">
-         
           <div
             style={{
               display: "flex",
@@ -122,7 +128,22 @@ function Login(props) {
               Sign In with Google
             </Button>
           </CardContent>
-          <Divider variant="middle" />
+          <CardContent>
+            <Button style={styles.facebookIconBtn}
+              onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
+              variant="contained"
+              color="primary"
+            >
+              <div style={styles.left}>
+                <img
+                  style={styles.socialIcon}
+                  alt="Facebook"
+                  src="./facebook.png"
+                />
+              </div>
+              Sign In with Facebook
+            </Button>
+          </CardContent>
         </Card>
       </div>
     </Container>
@@ -131,8 +152,11 @@ function Login(props) {
 
 const mapStateToProps = state => {
   return {
-      user: state.userState.user,
+    user: state.userState.user
   };
 };
 
-export default connect(mapStateToProps, { setUser })(Login);
+export default connect(
+  mapStateToProps,
+  { setUser }
+)(Login);

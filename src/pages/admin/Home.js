@@ -72,7 +72,6 @@ function Home(props) {
 
   function createEventCards() {
     const { classes } = props;
-
     if (props.events)
       return <Box flexWrap="wrap" display="flex">
         {props.events.map(event => {
@@ -125,7 +124,7 @@ function Home(props) {
         </Helmet>
         <Typography variant="h1">BizTech Admins</Typography>
         <Typography>BizTech Admins</Typography>
-        {/* {createEventCards()} */}
+        {createEventCards()}
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}
