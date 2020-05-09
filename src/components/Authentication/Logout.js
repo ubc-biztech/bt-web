@@ -10,7 +10,6 @@ export function Logout(props) {
     <Button variant="contained" color="primary" onClick={() => {
         Auth.signOut()
         .then(data => {
-            console.log(data)
             props.logout()
         })
         .catch(err => console.log(err));

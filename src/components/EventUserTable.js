@@ -117,7 +117,6 @@ export class EventUserTable extends Component {
     fetchBackend('/events/getUsers?' + params, 'GET')
       .then(response => response.json())
       .then(response => {
-        console.log(response);
         this.setState({ rows: response });
       });
   }

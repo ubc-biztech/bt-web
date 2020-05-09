@@ -7,6 +7,7 @@ import EventUserTable from "../../components/EventUserTable";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Link from "@material-ui/core/Link";
 import ThemeProvider from '../../components/ThemeProvider'
+import { Helmet } from 'react-helmet';
 
 function EventView(props) {
   const history = useHistory();
@@ -27,13 +28,16 @@ function EventView(props) {
 
   return event ? (
     <ThemeProvider>
+      <Helmet>
+          <title>{event.ename} - BizTech Admin</title>
+      </Helmet>
       <Link onClick={handleEditEventClick}>Edit Event</Link>
       <Link href={"/page?id=" + event.id} key={event.id}>Public Event Page</Link>
       <EventUserTable event={event} />
     </ThemeProvider>
   ) : (
-      <CircularProgress />
-    );
+    <CircularProgress />
+  );
 }
 
 const mapStateToProps = state => {

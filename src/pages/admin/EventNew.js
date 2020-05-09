@@ -3,6 +3,7 @@ import * as Yup from "yup"
 import { Formik } from "formik";
 import NewEventForm from '../../components/Forms/NewEvent'
 import { fetchBackend } from '../../utils'
+import { Helmet } from 'react-helmet';
 
 export default function EventNew() {
 
@@ -31,13 +32,18 @@ export default function EventNew() {
     };
 
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={submitValues}
-        >
-            {props => <NewEventForm {...props} />}
-        </Formik>
+        <React.Fragment>
+            <Helmet>
+                <title>Create Event - BizTech Admin</title>
+            </Helmet>
+            <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={submitValues}
+            >
+                {props => <NewEventForm {...props} />}
+            </Formik>
+        </React.Fragment>
     )
 
     async function submitValues(values) {
@@ -61,7 +67,6 @@ export default function EventNew() {
                     fetchBackend('/events/create', 'POST', body)
                         .then((response) => response.json())
                         .then((response) => {
-                            console.log(response)
                             alert(response.message)
                             window.location.href = "/";
                         })
