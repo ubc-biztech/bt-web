@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import { setEvent } from "../../actions/PageActions";
 import { makeStyles } from '@material-ui/core/styles';
@@ -48,7 +48,6 @@ const EventFormContainer = (props) => {
         <div className={classes.layout}>
             <Paper className={classes.paper}>
               <React.Fragment>
-                {/* <img src={require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} /> */}
                 
                 <div className={classes.content}>
                   <Typography variant="h4" align="center" gutterBottom>
