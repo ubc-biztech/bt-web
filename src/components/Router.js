@@ -18,6 +18,8 @@ import EventRegister from '../pages/member/EventRegister';
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew';
 import EventEdit from '../pages/admin/EventEdit'
+
+import NewMemberRegister from "../pages/member/NewMemberRegister";
 import { fetchBackend } from '../utils'
 
 const queryString = require('query-string');
@@ -88,6 +90,9 @@ class Router extends Component {
               <Route
                 path="/page"
                 render={() => <EventRegister />} />
+              <Route
+                path="/new-member"
+                render={() => <NewMemberRegister />} />
               <Route
                 path="/"
                 render={() => <Home events={this.props.events} />}
