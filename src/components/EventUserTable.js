@@ -84,6 +84,7 @@ export class EventUserTable extends Component {
       }
     }
 
+
     /**
      * Creates event table using MaterialTable library
      */
@@ -108,7 +109,18 @@ export class EventUserTable extends Component {
               <div>
                 <Select
                   value={rowData.registrationStatus}
-                  onClick={event => changeRegistration(event, rowData)}>
+                  onClick={event => changeRegistration(event, rowData)}
+                  style={{
+                    backgroundColor:
+                      rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
+                        ? "#54D26E"
+                        : rowData.registrationStatus === REGISTRATION_STATUS.WAITLISTED
+                          ? "#F7D055"
+                          : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
+                            ? "#E15453"
+                            : "#FFF",
+                    paddingLeft: "10px"
+                  }}>
                   <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
                   <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>Checked in</MenuItem>
                   <MenuItem value={REGISTRATION_STATUS.REGISTERED}>Registered</MenuItem>
@@ -132,14 +144,7 @@ export class EventUserTable extends Component {
             fontWeight: "bold"
           },
           rowStyle: rowData => ({
-            backgroundColor:
-              rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
-                ? "#54D26E"
-                : rowData.registrationStatus === REGISTRATION_STATUS.WAITLISTED
-                  ? "#FFFF00"
-                  : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
-                    ? "#FF0000"
-                    : "#FFF"
+
           })
         }}
       //actions={[rowData => this.displayAction(rowData)]}
