@@ -4,7 +4,8 @@ import { Auth } from "aws-amplify"
 import {
   BrowserRouter,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom"
 import './Router.scss'
 
@@ -18,7 +19,7 @@ import LoginRedirect from './Authentication/LoginRedirect'
 import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
-import UserSignup from '../pages/member/UserSignup'
+import NewMemberRegister from "../pages/member/NewMemberRegister"
 import EventRegister from '../pages/member/EventRegister'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
@@ -26,7 +27,7 @@ import EventEdit from '../pages/admin/EventEdit'
 
 import { setEvents } from "../actions/PageActions"
 import { setUser } from "../actions/UserActions"
-import { fetchBackend } from '../utils'
+import { log, fetchBackend } from '../utils'
 
 class Router extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class Router extends Component {
           this.props.setUser({ ...user, admin: false });
         }
       })
-      .catch(() => console.log("Not signed in"))
+      .catch(() => log("Not signed in"))
   }
 
   componentDidMount() {
@@ -61,11 +62,15 @@ class Router extends Component {
         })
       })
 
+      if(!this.props.user) this.getAuthenticatedUser();
+
   }
 
   render() {
 
     const { user } = this.props;
+
+    console.log({user})
 
     return (
       user
@@ -79,11 +84,6 @@ class Router extends Component {
               <Route
                 path="/login-redirect"
                 render={() => <LoginRedirect />} />
-
-              <Route
-                path="/signup"
-                render={() => <UserSignup />} />
-              { /* ^^ NEED TO REMOVE FROM HERE - ROUTE SHOULD ONLY BE AVAILABLE IF USER NOT SIGNED IN YET ^^ */ }
 
               <Route
                 path="/event/:id/register"
@@ -113,24 +113,31 @@ class Router extends Component {
                 render={() => <AdminHome />}
                 altRender={() => <UserHome />} />
 
+              <Redirect to="/" />
+
             </Switch>
           </div>
         </BrowserRouter>
         : <BrowserRouter>
           <ScrollToTop />
           <Switch>
+
             <Route
               path="/event/:id/register"
-              render={() => <EventRegister />} />
+              component={EventRegister} />
+
             <Route
               path="/signup"
-              render={() => <UserSignup />} />
+              component={NewMemberRegister} />
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
             <Route
               path="/"
               component={Login} />
+            
+            <Redirect to="/" />
+
           </Switch>
         </BrowserRouter >
     )
