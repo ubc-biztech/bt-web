@@ -1,8 +1,8 @@
 import React from 'react';
-import { useHistory, useLocation } from "react-router-dom";
-import { connect } from "react-redux"
-import * as Yup from "yup"
-import { Formik } from "formik";
+import { useHistory, useLocation } from 'react-router-dom';
+import { connect } from 'react-redux'
+import * as Yup from 'yup'
+import { Formik } from 'formik';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import NewMember from '../../components/Forms/NewMember';
 
 import { fetchBackend } from '../../utils'
-import { setUser } from "../../actions/UserActions"
+import { setUser } from '../../actions/UserActions'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -59,9 +59,9 @@ const NewMemberRegisterFormContainer = (props) => {
 
   // form initial values (if exist), will cause input fields to disable as well
   const initialValues = {
-    email: initialEmail || "",
-    fname: initialFname || "",
-    lname: initialLname || "",
+    email: initialEmail || '',
+    fname: initialFname || '',
+    lname: initialLname || '',
   };
 
   return (
@@ -70,11 +70,11 @@ const NewMemberRegisterFormContainer = (props) => {
         <React.Fragment>
           
           <div className={classes.content}>
-            <Typography variant="h4" align="center" gutterBottom>
+            <Typography variant='h4' align='center' gutterBottom>
               Member Information
             </Typography>
             
-            <Typography variant="subtitle1" gutterBottom>
+            <Typography variant='subtitle1' gutterBottom>
               To avoid having to provide your information every time you sign up for an event, please fill out the form below.
               The given information will allow UBC BizTech to better our future events and cater content towards our members
               needs. 
@@ -97,13 +97,13 @@ const NewMemberRegisterFormContainer = (props) => {
   async function submitValues(values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
 
-    //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+    //TODO: Standardize the values passed to DB (right now it passes '1st Year' instead of 1)
     fetchBackend(`/users/get?id=${values.id}`, 'GET')
       .then((response) => response.json())
       .then((response) => {
-        if (response === "User not found.") {
+        if (response === 'User not found.') {
           // Need to create new user
-          // console.log("User not found, creating user");
+          // console.log('User not found, creating user');
           const body = JSON.stringify({
             email,
             fname,
@@ -118,13 +118,13 @@ const NewMemberRegisterFormContainer = (props) => {
 
           console.log({body})
 
-          fetchBackend("/users/create", "POST", body)
+          fetchBackend('/users', 'POST', body)
             .then((userResponse) => userResponse.json())
             .then((userResponse) => {
 
               const { email, fname, lname } = userResponse.params.Item;
               const name = `${fname} ${lname}`;
-              const admin = email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com';
+              const admin = email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com';
 
               props.setUser({ attributes: { email, name }, admin });
               alert('Thanks for signing up!');
@@ -137,7 +137,7 @@ const NewMemberRegisterFormContainer = (props) => {
         }
       })
       .catch(err => {
-        alert("Signup failed");
+        alert('Signup failed');
       });
   }
 }
