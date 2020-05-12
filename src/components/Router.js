@@ -30,14 +30,6 @@ import { setUser } from "../actions/UserActions"
 import { log, fetchBackend } from '../utils'
 
 class Router extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      events: null
-    }
-  }
-
   getAuthenticatedUser() {
     Auth.currentAuthenticatedUser()
       .then(authUser => {
