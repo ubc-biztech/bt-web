@@ -38,7 +38,6 @@ export class LoginRedirect extends Component {
                     const lname = nameSplitted.pop() || null;
                     const fname = nameSplitted.join(' ');
 
-                    // TODO: this call no longer will work when new backend api definition is deployed
                     const results = await fetchBackend(`/users/get?email=${email}`, 'GET');
                     const users = await results.json();
 

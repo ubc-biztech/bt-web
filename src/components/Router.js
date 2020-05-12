@@ -19,11 +19,11 @@ import LoginRedirect from './Authentication/LoginRedirect'
 import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
-import NewMemberRegister from "../pages/member/NewMemberRegister"
 import EventRegister from '../pages/member/EventRegister'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
+import Signup from "../pages/member/Signup"
 
 import { setEvents } from "../actions/PageActions"
 import { setUser } from "../actions/UserActions"
@@ -128,7 +128,7 @@ class Router extends Component {
 
             <Route
               path="/signup"
-              component={NewMemberRegister} />
+              component={Signup} />
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
