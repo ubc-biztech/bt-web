@@ -1,28 +1,33 @@
 import React, { Component } from 'react'
-import Home from '../pages/admin/Home'
-import Nav from './Nav'
-import { Auth } from "aws-amplify";
-import Login from './Authentication/Login'
-import LoginRedirect from './Authentication/LoginRedirect'
-import { setEvent, setEvents } from "../actions/PageActions";
-import { setUser } from "../actions/UserActions";
-import { connect } from "react-redux";
+import { connect } from "react-redux"
+import { Auth } from "aws-amplify"
 import {
   BrowserRouter,
   Switch,
-  Route
-} from "react-router-dom";
-import './Router.scss';
+  Route,
+  Redirect
+} from "react-router-dom"
+import './Router.scss'
+
+import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
-import EventRegister from '../pages/member/EventRegister';
+
+import AdminRoute from './Authentication/AdminRoute'
+import Login from './Authentication/Login'
+import LoginRedirect from './Authentication/LoginRedirect'
+
+import Forbidden from '../pages/Forbidden'
+import AdminHome from '../pages/admin/AdminHome'
+import UserHome from '../pages/member/UserHome'
+import NewMemberRegister from "../pages/member/NewMemberRegister"
+import EventRegister from '../pages/member/EventRegister'
 import EventView from '../pages/admin/EventView'
-import EventNew from '../pages/admin/EventNew';
+import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
 
-import NewMemberRegister from "../pages/member/NewMemberRegister";
-import { fetchBackend } from '../utils'
-
-const queryString = require('query-string');
+import { setEvents } from "../actions/PageActions"
+import { setUser } from "../actions/UserActions"
+import { log, fetchBackend } from '../utils'
 
 class Router extends Component {
   constructor(props) {
@@ -35,17 +40,17 @@ class Router extends Component {
 
   getAuthenticatedUser() {
     Auth.currentAuthenticatedUser()
-      .then(user => {
-        const email = user.attributes.email
+      .then(authUser => {
+        const email = authUser.attributes.email
         if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-          this.props.setUser(user)
+          this.props.setUser({ ...authUser, admin: true });
         }
         else {
-          Auth.signOut()
-          alert('You must use a ubcbiztech.com email')
+          console.log('not using a biztech e-mail!');
+          this.props.setUser({ ...authUser, admin: false });
         }
       })
-      .catch(() => console.log("Not signed in"))
+      .catch(() => log("Not signed in"))
   }
 
   componentDidMount() {
@@ -55,63 +60,84 @@ class Router extends Component {
         this.props.setEvents({
           events: response
         })
-
-        let eventId = queryString.parse(window.location.search)['event']
-        if (eventId) {
-          response.forEach(event => {
-            if (event.id === eventId)
-              this.props.setEvent(event)
-          })
-        }
       })
+
+      if(!this.props.user) this.getAuthenticatedUser();
 
   }
 
   render() {
+
+    const { user } = this.props;
+
+    console.log({user})
+
     return (
-      this.props.user
+      user
         ? <BrowserRouter>
           <ScrollToTop />
           <Nav events={this.props.events} />
           <div className="content">
             <Switch>
-              <Route
-                path="/event"
-                render={props => <EventView {...props} />} />
+    
+              {/* COMMON ROUTES */}
               <Route
                 path="/login-redirect"
                 render={() => <LoginRedirect />} />
+
               <Route
-                path="/new-event"
-                render={() => <EventNew />} />
-              <Route
-                path="/edit-event"
-                render={() => <EventEdit />} />
-              <Route
-                path="/page"
+                path="/event/:id/register"
                 render={() => <EventRegister />} />
               <Route
-                path="/new-member"
-                render={() => <NewMemberRegister />} />
-              <Route
+                path="/forbidden"
+                render={() => <Forbidden />} />
+
+              {/* ADMIN ROUTES */}
+              <AdminRoute
+                path="/user-dashboard"
+                render={() => <UserHome />} />
+              <AdminRoute
+                path="/event/new"
+                render={() => <EventNew />} />
+              <AdminRoute
+                path="/event/:id/edit"
+                render={() => <EventEdit />} />
+              <AdminRoute
+                path="/event/:id" // Need to make sure that this comes after "new" and "edit"
+                render={props => <EventView {...props} />} />
+
+              {/* HOME */}
+              <AdminRoute
+                exact
                 path="/"
-                render={() => <Home events={this.props.events} />}
-              />
+                render={() => <AdminHome />}
+                altRender={() => <UserHome />} />
+
+              <Redirect to="/" />
+
             </Switch>
           </div>
         </BrowserRouter>
         : <BrowserRouter>
           <ScrollToTop />
           <Switch>
+
             <Route
-              path="/page"
-              render={() => <EventRegister />} />
+              path="/event/:id/register"
+              component={EventRegister} />
+
+            <Route
+              path="/signup"
+              component={NewMemberRegister} />
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
             <Route
               path="/"
               component={Login} />
+            
+            <Redirect to="/" />
+
           </Switch>
         </BrowserRouter >
     )
@@ -121,10 +147,9 @@ class Router extends Component {
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
-    event: state.pageState.event,
     user: state.userState.user,
     events: state.pageState.events
   };
 };
 
-export default connect(mapStateToProps, { setUser, setEvent, setEvents })(Router);
+export default connect(mapStateToProps, { setUser, setEvents })(Router);

@@ -70,20 +70,20 @@ const useStyles = makeStyles(theme => ({
 
 function Login(props) {
   const classes = useStyles();
+
   Auth.currentAuthenticatedUser()
-    .then(user => {
-      const email = user.attributes.email;
-      if (
-        email.substring(email.indexOf("@") + 1, email.length) ===
-        "ubcbiztech.com"
-      ) {
-        props.setUser(user);
-      } else {
-        Auth.signOut();
-        alert("You must use a ubcbiztech.com email");
+  .then(user => {
+      const email = user.attributes.email
+      if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
+          props.setUser({ ...user, admin: true });
       }
-    })
-    .catch(err => console.log("Not signed in:", err));
+      else {
+          console.log('not using a biztech e-mail!');
+          props.setUser({ ...user, admin: false });
+      }
+  })
+  .catch((err) => console.log("Not signed in", err));
+
   return (
     <Container component="main" maxWidth="xs">
       <Helmet>

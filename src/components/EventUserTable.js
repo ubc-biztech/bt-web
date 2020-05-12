@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import MaterialTable from "material-table";
 import { fetchBackend } from "../utils";
 import { REGISTRATION_STATUS } from "../constants/Constants";
@@ -179,9 +178,4 @@ export class EventUserTable extends Component {
     );
   }
 }
-const mapStateToProps = state => {
-  return {
-    event: state.pageState.event
-  };
-};
-export default connect(mapStateToProps, null)(EventUserTable);
+export default EventUserTable;

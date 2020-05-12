@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
-import { setEvent } from "../../actions/PageActions";
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { fetchBackend } from '../../utils'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import RegisterEvent from '../../components/Forms/RegisterEvent';
-import queryString from 'query-string';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -30,20 +29,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const EventRegister = (props) => {
+const EventFormContainer = (props) => {
   const classes = useStyles();
-  const { event } = props;
+  const { events } = props;
+  const { id: eventId } = useParams()
+
+  const [ event, setEvent ] = useState(null);
 
   useEffect(() => {
-      const params = queryString.parse(window.location.search);
-      const eventID = params.id;
-      if (eventID) {
-          const events = props.events
-          if (events) {
-              props.setEvent(events.find(event => event.id === params.id))
-          }
+      if (eventId && events) {
+        setEvent(events.find(event => event.id === eventId))
       }
-  }, [props])
+  }, [events, eventId])
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -192,9 +189,8 @@ const EventRegister = (props) => {
 
 const mapStateToProps = state => {
   return {
-      events: state.pageState.events,
-      event: state.pageState.event
+      events: state.pageState.events
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(EventRegister);
+export default connect(mapStateToProps, {})(EventFormContainer);

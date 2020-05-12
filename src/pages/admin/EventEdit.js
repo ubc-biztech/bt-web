@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import EditEventForm from '../../components/Forms/EditEvent'
@@ -7,6 +8,19 @@ import { connect } from "react-redux";
 import { Helmet } from 'react-helmet';
 
 function EventEdit(props) {
+
+    const { id: eventId } = useParams();
+    const [ event, setEvent ] = useState(null);
+
+    const { events } = props;
+
+    useEffect(() => {
+        // Get the initial values
+        if(!event && events && eventId) {
+            setEvent(events.find(event => event.id === eventId));
+        }
+    }, [event, events, setEvent, eventId])
+
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
         slug: Yup.string().matches(/^[a-z\-0-9]*$/, "Slug must be lowercase and have no whitespace").required(),
@@ -19,16 +33,16 @@ function EventEdit(props) {
         imageUrl: Yup.string().url().required(),
     });
 
-    const initialValues = props.event ? {
-        ename: props.event.ename,
-        slug: props.event.id,
-        description: props.event.description,
-        capacity: props.event.capac,
-        partners: props.event.partners,
-        elocation: props.event.elocation,
-        imageUrl: props.event.imageUrl,
-        startDate: props.event.startDate,
-        endDate: props.event.endDate
+    const initialValues = event ? {
+        ename: event.ename,
+        slug: event.id,
+        description: event.description,
+        capacity: event.capac,
+        partners: event.partners,
+        elocation: event.elocation,
+        imageUrl: event.imageUrl,
+        startDate: event.startDate,
+        endDate: event.endDate
     } : {
             ename: "",
             slug: "",
@@ -41,10 +55,10 @@ function EventEdit(props) {
             endDate: ""
         };
 
-    return (
+    return event ? (
         <React.Fragment>
             <Helmet>
-                <title>Edit {props.event.ename} - BizTech Admin</title>
+                <title>Edit {event.ename} - BizTech Admin</title>
             </Helmet>
             <Formik
                 initialValues={initialValues}
@@ -54,7 +68,7 @@ function EventEdit(props) {
                 {props => <EditEventForm {...props} />}
             </Formik>
         </React.Fragment>
-    )
+    ) : null
 
     async function submitValues(values) {
         const body = {
@@ -82,8 +96,8 @@ function EventEdit(props) {
 }
 const mapStateToProps = state => {
     return {
-        event: state.pageState.event,
+        events: state.pageState.events,
     };
 };
 
-export default connect(mapStateToProps)(EventEdit);
+export default connect(mapStateToProps, {})(EventEdit);
