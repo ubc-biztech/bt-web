@@ -17,7 +17,6 @@ export class EventUserTable extends Component {
   }
 
   async updateUserRegistrationStatus(id, registrationStatus) {
-    console.log(registrationStatus)
     const body = JSON.stringify({
       eventID: this.props.event.id,
       id: id,
@@ -57,26 +56,25 @@ export class EventUserTable extends Component {
      * @param {*} rowData data about the current row
     */
     const changeRegistration = (event, rowData) => {
-      console.log(event.target.value)
       switch (event.target.value) {
         case REGISTRATION_STATUS.REGISTERED:
-          if (window.confirm("Do you want to register " + rowData.fname + " " + rowData.lname + "?\n This will send an email to the user.")) {
+          if (window.confirm("Do you want to register " + rowData.fname + " " + rowData.lname + "?\nThis will send an email to the user.")) {
             this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.REGISTERED);
           }
           break;
         case REGISTRATION_STATUS.CHECKED_IN:
-          if (window.confirm("Do you want to check-in " + rowData.fname + " " + rowData.lname + "?\n This will send an email to the user.")) {
+          if (window.confirm("Do you want to check-in " + rowData.fname + " " + rowData.lname + "?\nThis will NOT send an email to the user.")) {
             this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CHECKED_IN);
           }
           break;
         case REGISTRATION_STATUS.WAITLISTED:
-          if (window.confirm("Do you want to waitlist " + rowData.fname + " " + rowData.lname + "?\n This will NOT send an email to the user.")) {
+          if (window.confirm("Do you want to waitlist " + rowData.fname + " " + rowData.lname + "?\nThis will send an email to the user.")) {
             this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.WAITLISTED);
           }
           break;
         case REGISTRATION_STATUS.CANCELLED:
-          if (window.confirm("Did " + rowData.fname + " " + rowData.lname + "cancel?\n This will send an email to the user.")) {
-            this.updateUserRegistrationStatus(rowData.studentNumber, REGISTRATION_STATUS.CANCELLED);
+          if (window.confirm("Did " + rowData.fname + " " + rowData.lname + "cancel?\nThis will send an email to the user.")) {
+            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CANCELLED);
           }
           break;
         default:
