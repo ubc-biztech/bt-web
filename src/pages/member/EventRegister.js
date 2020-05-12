@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const EventFormContainer = (props) => {
+const EventRegister = (props) => {
   const classes = useStyles();
   const { event } = props;
 
@@ -197,4 +197,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(EventFormContainer);
+export default connect(mapStateToProps, { setEvent })(EventRegister);

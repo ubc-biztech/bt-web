@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { setEvent } from '../../actions/PageActions';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { fetchBackend, log } from '../../utils'
@@ -26,9 +24,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const EventFormContainer = (props) => {
+const NewMemberRegister = (props) => {
   const classes = useStyles();
-  const { event } = props;
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -43,7 +40,7 @@ const EventFormContainer = (props) => {
     diet: Yup.string().required('Dietary restriction is required'), 
   });
 
-  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: ''};
+  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: ''};
     return (
         <div className={classes.layout}>
             <Paper className={classes.paper}>
@@ -74,8 +71,7 @@ const EventFormContainer = (props) => {
     )
 
   async function submitValues(values) {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
-    const eventID = event.id;
+    const { email, fname, lname, id, faculty, year, diet, gender } = values;
     //TODO: Standardize the values passed to DB (right now it passes '1st Year' instead of 1)
     // Create new user
     const body = {
@@ -102,11 +98,4 @@ const EventFormContainer = (props) => {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-      events: state.pageState.events,
-      event: state.pageState.event
-  };
-};
-
-export default connect(mapStateToProps, { setEvent })(EventFormContainer);
+export default NewMemberRegister;
