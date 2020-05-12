@@ -1,13 +1,17 @@
 import React from 'react';
-import { connect } from "react-redux";
-import { setEvent } from "../../actions/PageActions";
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { fetchBackend } from '../../utils'
+import { useHistory, useLocation } from "react-router-dom";
+import { connect } from "react-redux"
 import * as Yup from "yup"
 import { Formik } from "formik";
-import NewMember from '../../components/Forms/NewMember';
+
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+
+import NewMember from '../../components/Forms/NewMember';
+
+import { fetchBackend } from '../../utils'
+import { setUser } from "../../actions/UserActions"
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -26,9 +30,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const EventFormContainer = (props) => {
+const NewMemberRegisterFormContainer = (props) => {
   const classes = useStyles();
-  const { event } = props;
+
+  const history = useHistory();
+  const useQuery = () => { return new URLSearchParams(useLocation().search) };
+  const queries = useQuery();
+  
+  // Destructure query url
+  const initialEmail = queries.get('email');
+  let initialName = queries.get('name');
+  initialName = initialName && initialName.split(',')
+  const initialFname = initialName?.length && initialName[0];
+  const initialLname = initialName?.length && initialName[1];
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -43,39 +57,46 @@ const EventFormContainer = (props) => {
     diet: Yup.string().required("Dietary restriction is required"), 
   });
 
-  const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", diet: "", gender: "", heardFrom: ""};
-    return (
-        <div className={classes.layout}>
-            <Paper className={classes.paper}>
-              <React.Fragment>
-                
-                <div className={classes.content}>
-                  <Typography variant="h4" align="center" gutterBottom>
-                    Member Information
-                  </Typography>
-                  
-                  <Typography variant="h7" gutterBottom>
-                    To avoid having to provide your information every time you sign up for an event, please fill out the form below.
-                    The given information will allow UBC BizTech to better our future events and cater content towards our members
-                    needs. 
-                  </Typography>
+  // form initial values (if exist), will cause input fields to disable as well
+  const initialValues = {
+    email: initialEmail || "",
+    fname: initialFname || "",
+    lname: initialLname || "",
+  };
 
-                  <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={submitValues}
-                  >
-                    {props => <NewMember {...props} />}
-                  </Formik>
-                </div>
-              </React.Fragment>
-            </Paper>
-        </div>
-    )
+  return (
+    <div className={classes.layout}>
+      <Paper className={classes.paper}>
+        <React.Fragment>
+          
+          <div className={classes.content}>
+            <Typography variant="h4" align="center" gutterBottom>
+              Member Information
+            </Typography>
+            
+            <Typography variant="subtitle1" gutterBottom>
+              To avoid having to provide your information every time you sign up for an event, please fill out the form below.
+              The given information will allow UBC BizTech to better our future events and cater content towards our members
+              needs. 
+            </Typography>
+
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={submitValues}
+            >
+              {props => <NewMember {...props} />}
+            </Formik>
+          </div>
+
+        </React.Fragment>
+      </Paper>
+    </div>
+  )
 
   async function submitValues(values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
-    const eventID = event.id;
+
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/get?id=${values.id}`, 'GET')
       .then((response) => response.json())
@@ -84,64 +105,41 @@ const EventFormContainer = (props) => {
           // Need to create new user
           // console.log("User not found, creating user");
           const body = JSON.stringify({
-            id,
+            email,
             fname,
             lname,
-            email,
-            year,
+            id,
             faculty,
-            gender,
-            diet
+            year,
+            diet,
+            heardFrom,
+            gender
           });
+
+          console.log({body})
+
           fetchBackend("/users/create", "POST", body)
             .then((userResponse) => userResponse.json())
             .then((userResponse) => {
-              if (userResponse.message === "Created!") {
-                registerUser(id, eventID, heardFrom);
-              } else {
-                alert("Signup failed");
-              }
-            })
-        } else {
-          registerUser(id, eventID, heardFrom);
-        }
-      })
-      .catch(err => {
-        console.log("registration error");
-        alert("Signup failed");
-      });
-  }
 
-  async function registerUser(id, eventID, heardFrom) {
-    const body = JSON.stringify({
-      id,
-      eventID,
-      heardFrom,
-      registrationStatus: "registered"
-    })
-    fetchBackend("/registration/create", "POST", body)
-      .then((regResponse) => regResponse.json())
-      .then((regResponse) => {
-        if (regResponse.message === "Update succeeded") {
-          alert("Signed Up");
+              const { email, fname, lname } = userResponse.params.Item;
+              const name = `${fname} ${lname}`;
+              const admin = email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com';
+
+              props.setUser({ attributes: { email, name }, admin });
+              alert('Thanks for signing up!');
+              history.push('/');
+
+            })
+
         } else {
-          console.log("registration error");
-          console.log(regResponse.message);
-          alert("Signup failed");
+          alert('A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.')
         }
       })
       .catch(err => {
-        console.log("registration error");
         alert("Signup failed");
       });
   }
 }
 
-const mapStateToProps = state => {
-  return {
-      events: state.pageState.events,
-      event: state.pageState.event
-  };
-};
-
-export default connect(mapStateToProps, { setEvent })(EventFormContainer);
+export default connect(() => ({}), { setUser })(NewMemberRegisterFormContainer);
