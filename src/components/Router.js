@@ -40,14 +40,14 @@ class Router extends Component {
 
   getAuthenticatedUser() {
     Auth.currentAuthenticatedUser()
-      .then(user => {
-        const email = user.attributes.email
+      .then(authUser => {
+        const email = authUser.attributes.email
         if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-          this.props.setUser({ ...user, admin: true });
+          this.props.setUser({ ...authUser, admin: true });
         }
         else {
           console.log('not using a biztech e-mail!');
-          this.props.setUser({ ...user, admin: false });
+          this.props.setUser({ ...authUser, admin: false });
         }
       })
       .catch(() => log("Not signed in"))

@@ -20,35 +20,35 @@ export class LoginRedirect extends Component {
     
     pollForAuthenticatedUser() {
         Auth.currentAuthenticatedUser()
-            .then(async user => {
-                const { email } = user.attributes
+            .then(async authUser => {
+                const { email } = authUser.attributes
 
                 // If biztech email, assume admin
                 if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
 
-                    this.props.setUser({ ...user, admin: true });
+                    this.props.setUser({ ...authUser, admin: true });
                     this.props.history.push('/');
 
                 }
                 // If not biztech username
                 else {
 
-                    // TODO: Supply email and names as initial values to the form (preferrably through queries)
-
-                    // const { name } = user.attributes
-                    // const nameSplitted = name.split(' ');
-                    // const lname = nameSplitted.pop() || null;
-                    // const fname = nameSplitted.join(' ');
+                    const { name } = authUser.attributes
+                    const nameSplitted = name.split(' ');
+                    const lname = nameSplitted.pop() || null;
+                    const fname = nameSplitted.join(' ');
 
                     const results = await fetchBackend(`/users/get?email=${email}`, 'GET');
                     const users = await results.json();
-                    
-                    // TODO: Remove, this shouldn't be set until the user has officially "signed up" - do this in the "/signup" page
-                    this.props.setUser({ ...user, admin: false });
 
+                    const pathQuery = `?email=${email}&name=${fname},${lname}`
+                    
                     // Check if the user exists
-                    if(users.length)  this.props.history.push('/'); // Redirect to the 'user home' page
-                    else  this.props.history.push('/signup'); // Redirect to the 'user register' form
+                    if(users.length)  {
+                        this.props.setUser({ ...authUser, admin: false }) // save to redux
+                        this.props.history.push('/'); // Redirect to the 'user home' page
+                    }
+                    else  this.props.history.push(`/signup${pathQuery}`); // Redirect to the 'user register' form
                 }
 
             })
