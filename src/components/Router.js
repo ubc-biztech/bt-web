@@ -49,7 +49,7 @@ class Router extends Component {
   }
 
   componentDidMount() {
-    fetchBackend("/events/get", 'GET')
+    fetchBackend("/events", 'GET')
       .then((response) => response.json())
       .then((response) => {
         this.props.setEvents({

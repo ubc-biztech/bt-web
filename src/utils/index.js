@@ -15,7 +15,7 @@ export const API_KEY = process.env.REACT_APP_STAGE  === 'production'
     ? process.env.REACT_APP_PROD_API_KEY
     : process.env.REACT_APP_STAGING_API_KEY
 
-export function fetchBackend(endpoint, method, body) {
+export function fetchBackend(endpoint, method, data) {
     let headers;
     if (method === 'POST') {
         headers = {
@@ -23,11 +23,12 @@ export function fetchBackend(endpoint, method, body) {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         }
-    } else { // method === 'GET'
+    } else {
         headers = {
             'x-api-key': API_KEY
         }
     }
+    const body = JSON.stringify(data)
     return fetch(API_URL + endpoint, {method, headers, body})
 }
 

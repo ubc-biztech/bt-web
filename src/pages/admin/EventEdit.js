@@ -57,18 +57,17 @@ function EventEdit(props) {
     )
 
     async function submitValues(values) {
-        const body = JSON.stringify({
+        const body = {
             ename: values.ename,
-            id: values.slug,
             description: values.description,
             capac: values.capacity,
             elocation: values.elocation,
             imageUrl: values.imageUrl,
             startDate: values.startDate,
             endDate: values.endDate
-        })
+        }
 
-        fetchBackend('/events/update', 'POST', body)
+        fetchBackend(`/events/${values.slug}`, 'PATCH', body)
             .then((response) => response.json())
             .then((response) => {
                 alert(response)

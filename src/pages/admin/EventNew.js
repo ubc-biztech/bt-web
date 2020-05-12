@@ -47,7 +47,7 @@ export default function EventNew() {
     )
 
     async function submitValues(values) {
-        const body = JSON.stringify({
+        const body = {
             ename: values.ename,
             id: values.slug,
             description: values.description,
@@ -56,15 +56,15 @@ export default function EventNew() {
             imageUrl: values.imageUrl,
             startDate: values.startDate,
             endDate: values.endDate
-        })
-        fetchBackend('/events/get', 'GET')
+        }
+        fetchBackend(`/events/${values.slug}`, 'GET')
             .then((response) => response.json())
             .then((response) => {
                 const isDuplicate = response.find(event => event.id === values.slug)
                 if (isDuplicate) {
                     alert('Event with that slug already exists!')
                 } else {
-                    fetchBackend('/events/create', 'POST', body)
+                    fetchBackend('/events', 'POST', body)
                         .then((response) => response.json())
                         .then((response) => {
                             alert(response.message)

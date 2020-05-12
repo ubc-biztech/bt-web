@@ -98,23 +98,23 @@ export class EventUserTable extends Component {
   }
 
   async updateUserRegistrationStatus(id, registrationStatus) {
-    const body = JSON.stringify({
+    const body = {
       eventID: this.props.event.id,
-      id: id,
-      registrationStatus: registrationStatus
-    });
+      id,
+      registrationStatus
+    };
 
-    await fetchBackend('/registration/create', 'POST', body);
+    await fetchBackend('/registrations', 'POST', body);
 
     this.getEventTableData(this.props.event.id);
   }
 
   async getEventTableData(eventID) {
     const params = new URLSearchParams({
-      id: eventID
+      users: true
     });
 
-    fetchBackend('/events/getUsers?' + params, 'GET')
+    fetchBackend(`/events/${eventID}${params}`, 'GET')
       .then(response => response.json())
       .then(response => {
         this.setState({ rows: response });

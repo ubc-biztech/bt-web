@@ -51,7 +51,7 @@ function Home(props) {
   const handleClickDeleteEvent = () => {
     const clickedEvent = props.events.find(event => event.id === eventMenuClicked)
     if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {      
-      fetchBackend(`/events/delete?id=${clickedEvent.id}`, 'DELETE')
+      fetchBackend(`/events/${clickedEvent.id}`, 'DELETE')
       .then(response => response.json())
       .then(response => {
         alert(response.message)

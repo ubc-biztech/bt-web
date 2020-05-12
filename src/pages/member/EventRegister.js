@@ -130,13 +130,13 @@ const EventFormContainer = (props) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
     const eventID = event.id;
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    fetchBackend(`/users/get?id=${values.id}`, 'GET')
+    fetchBackend(`/users/${values.id}`, 'GET')
       .then((response) => response.json())
       .then((response) => {
         if (response === "User not found.") {
           // Need to create new user
           // console.log("User not found, creating user");
-          const body = JSON.stringify({
+          const body = {
             id,
             fname,
             lname,
@@ -145,8 +145,8 @@ const EventFormContainer = (props) => {
             faculty,
             gender,
             diet
-          });
-          fetchBackend("/users/create", "POST", body)
+          }
+          fetchBackend("/users", "POST", body)
             .then((userResponse) => userResponse.json())
             .then((userResponse) => {
               if (userResponse.message === "Created!") {
@@ -166,13 +166,13 @@ const EventFormContainer = (props) => {
   }
 
   async function registerUser(id, eventID, heardFrom) {
-    const body = JSON.stringify({
+    const body = {
       id,
       eventID,
       heardFrom,
       registrationStatus: "registered"
-    })
-    fetchBackend("/registration/create", "POST", body)
+    }
+    fetchBackend("/registration", "POST", body)
       .then((regResponse) => regResponse.json())
       .then((regResponse) => {
         if (regResponse.message === "Update succeeded") {
