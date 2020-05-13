@@ -1,4 +1,6 @@
 import aws_config from '../aws-config';
+import Store from '../components/Store'
+import { setEvents } from '../actions/PageActions'
 
 export const API_URL = process.env.REACT_APP_STAGE  === 'production'
     ? process.env.REACT_APP_PROD_API
@@ -38,12 +40,13 @@ export function log(message) {
     }
 }
 
-// export function getEvents() {
-//     fetchBackend('/events', 'GET')
-//         .then((response) => response.json())
-//         .then((response) => {
-//             props.setEvents({
-//                 events: response
-//             })
-//         })
-// }
+// Refresh the redux store
+export function getEvents() {
+    fetchBackend('/events', 'GET')
+        .then((response) => response.json())
+        .then((response) => {
+            Store.dispatch(setEvents({
+                events: response
+            }))
+        })
+}

@@ -27,7 +27,7 @@ import Signup from '../pages/member/Signup'
 
 import { setEvents } from '../actions/PageActions'
 import { setUser } from '../actions/UserActions'
-import { log, fetchBackend } from '../utils'
+import { log, getEvents } from '../utils'
 
 class Router extends Component {
   getAuthenticatedUser() {
@@ -46,16 +46,9 @@ class Router extends Component {
   }
 
   componentDidMount() {
-    fetchBackend('/events', 'GET')
-      .then((response) => response.json())
-      .then((response) => {
-        this.props.setEvents({
-          events: response
-        })
-      })
+   getEvents()
 
-      if(!this.props.user) this.getAuthenticatedUser();
-
+   if(!this.props.user) this.getAuthenticatedUser();
   }
 
   render() {

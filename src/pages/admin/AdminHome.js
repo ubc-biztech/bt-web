@@ -15,7 +15,7 @@ import ThemeProvider from '../../components/ThemeProvider'
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { fetchBackend } from '../../utils'
+import { fetchBackend, getEvents } from '../../utils'
 import { Helmet } from 'react-helmet';
 import { setEvents } from '../../actions/PageActions'
 
@@ -69,13 +69,7 @@ function AdminHome(props) {
       .then(response => response.json())
       .then(response => {
         alert(response.message)
-        fetchBackend('/events', 'GET')
-          .then((response) => response.json())
-          .then((response) => {
-            props.setEvents({
-              events: response
-            })
-          })
+        getEvents()
       })
       .catch(err => {
           console.log(err)
