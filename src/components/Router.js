@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { connect } from "react-redux"
-import { Auth } from "aws-amplify"
+import { connect } from 'react-redux'
+import { Auth } from 'aws-amplify'
 import {
   BrowserRouter,
   Switch,
   Route,
   Redirect
-} from "react-router-dom"
+} from 'react-router-dom'
 import './Router.scss'
 
 import Nav from './Nav'
@@ -23,10 +23,10 @@ import EventRegister from '../pages/member/EventRegister'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
-import Signup from "../pages/member/Signup"
+import Signup from '../pages/member/Signup'
 
-import { setEvents } from "../actions/PageActions"
-import { setUser } from "../actions/UserActions"
+import { setEvents } from '../actions/PageActions'
+import { setUser } from '../actions/UserActions'
 import { log, fetchBackend } from '../utils'
 
 class Router extends Component {
@@ -34,7 +34,7 @@ class Router extends Component {
     Auth.currentAuthenticatedUser()
       .then(authUser => {
         const email = authUser.attributes.email
-        if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
+        if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
           this.props.setUser({ ...authUser, admin: true });
         }
         else {
@@ -42,11 +42,11 @@ class Router extends Component {
           this.props.setUser({ ...authUser, admin: false });
         }
       })
-      .catch(() => log("Not signed in"))
+      .catch(() => log('Not signed in'))
   }
 
   componentDidMount() {
-    fetchBackend("/events", 'GET')
+    fetchBackend('/events', 'GET')
       .then((response) => response.json())
       .then((response) => {
         this.props.setEvents({
@@ -69,43 +69,43 @@ class Router extends Component {
         ? <BrowserRouter>
           <ScrollToTop />
           <Nav events={this.props.events} />
-          <div className="content">
+          <div className='content'>
             <Switch>
     
               {/* COMMON ROUTES */}
               <Route
-                path="/login-redirect"
+                path='/login-redirect'
                 render={() => <LoginRedirect />} />
 
               <Route
-                path="/event/:id/register"
+                path='/event/:id/register'
                 render={() => <EventRegister />} />
               <Route
-                path="/forbidden"
+                path='/forbidden'
                 render={() => <Forbidden />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
-                path="/user-dashboard"
+                path='/user-dashboard'
                 render={() => <UserHome />} />
               <AdminRoute
-                path="/event/new"
+                path='/event/new'
                 render={() => <EventNew />} />
               <AdminRoute
-                path="/event/:id/edit"
+                path='/event/:id/edit'
                 render={() => <EventEdit />} />
               <AdminRoute
-                path="/event/:id" // Need to make sure that this comes after "new" and "edit"
+                path='/event/:id' // Need to make sure that this comes after 'new' and 'edit'
                 render={props => <EventView {...props} />} />
 
               {/* HOME */}
               <AdminRoute
                 exact
-                path="/"
+                path='/'
                 render={() => <AdminHome />}
                 altRender={() => <UserHome />} />
 
-              <Redirect to="/" />
+              <Redirect to='/' />
 
             </Switch>
           </div>
@@ -115,20 +115,20 @@ class Router extends Component {
           <Switch>
 
             <Route
-              path="/event/:id/register"
+              path='/event/:id/register'
               component={EventRegister} />
 
             <Route
-              path="/signup"
+              path='/signup'
               component={Signup} />
             <Route
-              path="/login-redirect"
+              path='/login-redirect'
               component={LoginRedirect} />
             <Route
-              path="/"
+              path='/'
               component={Login} />
             
-            <Redirect to="/" />
+            <Redirect to='/' />
 
           </Switch>
         </BrowserRouter >

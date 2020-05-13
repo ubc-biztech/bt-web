@@ -17,6 +17,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { fetchBackend } from '../../utils'
 import { Helmet } from 'react-helmet';
+import { setEvents } from '../../actions/PageActions'
 
 const styles = ({
   card: {
@@ -68,6 +69,13 @@ function AdminHome(props) {
       .then(response => response.json())
       .then(response => {
         alert(response.message)
+        fetchBackend('/events', 'GET')
+          .then((response) => response.json())
+          .then((response) => {
+            props.setEvents({
+              events: response
+            })
+          })
         props.history.push('/');
       })
       .catch(err => {
@@ -167,4 +175,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {})(withStyles(styles)(withRouter(AdminHome)));
+export default connect(mapStateToProps, { setEvents })(withStyles(styles)(withRouter(AdminHome)));

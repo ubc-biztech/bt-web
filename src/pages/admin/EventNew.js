@@ -57,24 +57,15 @@ export default function EventNew() {
             startDate: values.startDate,
             endDate: values.endDate
         }
-        fetchBackend(`/events/${values.slug}`, 'GET')
+        fetchBackend('/events', 'POST', body)
             .then((response) => response.json())
             .then((response) => {
-                const isDuplicate = response.find(event => event.id === values.slug)
-                if (isDuplicate) {
-                    alert('Event with that slug already exists!')
-                } else {
-                    fetchBackend('/events', 'POST', body)
-                        .then((response) => response.json())
-                        .then((response) => {
-                            alert(response.message)
-                            window.location.href = "/";
-                        })
-                        .catch(err => {
-                            console.log(err)
-                            alert(err.message + ' Please contact a dev')
-                        })
-                }
+                alert(response.message)
+                window.location.href = '/';
+            })
+            .catch(err => {
+                console.log(err)
+                alert(err.message + ' Please contact a dev')
             })
 
     }
