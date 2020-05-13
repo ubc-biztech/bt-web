@@ -62,8 +62,6 @@ class Router extends Component {
 
     const { user } = this.props;
 
-    console.log({user})
-
     return (
       user
         ? <BrowserRouter>

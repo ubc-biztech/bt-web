@@ -76,7 +76,6 @@ function AdminHome(props) {
               events: response
             })
           })
-        props.history.push('/');
       })
       .catch(err => {
           console.log(err)

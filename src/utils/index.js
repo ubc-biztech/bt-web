@@ -37,3 +37,13 @@ export function log(message) {
         console.log(message)
     }
 }
+
+// export function getEvents() {
+//     fetchBackend('/events', 'GET')
+//         .then((response) => response.json())
+//         .then((response) => {
+//             props.setEvents({
+//                 events: response
+//             })
+//         })
+// }
