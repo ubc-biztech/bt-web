@@ -17,7 +17,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { fetchBackend, getEvents } from '../../utils'
 import { Helmet } from 'react-helmet';
-import { setEvents } from '../../actions/PageActions'
 
 const styles = ({
   card: {
@@ -168,4 +167,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEvents })(withStyles(styles)(withRouter(AdminHome)));
+export default connect(mapStateToProps, {})(withStyles(styles)(withRouter(AdminHome)));
