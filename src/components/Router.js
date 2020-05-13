@@ -30,16 +30,9 @@ import { setUser } from "../actions/UserActions"
 import { log, fetchBackend } from '../utils'
 
 class Router extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      events: null
-    }
-  }
 
   getAuthenticatedUser() {
-    Auth.currentAuthenticatedUser()
+    Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(authUser => {
         const email = authUser.attributes.email
         if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
@@ -62,8 +55,7 @@ class Router extends Component {
         })
       })
 
-      if(!this.props.user) this.getAuthenticatedUser();
-
+    if(!this.props.user) this.getAuthenticatedUser();
   }
 
   render() {
@@ -84,13 +76,19 @@ class Router extends Component {
               <Route
                 path="/login-redirect"
                 render={() => <LoginRedirect />} />
-
-              <Route
-                path="/event/:id/register"
-                render={() => <EventRegister />} />
               <Route
                 path="/forbidden"
                 render={() => <Forbidden />} />
+
+              <AdminRoute 
+                path="/signup"
+                render={() => <NewMemberRegister /> }
+                altRender={() => user.student_id
+                ? <Redirect to ="/" /> /* Allow signup only if user is not yet registered in DB*/
+                : <NewMemberRegister />} />
+              <Route
+                path="/event/:id/register"
+                render={() => <EventRegister />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
@@ -126,9 +124,6 @@ class Router extends Component {
               path="/event/:id/register"
               component={EventRegister} />
 
-            <Route
-              path="/signup"
-              component={NewMemberRegister} />
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
