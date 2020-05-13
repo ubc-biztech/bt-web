@@ -25,7 +25,6 @@ import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
 import Signup from '../pages/member/Signup'
 
-import { setEvents } from '../actions/PageActions'
 import { setUser } from '../actions/UserActions'
 import { log, getEvents } from '../utils'
 
@@ -67,7 +66,6 @@ class Router extends Component {
               <Route
                 path='/login-redirect'
                 render={() => <LoginRedirect />} />
-
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
@@ -135,4 +133,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setUser, setEvents })(Router);
+export default connect(mapStateToProps, { setUser })(Router);
