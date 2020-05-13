@@ -98,45 +98,36 @@ const NewMemberRegisterFormContainer = (props) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
 
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    fetchBackend(`/users/${values.id}`, 'GET')
+    const body = {
+      email,
+      fname,
+      lname,
+      id,
+      faculty,
+      year,
+      diet,
+      heardFrom,
+      gender
+    }
+
+    fetchBackend('/users', 'POST', body)
       .then((response) => response.json())
       .then((response) => {
-        if (response === "User not found.") {
-          // Need to create new user
-          // console.log("User not found, creating user");
-          const body = {
-            email,
-            fname,
-            lname,
-            id,
-            faculty,
-            year,
-            diet,
-            heardFrom,
-            gender
-          }
+        //TODO: does 409 error end up here?
+        const name = `${fname} ${lname}`;
+        const admin = email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com';
 
-          fetchBackend("/users", "POST", body)
-            .then((userResponse) => userResponse.json())
-            .then((userResponse) => {
+        props.setUser({ attributes: { email, name }, admin });
+        alert('Thanks for signing up!');
+        history.push('/');
 
-              const { email, fname, lname } = userResponse.params.Item;
-              const name = `${fname} ${lname}`;
-              const admin = email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com';
-
-              props.setUser({ attributes: { email, name }, admin });
-              alert('Thanks for signing up!');
-              history.push('/');
-
-            })
-
-        } else {
-          alert('A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.')
-        }
       })
       .catch(err => {
-        alert("Signup failed");
-      });
+        //TODO: parse out error code 409
+        alert('A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.')
+      })
+
+      
   }
 }
 
