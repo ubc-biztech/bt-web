@@ -11,6 +11,7 @@ import './Router.scss'
 
 import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
+import RegisterAlert from './Messages/RegisterAlert'
 
 import AdminRoute from './Authentication/AdminRoute'
 import Login from './Authentication/Login'
@@ -62,6 +63,9 @@ class Router extends Component {
 
     const { user } = this.props;
 
+    // Alert the user about the need to register if they haven't
+    const userNeedsRegister = user && !user.admin && !user.student_id;
+
     console.log({user})
 
     return (
@@ -70,6 +74,7 @@ class Router extends Component {
           <ScrollToTop />
           <Nav events={this.props.events} />
           <div className="content">
+            {userNeedsRegister && <RegisterAlert />}
             <Switch>
     
               {/* COMMON ROUTES */}
