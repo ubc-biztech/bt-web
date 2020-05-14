@@ -48,6 +48,9 @@ export class LoginRedirect extends Component {
                             this.props.history.push('/'); // Redirect to the 'user home' page
                             return null;
                         }
+                        // if the user exists in the user pool, but not the database, remove the user pool's student_id
+                        await Auth.updateUserAttributes(authUser, { 'custom:student_id': '' });
+                        authUser.attributes['custom:student_id'] = null;
                     }
 
                     // If the user doesn't exist in the database and/or the user pool, redirect to the 'user register' form
