@@ -80,10 +80,9 @@ class Router extends Component {
                 path="/forbidden"
                 render={() => <Forbidden />} />
 
-              <AdminRoute 
+              <Route 
                 path="/signup"
-                render={() => <NewMemberRegister /> }
-                altRender={() => user.student_id
+                render={() => user.student_id
                 ? <Redirect to ="/" /> /* Allow signup only if user is not yet registered in DB*/
                 : <NewMemberRegister />} />
               <Route
