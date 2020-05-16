@@ -145,7 +145,6 @@ export class EventUserTable extends Component {
 
           })
         }}
-      //actions={[rowData => this.displayAction(rowData)]}
       />
     );
   }
