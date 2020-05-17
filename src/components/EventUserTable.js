@@ -59,25 +59,25 @@ export class EventUserTable extends Component {
       switch (event.target.value) {
         case REGISTRATION_STATUS.REGISTERED:
           if (window.confirm(`Do you want to register ${rowData.fname} ${rowData.lname}?
-This will send an email to the user.`)) {
+          \nThis will send an email to the user.`)) {
             this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.REGISTERED);
           }
           break;
         case REGISTRATION_STATUS.CHECKED_IN:
           if (window.confirm(`Do you want to check in ${rowData.fname} ${rowData.lname}?
-This will NOT send an email to the user.`)) {
+          \nThis will NOT send an email to the user.`)) {
             this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CHECKED_IN);
           }
           break;
         case REGISTRATION_STATUS.WAITLISTED:
           if (window.confirm(`Do you want to waitlist ${rowData.fname} ${rowData.lname}?
-This will send an email to the user.`)) {
+          \nThis will send an email to the user.`)) {
             this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.WAITLISTED);
           }
           break;
         case REGISTRATION_STATUS.CANCELLED:
           if (window.confirm(`Did ${rowData.fname} ${rowData.lname} cancel?
-This will send an email to the user.`)) {
+          \nThis will send an email to the user.`)) {
             this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CANCELLED);
           }
           break;
