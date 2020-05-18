@@ -93,6 +93,7 @@ export class EventUserTable extends Component {
           }
         } else {
           obj.faculties = this.state.faculties;
+          obj.years = this.state.years;
         }
         this.setState(obj);
       });
