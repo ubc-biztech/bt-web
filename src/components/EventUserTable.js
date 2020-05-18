@@ -40,6 +40,10 @@ export class EventUserTable extends Component {
     this.getEventTableData(this.props.event.id);
   }
 
+  /* updates stats and the rows in the table
+     faculty and year stats are only computed on the initial render of the component
+     # of registered/checkedin etc. is computed every single time this function is called
+  */
   async getEventTableData(eventID, firstRender) {
     const params = new URLSearchParams({
       id: eventID
@@ -88,7 +92,9 @@ export class EventUserTable extends Component {
             }
             if (temp.hasOwnProperty("year")) {
               const yearInt = parseInt(temp.year);
-              obj.years[yearInt] = obj.years.hasOwnProperty(yearInt) ? obj.years[yearInt] + 1 : 1;
+              if (yearInt) {
+                obj.years[yearInt] = obj.years.hasOwnProperty(yearInt) ? obj.years[yearInt] + 1 : 1;
+              }
             }
           }
         } else {
