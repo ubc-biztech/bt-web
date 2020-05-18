@@ -1,6 +1,6 @@
 import aws_config from '../aws-config';
 
-export const API_URL = process.env.REACT_APP_STAGE  === 'production'
+export const API_URL = process.env.REACT_APP_STAGE === 'production'
     ? process.env.REACT_APP_PROD_API
     : process.env.REACT_APP_STAGING_API
 
@@ -11,7 +11,7 @@ export const API_URL = process.env.REACT_APP_STAGE  === 'production'
 
 export const AWS_CONFIG = aws_config
 
-export const API_KEY = process.env.REACT_APP_STAGE  === 'production'
+export const API_KEY = process.env.REACT_APP_STAGE === 'production'
     ? process.env.REACT_APP_PROD_API_KEY
     : process.env.REACT_APP_STAGING_API_KEY
 
@@ -28,11 +28,11 @@ export function fetchBackend(endpoint, method, body) {
             'x-api-key': API_KEY
         }
     }
-    return fetch(API_URL + endpoint, {method, headers, body})
+    return fetch(API_URL + endpoint, { method, headers, body })
 }
 
 export function log(message) {
-    if (process.env.REACT_APP_STAGE  !== 'production') {
+    if (process.env.REACT_APP_STAGE !== 'production') {
         console.log(message)
     }
 }
