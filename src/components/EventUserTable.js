@@ -25,7 +25,7 @@ const styles = {
 export class EventUserTable extends Component {
   constructor(props) {
     super(props);
-    this.state = { faculties: {} };
+    this.state = { faculties: {}, years: {} };
   }
 
   async updateUserRegistrationStatus(id, registrationStatus) {
@@ -48,7 +48,7 @@ export class EventUserTable extends Component {
     fetchBackend('/events/getUsers?' + params, 'GET')
       .then(response => response.json())
       .then(response => {
-        let obj = { "faculties": {} };
+        let obj = { "faculties": {}, "years": {} };
         let numRegistered = 0;
         let numChecked = 0;
         let numWaitlist = 0;
@@ -85,6 +85,10 @@ export class EventUserTable extends Component {
             const temp = response[i];
             if (temp.hasOwnProperty("faculty")) {
               obj.faculties[temp.faculty] = obj.faculties.hasOwnProperty(temp.faculty) ? obj.faculties[temp.faculty] + 1 : 1;
+            }
+            if (temp.hasOwnProperty("year")) {
+              const yearInt = parseInt(temp.year);
+              obj.years[yearInt] = obj.years.hasOwnProperty(yearInt) ? obj.years[yearInt] + 1 : 1;
             }
           }
         } else {
@@ -149,7 +153,12 @@ export class EventUserTable extends Component {
           <Typography style={styles.stat}>total: {this.state.registered + this.state.checkedIn + this.state.waitlisted + this.state.cancelled}</Typography>
         </div>
         <div style={styles.stats}>
+          <Typography style={styles.stat}>Faculty: </Typography>
           {Object.keys(this.state.faculties).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.faculties[key]}</Typography>))}
+        </div>
+        <div style={styles.stats}>
+          <Typography style={styles.stat}>Year level: </Typography>
+          {Object.keys(this.state.years).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.years[key]}</Typography>))}
         </div>
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
