@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import MaterialTable from "material-table";
-import { fetchBackend } from "../utils";
-import { REGISTRATION_STATUS } from "../constants/Constants";
-import Select from "@material-ui/core/Select";
+import React, { Component } from 'react';
+import MaterialTable from 'material-table';
+import { fetchBackend } from '../utils';
+import { REGISTRATION_STATUS } from '../constants/Constants';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 
 const styles = {
   stats: {
-    width: "100%",
-    display: "flex",
-    margin: "6px",
-    borderRadius: "20px",
-    boxShadow: "rgba(0, 0, 0, 0.4) 0 0 10px"
+    width: '100%',
+    display: 'flex',
+    margin: '6px',
+    borderRadius: '20px',
+    boxShadow: 'rgba(0, 0, 0, 0.4) 0 0 10px'
   },
   stat: {
-    margin: "10px"
+    margin: '10px'
   }
 }
 /**
@@ -25,7 +25,7 @@ const styles = {
 export class EventUserTable extends Component {
   constructor(props) {
     super(props);
-    this.state = { faculties: {}, years: {} };
+    this.state = { faculties: {}, years: {}, dietary: {}, genders: {}, heardFrom: {} };
   }
 
   async updateUserRegistrationStatus(id, registrationStatus) {
@@ -41,66 +41,104 @@ export class EventUserTable extends Component {
   }
 
   /* updates stats and the rows in the table
-     faculty and year stats are only computed on the initial render of the component
+     faculty, gender, dietary, and year stats are only computed on the initial render of the component
      # of registered/checkedin etc. is computed every single time this function is called
   */
   async getEventTableData(eventID, firstRender) {
+
     const params = new URLSearchParams({
       users: true
     });
 
     fetchBackend(`/events/${eventID}${params}`, 'GET')
       .then(response => {
-        let obj = { "faculties": {}, "years": {} };
-        let numRegistered = 0;
-        let numChecked = 0;
-        let numWaitlist = 0;
-        let numCancelled = 0;
-        for (let i = 0; i < response.length; ++i) {
-          const temp = response[i];
-          if (temp.hasOwnProperty("registrationStatus")) {
-            switch (temp.registrationStatus) {
+      })
+
+    await fetchBackend('/registration/scanEvent?' + params, 'GET')
+      .then(response => response.json())
+      .then(response => {
+        let heardFrom = {};
+        for (let i = 0; i < response.size; ++i) {
+          const temp = response.data[i];
+          if (temp.hasOwnProperty('heardFrom')) {
+            heardFrom[temp.heardFrom] = heardFrom.hasOwnProperty(temp.heardFrom) ? heardFrom[temp.heardFrom] + 1 : 1;
+          }
+        }
+        this.setState({ heardFrom })
+      })
+
+    const eventParams = new URLSearchParams({
+      id: eventID
+    });
+
+    fetchBackend('/events/getUsers?' + eventParams, 'GET')
+      .then(response => response.json())
+      .then(async users => {
+        let obj = {
+          'registered': 0,
+          'checkedIn': 0,
+          'waitlisted': 0,
+          'cancelled': 0,
+          'faculties': {},
+          'years': {},
+          'dietary': {},
+          'genders': {},
+          'heardFrom': {}
+        };
+
+        users.forEach(user => {
+          if (user.hasOwnProperty('registrationStatus')) {
+            switch (user.registrationStatus) {
               case REGISTRATION_STATUS.REGISTERED:
-                ++numRegistered;
+                ++obj['registered'];
                 break;
               case REGISTRATION_STATUS.CHECKED_IN:
-                ++numChecked;
+                ++obj['checkedIn'];
                 break;
               case REGISTRATION_STATUS.WAITLISTED:
-                ++numWaitlist;
+                ++obj['waitlisted'];
                 break;
               case REGISTRATION_STATUS.CANCELLED:
-                ++numCancelled;
+                ++obj['cancelled'];
                 break;
               default:
                 return;
             }
           }
-        }
-        obj["rows"] = response;
-        obj["registered"] = numRegistered;
-        obj["waitlisted"] = numWaitlist;
-        obj["cancelled"] = numCancelled;
-        obj["checkedIn"] = numChecked;
+        })
 
+        obj['rows'] = users;
         if (firstRender) {
-          for (let i = 0; i < response.length; ++i) {
-            const temp = response[i];
-            if (temp.hasOwnProperty("faculty")) {
-              obj.faculties[temp.faculty] = obj.faculties.hasOwnProperty(temp.faculty) ? obj.faculties[temp.faculty] + 1 : 1;
+          users.forEach(user => {
+            if (user.faculty) {
+              obj.faculties[user.faculty] = obj.faculties[user.faculty] ? obj.faculties[user.faculty] + 1 : 1;
             }
-            if (temp.hasOwnProperty("year")) {
-              const yearInt = parseInt(temp.year);
+            if (user.year) {
+              const yearInt = parseInt(user.year);
               if (yearInt) {
-                obj.years[yearInt] = obj.years.hasOwnProperty(yearInt) ? obj.years[yearInt] + 1 : 1;
+                obj.years[yearInt] = obj.years[yearInt] ? obj.years[yearInt] + 1 : 1;
               }
             }
-          }
-        } else {
-          obj.faculties = this.state.faculties;
-          obj.years = this.state.years;
+            if (user.diet) {
+              obj.dietary[user.diet] = obj.dietary[user.diet] ? obj.dietary[user.diet] + 1 : 1;
+            }
+            if (user.gender) {
+              obj.genders[user.gender] = obj.genders[user.gender] ? obj.genders[user.gender] + 1 : 1;
+            }
+          })
+
         }
-        this.setState(obj);
+        this.setState({
+          rows: obj.rows,
+          registered: obj.registered,
+          waitlisted: obj.waitlisted,
+          cancelled: obj.cancelled,
+          checkedIn: obj.checkedIn,
+          faculties: obj.faculties,
+          years: obj.years,
+          genders: obj.genders,
+          dietary: obj.dietary
+        });
       });
   }
 
@@ -152,11 +190,11 @@ export class EventUserTable extends Component {
     return (
       <div>
         <div style={styles.stats}>
-          <Typography style={styles.stat}># of registered: {this.state.registered}</Typography>
-          <Typography style={styles.stat}># of checked in: {this.state.checkedIn}</Typography>
-          <Typography style={styles.stat}># of waitlisted: {this.state.waitlisted}</Typography>
-          <Typography style={styles.stat}># of cancelled: {this.state.cancelled}</Typography>
-          <Typography style={styles.stat}>total: {this.state.registered + this.state.checkedIn + this.state.waitlisted + this.state.cancelled}</Typography>
+          <Typography style={styles.stat}>Registered: {this.state.registered}</Typography>
+          <Typography style={styles.stat}>Checked in: {this.state.checkedIn}</Typography>
+          <Typography style={styles.stat}>Waitlisted: {this.state.waitlisted}</Typography>
+          <Typography style={styles.stat}>Cancelled: {this.state.cancelled}</Typography>
+          <Typography style={styles.stat}>Total: {this.state.registered + this.state.checkedIn + this.state.waitlisted + this.state.cancelled}</Typography>
         </div>
         <div style={styles.stats}>
           <Typography style={styles.stat}>Faculty: </Typography>
@@ -166,21 +204,33 @@ export class EventUserTable extends Component {
           <Typography style={styles.stat}>Year level: </Typography>
           {Object.keys(this.state.years).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.years[key]}</Typography>))}
         </div>
+        <div style={styles.stats}>
+          <Typography style={styles.stat}>Dietary: </Typography>
+          {Object.keys(this.state.dietary).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.dietary[key]}</Typography>))}
+        </div>
+        <div style={styles.stats}>
+          <Typography style={styles.stat}>Gender: </Typography>
+          {Object.keys(this.state.genders).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.genders[key]}</Typography>))}
+        </div>
+        <div style={styles.stats}>
+          <Typography style={styles.stat}>Heard about the event from: </Typography>
+          {Object.keys(this.state.heardFrom).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.heardFrom[key]}</Typography>))}
+        </div>
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
           columns={[
-            { title: "First Name", field: "fname" },
-            { title: "Last Name", field: "lname" },
+            { title: 'First Name', field: 'fname' },
+            { title: 'Last Name', field: 'lname' },
             {
-              title: "Student Number",
-              field: "id",
-              type: "numeric",
+              title: 'Student Number',
+              field: 'id',
+              type: 'numeric',
               sorting: false
             },
-            { title: "Email", field: "email", sorting: false },
+            { title: 'Email', field: 'email', sorting: false },
             {
-              title: "Registration Status",
-              field: "registrationStatus",
+              title: 'Registration Status',
+              field: 'registrationStatus',
               sorting: false,
               render: rowData => (
                 <div>
@@ -190,13 +240,13 @@ export class EventUserTable extends Component {
                     style={{
                       backgroundColor:
                         rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
-                          ? "#54D26E"
+                          ? '#54D26E'
                           : rowData.registrationStatus === REGISTRATION_STATUS.WAITLISTED
-                            ? "#F7D055"
+                            ? '#F7D055'
                             : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
-                              ? "#E15453"
-                              : "#FFF",
-                      paddingLeft: "10px"
+                              ? '#E15453'
+                              : '#FFF',
+                      paddingLeft: '10px'
                     }}>
                     <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
                     <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>Checked in</MenuItem>
@@ -212,13 +262,13 @@ export class EventUserTable extends Component {
           options={{
             search: true,
             draggable: false,
-            padding: "dense",
+            padding: 'dense',
             pageSize: 15,
             pageSizeOptions: [15, 50, 100],
             actionsColumnIndex: 5,
             exportButton: true,
             headerStyle: {
-              fontWeight: "bold"
+              fontWeight: 'bold'
             },
             rowStyle: rowData => ({
 
