@@ -11,6 +11,7 @@ import './Router.scss'
 
 import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
+import RegisterAlert from './Messages/RegisterAlert'
 
 import AdminRoute from './Authentication/AdminRoute'
 import Login from './Authentication/Login'
@@ -30,16 +31,9 @@ import { setUser } from "../actions/UserActions"
 import { log, fetchBackend } from '../utils'
 
 class Router extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      events: null
-    }
-  }
 
   getAuthenticatedUser() {
-    Auth.currentAuthenticatedUser()
+    Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(authUser => {
         const email = authUser.attributes.email
         if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
@@ -62,13 +56,15 @@ class Router extends Component {
         })
       })
 
-      if(!this.props.user) this.getAuthenticatedUser();
-
+    if(!this.props.user) this.getAuthenticatedUser();
   }
 
   render() {
 
     const { user } = this.props;
+
+    // Alert the user about the need to register if they haven't
+    const userNeedsRegister = user && !user.admin && !user.student_id;
 
     console.log({user})
 
@@ -78,19 +74,25 @@ class Router extends Component {
           <ScrollToTop />
           <Nav events={this.props.events} />
           <div className="content">
+            {userNeedsRegister && <RegisterAlert />}
             <Switch>
     
               {/* COMMON ROUTES */}
               <Route
                 path="/login-redirect"
                 render={() => <LoginRedirect />} />
-
-              <Route
-                path="/event/:id/register"
-                render={() => <EventRegister />} />
               <Route
                 path="/forbidden"
                 render={() => <Forbidden />} />
+
+              <Route 
+                path="/signup"
+                render={() => user.student_id
+                ? <Redirect to ="/" /> /* Allow signup only if user is not yet registered in DB*/
+                : <NewMemberRegister />} />
+              <Route
+                path="/event/:id/register"
+                render={() => <EventRegister />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
@@ -126,9 +128,6 @@ class Router extends Component {
               path="/event/:id/register"
               component={EventRegister} />
 
-            <Route
-              path="/signup"
-              component={NewMemberRegister} />
             <Route
               path="/login-redirect"
               component={LoginRedirect} />
