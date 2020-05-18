@@ -1,5 +1,6 @@
 import React from 'react';
-import { useHistory, useLocation } from "react-router-dom";
+import { Auth } from "aws-amplify";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux"
 import * as Yup from "yup"
 import { Formik } from "formik";
@@ -34,13 +35,13 @@ const NewMemberRegisterFormContainer = (props) => {
   const classes = useStyles();
 
   const history = useHistory();
-  const useQuery = () => { return new URLSearchParams(useLocation().search) };
-  const queries = useQuery();
+
+  const { user } = props;
   
-  // Destructure query url
-  const initialEmail = queries.get('email');
-  let initialName = queries.get('name');
-  initialName = initialName && initialName.split(',')
+  // Destructure existing redux user info
+  const initialEmail = user?.email
+  let initialName = user?.name
+  initialName = initialName && initialName.split(' ')
   const initialFname = initialName?.length && initialName[0];
   const initialLname = initialName?.length && initialName[1];
 
@@ -63,6 +64,41 @@ const NewMemberRegisterFormContainer = (props) => {
     fname: initialFname || "",
     lname: initialLname || "",
   };
+
+  const submitValues = async (values) => {
+    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
+  
+    //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+    const body = {
+      email,
+      fname,
+      lname,
+      id,
+      faculty,
+      year,
+      diet,
+      heardFrom,
+      gender
+    };
+  
+    fetchBackend('/users', 'POST', body)
+      .then((response) => response.json())
+      .then(async (response) => {
+        const { email, id } = response.params.Item;
+        const admin = email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com';
+  
+        const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
+        await Auth.updateUserAttributes(authUser, { 'custom:student_id': JSON.stringify(id) });
+        
+        props.setUser({ attributes: { ...authUser.attributes, 'custom:student_id':id }, admin });
+        alert('Thanks for signing up!');
+        history.push('/');
+      })
+      .catch(err => {
+        //TODO: parse out error code 409
+        alert('A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.')
+      })
+  }
 
   return (
     <div className={classes.layout}>
@@ -93,42 +129,12 @@ const NewMemberRegisterFormContainer = (props) => {
       </Paper>
     </div>
   )
-
-  async function submitValues(values) {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
-
-    //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    const body = {
-      email,
-      fname,
-      lname,
-      id,
-      faculty,
-      year,
-      diet,
-      heardFrom,
-      gender
-    }
-
-    fetchBackend('/users', 'POST', body)
-      .then((response) => response.json())
-      .then((response) => {
-        //TODO: does 409 error end up here?
-        const name = `${fname} ${lname}`;
-        const admin = email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com';
-
-        props.setUser({ attributes: { email, name }, admin });
-        alert('Thanks for signing up!');
-        history.push('/');
-
-      })
-      .catch(err => {
-        //TODO: parse out error code 409
-        alert('A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.')
-      })
-
-      
-  }
 }
 
-export default connect(() => ({}), { setUser })(NewMemberRegisterFormContainer);
+const mapStateToProps = state => {
+  return {
+    user: state.userState.user
+  };
+};
+
+export default connect(mapStateToProps, { setUser })(NewMemberRegisterFormContainer);

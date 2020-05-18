@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import MaterialTable from "material-table";
 import { fetchBackend } from "../utils";
 import { REGISTRATION_STATUS } from "../constants/Constants";
+import Select from "@material-ui/core/Select";
+import MenuItem from '@material-ui/core/MenuItem';
 
 /**
  * Class component that displays event user table populated from the backend
@@ -11,89 +13,6 @@ export class EventUserTable extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-  }
-
-  /**
-   * Helper function to determine whether to display action for check-in or undo check-in
-   * @param {*} rowData data about the current row
-   */
-  displayAction(rowData) {
-    switch (rowData.registrationStatus) {
-      case REGISTRATION_STATUS.REGISTERED:
-        return {
-          icon: "check",
-          tooltip: "Check-in member to event to confirm attendance",
-          onClick: (event, rowData) => {
-            // Do check-in operation
-            if (
-              window.confirm(
-                "You want to check-in " +
-                rowData.fname +
-                " " +
-                rowData.lname +
-                "?"
-              )
-            ) {
-              const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
-              this.updateUserRegistrationStatus(rowData.id, registrationStatus);
-            }
-          }
-        };
-      case REGISTRATION_STATUS.CHECKED_IN:
-        return {
-          icon: "close",
-          tooltip: "Undo member check-in",
-          onClick: (event, rowData) => {
-            // Undo check-in operation
-            if (
-              window.confirm(
-                "You want to undo check-in for " +
-                rowData.fname +
-                " " +
-                rowData.lname +
-                "?"
-              )
-            ) {
-              const registrationStatus = REGISTRATION_STATUS.REGISTERED;
-              this.updateUserRegistrationStatus(rowData.id, registrationStatus);
-            }
-          }
-        };
-      case REGISTRATION_STATUS.WAITLISTED:
-        return {
-          icon: "queue",
-          tooltip: "Take member off waitlist and check them in",
-          onClick: (event, rowData) => {
-            // Do check-in operation
-            if (
-              window.confirm(
-                "You want to take " +
-                rowData.fname +
-                " " +
-                rowData.lname +
-                " off of waitlist and check-in?"
-              )
-            ) {
-              const registrationStatus = REGISTRATION_STATUS.CHECKED_IN;
-              this.updateUserRegistrationStatus(
-                rowData.studentNumber,
-                registrationStatus
-              );
-            }
-          }
-        };
-      case REGISTRATION_STATUS.CANCELLED:
-        return {
-          icon: "remove",
-          tooltip: "Member cancelled registration",
-          disabled: true
-        };
-      default:
-        return {
-          icon: "blank",
-          hidden: true
-        };
-    }
   }
 
   async updateUserRegistrationStatus(id, registrationStatus) {
@@ -132,6 +51,38 @@ export class EventUserTable extends Component {
 
   render() {
     /**
+     * Helper function to determine whether to display action for check-in or undo check-in
+     * @param {*} rowData data about the current row
+    */
+    const changeRegistration = (event, rowData) => {
+      switch (event.target.value) {
+        case REGISTRATION_STATUS.REGISTERED:
+          if (window.confirm(`Do you want to register ${rowData.fname} ${rowData.lname}?\nThis will send an email to the user.`)) {
+            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.REGISTERED);
+          }
+          break;
+        case REGISTRATION_STATUS.CHECKED_IN:
+          if (window.confirm(`Do you want to check in ${rowData.fname} ${rowData.lname}?\nThis will NOT send an email to the user.`)) {
+            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CHECKED_IN);
+          }
+          break;
+        case REGISTRATION_STATUS.WAITLISTED:
+          if (window.confirm(`Do you want to waitlist ${rowData.fname} ${rowData.lname}?\nThis will send an email to the user.`)) {
+            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.WAITLISTED);
+          }
+          break;
+        case REGISTRATION_STATUS.CANCELLED:
+          if (window.confirm(`Did ${rowData.fname} ${rowData.lname} cancel?\nThis will send an email to the user.`)) {
+            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CANCELLED);
+          }
+          break;
+        default:
+          return {};
+      }
+    }
+
+
+    /**
      * Creates event table using MaterialTable library
      */
     return (
@@ -150,7 +101,30 @@ export class EventUserTable extends Component {
           {
             title: "Registration Status",
             field: "registrationStatus",
-            sorting: false
+            sorting: false,
+            render: rowData => (
+              <div>
+                <Select
+                  value={rowData.registrationStatus}
+                  onClick={event => changeRegistration(event, rowData)}
+                  style={{
+                    backgroundColor:
+                      rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
+                        ? "#54D26E"
+                        : rowData.registrationStatus === REGISTRATION_STATUS.WAITLISTED
+                          ? "#F7D055"
+                          : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
+                            ? "#E15453"
+                            : "#FFF",
+                    paddingLeft: "10px"
+                  }}>
+                  <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
+                  <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>Checked in</MenuItem>
+                  <MenuItem value={REGISTRATION_STATUS.REGISTERED}>Registered</MenuItem>
+                  <MenuItem value={REGISTRATION_STATUS.CANCELLED}>Cancelled</MenuItem>
+                </Select>
+              </div>
+            )
           }
         ]}
         data={this.state.rows}
@@ -167,13 +141,9 @@ export class EventUserTable extends Component {
             fontWeight: "bold"
           },
           rowStyle: rowData => ({
-            backgroundColor:
-              rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
-                ? "#54D26E"
-                : "#FFF"
+
           })
         }}
-        actions={[rowData => this.displayAction(rowData)]}
       />
     );
   }

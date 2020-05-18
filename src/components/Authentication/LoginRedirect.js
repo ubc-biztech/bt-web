@@ -19,36 +19,43 @@ export class LoginRedirect extends Component {
     }
     
     pollForAuthenticatedUser() {
-        Auth.currentAuthenticatedUser()
+        Auth.currentAuthenticatedUser({ bypassCache: true })
             .then(async authUser => {
                 const { email } = authUser.attributes
 
-                // If biztech email, assume admin
+                // If biztech email, assume admin (no need for 'sign in')
                 if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
 
                     this.props.setUser({ ...authUser, admin: true });
                     this.props.history.push('/');
 
                 }
-                // If not biztech username
+                // If not biztech username (normal member)
                 else {
 
-                    const { name } = authUser.attributes
-                    const nameSplitted = name.split(' ');
-                    const lname = nameSplitted.pop() || null;
-                    const fname = nameSplitted.join(' ');
-
-                    const results = await fetchBackend(`/users/get?email=${email}`, 'GET');
-                    const users = await results.json();
-
-                    const pathQuery = `?email=${email}&name=${fname},${lname}`
+                    const student_id = authUser.attributes['custom:student_id'];
                     
-                    // Check if the user exists
-                    if(users.length)  {
-                        this.props.setUser({ ...authUser, admin: false }) // save to redux
-                        this.props.history.push('/'); // Redirect to the 'user home' page
+                    // Detect if "first time sign up" by checking if custom:student_id is saved in the user pool
+                    // If the user's student_id exists in the user pool, check if the user is registered in the database
+                    // There is a possibility that a user exists in the user pool but not the database
+                    if(student_id)  {
+
+                        const results = await fetchBackend(`/users/get?id=${student_id}`, 'GET');
+                        const user = await results.json();
+                        
+                        if(user && user.id) { // check database
+                            this.props.setUser({ ...authUser, admin: false }) // save to redux
+                            this.props.history.push('/'); // Redirect to the 'user home' page
+                            return null;
+                        }
+                        // if the user exists in the user pool, but not the database, remove the user pool's student_id
+                        await Auth.updateUserAttributes(authUser, { 'custom:student_id': '' });
+                        authUser.attributes['custom:student_id'] = null;
                     }
-                    else  this.props.history.push(`/signup${pathQuery}`); // Redirect to the 'user register' form
+
+                    // If the user doesn't exist in the database and/or the user pool, redirect to the 'user register' form
+                    this.props.setUser({ ...authUser, admin: false }) // save only essential info to redux
+                    this.props.history.push('/signup');
                 }
 
             })

@@ -11,6 +11,7 @@ import './Router.scss'
 
 import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
+import RegisterAlert from './Messages/RegisterAlert'
 
 import AdminRoute from './Authentication/AdminRoute'
 import Login from './Authentication/Login'
@@ -20,17 +21,17 @@ import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
 import EventRegister from '../pages/member/EventRegister'
+import Signup from '../pages/member/Signup'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
-import Signup from '../pages/member/Signup'
 
 import { setUser } from '../actions/UserActions'
 import { log, getEvents } from '../utils'
 
 class Router extends Component {
   getAuthenticatedUser() {
-    Auth.currentAuthenticatedUser()
+    Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(authUser => {
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
@@ -54,12 +55,16 @@ class Router extends Component {
 
     const { user } = this.props;
 
+    // Alert the user about the need to register if they haven't
+    const userNeedsRegister = user && !user.admin && !user.student_id;
+
     return (
       user
         ? <BrowserRouter>
           <ScrollToTop />
           <Nav events={this.props.events} />
-          <div className='content'>
+          <div className="content">
+            {userNeedsRegister && <RegisterAlert />}
             <Switch>
     
               {/* COMMON ROUTES */}
@@ -67,11 +72,16 @@ class Router extends Component {
                 path='/login-redirect'
                 render={() => <LoginRedirect />} />
               <Route
+                path="/forbidden"
+                render={() => <Forbidden />} />
+              <Route 
+                path="/signup"
+                render={() => user.student_id
+                ? <Redirect to ="/" /> /* Allow signup only if user is not yet registered in DB*/
+                : <Signup />} />
+              <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
-              <Route
-                path='/forbidden'
-                render={() => <Forbidden />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
@@ -106,10 +116,6 @@ class Router extends Component {
             <Route
               path='/event/:id/register'
               component={EventRegister} />
-
-            <Route
-              path='/signup'
-              component={Signup} />
             <Route
               path='/login-redirect'
               component={LoginRedirect} />
