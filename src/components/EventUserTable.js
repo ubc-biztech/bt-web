@@ -4,7 +4,20 @@ import { fetchBackend } from "../utils";
 import { REGISTRATION_STATUS } from "../constants/Constants";
 import Select from "@material-ui/core/Select";
 import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
 
+const styles = {
+  stats: {
+    width: "100%",
+    display: "flex",
+    margin: "6px",
+    borderRadius: "20px",
+    boxShadow: "rgba(0, 0, 0, 0.4) 0 0 10px"
+  },
+  stat: {
+    margin: "10px"
+  }
+}
 /**
  * Class component that displays event user table populated from the backend
  * When a user check-in status is changed, the backend is updated and it fetches new data
@@ -12,7 +25,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 export class EventUserTable extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { faculties: {} };
   }
 
   async updateUserRegistrationStatus(id, registrationStatus) {
@@ -27,24 +40,66 @@ export class EventUserTable extends Component {
     this.getEventTableData(this.props.event.id);
   }
 
-  async getEventTableData(eventID) {
+  async getEventTableData(eventID, firstRender) {
     const params = new URLSearchParams({
       users: true
     });
 
     fetchBackend(`/events/${eventID}${params}`, 'GET')
       .then(response => {
-        this.setState({ rows: response });
+        let obj = { "faculties": {} };
+        let numRegistered = 0;
+        let numChecked = 0;
+        let numWaitlist = 0;
+        let numCancelled = 0;
+        for (let i = 0; i < response.length; ++i) {
+          const temp = response[i];
+          if (temp.hasOwnProperty("registrationStatus")) {
+            switch (temp.registrationStatus) {
+              case REGISTRATION_STATUS.REGISTERED:
+                ++numRegistered;
+                break;
+              case REGISTRATION_STATUS.CHECKED_IN:
+                ++numChecked;
+                break;
+              case REGISTRATION_STATUS.WAITLISTED:
+                ++numWaitlist;
+                break;
+              case REGISTRATION_STATUS.CANCELLED:
+                ++numCancelled;
+                break;
+              default:
+                return;
+            }
+          }
+        }
+        obj["rows"] = response;
+        obj["registered"] = numRegistered;
+        obj["waitlisted"] = numWaitlist;
+        obj["cancelled"] = numCancelled;
+        obj["checkedIn"] = numChecked;
+
+        if (firstRender) {
+          for (let i = 0; i < response.length; ++i) {
+            const temp = response[i];
+            if (temp.hasOwnProperty("faculty")) {
+              obj.faculties[temp.faculty] = obj.faculties.hasOwnProperty(temp.faculty) ? obj.faculties[temp.faculty] + 1 : 1;
+            }
+          }
+        } else {
+          obj.faculties = this.state.faculties;
+        }
+        this.setState(obj);
       });
   }
 
   componentDidMount() {
-    this.getEventTableData(this.props.event.id);
+    this.getEventTableData(this.props.event.id, true);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.event.id !== this.props.event.id) {
-      this.getEventTableData(this.props.event.id);
+      this.getEventTableData(this.props.event.id, false);
     }
   }
 
@@ -80,70 +135,82 @@ export class EventUserTable extends Component {
       }
     }
 
-
     /**
      * Creates event table using MaterialTable library
      */
     return (
-      <MaterialTable
-        title={`${this.props.event.ename} Attendance`}
-        columns={[
-          { title: "First Name", field: "fname" },
-          { title: "Last Name", field: "lname" },
-          {
-            title: "Student Number",
-            field: "id",
-            type: "numeric",
-            sorting: false
-          },
-          { title: "Email", field: "email", sorting: false },
-          {
-            title: "Registration Status",
-            field: "registrationStatus",
-            sorting: false,
-            render: rowData => (
-              <div>
-                <Select
-                  value={rowData.registrationStatus}
-                  onClick={event => changeRegistration(event, rowData)}
-                  style={{
-                    backgroundColor:
-                      rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
-                        ? "#54D26E"
-                        : rowData.registrationStatus === REGISTRATION_STATUS.WAITLISTED
-                          ? "#F7D055"
-                          : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
-                            ? "#E15453"
-                            : "#FFF",
-                    paddingLeft: "10px"
-                  }}>
-                  <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
-                  <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>Checked in</MenuItem>
-                  <MenuItem value={REGISTRATION_STATUS.REGISTERED}>Registered</MenuItem>
-                  <MenuItem value={REGISTRATION_STATUS.CANCELLED}>Cancelled</MenuItem>
-                </Select>
-              </div>
-            )
-          }
-        ]}
-        data={this.state.rows}
-        // Configure options for the table
-        options={{
-          search: true,
-          draggable: false,
-          padding: "dense",
-          pageSize: 15,
-          pageSizeOptions: [15, 50, 100],
-          actionsColumnIndex: 5,
-          exportButton: true,
-          headerStyle: {
-            fontWeight: "bold"
-          },
-          rowStyle: rowData => ({
+      <div>
+        <div style={styles.stats}>
+          <Typography style={styles.stat}># of registered: {this.state.registered}</Typography>
+          <Typography style={styles.stat}># of checked in: {this.state.checkedIn}</Typography>
+          <Typography style={styles.stat}># of waitlisted: {this.state.waitlisted}</Typography>
+          <Typography style={styles.stat}># of cancelled: {this.state.cancelled}</Typography>
+          <Typography style={styles.stat}>total: {this.state.registered + this.state.checkedIn + this.state.waitlisted + this.state.cancelled}</Typography>
+        </div>
+        <div style={styles.stats}>
+          {Object.keys(this.state.faculties).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.faculties[key]}</Typography>))}
+        </div>
+        <MaterialTable
+          title={`${this.props.event.ename} Attendance`}
+          columns={[
+            { title: "First Name", field: "fname" },
+            { title: "Last Name", field: "lname" },
+            {
+              title: "Student Number",
+              field: "id",
+              type: "numeric",
+              sorting: false
+            },
+            { title: "Email", field: "email", sorting: false },
+            {
+              title: "Registration Status",
+              field: "registrationStatus",
+              sorting: false,
+              render: rowData => (
+                <div>
+                  <Select
+                    value={rowData.registrationStatus}
+                    onClick={event => changeRegistration(event, rowData)}
+                    style={{
+                      backgroundColor:
+                        rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
+                          ? "#54D26E"
+                          : rowData.registrationStatus === REGISTRATION_STATUS.WAITLISTED
+                            ? "#F7D055"
+                            : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
+                              ? "#E15453"
+                              : "#FFF",
+                      paddingLeft: "10px"
+                    }}>
+                    <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
+                    <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>Checked in</MenuItem>
+                    <MenuItem value={REGISTRATION_STATUS.REGISTERED}>Registered</MenuItem>
+                    <MenuItem value={REGISTRATION_STATUS.CANCELLED}>Cancelled</MenuItem>
+                  </Select>
+                </div>
+              )
+            }
+          ]}
+          data={this.state.rows}
+          // Configure options for the table
+          options={{
+            search: true,
+            draggable: false,
+            padding: "dense",
+            pageSize: 15,
+            pageSizeOptions: [15, 50, 100],
+            actionsColumnIndex: 5,
+            exportButton: true,
+            headerStyle: {
+              fontWeight: "bold"
+            },
+            rowStyle: rowData => ({
 
-          })
-        }}
-      />
+            })
+          }}
+        />
+      </div>
+
     );
   }
 }
