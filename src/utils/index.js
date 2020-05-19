@@ -45,7 +45,7 @@ export function fetchBackend(endpoint, method, data) {
                     message: response
                 })
             }
-            return response
+            return Promise.resolve(response)
         })
 }
 
