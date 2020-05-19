@@ -9,11 +9,11 @@ import { setEvents } from '../actions/PageActions'
 
 export const AWS_CONFIG = aws_config
 
-const API_URL = process.env.REACT_APP_STAGE  === 'production'
+const API_URL = process.env.REACT_APP_STAGE === 'production'
     ? process.env.REACT_APP_PROD_API
     : process.env.REACT_APP_STAGING_API
-    
-const API_KEY = process.env.REACT_APP_STAGE  === 'production'
+
+const API_KEY = process.env.REACT_APP_STAGE === 'production'
     ? process.env.REACT_APP_PROD_API_KEY
     : process.env.REACT_APP_STAGING_API_KEY
 
@@ -32,7 +32,7 @@ export function fetchBackend(endpoint, method, data) {
     }
     const body = JSON.stringify(data)
     let status;
-    return fetch(API_URL + endpoint, {method, headers, body})
+    return fetch(API_URL + endpoint, { method, headers, body })
         .then(response => {
             status = response.status;
             return response.json()
@@ -50,7 +50,7 @@ export function fetchBackend(endpoint, method, data) {
 }
 
 export function log(message) {
-    if (process.env.REACT_APP_STAGE  !== 'production') {
+    if (process.env.REACT_APP_STAGE !== 'production') {
         console.log(message)
     }
 }
@@ -62,5 +62,8 @@ export function getEvents() {
             Store.dispatch(setEvents({
                 events: response
             }))
+        })
+        .catch(err => {
+            log(err)
         })
 }
