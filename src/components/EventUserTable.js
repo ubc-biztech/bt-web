@@ -25,7 +25,7 @@ const styles = {
 export class EventUserTable extends Component {
   constructor(props) {
     super(props);
-    this.state = { faculties: {}, years: {}, dietary: {}, genders: {}, heardFrom: {} };
+    this.state = { registrationObj: {}, faculties: {}, years: {}, dietary: {}, genders: {}, heardFrom: {} };
   }
 
   async updateUserRegistrationStatus(id, registrationStatus) {
@@ -44,7 +44,7 @@ export class EventUserTable extends Component {
      faculty, gender, dietary, and year stats are only computed on the initial render of the component
      # of registered/checkedin etc. is computed every single time this function is called
   */
-  async getEventTableData(eventID, firstRender) {
+  async getEventTableData(eventID) {
 
     const params = new URLSearchParams({
       users: true
@@ -74,81 +74,97 @@ export class EventUserTable extends Component {
     fetchBackend('/events/getUsers?' + eventParams, 'GET')
       .then(response => response.json())
       .then(async users => {
-        let obj = {
-          'registered': 0,
-          'checkedIn': 0,
-          'waitlisted': 0,
-          'cancelled': 0,
-          'faculties': {},
-          'years': {},
-          'dietary': {},
-          'genders': {},
-          'heardFrom': {}
-        };
+        this.registrationNumbers(users)
+        this.notRegistrationNumbers(users);
+      });
+  }
 
-        users.forEach(user => {
-          if (user.hasOwnProperty('registrationStatus')) {
-            switch (user.registrationStatus) {
-              case REGISTRATION_STATUS.REGISTERED:
-                ++obj['registered'];
-                break;
-              case REGISTRATION_STATUS.CHECKED_IN:
-                ++obj['checkedIn'];
-                break;
-              case REGISTRATION_STATUS.WAITLISTED:
-                ++obj['waitlisted'];
-                break;
-              case REGISTRATION_STATUS.CANCELLED:
-                ++obj['cancelled'];
-                break;
-              default:
-                return;
-            }
-          }
-        })
-
-        obj['rows'] = users;
-        if (firstRender) {
-          users.forEach(user => {
-            if (user.faculty) {
-              obj.faculties[user.faculty] = obj.faculties[user.faculty] ? obj.faculties[user.faculty] + 1 : 1;
-            }
-            if (user.year) {
-              const yearInt = parseInt(user.year);
-              if (yearInt) {
-                obj.years[yearInt] = obj.years[yearInt] ? obj.years[yearInt] + 1 : 1;
-              }
-            }
-            if (user.diet) {
-              obj.dietary[user.diet] = obj.dietary[user.diet] ? obj.dietary[user.diet] + 1 : 1;
-            }
-            if (user.gender) {
-              obj.genders[user.gender] = obj.genders[user.gender] ? obj.genders[user.gender] + 1 : 1;
-            }
-          })
-
+  async registrationNumbers(users) {
+    let registrationObj = {
+      'registered': 0,
+      'checkedIn': 0,
+      'waitlisted': 0,
+      'cancelled': 0
+    }
+    users.forEach(user => {
+      if (user.hasOwnProperty('registrationStatus')) {
+        switch (user.registrationStatus) {
+          case REGISTRATION_STATUS.REGISTERED:
+            ++registrationObj['registered'];
+            break;
+          case REGISTRATION_STATUS.CHECKED_IN:
+            ++registrationObj['checkedIn'];
+            break;
+          case REGISTRATION_STATUS.WAITLISTED:
+            ++registrationObj['waitlisted'];
+            break;
+          case REGISTRATION_STATUS.CANCELLED:
+            ++registrationObj['cancelled'];
+            break;
+          default:
+            return;
         }
-        this.setState({
-          rows: obj.rows,
-          registered: obj.registered,
-          waitlisted: obj.waitlisted,
-          cancelled: obj.cancelled,
-          checkedIn: obj.checkedIn,
-          faculties: obj.faculties,
-          years: obj.years,
-          genders: obj.genders,
-          dietary: obj.dietary
-        });
+      }
+    })
+
+    this.setState({
+      rows: users,
+      registrationObj: registrationObj
+    });
+  }
+
+  async notRegistrationNumbers(users) {
+    let obj = {
+      'faculties': {},
+      'years': {},
+      'dietary': {},
+      'genders': {}
+    }
+    users.forEach(user => {
+      if (user.faculty) {
+        obj.faculties[user.faculty] = obj.faculties[user.faculty] ? obj.faculties[user.faculty] + 1 : 1;
+      }
+      if (user.year) {
+        const yearInt = parseInt(user.year);
+        if (yearInt) {
+          obj.years[yearInt] = obj.years[yearInt] ? obj.years[yearInt] + 1 : 1;
+        }
+      }
+      if (user.diet) {
+        obj.dietary[user.diet] = obj.dietary[user.diet] ? obj.dietary[user.diet] + 1 : 1;
+      }
+      if (user.gender) {
+        obj.genders[user.gender] = obj.genders[user.gender] ? obj.genders[user.gender] + 1 : 1;
+      }
+    })
+
+    this.setState({
+      faculties: obj.faculties,
+      years: obj.years,
+      genders: obj.genders,
+      dietary: obj.dietary
+    });
+  }
+
+  async updateEventTableData(eventID) {
+    const eventParams = new URLSearchParams({
+      id: eventID
+    });
+
+    fetchBackend('/events/getUsers?' + eventParams, 'GET')
+      .then(response => response.json())
+      .then(async users => {
+        this.registrationNumbers(users)
       });
   }
 
   componentDidMount() {
-    this.getEventTableData(this.props.event.id, true);
+    this.getEventTableData(this.props.event.id);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.event.id !== this.props.event.id) {
-      this.getEventTableData(this.props.event.id, false);
+      this.updateEventTableData(this.props.event.id);
     }
   }
 
@@ -190,11 +206,11 @@ export class EventUserTable extends Component {
     return (
       <div>
         <div style={styles.stats}>
-          <Typography style={styles.stat}>Registered: {this.state.registered}</Typography>
-          <Typography style={styles.stat}>Checked in: {this.state.checkedIn}</Typography>
-          <Typography style={styles.stat}>Waitlisted: {this.state.waitlisted}</Typography>
-          <Typography style={styles.stat}>Cancelled: {this.state.cancelled}</Typography>
-          <Typography style={styles.stat}>Total: {this.state.registered + this.state.checkedIn + this.state.waitlisted + this.state.cancelled}</Typography>
+          <Typography style={styles.stat}>Registered: {this.state.registrationObj.registered}</Typography>
+          <Typography style={styles.stat}>Checked in: {this.state.registrationObj.checkedIn}</Typography>
+          <Typography style={styles.stat}>Waitlisted: {this.state.registrationObj.waitlisted}</Typography>
+          <Typography style={styles.stat}>Cancelled: {this.state.registrationObj.cancelled}</Typography>
+          <Typography style={styles.stat}>Total: {this.state.registrationObj.registered + this.state.registrationObj.checkedIn + this.state.registrationObj.waitlisted + this.state.registrationObj.cancelled}</Typography>
         </div>
         <div style={styles.stats}>
           <Typography style={styles.stat}>Faculty: </Typography>
