@@ -128,7 +128,6 @@ const EventFormContainer = (props) => {
     const eventID = event.id;
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/${values.id}`, 'GET')
-      .then((response) => response.json())
       .then((response) => {
         if (response === "User not found.") {
           // Need to create new user
@@ -144,7 +143,6 @@ const EventFormContainer = (props) => {
             diet
           }
           fetchBackend("/users", "POST", body)
-            .then((userResponse) => userResponse.json())
             .then((userResponse) => {
               if (userResponse.message === "Created!") {
                 registerUser(id, eventID, heardFrom);
@@ -170,7 +168,6 @@ const EventFormContainer = (props) => {
       registrationStatus: "registered"
     }
     fetchBackend("/registration", "POST", body)
-      .then((regResponse) => regResponse.json())
       .then((regResponse) => {
         if (regResponse.message === "Update succeeded") {
           alert("Signed Up");

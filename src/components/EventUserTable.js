@@ -33,7 +33,6 @@ export class EventUserTable extends Component {
     });
 
     fetchBackend(`/events/${eventID}${params}`, 'GET')
-      .then(response => response.json())
       .then(response => {
         this.setState({ rows: response });
       });

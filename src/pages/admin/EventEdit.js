@@ -82,10 +82,9 @@ function EventEdit(props) {
         }
 
         fetchBackend(`/events/${values.slug}`, 'PATCH', body)
-            .then((response) => response.json())
             .then((response) => {
                 alert(response)
-                window.location.href = "/";
+                window.location.href = '/';
             })
             .catch(err => {
                 console.log(err)

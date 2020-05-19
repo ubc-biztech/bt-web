@@ -31,15 +31,21 @@ export function fetchBackend(endpoint, method, data) {
         }
     }
     const body = JSON.stringify(data)
+    let status;
     return fetch(API_URL + endpoint, {method, headers, body})
         .then(response => {
+            status = response.status;
+            return response.json()
+        })
+        .then(response => {
             // Actually throw an error (so catch block will run) when the response is an error
-            if (response.status < 200 || response.status >= 300) {
+            if (status < 200 || status >= 300) {
                 return Promise.reject({
-                    status: response.status
+                    status: status,
+                    message: response
                 })
             }
-            else return response
+            return response
         })
 }
 
@@ -52,8 +58,7 @@ export function log(message) {
 // Refresh the redux store
 export function getEvents() {
     fetchBackend('/events', 'GET')
-        .then((response) => response.json())
-        .then((response) => {
+        .then(response => {
             Store.dispatch(setEvents({
                 events: response
             }))

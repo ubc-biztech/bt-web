@@ -2,7 +2,7 @@ import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import NewEventForm from '../../components/Forms/NewEvent'
-import { fetchBackend } from '../../utils'
+import { fetchBackend, log } from '../../utils'
 import { Helmet } from 'react-helmet';
 
 export default function EventNew() {
@@ -58,13 +58,12 @@ export default function EventNew() {
             endDate: values.endDate
         }
         fetchBackend('/events', 'POST', body)
-            .then(response => response.json())
             .then(response => {
                 alert(response.message)
                 window.location.href = '/';
             })
             .catch(err => {
-                console.log(err)
+                log(err)
                 if (err.status === 409){
                     alert('Failed. Event with that slug/id already exists')
                 }

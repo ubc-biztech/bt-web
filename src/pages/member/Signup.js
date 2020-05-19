@@ -82,7 +82,6 @@ const NewMemberRegisterFormContainer = (props) => {
     };
   
     fetchBackend('/users', 'POST', body)
-      .then((response) => response.json())
       .then(async (response) => {
         const { email, id } = response.params.Item;
         const admin = email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com';
