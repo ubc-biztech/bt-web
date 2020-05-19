@@ -58,14 +58,17 @@ export default function EventNew() {
             endDate: values.endDate
         }
         fetchBackend('/events', 'POST', body)
-            .then((response) => response.json())
-            .then((response) => {
+            .then(response => response.json())
+            .then(response => {
                 alert(response.message)
                 window.location.href = '/';
             })
             .catch(err => {
                 console.log(err)
-                alert(err.message + ' Please contact a dev')
+                if (err.status === 409){
+                    alert('Failed. Event with that slug/id already exists')
+                }
+                else alert(err.message + ' Please contact a dev')
             })
 
     }

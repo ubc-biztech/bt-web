@@ -32,6 +32,15 @@ export function fetchBackend(endpoint, method, data) {
     }
     const body = JSON.stringify(data)
     return fetch(API_URL + endpoint, {method, headers, body})
+        .then(response => {
+            // Actually throw an error (so catch block will run) when the response is an error
+            if (response.status < 200 || response.status >= 300) {
+                return Promise.reject({
+                    status: response.status
+                })
+            }
+            else return response
+        })
 }
 
 export function log(message) {
