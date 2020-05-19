@@ -40,7 +40,7 @@ export class LoginRedirect extends Component {
                     // There is a possibility that a user exists in the user pool but not the database
                     if(student_id)  {
 
-                        const results = await fetchBackend(`/users/get?id=${student_id}`, 'GET');
+                        const results = await fetchBackend(`/users/${student_id}`, 'GET');
                         const user = await results.json();
                         
                         if(user && user.id) { // check database
