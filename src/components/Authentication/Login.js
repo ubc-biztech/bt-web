@@ -27,9 +27,14 @@ const styles = {
     width: "19px"
   },
   facebookIconBtn: {
-    backgroundColor: "#3fb5a3",
+    marginTop: "10px",
+    backgroundColor: "#303960",
     paddingLeft: "10px",
     paddingRight: "10px"
+  },
+
+  googleIconBtn: {
+    backgroundColor: "#3fb5a3",
   }
 };
 
@@ -114,6 +119,7 @@ function Login(props) {
           <Divider variant="middle" />
           <CardContent>
             <Button
+              style={styles.googleIconBtn}
               onClick={() => Auth.federatedSignIn({ provider: "Google" })}
               variant="contained"
               color="primary"
@@ -127,8 +133,6 @@ function Login(props) {
               </div>
               Sign In with Google
             </Button>
-          </CardContent>
-          <CardContent>
             <Button style={styles.facebookIconBtn}
               onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
               variant="contained"
