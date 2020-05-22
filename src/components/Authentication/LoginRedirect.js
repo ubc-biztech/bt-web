@@ -52,11 +52,9 @@ export class LoginRedirect extends Component {
                         fetchBackend(`/users/${studentId}`, 'GET')
                             .then(user => {
                                 clearTimeout(this.timeoutRedirect)
-                                if (user.id) {
-                                    this.props.setUser(user)
-                                    this.props.history.push('/'); // Redirect to the 'user home' page
-                                    return null;
-                                }
+                                this.props.setUser(user)
+                                this.props.history.push('/'); // Redirect to the 'user home' page
+                                return null;
                             })
                             .catch(async err => {
                                 if (err.status === 404) {
@@ -65,10 +63,16 @@ export class LoginRedirect extends Component {
                                     await Auth.updateUserAttributes(authUser, { 'custom:student_id': '' });
                                     authUser.attributes['custom:student_id'] = null;
                                     // If the user doesn't exist in the database and/or the user pool, redirect to the 'user register' form
+                                    // Parse first name and last name
+
+                                    const initialName = authUser.attributes.name.split(' ')
+                                    const fname = initialName[0];
+                                    const lname = initialName[1];
+
                                     this.props.setUser({
                                         email: authUser.attributes.email,
-                                        name: authUser.attributes.name,
-                                        id: authUser.attributes['custom:student_id']
+                                        fname,
+                                        lname
                                     }) // save only essential info to redux
                                     this.props.history.push('/signup');
                                 } else {
@@ -78,10 +82,14 @@ export class LoginRedirect extends Component {
                     } else {
                         clearTimeout(this.timeoutRedirect)
                         // No student ID
+                        const initialName = authUser.attributes.name.split(' ')
+                        const fname = initialName[0];
+                        const lname = initialName[1];
+
                         this.props.setUser({
                             email: authUser.attributes.email,
-                            name: authUser.attributes.name,
-                            id: authUser.attributes['custom:student_id']
+                            fname,
+                            lname
                         }) // save only essential info to redux
                         this.props.history.push('/signup');
                     }

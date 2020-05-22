@@ -27,7 +27,11 @@ import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
 
 import { setUser } from '../actions/UserActions'
-import { log, getEvents, fetchBackend } from '../utils'
+import {
+  log,
+  updateEvents,
+  updateUser
+} from '../utils'
 
 class Router extends Component {
   getAuthenticatedUser() {
@@ -44,10 +48,7 @@ class Router extends Component {
         else {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
-            fetchBackend(`/users/${studentId}`, 'GET')
-              .then(user => {
-                this.props.setUser({ ...user })
-              })
+            updateUser(studentId)
           }
         }
       })
@@ -55,7 +56,7 @@ class Router extends Component {
   }
 
   componentDidMount() {
-    getEvents()
+    updateEvents()
 
     if (!this.props.user) this.getAuthenticatedUser();
   }

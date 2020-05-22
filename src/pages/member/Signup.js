@@ -33,17 +33,9 @@ const useStyles = makeStyles(theme => ({
 
 const NewMemberRegisterFormContainer = (props) => {
   const classes = useStyles();
-
   const history = useHistory();
 
   const { user } = props;
-
-  // Destructure existing redux user info
-  const initialEmail = user?.email
-  let initialName = user?.name
-  initialName = initialName && initialName.split(' ')
-  const initialFname = initialName?.length && initialName[0];
-  const initialLname = initialName?.length && initialName[1];
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -60,9 +52,9 @@ const NewMemberRegisterFormContainer = (props) => {
 
   // form initial values (if exist), will cause input fields to disable as well
   const initialValues = {
-    email: initialEmail || "",
-    fname: initialFname || "",
-    lname: initialLname || "",
+    email: user?.email || "",
+    fname: user?.fname || "",
+    lname: user?.lname || "",
   };
 
   const submitValues = async (values) => {
@@ -84,8 +76,7 @@ const NewMemberRegisterFormContainer = (props) => {
     await Auth.updateUserAttributes(authUser, { 'custom:student_id': id });
 
     fetchBackend('/users', 'POST', body)
-      .then(async (response) => {
-        const { email, id } = response.params.Item;
+      .then(async () => {
         const admin = email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com';
 
         const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
@@ -96,6 +87,11 @@ const NewMemberRegisterFormContainer = (props) => {
           fname,
           lname,
           id,
+          faculty,
+          year,
+          diet,
+          heardFrom,
+          gender,
           admin
         });
         alert('Thanks for signing up!');
@@ -111,29 +107,25 @@ const NewMemberRegisterFormContainer = (props) => {
   return (
     <div className={classes.layout}>
       <Paper className={classes.paper}>
-        <React.Fragment>
-
-          <div className={classes.content}>
-            <Typography variant="h4" align="center" gutterBottom>
-              Member Information
+        <div className={classes.content}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Member Information
             </Typography>
 
-            <Typography variant="subtitle1" gutterBottom>
-              To avoid having to provide your information every time you sign up for an event, please fill out the form below.
-              The given information will allow UBC BizTech to better our future events and cater content towards our members
-              needs.
+          <Typography variant="subtitle1" gutterBottom>
+            To avoid having to provide your information every time you sign up for an event, please fill out the form below.
+            The given information will allow UBC BizTech to better our future events and cater content towards our members
+            needs.
             </Typography>
 
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={submitValues}
-            >
-              {props => <NewMember {...props} />}
-            </Formik>
-          </div>
-
-        </React.Fragment>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={submitValues}
+          >
+            {props => <NewMember {...props} />}
+          </Formik>
+        </div>
       </Paper>
     </div>
   )
