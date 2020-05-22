@@ -24,7 +24,7 @@ export default function EventNew() {
         slug: "",
         description: "",
         capacity: "",
-        partners: "",
+        facebookUrl: "",
         elocation: "",
         imageUrl: "",
         startDate: new Date(),
@@ -54,6 +54,7 @@ export default function EventNew() {
             capac: values.capacity,
             elocation: values.elocation,
             imageUrl: values.imageUrl,
+            facebookUrl: values.facebookUrl,
             startDate: values.startDate,
             endDate: values.endDate
         }
@@ -64,7 +65,7 @@ export default function EventNew() {
             })
             .catch(err => {
                 log(err)
-                if (err.status === 409){
+                if (err.status === 409) {
                     alert('Failed. Event with that slug/id already exists')
                 }
                 else alert(err.message + ' Please contact a dev')

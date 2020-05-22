@@ -13,7 +13,7 @@ const slugify = require('slugify')
 
 export default function NewEventForm(props) {
     const {
-        values: { ename, slug, description, capacity, elocation, imageUrl, startDate, endDate },
+        values: { ename, slug, description, capacity, elocation, imageUrl, facebookUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
@@ -87,15 +87,6 @@ export default function NewEventForm(props) {
                         value={capacity}
                         onChange={change.bind(null, "capacity")}
                     />
-                    {/* <TextField
-                        id="partners"
-                        label="Partners & Sponsors"
-                        fullWidth
-                        helperText={touched.partners ? errors.partners : ""}
-                        error={touched.partners && Boolean(errors.partners)}
-                        value={partners}
-                        onChange={change.bind(null, "partners")}
-                    /> */}
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDateTimePicker
                             margin="normal"
@@ -120,6 +111,15 @@ export default function NewEventForm(props) {
                         error={touched.elocation && Boolean(errors.elocation)}
                         value={elocation}
                         onChange={change.bind(null, "location")}
+                    />
+                    <TextField
+                        id="facebookUrl"
+                        label="Facebook Event Page"
+                        fullWidth
+                        helperText={touched.facebookUrl ? errors.facebookUrl : ""}
+                        error={touched.facebookUrl && Boolean(errors.facebookUrl)}
+                        value={facebookUrl}
+                        onChange={change.bind(null, "facebookUrl")}
                     />
                     <TextField
                         id="imageUrl"

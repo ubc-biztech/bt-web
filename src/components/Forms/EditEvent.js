@@ -13,7 +13,7 @@ const slugify = require('slugify')
 
 export default function EditEventForm(props) {
     const {
-        values: { ename, slug, description, capacity, elocation, imageUrl, startDate, endDate },
+        values: { ename, slug, description, capacity, elocation, imageUrl, facebookUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
@@ -27,14 +27,6 @@ export default function EditEventForm(props) {
         handleChange(e);
         setFieldTouched(name, true, false);
     };
-
-    const handleEventNameChange = (name, e) => {
-        e.persist();
-        const newSlug = slugify(e.target.value, { lower: true });
-        setFieldValue('slug', newSlug)
-        handleChange(e);
-        setFieldTouched(name, true, false);
-    }
 
     const handleStartDateChange = (date) => {
         setFieldValue("startDate", date)
@@ -56,16 +48,14 @@ export default function EditEventForm(props) {
                         helperText={touched.ename ? errors.ename : ""}
                         error={touched.ename && Boolean(errors.ename)}
                         value={ename}
-                        onChange={handleEventNameChange.bind(null, "ename")}
+                        onChange={change.bind(null, "ename")}
                     />
                     <TextField
                         id="slug"
-                        label="Slug"
+                        label="Slug (Not editable)"
                         fullWidth
-                        helperText={touched.slug ? errors.slug : ""}
-                        error={touched.slug && Boolean(errors.slug)}
+                        disabled
                         value={slug}
-                        onChange={change.bind(null, "slug")}
                     />
                     <TextField
                         id="description"
@@ -87,15 +77,6 @@ export default function EditEventForm(props) {
                         value={capacity}
                         onChange={change.bind(null, "capacity")}
                     />
-                    {/* <TextField
-                        id="partners"
-                        label="Partners & Sponsors"
-                        fullWidth
-                        helperText={touched.partners ? errors.partners : ""}
-                        error={touched.partners && Boolean(errors.partners)}
-                        value={partners}
-                        onChange={change.bind(null, "partners")}
-                    /> */}
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDateTimePicker
                             margin="normal"
@@ -119,6 +100,15 @@ export default function EditEventForm(props) {
                         error={touched.elocation && Boolean(errors.elocation)}
                         value={elocation}
                         onChange={change.bind(null, "elocation")}
+                    />
+                    <TextField
+                        id="facebookUrl"
+                        label="Facebook Event Page"
+                        fullWidth
+                        helperText={touched.facebookUrl ? errors.facebookUrl : ""}
+                        error={touched.facebookUrl && Boolean(errors.facebookUrl)}
+                        value={facebookUrl}
+                        onChange={change.bind(null, "facebookUrl")}
                     />
                     <TextField
                         id="imageUrl"

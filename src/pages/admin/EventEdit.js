@@ -10,25 +10,23 @@ import { Helmet } from 'react-helmet';
 function EventEdit(props) {
 
     const { id: eventId } = useParams();
-    const [ event, setEvent ] = useState(null);
+    const [event, setEvent] = useState(null);
 
     const { events } = props;
 
     useEffect(() => {
         // Get the initial values
-        if(!event && events && eventId) {
+        if (!event && events && eventId) {
             setEvent(events.find(event => event.id === eventId));
         }
     }, [event, events, setEvent, eventId])
 
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
-        slug: Yup.string().matches(/^[a-z\-0-9]*$/, "Slug must be lowercase and have no whitespace").required(),
         description: Yup.string().required(),
         capacity: Yup.number('Valid number required')
             .min(0, 'Valid capacity required')
             .required(),
-        // partners: Yup.string().required(),
         elocation: Yup.string().required(),
         imageUrl: Yup.string().url().required(),
     });
@@ -38,17 +36,16 @@ function EventEdit(props) {
         slug: event.id,
         description: event.description,
         capacity: event.capac,
-        partners: event.partners,
+        facebookUrl: event.facebookUrl,
         elocation: event.elocation,
         imageUrl: event.imageUrl,
         startDate: event.startDate,
         endDate: event.endDate
     } : {
             ename: "",
-            slug: "",
             description: "",
             capacity: "",
-            partners: "",
+            facebookUrl: "",
             elocation: "",
             imageUrl: "",
             startDate: "",
@@ -77,6 +74,7 @@ function EventEdit(props) {
             capac: values.capacity,
             elocation: values.elocation,
             imageUrl: values.imageUrl,
+            facebookUrl: values.facebookUrl,
             startDate: values.startDate,
             endDate: values.endDate
         }
