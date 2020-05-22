@@ -27,7 +27,7 @@ import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
 
 import { setUser } from '../actions/UserActions'
-import { log, getEvents } from '../utils'
+import { log, getEvents, fetchBackend } from '../utils'
 
 class Router extends Component {
   getAuthenticatedUser() {
@@ -38,17 +38,22 @@ class Router extends Component {
           this.props.setUser({ ...authUser, admin: true });
         }
         else {
-          console.log('not using a biztech e-mail!');
-          this.props.setUser({ ...authUser, admin: false });
+          const studentId = authUser.attributes['custom:student_id']
+          if (studentId) {
+            fetchBackend(`/users/${studentId}`, 'GET')
+              .then(user => {
+                this.props.setUser({ ...user })
+              })
+          }
         }
       })
       .catch(() => log('Not signed in'))
   }
 
   componentDidMount() {
-   getEvents()
+    getEvents()
 
-   if(!this.props.user) this.getAuthenticatedUser();
+    if (!this.props.user) this.getAuthenticatedUser();
   }
 
   render() {
@@ -66,7 +71,7 @@ class Router extends Component {
           <div className="content">
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
-    
+
               {/* COMMON ROUTES */}
               <Route
                 path='/login-redirect'
@@ -74,11 +79,11 @@ class Router extends Component {
               <Route
                 path="/forbidden"
                 render={() => <Forbidden />} />
-              <Route 
+              <Route
                 path="/signup"
                 render={() => user.student_id
-                ? <Redirect to ="/" /> /* Allow signup only if user is not yet registered in DB*/
-                : <Signup />} />
+                  ? <Redirect to="/" /> /* Allow signup only if user is not yet registered in DB*/
+                  : <Signup />} />
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
@@ -122,7 +127,7 @@ class Router extends Component {
             <Route
               path='/'
               component={Login} />
-            
+
             <Redirect to='/' />
 
           </Switch>
