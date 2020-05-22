@@ -35,8 +35,6 @@ const NewMemberRegisterFormContainer = (props) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const { user } = props;
-
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     id: Yup.number('Valid Student ID required')
@@ -50,7 +48,8 @@ const NewMemberRegisterFormContainer = (props) => {
     diet: Yup.string().required('Dietary restriction is required'),
   });
 
-  // form initial values (if exist), will cause input fields to disable as well
+  // form initial values (if exist). If email exists will disable email field
+  const { user } = props;
   const initialValues = {
     email: user?.email || "",
     fname: user?.fname || "",

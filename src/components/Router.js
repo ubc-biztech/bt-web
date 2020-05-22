@@ -40,7 +40,7 @@ class Router extends Component {
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
           this.props.setUser({
-            name: authUser.attributes.name,
+            // name: authUser.attributes.name, // we don't need admin name for now
             email: authUser.attributes.email,
             admin: true
           });
@@ -86,7 +86,7 @@ class Router extends Component {
                 render={() => <Forbidden />} />
               <Route
                 path="/signup"
-                render={() => user.student_id
+                render={() => user.id
                   ? <Redirect to="/" /> /* Allow signup only if user is not yet registered in DB*/
                   : <Signup />} />
               <Route

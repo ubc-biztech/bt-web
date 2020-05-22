@@ -54,7 +54,6 @@ export class LoginRedirect extends Component {
                                 clearTimeout(this.timeoutRedirect)
                                 this.props.setUser(user)
                                 this.props.history.push('/'); // Redirect to the 'user home' page
-                                return null;
                             })
                             .catch(async err => {
                                 if (err.status === 404) {
@@ -62,43 +61,40 @@ export class LoginRedirect extends Component {
                                     // if the user exists in the user pool, but not the database, remove the user pool's student_id
                                     await Auth.updateUserAttributes(authUser, { 'custom:student_id': '' });
                                     authUser.attributes['custom:student_id'] = null;
-                                    // If the user doesn't exist in the database and/or the user pool, redirect to the 'user register' form
-                                    // Parse first name and last name
 
-                                    const initialName = authUser.attributes.name.split(' ')
-                                    const fname = initialName[0];
-                                    const lname = initialName[1];
-
-                                    this.props.setUser({
-                                        email: authUser.attributes.email,
-                                        fname,
-                                        lname
-                                    }) // save only essential info to redux
-                                    this.props.history.push('/signup');
+                                    this.populateUserAndRedirect(authUser)
                                 } else {
                                     console.log(err.status)
                                 }
                             })
                     } else {
+                        // "First time sign up" aka no student_id in user pool
                         clearTimeout(this.timeoutRedirect)
-                        // No student ID
-                        const initialName = authUser.attributes.name.split(' ')
-                        const fname = initialName[0];
-                        const lname = initialName[1];
-
-                        this.props.setUser({
-                            email: authUser.attributes.email,
-                            fname,
-                            lname
-                        }) // save only essential info to redux
-                        this.props.history.push('/signup');
+                        this.populateUserAndRedirect(authUser)
                     }
                 }
             })
             .catch(() => {
-                log("Not signed in")
+                log('Not signed in')
                 setTimeout(() => this.pollForAuthenticatedUser(), 200)
             })
+    }
+
+    // If the user doesn't exist in the database and/or the user pool, redirect to the 'user register' form
+    populateUserAndRedirect(authUser) {
+        // Parse first name and last name
+        const initialName = authUser.attributes.name.split(' ')
+        const fname = initialName[0];
+        const lname = initialName[1];
+
+        // save only essential info to redux
+        this.props.setUser({
+            email: authUser.attributes.email,
+            fname,
+            lname
+        })
+
+        this.props.history.push('/signup');
     }
 
     render() {
