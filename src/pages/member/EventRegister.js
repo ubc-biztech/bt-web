@@ -155,7 +155,7 @@ const EventFormContainer = (props) => {
         }
       })
       .catch(err => {
-        console.log("registration error");
+        console.log("registration error", err);
         alert("Signup failed");
       });
   }
@@ -167,19 +167,16 @@ const EventFormContainer = (props) => {
       heardFrom,
       registrationStatus: "registered"
     }
-    fetchBackend("/registration", "POST", body)
+    fetchBackend("/registrations", "POST", body)
       .then((regResponse) => {
-        if (regResponse.message === "Update succeeded") {
-          alert("Signed Up");
-        } else {
-          console.log("registration error");
-          console.log(regResponse.message);
-          alert("Signup failed");
-        }
+        alert("Signed Up");
       })
       .catch(err => {
-        console.log("registration error");
-        alert("Signup failed");
+        if (err.status === 409) {
+          alert("You cannot sign up for this event again!");
+        } else {
+          alert("Signup failed");
+        }
       });
   }
 }
