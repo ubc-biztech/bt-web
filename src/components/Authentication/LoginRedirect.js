@@ -39,9 +39,7 @@ export class LoginRedirect extends Component {
                     // If the user's student_id exists in the user pool, check if the user is registered in the database
                     // There is a possibility that a user exists in the user pool but not the database
                     if(student_id)  {
-
-                        const results = await fetchBackend(`/users/get?id=${student_id}`, 'GET');
-                        const user = await results.json();
+                        const user = await fetchBackend(`/users/${student_id}`, 'GET');
                         
                         if(user && user.id) { // check database
                             this.props.setUser({ ...authUser, admin: false }) // save to redux

@@ -71,22 +71,20 @@ function EventEdit(props) {
     ) : null
 
     async function submitValues(values) {
-        const body = JSON.stringify({
+        const body = {
             ename: values.ename,
-            id: values.slug,
             description: values.description,
             capac: values.capacity,
             elocation: values.elocation,
             imageUrl: values.imageUrl,
             startDate: values.startDate,
             endDate: values.endDate
-        })
+        }
 
-        fetchBackend('/events/update', 'POST', body)
-            .then((response) => response.json())
+        fetchBackend(`/events/${values.slug}`, 'PATCH', body)
             .then((response) => {
                 alert(response)
-                window.location.href = "/";
+                window.location.href = '/';
             })
             .catch(err => {
                 console.log(err)

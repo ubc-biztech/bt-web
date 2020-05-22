@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { connect } from "react-redux"
-import { Auth } from "aws-amplify"
+import { connect } from 'react-redux'
+import { Auth } from 'aws-amplify'
 import {
   BrowserRouter,
   Switch,
   Route,
   Redirect
-} from "react-router-dom"
+} from 'react-router-dom'
 import './Router.scss'
 
 import Nav from './Nav'
@@ -20,23 +20,21 @@ import LoginRedirect from './Authentication/LoginRedirect'
 import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
-import NewMemberRegister from "../pages/member/NewMemberRegister"
 import EventRegister from '../pages/member/EventRegister'
+import Signup from '../pages/member/Signup'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
 
-import { setEvents } from "../actions/PageActions"
-import { setUser } from "../actions/UserActions"
-import { log, fetchBackend } from '../utils'
+import { setUser } from '../actions/UserActions'
+import { log, getEvents } from '../utils'
 
 class Router extends Component {
-
   getAuthenticatedUser() {
     Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(authUser => {
         const email = authUser.attributes.email
-        if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
+        if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
           this.props.setUser({ ...authUser, admin: true });
         }
         else {
@@ -44,19 +42,13 @@ class Router extends Component {
           this.props.setUser({ ...authUser, admin: false });
         }
       })
-      .catch(() => log("Not signed in"))
+      .catch(() => log('Not signed in'))
   }
 
   componentDidMount() {
-    fetchBackend("/events/get", 'GET')
-      .then((response) => response.json())
-      .then((response) => {
-        this.props.setEvents({
-          events: response
-        })
-      })
+   getEvents()
 
-    if(!this.props.user) this.getAuthenticatedUser();
+   if(!this.props.user) this.getAuthenticatedUser();
   }
 
   render() {
@@ -65,8 +57,6 @@ class Router extends Component {
 
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.student_id;
-
-    console.log({user})
 
     return (
       user
@@ -79,43 +69,42 @@ class Router extends Component {
     
               {/* COMMON ROUTES */}
               <Route
-                path="/login-redirect"
+                path='/login-redirect'
                 render={() => <LoginRedirect />} />
               <Route
                 path="/forbidden"
                 render={() => <Forbidden />} />
-
               <Route 
                 path="/signup"
                 render={() => user.student_id
                 ? <Redirect to ="/" /> /* Allow signup only if user is not yet registered in DB*/
-                : <NewMemberRegister />} />
+                : <Signup />} />
               <Route
-                path="/event/:id/register"
+                path='/event/:id/register'
                 render={() => <EventRegister />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
-                path="/user-dashboard"
+                path='/user-dashboard'
                 render={() => <UserHome />} />
               <AdminRoute
-                path="/event/new"
+                path='/event/new'
                 render={() => <EventNew />} />
               <AdminRoute
-                path="/event/:id/edit"
+                path='/event/:id/edit'
                 render={() => <EventEdit />} />
               <AdminRoute
-                path="/event/:id" // Need to make sure that this comes after "new" and "edit"
+                path='/event/:id' // Need to make sure that this comes after 'new' and 'edit'
                 render={props => <EventView {...props} />} />
 
               {/* HOME */}
               <AdminRoute
                 exact
-                path="/"
+                path='/'
                 render={() => <AdminHome />}
                 altRender={() => <UserHome />} />
 
-              <Redirect to="/" />
+              <Redirect to='/' />
 
             </Switch>
           </div>
@@ -125,17 +114,16 @@ class Router extends Component {
           <Switch>
 
             <Route
-              path="/event/:id/register"
+              path='/event/:id/register'
               component={EventRegister} />
-
             <Route
-              path="/login-redirect"
+              path='/login-redirect'
               component={LoginRedirect} />
             <Route
-              path="/"
+              path='/'
               component={Login} />
             
-            <Redirect to="/" />
+            <Redirect to='/' />
 
           </Switch>
         </BrowserRouter >
@@ -151,4 +139,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setUser, setEvents })(Router);
+export default connect(mapStateToProps, { setUser })(Router);

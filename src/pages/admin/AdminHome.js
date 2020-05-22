@@ -15,7 +15,7 @@ import ThemeProvider from '../../components/ThemeProvider'
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { fetchBackend } from '../../utils'
+import { fetchBackend, getEvents } from '../../utils'
 import { Helmet } from 'react-helmet';
 
 const styles = ({
@@ -64,11 +64,10 @@ function AdminHome(props) {
   const handleClickDeleteEvent = () => {
     const clickedEvent = events.find(event => event.id === eventMenuClicked)
     if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {      
-      fetchBackend(`/events/delete?id=${clickedEvent.id}`, 'DELETE')
-      .then(response => response.json())
+      fetchBackend(`/events/${clickedEvent.id}`, 'DELETE')
       .then(response => {
         alert(response.message)
-        props.history.push('/');
+        getEvents()
       })
       .catch(err => {
           console.log(err)

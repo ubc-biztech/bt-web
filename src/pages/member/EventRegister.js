@@ -127,13 +127,12 @@ const EventFormContainer = (props) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
     const eventID = event.id;
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    fetchBackend(`/users/get?id=${values.id}`, 'GET')
-      .then((response) => response.json())
+    fetchBackend(`/users/${values.id}`, 'GET')
       .then((response) => {
         if (response === "User not found.") {
           // Need to create new user
           // console.log("User not found, creating user");
-          const body = JSON.stringify({
+          const body = {
             id,
             fname,
             lname,
@@ -142,9 +141,8 @@ const EventFormContainer = (props) => {
             faculty,
             gender,
             diet
-          });
-          fetchBackend("/users/create", "POST", body)
-            .then((userResponse) => userResponse.json())
+          }
+          fetchBackend("/users", "POST", body)
             .then((userResponse) => {
               if (userResponse.message === "Created!") {
                 registerUser(id, eventID, heardFrom);
@@ -157,32 +155,28 @@ const EventFormContainer = (props) => {
         }
       })
       .catch(err => {
-        console.log("registration error");
+        console.log("registration error", err);
         alert("Signup failed");
       });
   }
 
   async function registerUser(id, eventID, heardFrom) {
-    const body = JSON.stringify({
+    const body = {
       id,
       eventID,
       heardFrom,
       registrationStatus: "registered"
-    })
-    fetchBackend("/registration/create", "POST", body)
-      .then((regResponse) => regResponse.json())
+    }
+    fetchBackend("/registrations", "POST", body)
       .then((regResponse) => {
-        if (regResponse.message === "Update succeeded") {
-          alert("Signed Up");
-        } else {
-          console.log("registration error");
-          console.log(regResponse.message);
-          alert("Signup failed");
-        }
+        alert("Signed Up");
       })
       .catch(err => {
-        console.log("registration error");
-        alert("Signup failed");
+        if (err.status === 409) {
+          alert("You cannot sign up for this event again!");
+        } else {
+          alert("Signup failed");
+        }
       });
   }
 }

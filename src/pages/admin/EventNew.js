@@ -2,7 +2,7 @@ import React from 'react'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import NewEventForm from '../../components/Forms/NewEvent'
-import { fetchBackend } from '../../utils'
+import { fetchBackend, log } from '../../utils'
 import { Helmet } from 'react-helmet';
 
 export default function EventNew() {
@@ -47,7 +47,7 @@ export default function EventNew() {
     )
 
     async function submitValues(values) {
-        const body = JSON.stringify({
+        const body = {
             ename: values.ename,
             id: values.slug,
             description: values.description,
@@ -56,25 +56,18 @@ export default function EventNew() {
             imageUrl: values.imageUrl,
             startDate: values.startDate,
             endDate: values.endDate
-        })
-        fetchBackend('/events/get', 'GET')
-            .then((response) => response.json())
-            .then((response) => {
-                const isDuplicate = response.find(event => event.id === values.slug)
-                if (isDuplicate) {
-                    alert('Event with that slug already exists!')
-                } else {
-                    fetchBackend('/events/create', 'POST', body)
-                        .then((response) => response.json())
-                        .then((response) => {
-                            alert(response.message)
-                            window.location.href = "/";
-                        })
-                        .catch(err => {
-                            console.log(err)
-                            alert(err.message + ' Please contact a dev')
-                        })
+        }
+        fetchBackend('/events', 'POST', body)
+            .then(response => {
+                alert(response.message)
+                window.location.href = '/';
+            })
+            .catch(err => {
+                log(err)
+                if (err.status === 409){
+                    alert('Failed. Event with that slug/id already exists')
                 }
+                else alert(err.message + ' Please contact a dev')
             })
 
     }
