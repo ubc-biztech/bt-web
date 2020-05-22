@@ -4,8 +4,29 @@ import { Formik } from "formik";
 import NewEventForm from '../../components/Forms/NewEvent'
 import { fetchBackend, log } from '../../utils'
 import { Helmet } from 'react-helmet';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+
+const useStyles = makeStyles(theme => ({
+    layout: {
+      [theme.breakpoints.up('sm')]: {
+        width: 600,
+        margin: 'auto',
+      },
+    },
+    paper: {
+      [theme.breakpoints.up('sm')]: {
+        margin: theme.spacing(3),
+      },
+    },
+    content: {
+      padding: theme.spacing(3),
+    }
+  }));
 
 export default function EventNew() {
+    const classes = useStyles();
 
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
@@ -32,18 +53,25 @@ export default function EventNew() {
     };
 
     return (
-        <React.Fragment>
+        <div className={classes.layout}>
             <Helmet>
                 <title>Create Event - BizTech Admin</title>
             </Helmet>
-            <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={submitValues}
-            >
-                {props => <NewEventForm {...props} />}
-            </Formik>
-        </React.Fragment>
+            <Paper className={classes.paper}>
+                <div className={classes.content}>
+                    <Typography variant="h4" align="center" gutterBottom>
+                        New Event
+                    </Typography>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={submitValues}
+                    >
+                        {props => <NewEventForm {...props} />}
+                    </Formik>
+                </div>
+            </Paper>
+                </div>
     )
 
     async function submitValues(values) {

@@ -2,14 +2,12 @@ import React from 'react'
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from '@material-ui/core/Grid';
-import Typography from "@material-ui/core/Typography"
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
     KeyboardDateTimePicker
 } from '@material-ui/pickers';
 import ThemeProvider from '../ThemeProvider'
-const slugify = require('slugify')
 
 export default function EditEventForm(props) {
     const {

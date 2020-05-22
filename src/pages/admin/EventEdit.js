@@ -79,18 +79,18 @@ function EventEdit(props) {
                 <title>Edit {event.ename} - BizTech Admin</title>
             </Helmet>
             <Paper className={classes.paper}>
-            <div className={classes.content}>
-                <Typography variant="h4" align="center" gutterBottom>
-                    Edit Event
-                </Typography>
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={submitValues}
-                >
-                    {props => <EditEventForm {...props} />}
-                </Formik>
-            </div>
+                <div className={classes.content}>
+                    <Typography variant="h4" align="center" gutterBottom>
+                        Edit Event
+                    </Typography>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={submitValues}
+                    >
+                        {props => <EditEventForm {...props} />}
+                    </Formik>
+                </div>
             </Paper>
         </div>
     ) : null
