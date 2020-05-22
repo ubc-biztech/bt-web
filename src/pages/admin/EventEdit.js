@@ -6,8 +6,29 @@ import EditEventForm from '../../components/Forms/EditEvent'
 import { fetchBackend } from '../../utils'
 import { connect } from "react-redux";
 import { Helmet } from 'react-helmet';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
+const useStyles = makeStyles(theme => ({
+    layout: {
+      [theme.breakpoints.up('sm')]: {
+        width: 600,
+        margin: 'auto',
+      },
+    },
+    paper: {
+      [theme.breakpoints.up('sm')]: {
+        margin: theme.spacing(3),
+      },
+    },
+    content: {
+      padding: theme.spacing(3),
+    }
+  }));
+  
 function EventEdit(props) {
+    const classes = useStyles();
 
     const { id: eventId } = useParams();
     const [event, setEvent] = useState(null);
@@ -53,18 +74,25 @@ function EventEdit(props) {
         };
 
     return event ? (
-        <React.Fragment>
+        <div className={classes.layout}>
             <Helmet>
                 <title>Edit {event.ename} - BizTech Admin</title>
             </Helmet>
-            <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={submitValues}
-            >
-                {props => <EditEventForm {...props} />}
-            </Formik>
-        </React.Fragment>
+            <Paper className={classes.paper}>
+            <div className={classes.content}>
+                <Typography variant="h4" align="center" gutterBottom>
+                    Edit Event
+                </Typography>
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={submitValues}
+                >
+                    {props => <EditEventForm {...props} />}
+                </Formik>
+            </div>
+            </Paper>
+        </div>
     ) : null
 
     async function submitValues(values) {

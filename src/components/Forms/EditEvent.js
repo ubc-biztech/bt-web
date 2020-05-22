@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
+import Grid from '@material-ui/core/Grid';
 import Typography from "@material-ui/core/Typography"
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -38,89 +38,112 @@ export default function EditEventForm(props) {
 
     return (
         <ThemeProvider>
-            <Typography variant="h1">Edit Event</Typography>
             <form onSubmit={handleSubmit}>
-                <Paper>
-                    <TextField
-                        id="ename"
-                        label="Event Name"
-                        fullWidth
-                        helperText={touched.ename ? errors.ename : ""}
-                        error={touched.ename && Boolean(errors.ename)}
-                        value={ename}
-                        onChange={change.bind(null, "ename")}
-                    />
-                    <TextField
-                        id="slug"
-                        label="Slug (Not editable)"
-                        fullWidth
-                        disabled
-                        value={slug}
-                    />
-                    <TextField
-                        id="description"
-                        label="Description"
-                        multiline
-                        fullWidth
-                        helperText={touched.description ? errors.description : ""}
-                        error={touched.description && Boolean(errors.description)}
-                        value={description}
-                        onChange={change.bind(null, "description")}
-                    />
-                    <TextField
-                        id="capacity"
-                        label="Capacity"
-                        type="number"
-                        min="0"
-                        helperText={touched.capacity ? errors.capacity : ""}
-                        error={touched.capacity && Boolean(errors.capacity)}
-                        value={capacity}
-                        onChange={change.bind(null, "capacity")}
-                    />
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="ename"
+                            label="Event Name"
+                            fullWidth
+                            helperText={touched.ename ? errors.ename : ""}
+                            error={touched.ename && Boolean(errors.ename)}
+                            value={ename}
+                            onChange={change.bind(null, "ename")}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="slug"
+                            label="Slug (Not editable)"
+                            fullWidth
+                            disabled
+                            value={slug}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="description"
+                            label="Description"
+                            multiline
+                            fullWidth
+                            helperText={touched.description ? errors.description : ""}
+                            error={touched.description && Boolean(errors.description)}
+                            value={description}
+                            onChange={change.bind(null, "description")}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="capacity"
+                            label="Capacity"
+                            type="number"
+                            min="0"
+                            fullWidth
+                            helperText={touched.capacity ? errors.capacity : ""}
+                            error={touched.capacity && Boolean(errors.capacity)}
+                            value={capacity}
+                            onChange={change.bind(null, "capacity")}
+                        />
+                    </Grid>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDateTimePicker
-                            margin="normal"
-                            label="Start Date"
-                            value={startDate}
-                            onChange={handleStartDateChange}
-                        />
-                        <KeyboardDateTimePicker
-                            margin="normal"
-                            label="End Date"
-                            minDate={startDate}
-                            value={endDate}
-                            onChange={handleEndDateChange}
-                        />
+                        <Grid item xs={12} sm={6}>
+                            <KeyboardDateTimePicker
+                                margin="normal"
+                                label="Start Date"
+                                value={startDate}
+                                onChange={handleStartDateChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <KeyboardDateTimePicker
+                                margin="normal"
+                                label="End Date"
+                                minDate={startDate}
+                                value={endDate}
+                                onChange={handleEndDateChange}
+                            />
+                        </Grid>
                     </MuiPickersUtilsProvider>
-                    <TextField
-                        id="elocation"
-                        label="Location"
-                        fullWidth
-                        helperText={touched.elocation ? errors.elocation : ""}
-                        error={touched.elocation && Boolean(errors.elocation)}
-                        value={elocation}
-                        onChange={change.bind(null, "elocation")}
-                    />
-                    <TextField
-                        id="facebookUrl"
-                        label="Facebook Event Page"
-                        fullWidth
-                        helperText={touched.facebookUrl ? errors.facebookUrl : ""}
-                        error={touched.facebookUrl && Boolean(errors.facebookUrl)}
-                        value={facebookUrl}
-                        onChange={change.bind(null, "facebookUrl")}
-                    />
-                    <TextField
-                        id="imageUrl"
-                        label="Image URL"
-                        fullWidth
-                        helperText={touched.imageUrl ? errors.imageUrl : ""}
-                        error={touched.imageUrl && Boolean(errors.imageUrl)}
-                        value={imageUrl}
-                        onChange={change.bind(null, "imageUrl")}
-                    />
-                </Paper>
-                <Button type="submit">
+                    <Grid item xs={12}>
+                        <TextField
+                            id="elocation"
+                            label="Location"
+                            fullWidth
+                            helperText={touched.elocation ? errors.elocation : ""}
+                            error={touched.elocation && Boolean(errors.elocation)}
+                            value={elocation}
+                            onChange={change.bind(null, "elocation")}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="facebookUrl"
+                            label="Facebook Event Page"
+                            fullWidth
+                            helperText={touched.facebookUrl ? errors.facebookUrl : ""}
+                            error={touched.facebookUrl && Boolean(errors.facebookUrl)}
+                            value={facebookUrl}
+                            onChange={change.bind(null, "facebookUrl")}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="imageUrl"
+                            label="Image URL"
+                            fullWidth
+                            helperText={touched.imageUrl ? errors.imageUrl : ""}
+                            error={touched.imageUrl && Boolean(errors.imageUrl)}
+                            value={imageUrl}
+                            onChange={change.bind(null, "imageUrl")}
+                        />
+                    </Grid>
+                </Grid>
+                <br />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                >
                     Submit
                 </Button>
             </form>
