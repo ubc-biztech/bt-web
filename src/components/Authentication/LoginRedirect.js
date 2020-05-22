@@ -28,12 +28,16 @@ export class LoginRedirect extends Component {
         Auth.currentAuthenticatedUser({ bypassCache: true })
             .then(async authUser => {
                 const { email } = authUser.attributes
-                clearTimeout(this.timeoutRedirect)
 
                 // If biztech email, assume admin (no need for 'sign in')
                 if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
+                    clearTimeout(this.timeoutRedirect)
 
-                    this.props.setUser({ ...authUser, admin: true });
+                    this.props.setUser({
+                        name: authUser.attributes.name,
+                        email: authUser.attributes.email,
+                        admin: true
+                    });
                     this.props.history.push('/');
 
                 }
@@ -47,27 +51,38 @@ export class LoginRedirect extends Component {
                     if (studentId) {
                         fetchBackend(`/users/${studentId}`, 'GET')
                             .then(user => {
+                                clearTimeout(this.timeoutRedirect)
                                 if (user.id) {
-                                    this.props.setUser({ ...user, admin: false }) // save to redux
+                                    this.props.setUser(user)
                                     this.props.history.push('/'); // Redirect to the 'user home' page
                                     return null;
                                 }
                             })
                             .catch(async err => {
                                 if (err.status === 404) {
+                                    clearTimeout(this.timeoutRedirect)
                                     // if the user exists in the user pool, but not the database, remove the user pool's student_id
                                     await Auth.updateUserAttributes(authUser, { 'custom:student_id': '' });
                                     authUser.attributes['custom:student_id'] = null;
                                     // If the user doesn't exist in the database and/or the user pool, redirect to the 'user register' form
-                                    this.props.setUser({ ...authUser }) // save only essential info to redux
+                                    this.props.setUser({
+                                        email: authUser.attributes.email,
+                                        name: authUser.attributes.name,
+                                        id: authUser.attributes['custom:student_id']
+                                    }) // save only essential info to redux
                                     this.props.history.push('/signup');
                                 } else {
                                     console.log(err.status)
                                 }
                             })
                     } else {
+                        clearTimeout(this.timeoutRedirect)
                         // No student ID
-                        this.props.setUser({ ...authUser }) // save only essential info to redux
+                        this.props.setUser({
+                            email: authUser.attributes.email,
+                            name: authUser.attributes.name,
+                            id: authUser.attributes['custom:student_id']
+                        }) // save only essential info to redux
                         this.props.history.push('/signup');
                     }
                 }

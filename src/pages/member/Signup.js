@@ -80,6 +80,8 @@ const NewMemberRegisterFormContainer = (props) => {
       heardFrom,
       gender
     };
+    const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
+    await Auth.updateUserAttributes(authUser, { 'custom:student_id': id });
 
     fetchBackend('/users', 'POST', body)
       .then(async (response) => {
@@ -87,9 +89,15 @@ const NewMemberRegisterFormContainer = (props) => {
         const admin = email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com';
 
         const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
-        await Auth.updateUserAttributes(authUser, { 'custom:student_id': JSON.stringify(id) });
+        await Auth.updateUserAttributes(authUser, { 'custom:student_id': id });
 
-        props.setUser({ attributes: { ...authUser.attributes, 'custom:student_id': id }, admin });
+        props.setUser({
+          email,
+          fname,
+          lname,
+          id,
+          admin
+        });
         alert('Thanks for signing up!');
         history.push('/');
       })

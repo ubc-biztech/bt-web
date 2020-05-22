@@ -35,7 +35,11 @@ class Router extends Component {
       .then(authUser => {
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
-          this.props.setUser({ ...authUser, admin: true });
+          this.props.setUser({
+            name: authUser.attributes.name,
+            email: authUser.attributes.email,
+            admin: true
+          });
         }
         else {
           const studentId = authUser.attributes['custom:student_id']
@@ -61,7 +65,7 @@ class Router extends Component {
     const { user } = this.props;
 
     // Alert the user about the need to register if they haven't
-    const userNeedsRegister = user && !user.admin && !user.student_id;
+    const userNeedsRegister = user && !user.admin && !user.id;
 
     return (
       user

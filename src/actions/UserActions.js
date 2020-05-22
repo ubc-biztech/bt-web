@@ -2,9 +2,11 @@ import { SET_USER, LOGOUT } from '../constants/Constants';
 
 export function setUser(userData) {
   const user = {
-    email: userData.attributes.email,
-    name: userData.attributes.name,
-    student_id: userData.attributes['custom:student_id'],
+    email: userData.email,
+    fname: userData.fname,
+    lname: userData.lname,
+    name: userData.name,
+    id: userData.id,
     admin: userData.admin
   }
   return {
