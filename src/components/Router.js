@@ -37,6 +37,7 @@ class Router extends Component {
   getAuthenticatedUser() {
     Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(authUser => {
+        console.log(authUser)
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
           this.props.setUser({
@@ -49,6 +50,10 @@ class Router extends Component {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
             updateUser(studentId)
+          } else {
+            this.props.setUser({
+              email: authUser.attributes.email
+            });
           }
         }
       })
@@ -58,12 +63,13 @@ class Router extends Component {
   componentDidMount() {
     updateEvents()
 
-    if (!this.props.user) this.getAuthenticatedUser();
+    this.getAuthenticatedUser();
   }
 
   render() {
 
     const { user } = this.props;
+    console.log(user)
 
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.id;
