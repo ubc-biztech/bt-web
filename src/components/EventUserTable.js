@@ -5,6 +5,7 @@ import { REGISTRATION_STATUS } from '../constants/Constants';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
+import { RadialChart } from 'react-vis';
 
 const styles = {
   stats: {
@@ -83,23 +84,8 @@ export class EventUserTable extends Component {
       'cancelled': 0
     }
     users.forEach(user => {
-      if (user.hasOwnProperty('registrationStatus')) {
-        switch (user.registrationStatus) {
-          case REGISTRATION_STATUS.REGISTERED:
-            ++registrationObj['registered'];
-            break;
-          case REGISTRATION_STATUS.CHECKED_IN:
-            ++registrationObj['checkedIn'];
-            break;
-          case REGISTRATION_STATUS.WAITLISTED:
-            ++registrationObj['waitlisted'];
-            break;
-          case REGISTRATION_STATUS.CANCELLED:
-            ++registrationObj['cancelled'];
-            break;
-          default:
-            return;
-        }
+      if (user.registrationStatus) {
+        registrationObj[user.registrationStatus] = registrationObj[user.registrationStatus] ? registrationObj[user.registrationStatus] + 1 : 1;
       }
     })
 
@@ -110,35 +96,30 @@ export class EventUserTable extends Component {
   }
 
   async notRegistrationNumbers(users) {
-    let obj = {
-      'faculties': {},
-      'years': {},
-      'dietary': {},
-      'genders': {}
-    }
+    let faculties = {}, years = {}, dietary = {}, genders = {}
     users.forEach(user => {
       if (user.faculty) {
-        obj.faculties[user.faculty] = obj.faculties[user.faculty] ? obj.faculties[user.faculty] + 1 : 1;
+        faculties[user.faculty] = faculties[user.faculty] ? faculties[user.faculty] + 1 : 1;
       }
       if (user.year) {
         const yearInt = parseInt(user.year);
         if (yearInt) {
-          obj.years[yearInt] = obj.years[yearInt] ? obj.years[yearInt] + 1 : 1;
+          years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1;
         }
       }
       if (user.diet) {
-        obj.dietary[user.diet] = obj.dietary[user.diet] ? obj.dietary[user.diet] + 1 : 1;
+        dietary[user.diet] = dietary[user.diet] ? dietary[user.diet] + 1 : 1;
       }
       if (user.gender) {
-        obj.genders[user.gender] = obj.genders[user.gender] ? obj.genders[user.gender] + 1 : 1;
+        genders[user.gender] = genders[user.gender] ? genders[user.gender] + 1 : 1;
       }
     })
 
     this.setState({
-      faculties: obj.faculties,
-      years: obj.years,
-      genders: obj.genders,
-      dietary: obj.dietary
+      faculties: faculties,
+      years: years,
+      genders: genders,
+      dietary: dietary
     });
   }
 
