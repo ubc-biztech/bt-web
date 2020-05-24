@@ -55,7 +55,7 @@ class Router extends Component {
 
   // User needs to be checked before the page physically renders
   // (otherwise, the login page will initially show on every refresh)
-  componentWillMount() {
+  componentDidMount() {
 
    if(!this.props.user) {
     // If the user doesn't already exist in react, get the authenticated user
