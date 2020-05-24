@@ -51,9 +51,17 @@ class Router extends Component {
           if (studentId) {
             updateUser(studentId)
           } else {
+            // Parse first name and last name
+            const initialName = authUser.attributes.name.split(' ')
+            const fname = initialName[0];
+            const lname = initialName[1];
+
+            // save only essential info to redux
             this.props.setUser({
-              email: authUser.attributes.email
-            });
+              email: authUser.attributes.email,
+              fname,
+              lname
+            })
           }
         }
       })
