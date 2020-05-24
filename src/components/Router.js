@@ -30,8 +30,15 @@ import { setUser } from '../actions/UserActions'
 import { log, getEvents } from '../utils'
 
 class Router extends Component {
+  constructor() {
+    super()
+    this.state = {
+      loaded: false
+    }
+  }
+
   getAuthenticatedUser() {
-    Auth.currentAuthenticatedUser({ bypassCache: true })
+    return Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(authUser => {
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
@@ -45,24 +52,41 @@ class Router extends Component {
       .catch(() => log('Not signed in'))
   }
 
-  componentDidMount() {
-   getEvents()
+  // User needs to be checked before the page physically renders
+  // (otherwise, the login page will initially show on every refresh)
+  componentWillMount() {
 
-   if(!this.props.user) this.getAuthenticatedUser();
+   if(!this.props.user) {
+    // If the user doesn't already exist in react, get the authenticated user
+     this.getAuthenticatedUser()
+      // After getting the authenticated user, get the events
+      .then(getEvents)
+      // Ultimately, after all is loaded, set the "loaded" state and render the component
+      .then(() => {
+        this.setState({ loaded: true })
+      })
+   }
+   else {
+     // If the user already exists, update the events and render the page
+     getEvents()
+     this.setState({ loaded: true })
+   }
+
   }
 
   render() {
 
-    const { user } = this.props;
+    const { user, events } = this.props;
+    const { loaded } = this.state;
 
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.student_id;
 
-    return (
+    return loaded ? (
       user
         ? <BrowserRouter>
           <ScrollToTop />
-          <Nav events={this.props.events} />
+          <Nav events={events} />
           <div className="content">
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
@@ -127,7 +151,7 @@ class Router extends Component {
 
           </Switch>
         </BrowserRouter >
-    )
+    ) : null
   }
 }
 
