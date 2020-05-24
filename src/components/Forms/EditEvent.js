@@ -1,23 +1,24 @@
-import React from 'react'
+import React from "react"
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
 import {
     MuiPickersUtilsProvider,
     KeyboardDateTimePicker
-} from '@material-ui/pickers';
-import ThemeProvider from '../ThemeProvider'
+} from "@material-ui/pickers";
+import ThemeProvider from "../ThemeProvider"
 
 export default function EditEventForm(props) {
     const {
-        values: { ename, slug, description, capacity, elocation, imageUrl, facebookUrl, startDate, endDate },
+        values: { ename, slug, description, capacity, elocation, facebookUrl, imageUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
         handleChange,
         setFieldValue,
-        setFieldTouched
+        setFieldTouched,
+        submitCount
     } = props;
 
     const change = (name, e) => {
@@ -34,6 +35,10 @@ export default function EditEventForm(props) {
         setFieldValue("endDate", date)
     }
 
+    const textFieldError = (id) => {
+        return (errors[id] && submitCount > 0) || (touched[id] ? errors[id] : "")
+    }
+
     return (
         <ThemeProvider>
             <form onSubmit={handleSubmit}>
@@ -43,8 +48,8 @@ export default function EditEventForm(props) {
                             id="ename"
                             label="Event Name"
                             fullWidth
-                            helperText={touched.ename ? errors.ename : ""}
-                            error={touched.ename && Boolean(errors.ename)}
+                            helperText={textFieldError("ename")}
+                            error={!!textFieldError("ename")}
                             value={ename}
                             onChange={change.bind(null, "ename")}
                         />
@@ -64,8 +69,8 @@ export default function EditEventForm(props) {
                             label="Description"
                             multiline
                             fullWidth
-                            helperText={touched.description ? errors.description : ""}
-                            error={touched.description && Boolean(errors.description)}
+                            helperText={textFieldError("description")}
+                            error={!!textFieldError("description")}
                             value={description}
                             onChange={change.bind(null, "description")}
                         />
@@ -77,8 +82,8 @@ export default function EditEventForm(props) {
                             type="number"
                             min="0"
                             fullWidth
-                            helperText={touched.capacity ? errors.capacity : ""}
-                            error={touched.capacity && Boolean(errors.capacity)}
+                            helperText={textFieldError("capacity")}
+                            error={!!textFieldError("capacity")}
                             value={capacity}
                             onChange={change.bind(null, "capacity")}
                         />
@@ -107,8 +112,8 @@ export default function EditEventForm(props) {
                             id="elocation"
                             label="Location"
                             fullWidth
-                            helperText={touched.elocation ? errors.elocation : ""}
-                            error={touched.elocation && Boolean(errors.elocation)}
+                            helperText={textFieldError("elocation")}
+                            error={!!textFieldError("elocation")}
                             value={elocation}
                             onChange={change.bind(null, "elocation")}
                         />
@@ -118,8 +123,8 @@ export default function EditEventForm(props) {
                             id="facebookUrl"
                             label="Facebook Event Page"
                             fullWidth
-                            helperText={touched.facebookUrl ? errors.facebookUrl : ""}
-                            error={touched.facebookUrl && Boolean(errors.facebookUrl)}
+                            helperText={textFieldError("facebookUrl")}
+                            error={!!textFieldError("facebookUrl")}
                             value={facebookUrl}
                             onChange={change.bind(null, "facebookUrl")}
                         />
@@ -129,8 +134,8 @@ export default function EditEventForm(props) {
                             id="imageUrl"
                             label="Image URL"
                             fullWidth
-                            helperText={touched.imageUrl ? errors.imageUrl : ""}
-                            error={touched.imageUrl && Boolean(errors.imageUrl)}
+                            helperText={textFieldError("imageUrl")}
+                            error={!!textFieldError("imageUrl")}
                             value={imageUrl}
                             onChange={change.bind(null, "imageUrl")}
                         />

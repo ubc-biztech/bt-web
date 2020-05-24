@@ -12,13 +12,14 @@ const slugify = require('slugify')
 
 export default function NewEventForm(props) {
     const {
-        values: { ename, slug, description, capacity, elocation, imageUrl, facebookUrl, startDate, endDate },
+        values: { slug, startDate, endDate }, // the only values we need to store as props are the ones that are programmatically modified
         errors,
         touched,
         handleSubmit,
         handleChange,
         setFieldValue,
-        setFieldTouched
+        setFieldTouched,
+        submitCount
     } = props;
 
     const change = (name, e) => {
@@ -43,6 +44,10 @@ export default function NewEventForm(props) {
         setFieldValue("endDate", date)
     }
 
+    const textFieldError = (id) => {
+        return (errors[id] && submitCount > 0) || (touched[id] ? errors[id] : "")
+    }
+
     return (
         <ThemeProvider>
             <form onSubmit={handleSubmit}>
@@ -52,9 +57,8 @@ export default function NewEventForm(props) {
                             id="ename"
                             label="Event Name"
                             fullWidth
-                            helperText={touched.ename ? errors.ename : ""}
-                            error={touched.ename && Boolean(errors.ename)}
-                            value={ename}
+                            helperText={textFieldError("ename")}
+                            error={!!textFieldError("ename")}
                             onChange={handleEventNameChange.bind(null, "ename")}
                         />
                     </Grid>
@@ -63,10 +67,10 @@ export default function NewEventForm(props) {
                             id="slug"
                             label="Slug"
                             fullWidth
-                            helperText={touched.slug ? errors.slug : ""}
-                            error={touched.slug && Boolean(errors.slug)}
-                            value={slug}
+                            helperText={textFieldError("slug")}
+                            error={!!textFieldError("slug")}
                             onChange={change.bind(null, "slug")}
+                            value={slug}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -75,9 +79,8 @@ export default function NewEventForm(props) {
                             label="Description"
                             multiline
                             fullWidth
-                            helperText={touched.description ? errors.description : ""}
-                            error={touched.description && Boolean(errors.description)}
-                            value={description}
+                            helperText={textFieldError("description")}
+                            error={!!textFieldError("description")}
                             onChange={change.bind(null, "description")}
                         />
                     </Grid>
@@ -87,9 +90,8 @@ export default function NewEventForm(props) {
                             label="Capacity"
                             type="number"
                             min="0"
-                            helperText={touched.capacity ? errors.capacity : ""}
-                            error={touched.capacity && Boolean(errors.capacity)}
-                            value={capacity}
+                            helperText={textFieldError("capacity")}
+                            error={!!textFieldError("capacity")}
                             onChange={change.bind(null, "capacity")}
                         />
                     </Grid>
@@ -118,9 +120,8 @@ export default function NewEventForm(props) {
                             id="elocation"
                             label="Location"
                             fullWidth
-                            helperText={touched.elocation ? errors.elocation : ""}
-                            error={touched.elocation && Boolean(errors.elocation)}
-                            value={elocation}
+                            helperText={textFieldError("location")}
+                            error={!!textFieldError("location")}
                             onChange={change.bind(null, "location")}
                         />
                     </Grid>
@@ -129,9 +130,8 @@ export default function NewEventForm(props) {
                             id="facebookUrl"
                             label="Facebook Event Page"
                             fullWidth
-                            helperText={touched.facebookUrl ? errors.facebookUrl : ""}
-                            error={touched.facebookUrl && Boolean(errors.facebookUrl)}
-                            value={facebookUrl}
+                            helperText={textFieldError("facebookUrl")}
+                            error={!!textFieldError("facebookUrl")}
                             onChange={change.bind(null, "facebookUrl")}
                         />
                     </Grid>
@@ -140,9 +140,8 @@ export default function NewEventForm(props) {
                             id="imageUrl"
                             label="Image URL"
                             fullWidth
-                            helperText={touched.imageUrl ? errors.imageUrl : ""}
-                            error={touched.imageUrl && Boolean(errors.imageUrl)}
-                            value={imageUrl}
+                            helperText={textFieldError("imageUrl")}
+                            error={!!textFieldError("imageUrl")}
                             onChange={change.bind(null, "imageUrl")}
                         />
                     </Grid>
