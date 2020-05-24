@@ -12,6 +12,7 @@ import './Router.scss'
 import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
 import RegisterAlert from './Messages/RegisterAlert'
+import Loading from './Loading'
 
 import AdminRoute from './Authentication/AdminRoute'
 import Login from './Authentication/Login'
@@ -151,7 +152,7 @@ class Router extends Component {
 
           </Switch>
         </BrowserRouter >
-    ) : null
+    ) : <Loading />
   }
 }
 
