@@ -11,7 +11,8 @@ export default function NewMemberForm(props) {
         touched,
         handleSubmit,
         handleChange,
-        setFieldTouched
+        setFieldTouched,
+        submitCount
     } = props;
 
     const change = (name, e) => {
@@ -20,19 +21,22 @@ export default function NewMemberForm(props) {
         setFieldTouched(name, true, false);
     };
 
+    const textFieldError = (id) => {
+        return (errors[id] && submitCount > 0) || (touched[id] ? errors[id] : "")
+    }
+
     return (
         <form onSubmit={handleSubmit}>
-            <br/>
+            <br />
             <Typography variant="caption" color={'error'}>* Indicates required field</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        disabled={!!initialValues.fname}
                         defaultValue={initialValues.fname}
                         label="First Name*"
                         autoComplete="given-name"
-                        helperText={touched.fname ? errors.fname : ""}
-                        error={touched.fname && Boolean(errors.fname)}
+                        helperText={textFieldError('fname')}
+                        error={!!textFieldError('fname')}
                         id="fname"
                         onChange={change.bind(null, "fname")}
                         fullWidth
@@ -41,12 +45,11 @@ export default function NewMemberForm(props) {
 
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        disabled={!!initialValues.lname}
                         defaultValue={initialValues.lname}
                         label="Last Name*"
                         autoComplete="family-name"
-                        helperText={touched.lname ? errors.lname : ""}
-                        error={touched.lname && Boolean(errors.lname)}
+                        helperText={textFieldError('lname')}
+                        error={!!textFieldError('lname')}
                         id="lname"
                         onChange={change.bind(null, "lname")}
                         fullWidth
@@ -59,8 +62,8 @@ export default function NewMemberForm(props) {
                         defaultValue={initialValues.email}
                         label="Email Address*"
                         autoComplete="email"
-                        helperText={touched.email ? errors.email : ""}
-                        error={touched.email && Boolean(errors.email)}
+                        helperText={textFieldError('email')}
+                        error={!!textFieldError('email')}
                         id="email"
                         onChange={change.bind(null, "email")}
                         fullWidth
@@ -70,10 +73,22 @@ export default function NewMemberForm(props) {
                 <Grid item xs={12}>
                     <TextField
                         label="Student Number*"
-                        helperText={touched.id ? errors.id : ""}
-                        error={touched.id && Boolean(errors.id)}
+                        helperText={textFieldError('id')}
+                        error={!!textFieldError('id')}
                         id="id"
                         onChange={change.bind(null, "id")}
+                        fullWidth
+                    />
+                </Grid>
+
+                <Grid item xs={12}>
+                    <TextField
+                        defaultValue={initialValues.inviteCode}
+                        label="Membership Code"
+                        helperText={textFieldError('inviteCode')}
+                        error={!!textFieldError('inviteCode')}
+                        id="inviteCode"
+                        onChange={change.bind(null, "inviteCode")}
                         fullWidth
                     />
                 </Grid>
