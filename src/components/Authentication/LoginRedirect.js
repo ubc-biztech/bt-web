@@ -11,13 +11,13 @@ export class LoginRedirect extends Component {
     componentDidMount() {
         // Check if there is an authenticated user
         // After authenticating with Google, Auth redirects to localhost:3000/login/ 
-        if(this.props.user) {
+        if (this.props.user) {
             this.props.history.push("/");
         }
         // There is a time delay where Auth.currentAuthenticatedUser() returns the wrong value. Hence polling
         this.pollForAuthenticatedUser()
     }
-    
+
     pollForAuthenticatedUser() {
         Auth.currentAuthenticatedUser({ bypassCache: true })
             .then(async authUser => {
@@ -34,14 +34,14 @@ export class LoginRedirect extends Component {
                 else {
 
                     const student_id = authUser.attributes['custom:student_id'];
-                    
+
                     // Detect if "first time sign up" by checking if custom:student_id is saved in the user pool
                     // If the user's student_id exists in the user pool, check if the user is registered in the database
                     // There is a possibility that a user exists in the user pool but not the database
-                    if(student_id)  {
+                    if (student_id) {
                         const user = await fetchBackend(`/users/${student_id}`, 'GET');
-                        
-                        if(user && user.id) { // check database
+
+                        if (user && user.id) { // check database
                             this.props.setUser({ ...authUser, admin: false }) // save to redux
                             this.props.history.push('/'); // Redirect to the 'user home' page
                             return null;
@@ -53,7 +53,7 @@ export class LoginRedirect extends Component {
 
                     // If the user doesn't exist in the database and/or the user pool, redirect to the 'user register' form
                     this.props.setUser({ ...authUser, admin: false }) // save only essential info to redux
-                    this.props.history.push('/signup');
+                    this.props.history.push('/new-member');
                 }
 
             })

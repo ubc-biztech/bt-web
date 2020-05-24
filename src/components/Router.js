@@ -76,9 +76,9 @@ class Router extends Component {
                 path="/forbidden"
                 render={() => <Forbidden />} />
               <Route
-                path="/signup"
+                path="/new-member"
                 render={() => user.student_id
-                  ? <Redirect to="/" /> /* Allow signup only if user is not yet registered in DB*/
+                  ? <Redirect to="/" /> /* Allow create member only if user is not yet registered in DB*/
                   : <NewMember />} />
               <Route
                 path='/event/:id/register'
@@ -121,7 +121,7 @@ class Router extends Component {
               path='/login-redirect'
               component={LoginRedirect} />
             <Route
-              path="/invite"
+              path="/signup"
               component={Signup} />
             <Route
               path='/'
