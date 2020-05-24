@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Invite(props) {
+function Signup(props) {
   const classes = useStyles();
 
   const inviteCode = new URLSearchParams(props.location.search).get('invite')
@@ -101,4 +101,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setUser })(Invite);
+export default connect(mapStateToProps, { setUser })(Signup);
