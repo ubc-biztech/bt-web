@@ -26,17 +26,25 @@ const styles = {
 export class EventUserTable extends Component {
   constructor(props) {
     super(props);
-    this.state = { registrationObj: {}, faculties: {}, years: {}, dietary: {}, genders: {}, heardFrom: {} };
+    this.changeVisibility = this.changeVisibility.bind(this)
+    this.state = {
+      registrationObj: {},
+      faculties: {},
+      years: {},
+      dietary: {},
+      genders: {},
+      heardFrom: {},
+      registrationVisible: { visible: false, style: { display: 'none' } }
+    };
   }
 
   async updateUserRegistrationStatus(id, registrationStatus) {
     const body = {
       eventID: this.props.event.id,
-      id,
       registrationStatus
     };
 
-    await fetchBackend('/registrations', 'POST', body);
+    await fetchBackend(`/registrations/${id}`, 'PUT', body);
 
     this.getEventTableData(this.props.event.id);
   }
@@ -49,8 +57,7 @@ export class EventUserTable extends Component {
     let params = new URLSearchParams({
       eventID: eventID
     })
-    await fetchBackend(`/registration/?${params}`, 'GET')
-      .then(response => response.json())
+    await fetchBackend(`/registrations/?${params}`, 'GET')
       .then(response => {
         let heardFrom = {};
         for (let i = 0; i < response.size; ++i) {
@@ -67,7 +74,6 @@ export class EventUserTable extends Component {
     });
 
     await fetchBackend(`/events/${eventID}?${params}`, 'GET')
-      .then(response => response.json())
       .then(async users => {
         this.registrationNumbers(users)
         this.notRegistrationNumbers(users);
@@ -76,10 +82,6 @@ export class EventUserTable extends Component {
 
   async registrationNumbers(users) {
     let registrationObj = {
-      'registered': 0,
-      'checkedIn': 0,
-      'waitlisted': 0,
-      'cancelled': 0
     }
     users.forEach(user => {
       if (user.registrationStatus) {
@@ -143,7 +145,28 @@ export class EventUserTable extends Component {
     }
   }
 
+  changeVisibility(event) {
+    const id = event.target.id
+    switch (id) {
+      case 'registration':
+        if (this.state.registrationVisible.visible) {
+          this.setState({ registrationVisible: { visible: false, style: { display: 'none' } } })
+        } else {
+          this.setState({ registrationVisible: { visible: true, style: { display: 'block' } } })
+        }
+        break;
+      default:
+        ;
+    }
+  }
+
   render() {
+    const registrationData = Object.keys(this.state.registrationObj).map(key => {
+      return {
+        label: key,
+        angle: this.state.registrationObj[key]
+      }
+    })
     /**
      * Helper function to determine whether to display action for check-in or undo check-in
      * @param {*} rowData data about the current row
@@ -180,12 +203,20 @@ export class EventUserTable extends Component {
      */
     return (
       <div>
-        <div style={styles.stats}>
-          <Typography style={styles.stat}>Registered: {this.state.registrationObj.registered}</Typography>
-          <Typography style={styles.stat}>Checked in: {this.state.registrationObj.checkedIn}</Typography>
-          <Typography style={styles.stat}>Waitlisted: {this.state.registrationObj.waitlisted}</Typography>
-          <Typography style={styles.stat}>Cancelled: {this.state.registrationObj.cancelled}</Typography>
-          <Typography style={styles.stat}>Total: {this.state.registrationObj.registered + this.state.registrationObj.checkedIn + this.state.registrationObj.waitlisted + this.state.registrationObj.cancelled}</Typography>
+        <div style={styles.stats} id='registration' onClick={this.changeVisibility}>
+          <Typography style={styles.stat}>Registration status: </Typography>
+          {Object.keys(this.state.registrationObj).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.registrationObj[key]}</Typography>))}
+          <Typography style={styles.stat}>Total: {this.state.registrationObj.registered + this.state.registrationObj.checkedIn + this.state.registrationObj.waitlist + this.state.registrationObj.cancelled}</Typography>
+        </div>
+        <div style={this.state.registrationVisible.style}>
+          <RadialChart
+            width={300}
+            height={300}
+            data={registrationData}
+            showLabels={true}
+            radius={140}
+            innerRadius={100}
+          />
         </div>
         <div style={styles.stats}>
           <Typography style={styles.stat}>Faculty: </Typography>
