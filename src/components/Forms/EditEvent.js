@@ -13,7 +13,7 @@ const slugify = require('slugify')
 
 export default function EditEventForm(props) {
     const {
-        values: { startDate, endDate },
+        values: { ename, slug, description, capacity, elocation, imageUrl, startDate, endDate },
         errors,
         touched,
         handleSubmit,
@@ -55,6 +55,7 @@ export default function EditEventForm(props) {
                         fullWidth
                         helperText={touched.ename ? errors.ename : ""}
                         error={touched.ename && Boolean(errors.ename)}
+                        value={ename}
                         onChange={handleEventNameChange.bind(null, "ename")}
                     />
                     <TextField
@@ -63,6 +64,7 @@ export default function EditEventForm(props) {
                         fullWidth
                         helperText={touched.slug ? errors.slug : ""}
                         error={touched.slug && Boolean(errors.slug)}
+                        value={slug}
                         onChange={change.bind(null, "slug")}
                     />
                     <TextField
@@ -72,6 +74,7 @@ export default function EditEventForm(props) {
                         fullWidth
                         helperText={touched.description ? errors.description : ""}
                         error={touched.description && Boolean(errors.description)}
+                        value={description}
                         onChange={change.bind(null, "description")}
                     />
                     <TextField
@@ -81,8 +84,18 @@ export default function EditEventForm(props) {
                         min="0"
                         helperText={touched.capacity ? errors.capacity : ""}
                         error={touched.capacity && Boolean(errors.capacity)}
+                        value={capacity}
                         onChange={change.bind(null, "capacity")}
                     />
+                    {/* <TextField
+                        id="partners"
+                        label="Partners & Sponsors"
+                        fullWidth
+                        helperText={touched.partners ? errors.partners : ""}
+                        error={touched.partners && Boolean(errors.partners)}
+                        value={partners}
+                        onChange={change.bind(null, "partners")}
+                    /> */}
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDateTimePicker
                             margin="normal"
@@ -104,6 +117,7 @@ export default function EditEventForm(props) {
                         fullWidth
                         helperText={touched.elocation ? errors.elocation : ""}
                         error={touched.elocation && Boolean(errors.elocation)}
+                        value={elocation}
                         onChange={change.bind(null, "elocation")}
                     />
                     <TextField
@@ -112,6 +126,7 @@ export default function EditEventForm(props) {
                         fullWidth
                         helperText={touched.imageUrl ? errors.imageUrl : ""}
                         error={touched.imageUrl && Boolean(errors.imageUrl)}
+                        value={imageUrl}
                         onChange={change.bind(null, "imageUrl")}
                     />
                 </Paper>
