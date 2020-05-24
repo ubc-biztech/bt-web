@@ -21,8 +21,8 @@ import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
 import EventRegister from '../pages/member/EventRegister'
-import Invite from '../pages/member/Invite'
 import Signup from '../pages/member/Signup'
+import NewMember from '../pages/member/NewMember'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
@@ -79,7 +79,7 @@ class Router extends Component {
                 path="/signup"
                 render={() => user.student_id
                   ? <Redirect to="/" /> /* Allow signup only if user is not yet registered in DB*/
-                  : <Signup />} />
+                  : <NewMember />} />
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
@@ -122,7 +122,7 @@ class Router extends Component {
               component={LoginRedirect} />
             <Route
               path="/invite"
-              component={Invite} />
+              component={Signup} />
             <Route
               path='/'
               component={Login} />
