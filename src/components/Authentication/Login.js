@@ -50,7 +50,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     borderRadius: 12,
     minWidth: 256,
-    textAlign: "center"
+    textAlign: "center",
+    padding: '16px'
   },
   header: {
     textAlign: "center",
@@ -95,7 +96,7 @@ function Login(props) {
       <CssBaseline />
       <div className={classes.paper}>
         <Card className={classes.root} width="400px">
-         
+
           <div
             style={{
               display: "flex",
@@ -134,7 +135,7 @@ function Login(props) {
 
 const mapStateToProps = state => {
   return {
-      user: state.userState.user,
+    user: state.userState.user,
   };
 };
 

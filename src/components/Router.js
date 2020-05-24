@@ -21,6 +21,7 @@ import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
 import EventRegister from '../pages/member/EventRegister'
+import Invite from '../pages/member/Invite'
 import Signup from '../pages/member/Signup'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
@@ -46,9 +47,9 @@ class Router extends Component {
   }
 
   componentDidMount() {
-   getEvents()
+    getEvents()
 
-   if(!this.props.user) this.getAuthenticatedUser();
+    if (!this.props.user) this.getAuthenticatedUser();
   }
 
   render() {
@@ -66,7 +67,7 @@ class Router extends Component {
           <div className="content">
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
-    
+
               {/* COMMON ROUTES */}
               <Route
                 path='/login-redirect'
@@ -74,11 +75,11 @@ class Router extends Component {
               <Route
                 path="/forbidden"
                 render={() => <Forbidden />} />
-              <Route 
+              <Route
                 path="/signup"
                 render={() => user.student_id
-                ? <Redirect to ="/" /> /* Allow signup only if user is not yet registered in DB*/
-                : <Signup />} />
+                  ? <Redirect to="/" /> /* Allow signup only if user is not yet registered in DB*/
+                  : <Signup />} />
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
@@ -120,9 +121,12 @@ class Router extends Component {
               path='/login-redirect'
               component={LoginRedirect} />
             <Route
+              path="/invite"
+              component={Invite} />
+            <Route
               path='/'
               component={Login} />
-            
+
             <Redirect to='/' />
 
           </Switch>
