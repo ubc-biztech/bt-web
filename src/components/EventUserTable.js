@@ -46,16 +46,10 @@ export class EventUserTable extends Component {
      # of registered/checkedin etc. is computed every single time this function is called
   */
   async getEventTableData(eventID) {
-
-    const params = new URLSearchParams({
-      users: true
-    });
-
-    fetchBackend(`/events/${eventID}${params}`, 'GET')
-      .then(response => {
-      })
-
-    await fetchBackend('/registration/scanEvent?' + params, 'GET')
+    let params = new URLSearchParams({
+      eventID: eventID
+    })
+    await fetchBackend(`/registration/?${params}`, 'GET')
       .then(response => response.json())
       .then(response => {
         let heardFrom = {};
@@ -68,11 +62,11 @@ export class EventUserTable extends Component {
         this.setState({ heardFrom })
       })
 
-    const eventParams = new URLSearchParams({
-      id: eventID
+    params = new URLSearchParams({
+      users: true
     });
 
-    fetchBackend('/events/getUsers?' + eventParams, 'GET')
+    await fetchBackend(`/events/${eventID}?${params}`, 'GET')
       .then(response => response.json())
       .then(async users => {
         this.registrationNumbers(users)

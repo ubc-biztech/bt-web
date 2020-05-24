@@ -2,10 +2,6 @@ import aws_config from '../aws-config';
 import Store from '../components/Store'
 import { setEvents } from '../actions/PageActions'
 
-export const API_URL = process.env.REACT_APP_STAGE === 'production'
-    ? process.env.REACT_APP_PROD_API
-    : process.env.REACT_APP_STAGING_API
-
 // TODO: Configure travis to build a staging version
 // export const AWS_CONFIG = process.env.REACT_APP_STAGE === 'production'
 //     ? aws_config
@@ -18,7 +14,6 @@ const API_URL = process.env.REACT_APP_STAGE === 'production'
     : process.env.REACT_APP_STAGING_API
 
 const API_KEY = process.env.REACT_APP_STAGE === 'production'
-export const API_KEY = process.env.REACT_APP_STAGE === 'production'
     ? process.env.REACT_APP_PROD_API_KEY
     : process.env.REACT_APP_STAGING_API_KEY
 
@@ -52,7 +47,6 @@ export function fetchBackend(endpoint, method, data) {
             }
             return Promise.resolve(response)
         })
-    return fetch(API_URL + endpoint, { method, headers, body })
 }
 
 export function log(message) {
