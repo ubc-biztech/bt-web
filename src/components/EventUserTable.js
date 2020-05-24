@@ -13,7 +13,8 @@ const styles = {
     display: 'flex',
     margin: '6px',
     borderRadius: '20px',
-    boxShadow: 'rgba(0, 0, 0, 0.4) 0 0 10px'
+    boxShadow: 'rgba(0, 0, 0, 0.4) 0 0 10px',
+    cursor: 'pointer'
   },
   stat: {
     margin: '10px'
@@ -28,13 +29,18 @@ export class EventUserTable extends Component {
     super(props);
     this.changeVisibility = this.changeVisibility.bind(this)
     this.state = {
-      registrationObj: {},
+      registrationObj: { temp: 0 },
       faculties: {},
       years: {},
       dietary: {},
       genders: {},
       heardFrom: {},
-      registrationVisible: { visible: false, style: { display: 'none' } }
+      'registrationVisible': { visible: false, style: { display: 'none' } },
+      facultyVisible: { visible: false, style: { display: 'none' } },
+      yearVisible: { visible: false, style: { display: 'none' } },
+      dietaryVisible: { visible: false, style: { display: 'none' } },
+      gendersVisible: { visible: false, style: { display: 'none' } },
+      heardFromVisible: { visible: false, style: { display: 'none' } }
     };
   }
 
@@ -91,7 +97,7 @@ export class EventUserTable extends Component {
 
     this.setState({
       rows: users,
-      registrationObj: registrationObj
+      registrationObj
     });
   }
 
@@ -116,10 +122,10 @@ export class EventUserTable extends Component {
     })
 
     this.setState({
-      faculties: faculties,
-      years: years,
-      genders: genders,
-      dietary: dietary
+      faculties,
+      years,
+      genders,
+      dietary
     });
   }
 
@@ -139,20 +145,63 @@ export class EventUserTable extends Component {
     this.getEventTableData(this.props.event.id);
   }
 
+  /*
+    the if statement is only used if an exec goes from one event directly to another event (not implemented right now)
+  */
   componentDidUpdate(prevProps) {
     if (prevProps.event.id !== this.props.event.id) {
       this.updateEventTableData(this.props.event.id);
     }
   }
 
+  /*
+    changes the visibility of the stats of whichever div was selected
+  */
   changeVisibility(event) {
     const id = event.target.id
+    const invisible = { visible: false, style: { display: 'none' } }
+    const visible = { visible: true, style: { display: 'block' } }
     switch (id) {
       case 'registration':
         if (this.state.registrationVisible.visible) {
-          this.setState({ registrationVisible: { visible: false, style: { display: 'none' } } })
+          this.setState({ registrationVisible: invisible })
         } else {
-          this.setState({ registrationVisible: { visible: true, style: { display: 'block' } } })
+          this.setState({ registrationVisible: visible })
+        }
+        break;
+      case 'faculties':
+        if (this.state.facultyVisible.visible) {
+          this.setState({ facultyVisible: invisible })
+        } else {
+          this.setState({ facultyVisible: visible })
+        }
+        break;
+      case 'year':
+        if (this.state.yearVisible.visible) {
+          this.setState({ yearVisible: invisible })
+        } else {
+          this.setState({ yearVisible: visible })
+        }
+        break;
+      case 'dietary':
+        if (this.state.dietaryVisible.visible) {
+          this.setState({ dietaryVisible: invisible })
+        } else {
+          this.setState({ dietaryVisible: visible })
+        }
+        break;
+      case 'gender':
+        if (this.state.gendersVisible.visible) {
+          this.setState({ gendersVisible: invisible })
+        } else {
+          this.setState({ gendersVisible: visible })
+        }
+        break;
+      case 'heardFrom':
+        if (this.state.heardFromVisible.visible) {
+          this.setState({ heardFromVisible: invisible })
+        } else {
+          this.setState({ heardFromVisible: visible })
         }
         break;
       default:
@@ -165,6 +214,36 @@ export class EventUserTable extends Component {
       return {
         label: key,
         angle: this.state.registrationObj[key]
+      }
+    })
+    const facultiesData = Object.keys(this.state.faculties).map(key => {
+      return {
+        label: key,
+        angle: this.state.faculties[key]
+      }
+    })
+    const yearData = Object.keys(this.state.years).map(key => {
+      return {
+        label: key,
+        angle: this.state.years[key]
+      }
+    })
+    const dietaryData = Object.keys(this.state.dietary).map(key => {
+      return {
+        label: key,
+        angle: this.state.dietary[key]
+      }
+    })
+    const gendersData = Object.keys(this.state.genders).map(key => {
+      return {
+        label: key,
+        angle: this.state.genders[key]
+      }
+    })
+    const heardFromData = Object.keys(this.state.heardFrom).map(key => {
+      return {
+        label: key,
+        angle: this.state.heardFrom[key]
       }
     })
     /**
@@ -206,7 +285,7 @@ export class EventUserTable extends Component {
         <div style={styles.stats} id='registration' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Registration status: </Typography>
           {Object.keys(this.state.registrationObj).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.registrationObj[key]}</Typography>))}
-          <Typography style={styles.stat}>Total: {this.state.registrationObj.registered + this.state.registrationObj.checkedIn + this.state.registrationObj.waitlist + this.state.registrationObj.cancelled}</Typography>
+          <Typography style={styles.stat}>Total: {Object.values(this.state.registrationObj).reduce((total, amount) => total + amount)}</Typography>
         </div>
         <div style={this.state.registrationVisible.style}>
           <RadialChart
@@ -218,25 +297,75 @@ export class EventUserTable extends Component {
             innerRadius={100}
           />
         </div>
-        <div style={styles.stats}>
+        <div style={styles.stats} id='faculties' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Faculty: </Typography>
           {Object.keys(this.state.faculties).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.faculties[key]}</Typography>))}
         </div>
-        <div style={styles.stats}>
+        <div style={this.state.facultyVisible.style}>
+          <RadialChart
+            width={300}
+            height={300}
+            data={facultiesData}
+            showLabels={true}
+            radius={140}
+            innerRadius={100}
+          />
+        </div>
+        <div style={styles.stats} id='year' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Year level: </Typography>
           {Object.keys(this.state.years).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.years[key]}</Typography>))}
         </div>
-        <div style={styles.stats}>
+        <div style={this.state.yearVisible.style}>
+          <RadialChart
+            width={300}
+            height={300}
+            data={yearData}
+            showLabels={true}
+            radius={140}
+            innerRadius={100}
+          />
+        </div>
+        <div style={styles.stats} id='dietary' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Dietary: </Typography>
           {Object.keys(this.state.dietary).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.dietary[key]}</Typography>))}
         </div>
-        <div style={styles.stats}>
+        <div style={this.state.dietaryVisible.style}>
+          <RadialChart
+            width={300}
+            height={300}
+            data={dietaryData}
+            showLabels={true}
+            radius={140}
+            innerRadius={100}
+          />
+        </div>
+        <div style={styles.stats} id='gender' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Gender: </Typography>
           {Object.keys(this.state.genders).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.genders[key]}</Typography>))}
         </div>
-        <div style={styles.stats}>
+        <div style={this.state.gendersVisible.style}>
+          <RadialChart
+            width={300}
+            height={300}
+            data={gendersData}
+            showLabels={true}
+            radius={140}
+            innerRadius={100}
+          />
+        </div>
+        <div style={styles.stats} id='heardFrom' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Heard about the event from: </Typography>
           {Object.keys(this.state.heardFrom).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.heardFrom[key]}</Typography>))}
+        </div>
+        <div style={this.state.heardFromVisible.style}>
+          <RadialChart
+            width={300}
+            height={300}
+            data={heardFromData}
+            showLabels={true}
+            radius={140}
+            innerRadius={100}
+          />
         </div>
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
