@@ -12,21 +12,21 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
     layout: {
-      [theme.breakpoints.up('sm')]: {
-        width: 600,
-        margin: 'auto',
-      },
+        [theme.breakpoints.up('sm')]: {
+            width: 600,
+            margin: 'auto',
+        },
     },
     paper: {
-      [theme.breakpoints.up('sm')]: {
-        margin: theme.spacing(3),
-      },
+        [theme.breakpoints.up('sm')]: {
+            margin: theme.spacing(3),
+        },
     },
     content: {
-      padding: theme.spacing(3),
+        padding: theme.spacing(3),
     }
-  }));
-  
+}));
+
 function EventEdit(props) {
     const classes = useStyles();
 
@@ -49,6 +49,7 @@ function EventEdit(props) {
             .min(0, 'Valid capacity required')
             .required(),
         elocation: Yup.string().required(),
+        facebookUrl: Yup.string().url(),
         imageUrl: Yup.string().url().required(),
     });
 
