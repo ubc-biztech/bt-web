@@ -5,7 +5,7 @@ import { REGISTRATION_STATUS } from '../constants/Constants';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import { RadialChart } from 'react-vis';
+import { RadialChart, XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, VerticalBarSeries } from 'react-vis';
 
 const styles = {
   stats: {
@@ -160,7 +160,7 @@ export class EventUserTable extends Component {
   changeVisibility(event) {
     const id = event.target.id
     const invisible = { visible: false, style: { display: 'none' } }
-    const visible = { visible: true, style: { display: 'block' } }
+    const visible = { visible: true, style: { display: 'flex', paddingBottom: '20px', paddingLeft: '50px' } }
     switch (id) {
       case 'registration':
         if (this.state.registrationVisible.visible) {
@@ -210,42 +210,91 @@ export class EventUserTable extends Component {
   }
 
   render() {
-    const registrationData = Object.keys(this.state.registrationObj).map(key => {
-      return {
-        label: key,
-        angle: this.state.registrationObj[key]
-      }
-    })
-    const facultiesData = Object.keys(this.state.faculties).map(key => {
-      return {
-        label: key,
-        angle: this.state.faculties[key]
-      }
-    })
-    const yearData = Object.keys(this.state.years).map(key => {
-      return {
-        label: key,
-        angle: this.state.years[key]
-      }
-    })
-    const dietaryData = Object.keys(this.state.dietary).map(key => {
-      return {
-        label: key,
-        angle: this.state.dietary[key]
-      }
-    })
-    const gendersData = Object.keys(this.state.genders).map(key => {
-      return {
-        label: key,
-        angle: this.state.genders[key]
-      }
-    })
-    const heardFromData = Object.keys(this.state.heardFrom).map(key => {
-      return {
-        label: key,
-        angle: this.state.heardFrom[key]
-      }
-    })
+    //each data set is an array of data (arrays) sets b/c different charts accept different data
+    const registrationData = [
+      Object.keys(this.state.registrationObj).map(key => {
+        return {
+          label: key,
+          angle: this.state.registrationObj[key]
+        }
+      }),
+      Object.keys(this.state.registrationObj).map(key => {
+        return {
+          x: key,
+          y: this.state.registrationObj[key]
+        }
+      })
+    ]
+    const facultiesData = [
+      Object.keys(this.state.faculties).map(key => {
+        return {
+          label: key,
+          angle: this.state.faculties[key]
+        }
+      }),
+      Object.keys(this.state.faculties).map(key => {
+        return {
+          x: key,
+          y: this.state.faculties[key]
+        }
+      })
+    ]
+    const yearData = [
+      Object.keys(this.state.years).map(key => {
+        return {
+          label: key,
+          angle: this.state.years[key]
+        }
+      }),
+      Object.keys(this.state.years).map(key => {
+        return {
+          x: key,
+          y: this.state.years[key]
+        }
+      })
+    ]
+    const dietaryData = [
+      Object.keys(this.state.dietary).map(key => {
+        return {
+          label: key,
+          angle: this.state.dietary[key]
+        }
+      }),
+      Object.keys(this.state.dietary).map(key => {
+        return {
+          x: key,
+          y: this.state.dietary[key]
+        }
+      })
+    ]
+    const gendersData = [
+      Object.keys(this.state.genders).map(key => {
+        return {
+          label: key,
+          angle: this.state.genders[key]
+        }
+      }),
+      Object.keys(this.state.genders).map(key => {
+        return {
+          x: key,
+          y: this.state.genders[key]
+        }
+      })
+    ]
+    const heardFromData = [
+      Object.keys(this.state.heardFrom).map(key => {
+        return {
+          label: key,
+          angle: this.state.heardFrom[key]
+        }
+      }),
+      Object.keys(this.state.heardFrom).map(key => {
+        return {
+          x: key,
+          y: this.state.heardFrom[key]
+        }
+      })
+    ]
     /**
      * Helper function to determine whether to display action for check-in or undo check-in
      * @param {*} rowData data about the current row
@@ -278,6 +327,7 @@ export class EventUserTable extends Component {
     }
 
     /**
+     * Creates stats + graphs/charts
      * Creates event table using MaterialTable library
      */
     return (
@@ -291,11 +341,22 @@ export class EventUserTable extends Component {
           <RadialChart
             width={300}
             height={300}
-            data={registrationData}
+            data={registrationData[0]}
             showLabels={true}
             radius={140}
             innerRadius={100}
           />
+          <XYPlot margin={{ left: 40, right: 40, top: 40, bottom: 70 }} xType="ordinal" width={300} height={300} >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <XAxis tickLabelAngle={-45} />
+            <YAxis />
+            <VerticalBarSeries
+              width={300}
+              height={300}
+              data={registrationData[1]}
+            />
+          </XYPlot>
         </div>
         <div style={styles.stats} id='faculties' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Faculty: </Typography>
@@ -305,11 +366,22 @@ export class EventUserTable extends Component {
           <RadialChart
             width={300}
             height={300}
-            data={facultiesData}
+            data={facultiesData[0]}
             showLabels={true}
             radius={140}
             innerRadius={100}
           />
+          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <XAxis tickLabelAngle={-45} />
+            <YAxis />
+            <VerticalBarSeries
+              width={300}
+              height={300}
+              data={facultiesData[1]}
+            />
+          </XYPlot>
         </div>
         <div style={styles.stats} id='year' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Year level: </Typography>
@@ -319,11 +391,22 @@ export class EventUserTable extends Component {
           <RadialChart
             width={300}
             height={300}
-            data={yearData}
+            data={yearData[0]}
             showLabels={true}
             radius={140}
             innerRadius={100}
           />
+          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <XAxis tickLabelAngle={-45} />
+            <YAxis />
+            <VerticalBarSeries
+              width={300}
+              height={300}
+              data={yearData[1]}
+            />
+          </XYPlot>
         </div>
         <div style={styles.stats} id='dietary' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Dietary: </Typography>
@@ -333,11 +416,22 @@ export class EventUserTable extends Component {
           <RadialChart
             width={300}
             height={300}
-            data={dietaryData}
+            data={dietaryData[0]}
             showLabels={true}
             radius={140}
             innerRadius={100}
           />
+          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <XAxis tickLabelAngle={-45} />
+            <YAxis />
+            <VerticalBarSeries
+              width={300}
+              height={300}
+              data={dietaryData[1]}
+            />
+          </XYPlot>
         </div>
         <div style={styles.stats} id='gender' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Gender: </Typography>
@@ -347,11 +441,22 @@ export class EventUserTable extends Component {
           <RadialChart
             width={300}
             height={300}
-            data={gendersData}
+            data={gendersData[0]}
             showLabels={true}
             radius={140}
             innerRadius={100}
           />
+          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <XAxis tickLabelAngle={-45} />
+            <YAxis />
+            <VerticalBarSeries
+              width={300}
+              height={300}
+              data={gendersData[1]}
+            />
+          </XYPlot>
         </div>
         <div style={styles.stats} id='heardFrom' onClick={this.changeVisibility}>
           <Typography style={styles.stat}>Heard about the event from: </Typography>
@@ -361,11 +466,22 @@ export class EventUserTable extends Component {
           <RadialChart
             width={300}
             height={300}
-            data={heardFromData}
+            data={heardFromData[0]}
             showLabels={true}
             radius={140}
             innerRadius={100}
           />
+          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <XAxis tickLabelAngle={-45} />
+            <YAxis />
+            <VerticalBarSeries
+              width={300}
+              height={300}
+              data={heardFromData[1]}
+            />
+          </XYPlot>
         </div>
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
