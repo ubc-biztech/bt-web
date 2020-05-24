@@ -10,7 +10,9 @@ export default function RegisterEventForm(props) {
         touched,
         handleSubmit,
         handleChange,
-        setFieldTouched
+        setFieldTouched,
+        dirty,
+        isSubmitting
     } = props;
 
     const change = (name, e) => {
@@ -126,6 +128,7 @@ export default function RegisterEventForm(props) {
                 variant="contained"
                 color="primary"
                 type="submit"
+                disabled={!dirty || isSubmitting}
             >
                 Submit
             </Button>

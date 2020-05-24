@@ -19,7 +19,9 @@ export default function EditEventForm(props) {
         handleSubmit,
         handleChange,
         setFieldValue,
-        setFieldTouched
+        setFieldTouched,
+        dirty,
+        isSubmitting
     } = props;
 
     const change = (name, e) => {
@@ -130,7 +132,7 @@ export default function EditEventForm(props) {
                         onChange={change.bind(null, "imageUrl")}
                     />
                 </Paper>
-                <Button type="submit">
+                <Button disabled={!dirty || isSubmitting} type="submit">
                     Submit
                 </Button>
             </form>
