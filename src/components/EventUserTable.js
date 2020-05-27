@@ -40,12 +40,6 @@ export class EventUserTable extends Component {
       dietaryVisible: { visible: false, style: { display: 'none' } },
       gendersVisible: { visible: false, style: { display: 'none' } },
       heardFromVisible: { visible: false, style: { display: 'none' } },
-      registrationData: [],
-      facultiesData: [],
-      yearData: [],
-      dietaryData: [],
-      gendersData: [],
-      hearedFromData: [],
     };
   }
 
@@ -207,13 +201,13 @@ export class EventUserTable extends Component {
      * Creates event table using MaterialTable library
      */
     return (
-      <div>
-        <Statistic statName="Registration status: " statObj={this.state.registrations} data={this.state.registrationData} />
-        <Statistic statName="Faculty: " statObj={this.state.faculties} data={this.state.facultiesData} />
-        <Statistic statName="Year level: " statObj={this.state.years} data={this.state.yearData} />
-        <Statistic statName="Dietary: " statObj={this.state.dietary} data={this.state.dietaryData} />
-        <Statistic statName="Gender: " statObj={this.state.genders} data={this.state.gendersData} />
-        <Statistic statName="Heard about event from: " statObj={this.state.heardFrom} data={this.state.heardFromData} />
+      <React.Fragment>
+        <Statistic statName="Registration status: " statObj={this.state.registrations} />
+        <Statistic statName="Faculty: " statObj={this.state.faculties} />
+        <Statistic statName="Year level: " statObj={this.state.years} />
+        <Statistic statName="Dietary: " statObj={this.state.dietary} />
+        <Statistic statName="Gender: " statObj={this.state.genders} />
+        <Statistic statName="Heard about event from: " statObj={this.state.heardFrom} />
 
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
@@ -274,7 +268,7 @@ export class EventUserTable extends Component {
             })
           }}
         />
-      </div>
+      </React.Fragment>
 
     );
   }
@@ -321,7 +315,7 @@ class Statistic extends React.Component {
       })
     ]
     return (
-      <div>
+      <React.Fragment>
         <div style={styles.stats} onClick={this.changeVisibility}>
           <Typography style={styles.stat}>{this.props.statName} </Typography>
           {Object.keys(this.props.statObj).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.props.statObj[key]}</Typography>))}
@@ -348,7 +342,7 @@ class Statistic extends React.Component {
             />
           </XYPlot>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }
