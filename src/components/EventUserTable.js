@@ -27,20 +27,25 @@ const styles = {
 export class EventUserTable extends Component {
   constructor(props) {
     super(props);
-    this.changeVisibility = this.changeVisibility.bind(this)
     this.state = {
-      registrationObj: { temp: 0 },
+      registrations: {},
       faculties: {},
       years: {},
       dietary: {},
       genders: {},
       heardFrom: {},
-      'registrationVisible': { visible: false, style: { display: 'none' } },
+      registrationVisible: { visible: false, style: { display: 'none' } },
       facultyVisible: { visible: false, style: { display: 'none' } },
       yearVisible: { visible: false, style: { display: 'none' } },
       dietaryVisible: { visible: false, style: { display: 'none' } },
       gendersVisible: { visible: false, style: { display: 'none' } },
-      heardFromVisible: { visible: false, style: { display: 'none' } }
+      heardFromVisible: { visible: false, style: { display: 'none' } },
+      registrationData: [],
+      facultiesData: [],
+      yearData: [],
+      dietaryData: [],
+      gendersData: [],
+      hearedFromData: [],
     };
   }
 
@@ -66,12 +71,11 @@ export class EventUserTable extends Component {
     await fetchBackend(`/registrations/?${params}`, 'GET')
       .then(response => {
         let heardFrom = {};
-        for (let i = 0; i < response.size; ++i) {
-          const temp = response.data[i];
-          if (temp.hasOwnProperty('heardFrom')) {
-            heardFrom[temp.heardFrom] = heardFrom.hasOwnProperty(temp.heardFrom) ? heardFrom[temp.heardFrom] + 1 : 1;
+        response.data.forEach(user => {
+          if (user.heardFromData) {
+            heardFrom[user.heardFrom] = heardFrom.hasOwnProperty(user.heardFrom) ? heardFrom[user.heardFrom] + 1 : 1;
           }
-        }
+        })
         this.setState({ heardFrom })
       })
 
@@ -86,21 +90,33 @@ export class EventUserTable extends Component {
       });
   }
 
+  /**
+   * 
+   * @param {array of users} users
+   * calculates the stats for registration and updates the data for charts 
+   * each data set is an array of data (arrays) sets b/c different charts accept different data
+   */
   async registrationNumbers(users) {
-    let registrationObj = {
+    let registrations = {
     }
     users.forEach(user => {
       if (user.registrationStatus) {
-        registrationObj[user.registrationStatus] = registrationObj[user.registrationStatus] ? registrationObj[user.registrationStatus] + 1 : 1;
+        registrations[user.registrationStatus] = registrations[user.registrationStatus] ? registrations[user.registrationStatus] + 1 : 1;
       }
     })
 
     this.setState({
       rows: users,
-      registrationObj
+      registrations
     });
   }
 
+  /**
+  * 
+  * @param {array of users} users
+  * calculates any stats that aren't registration stats
+  * each data set is an array of data (arrays) sets b/c different charts accept different data
+  */
   async notRegistrationNumbers(users) {
     let faculties = {}, years = {}, dietary = {}, genders = {}
     users.forEach(user => {
@@ -154,147 +170,7 @@ export class EventUserTable extends Component {
     }
   }
 
-  /*
-    changes the visibility of the stats of whichever div was selected
-  */
-  changeVisibility(event) {
-    const id = event.target.id
-    const invisible = { visible: false, style: { display: 'none' } }
-    const visible = { visible: true, style: { display: 'flex', paddingBottom: '20px', paddingLeft: '50px' } }
-    switch (id) {
-      case 'registration':
-        if (this.state.registrationVisible.visible) {
-          this.setState({ registrationVisible: invisible })
-        } else {
-          this.setState({ registrationVisible: visible })
-        }
-        break;
-      case 'faculties':
-        if (this.state.facultyVisible.visible) {
-          this.setState({ facultyVisible: invisible })
-        } else {
-          this.setState({ facultyVisible: visible })
-        }
-        break;
-      case 'year':
-        if (this.state.yearVisible.visible) {
-          this.setState({ yearVisible: invisible })
-        } else {
-          this.setState({ yearVisible: visible })
-        }
-        break;
-      case 'dietary':
-        if (this.state.dietaryVisible.visible) {
-          this.setState({ dietaryVisible: invisible })
-        } else {
-          this.setState({ dietaryVisible: visible })
-        }
-        break;
-      case 'gender':
-        if (this.state.gendersVisible.visible) {
-          this.setState({ gendersVisible: invisible })
-        } else {
-          this.setState({ gendersVisible: visible })
-        }
-        break;
-      case 'heardFrom':
-        if (this.state.heardFromVisible.visible) {
-          this.setState({ heardFromVisible: invisible })
-        } else {
-          this.setState({ heardFromVisible: visible })
-        }
-        break;
-      default:
-        ;
-    }
-  }
-
   render() {
-    //each data set is an array of data (arrays) sets b/c different charts accept different data
-    const registrationData = [
-      Object.keys(this.state.registrationObj).map(key => {
-        return {
-          label: key,
-          angle: this.state.registrationObj[key]
-        }
-      }),
-      Object.keys(this.state.registrationObj).map(key => {
-        return {
-          x: key,
-          y: this.state.registrationObj[key]
-        }
-      })
-    ]
-    const facultiesData = [
-      Object.keys(this.state.faculties).map(key => {
-        return {
-          label: key,
-          angle: this.state.faculties[key]
-        }
-      }),
-      Object.keys(this.state.faculties).map(key => {
-        return {
-          x: key,
-          y: this.state.faculties[key]
-        }
-      })
-    ]
-    const yearData = [
-      Object.keys(this.state.years).map(key => {
-        return {
-          label: key,
-          angle: this.state.years[key]
-        }
-      }),
-      Object.keys(this.state.years).map(key => {
-        return {
-          x: key,
-          y: this.state.years[key]
-        }
-      })
-    ]
-    const dietaryData = [
-      Object.keys(this.state.dietary).map(key => {
-        return {
-          label: key,
-          angle: this.state.dietary[key]
-        }
-      }),
-      Object.keys(this.state.dietary).map(key => {
-        return {
-          x: key,
-          y: this.state.dietary[key]
-        }
-      })
-    ]
-    const gendersData = [
-      Object.keys(this.state.genders).map(key => {
-        return {
-          label: key,
-          angle: this.state.genders[key]
-        }
-      }),
-      Object.keys(this.state.genders).map(key => {
-        return {
-          x: key,
-          y: this.state.genders[key]
-        }
-      })
-    ]
-    const heardFromData = [
-      Object.keys(this.state.heardFrom).map(key => {
-        return {
-          label: key,
-          angle: this.state.heardFrom[key]
-        }
-      }),
-      Object.keys(this.state.heardFrom).map(key => {
-        return {
-          x: key,
-          y: this.state.heardFrom[key]
-        }
-      })
-    ]
     /**
      * Helper function to determine whether to display action for check-in or undo check-in
      * @param {*} rowData data about the current row
@@ -332,157 +208,13 @@ export class EventUserTable extends Component {
      */
     return (
       <div>
-        <div style={styles.stats} id='registration' onClick={this.changeVisibility}>
-          <Typography style={styles.stat}>Registration status: </Typography>
-          {Object.keys(this.state.registrationObj).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.registrationObj[key]}</Typography>))}
-          <Typography style={styles.stat}>Total: {Object.values(this.state.registrationObj).reduce((total, amount) => total + amount)}</Typography>
-        </div>
-        <div style={this.state.registrationVisible.style}>
-          <RadialChart
-            width={300}
-            height={300}
-            data={registrationData[0]}
-            showLabels={true}
-            radius={140}
-            innerRadius={100}
-          />
-          <XYPlot margin={{ left: 40, right: 40, top: 40, bottom: 70 }} xType="ordinal" width={300} height={300} >
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis tickLabelAngle={-45} />
-            <YAxis />
-            <VerticalBarSeries
-              width={300}
-              height={300}
-              data={registrationData[1]}
-            />
-          </XYPlot>
-        </div>
-        <div style={styles.stats} id='faculties' onClick={this.changeVisibility}>
-          <Typography style={styles.stat}>Faculty: </Typography>
-          {Object.keys(this.state.faculties).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.faculties[key]}</Typography>))}
-        </div>
-        <div style={this.state.facultyVisible.style}>
-          <RadialChart
-            width={300}
-            height={300}
-            data={facultiesData[0]}
-            showLabels={true}
-            radius={140}
-            innerRadius={100}
-          />
-          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis tickLabelAngle={-45} />
-            <YAxis />
-            <VerticalBarSeries
-              width={300}
-              height={300}
-              data={facultiesData[1]}
-            />
-          </XYPlot>
-        </div>
-        <div style={styles.stats} id='year' onClick={this.changeVisibility}>
-          <Typography style={styles.stat}>Year level: </Typography>
-          {Object.keys(this.state.years).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.years[key]}</Typography>))}
-        </div>
-        <div style={this.state.yearVisible.style}>
-          <RadialChart
-            width={300}
-            height={300}
-            data={yearData[0]}
-            showLabels={true}
-            radius={140}
-            innerRadius={100}
-          />
-          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis tickLabelAngle={-45} />
-            <YAxis />
-            <VerticalBarSeries
-              width={300}
-              height={300}
-              data={yearData[1]}
-            />
-          </XYPlot>
-        </div>
-        <div style={styles.stats} id='dietary' onClick={this.changeVisibility}>
-          <Typography style={styles.stat}>Dietary: </Typography>
-          {Object.keys(this.state.dietary).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.dietary[key]}</Typography>))}
-        </div>
-        <div style={this.state.dietaryVisible.style}>
-          <RadialChart
-            width={300}
-            height={300}
-            data={dietaryData[0]}
-            showLabels={true}
-            radius={140}
-            innerRadius={100}
-          />
-          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis tickLabelAngle={-45} />
-            <YAxis />
-            <VerticalBarSeries
-              width={300}
-              height={300}
-              data={dietaryData[1]}
-            />
-          </XYPlot>
-        </div>
-        <div style={styles.stats} id='gender' onClick={this.changeVisibility}>
-          <Typography style={styles.stat}>Gender: </Typography>
-          {Object.keys(this.state.genders).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.genders[key]}</Typography>))}
-        </div>
-        <div style={this.state.gendersVisible.style}>
-          <RadialChart
-            width={300}
-            height={300}
-            data={gendersData[0]}
-            showLabels={true}
-            radius={140}
-            innerRadius={100}
-          />
-          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis tickLabelAngle={-45} />
-            <YAxis />
-            <VerticalBarSeries
-              width={300}
-              height={300}
-              data={gendersData[1]}
-            />
-          </XYPlot>
-        </div>
-        <div style={styles.stats} id='heardFrom' onClick={this.changeVisibility}>
-          <Typography style={styles.stat}>Heard about the event from: </Typography>
-          {Object.keys(this.state.heardFrom).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.state.heardFrom[key]}</Typography>))}
-        </div>
-        <div style={this.state.heardFromVisible.style}>
-          <RadialChart
-            width={300}
-            height={300}
-            data={heardFromData[0]}
-            showLabels={true}
-            radius={140}
-            innerRadius={100}
-          />
-          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis tickLabelAngle={-45} />
-            <YAxis />
-            <VerticalBarSeries
-              width={300}
-              height={300}
-              data={heardFromData[1]}
-            />
-          </XYPlot>
-        </div>
+        <Statistic statName="Registration status: " statObj={this.state.registrations} data={this.state.registrationData} />
+        <Statistic statName="Faculty: " statObj={this.state.faculties} data={this.state.facultiesData} />
+        <Statistic statName="Year level: " statObj={this.state.years} data={this.state.yearData} />
+        <Statistic statName="Dietary: " statObj={this.state.dietary} data={this.state.dietaryData} />
+        <Statistic statName="Gender: " statObj={this.state.genders} data={this.state.gendersData} />
+        <Statistic statName="Heard about event from: " statObj={this.state.heardFrom} data={this.state.heardFromData} />
+
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
           columns={[
@@ -545,6 +277,79 @@ export class EventUserTable extends Component {
       </div>
 
     );
+  }
+}
+
+/**
+ * represents a statistic and shows a row of the stats with a dropdown for charts
+ */
+class Statistic extends React.Component {
+  constructor(props) {
+    super(props);
+    this.changeVisibility = this.changeVisibility.bind(this)
+    this.state = {
+      visibility: { visible: false, style: { display: 'none' } },
+    };
+  }
+
+  /*
+  changes the visibility of the stats of whichever div was selected
+  */
+  changeVisibility() {
+    const invisible = { visible: false, style: { display: 'none' } }
+    const visible = { visible: true, style: { display: 'flex', paddingBottom: '20px', paddingLeft: '50px' } }
+
+    if (this.state.visibility.visible) {
+      this.setState({ visibility: invisible })
+    } else {
+      this.setState({ visibility: visible })
+    }
+  }
+  render() {
+    const chartData = [
+      Object.keys(this.props.statObj).map(key => {
+        return {
+          label: key,
+          angle: this.props.statObj[key]
+        }
+      }),
+      Object.keys(this.props.statObj).map(key => {
+        return {
+          x: key,
+          y: this.props.statObj[key]
+        }
+      })
+    ]
+    return (
+      <div>
+        <div style={styles.stats} onClick={this.changeVisibility}>
+          <Typography style={styles.stat}>{this.props.statName} </Typography>
+          {Object.keys(this.props.statObj).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.props.statObj[key]}</Typography>))}
+          {this.props.statName === "Registration status: " ? <Typography style={styles.stat}>Total: {Object.values(this.props.statObj).reduce((total, amount) => total + amount, 0)}</Typography> : <Typography />}
+        </div>
+        <div style={this.state.visibility.style}>
+          <RadialChart
+            width={300}
+            height={300}
+            data={chartData[0]}
+            showLabels={true}
+            radius={140}
+            innerRadius={100}
+          />
+          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <XAxis tickLabelAngle={-45} />
+            <YAxis />
+            <VerticalBarSeries
+              width={300}
+              height={300}
+              data={chartData[1]}
+            />
+          </XYPlot>
+        </div>
+      </div>
+    )
   }
 }
 export default EventUserTable;
