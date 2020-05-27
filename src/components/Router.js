@@ -27,36 +27,60 @@ import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
 
 import { setUser } from '../actions/UserActions'
-import { log, getEvents } from '../utils'
+import {
+  log,
+  updateEvents,
+  updateUser
+} from '../utils'
 
 class Router extends Component {
   getAuthenticatedUser() {
     Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(authUser => {
+        console.log(authUser)
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
-          this.props.setUser({ ...authUser, admin: true });
+          this.props.setUser({
+            // name: authUser.attributes.name, // we don't need admin name for now
+            email: authUser.attributes.email,
+            admin: true
+          });
         }
         else {
-          console.log('not using a biztech e-mail!');
-          this.props.setUser({ ...authUser, admin: false });
+          const studentId = authUser.attributes['custom:student_id']
+          if (studentId) {
+            updateUser(studentId)
+          } else {
+            // Parse first name and last name
+            const initialName = authUser.attributes.name.split(' ')
+            const fname = initialName[0];
+            const lname = initialName[1];
+
+            // save only essential info to redux
+            this.props.setUser({
+              email: authUser.attributes.email,
+              fname,
+              lname
+            })
+          }
         }
       })
       .catch(() => log('Not signed in'))
   }
 
   componentDidMount() {
-   getEvents()
+    updateEvents()
 
-   if(!this.props.user) this.getAuthenticatedUser();
+    this.getAuthenticatedUser();
   }
 
   render() {
 
     const { user } = this.props;
+    console.log(user)
 
     // Alert the user about the need to register if they haven't
-    const userNeedsRegister = user && !user.admin && !user.student_id;
+    const userNeedsRegister = user && !user.admin && !user.id;
 
     return (
       user
@@ -66,7 +90,7 @@ class Router extends Component {
           <div className="content">
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
-    
+
               {/* COMMON ROUTES */}
               <Route
                 path='/login-redirect'
@@ -74,11 +98,11 @@ class Router extends Component {
               <Route
                 path="/forbidden"
                 render={() => <Forbidden />} />
-              <Route 
+              <Route
                 path="/signup"
-                render={() => user.student_id
-                ? <Redirect to ="/" /> /* Allow signup only if user is not yet registered in DB*/
-                : <Signup />} />
+                render={() => user.id
+                  ? <Redirect to="/" /> /* Allow signup only if user is not yet registered in DB*/
+                  : <Signup />} />
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
@@ -122,7 +146,7 @@ class Router extends Component {
             <Route
               path='/'
               component={Login} />
-            
+
             <Redirect to='/' />
 
           </Switch>

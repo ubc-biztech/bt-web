@@ -22,12 +22,11 @@ export default function NewMemberForm(props) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <br/>
+            <br />
             <Typography variant="caption" color={'error'}>* Indicates required field</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        disabled={!!initialValues.fname}
                         defaultValue={initialValues.fname}
                         label="First Name*"
                         autoComplete="given-name"
@@ -41,7 +40,6 @@ export default function NewMemberForm(props) {
 
                 <Grid item xs={12} sm={6}>
                     <TextField
-                        disabled={!!initialValues.lname}
                         defaultValue={initialValues.lname}
                         label="Last Name*"
                         autoComplete="family-name"
