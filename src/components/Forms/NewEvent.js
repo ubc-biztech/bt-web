@@ -8,11 +8,12 @@ import {
     KeyboardDateTimePicker
 } from '@material-ui/pickers';
 import ThemeProvider from '../ThemeProvider'
+import InfoIcon from '@material-ui/icons/Info'
 const slugify = require('slugify')
 
 export default function NewEventForm(props) {
     const {
-        values: { slug, startDate, endDate }, // the only values we need to store as props are the ones that are programmatically modified
+        values: { slug, startDate, endDate, elocation, longitude, latitude }, // the only values we need to store as props are the ones that are programmatically modified
         errors,
         touched,
         handleSubmit,
@@ -46,6 +47,52 @@ export default function NewEventForm(props) {
 
     const textFieldError = (id) => {
         return (errors[id] && submitCount > 0) || (touched[id] ? errors[id] : "")
+    }
+
+    const handleInfoClick = () => {
+        window.alert(`Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing "What's here?"
+        If you get an error, try adding any character to the field and then deleting it.`)
+    }
+
+    const handleLocation = (e) => {
+        const id = e.target.innerHTML
+        let location;
+        let longitude;
+        let latitude;
+        switch (id) {
+            case 'Nest':
+                location = 'UBC AMS Nest'
+                longitude = '-123.249818'
+                latitude = '49.266503'
+                break;
+            case 'Henning':
+                location = 'Hennings'
+                longitude = '-123.252198'
+                latitude = '49.266487'
+                break;
+            case 'Sauder':
+                location = 'UBC Sauder School of Business'
+                longitude = '-123.253800'
+                latitude = '49.264861'
+                break;
+            case 'Birmingham':
+                location = 'Birmingham, Henry Angus'
+                longitude = '-123.253929'
+                latitude = '49.265112'
+                break;
+            case 'Orchard':
+                location = 'Orchard Commons'
+                longitude = '-123.251181'
+                latitude = '49.260396'
+                break;
+            default:
+                ;
+        }
+        e.persist()
+        handleChange(e)
+        setFieldValue('elocation', location)
+        setFieldValue('longitude', longitude)
+        setFieldValue('latitude', latitude)
     }
 
     return (
@@ -115,15 +162,82 @@ export default function NewEventForm(props) {
                             />
                         </Grid>
                     </MuiPickersUtilsProvider>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={4}>
                         <TextField
                             id="elocation"
                             label="Location"
                             fullWidth
                             helperText={textFieldError("location")}
                             error={!!textFieldError("location")}
+                            value={elocation}
                             onChange={change.bind(null, "location")}
                         />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            id="longitude"
+                            label="Longitude"
+                            fullWidth
+                            helperText={textFieldError("longitude")}
+                            error={!!textFieldError("longitude")}
+                            value={longitude}
+                            onChange={change.bind(null, "longitude")} />
+                    </Grid>
+                    <Grid item xs={12} sm={4} style={{ display: 'flex' }}>
+                        <TextField
+                            id="latitude"
+                            label="Latitude"
+                            fullWidth
+                            helperText={textFieldError("latitude")}
+                            error={!!textFieldError("latitude")}
+                            value={latitude}
+                            onChange={change.bind(null, "latitude")} />
+                        <InfoIcon onClick={handleInfoClick} style={{ cursor: 'pointer' }} />
+                    </Grid>
+                    <Grid item sm={2}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            button="button"
+                            onClick={handleLocation.bind(null)}>
+                            Nest
+                        </Button>
+                    </Grid>
+                    <Grid item sm={2}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            button="button"
+                            onClick={handleLocation.bind(null)}>
+                            Henning
+                        </Button>
+                    </Grid>
+                    <Grid item sm={2}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            button="button"
+                            onClick={handleLocation.bind(null)}>
+                            Sauder
+                        </Button>
+                    </Grid>
+                    <Grid item sm={3}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            button="button"
+                            onClick={handleLocation.bind(null)}>
+                            Birmingham
+                        </Button>
+                    </Grid>
+                    <Grid item sm={3}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            button="button"
+                            onClick={handleLocation.bind(null)}>
+                            Orchard
+                        </Button>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -134,6 +248,9 @@ export default function NewEventForm(props) {
                             error={!!textFieldError("facebookUrl")}
                             onChange={change.bind(null, "facebookUrl")}
                         />
+                    </Grid>
+                    <Grid >
+
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
