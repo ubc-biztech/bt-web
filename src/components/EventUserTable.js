@@ -5,6 +5,7 @@ import { REGISTRATION_STATUS } from '../constants/Constants';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 import { RadialChart, XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, VerticalBarSeries } from 'react-vis';
 
 const styles = {
@@ -12,8 +13,6 @@ const styles = {
     width: '100%',
     display: 'flex',
     margin: '6px',
-    borderRadius: '20px',
-    boxShadow: 'rgba(0, 0, 0, 0.4) 0 0 10px',
     cursor: 'pointer'
   },
   stat: {
@@ -140,12 +139,11 @@ export class EventUserTable extends Component {
   }
 
   async updateEventTableData(eventID) {
-    const eventParams = new URLSearchParams({
-      id: eventID
+    const params = new URLSearchParams({
+      users: true
     });
 
-    fetchBackend('/events/getUsers?' + eventParams, 'GET')
-      .then(response => response.json())
+    await fetchBackend(`/events/${eventID}?${params}`, 'GET')
       .then(async users => {
         this.registrationNumbers(users)
       });
@@ -315,7 +313,7 @@ class Statistic extends React.Component {
       })
     ]
     return (
-      <React.Fragment>
+      <Paper>
         <div style={styles.stats} onClick={this.changeVisibility}>
           <Typography style={styles.stat}>{this.props.statName} </Typography>
           {Object.keys(this.props.statObj).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.props.statObj[key]}</Typography>))}
@@ -342,7 +340,7 @@ class Statistic extends React.Component {
             />
           </XYPlot>
         </div>
-      </React.Fragment>
+      </Paper>
     )
   }
 }
