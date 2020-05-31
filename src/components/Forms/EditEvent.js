@@ -9,6 +9,9 @@ import {
 } from "@material-ui/pickers";
 import ThemeProvider from "../ThemeProvider"
 import InfoIcon from '@material-ui/icons/Info'
+import Select from "@material-ui/core/Select";
+import MenuItem from '@material-ui/core/MenuItem';
+import { Typography } from '@material-ui/core';
 
 export default function EditEventForm(props) {
     const {
@@ -45,18 +48,15 @@ export default function EditEventForm(props) {
     }
 
     const handleLocation = (e) => {
-        e.persist()
-        const id = e.target.innerHTML
-        let location;
-        let longitude;
-        let latitude;
-        switch (id) {
+        const value = e.target.value
+        let location, longitude, latitude;
+        switch (value) {
             case 'Nest':
                 location = 'UBC AMS Nest'
                 longitude = '-123.249818'
                 latitude = '49.266503'
                 break;
-            case 'Henning':
+            case 'Hennings':
                 location = 'Hennings'
                 longitude = '-123.252198'
                 latitude = '49.266487'
@@ -186,50 +186,15 @@ export default function EditEventForm(props) {
                             onChange={change.bind(null, "latitude")} />
                         <InfoIcon onClick={handleInfoClick} style={{ cursor: 'pointer' }} />
                     </Grid>
-                    <Grid item sm={2}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            button="button"
-                            onClick={handleLocation.bind(null)}>
-                            Nest
-                        </Button>
-                    </Grid>
-                    <Grid item sm={2}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            button="button"
-                            onClick={handleLocation.bind(null)}>
-                            Henning
-                        </Button>
-                    </Grid>
-                    <Grid item sm={2}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            button="button"
-                            onClick={handleLocation.bind(null)}>
-                            Sauder
-                        </Button>
-                    </Grid>
-                    <Grid item sm={3}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            button="button"
-                            onClick={handleLocation.bind(null)}>
-                            Birmingham
-                        </Button>
-                    </Grid>
-                    <Grid item sm={3}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            button="button"
-                            onClick={handleLocation.bind(null)}>
-                            Orchard
-                        </Button>
+                    <Grid item xs={12}>
+                        <Typography>Some common event locations (optional):</Typography>
+                        <Select fullWidth onClick={handleLocation.bind(null)}>
+                            <MenuItem value={'Nest'}>Nest</MenuItem>
+                            <MenuItem value={'Hennings'}>Hennings</MenuItem>
+                            <MenuItem value={'Sauder'}>Sauder</MenuItem>
+                            <MenuItem value={'Birmingham'}>Birmingham, HA</MenuItem>
+                            <MenuItem value={'Orchard'}>Orchard</MenuItem>
+                        </Select>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
