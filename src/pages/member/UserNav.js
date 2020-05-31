@@ -16,8 +16,9 @@ import { logout } from '../../actions/UserActions'
 import Logo from './images/biztech.svg'
 
 const styles = {
-    drawer: {
-        width: 9999
+    list: {
+        width: '10vw',
+        textAlign: 'center'
     }
 }
 
@@ -55,10 +56,10 @@ function UserNav(props) {
 
     return (
         <div>
-            <Drawer
-                variant='permanent'
-                width='100%'>
-                <img src={Logo} alt='BizTech Logo' />
+            <Drawer variant='permanent'>
+                <List style={styles.list}>
+                    <img src={Logo} alt='BizTech Logo' />
+                </List>
             </Drawer>
         </div >
     );
