@@ -10,6 +10,7 @@ import {
 import './Router.scss'
 
 import Nav from './Nav'
+import UserNav from '../pages/member/UserNav'
 import ScrollToTop from './ScrollToTop'
 import RegisterAlert from './Messages/RegisterAlert'
 
@@ -86,7 +87,9 @@ class Router extends Component {
       user
         ? <BrowserRouter>
           <ScrollToTop />
-          <Nav events={this.props.events} />
+          {user.email.substring(user.email.indexOf("@") + 1, user.email.length) === 'ubcbiztech.com'
+            ? <Nav events={this.props.events} />
+            : <UserNav />}
           <div className="content">
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
