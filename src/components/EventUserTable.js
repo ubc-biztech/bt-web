@@ -32,7 +32,7 @@ export class EventUserTable extends Component {
       users: true
     });
 
-    fetchBackend(`/events/${eventID}&${params}`, 'GET')
+    fetchBackend(`/events/${eventID}?${params}`, 'GET')
       .then(response => {
         this.setState({ rows: response });
       });
