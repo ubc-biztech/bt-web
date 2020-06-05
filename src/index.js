@@ -11,7 +11,6 @@ import { AWS_CONFIG } from './utils';
 Amplify.configure(AWS_CONFIG);
 
 ReactDOM.render(
-
   <Provider store={Store}>
     <App />
   </Provider>

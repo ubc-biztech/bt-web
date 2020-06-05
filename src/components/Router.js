@@ -37,7 +37,9 @@ class Router extends Component {
   getAuthenticatedUser() {
     Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(authUser => {
-        console.log(authUser)
+
+        updateEvents()
+        // console.log(authUser)
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
           this.props.setUser({
@@ -69,8 +71,6 @@ class Router extends Component {
   }
 
   componentDidMount() {
-    updateEvents()
-
     this.getAuthenticatedUser();
   }
 
