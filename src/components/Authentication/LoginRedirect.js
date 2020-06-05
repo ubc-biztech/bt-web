@@ -18,14 +18,15 @@ export class LoginRedirect extends Component {
     pollForAuthenticatedUser() {
         Auth.currentAuthenticatedUser()
             .then(user => {
-                const email = user.attributes.email
-                if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-                    this.props.setUser(user)
-                }
-                else {
-                    Auth.signOut()
-                    alert('You must use a ubcbiztech.com email')
-                }
+                console.log('USER: ===> ', user);
+                // const email = user.attributes.email
+                // if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
+                //     this.props.setUser(user)
+                // }
+                // else {
+                //     Auth.signOut()
+                //     alert('You must use a ubcbiztech.com email')
+                // }
                 this.props.setUser(user);
             })
             .catch(() => {
