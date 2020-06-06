@@ -5,6 +5,7 @@ import {
     ListItem,
     ListItemIcon
 } from "@material-ui/core";
+import { withStyles } from '@material-ui/styles';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import PersonIcon from '@material-ui/icons/Person'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -17,8 +18,7 @@ import Logo from './images/biztech.svg'
 const styles = {
     list: {
         width: '170px',
-        paddingTop: '95px',
-
+        paddingTop: '95px'
     },
     icon: {
         width: '49px',
@@ -33,22 +33,30 @@ const styles = {
     logout: {
         paddingTop: '330px',
         cursor: 'pointer',
-        paddingLeft: '48px'
+        paddingLeft: '48px',
+        color: '#FFFFFF'
+    },
+    paper: {
+        backgroundColor: '#070F21'
     }
 }
 
 function UserNav(props) {
+    const { classes } = props
     const history = useHistory();
+
     const selected = { color: '#7AD040', fontSize: '30', width: '43px' }
-    const unselected = { color: '#000000', fontSize: '30', width: '43px' }
-    const barSelected = { borderLeft: '6px solid #7AD040', height: '43px', marginTop: '28px', paddingBottom: '28px' }
-    const barUnselected = { borderLeft: '6px solid #FFFFFF', height: '43px', marginTop: '28px', paddingBottom: '28px' }
-    const [homeBar, setHomeBar] = useState(barSelected)
-    const [eventsBar, setEventsBar] = useState(barUnselected)
-    const [profileBar, setProfileBar] = useState(barUnselected)
-    const [home, setHome] = useState(selected)
-    const [events, setEvents] = useState(unselected)
-    const [profile, setProfile] = useState(unselected)
+    const unselected = { color: '#FFFFFF', fontSize: '30', width: '43px' }
+    const barSelected = { borderLeft: '6px solid #7AD040', height: '45px', marginTop: '28px', paddingBottom: '28px', backgroundPositionX: 'left' }
+    const barUnselected = { borderLeft: '6px solid #070F21', height: '45px', marginTop: '28px', paddingBottom: '28px' }
+
+    const pathname = window.location.pathname
+    const [homeBar, setHomeBar] = useState(pathname === '/userHome' ? barSelected : barUnselected)
+    const [eventsBar, setEventsBar] = useState(pathname === '/events' ? barSelected : barUnselected)
+    const [profileBar, setProfileBar] = useState(pathname === '/profile' ? barSelected : barUnselected)
+    const [home, setHome] = useState(pathname === '/userHome' ? selected : unselected)
+    const [events, setEvents] = useState(pathname === '/events' ? selected : unselected)
+    const [profile, setProfile] = useState(pathname === '/profile' ? selected : unselected)
 
     const logout = () => {
         Auth.signOut()
@@ -59,7 +67,7 @@ function UserNav(props) {
     }
 
     const handleEventsClick = () => {
-        history.push('/events/')
+        history.push('/events')
         setHome(unselected)
         setHomeBar(barUnselected)
         setEvents(selected)
@@ -69,7 +77,7 @@ function UserNav(props) {
     }
 
     const handleProfileClick = () => {
-        history.push('/profile/')
+        history.push('/profile')
         setHome(unselected)
         setHomeBar(barUnselected)
         setEvents(unselected)
@@ -79,7 +87,7 @@ function UserNav(props) {
     }
 
     const handleHomeClick = () => {
-        history.push('/userHome/')
+        history.push('/userHome')
         setHome(selected)
         setHomeBar(barSelected)
         setEvents(unselected)
@@ -98,15 +106,13 @@ function UserNav(props) {
                         {icon}
                     </ListItemIcon>
                 </div>
-
             </ListItem>
         )
     }
 
     return (
         <div>
-            <div style={{ paddingLeft: '170px' }} />
-            <Drawer variant='permanent'>
+            <Drawer variant='permanent' classes={{ paper: classes.paper }}>
                 <List style={styles.list}>
                     <MenuItem label='Home' icon={<img src={Logo} alt='Home' style={home} />} onClick={handleHomeClick} bar={homeBar} />
                     <MenuItem label='Events' icon={<DateRangeIcon style={events} />} onClick={handleEventsClick} bar={eventsBar} />
@@ -122,4 +128,4 @@ function UserNav(props) {
     );
 }
 
-export default withRouter(connect(null, { logout })(UserNav));
+export default (withStyles(styles))(withRouter(connect(null, { logout })(UserNav)));

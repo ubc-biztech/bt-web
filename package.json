@@ -8,6 +8,7 @@
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^4.0.0-alpha.53",
     "@material-ui/pickers": "^3.2.8",
+    "@material-ui/styles": "^4.10.0",
     "aws-amplify": "^2.1.0",
     "date-fns": "^2.0.0-beta.5",
     "eslint": "^6.7.1",
