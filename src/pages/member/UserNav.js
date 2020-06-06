@@ -25,7 +25,7 @@ const styles = {
         paddingTop: '28px',
         paddingBottom: '28px',
         cursor: 'pointer',
-        paddingLeft: '48px'
+        paddingLeft: '54px'
     },
     iconSize: {
         fontSize: '30'
