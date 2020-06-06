@@ -44,7 +44,7 @@ export default function EditEventForm(props) {
     }
 
     const handleInfoClick = () => {
-        window.alert(`Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing "What's here?"`)
+        alert(`Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing "What's here?"`)
     }
 
     const handleLocation = (e) => {
@@ -154,6 +154,16 @@ export default function EditEventForm(props) {
                             />
                         </Grid>
                     </MuiPickersUtilsProvider>
+                    <Grid item xs={12}>
+                        <Typography>Some common event locations (optional):</Typography>
+                        <Select fullWidth onClick={handleLocation.bind(null)}>
+                            <MenuItem value={'Nest'}>Nest</MenuItem>
+                            <MenuItem value={'Hennings'}>Hennings</MenuItem>
+                            <MenuItem value={'Sauder'}>Sauder</MenuItem>
+                            <MenuItem value={'Birmingham'}>Birmingham, HA</MenuItem>
+                            <MenuItem value={'Orchard'}>Orchard</MenuItem>
+                        </Select>
+                    </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField
                             id="elocation"
@@ -185,16 +195,6 @@ export default function EditEventForm(props) {
                             value={latitude}
                             onChange={change.bind(null, "latitude")} />
                         <InfoIcon onClick={handleInfoClick} style={{ cursor: 'pointer' }} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography>Some common event locations (optional):</Typography>
-                        <Select fullWidth onClick={handleLocation.bind(null)}>
-                            <MenuItem value={'Nest'}>Nest</MenuItem>
-                            <MenuItem value={'Hennings'}>Hennings</MenuItem>
-                            <MenuItem value={'Sauder'}>Sauder</MenuItem>
-                            <MenuItem value={'Birmingham'}>Birmingham, HA</MenuItem>
-                            <MenuItem value={'Orchard'}>Orchard</MenuItem>
-                        </Select>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField

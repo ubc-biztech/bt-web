@@ -11,7 +11,7 @@ import ThemeProvider from '../ThemeProvider'
 import InfoIcon from '@material-ui/icons/Info'
 import Select from "@material-ui/core/Select";
 import MenuItem from '@material-ui/core/MenuItem';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 const slugify = require('slugify')
 
 export default function NewEventForm(props) {
@@ -53,7 +53,7 @@ export default function NewEventForm(props) {
     }
 
     const handleInfoClick = () => {
-        window.alert(`Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing "What's here?"
+        alert(`Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing "What's here?"
         If you get an error, try adding any character to the field and then deleting it.`)
     }
 
@@ -163,6 +163,16 @@ export default function NewEventForm(props) {
                             />
                         </Grid>
                     </MuiPickersUtilsProvider>
+                    <Grid item xs={12}>
+                        <Typography>Some common event locations (optional):</Typography>
+                        <Select fullWidth onClick={handleLocation.bind(null)}>
+                            <MenuItem value={'Nest'}>Nest</MenuItem>
+                            <MenuItem value={'Hennings'}>Hennings</MenuItem>
+                            <MenuItem value={'Sauder'}>Sauder</MenuItem>
+                            <MenuItem value={'Birmingham'}>Birmingham, HA</MenuItem>
+                            <MenuItem value={'Orchard'}>Orchard</MenuItem>
+                        </Select>
+                    </Grid>
                     <Grid item xs={12} sm={4}>
                         <TextField
                             id="elocation"
@@ -196,17 +206,6 @@ export default function NewEventForm(props) {
                         <InfoIcon onClick={handleInfoClick} style={{ cursor: 'pointer' }} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography>Some common event locations (optional):</Typography>
-                        <Select fullWidth onClick={handleLocation.bind(null)}>
-                            <MenuItem value={'Nest'}>Nest</MenuItem>
-                            <MenuItem value={'Hennings'}>Hennings</MenuItem>
-                            <MenuItem value={'Sauder'}>Sauder</MenuItem>
-                            <MenuItem value={'Birmingham'}>Birmingham, HA</MenuItem>
-                            <MenuItem value={'Orchard'}>Orchard</MenuItem>
-                        </Select>
-                    </Grid>
-
-                    <Grid item xs={12}>
                         <TextField
                             id="facebookUrl"
                             label="Facebook Event Page"
@@ -217,7 +216,6 @@ export default function NewEventForm(props) {
                         />
                     </Grid>
                     <Grid >
-
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
