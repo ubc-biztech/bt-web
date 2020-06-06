@@ -31,7 +31,7 @@ const styles = {
         fontSize: '30'
     },
     logout: {
-        paddingTop: '330px',
+        marginTop: '330px',
         cursor: 'pointer',
         paddingLeft: '48px',
         color: '#FFFFFF'
@@ -51,10 +51,10 @@ function UserNav(props) {
     const barUnselected = { borderLeft: '6px solid #070F21', height: '45px', marginTop: '28px', paddingBottom: '28px' }
 
     const pathname = window.location.pathname
-    const [homeBar, setHomeBar] = useState(pathname === '/userHome' ? barSelected : barUnselected)
+    const [homeBar, setHomeBar] = useState(pathname === '/' ? barSelected : barUnselected)
     const [eventsBar, setEventsBar] = useState(pathname === '/events' ? barSelected : barUnselected)
     const [profileBar, setProfileBar] = useState(pathname === '/profile' ? barSelected : barUnselected)
-    const [home, setHome] = useState(pathname === '/userHome' ? selected : unselected)
+    const [home, setHome] = useState(pathname === '/' ? selected : unselected)
     const [events, setEvents] = useState(pathname === '/events' ? selected : unselected)
     const [profile, setProfile] = useState(pathname === '/profile' ? selected : unselected)
 
@@ -87,7 +87,7 @@ function UserNav(props) {
     }
 
     const handleHomeClick = () => {
-        history.push('/userHome')
+        history.push('/')
         setHome(selected)
         setHomeBar(barSelected)
         setEvents(unselected)
@@ -99,7 +99,7 @@ function UserNav(props) {
     function MenuItem(props) {
         const { label, icon, onClick, bar } = props
         return (
-            <ListItem onClick={onClick} aria-label={label}>
+            <ListItem onClick={onClick} aria-label={label} disableGutters={true}>
                 <div style={{ display: 'flex' }}>
                     <div style={bar} />
                     <ListItemIcon style={styles.icon}>
