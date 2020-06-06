@@ -78,19 +78,22 @@ class Router extends Component {
   render() {
 
     const { user } = this.props;
-    console.log(user)
 
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.id;
+    let isUser = true;
+    if (user) {
+      isUser = user.email.substring(user.email.indexOf("@") + 1, user.email.length) !== 'ubcbiztech.com'
+    }
 
     return (
       user
         ? <BrowserRouter>
           <ScrollToTop />
-          {user.email.substring(user.email.indexOf("@") + 1, user.email.length) === 'ubcbiztech.com'
-            ? <Nav events={this.props.events} />
-            : <UserNav />}
-          <div className="content">
+          {isUser
+            ? <UserNav />
+            : <Nav events={this.props.events} />}
+          <div className={isUser ? "userContent" : "content"}>
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
 
