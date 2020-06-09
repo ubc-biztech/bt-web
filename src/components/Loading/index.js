@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from "@material-ui/core/Typography"
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +26,7 @@ export default function Loading(props) {
     return (
         <div className={classes.layout}>
             <CircularProgress />
-            <span className={classes.textContent}>{props.message}</span>
+            <Typography className={classes.textContent}>{props.message}</Typography>
         </div>
     )
 }

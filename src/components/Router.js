@@ -59,11 +59,13 @@ class Router extends Component {
 
    if(!this.props.user) {
     // If the user doesn't already exist in react, get the authenticated user
-     this.getAuthenticatedUser()
-      // After getting the authenticated user, get the events
-      .then(getEvents)
-      // Ultimately, after all is loaded, set the "loaded" state and render the component
+    // also get events at the same time
+    Promise.all([
+      this.getAuthenticatedUser(),
+      getEvents()
+    ])
       .then(() => {
+      // Ultimately, after all is loaded, set the "loaded" state and render the component
         this.setState({ loaded: true })
       })
    }
