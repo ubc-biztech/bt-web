@@ -123,7 +123,7 @@ export default function RegisterEventForm(props) {
                 </Grid>
 
             </Grid>
-            <br></br>
+            <br />
             <Button
                 variant="contained"
                 color="primary"

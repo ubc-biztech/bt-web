@@ -15,7 +15,7 @@ import ThemeProvider from '../../components/ThemeProvider'
 import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { fetchBackend, getEvents } from '../../utils'
+import { fetchBackend, updateEvents } from '../../utils'
 import { Helmet } from 'react-helmet';
 
 const styles = ({
@@ -63,16 +63,16 @@ function AdminHome(props) {
 
   const handleClickDeleteEvent = () => {
     const clickedEvent = events.find(event => event.id === eventMenuClicked)
-    if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {      
+    if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {
       fetchBackend(`/events/${clickedEvent.id}`, 'DELETE')
-      .then(response => {
-        alert(response.message)
-        getEvents()
-      })
-      .catch(err => {
+        .then(response => {
+          alert(response.message)
+          updateEvents()
+        })
+        .catch(err => {
           console.log(err)
           alert(err.message + ' Please contact a dev')
-      })
+        })
     }
     handleClose()
   };
@@ -125,7 +125,7 @@ function AdminHome(props) {
   return events !== null ? (
     <ThemeProvider>
       <Helmet>
-          <title>BizTech Admin Dashboard</title>
+        <title>BizTech Admin Dashboard</title>
       </Helmet>
 
       <div style={styles.row}>
@@ -155,8 +155,8 @@ function AdminHome(props) {
       </Menu>
     </ThemeProvider>
   ) : (
-    <CircularProgress />
-  );
+      <CircularProgress />
+    );
 }
 
 const mapStateToProps = state => {

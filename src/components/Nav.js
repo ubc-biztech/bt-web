@@ -6,26 +6,21 @@ import {
   ListItem,
 } from "@material-ui/core";
 import "./Nav.scss";
-import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 import HomeIcon from '@material-ui/icons/Home';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { useHistory, withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
-
-const useStyles = makeStyles(theme => ({
-  drawer: {
-  }
-}))
+import { connect } from 'react-redux'
+import { logout } from '../actions/UserActions'
 
 function Nav(props) {
   const history = useHistory();
-  const classes = useStyles();
 
   const logout = () => {
     Auth.signOut()
-      .then(data => {
+      .then(() => {
         props.logout()
       })
       .catch(err => console.log(err));
@@ -54,7 +49,7 @@ function Nav(props) {
 
   return (
     <div>
-      <Drawer variant="permanent" className={classes.drawer}>
+      <Drawer variant="permanent">
         <Divider />
         <List>
           <MenuItem label='Home' icon={<HomeIcon />} onClick={handleItemClick} />
@@ -62,29 +57,9 @@ function Nav(props) {
           <Divider />
           <MenuItem label='Logout' icon={<ExitToAppIcon />} onClick={logout} />
         </List>
-        {/* 
-        <Typography className="menu-tag" variant="h6" noWrap>
-          Events
-        </Typography>
-        <List>
-          {events
-            ? events.map(event => (
-              <ListItem
-                button
-                selected={props.event ? event.id === props.event.id : false}
-                key={event.ename}
-                component="a"
-                onClick={handleItemClick.bind(this, event)}
-              >
-                <ListItemText primary={event.ename} />
-              </ListItem>
-            ))
-            : "Loading..."}
-          <Logout />
-        </List> */}
       </Drawer>
     </div >
   );
 }
 
-export default withRouter(Nav);
+export default withRouter(connect(null, { logout })(Nav));
