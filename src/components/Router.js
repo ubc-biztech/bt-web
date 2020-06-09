@@ -44,7 +44,7 @@ class Router extends Component {
 
   getAuthenticatedUser() {
     return Auth.currentAuthenticatedUser({ bypassCache: true })
-      .then(authUser => {
+      .then(async authUser => {
         console.log(authUser)
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
@@ -57,7 +57,7 @@ class Router extends Component {
         else {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
-            updateUser(studentId)
+            await updateUser(studentId)
           } else {
             // Parse first name and last name
             const initialName = authUser.attributes.name.split(' ')

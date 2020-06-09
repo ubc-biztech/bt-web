@@ -57,25 +57,24 @@ export function log(message) {
 }
 
 // Refresh the redux store
-export function updateEvents() {
-    fetchBackend('/events', 'GET')
-        .then(response => {
+export async function updateEvents() {
+    try {
+        const response = await fetchBackend('/events', 'GET')
             Store.dispatch(setEvents({
                 events: response
-            }))
-        })
-        .catch(err => {
-            log(err)
-        })
+        }))
+    }
+    catch(err) {
+        log(err)
+    }
 }
 
 // Refresh the redux store
-export function updateUser(id) {
-    fetchBackend(`/users/${id}`, 'GET')
-        .then(response => {
-            Store.dispatch(setUser(response))
-        })
-        .catch(err => {
-            log(err)
-        })
+export async function updateUser(id) {
+    try {
+        const response = await fetchBackend(`/users/${id}`, 'GET')
+        Store.dispatch(setUser(response))
+    } catch(err) {
+        log(err)
+    }
 }

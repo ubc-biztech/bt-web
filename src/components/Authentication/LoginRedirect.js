@@ -25,13 +25,16 @@ function LoginRedirect(props) {
             const lname = initialName[1];
 
             // save only essential info to redux
-            props.setUser({
+            const userObject = admin ? {
+                email: authUser.attributes.email,
+                admin
+            } : {
                 email: authUser.attributes.email,
                 fname,
                 lname,
                 admin
-            })
-
+            }
+            props.setUser(userObject)
             props.history.push(redirectRoute);
         }
 
@@ -70,11 +73,12 @@ function LoginRedirect(props) {
 
                                     populateUserAndRedirect(authUser, '/signup')
                                 } else {
-                                    console.log('Error checking database!', err.status);
+                                    console.log('Encountered an error querying database!', err.status);
                                 }
                             }
                         } else {
-                            // If the user doesn't exist in the database and/or the user pool, redirect to the 'user register' form
+                            clearTimeout(timeoutRedirect)
+                            // If the user doesn't exist in the user pool, redirect to the 'user register' form
                             populateUserAndRedirect(authUser, '/signup')
                         }
     
