@@ -19,6 +19,8 @@ export default function NewEventForm(props) {
         handleChange,
         setFieldValue,
         setFieldTouched,
+        dirty,
+        isSubmitting,
         submitCount
     } = props;
 
@@ -151,6 +153,7 @@ export default function NewEventForm(props) {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    disabled={!dirty || isSubmitting}
                 >
                     Submit
                 </Button>

@@ -11,7 +11,9 @@ export default function NewMemberForm(props) {
         touched,
         handleSubmit,
         handleChange,
-        setFieldTouched
+        setFieldTouched,
+        dirty,
+        isSubmitting
     } = props;
 
     const change = (name, e) => {
@@ -132,6 +134,7 @@ export default function NewMemberForm(props) {
                 variant="contained"
                 color="primary"
                 type="submit"
+                disabled={!dirty || isSubmitting}
             >
                 Submit
             </Button>
