@@ -73,7 +73,8 @@ function LoginRedirect(props) {
                             // if the user exists in the user pool, but not the database, remove the user pool's student_id
                             if(err.status === 404) {
                                 clearTimeout(timeoutRedirect)
-                                await Auth.updateUserAttributes(authUser, { 'custom:student_id': '' });
+                                const user = await Auth.currentAuthenticatedUser();
+                                await Auth.updateUserAttributes(user, { 'custom:student_id': '' });
                                 authUser['custom:student_id'] = null;
 
                                 populateUserAndRedirect(authUser, '/signup')
