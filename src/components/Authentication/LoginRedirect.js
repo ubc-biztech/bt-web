@@ -42,14 +42,19 @@ function LoginRedirect(props) {
             Auth.currentSession({ bypassCache: true })
                 .then(async session => {
                     const authUser = session.idToken.payload
-                    const { email, name } = authUser
-    
-                    // If biztech email, assume admin (no need for 'sign in')
-                    if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
+                    const { email } = authUser
+
+                    // might have already set them to be an admin
+                    const isAdminGroup = (authUser['cognito:groups'].includes('admin'))
+                    if (isAdminGroup) {
+                        populateUserAndRedirect(authUser, '/', true)
+                    }
+                    // if biztech email, set them as admin (no need for 'sign in')
+                    else if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
 
                         await fetchBackend(`/admin`, 'POST')
-                        .then(() => {})
-                        .catch(err => console.log(err))
+                            .then(() => {})
+                            .catch(err => console.log(err))
 
                         populateUserAndRedirect(authUser, '/', true)
     
@@ -92,7 +97,7 @@ function LoginRedirect(props) {
                 })
                 .catch(() => {
                     log("Not signed in")
-                    setTimeout(() => pollForAuthenticatedUser(), 200)
+                    setTimeout(() => pollForAuthenticatedUser(), 300)
                 })
         }
 
@@ -114,10 +119,4 @@ function LoginRedirect(props) {
 
 }
 
-const mapStateToProps = state => {
-    return {
-        user: state.userState.user,
-    };
-};
-
-export default connect(mapStateToProps, { setUser })(withRouter(LoginRedirect));
+export default connect(null, { setUser })(withRouter(LoginRedirect));
