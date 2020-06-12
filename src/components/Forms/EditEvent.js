@@ -18,6 +18,8 @@ export default function EditEventForm(props) {
         handleChange,
         setFieldValue,
         setFieldTouched,
+        dirty,
+        isSubmitting,
         submitCount
     } = props;
 
@@ -146,6 +148,7 @@ export default function EditEventForm(props) {
                     variant="contained"
                     color="primary"
                     type="submit"
+                    disabled={!dirty || isSubmitting}
                 >
                     Submit
                 </Button>
