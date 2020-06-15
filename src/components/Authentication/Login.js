@@ -30,11 +30,12 @@ const styles = {
     marginTop: "10px",
     backgroundColor: "#303960",
     paddingLeft: "10px",
-    paddingRight: "10px"
+    paddingRight: "10px",
+    color: '#ffffff'
   },
 
   googleIconBtn: {
-    backgroundColor: "#3fb5a3",
+    backgroundColor: "#fafafa",
   }
 };
 
@@ -106,7 +107,6 @@ function Login(props) {
               style={styles.googleIconBtn}
               onClick={() => Auth.federatedSignIn({ provider: "Google" })}
               variant="contained"
-              color="primary"
             >
               <div style={styles.left}>
                 <img
@@ -120,7 +120,6 @@ function Login(props) {
             <Button style={styles.facebookIconBtn}
               onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
               variant="contained"
-              color="primary"
             >
               <div style={styles.left}>
                 <img
