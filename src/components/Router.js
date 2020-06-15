@@ -21,6 +21,7 @@ import LoginRedirect from './Authentication/LoginRedirect'
 import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
+import UserEvents from '../pages/member/UserEvents'
 import EventRegister from '../pages/member/EventRegister'
 import Signup from '../pages/member/Signup'
 import EventView from '../pages/admin/EventView'
@@ -132,6 +133,9 @@ class Router extends Component {
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
+              <Route
+                path='/events'
+                render={() => <UserEvents />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
