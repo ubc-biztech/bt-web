@@ -1,123 +1,192 @@
 import React, { Component } from 'react'
-import Home from '../pages/admin/Home'
-import Nav from './Nav'
-import { Auth } from "aws-amplify";
-import Login from './Authentication/Login'
-import LoginRedirect from './Authentication/LoginRedirect'
-import { setEvent, setEvents } from "../actions/PageActions";
-import { setUser } from "../actions/UserActions";
-import { connect } from "react-redux";
+import { connect } from 'react-redux'
+import { Auth } from 'aws-amplify'
 import {
   BrowserRouter,
   Switch,
-  Route
-} from "react-router-dom";
-import './Router.scss';
-import ScrollToTop from './ScrollToTop'
-import EventRegister from '../pages/member/EventRegister';
-import EventView from '../pages/admin/EventView'
-import EventNew from '../pages/admin/EventNew';
-import EventEdit from '../pages/admin/EventEdit'
-import { fetchBackend } from '../utils'
+  Route,
+  Redirect
+} from 'react-router-dom'
+import './Router.scss'
 
-const queryString = require('query-string');
+import Nav from './Nav'
+import ScrollToTop from './ScrollToTop'
+import RegisterAlert from './Messages/RegisterAlert'
+import Loading from './Loading'
+
+import AdminRoute from './Authentication/AdminRoute'
+import Login from './Authentication/Login'
+import LoginRedirect from './Authentication/LoginRedirect'
+
+import Forbidden from '../pages/Forbidden'
+import AdminHome from '../pages/admin/AdminHome'
+import UserHome from '../pages/member/UserHome'
+import EventRegister from '../pages/member/EventRegister'
+import Signup from '../pages/member/Signup'
+import EventView from '../pages/admin/EventView'
+import EventNew from '../pages/admin/EventNew'
+import EventEdit from '../pages/admin/EventEdit'
+
+import { setUser } from '../actions/UserActions'
+import {
+  log,
+  updateEvents,
+  updateUser
+} from '../utils'
 
 class Router extends Component {
-  constructor(props) {
-    super(props)
-
+  constructor() {
+    super()
     this.state = {
-      events: null
+      loaded: false
     }
   }
 
   getAuthenticatedUser() {
-    Auth.currentAuthenticatedUser()
-      .then(user => {
-        const email = user.attributes.email
-        if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-          this.props.setUser(user)
+    return Auth.currentAuthenticatedUser({ bypassCache: true })
+      .then(async authUser => {
+        console.log(authUser)
+        const email = authUser.attributes.email
+        if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
+          this.props.setUser({
+            // name: authUser.attributes.name, // we don't need admin name for now
+            email: authUser.attributes.email,
+            admin: true
+          });
         }
         else {
-          Auth.signOut()
-          alert('You must use a ubcbiztech.com email')
+          const studentId = authUser.attributes['custom:student_id']
+          if (studentId) {
+            await updateUser(studentId)
+          } else {
+            // Parse first name and last name
+            const initialName = authUser.attributes.name.split(' ')
+            const fname = initialName[0];
+            const lname = initialName[1];
+
+            // save only essential info to redux
+            this.props.setUser({
+              email: authUser.attributes.email,
+              fname,
+              lname
+            })
+          }
         }
       })
-      .catch(() => console.log("Not signed in"))
+      .catch(() => log('Not signed in'))
   }
 
+  // User needs to be checked before the page physically renders
+  // (otherwise, the login page will initially show on every refresh)
   componentDidMount() {
-    fetchBackend("/events/get", 'GET')
-      .then((response) => response.json())
-      .then((response) => {
-        this.props.setEvents({
-          events: response
-        })
-        let eventId = queryString.parse(window.location.search)['event']
-        if (eventId) {
-          response.forEach(event => {
-            if (event.id === eventId)
-              this.props.setEvent(event)
-          })
-        }
+
+   if(!this.props.user) {
+    // If the user doesn't already exist in react, get the authenticated user
+    // also get events at the same time
+    Promise.all([
+      this.getAuthenticatedUser(),
+      updateEvents()
+    ])
+      .then(() => {
+      // Ultimately, after all is loaded, set the "loaded" state and render the component
+        this.setState({ loaded: true })
       })
+   }
+   else {
+     // If the user already exists, update the events and render the page
+     updateEvents()
+     this.setState({ loaded: true })
+   }
+
   }
 
   render() {
-    return (
-      this.props.user
+
+    const { user, events } = this.props;
+    const { loaded } = this.state;
+
+    // Alert the user about the need to register if they haven't
+    const userNeedsRegister = user && !user.admin && !user.id;
+
+    return loaded ? (
+      user
         ? <BrowserRouter>
           <ScrollToTop />
-          <Nav events={this.props.events} />
+          <Nav events={events} />
           <div className="content">
+            {userNeedsRegister && <RegisterAlert />}
             <Switch>
+
+              {/* COMMON ROUTES */}
               <Route
-                path="/event"
-                render={props => <EventView {...props} />} />
-              <Route
-                path="/login-redirect"
+                path='/login-redirect'
                 render={() => <LoginRedirect />} />
               <Route
-                path="/new-event"
-                render={() => <EventNew />} />
+                path="/forbidden"
+                render={() => <Forbidden />} />
               <Route
-                path="/edit-event"
-                render={() => <EventEdit />} />
+                path="/signup"
+                render={() => user.id
+                  ? <Redirect to="/" /> /* Allow signup only if user is not yet registered in DB*/
+                  : <Signup />} />
               <Route
-                path="/page"
+                path='/event/:id/register'
                 render={() => <EventRegister />} />
-              <Route
-                path="/"
-                render={() => <Home events={this.props.events} />}
-              />
+
+              {/* ADMIN ROUTES */}
+              <AdminRoute
+                path='/user-dashboard'
+                render={() => <UserHome />} />
+              <AdminRoute
+                path='/event/new'
+                render={() => <EventNew />} />
+              <AdminRoute
+                path='/event/:id/edit'
+                render={() => <EventEdit />} />
+              <AdminRoute
+                path='/event/:id' // Need to make sure that this comes after 'new' and 'edit'
+                render={props => <EventView {...props} />} />
+
+              {/* HOME */}
+              <AdminRoute
+                exact
+                path='/'
+                render={() => <AdminHome />}
+                altRender={() => <UserHome />} />
+
+              <Redirect to='/' />
+
             </Switch>
           </div>
         </BrowserRouter>
         : <BrowserRouter>
           <ScrollToTop />
           <Switch>
+
             <Route
-              path="/page"
-              render={() => <EventRegister />} />
+              path='/event/:id/register'
+              component={EventRegister} />
             <Route
-              path="/login-redirect"
+              path='/login-redirect'
               component={LoginRedirect} />
             <Route
-              path="/"
+              path='/'
               component={Login} />
+
+            <Redirect to='/' />
+
           </Switch>
         </BrowserRouter >
-    )
+    ) : <Loading />
   }
 }
 
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
-    event: state.pageState.event,
     user: state.userState.user,
     events: state.pageState.events
   };
 };
 
-export default connect(mapStateToProps, { setUser, setEvent, setEvents })(Router);
+export default connect(mapStateToProps, { setUser })(Router);

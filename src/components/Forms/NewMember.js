@@ -4,8 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import RadioGroupButtons from '../RadioGroupButtons';
 
-export default function RegisterEventForm(props) {
+export default function NewMemberForm(props) {
     const {
+        initialValues,
         errors,
         touched,
         handleSubmit,
@@ -23,10 +24,12 @@ export default function RegisterEventForm(props) {
 
     return (
         <form onSubmit={handleSubmit}>
+            <br />
             <Typography variant="caption" color={'error'}>* Indicates required field</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <TextField
+                        defaultValue={initialValues.fname}
                         label="First Name*"
                         autoComplete="given-name"
                         helperText={touched.fname ? errors.fname : ""}
@@ -39,6 +42,7 @@ export default function RegisterEventForm(props) {
 
                 <Grid item xs={12} sm={6}>
                     <TextField
+                        defaultValue={initialValues.lname}
                         label="Last Name*"
                         autoComplete="family-name"
                         helperText={touched.lname ? errors.lname : ""}
@@ -51,6 +55,8 @@ export default function RegisterEventForm(props) {
 
                 <Grid item xs={12}>
                     <TextField
+                        disabled={!!initialValues.email}
+                        defaultValue={initialValues.email}
                         label="Email Address*"
                         autoComplete="email"
                         helperText={touched.email ? errors.email : ""}
@@ -118,12 +124,12 @@ export default function RegisterEventForm(props) {
                         otherOption={true}
                         options={["Facebook", "Boothing", "Friends", "BizTech Newsletter", "Faculty Newsletter"]}
                         groupName={"heardFrom"}
-                        displayName={"How did you hear about this event?"}
+                        displayName={"How did you hear about UBC BizTech?"}
                     />
                 </Grid>
 
             </Grid>
-            <br />
+            <br></br>
             <Button
                 variant="contained"
                 color="primary"

@@ -1,7 +1,6 @@
-import React,  { useEffect } from "react";
+import React,  { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
-import queryString from "query-string";
-import { setEvent } from "../../actions/PageActions";
 import { useHistory, withRouter } from "react-router-dom";
 import EventUserTable from "../../components/EventUserTable";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -11,19 +10,20 @@ import { Helmet } from 'react-helmet';
 
 function EventView(props) {
   const history = useHistory();
-  const event = props.event;
+  const { id: eventId } = useParams()
+  const { events } = props;
+  
+  const [ event, setEvent ] = useState(null);
 
   // Like componentDidUpdate/DidMount
   useEffect(() => {
-      const params = queryString.parse(props.location.search);
-      const events = props.events;
-      if (events) {
-        props.setEvent(events.find(event => event.id === params.id));
+      if (events && eventId) {
+        setEvent(events.find(event => event.id === eventId));
       }
-  });
+  }, [event, events, setEvent, eventId]);
 
   function handleEditEventClick() {
-    history.push({ pathname: "/edit-event" });
+    if(eventId) history.push(`/event/${eventId}/edit`);
   }
 
   return event ? (
@@ -32,7 +32,7 @@ function EventView(props) {
           <title>{event.ename} - BizTech Admin</title>
       </Helmet>
       <Link onClick={handleEditEventClick}>Edit Event</Link>
-      <Link href={"/page?id=" + event.id} key={event.id}>Public Event Page</Link>
+      <Link onClick={() => { props.history.push(`/event/${event.id}/register`)}} key={event.id}>Public Event Page</Link>
       <EventUserTable event={event} />
     </ThemeProvider>
   ) : (
@@ -42,9 +42,8 @@ function EventView(props) {
 
 const mapStateToProps = state => {
   return {
-    event: state.pageState.event,
     events: state.pageState.events
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(withRouter(EventView));
+export default connect(mapStateToProps, { })(withRouter(EventView));

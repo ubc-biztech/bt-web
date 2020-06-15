@@ -80,22 +80,6 @@ const useStyles = makeStyles(theme => ({
 
 function Login(props) {
   const classes = useStyles();
-  Auth.currentAuthenticatedUser()
-    .then(user => {
-      console.log(user);
-      const email = user.attributes.email;
-      if (
-        email.substring(email.indexOf("@") + 1, email.length) ===
-        "ubcbiztech.com"
-      ) {
-        props.setUser(user);
-      } else {
-        Auth.signOut();
-        alert("You must use a ubcbiztech.com email");
-      }
-      props.setUser(user);
-    })
-    .catch(err => console.log("Not signed in:", err));
   return (
     <Container component="main" maxWidth="xs">
       <Helmet>
@@ -156,7 +140,7 @@ function Login(props) {
 
 const mapStateToProps = state => {
   return {
-    user: state.userState.user
+    user: state.userState.user,
   };
 };
 

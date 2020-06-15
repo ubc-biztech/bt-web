@@ -1,13 +1,32 @@
 import { SET_USER, LOGOUT } from '../constants/Constants';
 
 export function setUser(userData) {
-  const user = {
-    email: userData.attributes.email,
-    name: userData.attributes.name
-  }
+  const {
+    email,
+    fname,
+    lname,
+    id,
+    faculty,
+    year,
+    diet,
+    heardFrom,
+    gender,
+    admin
+  } = userData;
   return {
     type: SET_USER,
-    user
+    user: {
+      email,
+      fname,
+      lname,
+      id,
+      faculty,
+      year,
+      diet,
+      heardFrom,
+      gender,
+      admin
+    }
   };
 }
 

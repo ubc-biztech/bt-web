@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
-import { setEvent } from "../../actions/PageActions";
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { fetchBackend } from '../../utils'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import RegisterEvent from '../../components/Forms/RegisterEvent';
-import queryString from 'query-string';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -32,18 +31,16 @@ const useStyles = makeStyles(theme => ({
 
 const EventFormContainer = (props) => {
   const classes = useStyles();
-  const { event } = props;
+  const { events } = props;
+  const { id: eventId } = useParams()
+
+  const [ event, setEvent ] = useState(null);
 
   useEffect(() => {
-      const params = queryString.parse(window.location.search);
-      const eventID = params.id;
-      if (eventID) {
-          const events = props.events
-          if (events) {
-              props.setEvent(events.find(event => event.id === params.id))
-          }
+      if (eventId && events) {
+        setEvent(events.find(event => event.id === eventId))
       }
-  }, [props])
+  }, [events, eventId])
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -67,7 +64,6 @@ const EventFormContainer = (props) => {
             <title>{event.ename} - Register</title>
           </Helmet>
           <Paper className={classes.paper}>
-            <React.Fragment>
               <img src={event.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
               
               <div className={classes.content}>
@@ -87,7 +83,6 @@ const EventFormContainer = (props) => {
                   {props => <RegisterEvent {...props} />}
                 </Formik>
               </div>
-            </React.Fragment>
           </Paper>
         </div>
     )
@@ -130,13 +125,12 @@ const EventFormContainer = (props) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
     const eventID = event.id;
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    fetchBackend(`/users/get?id=${values.id}`, 'GET')
-      .then((response) => response.json())
+    fetchBackend(`/users/${values.id}`, 'GET')
       .then((response) => {
         if (response === "User not found.") {
           // Need to create new user
           // console.log("User not found, creating user");
-          const body = JSON.stringify({
+          const body = {
             id,
             fname,
             lname,
@@ -145,9 +139,8 @@ const EventFormContainer = (props) => {
             faculty,
             gender,
             diet
-          });
-          fetchBackend("/users/create", "POST", body)
-            .then((userResponse) => userResponse.json())
+          }
+          fetchBackend("/users", "POST", body)
             .then((userResponse) => {
               if (userResponse.message === "Created!") {
                 registerUser(id, eventID, heardFrom);
@@ -160,41 +153,36 @@ const EventFormContainer = (props) => {
         }
       })
       .catch(err => {
-        console.log("registration error");
+        console.log("registration error", err);
         alert("Signup failed");
       });
   }
 
   async function registerUser(id, eventID, heardFrom) {
-    const body = JSON.stringify({
+    const body = {
       id,
       eventID,
       heardFrom,
       registrationStatus: "registered"
-    })
-    fetchBackend("/registration/create", "POST", body)
-      .then((regResponse) => regResponse.json())
+    }
+    fetchBackend("/registrations", "POST", body)
       .then((regResponse) => {
-        if (regResponse.message === "Update succeeded") {
-          alert("Signed Up");
-        } else {
-          console.log("registration error");
-          console.log(regResponse.message);
-          alert("Signup failed");
-        }
+        alert("Signed Up");
       })
       .catch(err => {
-        console.log("registration error");
-        alert("Signup failed");
+        if (err.status === 409) {
+          alert("You cannot sign up for this event again!");
+        } else {
+          alert("Signup failed");
+        }
       });
   }
 }
 
 const mapStateToProps = state => {
   return {
-      events: state.pageState.events,
-      event: state.pageState.event
+      events: state.pageState.events
   };
 };
 
-export default connect(mapStateToProps, { setEvent })(EventFormContainer);
+export default connect(mapStateToProps, {})(EventFormContainer);
