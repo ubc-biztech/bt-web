@@ -22,12 +22,18 @@ const styles = ({
   card: {
     width: '30%',
     margin: '15px 30px 15px 0',
+    backgroundColor: 'rgba(174, 196, 244, 0.35)',
+    color: '#FFFFFF'
+  },
+  cardHeader: {
+    color: '#FFFFFF'
   },
   media: {
     height: 250
   },
   row: {
-    display: 'flex'
+    display: 'flex',
+    paddingLeft: '15px'
   },
   columnLeft: {
     flex: '50%',
@@ -102,6 +108,7 @@ function AdminHome(props) {
                 />
               </CardActionArea>
               <CardHeader
+                classes={{ subheader: classes.cardHeader }}
                 title={event.ename}
                 subheader={event.startDate ?
                   new Date(event.startDate)
@@ -130,8 +137,8 @@ function AdminHome(props) {
 
       <div style={styles.row}>
         <div style={styles.columnLeft}>
-          <Typography variant="h1">BizTech Admins</Typography>
-          <Typography>BizTech Admins</Typography>
+          <Typography variant="h1" style={{ color: '#96FF50' }}>BizTech Admins</Typography>
+          <Typography style={{ color: '#96FF50' }}>BizTech Admins</Typography>
         </div>
         <div style={styles.columnRight}>
           {/* Link to user dashboard*/}
