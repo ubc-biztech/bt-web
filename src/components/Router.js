@@ -89,7 +89,7 @@ class Router extends Component {
           {user.admin
             ? <Nav events={this.props.events} />
             : <UserNav />}
-          <div className={user.admin ? 'content' : 'userContent'}>
+          <div className='content'>
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
 
