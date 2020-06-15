@@ -64,7 +64,7 @@ const EventFormContainer = (props) => {
             <title>{event.ename} - Register</title>
           </Helmet>
           <Paper className={classes.paper}>
-              <img src={event.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
+              <img src={event.imageUrl || require("../../assets/default.png")} alt="Event" style={{maxWidth: '100%'}} />
               
               <div className={classes.content}>
                 <Typography variant="h4" align="center" gutterBottom>
