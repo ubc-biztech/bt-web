@@ -81,19 +81,15 @@ class Router extends Component {
 
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.id;
-    let isUser = true;
-    if (user) {
-      isUser = user.email.substring(user.email.indexOf("@") + 1, user.email.length) !== 'ubcbiztech.com'
-    }
-
+    console.log("props: " + this.props)
     return (
       user
         ? <BrowserRouter>
           <ScrollToTop />
-          {isUser
-            ? <UserNav />
-            : <Nav events={this.props.events} />}
-          <div className={isUser ? "userContent" : "content"}>
+          {user.admin
+            ? <Nav events={this.props.events} />
+            : <UserNav />}
+          <div className={user.admin ? 'content' : 'userContent'}>
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
 
@@ -132,7 +128,7 @@ class Router extends Component {
                 exact
                 path='/'
                 render={() => <AdminHome />}
-                altRender={() => <UserHome />} />
+                altRender={() => <UserHome user={user} />} />
 
               <Redirect to='/' />
 
