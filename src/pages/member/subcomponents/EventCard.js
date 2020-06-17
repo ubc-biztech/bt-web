@@ -1,14 +1,13 @@
 import React from 'react'
+import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
+import Card from '@material-ui/core/Card'
 
 const styles = {
     page: {
         width: '345px',
-        background: 'rgb(174, 196, 244, 0.19',
-        borderRadius: '20px',
         marginLeft: '34px',
         marginTop: '27px',
-        overflow: 'hidden'
     },
     title: {
         color: '#96FF50',
@@ -34,6 +33,7 @@ const styles = {
 }
 
 function EventCard(props) {
+    const { classes } = props
     let eventName = ''
     let eventDate = ''
     if (props.event) {
@@ -45,12 +45,12 @@ function EventCard(props) {
     }
 
     return (
-        <div style={styles.page}>
+        <Card classes={{ root: classes.page }}>
             <Typography style={styles.title}>{props.type}</Typography>
             <Typography style={styles.eventName}>{eventName}</Typography>
             <Typography style={styles.eventDate}>{eventDate}</Typography>
-        </div>
+        </Card>
     )
 }
 
-export default EventCard
+export default withStyles(styles)(EventCard)

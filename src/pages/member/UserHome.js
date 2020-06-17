@@ -19,7 +19,6 @@ const styles = {
         paddingTop: '50px',
     },
     page: {
-        backgroundColor: '#070F21',
         height: '100vh'
     },
     container: {
@@ -31,7 +30,9 @@ function UserHome(props) {
     const [featuredEvent, setFeaturedEvent] = useState()
     const [nextEvent, setNextEvent] = useState()
     const getFeaturedEvent = () => {
-        setFeaturedEvent(props.events[Math.floor(Math.random() * (props.events.length - 1))]);
+        if (props.events.length) {
+            setFeaturedEvent(props.events[Math.floor(Math.random() * (props.events.length - 1))]);
+        }
     }
 
     /**
@@ -46,7 +47,7 @@ function UserHome(props) {
         await fetchBackend(`/registrations?${params}`, 'GET')
             .then(async response => {
                 if (response && response.size > 0) {
-                    //iterate over events - the first one that is found is the closest event assuming that events are already sorted by date
+                    //iterate over events - the first one that is found in registrations is the closest event assuming that events are already sorted by date
                     let found = false;
                     props.events.forEach(event => {
                         if (!found) {

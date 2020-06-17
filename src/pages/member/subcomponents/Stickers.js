@@ -1,19 +1,16 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
+import withStyles from '@material-ui/core/styles/withStyles'
+import Card from '@material-ui/core/Card'
 
 const styles = {
     page: {
         width: '719px',
-        background: 'rgb(174, 196, 244, 0.19',
-        borderRadius: '20px',
         marginLeft: '34px',
         marginTop: '27px',
-        display: 'inline-block',
-        overflow: 'hidden',
         paddingBottom: '33px'
     },
     title: {
-        color: '#FFFFFF',
         fontStyle: 'normal',
         fontWeight: 'bold',
         fontSize: '36px',
@@ -22,12 +19,14 @@ const styles = {
     }
 }
 
-function Stickers() {
+function Stickers(props) {
+    const { classes } = props
     return (
-        <div style={styles.page}>
+        <Card classes={{ root: classes.page }}>
             <Typography style={styles.title}>Sticker Collection</Typography>
-        </div>
+        </Card>
+
     )
 }
 
-export default Stickers
+export default withStyles(styles)(Stickers)

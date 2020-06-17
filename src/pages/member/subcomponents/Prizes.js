@@ -1,19 +1,15 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
+import Card from '@material-ui/core/Card'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const styles = {
     page: {
         width: '719px',
-        background: 'rgb(174, 196, 244, 0.19',
-        borderRadius: '20px',
         marginLeft: '34px',
         marginTop: '27px',
-        display: 'inline-block',
-        overflow: 'hidden',
-        paddingBottom: '33px'
     },
     title: {
-        color: '#FFFFFF',
         fontStyle: 'normal',
         fontWeight: 'bold',
         fontSize: '36px',
@@ -22,12 +18,13 @@ const styles = {
     }
 }
 
-function Prizes() {
+function Prizes(props) {
+    const { classes } = props
     return (
-        <div style={styles.page}>
+        <Card classes={{ root: classes.page }}>
             <Typography style={styles.title}>Prizes</Typography>
-        </div>
+        </Card >
     )
 }
 
-export default Prizes
+export default withStyles(styles)(Prizes)
