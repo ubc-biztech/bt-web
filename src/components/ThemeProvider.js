@@ -16,6 +16,12 @@ const theme = createMuiTheme({
                 fontFamily,
                 fontSize: '.7rem',
             }
+        },
+        MuiCard: {
+            root: {
+                background: 'rgb(174, 196, 244, 0.19)',
+                color: '#FFFFFF'
+            }
         }
     },
     typography: {
@@ -39,6 +45,11 @@ const theme = createMuiTheme({
     },
     shape: {
         borderRadius: 10
+    },
+    palette: {
+        background: {
+            default: "#070F21"
+        }
     },
     shadows: [
         "none",

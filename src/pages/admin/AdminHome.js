@@ -26,7 +26,7 @@ const styles = ({
     color: '#FFFFFF'
   },
   cardHeader: {
-    color: '#FFFFFF'
+    color: '#AEC4F4'
   },
   media: {
     height: 250
