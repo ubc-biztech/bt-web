@@ -1,44 +1,44 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from "redux";
 import {
   SET_EVENTS,
   SET_USER,
   LOGOUT
-} from '../constants/Constants'
+} from "../constants/Constants";
 
 const initialState = {
-  page: 'login'
-}
+  page: "login"
+};
 
-function pageReducer (state = initialState, action) {
+function pageReducer(state = initialState, action) {
   switch (action.type) {
     case SET_EVENTS:
       return {
         ...state,
         events: action.events.events
-      }
+      };
     default:
-      return state
+      return state;
   }
 }
 
-function userReducer (state = initialState, action) {
+function userReducer(state = initialState, action) {
   switch (action.type) {
     case SET_USER:
       return {
         ...state,
         user: action.user
-      }
+      };
     case LOGOUT:
       return {
         ...state,
         user: null
-      }
+      };
     default:
-      return state
+      return state;
   }
 }
 
 export default combineReducers({
   pageState: pageReducer,
   userState: userReducer
-})
+});

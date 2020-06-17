@@ -1,6 +1,6 @@
-import { SET_USER, LOGOUT } from '../constants/Constants'
+import { SET_USER, LOGOUT } from '../constants/Constants';
 
-export function setUser (userData) {
+export function setUser(userData) {
   const {
     email,
     fname,
@@ -12,7 +12,7 @@ export function setUser (userData) {
     heardFrom,
     gender,
     admin
-  } = userData
+  } = userData;
   return {
     type: SET_USER,
     user: {
@@ -27,11 +27,11 @@ export function setUser (userData) {
       gender,
       admin
     }
-  }
+  };
 }
 
-export function logout (user) {
+export function logout(user) {
   return {
     type: LOGOUT
-  }
+  };
 }
