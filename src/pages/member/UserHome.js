@@ -1,15 +1,15 @@
 import React from 'react'
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet'
 
-function UserHome() {
-    return (
-        <div>
-            <Helmet>
-                <title>Biztech User Dashboard</title>
-            </Helmet>
+function UserHome () {
+  return (
+    <div>
+      <Helmet>
+        <title>Biztech User Dashboard</title>
+      </Helmet>
             User Home
-        </div>
-    )
+    </div>
+  )
 }
 
 export default UserHome
