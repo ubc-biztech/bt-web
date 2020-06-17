@@ -1,17 +1,15 @@
 import React from 'react'
+import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import House from '../images/house.svg'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
 
 const styles = {
     page: {
         width: '719px',
-        background: 'rgb(174, 196, 244, 0.19',
-        borderRadius: '20px',
         marginLeft: '85px',
         marginTop: '27px',
-        display: 'inline-block',
-        overflow: 'hidden',
-        paddingBottom: '33px'
     },
     title: {
         color: '#FFFFFF',
@@ -34,21 +32,21 @@ const styles = {
     house: {
         position: 'absolute',
         left: '685px',
-        top: '103px'
+        top: '117px'
     }
 }
 
 function Greeting(props) {
+    const { classes } = props
     return (
-        <div style={styles.page}>
-            <div>
+        <Card classes={{ root: classes.page }}>
+            <CardContent>
                 <Typography style={styles.title}>Hi {props.user.fname}!</Typography>
                 <Typography style={styles.reward}>You are X events away from a reward!</Typography>
-            </div>
-
+            </CardContent>
             <img src={House} style={styles.house} alt='BizTech House' />
-        </div>
+        </Card>
     )
 }
 
-export default Greeting
+export default withStyles(styles)(Greeting)
