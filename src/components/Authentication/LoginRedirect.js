@@ -34,6 +34,7 @@ function LoginRedirect(props) {
     }
 
     const pollForAuthenticatedUser = () => {
+        // currentSession includes more auth information (such as token) than currentAuthenticatedUser
         Auth.currentSession({ bypassCache: true })
             .then(async session => {
                 const authUser = session.idToken.payload
@@ -46,7 +47,7 @@ function LoginRedirect(props) {
                 }
                 // if biztech email, set them as admin (no need for 'sign in')
                 else if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-
+                    // attempt to assign cognito group 'admin' to this user
                     await fetchBackend(`/admin`, 'POST')
                         .then(() => {})
                         .catch(err => console.log(err))
@@ -73,6 +74,8 @@ function LoginRedirect(props) {
                             // if the user exists in the user pool, but not the database, remove the user pool's student_id
                             if(err.status === 404) {
                                 clearTimeout(timeoutRedirect)
+
+                                //updateUserAttributes requires a user object and Auth.currentSession() does not provide the exact object needed
                                 const user = await Auth.currentAuthenticatedUser();
                                 await Auth.updateUserAttributes(user, { 'custom:student_id': '' });
                                 authUser['custom:student_id'] = null;
