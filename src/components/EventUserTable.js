@@ -32,8 +32,9 @@ export class EventUserTable extends Component {
       users: true
     });
 
-    fetchBackend(`/events/${eventID}${params}`, 'GET')
+    fetchBackend(`/events/${eventID}?${params}`, 'GET')
       .then(response => {
+        console.log(response, 'HIHIHIH')
         this.setState({ rows: response });
       });
   }
@@ -114,7 +115,7 @@ export class EventUserTable extends Component {
                           ? "#F7D055"
                           : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
                             ? "#E15453"
-                            : "#FFF",
+                            : "rgb(174, 196, 244, 0.19)",
                     paddingLeft: "10px"
                   }}>
                   <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
@@ -137,10 +138,9 @@ export class EventUserTable extends Component {
           actionsColumnIndex: 5,
           exportButton: true,
           headerStyle: {
-            fontWeight: "bold"
-          },
-          searchFieldStyle: {
-            color: '#000000'
+            fontWeight: "bold",
+            backgroundColor: '#273149',
+            color: '#AEC4F4'
           },
           rowStyle: rowData => ({
 
