@@ -71,22 +71,6 @@ const useStyles = makeStyles(theme => ({
 function Login(props) {
   const classes = useStyles();
 
-  // *****
-  // MIGHT NOT NEED IT HERE SINCE ALREADY CALLED IN ROUTER ROOT
-  // *****
-  // Auth.currentAuthenticatedUser({ bypassCache: true })
-  // .then(authUser => {
-  //     const email = authUser.attributes.email
-  //     if (email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com') {
-  //         props.setUser({ ...authUser, admin: true });
-  //     }
-  //     else {
-  //         console.log('not using a biztech e-mail!');
-  //         props.setUser({ ...authUser, admin: false });
-  //     }
-  // })
-  // .catch((err) => console.log("Not signed in", err));
-
   return (
     <Container component="main" maxWidth="xs">
       <Helmet>

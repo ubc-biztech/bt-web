@@ -10,7 +10,9 @@ export default function RegisterEventForm(props) {
         touched,
         handleSubmit,
         handleChange,
-        setFieldTouched
+        setFieldTouched,
+        dirty,
+        isSubmitting
     } = props;
 
     const change = (name, e) => {
@@ -121,11 +123,12 @@ export default function RegisterEventForm(props) {
                 </Grid>
 
             </Grid>
-            <br></br>
+            <br />
             <Button
                 variant="contained"
                 color="primary"
                 type="submit"
+                disabled={!dirty || isSubmitting}
             >
                 Submit
             </Button>

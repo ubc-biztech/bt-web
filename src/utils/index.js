@@ -1,6 +1,7 @@
 import aws_config from '../aws-config';
 import Store from '../components/Store'
 import { setEvents } from '../actions/PageActions'
+import { setUser } from '../actions/UserActions'
 
 // TODO: Configure travis to build a staging version
 // export const AWS_CONFIG = process.env.REACT_APP_STAGE === 'production'
@@ -56,14 +57,24 @@ export function log(message) {
 }
 
 // Refresh the redux store
-export function getEvents() {
-    fetchBackend('/events', 'GET')
-        .then(response => {
+export async function updateEvents() {
+    try {
+        const response = await fetchBackend('/events', 'GET')
             Store.dispatch(setEvents({
                 events: response
-            }))
-        })
-        .catch(err => {
-            log(err)
-        })
+        }))
+    }
+    catch(err) {
+        log(err)
+    }
+}
+
+// Refresh the redux store
+export async function updateUser(id) {
+    try {
+        const response = await fetchBackend(`/users/${id}`, 'GET')
+        Store.dispatch(setUser(response))
+    } catch(err) {
+        log(err)
+    }
 }
