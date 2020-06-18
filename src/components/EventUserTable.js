@@ -139,6 +139,9 @@ export class EventUserTable extends Component {
           headerStyle: {
             fontWeight: "bold"
           },
+          searchFieldStyle: {
+            color: '#000000'
+          },
           rowStyle: rowData => ({
 
           })
