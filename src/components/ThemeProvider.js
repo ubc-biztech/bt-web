@@ -41,7 +41,7 @@ const theme = createMuiTheme({
         MuiButton: {
             containedPrimary: {
                 backgroundColor: 'rgb(174, 196, 244, 0.19)',
-                color: '#AEC4F4',
+                color: '#FFFFFF',
             }
         }
     },
