@@ -22,6 +22,27 @@ const theme = createMuiTheme({
                 background: 'rgb(174, 196, 244, 0.19)',
                 color: '#FFFFFF'
             }
+        },
+        MuiInput: {
+            root: {
+                color: '#AEC4F4'
+            }
+        },
+        MuiFormLabel: {
+            root: {
+                color: '#FFFFFF'
+            }
+        },
+        MuiSvgIcon: {
+            root: {
+                color: '#FFFFFF'
+            }
+        },
+        MuiButton: {
+            containedPrimary: {
+                backgroundColor: 'rgb(174, 196, 244, 0.19)',
+                color: '#AEC4F4',
+            }
         }
     },
     typography: {
