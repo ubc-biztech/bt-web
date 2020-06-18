@@ -25,15 +25,36 @@ const theme = createMuiTheme({
         },
         MuiInput: {
             root: {
-                color: '#AEC4F4'
+                color: '#FFFFFF'
             }
         },
         MuiFormLabel: {
             root: {
-                color: '#FFFFFF'
+                color: '#AEC4F4'
             }
         },
         MuiSvgIcon: {
+            root: {
+                color: '#FFFFFF'
+            }
+        },
+        MuiIcon: {
+            root: {
+                color: '#FFFFFF'
+            }
+        },
+        MuiSelect: {
+            root: {
+                color: '#FFFFFF'
+            }
+        },
+        MuiInputBase: {
+            root: {
+                color: '#FFFFFF',
+                backgroundColor: 'rgb(174, 196, 244, 0.19)'
+            }
+        },
+        MuiTypography: {
             root: {
                 color: '#FFFFFF'
             }
@@ -43,7 +64,13 @@ const theme = createMuiTheme({
                 backgroundColor: 'rgb(174, 196, 244, 0.19)',
                 color: '#FFFFFF',
             }
-        }
+        },
+        MuiPaper: {
+            root: {
+                backgroundColor: '#273149',
+                color: '#AEC4F4'
+            }
+        },
     },
     typography: {
         useNextVariants: true,
