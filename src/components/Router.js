@@ -31,7 +31,6 @@ import EventEdit from '../pages/admin/EventEdit'
 import { setUser } from '../actions/UserActions'
 import {
   log,
-  updateEvents,
   updateUser
 } from '../utils'
 
@@ -46,7 +45,6 @@ class Router extends Component {
   getAuthenticatedUser() {
     return Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(async authUser => {
-        console.log(authUser)
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
           this.props.setUser({
@@ -85,8 +83,7 @@ class Router extends Component {
     // If the user doesn't already exist in react, get the authenticated user
     // also get events at the same time
     Promise.all([
-      this.getAuthenticatedUser(),
-      updateEvents()
+      this.getAuthenticatedUser()
     ])
       .then(() => {
       // Ultimately, after all is loaded, set the "loaded" state and render the component
@@ -95,7 +92,6 @@ class Router extends Component {
    }
    else {
      // If the user already exists, update the events and render the page
-     updateEvents()
      this.setState({ loaded: true })
    }
 
@@ -103,7 +99,7 @@ class Router extends Component {
 
   render() {
 
-    const { user, events } = this.props;
+    const { user } = this.props;
     const { loaded } = this.state;
 
     // Alert the user about the need to register if they haven't
@@ -113,7 +109,7 @@ class Router extends Component {
       user
         ? <BrowserRouter>
           <ScrollToTop />
-          <Nav events={events} />
+          <Nav />
           <div className="content">
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
@@ -122,9 +118,6 @@ class Router extends Component {
               <Route
                 path='/login-redirect'
                 render={() => <LoginRedirect />} />
-              <Route
-                path='/signup'
-                render={() => <Signup />} />
               <Route
                 path="/forbidden"
                 render={() => <Forbidden />} />
@@ -191,8 +184,7 @@ class Router extends Component {
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
-    user: state.userState.user,
-    events: state.pageState.events
+    user: state.userState.user
   };
 };
 

@@ -51,14 +51,16 @@ const NewMemberRegisterFormContainer = (props) => {
 
   // form initial values (if exist). If email exists will disable email field
   const { user } = props;
+  const initialInviteCode = sessionStorage.getItem('inviteCode');
   const initialValues = {
     email: user?.email || "",
     fname: user?.fname || "",
     lname: user?.lname || "",
+    inviteCode: initialInviteCode || "",
   };
 
   const submitValues = async (values) => {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
+    const { email, fname, lname, id, inviteCode, faculty, year, diet, heardFrom, gender } = values;
 
     //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     const body = {
@@ -66,6 +68,7 @@ const NewMemberRegisterFormContainer = (props) => {
       fname,
       lname,
       id,
+      inviteCode,
       faculty,
       year,
       diet,
@@ -87,6 +90,7 @@ const NewMemberRegisterFormContainer = (props) => {
           fname,
           lname,
           id,
+          inviteCode,
           faculty,
           year,
           diet,

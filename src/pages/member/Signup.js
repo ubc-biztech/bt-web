@@ -50,7 +50,6 @@ const useStyles = makeStyles(theme => ({
 
 function Signup(props) {
   const classes = useStyles();
-
   const inviteCode = new URLSearchParams(props.location.search).get('invite')
   if (inviteCode) {
     sessionStorage.setItem('inviteCode', inviteCode)
