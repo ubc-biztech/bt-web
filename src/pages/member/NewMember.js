@@ -102,9 +102,12 @@ const NewMemberRegisterFormContainer = (props) => {
         history.push('/');
       })
       .catch(err => {
-        //TODO: parse out error code 409
-        log(err)
-        alert('A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.')
+        if (err.status === 409) {
+          alert('A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.')
+        } else if (err.status === 404) {
+          sessionStorage.removeItem('inviteCode');
+          alert('Membership code is invalid')
+        }
       })
   }
 
