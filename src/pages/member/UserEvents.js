@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
 import EventCard from '../../components/Cards/Event';
+import { updateEvents } from '../../utils'
 
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -100,8 +101,9 @@ function UserHome(props) {
 
     const history = useHistory();
     
-    const { events, user } = props;
-
+    if(!props.events) updateEvents()
+    const { events = [], user } = props;
+    
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex)
     }
@@ -116,6 +118,7 @@ function UserHome(props) {
 
     const AllEventCards = useMemo(() => {
 
+        console.log({events})
         return events;
         // TODO: filter events by favorites and registered
 

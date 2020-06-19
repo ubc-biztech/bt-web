@@ -31,6 +31,9 @@ const styles = ({
 function AdminHome(props) {
 
   const { user, events } = props;
+  if(!events){
+    updateEvents()
+  }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [eventMenuClicked, setEventMenuClicked] = React.useState(null);
