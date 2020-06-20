@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
 import EventCard from '../../components/Cards/Event';
-import { updateEvents } from '../../utils'
+import { updateEvents, updateRegisteredEvents } from '../../utils'
 
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -101,8 +101,12 @@ function UserHome(props) {
 
     const history = useHistory();
     
-    if(!props.events) updateEvents()
-    const { events = [], user } = props;
+    const { events = [], eventsRegistered = [], user } = props;
+
+    useEffect(() => {
+        if(!props.events) updateEvents()
+        if(user.id) updateRegisteredEvents(user.id)
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
     
     const handleTabChange = (event, newIndex) => {
         setTabIndex(newIndex)
@@ -116,18 +120,28 @@ function UserHome(props) {
         history.push(`/event/${eventId}/register`)
     }
 
+    const eventsRegisteredIds = useMemo(() => {
+
+        if(eventsRegistered.length && typeof eventsRegistered[0] === 'object') {
+            return eventsRegistered.map((event) => event.eventID)
+        }
+
+        return eventsRegistered
+
+    }, [eventsRegistered])
+
     const AllEventCards = useMemo(() => {
 
-        console.log({events})
-        return events;
-        // TODO: filter events by favorites and registered
+        if(selectedPanel === PANEL_STATES.REGISTERED) return events.filter((event) => eventsRegisteredIds.includes(event.id));
+        // TODO: filter events by favorites
+        else if(selectedPanel === PANEL_STATES.FAVORITES) return []
+        else return events
 
     }, [events, selectedPanel]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const UpcomingEventCards = useMemo(() => {
 
         // filter events by the date
-        console.log({user}, {AllEventCards})
         const now = new Date();
         return AllEventCards.filter((event) => event.startDate && new Date(event.startDate) >= now)
 
@@ -136,7 +150,6 @@ function UserHome(props) {
     const PastEventCards = useMemo(() => {
 
         // filter events by the date
-        console.log({user}, {AllEventCards})
         const now = new Date();
         return AllEventCards.filter((event) => event.startDate && new Date(event.startDate) < now)
 
@@ -201,7 +214,7 @@ function UserHome(props) {
                                     event={event}
                                     key={event.id}
                                     variant="user"
-                                    handleClick={redirectToEvent}
+                                    handleCardClick={redirectToEvent}
                                     // handleFavorite={handleFavoriteEvent}
                                     cardStyle={{ width: '40%' }}
                                 />
@@ -215,7 +228,7 @@ function UserHome(props) {
                                     event={event}
                                     key={event.id}
                                     variant="user"
-                                    handleClick={redirectToEvent}
+                                    handleCardClick={redirectToEvent}
                                     // handleFavorite={handleFavoriteEvent}
                                     cardStyle={{ width: '40%' }}
                                 />
@@ -229,7 +242,7 @@ function UserHome(props) {
                                     event={event}
                                     key={event.id}
                                     variant="user"
-                                    handleClick={redirectToEvent}
+                                    handleCardClick={redirectToEvent}
                                     // handleFavorite={handleFavoriteEvent}
                                     cardStyle={{ width: '40%' }}
                                 />
@@ -245,6 +258,7 @@ function UserHome(props) {
 const mapStateToProps = state => {
     return {
         events: state.pageState.events,
+        eventsRegistered: state.pageState.eventsRegistered,
         user: state.userState.user,
     };
   };
