@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import Box from '@material-ui/core/Box';
-import { withRouter, Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ThemeProvider from '../../components/ThemeProvider'
 import Typography from '@material-ui/core/Typography';
@@ -38,7 +38,9 @@ function AdminHome(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [eventMenuClicked, setEventMenuClicked] = React.useState(null);
 
-  const handleClick = (e, event) => {
+  const history = useHistory();
+
+  const handleSubMenuClick = (e, event) => {
     setAnchorEl(e.currentTarget);
     setEventMenuClicked(event);
   };
@@ -48,7 +50,7 @@ function AdminHome(props) {
   };
 
   const handleClickEditEvent = () => {
-    props.history.push(`/event/${eventMenuClicked}/edit`);
+    history.push(`/event/${eventMenuClicked}/edit`);
     handleClose()
   };
 
@@ -69,9 +71,13 @@ function AdminHome(props) {
   };
 
   const handleClickViewEvent = () => {
-    props.history.push(`/event/${eventMenuClicked}/register`);
+    history.push(`/event/${eventMenuClicked}/register`);
     handleClose()
   };
+
+  const handleEventClick = (e, eventId) => {
+    history.push(`/event/${eventId}`)
+  }
 
   function createEventCards() {
 
@@ -79,8 +85,10 @@ function AdminHome(props) {
       return <Box flexWrap="wrap" display="flex">
         {events.map(event =>
           <EventCard
+            key={event.id}
             event={event}
-            handleClick={handleClick}
+            handleCardClick={handleEventClick}
+            handleSubMenuClick={handleSubMenuClick}
           />
         )}
       </Box >
@@ -130,4 +138,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {})(withStyles(styles)(withRouter(AdminHome)));
+export default connect(mapStateToProps, {})(withStyles(styles)(AdminHome));

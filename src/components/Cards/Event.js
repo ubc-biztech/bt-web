@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -33,19 +32,17 @@ function EventCard(props) {
         classes,
         cardStyle = {},
         event,
-        handleClick,
+        handleCardClick,
+        handleSubMenuClick = () => {},
         handleFavorite = () => {},
         variant = "admin"
     } = props;
-    const history = useHistory();
 
     const image = event.imageUrl || require("../../assets/default.png")
 
     return (
         <Card className={classes.card} style={cardStyle} key={event.id}>
-              <CardActionArea onClick={() => {
-                history.push(`/event/${event.id}`)
-              }} >
+              <CardActionArea onClick={e => { handleCardClick(e, event.id) }} >
                 <CardMedia
                   className={classes.media}
                   component="img"
@@ -61,7 +58,7 @@ function EventCard(props) {
                 action={
                   variant === "admin" ? (
                   <IconButton aria-label="more options"
-                    onClick={e => { handleClick(e, event.id) }}>
+                    onClick={e => { handleSubMenuClick(e, event.id) }}>
                     <MoreVertIcon />
                   </IconButton>
                   ) : (

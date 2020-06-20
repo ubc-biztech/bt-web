@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { Helmet } from 'react-helmet';
+import { updateEvents } from '../../utils'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -39,6 +40,9 @@ const EventFormContainer = (props) => {
   useEffect(() => {
       if (eventId && events) {
         setEvent(events.find(event => event.id === eventId))
+      }
+      else if (!events) {
+        updateEvents()
       }
   }, [events, eventId])
 
