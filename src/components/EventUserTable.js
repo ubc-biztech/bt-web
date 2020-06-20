@@ -236,7 +236,7 @@ export class EventUserTable extends Component {
                             ? '#F7D055'
                             : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
                               ? '#E15453'
-                              : '#FFF',
+                              : "rgb(174, 196, 244, 0.19)",
                       paddingLeft: '10px'
                     }}>
                     <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
@@ -259,7 +259,9 @@ export class EventUserTable extends Component {
             actionsColumnIndex: 5,
             exportButton: true,
             headerStyle: {
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              backgroundColor: '#273149',
+              color: '#AEC4F4'
             },
             rowStyle: rowData => ({
 
