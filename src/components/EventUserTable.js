@@ -143,16 +143,9 @@ export class EventUserTable extends Component {
       users: true
     });
 
-<<<<<<< HEAD
     await fetchBackend(`/events/${eventID}?${params}`, 'GET')
       .then(async users => {
         this.registrationNumbers(users)
-=======
-    fetchBackend(`/events/${eventID}?${params}`, 'GET')
-      .then(response => {
-        console.log(response, 'HIHIHIH')
-        this.setState({ rows: response });
->>>>>>> changed themeprovider to be dark mode for EventUserTable.js
       });
   }
 
