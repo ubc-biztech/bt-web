@@ -51,6 +51,14 @@ function EventEdit(props) {
             .min(0, 'Valid capacity required')
             .required(),
         elocation: Yup.string().required(),
+        longitude: Yup.number('Valid number required')
+            .min(-180, 'Valid number required')
+            .max(180, "Valid number required")
+            .required(),
+        latitude: Yup.number('Valid number required')
+            .min(-180, 'Valid number required')
+            .max(180, "Valid number required")
+            .required(),
         facebookUrl: Yup.string().url(),
         imageUrl: Yup.string().url().required(),
     });
@@ -62,6 +70,8 @@ function EventEdit(props) {
         capacity: event.capac,
         facebookUrl: event.facebookUrl,
         elocation: event.elocation,
+        longitude: event.longitude,
+        latitude: event.latitude,
         imageUrl: event.imageUrl,
         startDate: event.startDate,
         endDate: event.endDate
@@ -71,6 +81,8 @@ function EventEdit(props) {
             capacity: "",
             facebookUrl: "",
             elocation: "",
+            longitude: "",
+            latitude: "",
             imageUrl: "",
             startDate: "",
             endDate: ""
@@ -104,6 +116,8 @@ function EventEdit(props) {
             description: values.description,
             capac: values.capacity,
             elocation: values.elocation,
+            longitude: values.longitude,
+            latitude: values.latitude,
             imageUrl: values.imageUrl,
             facebookUrl: values.facebookUrl,
             startDate: values.startDate,

@@ -13,6 +13,7 @@ import Nav from './Nav'
 import UserNav from '../pages/member/UserNav'
 import ScrollToTop from './ScrollToTop'
 import RegisterAlert from './Messages/RegisterAlert'
+import Loading from './Loading'
 
 import AdminRoute from './Authentication/AdminRoute'
 import Login from './Authentication/Login'
@@ -30,15 +31,20 @@ import EventEdit from '../pages/admin/EventEdit'
 import { setUser } from '../actions/UserActions'
 import {
   log,
-  updateEvents,
   updateUser
 } from '../utils'
 
 class Router extends Component {
+  constructor() {
+    super()
+    this.state = {
+      loaded: false
+    }
+  }
+
   getAuthenticatedUser() {
-    Auth.currentAuthenticatedUser({ bypassCache: true })
-      .then(authUser => {
-        console.log(authUser)
+    return Auth.currentAuthenticatedUser({ bypassCache: true })
+      .then(async authUser => {
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
           this.props.setUser({
@@ -50,7 +56,7 @@ class Router extends Component {
         else {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
-            updateUser(studentId)
+            await updateUser(studentId)
           } else {
             // Parse first name and last name
             const initialName = authUser.attributes.name.split(' ')
@@ -69,27 +75,44 @@ class Router extends Component {
       .catch(() => log('Not signed in'))
   }
 
+  // User needs to be checked before the page physically renders
+  // (otherwise, the login page will initially show on every refresh)
   componentDidMount() {
-    updateEvents()
 
-    this.getAuthenticatedUser();
+    if (!this.props.user) {
+      // If the user doesn't already exist in react, get the authenticated user
+      // also get events at the same time
+      Promise.all([
+        this.getAuthenticatedUser()
+      ])
+        .then(() => {
+          // Ultimately, after all is loaded, set the "loaded" state and render the component
+          this.setState({ loaded: true })
+        })
+    }
+    else {
+      // If the user already exists, update the events and render the page
+      this.setState({ loaded: true })
+    }
+
   }
 
   render() {
 
     const { user } = this.props;
+    const { loaded } = this.state;
 
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.id;
-    console.log("props: " + this.props)
-    return (
+
+    return loaded ? (
       user
         ? <BrowserRouter>
           <ScrollToTop />
           {user.admin
             ? <Nav events={this.props.events} />
             : <UserNav />}
-          <div className='content'>
+          <div className="content">
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
 
@@ -153,15 +176,14 @@ class Router extends Component {
 
           </Switch>
         </BrowserRouter >
-    )
+    ) : <Loading />
   }
 }
 
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
-    user: state.userState.user,
-    events: state.pageState.events
+    user: state.userState.user
   };
 };
 

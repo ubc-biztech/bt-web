@@ -5,11 +5,11 @@ import {
   LOGOUT
 } from "../constants/Constants";
 
-const initialState = {
+const initialPageState = {
   page: "login"
 };
 
-function pageReducer(state = initialState, action) {
+function pageReducer(state = initialPageState, action) {
   switch (action.type) {
     case SET_EVENTS:
       return {
@@ -21,7 +21,7 @@ function pageReducer(state = initialState, action) {
   }
 }
 
-function userReducer(state = initialState, action) {
+function userReducer(state = {}, action) {
   switch (action.type) {
     case SET_USER:
       return {
