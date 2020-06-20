@@ -12,7 +12,7 @@
     "date-fns": "^2.0.0-beta.5",
     "formik": "^2.0.7",
     "material-table": "^1.54.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "query-string": "^6.9.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -34,7 +34,8 @@
     "generate:prod": "cross-env GENERATE_SOURCEMAP=false REACT_APP_STAGE=production npm run build",
     "deploy": "aws s3 sync build/ s3://biztech-web",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint \"**/*.js\""
   },
   "eslintConfig": {
     "extends": "react-app"
