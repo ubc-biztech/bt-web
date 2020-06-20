@@ -199,67 +199,76 @@ export class EventUserTable extends Component {
      * Creates event table using MaterialTable library
      */
     return (
-      <MaterialTable
-        title={`${this.props.event.ename} Attendance`}
-        columns={[
-          { title: "First Name", field: "fname" },
-          { title: "Last Name", field: "lname" },
-          {
-            title: "Student Number",
-            field: "id",
-            type: "numeric",
-            sorting: false
-          },
-          { title: "Email", field: "email", sorting: false },
-          {
-            title: "Registration Status",
-            field: "registrationStatus",
-            sorting: false,
-            render: rowData => (
-              <div>
-                <Select
-                  value={rowData.registrationStatus}
-                  onClick={event => changeRegistration(event, rowData)}
-                  style={{
-                    backgroundColor:
-                      rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
-                        ? "#54D26E"
-                        : rowData.registrationStatus === REGISTRATION_STATUS.WAITLISTED
-                          ? "#F7D055"
-                          : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
-                            ? "#E15453"
-                            : "rgb(174, 196, 244, 0.19)",
-                    paddingLeft: "10px"
-                  }}>
-                  <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
-                  <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>Checked in</MenuItem>
-                  <MenuItem value={REGISTRATION_STATUS.REGISTERED}>Registered</MenuItem>
-                  <MenuItem value={REGISTRATION_STATUS.CANCELLED}>Cancelled</MenuItem>
-                </Select>
-              </div>
-            )
-          }
-        ]}
-        data={this.state.rows}
-        // Configure options for the table
-        options={{
-          search: true,
-          draggable: false,
-          padding: "dense",
-          pageSize: 15,
-          pageSizeOptions: [15, 50, 100],
-          actionsColumnIndex: 5,
-          exportButton: true,
-          headerStyle: {
-            fontWeight: "bold",
-            backgroundColor: '#273149',
-            color: '#AEC4F4'
-          },
-          rowStyle: rowData => ({
+      <React.Fragment>
+        <Statistic statName="Registration status: " statObj={this.state.registrations} />
+        <Statistic statName="Faculty: " statObj={this.state.faculties} />
+        <Statistic statName="Year level: " statObj={this.state.years} />
+        <Statistic statName="Dietary: " statObj={this.state.dietary} />
+        <Statistic statName="Gender: " statObj={this.state.genders} />
+        <Statistic statName="Heard about event from: " statObj={this.state.heardFrom} />
 
-          })
-        }}
-      />
+        <MaterialTable
+          title={`${this.props.event.ename} Attendance`}
+          columns={[
+            { title: 'First Name', field: 'fname' },
+            { title: 'Last Name', field: 'lname' },
+            {
+              title: 'Student Number',
+              field: 'id',
+              type: 'numeric',
+              sorting: false
+            },
+            { title: 'Email', field: 'email', sorting: false },
+            {
+              title: 'Registration Status',
+              field: 'registrationStatus',
+              sorting: false,
+              render: rowData => (
+                <div>
+                  <Select
+                    value={rowData.registrationStatus}
+                    onClick={event => changeRegistration(event, rowData)}
+                    style={{
+                      backgroundColor:
+                        rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
+                          ? '#54D26E'
+                          : rowData.registrationStatus === REGISTRATION_STATUS.WAITLISTED
+                            ? '#F7D055'
+                            : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
+                              ? '#E15453'
+                              : "rgb(174, 196, 244, 0.19)",
+                      paddingLeft: '10px'
+                    }}>
+                    <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
+                    <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>Checked in</MenuItem>
+                    <MenuItem value={REGISTRATION_STATUS.REGISTERED}>Registered</MenuItem>
+                    <MenuItem value={REGISTRATION_STATUS.CANCELLED}>Cancelled</MenuItem>
+                  </Select>
+                </div>
+              )
+            }
+          ]}
+          data={this.state.rows}
+          // Configure options for the table
+          options={{
+            search: true,
+            draggable: false,
+            padding: 'dense',
+            pageSize: 15,
+            pageSizeOptions: [15, 50, 100],
+            actionsColumnIndex: 5,
+            exportButton: true,
+            headerStyle: {
+              fontWeight: 'bold',
+              backgroundColor: '#273149',
+              color: '#AEC4F4'
+            },
+            rowStyle: rowData => ({
+
+            })
+          }}
+        />
+      </React.Fragment>
     );
   }
 }
