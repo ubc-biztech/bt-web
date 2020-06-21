@@ -17,16 +17,12 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { fetchBackend, updateEvents } from '../../utils'
 import { Helmet } from 'react-helmet';
+import { COLOR } from '../../constants/Constants'
 
 const styles = ({
   card: {
     width: '30%',
-    margin: '15px 30px 15px 0',
-    backgroundColor: 'rgba(174, 196, 244, 0.35)',
-    color: '#FFFFFF'
-  },
-  cardHeader: {
-    color: '#AEC4F4'
+    margin: '15px 30px 15px 0'
   },
   media: {
     height: 250
@@ -49,7 +45,7 @@ const styles = ({
 function AdminHome(props) {
 
   const { user, events } = props;
-  if(!events){
+  if (!events) {
     updateEvents()
   }
 
@@ -111,7 +107,6 @@ function AdminHome(props) {
                 />
               </CardActionArea>
               <CardHeader
-                classes={{ subheader: classes.cardHeader }}
                 title={event.ename}
                 subheader={event.startDate ?
                   new Date(event.startDate)
@@ -140,8 +135,8 @@ function AdminHome(props) {
 
       <div style={styles.row}>
         <div style={styles.columnLeft}>
-          <Typography variant="h1" style={{ color: '#96FF50' }}>BizTech Admins</Typography>
-          <Typography style={{ color: '#96FF50' }}>BizTech Admins</Typography>
+          <Typography variant="h1" style={{ color: COLOR.TITLE_GREEN }}>BizTech Admins</Typography>
+          <Typography style={{ color: COLOR.TITLE_GREEN }}>BizTech Admins</Typography>
         </div>
         <div style={styles.columnRight}>
           {/* Link to user dashboard*/}
@@ -170,6 +165,7 @@ function AdminHome(props) {
 }
 
 const mapStateToProps = state => {
+  console.log(state)
   return {
     user: state.userState.user,
     events: state.pageState.events

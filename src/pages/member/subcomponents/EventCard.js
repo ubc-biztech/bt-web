@@ -2,6 +2,7 @@ import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import Card from '@material-ui/core/Card'
+import { COLOR } from '../../../constants/Constants'
 
 const styles = {
     page: {
@@ -10,7 +11,7 @@ const styles = {
         marginTop: '27px',
     },
     title: {
-        color: '#96FF50',
+        color: COLOR.TITLE_GREEN,
         fontWeight: 'bold',
         fontSize: '36px',
         paddingLeft: '37px',
@@ -18,13 +19,11 @@ const styles = {
         paddingBottom: '15px'
     },
     eventName: {
-        color: '#FFFFFF',
         fontSize: '23px',
         paddingLeft: '37px',
         fontWeight: 'bold'
     },
     eventDate: {
-        color: '#FFFFFF',
         fontSize: '20px',
         paddingLeft: '37px',
         paddingBottom: '23px',

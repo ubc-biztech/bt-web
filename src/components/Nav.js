@@ -13,7 +13,9 @@ import { useHistory, withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from 'react-redux'
 import { logout } from '../actions/UserActions'
-import Logo from '../pages/member/images/biztech.svg'
+import WhiteBiztech from '../pages/member/images/biztech1.svg'
+import ColoredBiztech from '../pages/member/images/biztech.svg'
+import { COLOR } from '../constants/Constants'
 
 const styles = {
   list: {
@@ -33,11 +35,10 @@ const styles = {
   logout: {
     marginTop: '330px',
     cursor: 'pointer',
-    paddingLeft: '48px',
-    color: '#FFFFFF'
+    paddingLeft: '48px'
   },
   paper: {
-    backgroundColor: '#070F21'
+    backgroundColor: COLOR.BACKGROUND_COLOR
   }
 }
 
@@ -45,16 +46,13 @@ function Nav(props) {
   const { classes } = props
   const history = useHistory();
 
-  const selected = { color: '#7AD040', fontSize: '30', width: '43px' }
-  const unselected = { color: '#FFFFFF', fontSize: '30', width: '43px' }
+  const selected = { color: COLOR.BIZTECH_GREEN, fontSize: '30', width: '43px' }
+  const unselected = { color: COLOR.WHITE, fontSize: '30', width: '43px' }
   const barSelected = { borderLeft: '6px solid #7AD040', height: '45px', marginTop: '28px', paddingBottom: '28px', backgroundPositionX: 'left' }
   const barUnselected = { borderLeft: '6px solid #070F21', height: '45px', marginTop: '28px', paddingBottom: '28px' }
 
   const pathname = window.location.pathname
-  const [homeBar, setHomeBar] = useState(pathname === '/' ? barSelected : barUnselected)
-  const [eventsBar, setEventsBar] = useState(pathname === '/event/new' ? barSelected : barUnselected)
-  const [home, setHome] = useState(pathname === '/' ? selected : unselected)
-  const [events, setEvents] = useState(pathname === '/event/new' ? selected : unselected)
+  const [selectedItem, setSelectedItem] = useState(pathname)
 
   const logout = () => {
     Auth.signOut()
@@ -69,19 +67,13 @@ function Nav(props) {
       history.push(`/event/${event.id}`);
     } else {
       history.push("/");
-      setHome(selected);
-      setHomeBar(barSelected);
-      setEvents(unselected);
-      setEventsBar(barUnselected)
+      setSelectedItem('/')
     }
   };
 
   const handleNewEventClick = () => {
     history.push('/event/new')
-    setHome(unselected);
-    setHomeBar(barUnselected);
-    setEvents(selected);
-    setEventsBar(barSelected);
+    setSelectedItem('/event/new')
   }
 
   function MenuItem(props) {
@@ -102,8 +94,8 @@ function Nav(props) {
     <div>
       <Drawer variant='permanent' classes={{ paper: classes.paper }}>
         <List style={styles.list}>
-          <MenuItem label='Home' icon={<img src={Logo} alt='Home' style={home} />} onClick={handleItemClick} bar={homeBar} />
-          <MenuItem label='Create Event' icon={<AddBoxIcon style={events} />} onClick={handleNewEventClick} bar={eventsBar} />
+          <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleItemClick} bar={selectedItem === '/' ? barSelected : barUnselected} />
+          <MenuItem label='Create Event' icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />} onClick={handleNewEventClick} bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
           <ListItem>
             <ListItemIcon style={styles.logout} onClick={logout}>
               <ExitToAppIcon style={styles.iconSize} />

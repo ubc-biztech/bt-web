@@ -13,7 +13,9 @@ import { useHistory, withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from 'react-redux'
 import { logout } from '../../actions/UserActions'
-import Logo from './images/biztech.svg'
+import WhiteBiztech from './images/biztech1.svg'
+import ColoredBiztech from './images/biztech.svg'
+import { COLOR } from '../../constants/Constants'
 
 const styles = {
     list: {
@@ -33,11 +35,10 @@ const styles = {
     logout: {
         marginTop: '330px',
         cursor: 'pointer',
-        paddingLeft: '48px',
-        color: '#FFFFFF'
+        paddingLeft: '48px'
     },
     paper: {
-        backgroundColor: '#070F21'
+        backgroundColor: COLOR.BACKGROUND_COLOR
     }
 }
 
@@ -45,18 +46,13 @@ function UserNav(props) {
     const { classes } = props
     const history = useHistory();
 
-    const selected = { color: '#7AD040', fontSize: '30', width: '43px' }
-    const unselected = { color: '#FFFFFF', fontSize: '30', width: '43px' }
-    const barSelected = { borderLeft: '6px solid #7AD040', height: '45px', marginTop: '28px', paddingBottom: '28px', backgroundPositionX: 'left' }
-    const barUnselected = { borderLeft: '6px solid #070F21', height: '45px', marginTop: '28px', paddingBottom: '28px' }
+    const selected = { color: COLOR.BIZTECH_GREEN, fontSize: '30', width: '43px' }
+    const unselected = { color: COLOR.WHITE, fontSize: '30', width: '43px' }
+    const barSelected = { borderLeft: '6px solid ' + COLOR.BIZTECH_GREEN, height: '45px', marginTop: '28px', paddingBottom: '28px', backgroundPositionX: 'left' }
+    const barUnselected = { borderLeft: '6px solid ' + COLOR.BACKGROUND_COLOR, height: '45px', marginTop: '28px', paddingBottom: '28px' }
 
     const pathname = window.location.pathname
-    const [homeBar, setHomeBar] = useState(pathname === '/' ? barSelected : barUnselected)
-    const [eventsBar, setEventsBar] = useState(pathname === '/events' ? barSelected : barUnselected)
-    const [profileBar, setProfileBar] = useState(pathname === '/profile' ? barSelected : barUnselected)
-    const [home, setHome] = useState(pathname === '/' ? selected : unselected)
-    const [events, setEvents] = useState(pathname === '/events' ? selected : unselected)
-    const [profile, setProfile] = useState(pathname === '/profile' ? selected : unselected)
+    const [selectedItem, setSelectedItem] = useState(pathname)
 
     const logout = () => {
         Auth.signOut()
@@ -68,32 +64,17 @@ function UserNav(props) {
 
     const handleEventsClick = () => {
         history.push('/events')
-        setHome(unselected)
-        setHomeBar(barUnselected)
-        setEvents(selected)
-        setEventsBar(barSelected)
-        setProfile(unselected)
-        setProfileBar(barUnselected)
+        setSelectedItem('/events')
     }
 
     const handleProfileClick = () => {
         history.push('/profile')
-        setHome(unselected)
-        setHomeBar(barUnselected)
-        setEvents(unselected)
-        setEventsBar(barUnselected)
-        setProfile(selected)
-        setProfileBar(barSelected)
+        setSelectedItem('/profile')
     }
 
     const handleHomeClick = () => {
         history.push('/')
-        setHome(selected)
-        setHomeBar(barSelected)
-        setEvents(unselected)
-        setEventsBar(barUnselected)
-        setProfile(unselected)
-        setProfileBar(barUnselected)
+        setSelectedItem('/')
     }
 
     function MenuItem(props) {
@@ -114,9 +95,9 @@ function UserNav(props) {
         <div>
             <Drawer variant='permanent' classes={{ paper: classes.paper }}>
                 <List style={styles.list}>
-                    <MenuItem label='Home' icon={<img src={Logo} alt='Home' style={home} />} onClick={handleHomeClick} bar={homeBar} />
-                    <MenuItem label='Events' icon={<DateRangeIcon style={events} />} onClick={handleEventsClick} bar={eventsBar} />
-                    <MenuItem label='Profile' icon={<PersonIcon style={profile} />} onClick={handleProfileClick} bar={profileBar} />
+                    <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleHomeClick} bar={selectedItem === '/' ? barSelected : barUnselected} />
+                    <MenuItem label='Events' icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />} onClick={handleEventsClick} bar={selectedItem === '/events' ? barSelected : barUnselected} />
+                    <MenuItem label='Profile' icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />} onClick={handleProfileClick} bar={selectedItem === '/profile' ? barSelected : barUnselected} />
                     <ListItem>
                         <ListItemIcon style={styles.logout} onClick={logout}>
                             <ExitToAppIcon style={styles.iconSize} />

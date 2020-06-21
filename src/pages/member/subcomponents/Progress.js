@@ -10,7 +10,6 @@ const styles = {
         marginTop: '27px',
     },
     title: {
-        color: '#FFFFFF',
         fontStyle: 'normal',
         fontWeight: 'bold',
         fontSize: '36px',

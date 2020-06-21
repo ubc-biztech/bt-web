@@ -1,5 +1,6 @@
 import React from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { COLOR } from '../constants/Constants'
 
 const fontFamily = [
     'Gilroy',
@@ -19,58 +20,62 @@ const theme = createMuiTheme({
         },
         MuiCard: {
             root: {
-                background: 'rgb(174, 196, 244, 0.19)',
-                color: '#FFFFFF'
+                background: COLOR.LIGHT_BACKGROUND_COLOR,
+                color: COLOR.WHITE
             }
         },
         MuiInput: {
             root: {
-                color: '#FFFFFF'
+                color: COLOR.WHITE
             }
         },
         MuiFormLabel: {
             root: {
-                color: '#AEC4F4'
+                color: COLOR.FONT_COLOR
             }
         },
         MuiSvgIcon: {
             root: {
-                color: '#FFFFFF'
+                color: COLOR.WHITE
             }
         },
         MuiIcon: {
             root: {
-                color: '#FFFFFF'
+                color: COLOR.WHITE
             }
         },
         MuiSelect: {
             root: {
-                color: '#FFFFFF'
+                color: COLOR.WHITE
             }
         },
         MuiInputBase: {
             root: {
-                color: '#FFFFFF',
-                backgroundColor: 'rgb(174, 196, 244, 0.19)'
+                color: COLOR.WHITE,
             }
         },
         MuiTypography: {
             root: {
-                color: '#FFFFFF'
+                color: COLOR.WHITE
             }
         },
         MuiButton: {
             containedPrimary: {
-                backgroundColor: 'rgb(174, 196, 244, 0.19)',
-                color: '#FFFFFF',
+                backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
+                color: COLOR.WHITE,
             }
         },
         MuiPaper: {
             root: {
-                backgroundColor: '#273149',
-                color: '#AEC4F4'
+                backgroundColor: COLOR.CARD_PAPER_COLOR,
+                color: COLOR.WHITE
             }
         },
+        MuiCardHeader: {
+            subheader: {
+                color: COLOR.FONT_COLOR
+            }
+        }
     },
     typography: {
         useNextVariants: true,
@@ -96,7 +101,7 @@ const theme = createMuiTheme({
     },
     palette: {
         background: {
-            default: "#070F21"
+            default: COLOR.BACKGROUND_COLOR
         }
     },
     shadows: [

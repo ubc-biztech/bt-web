@@ -12,7 +12,6 @@ const styles = {
         marginTop: '27px',
     },
     title: {
-        color: '#FFFFFF',
         fontStyle: 'normal',
         fontWeight: 'bold',
         fontSize: '36px',
@@ -20,14 +19,11 @@ const styles = {
         paddingTop: '45px'
     },
     reward: {
-        color: '#FFFFFF',
         fontStyle: 'normal',
         fontWeight: 'normal',
         fontSize: '22px',
         paddingLeft: '76px',
         paddingTop: '15px',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden'
     },
     house: {
         position: 'absolute',

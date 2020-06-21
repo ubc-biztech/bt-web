@@ -8,10 +8,11 @@ import Prizes from './subcomponents/Prizes'
 import EventCard from './subcomponents/EventCard'
 import { fetchBackend } from "../../utils";
 import { connect } from 'react-redux'
+import { COLOR } from '../../constants/Constants'
 
 const styles = {
     home: {
-        color: '#96FF50',
+        color: COLOR.TITLE_GREEN,
         fontStyle: 'normal',
         fontWeight: 'bold',
         fontSize: '36px',
@@ -30,7 +31,7 @@ function UserHome(props) {
     const [featuredEvent, setFeaturedEvent] = useState()
     const [nextEvent, setNextEvent] = useState()
     const getFeaturedEvent = () => {
-        if (props.events.length) {
+        if (props.events && props.events.length) {
             setFeaturedEvent(props.events[Math.floor(Math.random() * (props.events.length - 1))]);
         }
     }
@@ -49,22 +50,24 @@ function UserHome(props) {
                 if (response && response.size > 0) {
                     //iterate over events - the first one that is found in registrations is the closest event assuming that events are already sorted by date
                     let found = false;
-                    props.events.forEach(event => {
-                        if (!found) {
-                            const index = response.data.findIndex(registration => registration.eventID === event.id)
-                            if (index !== -1) {
-                                found = true;
-                                // if the event has not passed yet
-                                if (new Date(event.startDate).getTime() > new Date().getTime()) {
-                                    setNextEvent(event)
-                                } else {
-                                    setNextEvent({
-                                        ename: 'None Registered!'
-                                    })
+                    if (props.events) {
+                        props.events.forEach(event => {
+                            if (!found) {
+                                const index = response.data.findIndex(registration => registration.eventID === event.id)
+                                if (index !== -1) {
+                                    found = true;
+                                    // if the event has not passed yet
+                                    if (new Date(event.startDate).getTime() > new Date().getTime()) {
+                                        setNextEvent(event)
+                                    } else {
+                                        setNextEvent({
+                                            ename: 'None Registered!'
+                                        })
+                                    }
                                 }
                             }
-                        }
-                    })
+                        })
+                    }
                 } else {
                     setNextEvent({
                         ename: 'None Registered!'

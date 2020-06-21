@@ -18,9 +18,7 @@ const useStyles = makeStyles(theme => ({
     paper: {
         [theme.breakpoints.up('sm')]: {
             margin: theme.spacing(3),
-        },
-        color: '#FFFFFF',
-        backgroundColor: 'rgb(174, 196, 244, 0.19)'
+        }
     },
     content: {
         padding: theme.spacing(3),
