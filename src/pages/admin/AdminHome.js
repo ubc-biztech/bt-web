@@ -107,6 +107,7 @@ function AdminHome(props) {
                 />
               </CardActionArea>
               <CardHeader
+                classes={{ subheader: classes.cardHeader }}
                 title={event.ename}
                 subheader={event.startDate ?
                   new Date(event.startDate)
