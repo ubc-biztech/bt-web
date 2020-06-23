@@ -7,7 +7,6 @@ import Stickers from './subcomponents/Stickers'
 import Prizes from './subcomponents/Prizes'
 import EventCard from './subcomponents/EventCard'
 import { fetchBackend } from "../../utils";
-import { connect } from 'react-redux'
 import { COLOR } from '../../constants/Constants'
 
 const styles = {
@@ -30,9 +29,9 @@ const styles = {
 function UserHome(props) {
     const [featuredEvent, setFeaturedEvent] = useState()
     const [nextEvent, setNextEvent] = useState()
-    const getFeaturedEvent = () => {
-        if (props.events && props.events.length) {
-            setFeaturedEvent(props.events[Math.floor(Math.random() * (props.events.length - 1))]);
+    const getFeaturedEvent = (events) => {
+        if (events.length) {
+            setFeaturedEvent(events[Math.floor(Math.random() * (events.length - 1))]);
         }
     }
 
@@ -41,7 +40,7 @@ function UserHome(props) {
      * verifies that the event is after the current time
      * sets next event to 'None Registered!' if no events found
      */
-    const getNextEvent = async () => {
+    const getNextEvent = async (events) => {
         const params = new URLSearchParams({
             id: props.user.id
         })
@@ -50,24 +49,23 @@ function UserHome(props) {
                 if (response && response.size > 0) {
                     //iterate over events - the first one that is found in registrations is the closest event assuming that events are already sorted by date
                     let found = false;
-                    if (props.events) {
-                        props.events.forEach(event => {
-                            if (!found) {
-                                const index = response.data.findIndex(registration => registration.eventID === event.id)
-                                if (index !== -1) {
-                                    found = true;
-                                    // if the event has not passed yet
-                                    if (new Date(event.startDate).getTime() > new Date().getTime()) {
-                                        setNextEvent(event)
-                                    } else {
-                                        setNextEvent({
-                                            ename: 'None Registered!'
-                                        })
-                                    }
+                    events.forEach(event => {
+                        if (!found) {
+                            const index = response.data.findIndex(registration => registration.eventID === event.id)
+                            if (index !== -1) {
+                                found = true;
+                                // if the event has not passed yet
+                                if (new Date(event.startDate).getTime() > new Date().getTime()) {
+                                    setNextEvent(event)
+                                } else {
+                                    setNextEvent({
+                                        ename: 'None Registered!'
+                                    })
                                 }
                             }
-                        })
-                    }
+                        }
+                    })
+
                 } else {
                     setNextEvent({
                         ename: 'None Registered!'
@@ -77,10 +75,17 @@ function UserHome(props) {
     }
 
     // set featured event and nextEvent on initial render
-    if (!featuredEvent && !nextEvent) {
-        getFeaturedEvent()
-        getNextEvent()
+    const initialRender = async () => {
+        if (!featuredEvent && !nextEvent) {
+            await fetchBackend(`/events`, 'GET')
+                .then(async events => {
+                    getFeaturedEvent(events)
+                    getNextEvent(events)
+                })
+        }
     }
+
+    initialRender()
 
     return (
         <div style={styles.page}>
@@ -107,10 +112,4 @@ function UserHome(props) {
     )
 }
 
-function mapStateToProps(state) {
-    return {
-        events: state.pageState.events
-    };
-}
-
-export default connect(mapStateToProps)(UserHome)
+export default UserHome

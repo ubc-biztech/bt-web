@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
 import { fetchBackend } from '../utils';
-import { REGISTRATION_STATUS } from '../constants/Constants';
+import { REGISTRATION_STATUS, COLOR } from '../constants/Constants';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
@@ -236,7 +236,7 @@ export class EventUserTable extends Component {
                             ? '#F7D055'
                             : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
                               ? '#E15453'
-                              : "rgb(174, 196, 244, 0.19)",
+                              : COLOR.LIGHT_BACKGROUND_COLOR,
                       paddingLeft: '10px'
                     }}>
                     <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
@@ -260,8 +260,8 @@ export class EventUserTable extends Component {
             exportButton: true,
             headerStyle: {
               fontWeight: 'bold',
-              backgroundColor: '#273149',
-              color: '#AEC4F4'
+              backgroundColor: COLOR.CARD_PAPER_COLOR,
+              color: COLOR.FONT_COLOR
             },
             rowStyle: rowData => ({
 

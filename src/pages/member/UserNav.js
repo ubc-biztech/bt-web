@@ -13,8 +13,8 @@ import { useHistory, withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from 'react-redux'
 import { logout } from '../../actions/UserActions'
-import WhiteBiztech from './images/biztech1.svg'
-import ColoredBiztech from './images/biztech.svg'
+import WhiteBiztech from './images/whitebiztech.svg'
+import ColoredBiztech from './images/coloredbiztech.svg'
 import { COLOR } from '../../constants/Constants'
 
 const styles = {
