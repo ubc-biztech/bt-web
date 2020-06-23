@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 
 import NewMember from '../../components/Forms/NewMember';
 
-import { log, fetchBackend } from '../../utils'
+import { fetchBackend } from '../../utils'
 import { setUser } from "../../actions/UserActions"
 
 const useStyles = makeStyles(theme => ({
