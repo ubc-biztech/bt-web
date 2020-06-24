@@ -23,6 +23,7 @@ import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
 import EventRegister from '../pages/member/EventRegister'
 import Signup from '../pages/member/Signup'
+import NewMember from '../pages/member/NewMember'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
@@ -30,7 +31,6 @@ import EventEdit from '../pages/admin/EventEdit'
 import { setUser } from '../actions/UserActions'
 import {
   log,
-  updateEvents,
   updateUser
 } from '../utils'
 
@@ -45,7 +45,6 @@ class Router extends Component {
   getAuthenticatedUser() {
     return Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(async authUser => {
-        console.log(authUser)
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
           this.props.setUser({
@@ -84,8 +83,7 @@ class Router extends Component {
     // If the user doesn't already exist in react, get the authenticated user
     // also get events at the same time
     Promise.all([
-      this.getAuthenticatedUser(),
-      updateEvents()
+      this.getAuthenticatedUser()
     ])
       .then(() => {
       // Ultimately, after all is loaded, set the "loaded" state and render the component
@@ -94,7 +92,6 @@ class Router extends Component {
    }
    else {
      // If the user already exists, update the events and render the page
-     updateEvents()
      this.setState({ loaded: true })
    }
 
@@ -102,7 +99,7 @@ class Router extends Component {
 
   render() {
 
-    const { user, events } = this.props;
+    const { user } = this.props;
     const { loaded } = this.state;
 
     // Alert the user about the need to register if they haven't
@@ -112,7 +109,7 @@ class Router extends Component {
       user
         ? <BrowserRouter>
           <ScrollToTop />
-          <Nav events={events} />
+          <Nav />
           <div className="content">
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
@@ -125,10 +122,10 @@ class Router extends Component {
                 path="/forbidden"
                 render={() => <Forbidden />} />
               <Route
-                path="/signup"
+                path="/new-member"
                 render={() => user.id
-                  ? <Redirect to="/" /> /* Allow signup only if user is not yet registered in DB*/
-                  : <Signup />} />
+                  ? <Redirect to="/" /> /* Allow create member only if user is not yet registered in DB*/
+                  : <NewMember />} />
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
@@ -170,6 +167,9 @@ class Router extends Component {
               path='/login-redirect'
               component={LoginRedirect} />
             <Route
+              path="/signup"
+              component={Signup} />
+            <Route
               path='/'
               component={Login} />
 
@@ -184,8 +184,7 @@ class Router extends Component {
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
-    user: state.userState.user,
-    events: state.pageState.events
+    user: state.userState.user
   };
 };
 

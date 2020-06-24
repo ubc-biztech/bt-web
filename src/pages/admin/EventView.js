@@ -1,17 +1,21 @@
-import React,  { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
+import { Helmet } from 'react-helmet';
 import { useHistory, withRouter } from "react-router-dom";
-import EventUserTable from "../../components/EventUserTable";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Link from "@material-ui/core/Link";
+import EventUserTable from "../../components/EventUserTable";
 import ThemeProvider from '../../components/ThemeProvider'
-import { Helmet } from 'react-helmet';
+import { updateEvents } from '../../utils'
 
 function EventView(props) {
   const history = useHistory();
   const { id: eventId } = useParams()
   const { events } = props;
+  if (!events){
+    updateEvents()
+  }
   
   const [ event, setEvent ] = useState(null);
 
