@@ -80,7 +80,7 @@ function LoginRedirect(props) {
                                 await Auth.updateUserAttributes(user, { 'custom:student_id': '' });
                                 authUser['custom:student_id'] = null;
 
-                                populateUserAndRedirect(authUser, '/signup')
+                                populateUserAndRedirect(authUser, '/new-member')
                             } else {
                                 console.log('Encountered an error querying database!', err.status);
                             }
@@ -88,7 +88,7 @@ function LoginRedirect(props) {
                     } else {
                         clearTimeout(timeoutRedirect)
                         // If the user doesn't exist in the user pool, redirect to the 'user register' form
-                        populateUserAndRedirect(authUser, '/signup')
+                        populateUserAndRedirect(authUser, '/new-member')
                     }
 
                 }
