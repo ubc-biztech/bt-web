@@ -10,6 +10,9 @@ Runs linter. You may need to install eslint first `npm i -g eslint`
 Installs dependencies (node_modules)
 Use this command if anyone adds a new dependency. You don't need to add each new dependency on its own.
 
+### `npm run lint`
+Runs linter. You may need to install eslint first `npm i -g eslint`
+
 ### `npm start`
 
 Runs the app in the development mode.<br>

@@ -6,7 +6,6 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
-// import CardMedia from '@material-ui/core/CardMedia';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { makeStyles } from '@material-ui/core/styles'
 import { Divider } from '@material-ui/core'
@@ -50,7 +49,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     borderRadius: 12,
     minWidth: 256,
-    textAlign: 'center'
+    textAlign: 'center',
+    padding: '16px'
   },
   header: {
     textAlign: 'center',

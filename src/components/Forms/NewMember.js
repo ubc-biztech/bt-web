@@ -12,6 +12,7 @@ export default function NewMemberForm (props) {
     handleSubmit,
     handleChange,
     setFieldTouched,
+    submitCount,
     dirty,
     isSubmitting
   } = props
@@ -20,6 +21,10 @@ export default function NewMemberForm (props) {
     e.persist()
     handleChange(e)
     setFieldTouched(name, true, false)
+  }
+
+  const textFieldError = (id) => {
+    return (errors[id] && submitCount > 0) || (touched[id] ? errors[id] : '')
   }
 
   return (
@@ -32,8 +37,8 @@ export default function NewMemberForm (props) {
             defaultValue={initialValues.fname}
             label='First Name*'
             autoComplete='given-name'
-            helperText={touched.fname ? errors.fname : ''}
-            error={touched.fname && Boolean(errors.fname)}
+            helperText={textFieldError('fname')}
+            error={!!textFieldError('fname')}
             id='fname'
             onChange={change.bind(null, 'fname')}
             fullWidth
@@ -45,8 +50,8 @@ export default function NewMemberForm (props) {
             defaultValue={initialValues.lname}
             label='Last Name*'
             autoComplete='family-name'
-            helperText={touched.lname ? errors.lname : ''}
-            error={touched.lname && Boolean(errors.lname)}
+            helperText={textFieldError('lname')}
+            error={!!textFieldError('lname')}
             id='lname'
             onChange={change.bind(null, 'lname')}
             fullWidth
@@ -59,8 +64,8 @@ export default function NewMemberForm (props) {
             defaultValue={initialValues.email}
             label='Email Address*'
             autoComplete='email'
-            helperText={touched.email ? errors.email : ''}
-            error={touched.email && Boolean(errors.email)}
+            helperText={textFieldError('email')}
+            error={!!textFieldError('email')}
             id='email'
             onChange={change.bind(null, 'email')}
             fullWidth
@@ -70,10 +75,22 @@ export default function NewMemberForm (props) {
         <Grid item xs={12}>
           <TextField
             label='Student Number*'
-            helperText={touched.id ? errors.id : ''}
-            error={touched.id && Boolean(errors.id)}
+            helperText={textFieldError('id')}
+            error={!!textFieldError('id')}
             id='id'
             onChange={change.bind(null, 'id')}
+            fullWidth
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextField
+            defaultValue={initialValues.inviteCode}
+            label='Membership Code'
+            helperText={textFieldError('inviteCode')}
+            error={!!textFieldError('inviteCode')}
+            id='inviteCode'
+            onChange={change.bind(null, 'inviteCode')}
             fullWidth
           />
         </Grid>
