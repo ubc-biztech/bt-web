@@ -34,7 +34,8 @@
     "generate:prod": "cross-env GENERATE_SOURCEMAP=false REACT_APP_STAGE=production npm run build",
     "deploy": "aws s3 sync build/ s3://biztech-web",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint \"**/*.js\" --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
