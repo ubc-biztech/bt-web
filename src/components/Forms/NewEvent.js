@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from '@material-ui/core/Grid';
@@ -16,7 +16,7 @@ const slugify = require('slugify')
 
 export default function NewEventForm(props) {
     const {
-        values: { slug, startDate, endDate, elocation, longitude, latitude }, // the only values we need to store as props are the ones that are programmatically modified
+        values: { ename, description, imageUrl, slug, startDate, endDate, elocation, longitude, latitude }, // the only values we need to store as props are the ones that are programmatically modified
         errors,
         touched,
         handleSubmit,
@@ -29,7 +29,9 @@ export default function NewEventForm(props) {
         updatePreview
     } = props;
 
-    updatePreview(props.values)
+    useEffect(() => {
+        updatePreview({ename, description, imageUrl})
+    }, [updatePreview, ename, description, imageUrl])
 
     const change = (name, e) => {
         e.persist();

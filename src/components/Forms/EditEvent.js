@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -28,7 +28,10 @@ export default function EditEventForm(props) {
         updatePreview
     } = props;
 
-    updatePreview(props.values)
+    useEffect(() => {
+        updatePreview({ename, description, imageUrl})
+    }, [updatePreview, ename, description, imageUrl])
+
 
     const change = (name, e) => {
         e.persist();
