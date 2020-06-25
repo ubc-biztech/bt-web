@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import EditEventForm from '../../components/Forms/EditEvent'
+import EventView from '../../components/EventView'
 import { fetchBackend, updateEvents } from '../../utils'
 import { connect } from "react-redux";
 import { Helmet } from 'react-helmet';
@@ -10,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory, withRouter } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+
 
 const useStyles = makeStyles(theme => ({
     layout: {
@@ -33,6 +35,7 @@ function EventEdit(props) {
     const classes = useStyles();
     const { id: eventId } = useParams();
     const [event, setEvent] = useState(null);
+    const [previewEvent, setPreviewEvent] = useState({description: ''});
     const history = useHistory();
 
     const { events } = props;
@@ -42,7 +45,9 @@ function EventEdit(props) {
 
     // Get the initial values
     if (!event && events && eventId) {
-        setEvent(events.find(event => event.id === eventId));
+        let event = events.find(event => event.id === eventId)
+        setEvent(event);
+        setPreviewEvent(event);
     }
 
     const validationSchema = Yup.object({
@@ -89,7 +94,11 @@ function EventEdit(props) {
             endDate: ""
         };
 
-    return event ? (
+    const updatePreview = (values) => {
+        setPreviewEvent(values)
+    }
+
+    return event && (
         <div className={classes.layout}>
             <Helmet>
                 <title>Edit {event.ename} - BizTech Admin</title>
@@ -104,16 +113,16 @@ function EventEdit(props) {
                         validationSchema={validationSchema}
                         onSubmit={submitValues}
                     >
-                        {props => <EditEventForm {...props} />}
+                        {props => <EditEventForm updatePreview={updatePreview} {...props} />}
                     </Formik>
                 </div>
             </Paper>
 
             <Paper className={classes.paper}>
-                hi
+                <EventView event={previewEvent}/>
             </Paper>
         </div>
-    ) : null
+    )
 
     async function submitValues(values) {
         const body = {
