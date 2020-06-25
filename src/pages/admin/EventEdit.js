@@ -7,6 +7,7 @@ import { fetchBackend, updateEvents } from '../../utils'
 import { connect } from "react-redux";
 import { Helmet } from 'react-helmet';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory, withRouter } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
@@ -31,6 +32,7 @@ function EventEdit(props) {
     const classes = useStyles();
     const { id: eventId } = useParams();
     const [event, setEvent] = useState(null);
+    const history = useHistory();
 
     const { events } = props;
     if (!events) {
@@ -125,7 +127,8 @@ function EventEdit(props) {
         fetchBackend(`/events/${values.slug}`, 'PATCH', body)
             .then((response) => {
                 alert(response)
-                window.location.href = '/';
+                history.push(`/event/${values.slug}/register`)
+                // window.location.href = `/events/${values.slug}/register`;
             })
             .catch(err => {
                 console.log(err)
@@ -140,4 +143,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, {})(EventEdit);
+export default withRouter(connect(mapStateToProps, {})(EventEdit));

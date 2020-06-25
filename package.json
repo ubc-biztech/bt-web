@@ -13,6 +13,7 @@
     "eslint": "^6.7.1",
     "eslint-plugin-react": "^7.16.0",
     "formik": "^2.0.7",
+    "markdown-to-jsx": "^6.11.4",
     "material-table": "^1.54.1",
     "node-sass": "^4.13.1",
     "query-string": "^6.9.0",
