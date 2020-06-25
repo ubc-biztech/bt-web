@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { fetchBackend } from '../../utils'
+import { fetchBackend, updateEvents } from '../../utils'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import RegisterEvent from '../../components/Forms/RegisterEvent';
@@ -32,6 +32,9 @@ const useStyles = makeStyles(theme => ({
 const EventFormContainer = (props) => {
   const classes = useStyles();
   const { events } = props;
+  if (!events) {
+    updateEvents()
+  }
   const { id: eventId } = useParams()
 
   const [ event, setEvent ] = useState(null);

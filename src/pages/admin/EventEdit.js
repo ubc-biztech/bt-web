@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import EditEventForm from '../../components/Forms/EditEvent'
-import { fetchBackend } from '../../utils'
+import { fetchBackend, updateEvents } from '../../utils'
 import { connect } from "react-redux";
 import { Helmet } from 'react-helmet';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,18 +29,18 @@ const useStyles = makeStyles(theme => ({
 
 function EventEdit(props) {
     const classes = useStyles();
-
     const { id: eventId } = useParams();
     const [event, setEvent] = useState(null);
 
     const { events } = props;
+    if (!events) {
+        updateEvents()
+    }
 
-    useEffect(() => {
-        // Get the initial values
-        if (!event && events && eventId) {
-            setEvent(events.find(event => event.id === eventId));
-        }
-    }, [event, events, setEvent, eventId])
+    // Get the initial values
+    if (!event && events && eventId) {
+        setEvent(events.find(event => event.id === eventId));
+    }
 
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
@@ -67,9 +67,9 @@ function EventEdit(props) {
         description: event.description,
         capacity: event.capac,
         facebookUrl: event.facebookUrl,
-        elocation: event.elocation,
-        longitude: event.longitude,
-        latitude: event.latitude,
+        elocation: event.elocation || "",
+        longitude: event.longitude || "",
+        latitude: event.latitude || "",
         imageUrl: event.imageUrl,
         startDate: event.startDate,
         endDate: event.endDate
