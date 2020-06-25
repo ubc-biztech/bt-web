@@ -168,7 +168,7 @@ export default function NewEventForm(props) {
                     <Grid item xs={12}>
                         <Typography>Some common event locations (optional):</Typography>
                         <Select fullWidth onClick={handleLocation.bind(null)}>
-                            <MenuItem key={'Nest'} value={'Nest'}>Nest</MenuItem>
+                            <MenuItem value={'Nest'}>Nest</MenuItem>
                             <MenuItem value={'Hennings'}>Hennings</MenuItem>
                             <MenuItem value={'Sauder'}>Sauder</MenuItem>
                             <MenuItem value={'Birmingham'}>Birmingham, HA</MenuItem>

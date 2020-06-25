@@ -48,8 +48,8 @@ function Nav(props) {
 
   const selected = { color: COLOR.BIZTECH_GREEN, fontSize: '30', width: '43px' }
   const unselected = { color: COLOR.WHITE, fontSize: '30', width: '43px' }
-  const barSelected = { borderLeft: '6px solid #7AD040', height: '45px', marginTop: '28px', paddingBottom: '28px', backgroundPositionX: 'left' }
-  const barUnselected = { borderLeft: '6px solid #070F21', height: '45px', marginTop: '28px', paddingBottom: '28px' }
+  const barSelected = { borderLeft: `6px solid ${COLOR.BIZTECH_GREEN}`, height: '45px', marginTop: '28px', paddingBottom: '28px', backgroundPositionX: 'left' }
+  const barUnselected = { borderLeft: `6px solid ${COLOR.BACKGROUND_COLOR}`, height: '45px', marginTop: '28px', paddingBottom: '28px' }
 
   const pathname = window.location.pathname
   const [selectedItem, setSelectedItem] = useState(pathname)
