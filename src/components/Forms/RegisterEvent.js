@@ -108,7 +108,7 @@ export default function RegisterEventForm(props) {
                         otherOption={true}
                         options={['He/Him/His', 'She/Her/Hers']}
                         groupName={'gender'}
-                        displayName={'Pronouns'} />
+                        displayName={'Preferred Pronouns'} />
                 </Grid>
 
                 <Grid item xs={12}>
