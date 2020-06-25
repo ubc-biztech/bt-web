@@ -18,7 +18,7 @@ const options = {
         component: Typography,
         props: { gutterBottom: true, variant: 'caption', paragraph: true },
       },
-      p: { component: Typography, props: { paragraph: true } },
+      p: { component: Typography },
       a: { component: Link },
       li: {
         component: ({ classes, ...props }) => (
@@ -30,8 +30,12 @@ const options = {
     },
   };
 
-const Markdown = (props) => (
-    <ReactMarkdown options={options} {...props} />
-)
+const Markdown = (props) => {
+  return (
+    <ReactMarkdown options={options} {...props}>
+      {props.children || ''}
+    </ReactMarkdown>
+  )
+}
 
 export default Markdown

@@ -35,7 +35,7 @@ function EventEdit(props) {
     const classes = useStyles();
     const { id: eventId } = useParams();
     const [event, setEvent] = useState(null);
-    const [previewEvent, setPreviewEvent] = useState({description: ''});
+    const [previewEvent, setPreviewEvent] = useState({});
     const history = useHistory();
 
     const { events } = props;
@@ -94,10 +94,6 @@ function EventEdit(props) {
             endDate: ""
         };
 
-    const updatePreview = (values) => {
-        setPreviewEvent(values)
-    }
-
     return event && (
         <div className={classes.layout}>
             <Helmet>
@@ -113,7 +109,7 @@ function EventEdit(props) {
                         validationSchema={validationSchema}
                         onSubmit={submitValues}
                     >
-                        {props => <EditEventForm updatePreview={updatePreview} {...props} />}
+                        {props => <EditEventForm updatePreview={setPreviewEvent} {...props} />}
                     </Formik>
                 </div>
             </Paper>
