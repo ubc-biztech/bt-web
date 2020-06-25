@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import { fetchBackend, updateEvents } from '../../utils'
 import * as Yup from "yup"
 import { Formik } from "formik";
@@ -11,8 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { Helmet } from 'react-helmet';
-import ReactMarkdown from 'markdown-to-jsx';
-import Link from '@material-ui/core/Link';
+import EventView from '../../components/EventView'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -30,33 +28,6 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   }
 }));
-
-const options = {
-  overrides: {
-    h1: {
-      component: Typography,
-      props: {
-        gutterBottom: true,
-        variant: 'h5',
-      },
-    },
-    h2: { component: Typography, props: { gutterBottom: true, variant: 'h6' } },
-    h3: { component: Typography, props: { gutterBottom: true, variant: 'subtitle1' } },
-    h4: {
-      component: Typography,
-      props: { gutterBottom: true, variant: 'caption', paragraph: true },
-    },
-    p: { component: Typography, props: { paragraph: true } },
-    a: { component: Link },
-    li: {
-      component: ({ classes, ...props }) => (
-        <li>
-          <Typography component="span" {...props} />
-        </li>
-      )
-    },
-  },
-};
 
 const EventFormContainer = (props) => {
   const classes = useStyles();
@@ -90,27 +61,13 @@ const EventFormContainer = (props) => {
   const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", diet: "", gender: "", heardFrom: ""};
 
   if (event) {
-    console.log(event.description)
     return (
         <div className={classes.layout}>
           <Helmet>
             <title>{event.ename} - Register</title>
           </Helmet>
           <Paper className={classes.paper}>
-              <img src={event.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
-              
-              <div className={classes.content}>
-                <Typography variant="h4" align="center" gutterBottom>
-                  {event.ename}
-                </Typography>
-                
-                {/* <Typography variant="h6" style={{whiteSpace: 'pre-line'}} gutterBottom>
-                  {event.description}
-                </Typography> */}
-                <ReactMarkdown options={options}>
-                  {event.description}
-                </ReactMarkdown>
-
+            <EventView event={event}>
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
@@ -118,7 +75,7 @@ const EventFormContainer = (props) => {
                 >
                   {props => <RegisterEvent {...props} />}
                 </Formik>
-              </div>
+              </EventView>
           </Paper>
         </div>
     )

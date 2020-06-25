@@ -14,12 +14,13 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles(theme => ({
     layout: {
         [theme.breakpoints.up('sm')]: {
-            width: 600,
+            display: 'flex',
             margin: 'auto',
         },
     },
     paper: {
         [theme.breakpoints.up('sm')]: {
+            width: 600,
             margin: theme.spacing(3),
         },
     },
@@ -107,6 +108,10 @@ function EventEdit(props) {
                     </Formik>
                 </div>
             </Paper>
+
+            <Paper className={classes.paper}>
+                hi
+            </Paper>
         </div>
     ) : null
 
@@ -128,7 +133,6 @@ function EventEdit(props) {
             .then((response) => {
                 alert(response)
                 history.push(`/event/${values.slug}/register`)
-                // window.location.href = `/events/${values.slug}/register`;
             })
             .catch(err => {
                 console.log(err)
