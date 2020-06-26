@@ -104,10 +104,8 @@ function UserHome(props) {
     // set featured event and nextEvent on initial render
     const initialRender = async () => {
         if (!featuredEvent && !nextEvent) {
-            console.log('about to check events')
             if (!props.events) {
-                console.log('UPDATING EVENTS RIGHT NOW')
-                await updateEvents()
+                updateEvents()
             }
             getFeaturedEvent()
             getNextEvent()
