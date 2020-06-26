@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { Helmet } from 'react-helmet';
 import Typography from '@material-ui/core/Typography'
 import EventCard from './EventCard'
-import { fetchBackend } from "../../utils";
+import { fetchBackend, updateEvents } from "../../utils";
 import { COLOR } from '../../constants/Constants'
 import House from '../../assets/house.svg'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import { makeStyles } from '@material-ui/core/styles'
+import { connect } from "react-redux";
 
 const styles = {
     home: {
@@ -54,9 +55,9 @@ const useStyles = makeStyles({
 function UserHome(props) {
     const [featuredEvent, setFeaturedEvent] = useState()
     const [nextEvent, setNextEvent] = useState()
-    const getFeaturedEvent = (events) => {
-        if (events.length) {
-            setFeaturedEvent(events[Math.floor(Math.random() * (events.length - 1))]);
+    const getFeaturedEvent = () => {
+        if (props.events && props.events.length) {
+            setFeaturedEvent(props.events[Math.floor(Math.random() * (props.events.length - 1))]);
         }
     }
 
@@ -65,7 +66,7 @@ function UserHome(props) {
      * verifies that the event is after the current time
      * sets next event to 'None Registered!' if no events found
      */
-    const getNextEvent = async (events) => {
+    const getNextEvent = async () => {
         const params = new URLSearchParams({
             id: props.user.id
         })
@@ -74,23 +75,24 @@ function UserHome(props) {
                 if (response && response.size > 0) {
                     //iterate over events - the first one that is found in registrations is the closest event assuming that events are already sorted by date
                     let found = false;
-                    events.forEach(event => {
-                        if (!found) {
-                            const index = response.data.findIndex(registration => registration.eventID === event.id)
-                            if (index !== -1) {
-                                found = true;
-                                // if the event has not passed yet
-                                if (new Date(event.startDate).getTime() > new Date().getTime()) {
-                                    setNextEvent(event)
-                                } else {
-                                    setNextEvent({
-                                        ename: 'None Registered!'
-                                    })
+                    if (props.events) {
+                        props.events.forEach(event => {
+                            if (!found) {
+                                const index = response.data.findIndex(registration => registration.eventID === event.id)
+                                if (index !== -1) {
+                                    found = true;
+                                    // if the event has not passed yet
+                                    if (new Date(event.startDate).getTime() > new Date().getTime()) {
+                                        setNextEvent(event)
+                                    } else {
+                                        setNextEvent({
+                                            ename: 'None Registered!'
+                                        })
+                                    }
                                 }
                             }
-                        }
-                    })
-
+                        })
+                    }
                 } else {
                     setNextEvent({
                         ename: 'None Registered!'
@@ -102,11 +104,13 @@ function UserHome(props) {
     // set featured event and nextEvent on initial render
     const initialRender = async () => {
         if (!featuredEvent && !nextEvent) {
-            await fetchBackend(`/events`, 'GET')
-                .then(async events => {
-                    getFeaturedEvent(events)
-                    getNextEvent(events)
-                })
+            console.log('about to check events')
+            if (!props.events) {
+                console.log('UPDATING EVENTS RIGHT NOW')
+                await updateEvents()
+            }
+            getFeaturedEvent()
+            getNextEvent()
         }
     }
 
@@ -162,4 +166,10 @@ function UserHome(props) {
     )
 }
 
-export default UserHome
+function mapStateToProps(state) {
+    return {
+        events: state.pageState.events,
+    };
+}
+
+export default connect(mapStateToProps)(UserHome)
