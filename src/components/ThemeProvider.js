@@ -56,7 +56,7 @@ const theme = createMuiTheme({
         },
         MuiTypography: {
             root: {
-                color: COLOR.WHITE
+                color: COLOR.WHITE,
             }
         },
         MuiButton: {

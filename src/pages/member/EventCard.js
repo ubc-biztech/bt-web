@@ -2,12 +2,12 @@ import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import Card from '@material-ui/core/Card'
-import { COLOR } from '../../../constants/Constants'
+import { COLOR } from '../../constants/Constants'
 
 const styles = {
     page: {
         width: '345px',
-        marginLeft: '34px',
+        marginRight: '34px',
         marginTop: '27px',
     },
     title: {

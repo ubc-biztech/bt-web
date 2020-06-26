@@ -13,13 +13,13 @@ import { useHistory, withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from 'react-redux'
 import { logout } from '../../actions/UserActions'
-import WhiteBiztech from './images/whitebiztech.svg'
-import ColoredBiztech from './images/coloredbiztech.svg'
+import WhiteBiztech from '../../assets/whitebiztech.svg'
+import ColoredBiztech from '../../assets/coloredbiztech.svg'
 import { COLOR } from '../../constants/Constants'
 
 const styles = {
     list: {
-        width: '170px',
+        width: '165px',
         paddingTop: '95px'
     },
     icon: {
@@ -62,19 +62,9 @@ function UserNav(props) {
             .catch(err => console.log(err));
     }
 
-    const handleEventsClick = () => {
-        history.push('/events')
-        setSelectedItem('/events')
-    }
-
-    const handleProfileClick = () => {
-        history.push('/profile')
-        setSelectedItem('/profile')
-    }
-
-    const handleHomeClick = () => {
-        history.push('/')
-        setSelectedItem('/')
+    const handleClick = (path) => {
+        history.push(path)
+        setSelectedItem(path)
     }
 
     function MenuItem(props) {
@@ -95,9 +85,9 @@ function UserNav(props) {
         <div>
             <Drawer variant='permanent' classes={{ paper: classes.paper }}>
                 <List style={styles.list}>
-                    <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleHomeClick} bar={selectedItem === '/' ? barSelected : barUnselected} />
-                    <MenuItem label='Events' icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />} onClick={handleEventsClick} bar={selectedItem === '/events' ? barSelected : barUnselected} />
-                    <MenuItem label='Profile' icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />} onClick={handleProfileClick} bar={selectedItem === '/profile' ? barSelected : barUnselected} />
+                    <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleClick.bind(null, '/')} bar={selectedItem === '/' ? barSelected : barUnselected} />
+                    <MenuItem label='Events' icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />} onClick={handleClick.bind(null, '/events')} bar={selectedItem === '/events' ? barSelected : barUnselected} />
+                    <MenuItem label='Profile' icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />} onClick={handleClick.bind(null, '/profile')} bar={selectedItem === '/profile' ? barSelected : barUnselected} />
                     <ListItem>
                         <ListItemIcon style={styles.logout} onClick={logout}>
                             <ExitToAppIcon style={styles.iconSize} />

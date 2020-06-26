@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet';
 import Typography from '@material-ui/core/Typography'
-import Greeting from './subcomponents/Greeting'
-import Progress from './subcomponents/Progress'
-import Stickers from './subcomponents/Stickers'
-import Prizes from './subcomponents/Prizes'
-import EventCard from './subcomponents/EventCard'
+import EventCard from './EventCard'
 import { fetchBackend } from "../../utils";
 import { COLOR } from '../../constants/Constants'
+import SubComponent from './SubComponent'
+import House from '../../assets/house.svg'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import { makeStyles } from '@material-ui/core/styles'
 
 const styles = {
     home: {
         color: COLOR.TITLE_GREEN,
         fontStyle: 'normal',
         fontWeight: 'bold',
-        fontSize: '36px',
         paddingLeft: '85px',
         paddingTop: '50px',
     },
@@ -23,8 +23,34 @@ const styles = {
     },
     container: {
         display: 'flex'
+    },
+    header: {
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        fontSize: '36px',
+        paddingLeft: '76px',
+        paddingTop: '45px'
+    },
+    reward: {
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '22px',
+        paddingLeft: '76px',
+        paddingTop: '15px',
+    },
+    house: {
+        position: 'absolute',
+        left: '685px',
+        top: '110px'
     }
 }
+
+const useStyles = makeStyles({
+    root: {
+        width: '719px',
+        marginTop: '27px'
+    },
+})
 
 function UserHome(props) {
     const [featuredEvent, setFeaturedEvent] = useState()
@@ -87,20 +113,35 @@ function UserHome(props) {
 
     initialRender()
 
+    function Greeting(props) {
+        const classes = useStyles()
+        console.log('HI', classes)
+
+        return (
+            <Card className={classes.root}>
+                <CardContent>
+                    <Typography style={styles.header}>Hi {props.user.fname}!</Typography>
+                    <Typography style={styles.reward}>You are X events away from a reward!</Typography>
+                </CardContent>
+                <img src={House} style={styles.house} alt='BizTech House' />
+            </Card>
+        )
+    }
+
     return (
         <div style={styles.page}>
             <Helmet>
                 <title>Biztech User Dashboard</title>
             </Helmet>
-            <Typography style={styles.home}>Home</Typography>
+            <Typography style={styles.home} variant='h3'>Home</Typography>
             <div style={styles.container}>
-                <div>
+                <div style={{ marginLeft: '85px' }}>
                     <Greeting user={props.user} />
-                    <Progress />
+                    <SubComponent header='Progress' />
                 </div>
-                <div>
-                    <Stickers />
-                    <Prizes />
+                <div style={{ marginLeft: '34px' }}>
+                    <SubComponent header='Sticker Collection' />
+                    <SubComponent header='Prizes' />
                     <div style={styles.container}>
                         <EventCard type={'Next Event'} event={nextEvent} />
                         <EventCard type={'Featured'} event={featuredEvent} />
