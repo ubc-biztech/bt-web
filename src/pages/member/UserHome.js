@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography'
 import EventCard from './EventCard'
 import { fetchBackend } from "../../utils";
 import { COLOR } from '../../constants/Constants'
-import SubComponent from './SubComponent'
 import House from '../../assets/house.svg'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -115,7 +114,6 @@ function UserHome(props) {
 
     function Greeting(props) {
         const classes = useStyles()
-        console.log('HI', classes)
 
         return (
             <Card className={classes.root}>
@@ -124,6 +122,17 @@ function UserHome(props) {
                     <Typography style={styles.reward}>You are X events away from a reward!</Typography>
                 </CardContent>
                 <img src={House} style={styles.house} alt='BizTech House' />
+            </Card>
+        )
+    }
+
+    function SubComponent(props) {
+        const classes = useStyles()
+
+        return (
+            <Card classes={{ root: classes.root }}>
+                <Typography style={styles.header}>{props.header}</Typography>
+                {props.content}
             </Card>
         )
     }

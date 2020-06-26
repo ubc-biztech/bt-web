@@ -9,6 +9,8 @@ import "./Nav.scss";
 import { withStyles } from '@material-ui/styles';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import DateRangeIcon from '@material-ui/icons/DateRange'
+import PersonIcon from '@material-ui/icons/Person'
 import { useHistory, withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { connect } from 'react-redux'
@@ -89,8 +91,18 @@ function Nav(props) {
     <div>
       <Drawer variant='permanent' classes={{ paper: classes.paper }}>
         <List style={styles.list}>
-          <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/')} bar={selectedItem === '/' ? barSelected : barUnselected} />
-          <MenuItem label='Create Event' icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/event/new')} bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
+          {props.admin
+            ?
+            <React.Fragment>
+              <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/')} bar={selectedItem === '/' ? barSelected : barUnselected} />
+              <MenuItem label='Create Event' icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/event/new')} bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
+            </React.Fragment>
+            :
+            <React.Fragment>
+              <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/')} bar={selectedItem === '/' ? barSelected : barUnselected} />
+              <MenuItem label='Events' icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/events')} bar={selectedItem === '/events' ? barSelected : barUnselected} />
+              <MenuItem label='Profile' icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/profile')} bar={selectedItem === '/profile' ? barSelected : barUnselected} />
+            </React.Fragment>}
           <ListItem>
             <ListItemIcon style={styles.logout} onClick={logout}>
               <ExitToAppIcon style={styles.iconSize} />

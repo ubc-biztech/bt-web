@@ -10,7 +10,6 @@ import {
 import './Router.scss'
 
 import Nav from './Nav'
-import UserNav from '../pages/member/UserNav'
 import ScrollToTop from './ScrollToTop'
 import RegisterAlert from './Messages/RegisterAlert'
 import Loading from './Loading'
@@ -109,9 +108,7 @@ class Router extends Component {
       user
         ? <BrowserRouter>
           <ScrollToTop />
-          {user.admin
-            ? <Nav events={this.props.events} />
-            : <UserNav />}
+          <Nav admin={user.admin} />
           <div className="content">
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
