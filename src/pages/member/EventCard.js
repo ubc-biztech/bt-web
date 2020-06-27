@@ -11,23 +11,23 @@ const styles = {
         marginTop: '27px',
     },
     title: {
-        color: COLOR.TITLE_GREEN,
+        color: COLOR.BIZTECH_GREEN,
         fontWeight: 'bold',
-        fontSize: '36px',
         paddingLeft: '37px',
         paddingTop: '10px',
         paddingBottom: '15px'
     },
     eventName: {
-        fontSize: '23px',
+        fontSize: '24px',
         paddingLeft: '37px',
-        fontWeight: 'bold'
+        fontWeight: 'normal'
     },
     eventDate: {
         fontSize: '20px',
         paddingLeft: '37px',
         paddingBottom: '23px',
-        fontWeight: 'normal'
+        fontWeight: 'normal',
+        color: COLOR.FONT_COLOR
     }
 }
 
@@ -45,7 +45,7 @@ function EventCard(props) {
 
     return (
         <Card classes={{ root: classes.page }}>
-            <Typography style={styles.title}>{props.type}</Typography>
+            <Typography variant='h2' style={styles.title}>{props.type}</Typography>
             <Typography style={styles.eventName}>{eventName}</Typography>
             <Typography style={styles.eventDate}>{eventDate}</Typography>
         </Card>

@@ -136,8 +136,8 @@ function AdminHome(props) {
 
       <div style={styles.row}>
         <div style={styles.columnLeft}>
-          <Typography variant="h1" style={{ color: COLOR.TITLE_GREEN }}>BizTech Admins</Typography>
-          <Typography style={{ color: COLOR.TITLE_GREEN }}>BizTech Admins</Typography>
+          <Typography variant="h1" style={{ color: COLOR.BIZTECH_GREEN }}>BizTech Admins</Typography>
+          <Typography style={{ color: COLOR.BIZTECH_GREEN }}>BizTech Admins</Typography>
         </div>
         <div style={styles.columnRight}>
           {/* Link to user dashboard*/}
@@ -166,7 +166,6 @@ function AdminHome(props) {
 }
 
 const mapStateToProps = state => {
-  console.log(state)
   return {
     user: state.userState.user,
     events: state.pageState.events

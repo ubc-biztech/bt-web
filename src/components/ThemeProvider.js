@@ -87,7 +87,7 @@ const theme = createMuiTheme({
             fontFamily,
         },
         h2: {
-            fontSize: '1.3rem',
+            fontSize: '36px',
             fontFamily,
         },
         h5: {

@@ -10,9 +10,13 @@ import CardContent from '@material-ui/core/CardContent'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from "react-redux";
 
-const styles = {
+const useStyles = makeStyles({
+    root: {
+        width: '719px',
+        marginTop: '27px'
+    },
     home: {
-        color: COLOR.TITLE_GREEN,
+        color: COLOR.BIZTECH_GREEN,
         fontStyle: 'normal',
         fontWeight: 'bold',
         paddingLeft: '85px',
@@ -27,7 +31,6 @@ const styles = {
     header: {
         fontStyle: 'normal',
         fontWeight: 'bold',
-        fontSize: '36px',
         paddingLeft: '76px',
         paddingTop: '45px'
     },
@@ -41,18 +44,12 @@ const styles = {
     house: {
         position: 'absolute',
         left: '685px',
-        top: '110px'
+        top: '99px'
     }
-}
-
-const useStyles = makeStyles({
-    root: {
-        width: '719px',
-        marginTop: '27px'
-    },
 })
 
 function UserHome(props) {
+    const classes = useStyles()
     const [featuredEvent, setFeaturedEvent] = useState()
     const [nextEvent, setNextEvent] = useState()
     const getFeaturedEvent = () => {
@@ -74,21 +71,17 @@ function UserHome(props) {
             .then(async response => {
                 if (response && response.size > 0) {
                     //iterate over events - the first one that is found in registrations is the closest event assuming that events are already sorted by date
-                    let found = false;
                     if (props.events) {
                         props.events.forEach(event => {
-                            if (!found) {
-                                const index = response.data.findIndex(registration => registration.eventID === event.id)
-                                if (index !== -1) {
-                                    found = true;
-                                    // if the event has not passed yet
-                                    if (new Date(event.startDate).getTime() > new Date().getTime()) {
-                                        setNextEvent(event)
-                                    } else {
-                                        setNextEvent({
-                                            ename: 'None Registered!'
-                                        })
-                                    }
+                            const index = response.data.findIndex(registration => registration.eventID === event.id)
+                            if (index !== -1) {
+                                // if the event has not passed yet
+                                if (new Date(event.startDate).getTime() > new Date().getTime()) {
+                                    return setNextEvent(event)
+                                } else {
+                                    return setNextEvent({
+                                        ename: 'None Registered!'
+                                    })
                                 }
                             }
                         })
@@ -102,50 +95,42 @@ function UserHome(props) {
     }
 
     // set featured event and nextEvent on initial render
-    const initialRender = async () => {
-        if (!featuredEvent && !nextEvent) {
-            if (!props.events) {
-                updateEvents()
-            }
-            getFeaturedEvent()
-            getNextEvent()
+    if (!featuredEvent && !nextEvent) {
+        if (!props.events) {
+            updateEvents()
         }
+        getFeaturedEvent()
+        getNextEvent()
     }
 
-    initialRender()
-
     function Greeting(props) {
-        const classes = useStyles()
-
         return (
             <Card className={classes.root}>
                 <CardContent>
-                    <Typography style={styles.header}>Hi {props.user.fname}!</Typography>
-                    <Typography style={styles.reward}>You are X events away from a reward!</Typography>
+                    <Typography variant='h2' className={classes.header}>Hi {props.user.fname}!</Typography>
+                    <Typography className={classes.reward}>You are X events away from a reward!</Typography>
                 </CardContent>
-                <img src={House} style={styles.house} alt='BizTech House' />
+                <img src={House} className={classes.house} alt='BizTech House' />
             </Card>
         )
     }
 
     function SubComponent(props) {
-        const classes = useStyles()
-
         return (
             <Card classes={{ root: classes.root }}>
-                <Typography style={styles.header}>{props.header}</Typography>
+                <Typography variant='h2' className={classes.header}>{props.header}</Typography>
                 {props.content}
             </Card>
         )
     }
 
     return (
-        <div style={styles.page}>
+        <div className={classes.page}>
             <Helmet>
                 <title>Biztech User Dashboard</title>
             </Helmet>
-            <Typography style={styles.home} variant='h3'>Home</Typography>
-            <div style={styles.container}>
+            <Typography className={classes.home} variant='h3'>Home</Typography>
+            <div className={classes.container}>
                 <div style={{ marginLeft: '85px' }}>
                     <Greeting user={props.user} />
                     <SubComponent header='Progress' />
@@ -153,7 +138,7 @@ function UserHome(props) {
                 <div style={{ marginLeft: '34px' }}>
                     <SubComponent header='Sticker Collection' />
                     <SubComponent header='Prizes' />
-                    <div style={styles.container}>
+                    <div className={classes.container}>
                         <EventCard type={'Next Event'} event={nextEvent} />
                         <EventCard type={'Featured'} event={featuredEvent} />
                     </div>
