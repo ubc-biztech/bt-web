@@ -1,5 +1,6 @@
 import React from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { COLOR } from '../constants/Constants'
 
 const fontFamily = [
     'Gilroy',
@@ -16,6 +17,64 @@ const theme = createMuiTheme({
                 fontFamily,
                 fontSize: '.7rem',
             }
+        },
+        MuiCard: {
+            root: {
+                background: COLOR.LIGHT_BACKGROUND_COLOR,
+                color: COLOR.WHITE
+            }
+        },
+        MuiInput: {
+            root: {
+                color: COLOR.WHITE
+            }
+        },
+        MuiFormLabel: {
+            root: {
+                color: COLOR.FONT_COLOR
+            }
+        },
+        MuiSvgIcon: {
+            root: {
+                color: COLOR.WHITE
+            }
+        },
+        MuiIcon: {
+            root: {
+                color: COLOR.WHITE
+            }
+        },
+        MuiSelect: {
+            root: {
+                color: COLOR.WHITE
+            }
+        },
+        MuiInputBase: {
+            root: {
+                color: COLOR.WHITE,
+            }
+        },
+        MuiTypography: {
+            root: {
+                color: COLOR.WHITE,
+            }
+        },
+        MuiButton: {
+            containedPrimary: {
+                backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
+                color: COLOR.WHITE,
+            }
+        },
+        MuiPaper: {
+            root: {
+                backgroundColor: COLOR.CARD_PAPER_COLOR,
+                color: COLOR.WHITE
+            }
+        },
+        MuiCardHeader: {
+            subheader: {
+                color: COLOR.FONT_COLOR
+            }
         }
     },
     typography: {
@@ -28,7 +87,7 @@ const theme = createMuiTheme({
             fontFamily,
         },
         h2: {
-            fontSize: '1.3rem',
+            fontSize: '36px',
             fontFamily,
         },
         h5: {
@@ -39,6 +98,11 @@ const theme = createMuiTheme({
     },
     shape: {
         borderRadius: 10
+    },
+    palette: {
+        background: {
+            default: COLOR.BACKGROUND_COLOR
+        }
     },
     shadows: [
         "none",
