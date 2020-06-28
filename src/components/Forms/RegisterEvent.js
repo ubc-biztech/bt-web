@@ -105,11 +105,18 @@ export default function RegisterEventForm (props) {
         <Grid item xs={12}>
           <RadioGroupButtons
             {...props}
+<<<<<<< HEAD
             otherOption={false}
             options={['Male', 'Female', 'Other/Prefer not to say']}
             groupName={'gender'}
             displayName={'Gender'}
           />
+=======
+            otherOption={true}
+            options={['He/Him/His', 'She/Her/Hers']}
+            groupName={'gender'}
+            displayName={'Preferred Pronouns'} />
+>>>>>>> eslint-fixer
         </Grid>
 
         <Grid item xs={12}>

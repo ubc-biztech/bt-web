@@ -17,6 +17,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import { fetchBackend, updateEvents } from '../../utils'
 import { Helmet } from 'react-helmet'
+import { COLOR } from '../../constants/Constants'
 
 const styles = ({
   card: {
@@ -27,7 +28,8 @@ const styles = ({
     height: 250
   },
   row: {
-    display: 'flex'
+    display: 'flex',
+    paddingLeft: '15px'
   },
   columnLeft: {
     flex: '50%',
@@ -104,6 +106,7 @@ function AdminHome (props) {
                 />
               </CardActionArea>
               <CardHeader
+                classes={{ subheader: classes.cardHeader }}
                 title={event.ename}
                 subheader={event.startDate
                   ? new Date(event.startDate)
@@ -133,8 +136,8 @@ function AdminHome (props) {
 
       <div style={styles.row}>
         <div style={styles.columnLeft}>
-          <Typography variant='h1'>BizTech Admins</Typography>
-          <Typography>BizTech Admins</Typography>
+          <Typography variant='h1' style={{ color: COLOR.BIZTECH_GREEN }}>BizTech Admins</Typography>
+          <Typography style={{ color: COLOR.BIZTECH_GREEN }}>BizTech Admins</Typography>
         </div>
         <div style={styles.columnRight}>
           {/* Link to user dashboard */}
