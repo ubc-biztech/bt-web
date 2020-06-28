@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Grid from '@material-ui/core/Grid';
@@ -16,7 +16,7 @@ const slugify = require('slugify')
 
 export default function NewEventForm(props) {
     const {
-        values: { slug, startDate, endDate, elocation, longitude, latitude }, // the only values we need to store as props are the ones that are programmatically modified
+        values: { ename, description, imageUrl, slug, startDate, endDate, elocation, longitude, latitude }, // the only values we need to store as props are the ones that are programmatically modified
         errors,
         touched,
         handleSubmit,
@@ -25,8 +25,13 @@ export default function NewEventForm(props) {
         setFieldTouched,
         dirty,
         isSubmitting,
-        submitCount
+        submitCount,
+        updatePreview
     } = props;
+
+    useEffect(() => {
+        updatePreview({ename, description, imageUrl})
+    }, [updatePreview, ename, description, imageUrl])
 
     const change = (name, e) => {
         e.persist();
@@ -92,7 +97,6 @@ export default function NewEventForm(props) {
                 ;
         }
         e.persist()
-        handleChange(e)
         setFieldValue('elocation', location)
         setFieldValue('longitude', longitude)
         setFieldValue('latitude', latitude)
@@ -167,7 +171,7 @@ export default function NewEventForm(props) {
                     </MuiPickersUtilsProvider>
                     <Grid item xs={12}>
                         <Typography>Some common event locations (optional):</Typography>
-                        <Select fullWidth onClick={handleLocation.bind(null)}>
+                        <Select fullWidth defaultValue='' onClick={handleLocation.bind(null)}>
                             <MenuItem value={'Nest'}>Nest</MenuItem>
                             <MenuItem value={'Hennings'}>Hennings</MenuItem>
                             <MenuItem value={'Sauder'}>Sauder</MenuItem>

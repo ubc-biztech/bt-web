@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import EditEventForm from '../../components/Forms/EditEvent'
-import { fetchBackend } from '../../utils'
+import EventView from '../../components/EventView'
+import { fetchBackend, updateEvents } from '../../utils'
 import { connect } from "react-redux";
 import { Helmet } from 'react-helmet';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory, withRouter } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+
 
 const useStyles = makeStyles(theme => ({
     layout: {
         [theme.breakpoints.up('sm')]: {
-            width: 600,
+            display: 'flex',
             margin: 'auto',
         },
     },
     paper: {
         [theme.breakpoints.up('sm')]: {
+            width: 600,
             margin: theme.spacing(3),
         }
     },
@@ -29,18 +33,22 @@ const useStyles = makeStyles(theme => ({
 
 function EventEdit(props) {
     const classes = useStyles();
-
     const { id: eventId } = useParams();
     const [event, setEvent] = useState(null);
+    const [previewEvent, setPreviewEvent] = useState({});
+    const history = useHistory();
 
     const { events } = props;
+    if (!events) {
+        updateEvents()
+    }
 
-    useEffect(() => {
-        // Get the initial values
-        if (!event && events && eventId) {
-            setEvent(events.find(event => event.id === eventId));
-        }
-    }, [event, events, setEvent, eventId])
+    // Get the initial values
+    if (!event && events && eventId) {
+        let event = events.find(event => event.id === eventId)
+        setEvent(event);
+        setPreviewEvent(event);
+    }
 
     const validationSchema = Yup.object({
         ename: Yup.string().required(),
@@ -67,9 +75,9 @@ function EventEdit(props) {
         description: event.description,
         capacity: event.capac,
         facebookUrl: event.facebookUrl,
-        elocation: event.elocation,
-        longitude: event.longitude,
-        latitude: event.latitude,
+        elocation: event.elocation || "",
+        longitude: event.longitude || "",
+        latitude: event.latitude || "",
         imageUrl: event.imageUrl,
         startDate: event.startDate,
         endDate: event.endDate
@@ -86,7 +94,7 @@ function EventEdit(props) {
             endDate: ""
         };
 
-    return event ? (
+    return event && (
         <div className={classes.layout}>
             <Helmet>
                 <title>Edit {event.ename} - BizTech Admin</title>
@@ -101,12 +109,16 @@ function EventEdit(props) {
                         validationSchema={validationSchema}
                         onSubmit={submitValues}
                     >
-                        {props => <EditEventForm {...props} />}
+                        {props => <EditEventForm updatePreview={setPreviewEvent} {...props} />}
                     </Formik>
                 </div>
             </Paper>
+
+            <Paper className={classes.paper}>
+                <EventView event={previewEvent}/>
+            </Paper>
         </div>
-    ) : null
+    )
 
     async function submitValues(values) {
         const body = {
@@ -125,7 +137,7 @@ function EventEdit(props) {
         fetchBackend(`/events/${values.slug}`, 'PATCH', body)
             .then((response) => {
                 alert(response)
-                window.location.href = '/';
+                history.push(`/event/${values.slug}/register`)
             })
             .catch(err => {
                 console.log(err)
@@ -140,4 +152,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, {})(EventEdit);
+export default withRouter(connect(mapStateToProps, {})(EventEdit));

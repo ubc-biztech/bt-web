@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { fetchBackend } from '../../utils'
+import { fetchBackend, updateEvents } from '../../utils'
 import * as Yup from "yup"
 import { Formik } from "formik";
 import RegisterEvent from '../../components/Forms/RegisterEvent';
@@ -11,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { Helmet } from 'react-helmet';
+import EventView from '../../components/EventView'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -32,6 +32,9 @@ const useStyles = makeStyles(theme => ({
 const EventFormContainer = (props) => {
   const classes = useStyles();
   const { events } = props;
+  if (!events) {
+    updateEvents()
+  }
   const { id: eventId } = useParams()
 
   const [ event, setEvent ] = useState(null);
@@ -64,17 +67,7 @@ const EventFormContainer = (props) => {
             <title>{event.ename} - Register</title>
           </Helmet>
           <Paper className={classes.paper}>
-              <img src={event.imageUrl || require("../../assets/placeholder.jpg")} alt="Event" style={{maxWidth: '100%'}} />
-              
-              <div className={classes.content}>
-                <Typography variant="h4" align="center" gutterBottom>
-                  {event.ename}
-                </Typography>
-                
-                <Typography variant="h6" gutterBottom>
-                  {event.description}
-                </Typography>
-
+            <EventView event={event}>
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
@@ -82,7 +75,7 @@ const EventFormContainer = (props) => {
                 >
                   {props => <RegisterEvent {...props} />}
                 </Formik>
-              </div>
+              </EventView>
           </Paper>
         </div>
     )
