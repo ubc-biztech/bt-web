@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Drawer,
   List,
   ListItem,
   ListItemIcon
-} from "@material-ui/core";
-import "./Nav.scss";
-import { withStyles } from '@material-ui/styles';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import AddBoxIcon from '@material-ui/icons/AddBox';
+} from '@material-ui/core'
+import './Nav.scss'
+import { withStyles } from '@material-ui/styles'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import AddBoxIcon from '@material-ui/icons/AddBox'
 import DateRangeIcon from '@material-ui/icons/DateRange'
 import PersonIcon from '@material-ui/icons/Person'
-import { useHistory, withRouter } from "react-router-dom";
-import { Auth } from "aws-amplify";
+import { useHistory, withRouter } from 'react-router-dom'
+import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
 import { logout } from '../actions/UserActions'
 import WhiteBiztech from '../assets/whitebiztech.svg'
@@ -44,9 +44,9 @@ const styles = {
   }
 }
 
-function Nav(props) {
+function Nav (props) {
   const { classes } = props
-  const history = useHistory();
+  const history = useHistory()
 
   const selected = { color: COLOR.BIZTECH_GREEN, fontSize: '30', width: '43px' }
   const unselected = { color: COLOR.WHITE, fontSize: '30', width: '43px' }
@@ -61,19 +61,19 @@ function Nav(props) {
       .then(() => {
         props.logout()
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   }
 
   const handleItemClick = (path, event) => {
     if (event.id) {
-      history.push(`/event/${event.id}`);
+      history.push(`/event/${event.id}`)
     } else {
-      history.push(path);
+      history.push(path)
       setSelectedItem(path)
     }
-  };
+  }
 
-  function MenuItem(props) {
+  function MenuItem (props) {
     const { label, icon, onClick, bar } = props
     return (
       <ListItem onClick={onClick} aria-label={label} disableGutters={true}>
@@ -92,13 +92,11 @@ function Nav(props) {
       <Drawer variant='permanent' classes={{ paper: classes.paper }}>
         <List style={styles.list}>
           {props.admin
-            ?
-            <React.Fragment>
+            ? <React.Fragment>
               <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/')} bar={selectedItem === '/' ? barSelected : barUnselected} />
               <MenuItem label='Create Event' icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/event/new')} bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
             </React.Fragment>
-            :
-            <React.Fragment>
+            : <React.Fragment>
               <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/')} bar={selectedItem === '/' ? barSelected : barUnselected} />
               <MenuItem label='Events' icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/events')} bar={selectedItem === '/events' ? barSelected : barUnselected} />
               <MenuItem label='Profile' icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/profile')} bar={selectedItem === '/profile' ? barSelected : barUnselected} />
@@ -111,7 +109,7 @@ function Nav(props) {
         </List>
       </Drawer>
     </div >
-  );
+  )
 }
 
-export default (withStyles(styles))(withRouter(connect(null, { logout })(Nav)));
+export default (withStyles(styles))(withRouter(connect(null, { logout })(Nav)))

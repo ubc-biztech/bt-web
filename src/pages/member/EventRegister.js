@@ -1,48 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { connect } from "react-redux";
-import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
 import { fetchBackend, updateEvents } from '../../utils'
-import * as Yup from "yup"
-import { Formik } from "formik";
-import RegisterEvent from '../../components/Forms/RegisterEvent';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { Helmet } from 'react-helmet';
+import * as Yup from 'yup'
+import { Formik } from 'formik'
+import RegisterEvent from '../../components/Forms/RegisterEvent'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+import Skeleton from '@material-ui/lab/Skeleton'
+import { Helmet } from 'react-helmet'
 import EventView from '../../components/EventView'
 
 const useStyles = makeStyles(theme => ({
   layout: {
     [theme.breakpoints.up('sm')]: {
       width: 600,
-      margin: 'auto',
-    },
+      margin: 'auto'
+    }
   },
   paper: {
     [theme.breakpoints.up('sm')]: {
-      margin: theme.spacing(3),
-    },
+      margin: theme.spacing(3)
+    }
   },
   content: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(3)
   }
-}));
+}))
 
 const EventFormContainer = (props) => {
-  const classes = useStyles();
-  const { events } = props;
+  const classes = useStyles()
+  const { events } = props
   if (!events) {
     updateEvents()
   }
   const { id: eventId } = useParams()
 
-  const [ event, setEvent ] = useState(null);
+  const [event, setEvent] = useState(null)
 
   useEffect(() => {
-      if (eventId && events) {
-        setEvent(events.find(event => event.id === eventId))
-      }
+    if (eventId && events) {
+      setEvent(events.find(event => event.id === eventId))
+    }
   }, [events, eventId])
 
   const validationSchema = Yup.object({
@@ -51,76 +51,76 @@ const EventFormContainer = (props) => {
       .min(9999999, 'Valid Student ID required')
       .max(100000000, 'Valid Student ID required')
       .required(),
-    fname: Yup.string().required("First name is required"),
-    lname: Yup.string().required("Last name is required"),
-    faculty: Yup.string().required("Faculty is required"),
-    year: Yup.string().required("Level of study is required"),
-    diet: Yup.string().required("Dietary restriction is required"), 
-  });
+    fname: Yup.string().required('First name is required'),
+    lname: Yup.string().required('Last name is required'),
+    faculty: Yup.string().required('Faculty is required'),
+    year: Yup.string().required('Level of study is required'),
+    diet: Yup.string().required('Dietary restriction is required')
+  })
 
-  const initialValues = { email: "", fname: "", lname: "", id: "", faculty: "", year: "", diet: "", gender: "", heardFrom: ""};
+  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '' }
 
   if (event) {
     return (
-        <div className={classes.layout}>
-          <Helmet>
-            <title>{event.ename} - Register</title>
-          </Helmet>
-          <Paper className={classes.paper}>
-            <EventView event={event}>
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={submitValues}
-                >
-                  {props => <RegisterEvent {...props} />}
-                </Formik>
-              </EventView>
-          </Paper>
-        </div>
+      <div className={classes.layout}>
+        <Helmet>
+          <title>{event.ename} - Register</title>
+        </Helmet>
+        <Paper className={classes.paper}>
+          <EventView event={event}>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={submitValues}
+            >
+              {props => <RegisterEvent {...props} />}
+            </Formik>
+          </EventView>
+        </Paper>
+      </div>
     )
   } else {
-      return (
-          <div className={classes.layout}>
-              <Paper className={classes.paper}>
-                  <Skeleton animation="wave" variant="rect" width={'100%'} height={320} />
-                  <div className={classes.content}>
+    return (
+      <div className={classes.layout}>
+        <Paper className={classes.paper}>
+          <Skeleton animation='wave' variant='rect' width={'100%'} height={320} />
+          <div className={classes.content}>
 
-                      <Grid container spacing={3}>
+            <Grid container spacing={3}>
 
-                          <Grid item xs={12}>
-                              <Skeleton animation="wave" variant="rect" width={300} height={30} />
-                          </Grid>
+              <Grid item xs={12}>
+                <Skeleton animation='wave' variant='rect' width={300} height={30} />
+              </Grid>
 
-                          {[1, 2, 3].map((e) =>
-                          <Grid item container spacing={1} key={e}> 
-                              <Grid item xs={12}>
-                                  <Skeleton animation="wave" variant="rect" width={130} height={20} />
-                              </Grid>
-                              <Grid item xs={12}>
-                                  <Skeleton animation="wave" variant="rect" width={'100%'} height={20} />
-                              </Grid>
-                          </Grid>)
-                          }
-                          
-                          <Grid item xs={12}>
-                              <Skeleton animation="wave" variant="rect" width={90} height={36} />
-                          </Grid>
+              {[1, 2, 3].map((e) =>
+                <Grid item container spacing={1} key={e}>
+                  <Grid item xs={12}>
+                    <Skeleton animation='wave' variant='rect' width={130} height={20} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Skeleton animation='wave' variant='rect' width={'100%'} height={20} />
+                  </Grid>
+                </Grid>)
+              }
 
-                      </Grid>
-                  </div>
-              </Paper>
+              <Grid item xs={12}>
+                <Skeleton animation='wave' variant='rect' width={90} height={36} />
+              </Grid>
+
+            </Grid>
           </div>
-      )
+        </Paper>
+      </div>
+    )
   }
 
-  async function submitValues(values) {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
-    const eventID = event.id;
-    //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+  async function submitValues (values) {
+    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
+    const eventID = event.id
+    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/${values.id}`, 'GET')
       .then((response) => {
-        if (response === "User not found.") {
+        if (response === 'User not found.') {
           // Need to create new user
           // console.log("User not found, creating user");
           const body = {
@@ -133,49 +133,49 @@ const EventFormContainer = (props) => {
             gender,
             diet
           }
-          fetchBackend("/users", "POST", body)
+          fetchBackend('/users', 'POST', body)
             .then((userResponse) => {
-              if (userResponse.message === "Created!") {
-                registerUser(id, eventID, heardFrom);
+              if (userResponse.message === 'Created!') {
+                registerUser(id, eventID, heardFrom)
               } else {
-                alert("Signup failed");
+                alert('Signup failed')
               }
             })
         } else {
-          registerUser(id, eventID, heardFrom);
+          registerUser(id, eventID, heardFrom)
         }
       })
       .catch(err => {
-        console.log("registration error", err);
-        alert("Signup failed");
-      });
+        console.log('registration error', err)
+        alert('Signup failed')
+      })
   }
 
-  async function registerUser(id, eventID, heardFrom) {
+  async function registerUser (id, eventID, heardFrom) {
     const body = {
       id,
       eventID,
       heardFrom,
-      registrationStatus: "registered"
+      registrationStatus: 'registered'
     }
-    fetchBackend("/registrations", "POST", body)
+    fetchBackend('/registrations', 'POST', body)
       .then((regResponse) => {
-        alert("Signed Up");
+        alert('Signed Up')
       })
       .catch(err => {
         if (err.status === 409) {
-          alert("You cannot sign up for this event again!");
+          alert('You cannot sign up for this event again!')
         } else {
-          alert("Signup failed");
+          alert('Signup failed')
         }
-      });
+      })
   }
 }
 
 const mapStateToProps = state => {
   return {
-      events: state.pageState.events
-  };
-};
+    events: state.pageState.events
+  }
+}
 
-export default connect(mapStateToProps, {})(EventFormContainer);
+export default connect(mapStateToProps, {})(EventFormContainer)

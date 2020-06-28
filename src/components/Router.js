@@ -35,14 +35,14 @@ import {
 } from '../utils'
 
 class Router extends Component {
-  constructor() {
+  constructor () {
     super()
     this.state = {
       loaded: false
     }
   }
 
-  getAuthenticatedUser() {
+  getAuthenticatedUser () {
     return Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(async authUser => {
         const email = authUser.attributes.email
@@ -51,17 +51,16 @@ class Router extends Component {
             // name: authUser.attributes.name, // we don't need admin name for now
             email: authUser.attributes.email,
             admin: true
-          });
-        }
-        else {
+          })
+        } else {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
             await updateUser(studentId)
           } else {
             // Parse first name and last name
             const initialName = authUser.attributes.name.split(' ')
-            const fname = initialName[0];
-            const lname = initialName[1];
+            const fname = initialName[0]
+            const lname = initialName[1]
 
             // save only essential info to redux
             this.props.setUser({
@@ -77,8 +76,7 @@ class Router extends Component {
 
   // User needs to be checked before the page physically renders
   // (otherwise, the login page will initially show on every refresh)
-  componentDidMount() {
-
+  componentDidMount () {
     if (!this.props.user) {
       // If the user doesn't already exist in react, get the authenticated user
       // also get events at the same time
@@ -89,28 +87,25 @@ class Router extends Component {
           // Ultimately, after all is loaded, set the "loaded" state and render the component
           this.setState({ loaded: true })
         })
-    }
-    else {
+    } else {
       // If the user already exists, update the events and render the page
       this.setState({ loaded: true })
     }
-
   }
 
-  render() {
-
-    const { user } = this.props;
-    const { loaded } = this.state;
+  render () {
+    const { user } = this.props
+    const { loaded } = this.state
 
     // Alert the user about the need to register if they haven't
-    const userNeedsRegister = user && !user.admin && !user.id;
+    const userNeedsRegister = user && !user.admin && !user.id
 
     return loaded ? (
       user
         ? <BrowserRouter>
           <ScrollToTop />
           <Nav admin={user.admin} />
-          <div className="content">
+          <div className='content'>
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
 
@@ -119,12 +114,12 @@ class Router extends Component {
                 path='/login-redirect'
                 render={() => <LoginRedirect />} />
               <Route
-                path="/forbidden"
+                path='/forbidden'
                 render={() => <Forbidden />} />
               <Route
-                path="/new-member"
+                path='/new-member'
                 render={() => user.id
-                  ? <Redirect to="/" /> /* Allow create member only if user is not yet registered in DB*/
+                  ? <Redirect to='/' /> /* Allow create member only if user is not yet registered in DB */
                   : <NewMember />} />
               <Route
                 path='/event/:id/register'
@@ -167,7 +162,7 @@ class Router extends Component {
               path='/login-redirect'
               component={LoginRedirect} />
             <Route
-              path="/signup"
+              path='/signup'
               component={Signup} />
             <Route
               path='/'
@@ -185,7 +180,7 @@ const mapStateToProps = state => {
   return {
     page: state.pageState.page,
     user: state.userState.user
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, { setUser })(Router);
+export default connect(mapStateToProps, { setUser })(Router)
