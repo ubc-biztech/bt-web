@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React from 'react'
-=======
 import React, { useState } from 'react'
->>>>>>> eslint-fixer
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import NewEventForm from '../../components/Forms/NewEvent'
