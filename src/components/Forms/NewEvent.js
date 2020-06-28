@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React from 'react'
-=======
 import React, { useEffect } from 'react'
->>>>>>> eslint-fixer
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
@@ -20,11 +16,7 @@ const slugify = require('slugify')
 
 export default function NewEventForm (props) {
   const {
-<<<<<<< HEAD
-    values: { slug, startDate, endDate, elocation, longitude, latitude }, // the only values we need to store as props are the ones that are programmatically modified
-=======
     values: { ename, description, imageUrl, slug, startDate, endDate, elocation, longitude, latitude }, // the only values we need to store as props are the ones that are programmatically modified
->>>>>>> eslint-fixer
     errors,
     touched,
     handleSubmit,
@@ -33,21 +25,6 @@ export default function NewEventForm (props) {
     setFieldTouched,
     dirty,
     isSubmitting,
-<<<<<<< HEAD
-    submitCount
-  } = props
-
-  const change = (name, e) => {
-    e.persist()
-    handleChange(e)
-    setFieldTouched(name, true, false)
-  }
-
-  const handleEventNameChange = (name, e) => {
-    e.persist()
-    const newSlug = slugify(e.target.value, { lower: true })
-    setFieldValue('slug', newSlug)
-=======
     submitCount,
     updatePreview
   } = props
@@ -58,21 +35,10 @@ export default function NewEventForm (props) {
 
   const change = (name, e) => {
     e.persist()
->>>>>>> eslint-fixer
     handleChange(e)
     setFieldTouched(name, true, false)
   }
 
-<<<<<<< HEAD
-  const handleStartDateChange = (date) => {
-    setFieldValue('startDate', date)
-  }
-
-  const handleEndDateChange = (date) => {
-    setFieldValue('endDate', date)
-  }
-
-=======
   const handleEventNameChange = (name, e) => {
     e.persist()
     const newSlug = slugify(e.target.value, { lower: true })
@@ -89,7 +55,6 @@ export default function NewEventForm (props) {
     setFieldValue('endDate', date)
   }
 
->>>>>>> eslint-fixer
   const textFieldError = (id) => {
     return (errors[id] && submitCount > 0) || (touched[id] ? errors[id] : '')
   }
@@ -132,10 +97,6 @@ export default function NewEventForm (props) {
         ;
     }
     e.persist()
-<<<<<<< HEAD
-    handleChange(e)
-=======
->>>>>>> eslint-fixer
     setFieldValue('elocation', location)
     setFieldValue('longitude', longitude)
     setFieldValue('latitude', latitude)
@@ -210,11 +171,7 @@ export default function NewEventForm (props) {
           </MuiPickersUtilsProvider>
           <Grid item xs={12}>
             <Typography>Some common event locations (optional):</Typography>
-<<<<<<< HEAD
-            <Select fullWidth onClick={handleLocation.bind(null)}>
-=======
             <Select fullWidth defaultValue='' onClick={handleLocation.bind(null)}>
->>>>>>> eslint-fixer
               <MenuItem value={'Nest'}>Nest</MenuItem>
               <MenuItem value={'Hennings'}>Hennings</MenuItem>
               <MenuItem value={'Sauder'}>Sauder</MenuItem>

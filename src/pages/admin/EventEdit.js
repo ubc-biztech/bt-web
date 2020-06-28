@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import * as Yup from 'yup'
-import { Formik } from 'formik'
-import EditEventForm from '../../components/Forms/EditEvent'
-import { fetchBackend } from '../../utils'
-import { connect } from 'react-redux'
-import { Helmet } from 'react-helmet'
-import { makeStyles } from '@material-ui/core/styles'
-=======
 import React, { useState } from 'react'
 import { useParams, useHistory, withRouter } from 'react-router-dom'
 import * as Yup from 'yup'
@@ -20,7 +9,6 @@ import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { makeStyles } from '@material-ui/core/styles'
 
->>>>>>> eslint-fixer
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 

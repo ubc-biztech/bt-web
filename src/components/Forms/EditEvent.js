@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React from 'react'
-=======
 import React, { useEffect } from 'react'
->>>>>>> eslint-fixer
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
@@ -28,33 +24,6 @@ export default function EditEventForm (props) {
     setFieldTouched,
     dirty,
     isSubmitting,
-<<<<<<< HEAD
-    submitCount
-  } = props
-
-  const change = (name, e) => {
-    e.persist()
-    handleChange(e)
-    setFieldTouched(name, true, false)
-  }
-
-  const handleStartDateChange = (date) => {
-    setFieldValue('startDate', date)
-  }
-
-  const handleEndDateChange = (date) => {
-    setFieldValue('endDate', date)
-  }
-
-  const textFieldError = (id) => {
-    return (errors[id] && submitCount > 0) || (touched[id] ? errors[id] : '')
-  }
-
-  const handleInfoClick = () => {
-    alert('Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing "What\'s here?"')
-  }
-
-=======
     submitCount,
     updatePreview
   } = props
@@ -85,7 +54,6 @@ export default function EditEventForm (props) {
     alert('Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing "What\'s here?"')
   }
 
->>>>>>> eslint-fixer
   const handleLocation = (e) => {
     const value = e.target.value
     let location, longitude, latitude
@@ -119,10 +87,6 @@ export default function EditEventForm (props) {
         ;
     }
     e.persist()
-<<<<<<< HEAD
-    handleChange(e)
-=======
->>>>>>> eslint-fixer
     setFieldValue('elocation', location)
     setFieldValue('longitude', longitude)
     setFieldValue('latitude', latitude)
@@ -198,11 +162,7 @@ export default function EditEventForm (props) {
           </MuiPickersUtilsProvider>
           <Grid item xs={12}>
             <Typography>Some common event locations (optional):</Typography>
-<<<<<<< HEAD
-            <Select fullWidth onClick={handleLocation.bind(null)}>
-=======
             <Select fullWidth defaultValue='' onClick={handleLocation.bind(null)}>
->>>>>>> eslint-fixer
               <MenuItem value={'Nest'}>Nest</MenuItem>
               <MenuItem value={'Hennings'}>Hennings</MenuItem>
               <MenuItem value={'Sauder'}>Sauder</MenuItem>
