@@ -24,6 +24,11 @@ module.exports = {
   rules: {
     'react/prop-types': 0,
     quotes: ['error', 'single'],
-    'jsx-quotes': ['error', 'prefer-single']
+    'jsx-quotes': ['error', 'prefer-single'],
+    'brace-type': 0,
+    camelcase: 0,
+    'no-prototype-builtins': 0,
+    'prefer-promise-reject-errors': 0,
+    'brace-style': 0
   }
 }

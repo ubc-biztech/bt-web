@@ -1,17 +1,17 @@
 import React from 'react'
-import { connect } from "react-redux";
-import { withStyles } from '@material-ui/core/styles';
-import Button from "@material-ui/core/Button";
-import Box from '@material-ui/core/Box';
-import { Link, useHistory } from 'react-router-dom';
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import Box from '@material-ui/core/Box'
+import { Link, useHistory } from 'react-router-dom'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import ThemeProvider from '../../components/ThemeProvider'
-import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import EventCard from "../../components/Cards/Event";
+import Typography from '@material-ui/core/Typography'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import EventCard from '../../components/Cards/Event'
 import { fetchBackend, updateEvents } from '../../utils'
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet'
 
 const styles = ({
   row: {
@@ -26,33 +26,32 @@ const styles = ({
     textAlign: 'right',
     marginRight: '72px'
   }
-});
+})
 
-function AdminHome(props) {
-
-  const { user, events } = props;
-  if(!events){
+function AdminHome (props) {
+  const { user, events } = props
+  if (!events) {
     updateEvents()
   }
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [eventMenuClicked, setEventMenuClicked] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [eventMenuClicked, setEventMenuClicked] = React.useState(null)
 
-  const history = useHistory();
+  const history = useHistory()
 
   const handleSubMenuClick = (e, event) => {
-    setAnchorEl(e.currentTarget);
-    setEventMenuClicked(event);
-  };
+    setAnchorEl(e.currentTarget)
+    setEventMenuClicked(event)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   const handleClickEditEvent = () => {
-    history.push(`/event/${eventMenuClicked}/edit`);
+    history.push(`/event/${eventMenuClicked}/edit`)
     handleClose()
-  };
+  }
 
   const handleClickDeleteEvent = () => {
     const clickedEvent = events.find(event => event.id === eventMenuClicked)
@@ -68,21 +67,20 @@ function AdminHome(props) {
         })
     }
     handleClose()
-  };
+  }
 
   const handleClickViewEvent = () => {
-    history.push(`/event/${eventMenuClicked}/register`);
+    history.push(`/event/${eventMenuClicked}/register`)
     handleClose()
-  };
+  }
 
   const handleEventClick = (e, eventId) => {
     history.push(`/event/${eventId}`)
   }
 
-  function createEventCards() {
-
-    if (events)
-      return <Box flexWrap="wrap" display="flex">
+  function createEventCards () {
+    if (events) {
+      return <Box flexWrap='wrap' display='flex'>
         {events.map(event =>
           <EventCard
             key={event.id}
@@ -92,6 +90,7 @@ function AdminHome(props) {
           />
         )}
       </Box >
+    }
   }
 
   return events !== null ? (
@@ -102,20 +101,20 @@ function AdminHome(props) {
 
       <div style={styles.row}>
         <div style={styles.columnLeft}>
-          <Typography variant="h1">BizTech Admins</Typography>
+          <Typography variant='h1'>BizTech Admins</Typography>
           <Typography>BizTech Admins</Typography>
         </div>
         <div style={styles.columnRight}>
-          {/* Link to user dashboard*/}
-          {user.admin && <Link to="/user-dashboard">
-            <Button variant="contained" color="primary">User Dashboard</Button>
+          {/* Link to user dashboard */}
+          {user.admin && <Link to='/user-dashboard'>
+            <Button variant='contained' color='primary'>User Dashboard</Button>
           </Link>}
         </div>
       </div>
 
       {createEventCards()}
       <Menu
-        id="simple-menu"
+        id='simple-menu'
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -127,15 +126,15 @@ function AdminHome(props) {
       </Menu>
     </ThemeProvider>
   ) : (
-      <CircularProgress />
-    );
+    <CircularProgress />
+  )
 }
 
 const mapStateToProps = state => {
   return {
     user: state.userState.user,
     events: state.pageState.events
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, {})(withStyles(styles)(AdminHome));
+export default connect(mapStateToProps, {})(withStyles(styles)(AdminHome))

@@ -1,15 +1,15 @@
-import { SET_EVENTS, SET_EVENTS_REGISTERED } from '../constants/Constants';
+import { SET_EVENTS, SET_EVENTS_REGISTERED } from '../constants/Constants'
 
-export function setEvents(events) {
+export function setEvents (events) {
   return {
     type: SET_EVENTS,
     events
-  };
+  }
 }
 
-export function setEventsRegistered(eventsRegistered) {
+export function setEventsRegistered (eventsRegistered) {
   return {
     type: SET_EVENTS_REGISTERED,
     eventsRegistered
-  };
+  }
 }
