@@ -21,6 +21,7 @@ const options = {
     p: { component: Typography },
     a: { component: Link },
     li: {
+      // eslint-disable-next-line
       component: ({ classes, ...props }) => (
         <li>
           <Typography component='span' {...props} />

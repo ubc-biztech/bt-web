@@ -61,6 +61,7 @@ export async function fetchBackend (endpoint, method, data) {
     .then(response => {
       // Actually throw an error (so catch block will run) when the response is an error
       if (status < 200 || status >= 300) {
+        // eslint-disable-next-line
         return Promise.reject({
           status: status,
           message: response

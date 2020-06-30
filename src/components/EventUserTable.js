@@ -66,7 +66,8 @@ export class EventUserTable extends Component {
         const heardFrom = {}
         response.data.forEach(user => {
           if (user.heardFromData) {
-            heardFrom[user.heardFrom] = heardFrom.hasOwnProperty(user.heardFrom) ? heardFrom[user.heardFrom] + 1 : 1
+            heardFrom[user.heardFrom] = Object.prototype.hasOwnProperty.call(heardFrom, user.heardFrom)
+              ? heardFrom[user.heardFrom] + 1 : 1
           }
         })
         this.setState({ heardFrom })
