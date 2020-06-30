@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
 import EventCard from '../../components/Cards/Event'
-import { updateEvents, updateRegisteredEvents } from '../../utils'
+import { fetchBackend, updateEvents, updateRegisteredEvents, updateUser } from '../../utils'
 
+import { COLOR } from '../../constants/Constants'
 import { withStyles } from '@material-ui/core/styles'
 import {
   Tabs,
@@ -57,10 +58,13 @@ const styles = ({
     },
     activeButton: {
       textAlign: 'right',
-      color: 'green'
+      borderRight: `2px solid ${COLOR.BIZTECH_GREEN}`
     }
   },
   tabs: {
+    container: {
+      width: '100%'
+    },
     layout: {
       marginBottom: '2em'
     },
@@ -70,7 +74,8 @@ const styles = ({
       marginRight: '1em',
       textTransform: 'none',
       maxWidth: '5em',
-      width: '100%'
+      width: '100%',
+      color: COLOR.WHITE
     }
   },
   rows: {
@@ -95,7 +100,7 @@ function EventPanel (props) {
 }
 
 function UserHome (props) {
-  const [tabIndex, setTabIndex] = useState(TAB_STATES.UPCOMING)
+  const [tabIndex, setTabIndex] = useState(TAB_STATES.ALL)
   const [selectedPanel, setSelectedPanel] = useState(PANEL_STATES.ALL)
 
   const history = useHistory()
@@ -106,6 +111,12 @@ function UserHome (props) {
     if (!props.events) updateEvents()
     if (user.id) updateRegisteredEvents(user.id)
   }, [])
+
+  const handleFavoriteEvent = async (eventId, toggle) => {
+    const body = { eventID: eventId, isFavourite: toggle }
+    await fetchBackend(`/users/favEvent/${user.id}`, 'PATCH', body)
+    updateUser()
+  }
 
   const handleTabChange = (event, newIndex) => {
     setTabIndex(newIndex)
@@ -127,12 +138,19 @@ function UserHome (props) {
     return eventsRegistered
   }, [eventsRegistered])
 
+  const eventsFavoritedIds = useMemo(() => {
+    if (user && user.favedEventsID && user.favedEventsID.length) {
+      return user.favedEventsID
+    }
+
+    return []
+  }, [user.favedEventsID])
+
   const AllEventCards = useMemo(() => {
     if (selectedPanel === PANEL_STATES.REGISTERED) return events.filter((event) => eventsRegisteredIds.includes(event.id))
-    // TODO: filter events by favorites
-    else if (selectedPanel === PANEL_STATES.FAVORITES) return []
+    else if (selectedPanel === PANEL_STATES.FAVORITES) return events.filter((event) => eventsFavoritedIds.includes(event.id))
     else return events
-  }, [events, selectedPanel])
+  }, [events, selectedPanel, user.favedEventsID])
 
   const UpcomingEventCards = useMemo(() => {
     // filter events by the date
@@ -184,7 +202,7 @@ function UserHome (props) {
             </ListItem>
           </List>
         </div>
-        <div>
+        <div style={styles.tabs.container}>
 
           <Tabs
             value={tabIndex}
@@ -205,8 +223,9 @@ function UserHome (props) {
                   event={event}
                   key={event.id}
                   variant='user'
+                  favorited={user && user.favedEventsID && user.favedEventsID.includes(event.id)}
                   handleCardClick={redirectToEvent}
-                  // handleFavorite={handleFavoriteEvent}
+                  handleFavorite={handleFavoriteEvent}
                   cardStyle={{ width: '40%' }}
                 />
               ))}
@@ -219,8 +238,9 @@ function UserHome (props) {
                   event={event}
                   key={event.id}
                   variant='user'
+                  favorited={user && user.favedEventsID && user.favedEventsID.includes(event.id)}
                   handleCardClick={redirectToEvent}
-                  // handleFavorite={handleFavoriteEvent}
+                  handleFavorite={handleFavoriteEvent}
                   cardStyle={{ width: '40%' }}
                 />
               ))}
@@ -233,8 +253,9 @@ function UserHome (props) {
                   event={event}
                   key={event.id}
                   variant='user'
+                  favorited={user && user.favedEventsID && user.favedEventsID.includes(event.id)}
                   handleCardClick={redirectToEvent}
-                  // handleFavorite={handleFavoriteEvent}
+                  handleFavorite={handleFavoriteEvent}
                   cardStyle={{ width: '40%' }}
                 />
               ))}

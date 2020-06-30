@@ -64,6 +64,7 @@ function UserHome (props) {
              * sets next event to 'None Registered!' if no events found
              */
   const getNextEvent = async () => {
+    if (!props.user) return null
     const params = new URLSearchParams({
       id: props.user.id
     })
@@ -107,7 +108,7 @@ function UserHome (props) {
     return (
       <Card className={classes.root}>
         <CardContent>
-          <Typography variant='h2' className={classes.header}>Hi {props.user.fname}!</Typography>
+          <Typography variant='h2' className={classes.header}>Hi {props.user && props.user.fname}!</Typography>
           <Typography className={classes.reward}>You are X events away from a reward!</Typography>
         </CardContent>
         <img src={House} className={classes.house} alt='BizTech House' />

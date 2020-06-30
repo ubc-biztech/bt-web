@@ -59,6 +59,11 @@ const theme = createMuiTheme({
         color: COLOR.WHITE
       }
     },
+    MuiTabs: {
+      indicator: {
+        backgroundColor: COLOR.BIZTECH_GREEN
+      }
+    },
     MuiButton: {
       containedPrimary: {
         backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,

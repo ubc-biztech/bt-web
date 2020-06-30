@@ -6,7 +6,7 @@ import CardHeader from '@material-ui/core/CardHeader'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardMedia from '@material-ui/core/CardMedia'
 import {
-  // Star,
+  Star,
   StarBorder
 } from '@material-ui/icons'
 
@@ -31,6 +31,7 @@ function EventCard (props) {
     classes,
     cardStyle = {},
     event,
+    favorited = false,
     handleCardClick,
     handleSubMenuClick = () => {},
     handleFavorite = () => {},
@@ -61,9 +62,9 @@ function EventCard (props) {
               <MoreVertIcon />
             </IconButton>
           ) : (
-          // TODO: Check if is a user favorite
-          // <Star fontSize="large" onClick={() => { handleFavorite(event.id) }} style={styles.favoriteButton}/>
-            <StarBorder fontSize='large' onClick={() => { handleFavorite(event.id) }} style={styles.favoriteButton}/>
+            favorited
+              ? <Star fontSize='large' onClick={() => { handleFavorite(event.id, false) }} style={styles.favoriteButton}/>
+              : <StarBorder fontSize='large' onClick={() => { handleFavorite(event.id, true) }} style={styles.favoriteButton}/>
           )
         }>
       </CardHeader>
