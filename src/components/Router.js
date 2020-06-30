@@ -24,6 +24,7 @@ import UserHome from '../pages/member/UserHome'
 import UserEvents from '../pages/member/UserEvents'
 import EventRegister from '../pages/member/EventRegister'
 import Signup from '../pages/member/Signup'
+import NewMember from '../pages/member/NewMember'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
@@ -122,10 +123,10 @@ class Router extends Component {
                 path="/forbidden"
                 render={() => <Forbidden />} />
               <Route
-                path="/signup"
+                path="/new-member"
                 render={() => user.id
-                  ? <Redirect to="/" /> /* Allow signup only if user is not yet registered in DB*/
-                  : <Signup />} />
+                  ? <Redirect to="/" /> /* Allow create member only if user is not yet registered in DB*/
+                  : <NewMember />} />
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
@@ -169,6 +170,9 @@ class Router extends Component {
             <Route
               path='/login-redirect'
               component={LoginRedirect} />
+            <Route
+              path="/signup"
+              component={Signup} />
             <Route
               path='/'
               component={Login} />
