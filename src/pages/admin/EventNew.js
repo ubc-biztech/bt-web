@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import NewEventForm from '../../components/Forms/NewEvent'
+import EventView from '../../components/EventView'
 import { fetchBackend, log } from '../../utils'
 import { Helmet } from 'react-helmet'
 import { makeStyles } from '@material-ui/core/styles'
@@ -11,12 +12,13 @@ import Typography from '@material-ui/core/Typography'
 const useStyles = makeStyles(theme => ({
   layout: {
     [theme.breakpoints.up('sm')]: {
-      width: 600,
+      display: 'flex',
       margin: 'auto'
     }
   },
   paper: {
     [theme.breakpoints.up('sm')]: {
+      width: 600,
       margin: theme.spacing(3)
     }
   },
@@ -27,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function EventNew () {
   const classes = useStyles()
+  const [previewEvent, setPreviewEvent] = useState({})
 
   const validationSchema = Yup.object({
     ename: Yup.string().required(),
@@ -78,9 +81,13 @@ export default function EventNew () {
             validationSchema={validationSchema}
             onSubmit={submitValues}
           >
-            {props => <NewEventForm {...props} />}
+            {props => <NewEventForm updatePreview={setPreviewEvent} {...props} />}
           </Formik>
         </div>
+      </Paper>
+
+      <Paper className={classes.paper}>
+        <EventView event={previewEvent}/>
       </Paper>
     </div>
   )

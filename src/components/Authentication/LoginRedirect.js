@@ -44,7 +44,8 @@ function LoginRedirect (props) {
         const isAdminGroup = (authUser['cognito:groups'].includes('admin'))
         if (isAdminGroup) {
           populateUserAndRedirect(authUser, '/', true)
-        } // if biztech email, set them as admin (no need for 'sign in')
+        }
+        // if biztech email, set them as admin (no need for 'sign in')
         else if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
           // attempt to assign cognito group 'admin' to this user
           await fetchBackend('/admin', 'POST')

@@ -2,6 +2,9 @@
 
 In the project directory, you can run:
 
+### `npm lint`
+Runs linter. You may need to install eslint first `npm i -g eslint`
+
 ### `npm install`
 
 Installs dependencies (node_modules)

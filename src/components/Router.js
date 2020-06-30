@@ -79,8 +79,8 @@ class Router extends Component {
   // (otherwise, the login page will initially show on every refresh)
   componentDidMount () {
     if (!this.props.user) {
-    // If the user doesn't already exist in react, get the authenticated user
-    // also get events at the same time
+      // If the user doesn't already exist in react, get the authenticated user
+      // also get events at the same time
       Promise.all([
         this.getAuthenticatedUser()
       ])
@@ -105,7 +105,7 @@ class Router extends Component {
       user
         ? <BrowserRouter>
           <ScrollToTop />
-          <Nav />
+          <Nav admin={user.admin} />
           <div className='content'>
             {userNeedsRegister && <RegisterAlert />}
             <Switch>
@@ -148,7 +148,7 @@ class Router extends Component {
                 exact
                 path='/'
                 render={() => <AdminHome />}
-                altRender={() => <UserHome />} />
+                altRender={() => <UserHome user={user} />} />
 
               <Redirect to='/' />
 
