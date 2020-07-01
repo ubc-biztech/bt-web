@@ -15,29 +15,22 @@ import { useHistory, withRouter } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
 import { logout } from '../actions/UserActions'
-import WhiteBiztech from '../assets/whitebiztech.svg'
-import ColoredBiztech from '../assets/coloredbiztech.svg'
 import { COLOR } from '../constants/Constants'
+import Biztech from './Icons/Biztech'
+
+const ICON_SIZE = '32px'
 
 const styles = {
   list: {
-    width: '150px',
-    paddingTop: '95px'
+    width: '100px'
+  },
+  listItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   icon: {
-    width: '49px',
-    paddingTop: '28px',
-    paddingBottom: '28px',
-    cursor: 'pointer',
-    paddingLeft: '54px'
-  },
-  iconSize: {
-    fontSize: '30'
-  },
-  logout: {
-    marginTop: '330px',
-    cursor: 'pointer',
-    paddingLeft: '48px'
+    cursor: 'pointer'
   },
   paper: {
     backgroundColor: COLOR.BACKGROUND_COLOR
@@ -48,10 +41,10 @@ function Nav (props) {
   const { classes } = props
   const history = useHistory()
 
-  const selected = { color: COLOR.BIZTECH_GREEN, fontSize: '30', width: '43px' }
-  const unselected = { color: COLOR.WHITE, fontSize: '30', width: '43px' }
-  const barSelected = { borderLeft: `6px solid ${COLOR.BIZTECH_GREEN}`, height: '45px', marginTop: '28px', paddingBottom: '28px', backgroundPositionX: 'left' }
-  const barUnselected = { borderLeft: `6px solid ${COLOR.BACKGROUND_COLOR}`, height: '45px', marginTop: '28px', paddingBottom: '28px' }
+  const selected = { color: COLOR.BIZTECH_GREEN, fontSize: ICON_SIZE }
+  const unselected = { color: COLOR.WHITE, fontSize: ICON_SIZE }
+  const barSelected = { borderLeft: `6px solid ${COLOR.BIZTECH_GREEN}` }
+  const barUnselected = { borderLeft: `6px solid ${COLOR.BACKGROUND_COLOR}` }
 
   const pathname = window.location.pathname
   const [selectedItem, setSelectedItem] = useState(pathname)
@@ -76,13 +69,10 @@ function Nav (props) {
   function MenuItem (props) {
     const { label, icon, onClick, bar } = props
     return (
-      <ListItem onClick={onClick} aria-label={label} disableGutters={true}>
-        <div style={{ display: 'flex' }}>
-          <div style={bar} />
-          <ListItemIcon style={styles.icon}>
-            {icon}
-          </ListItemIcon>
-        </div>
+      <ListItem style={{ ...bar, ...styles.listItem }} onClick={onClick} aria-label={label} disableGutters={true}>
+        <ListItemIcon style={styles.icon}>
+          {icon}
+        </ListItemIcon>
       </ListItem>
     )
   }
@@ -93,19 +83,45 @@ function Nav (props) {
         <List style={styles.list}>
           {props.admin
             ? <React.Fragment>
-              <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/')} bar={selectedItem === '/' ? barSelected : barUnselected} />
-              <MenuItem label='Create Event' icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/event/new')} bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
+              <MenuItem
+                label='Home'
+                // icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={{ width: ICON_SIZE }} />}
+                onClick={handleItemClick.bind(null, '/')}
+                bar={selectedItem === '/' ? barSelected : barUnselected}
+              />
+              <MenuItem
+                label='Create Event'
+                icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />}
+                onClick={handleItemClick.bind(null, '/event/new')}
+                bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
+              <MenuItem
+                label='Logout'
+                icon={<ExitToAppIcon />}
+                onClick={logout} />
             </React.Fragment>
             : <React.Fragment>
-              <MenuItem label='Home' icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={selectedItem === '/' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/')} bar={selectedItem === '/' ? barSelected : barUnselected} />
-              <MenuItem label='Events' icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/events')} bar={selectedItem === '/events' ? barSelected : barUnselected} />
-              <MenuItem label='Profile' icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />} onClick={handleItemClick.bind(null, '/profile')} bar={selectedItem === '/profile' ? barSelected : barUnselected} />
+              <MenuItem
+                label='Home'
+                icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
+                onClick={handleItemClick.bind(null, '/')}
+                bar={selectedItem === '/' ? barSelected : barUnselected}
+              />
+              <MenuItem
+                label='Events'
+                icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />}
+                onClick={handleItemClick.bind(null, '/events')}
+                bar={selectedItem === '/events' ? barSelected : barUnselected} />
+              <MenuItem
+                label='Profile'
+                icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />}
+                onClick={handleItemClick.bind(null, '/profile')}
+                bar={selectedItem === '/profile' ? barSelected : barUnselected} />
+              <MenuItem
+                label='Logout'
+                icon={<ExitToAppIcon style={unselected} />}
+                onClick={logout}
+                bar={barUnselected} />
             </React.Fragment>}
-          <ListItem>
-            <ListItemIcon style={styles.logout} onClick={logout}>
-              <ExitToAppIcon style={styles.iconSize} />
-            </ListItemIcon>
-          </ListItem>
         </List>
       </Drawer>
     </div >
