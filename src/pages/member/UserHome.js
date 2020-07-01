@@ -10,33 +10,16 @@ import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 
 const useStyles = makeStyles({
-  root: {
-  },
-  home: {
-    color: COLOR.BIZTECH_GREEN,
-    fontStyle: 'normal',
-    fontWeight: 'bold'
-  },
   container: {
     display: 'flex'
-  },
-  header: {
-    fontStyle: 'normal',
-    fontWeight: 'bold'
-  },
-  reward: {
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontSize: '22px'
   },
   house: {
     position: 'absolute',
     left: '685px',
     top: '99px'
   },
-  title: {
-    color: COLOR.BIZTECH_GREEN,
-    fontWeight: 'bold'
+  green: {
+    color: COLOR.BIZTECH_GREEN
   },
   eventName: {
     fontSize: '24px',
@@ -106,7 +89,7 @@ function UserHome (props) {
 
   function CardComponent (props) {
     return (
-      <Card className={classes.root}>
+      <Card>
         <CardContent>
           {props.content}
           {props.children}
@@ -125,12 +108,12 @@ function UserHome (props) {
       <Helmet>
         <title>Biztech User Dashboard</title>
       </Helmet>
-      <Typography variant='h3'>Home</Typography>
+      <Typography variant='h1' className={classes.green}>Home</Typography>
       <div className={classes.container}>
         <div>
           <CardComponent>
             <Typography variant='h2'>Hi {props.user.fname}!</Typography>
-            <Typography className={classes.reward}>You are X events away from a reward!</Typography>
+            <Typography>You are X events away from a reward!</Typography>
             <img src={House} className={classes.house} alt='BizTech House' />
           </CardComponent>
           <CardComponent>
@@ -146,12 +129,12 @@ function UserHome (props) {
           </CardComponent>
           <div className={classes.container}>
             <CardComponent>
-              <Typography variant='h2' className={classes.title}>Next Event</Typography>
+              <Typography variant='h2' className={classes.green}>Next Event</Typography>
               <Typography className={classes.eventName}>{nextEvent.ename}</Typography>
               <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(nextEvent.startDate)}</Typography>
             </CardComponent>
             <CardComponent>
-              <Typography variant='h2' className={classes.title}>Featured</Typography>
+              <Typography variant='h2' className={classes.green}>Featured</Typography>
               <Typography className={classes.eventName}>{featuredEvent.ename}</Typography>
               <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(featuredEvent.startDate)}</Typography>
             </CardComponent>
