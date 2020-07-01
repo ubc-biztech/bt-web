@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Typography from '@material-ui/core/Typography'
-import EventCard from './EventCard'
 import { fetchBackend, updateEvents } from '../../utils'
 import { COLOR } from '../../constants/Constants'
 import House from '../../assets/house.svg'
@@ -34,13 +33,26 @@ const useStyles = makeStyles({
     position: 'absolute',
     left: '685px',
     top: '99px'
+  },
+  title: {
+    color: COLOR.BIZTECH_GREEN,
+    fontWeight: 'bold'
+  },
+  eventName: {
+    fontSize: '24px',
+    fontWeight: 'normal'
+  },
+  eventDate: {
+    fontSize: '20px',
+    fontWeight: 'normal',
+    color: COLOR.FONT_COLOR
   }
 })
 
 function UserHome (props) {
   const classes = useStyles()
-  const [featuredEvent, setFeaturedEvent] = useState()
-  const [nextEvent, setNextEvent] = useState()
+  const [featuredEvent, setFeaturedEvent] = useState({})
+  const [nextEvent, setNextEvent] = useState({})
   const getFeaturedEvent = () => {
     if (props.events && props.events.length) {
       setFeaturedEvent(props.events[Math.floor(Math.random() * (props.events.length - 1))])
@@ -92,27 +104,20 @@ function UserHome (props) {
     getNextEvent()
   }
 
-  function Greeting (props) {
+  function CardComponent (props) {
     return (
       <Card className={classes.root}>
         <CardContent>
-          <Typography variant='h2'>Hi {props.user.fname}!</Typography>
-          <Typography className={classes.reward}>You are X events away from a reward!</Typography>
+          {props.content}
+          {props.children}
         </CardContent>
-        <img src={House} className={classes.house} alt='BizTech House' />
       </Card>
     )
   }
 
-  function SubComponent (props) {
-    return (
-      <Card className={classes.root}>
-        <CardContent>
-          <Typography variant='h2'>{props.header}</Typography>
-          {props.content}
-        </CardContent>
-      </Card>
-    )
+  function eventDate (date) {
+    return new Date(date)
+      .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })
   }
 
   return (
@@ -123,15 +128,33 @@ function UserHome (props) {
       <Typography variant='h3'>Home</Typography>
       <div className={classes.container}>
         <div>
-          <Greeting user={props.user} />
-          <SubComponent header='Progress' />
+          <CardComponent>
+            <Typography variant='h2'>Hi {props.user.fname}!</Typography>
+            <Typography className={classes.reward}>You are X events away from a reward!</Typography>
+            <img src={House} className={classes.house} alt='BizTech House' />
+          </CardComponent>
+          <CardComponent>
+            <Typography variant='h2'>Progress</Typography>
+          </CardComponent>
         </div>
         <div>
-          <SubComponent header='Sticker Collection' />
-          <SubComponent header='Prizes' />
+          <CardComponent>
+            <Typography variant='h2'>Sticker Collection</Typography>
+          </CardComponent>
+          <CardComponent>
+            <Typography variant='h2'>Prizes</Typography>
+          </CardComponent>
           <div className={classes.container}>
-            <EventCard type={'Next Event'} event={nextEvent} />
-            <EventCard type={'Featured'} event={featuredEvent} />
+            <CardComponent>
+              <Typography variant='h2' className={classes.title}>Next Event</Typography>
+              <Typography className={classes.eventName}>{nextEvent.ename}</Typography>
+              <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(nextEvent.startDate)}</Typography>
+            </CardComponent>
+            <CardComponent>
+              <Typography variant='h2' className={classes.title}>Featured</Typography>
+              <Typography className={classes.eventName}>{featuredEvent.ename}</Typography>
+              <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(featuredEvent.startDate)}</Typography>
+            </CardComponent>
           </div>
         </div>
       </div>
