@@ -8,7 +8,6 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import zIndex from '@material-ui/core/styles/zIndex'
 
 const useStyles = makeStyles({
   container: {
