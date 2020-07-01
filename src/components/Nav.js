@@ -74,53 +74,51 @@ function Nav (props) {
   }
 
   return (
-    <div>
-      <Drawer variant='permanent' classes={{ paper: classes.paper }}>
-        <List style={styles.list}>
-          {props.admin
-            ? <React.Fragment>
-              <MenuItem
-                label='Home'
-                icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
-                onClick={handleItemClick.bind(null, '/')}
-                bar={selectedItem === '/' ? barSelected : barUnselected}
-              />
-              <MenuItem
-                label='Create Event'
-                icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />}
-                onClick={handleItemClick.bind(null, '/event/new')}
-                bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
-              <MenuItem
-                label='Logout'
-                icon={<ExitToAppIcon />}
-                onClick={logout} />
-            </React.Fragment>
-            : <React.Fragment>
-              <MenuItem
-                label='Home'
-                icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
-                onClick={handleItemClick.bind(null, '/')}
-                bar={selectedItem === '/' ? barSelected : barUnselected}
-              />
-              <MenuItem
-                label='Events'
-                icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />}
-                onClick={handleItemClick.bind(null, '/events')}
-                bar={selectedItem === '/events' ? barSelected : barUnselected} />
-              <MenuItem
-                label='Profile'
-                icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />}
-                onClick={handleItemClick.bind(null, '/profile')}
-                bar={selectedItem === '/profile' ? barSelected : barUnselected} />
-              <MenuItem
-                label='Logout'
-                icon={<ExitToAppIcon style={unselected} />}
-                onClick={logout}
-                bar={barUnselected} />
-            </React.Fragment>}
-        </List>
-      </Drawer>
-    </div >
+    <Drawer variant='permanent' classes={{ paper: classes.paper }}>
+      <List style={styles.list}>
+        {props.admin
+          ? <React.Fragment>
+            <MenuItem
+              label='Home'
+              icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
+              onClick={handleItemClick.bind(null, '/')}
+              bar={selectedItem === '/' ? barSelected : barUnselected}
+            />
+            <MenuItem
+              label='Create Event'
+              icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />}
+              onClick={handleItemClick.bind(null, '/event/new')}
+              bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
+            <MenuItem
+              label='Logout'
+              icon={<ExitToAppIcon />}
+              onClick={logout} />
+          </React.Fragment>
+          : <React.Fragment>
+            <MenuItem
+              label='Home'
+              icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
+              onClick={handleItemClick.bind(null, '/')}
+              bar={selectedItem === '/' ? barSelected : barUnselected}
+            />
+            <MenuItem
+              label='Events'
+              icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />}
+              onClick={handleItemClick.bind(null, '/events')}
+              bar={selectedItem === '/events' ? barSelected : barUnselected} />
+            <MenuItem
+              label='Profile'
+              icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />}
+              onClick={handleItemClick.bind(null, '/profile')}
+              bar={selectedItem === '/profile' ? barSelected : barUnselected} />
+            <MenuItem
+              label='Logout'
+              icon={<ExitToAppIcon style={unselected} />}
+              onClick={logout}
+              bar={barUnselected} />
+          </React.Fragment>}
+      </List>
+    </Drawer>
   )
 }
 

@@ -3,29 +3,22 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import Card from '@material-ui/core/Card'
 import { COLOR } from '../../constants/Constants'
+import CardContent from '@material-ui/core/CardContent'
 
 const styles = {
   page: {
-    width: '345px',
-    marginRight: '34px',
-    marginTop: '27px'
+    width: '345px'
   },
   title: {
     color: COLOR.BIZTECH_GREEN,
-    fontWeight: 'bold',
-    paddingLeft: '37px',
-    paddingTop: '10px',
-    paddingBottom: '15px'
+    fontWeight: 'bold'
   },
   eventName: {
     fontSize: '24px',
-    paddingLeft: '37px',
     fontWeight: 'normal'
   },
   eventDate: {
     fontSize: '20px',
-    paddingLeft: '37px',
-    paddingBottom: '23px',
     fontWeight: 'normal',
     color: COLOR.FONT_COLOR
   }
@@ -45,9 +38,11 @@ function EventCard (props) {
 
   return (
     <Card classes={{ root: classes.page }}>
-      <Typography variant='h2' style={styles.title}>{props.type}</Typography>
-      <Typography style={styles.eventName}>{eventName}</Typography>
-      <Typography style={styles.eventDate}>{eventDate}</Typography>
+      <CardContent>
+        <Typography variant='h2' style={styles.title}>{props.type}</Typography>
+        <Typography style={styles.eventName}>{eventName}</Typography>
+        <Typography style={styles.eventDate}>{eventDate}</Typography>
+      </CardContent>
     </Card>
   )
 }

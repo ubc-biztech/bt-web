@@ -12,34 +12,23 @@ import { connect } from 'react-redux'
 
 const useStyles = makeStyles({
   root: {
-    width: '719px',
-    marginTop: '27px'
   },
   home: {
     color: COLOR.BIZTECH_GREEN,
     fontStyle: 'normal',
-    fontWeight: 'bold',
-    paddingLeft: '85px',
-    paddingTop: '50px'
-  },
-  page: {
-    height: '100vh'
+    fontWeight: 'bold'
   },
   container: {
     display: 'flex'
   },
   header: {
     fontStyle: 'normal',
-    fontWeight: 'bold',
-    paddingLeft: '76px',
-    paddingTop: '45px'
+    fontWeight: 'bold'
   },
   reward: {
     fontStyle: 'normal',
     fontWeight: 'normal',
-    fontSize: '22px',
-    paddingLeft: '76px',
-    paddingTop: '15px'
+    fontSize: '22px'
   },
   house: {
     position: 'absolute',
@@ -59,10 +48,10 @@ function UserHome (props) {
   }
 
   /**
-             * gets the next event that the user is registered for
-             * verifies that the event is after the current time
-             * sets next event to 'None Registered!' if no events found
-             */
+   * gets the next event that the user is registered for
+   * verifies that the event is after the current time
+   * sets next event to 'None Registered!' if no events found
+   */
   const getNextEvent = async () => {
     const params = new URLSearchParams({
       id: props.user.id
@@ -107,7 +96,7 @@ function UserHome (props) {
     return (
       <Card className={classes.root}>
         <CardContent>
-          <Typography variant='h2' className={classes.header}>Hi {props.user.fname}!</Typography>
+          <Typography variant='h2'>Hi {props.user.fname}!</Typography>
           <Typography className={classes.reward}>You are X events away from a reward!</Typography>
         </CardContent>
         <img src={House} className={classes.house} alt='BizTech House' />
@@ -117,25 +106,27 @@ function UserHome (props) {
 
   function SubComponent (props) {
     return (
-      <Card classes={{ root: classes.root }}>
-        <Typography variant='h2' className={classes.header}>{props.header}</Typography>
-        {props.content}
+      <Card className={classes.root}>
+        <CardContent>
+          <Typography variant='h2'>{props.header}</Typography>
+          {props.content}
+        </CardContent>
       </Card>
     )
   }
 
   return (
-    <div className={classes.page}>
+    <div>
       <Helmet>
         <title>Biztech User Dashboard</title>
       </Helmet>
-      <Typography className={classes.home} variant='h3'>Home</Typography>
+      <Typography variant='h3'>Home</Typography>
       <div className={classes.container}>
-        <div style={{ marginLeft: '85px' }}>
+        <div>
           <Greeting user={props.user} />
           <SubComponent header='Progress' />
         </div>
-        <div style={{ marginLeft: '34px' }}>
+        <div>
           <SubComponent header='Sticker Collection' />
           <SubComponent header='Prizes' />
           <div className={classes.container}>
