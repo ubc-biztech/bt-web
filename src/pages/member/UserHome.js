@@ -8,15 +8,37 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
+import zIndex from '@material-ui/core/styles/zIndex'
 
 const useStyles = makeStyles({
   container: {
-    display: 'flex'
+    maxWidth: '1200px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: 'auto',
+    padding: '14px'
+  },
+  header: {
+    color: COLOR.BIZTECH_GREEN,
+    width: '100%'
+  },
+  column: {
+    flex: '1'
+  },
+  card: {
+    position: 'relative',
+    margin: '10px 10px 0 0',
+    overflow: 'visible'
+  },
+  flexbox: {
+    display: 'flex',
+    width: '100%'
   },
   house: {
     position: 'absolute',
-    left: '685px',
-    top: '99px'
+    width: '33%',
+    bottom: '0px',
+    right: '10px'
   },
   green: {
     color: COLOR.BIZTECH_GREEN
@@ -89,7 +111,7 @@ function UserHome (props) {
 
   function CardComponent (props) {
     return (
-      <Card>
+      <Card className={classes.card}>
         <CardContent>
           {props.content}
           {props.children}
@@ -104,13 +126,13 @@ function UserHome (props) {
   }
 
   return (
-    <div>
+    <React.Fragment>
       <Helmet>
         <title>Biztech User Dashboard</title>
       </Helmet>
-      <Typography variant='h1' className={classes.green}>Home</Typography>
       <div className={classes.container}>
-        <div>
+        <Typography variant='h1' className={classes.header}>Home</Typography>
+        <div className={classes.column}>
           <CardComponent>
             <Typography variant='h2'>Hi {props.user.fname}!</Typography>
             <Typography>You are X events away from a reward!</Typography>
@@ -120,29 +142,32 @@ function UserHome (props) {
             <Typography variant='h2'>Progress</Typography>
           </CardComponent>
         </div>
-        <div>
+        <div className={classes.column}>
           <CardComponent>
             <Typography variant='h2'>Sticker Collection</Typography>
           </CardComponent>
           <CardComponent>
             <Typography variant='h2'>Prizes</Typography>
           </CardComponent>
-          <div className={classes.container}>
-            <CardComponent>
-              <Typography variant='h2' className={classes.green}>Next Event</Typography>
-              <Typography className={classes.eventName}>{nextEvent.ename}</Typography>
-              <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(nextEvent.startDate)}</Typography>
-            </CardComponent>
-            <CardComponent>
-              <Typography variant='h2' className={classes.green}>Featured</Typography>
-              <Typography className={classes.eventName}>{featuredEvent.ename}</Typography>
-              <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(featuredEvent.startDate)}</Typography>
-            </CardComponent>
+          <div className={classes.flexbox}>
+            <div className={classes.column}>
+              <CardComponent>
+                <Typography variant='h2' className={classes.green}>Next Event</Typography>
+                <Typography className={classes.eventName}>{nextEvent.ename}</Typography>
+                <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(nextEvent.startDate)}</Typography>
+              </CardComponent>
+            </div>
+            <div className={classes.column}>
+              <CardComponent>
+                <Typography variant='h2' className={classes.green}>Featured</Typography>
+                <Typography className={classes.eventName}>{featuredEvent.ename}</Typography>
+                <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(featuredEvent.startDate)}</Typography>
+              </CardComponent>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
+    </React.Fragment>
   )
 }
 
