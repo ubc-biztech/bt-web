@@ -1,3 +1,7 @@
-.menu-tag {
-    padding-left: 10px;
+.navItem {
+    margin: 12px 0;
+}
+
+.navItem:last-child {
+    margin-top: auto;
 }

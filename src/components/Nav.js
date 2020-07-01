@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import {
   Drawer,
   List,
-  ListItem,
-  ListItemIcon
+  ListItem
 } from '@material-ui/core'
 import './Nav.scss'
 import { withStyles } from '@material-ui/styles'
@@ -22,14 +21,13 @@ const ICON_SIZE = '32px'
 
 const styles = {
   list: {
-    width: '100px'
+    height: '100%',
+    width: '100px',
+    display: 'flex',
+    flexDirection: 'column'
   },
   listItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center'
-  },
-  icon: {
+    justifyContent: 'center',
     cursor: 'pointer'
   },
   paper: {
@@ -69,10 +67,8 @@ function Nav (props) {
   function MenuItem (props) {
     const { label, icon, onClick, bar } = props
     return (
-      <ListItem style={{ ...bar, ...styles.listItem }} onClick={onClick} aria-label={label} disableGutters={true}>
-        <ListItemIcon style={styles.icon}>
-          {icon}
-        </ListItemIcon>
+      <ListItem className='navItem' style={{ ...bar, ...styles.listItem }} onClick={onClick} aria-label={label} disableGutters={true}>
+        {icon}
       </ListItem>
     )
   }
@@ -85,7 +81,7 @@ function Nav (props) {
             ? <React.Fragment>
               <MenuItem
                 label='Home'
-                // icon={<img src={selectedItem === '/' ? ColoredBiztech : WhiteBiztech} alt='Home' style={{ width: ICON_SIZE }} />}
+                icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
                 onClick={handleItemClick.bind(null, '/')}
                 bar={selectedItem === '/' ? barSelected : barUnselected}
               />
