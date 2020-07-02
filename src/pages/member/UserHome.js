@@ -47,13 +47,13 @@ const useStyles = makeStyles({
     fontWeight: 'normal'
   },
   eventDate: {
-    fontSize: '20px',
     fontWeight: 'normal',
     color: COLOR.FONT_COLOR
   }
 })
 
 function UserHome (props) {
+  console.log(props)
   const classes = useStyles()
   const [featuredEvent, setFeaturedEvent] = useState({})
   const [nextEvent, setNextEvent] = useState({})
@@ -99,11 +99,12 @@ function UserHome (props) {
       })
   }
 
+  if (!props.events) {
+    updateEvents()
+  }
+
   // set featured event and nextEvent on initial render
-  if (!featuredEvent && !nextEvent) {
-    if (!props.events) {
-      updateEvents()
-    }
+  if (!featuredEvent.ename && !nextEvent.ename) {
     getFeaturedEvent()
     getNextEvent()
   }
@@ -112,7 +113,6 @@ function UserHome (props) {
     return (
       <Card className={classes.card}>
         <CardContent>
-          {props.content}
           {props.children}
         </CardContent>
       </Card>
@@ -121,7 +121,7 @@ function UserHome (props) {
 
   function eventDate (date) {
     return new Date(date)
-      .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })
+    .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })
   }
 
   return (
@@ -160,7 +160,7 @@ function UserHome (props) {
               <CardComponent>
                 <Typography variant='h2' className={classes.green}>Featured</Typography>
                 <Typography className={classes.eventName}>{featuredEvent.ename}</Typography>
-                <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(featuredEvent.startDate)}</Typography>
+                <Typography className={classes.eventDate}>{featuredEvent.startDate && eventDate(featuredEvent.startDate)}</Typography>
               </CardComponent>
             </div>
           </div>
