@@ -1,8 +1,8 @@
-import { SET_EVENTS } from '../constants/Constants';
+import { SET_EVENTS } from '../constants/Constants'
 
-export function setEvents(events) {
+export function setEvents (events) {
   return {
     type: SET_EVENTS,
     events
-  };
+  }
 }

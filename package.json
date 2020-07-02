@@ -8,13 +8,13 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.53",
     "@material-ui/pickers": "^3.2.8",
+    "@material-ui/styles": "^4.10.0",
     "aws-amplify": "^2.1.0",
     "date-fns": "^2.0.0-beta.5",
-    "eslint": "^6.7.1",
-    "eslint-plugin-react": "^7.16.0",
     "formik": "^2.0.7",
+    "markdown-to-jsx": "^6.11.4",
     "material-table": "^1.54.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "query-string": "^6.9.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -36,7 +36,8 @@
     "generate:prod": "cross-env GENERATE_SOURCEMAP=false REACT_APP_STAGE=production npm run build",
     "deploy": "aws s3 sync build/ s3://biztech-web",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint \"**/*.js\" --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -54,6 +55,12 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^6.0.3"
+    "cross-env": "^6.0.3",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-standard": "^4.0.1"
   }
 }

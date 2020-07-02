@@ -1,139 +1,103 @@
-import React from 'react';
-import { Auth } from "aws-amplify";
-import { useHistory } from "react-router-dom";
-import { connect } from "react-redux"
-import * as Yup from "yup"
-import { Formik } from "formik";
+import React from 'react'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
 
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import Person from '@material-ui/icons/Person'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import Typography from '@material-ui/core/Typography'
 
-import NewMember from '../../components/Forms/NewMember';
-
-import { log, fetchBackend } from '../../utils'
-import { setUser } from "../../actions/UserActions"
+import { Auth } from 'aws-amplify'
+import { setUser } from '../../actions/UserActions'
+import { connect } from 'react-redux'
+import { Helmet } from 'react-helmet'
 
 const useStyles = makeStyles(theme => ({
-  layout: {
-    [theme.breakpoints.up('sm')]: {
-      width: 600,
-      margin: 'auto',
-    },
-  },
   paper: {
-    [theme.breakpoints.up('sm')]: {
-      margin: theme.spacing(3),
-    },
+    marginTop: theme.spacing(10),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
-  content: {
-    padding: theme.spacing(3),
+  root: {
+    borderRadius: 12,
+    minWidth: 256,
+    textAlign: 'center',
+    padding: theme.spacing(4)
+  },
+  avatar: {
+    margin: 'auto',
+    backgroundColor: '#54D260'
+  },
+  header: {
+    paddingBottom: theme.spacing(1)
+  },
+  button: {
+    marginTop: theme.spacing(2)
+  },
+  left: {
+    float: 'left'
+  },
+  socialIcon: {
+    marginTop: '5px',
+    marginRight: '8px',
+    width: '19px'
   }
-}));
+}))
 
-const NewMemberRegisterFormContainer = (props) => {
-  const classes = useStyles();
-  const history = useHistory();
-
-  const validationSchema = Yup.object({
-    email: Yup.string().email().required(),
-    id: Yup.number('Valid Student ID required')
-      .min(9999999, 'Valid Student ID required')
-      .max(100000000, 'Valid Student ID required')
-      .required(),
-    fname: Yup.string().required('First name is required'),
-    lname: Yup.string().required('Last name is required'),
-    faculty: Yup.string().required('Faculty is required'),
-    year: Yup.string().required('Level of study is required'),
-    diet: Yup.string().required('Dietary restriction is required'),
-  });
-
-  // form initial values (if exist). If email exists will disable email field
-  const { user } = props;
-  const initialValues = {
-    email: user?.email || "",
-    fname: user?.fname || "",
-    lname: user?.lname || "",
-  };
-
-  const submitValues = async (values) => {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values;
-
-    //TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    const body = {
-      email,
-      fname,
-      lname,
-      id,
-      faculty,
-      year,
-      diet,
-      heardFrom,
-      gender
-    };
-    const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
-    await Auth.updateUserAttributes(authUser, { 'custom:student_id': id });
-
-    fetchBackend('/users', 'POST', body)
-      .then(async () => {
-        const admin = email.substring(email.indexOf("@") + 1, email.length) === 'ubcbiztech.com';
-
-        const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
-        await Auth.updateUserAttributes(authUser, { 'custom:student_id': id });
-
-        props.setUser({
-          email,
-          fname,
-          lname,
-          id,
-          faculty,
-          year,
-          diet,
-          heardFrom,
-          gender,
-          admin
-        });
-        alert('Thanks for signing up!');
-        history.push('/');
-      })
-      .catch(err => {
-        //TODO: parse out error code 409
-        log(err)
-        alert('A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.')
-      })
+function Signup (props) {
+  const classes = useStyles()
+  const inviteCode = new URLSearchParams(props.location.search).get('invite')
+  if (inviteCode) {
+    sessionStorage.setItem('inviteCode', inviteCode)
   }
 
   return (
-    <div className={classes.layout}>
-      <Paper className={classes.paper}>
-        <div className={classes.content}>
-          <Typography variant="h4" align="center" gutterBottom>
-            Member Information
-            </Typography>
-
-          <Typography variant="subtitle1" gutterBottom>
-            To avoid having to provide your information every time you sign up for an event, please fill out the form below.
-            The given information will allow UBC BizTech to better our future events and cater content towards our members
-            needs.
-            </Typography>
-
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={submitValues}
+    <Container component='main' maxWidth='xs'>
+      <Helmet>
+        <title>UBC BizTech - Sign Up</title>
+      </Helmet>
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Card className={classes.root} width='400px'>
+          <Avatar className={classes.avatar}>
+            <Person />
+          </Avatar>
+          <CardHeader title='Sign Up' className={classes.header} />
+          {
+            inviteCode
+              ? <Typography className={classes.subtext}>
+                To complete your registration, please sign up
+              </Typography> : ''
+          }
+          <Button
+            className={classes.button}
+            onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
+            variant='contained'
+            color='primary'
           >
-            {props => <NewMember {...props} />}
-          </Formik>
-        </div>
-      </Paper>
-    </div>
+            <div className={classes.left}>
+              <img
+                className={classes.socialIcon}
+                alt='Google'
+                src='./google.png'
+              />
+            </div>
+              Sign Up with Google
+          </Button>
+        </Card>
+      </div>
+    </Container>
   )
 }
 
 const mapStateToProps = state => {
   return {
     user: state.userState.user
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, { setUser })(NewMemberRegisterFormContainer);
+export default connect(mapStateToProps, { setUser })(Signup)

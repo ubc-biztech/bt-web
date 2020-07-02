@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import MaterialTable from 'material-table';
-import { fetchBackend } from '../utils';
-import { REGISTRATION_STATUS } from '../constants/Constants';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import { RadialChart, XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, VerticalBarSeries } from 'react-vis';
+import React, { Component } from 'react'
+import MaterialTable from 'material-table'
+import { fetchBackend } from '../utils'
+import { REGISTRATION_STATUS, COLOR } from '../constants/Constants'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import { RadialChart, XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, VerticalBarSeries } from 'react-vis'
 
 const styles = {
   stats: {
@@ -24,8 +24,8 @@ const styles = {
  * When a user check-in status is changed, the backend is updated and it fetches new data
  */
 export class EventUserTable extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       registrations: {},
       faculties: {},
@@ -38,35 +38,35 @@ export class EventUserTable extends Component {
       yearVisible: { visible: false, style: { display: 'none' } },
       dietaryVisible: { visible: false, style: { display: 'none' } },
       gendersVisible: { visible: false, style: { display: 'none' } },
-      heardFromVisible: { visible: false, style: { display: 'none' } },
-    };
+      heardFromVisible: { visible: false, style: { display: 'none' } }
+    }
   }
 
-  async updateUserRegistrationStatus(id, registrationStatus) {
+  async updateUserRegistrationStatus (id, registrationStatus) {
     const body = {
       eventID: this.props.event.id,
       registrationStatus
-    };
+    }
 
-    await fetchBackend(`/registrations/${id}`, 'PUT', body);
+    await fetchBackend(`/registrations/${id}`, 'PUT', body)
 
-    this.getEventTableData(this.props.event.id);
+    this.getEventTableData(this.props.event.id)
   }
 
   /* updates stats and the rows in the table
      faculty, gender, dietary, and year stats are only computed on the initial render of the component
      # of registered/checkedin etc. is computed every single time this function is called
   */
-  async getEventTableData(eventID) {
+  async getEventTableData (eventID) {
     let params = new URLSearchParams({
       eventID: eventID
     })
     await fetchBackend(`/registrations/?${params}`, 'GET')
       .then(response => {
-        let heardFrom = {};
+        const heardFrom = {}
         response.data.forEach(user => {
           if (user.heardFromData) {
-            heardFrom[user.heardFrom] = heardFrom.hasOwnProperty(user.heardFrom) ? heardFrom[user.heardFrom] + 1 : 1;
+            heardFrom[user.heardFrom] = heardFrom.hasOwnProperty(user.heardFrom) ? heardFrom[user.heardFrom] + 1 : 1
           }
         })
         this.setState({ heardFrom })
@@ -74,59 +74,59 @@ export class EventUserTable extends Component {
 
     params = new URLSearchParams({
       users: true
-    });
+    })
 
     await fetchBackend(`/events/${eventID}?${params}`, 'GET')
       .then(async users => {
         this.registrationNumbers(users)
-        this.notRegistrationNumbers(users);
-      });
+        this.notRegistrationNumbers(users)
+      })
   }
 
   /**
-   * 
+   *
    * @param {array of users} users
-   * calculates the stats for registration and updates the data for charts 
+   * calculates the stats for registration and updates the data for charts
    * each data set is an array of data (arrays) sets b/c different charts accept different data
    */
-  async registrationNumbers(users) {
-    let registrations = {
+  async registrationNumbers (users) {
+    const registrations = {
     }
     users.forEach(user => {
       if (user.registrationStatus) {
-        registrations[user.registrationStatus] = registrations[user.registrationStatus] ? registrations[user.registrationStatus] + 1 : 1;
+        registrations[user.registrationStatus] = registrations[user.registrationStatus] ? registrations[user.registrationStatus] + 1 : 1
       }
     })
 
     this.setState({
       rows: users,
       registrations
-    });
+    })
   }
 
   /**
-  * 
+  *
   * @param {array of users} users
   * calculates any stats that aren't registration stats
   * each data set is an array of data (arrays) sets b/c different charts accept different data
   */
-  async notRegistrationNumbers(users) {
-    let faculties = {}, years = {}, dietary = {}, genders = {}
+  async notRegistrationNumbers (users) {
+    const faculties = {}; const years = {}; const dietary = {}; const genders = {}
     users.forEach(user => {
       if (user.faculty) {
-        faculties[user.faculty] = faculties[user.faculty] ? faculties[user.faculty] + 1 : 1;
+        faculties[user.faculty] = faculties[user.faculty] ? faculties[user.faculty] + 1 : 1
       }
       if (user.year) {
-        const yearInt = parseInt(user.year);
+        const yearInt = parseInt(user.year)
         if (yearInt) {
-          years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1;
+          years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1
         }
       }
       if (user.diet) {
-        dietary[user.diet] = dietary[user.diet] ? dietary[user.diet] + 1 : 1;
+        dietary[user.diet] = dietary[user.diet] ? dietary[user.diet] + 1 : 1
       }
       if (user.gender) {
-        genders[user.gender] = genders[user.gender] ? genders[user.gender] + 1 : 1;
+        genders[user.gender] = genders[user.gender] ? genders[user.gender] + 1 : 1
       }
     })
 
@@ -135,34 +135,34 @@ export class EventUserTable extends Component {
       years,
       genders,
       dietary
-    });
+    })
   }
 
-  async updateEventTableData(eventID) {
+  async updateEventTableData (eventID) {
     const params = new URLSearchParams({
       users: true
-    });
+    })
 
     await fetchBackend(`/events/${eventID}?${params}`, 'GET')
       .then(async users => {
         this.registrationNumbers(users)
-      });
+      })
   }
 
-  componentDidMount() {
-    this.getEventTableData(this.props.event.id);
+  componentDidMount () {
+    this.getEventTableData(this.props.event.id)
   }
 
   /*
     the if statement is only used if an exec goes from one event directly to another event (not implemented right now)
   */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     if (prevProps.event.id !== this.props.event.id) {
-      this.updateEventTableData(this.props.event.id);
+      this.updateEventTableData(this.props.event.id)
     }
   }
 
-  render() {
+  render () {
     /**
      * Helper function to determine whether to display action for check-in or undo check-in
      * @param {*} rowData data about the current row
@@ -171,26 +171,26 @@ export class EventUserTable extends Component {
       switch (event.target.value) {
         case REGISTRATION_STATUS.REGISTERED:
           if (window.confirm(`Do you want to register ${rowData.fname} ${rowData.lname}?\nThis will send an email to the user.`)) {
-            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.REGISTERED);
+            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.REGISTERED)
           }
-          break;
+          break
         case REGISTRATION_STATUS.CHECKED_IN:
           if (window.confirm(`Do you want to check in ${rowData.fname} ${rowData.lname}?\nThis will NOT send an email to the user.`)) {
-            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CHECKED_IN);
+            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CHECKED_IN)
           }
-          break;
+          break
         case REGISTRATION_STATUS.WAITLISTED:
           if (window.confirm(`Do you want to waitlist ${rowData.fname} ${rowData.lname}?\nThis will send an email to the user.`)) {
-            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.WAITLISTED);
+            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.WAITLISTED)
           }
-          break;
+          break
         case REGISTRATION_STATUS.CANCELLED:
           if (window.confirm(`Did ${rowData.fname} ${rowData.lname} cancel?\nThis will send an email to the user.`)) {
-            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CANCELLED);
+            this.updateUserRegistrationStatus(rowData.id, REGISTRATION_STATUS.CANCELLED)
           }
-          break;
+          break
         default:
-          return {};
+          return {}
       }
     }
 
@@ -200,12 +200,12 @@ export class EventUserTable extends Component {
      */
     return (
       <React.Fragment>
-        <Statistic statName="Registration status: " statObj={this.state.registrations} />
-        <Statistic statName="Faculty: " statObj={this.state.faculties} />
-        <Statistic statName="Year level: " statObj={this.state.years} />
-        <Statistic statName="Dietary: " statObj={this.state.dietary} />
-        <Statistic statName="Gender: " statObj={this.state.genders} />
-        <Statistic statName="Heard about event from: " statObj={this.state.heardFrom} />
+        <Statistic statName='Registration status: ' statObj={this.state.registrations} />
+        <Statistic statName='Faculty: ' statObj={this.state.faculties} />
+        <Statistic statName='Year level: ' statObj={this.state.years} />
+        <Statistic statName='Dietary: ' statObj={this.state.dietary} />
+        <Statistic statName='Gender: ' statObj={this.state.genders} />
+        <Statistic statName='Heard about event from: ' statObj={this.state.heardFrom} />
 
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
@@ -236,7 +236,7 @@ export class EventUserTable extends Component {
                             ? '#F7D055'
                             : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
                               ? '#E15453'
-                              : '#FFF',
+                              : COLOR.LIGHT_BACKGROUND_COLOR,
                       paddingLeft: '10px'
                     }}>
                     <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
@@ -259,7 +259,9 @@ export class EventUserTable extends Component {
             actionsColumnIndex: 5,
             exportButton: true,
             headerStyle: {
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              backgroundColor: COLOR.CARD_PAPER_COLOR,
+              color: COLOR.FONT_COLOR
             },
             rowStyle: rowData => ({
 
@@ -267,8 +269,7 @@ export class EventUserTable extends Component {
           }}
         />
       </React.Fragment>
-
-    );
+    )
   }
 }
 
@@ -276,18 +277,18 @@ export class EventUserTable extends Component {
  * represents a statistic and shows a row of the stats with a dropdown for charts
  */
 class Statistic extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.changeVisibility = this.changeVisibility.bind(this)
     this.state = {
-      visibility: { visible: false, style: { display: 'none' } },
-    };
+      visibility: { visible: false, style: { display: 'none' } }
+    }
   }
 
   /*
   changes the visibility of the stats of whichever div was selected
   */
-  changeVisibility() {
+  changeVisibility () {
     const invisible = { visible: false, style: { display: 'none' } }
     const visible = { visible: true, style: { display: 'flex', paddingBottom: '20px', paddingLeft: '50px' } }
 
@@ -297,7 +298,8 @@ class Statistic extends React.Component {
       this.setState({ visibility: visible })
     }
   }
-  render() {
+
+  render () {
     const chartData = [
       Object.keys(this.props.statObj).map(key => {
         return {
@@ -317,7 +319,7 @@ class Statistic extends React.Component {
         <div style={styles.stats} onClick={this.changeVisibility}>
           <Typography style={styles.stat}>{this.props.statName} </Typography>
           {Object.keys(this.props.statObj).map(key => (<Typography key={key} style={styles.stat}>{key}: {this.props.statObj[key]}</Typography>))}
-          {this.props.statName === "Registration status: " ? <Typography style={styles.stat}>Total: {Object.values(this.props.statObj).reduce((total, amount) => total + amount, 0)}</Typography> : <Typography />}
+          {this.props.statName === 'Registration status: ' ? <Typography style={styles.stat}>Total: {Object.values(this.props.statObj).reduce((total, amount) => total + amount, 0)}</Typography> : <Typography />}
         </div>
         <div style={this.state.visibility.style}>
           <RadialChart
@@ -328,7 +330,7 @@ class Statistic extends React.Component {
             radius={140}
             innerRadius={100}
           />
-          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType="ordinal" width={300} height={300} >
+          <XYPlot margin={{ left: 40, right: 30, top: 30, bottom: 70 }} xType='ordinal' width={300} height={300} >
             <VerticalGridLines />
             <HorizontalGridLines />
             <XAxis tickLabelAngle={-45} />
@@ -344,4 +346,4 @@ class Statistic extends React.Component {
     )
   }
 }
-export default EventUserTable;
+export default EventUserTable
