@@ -223,7 +223,7 @@ function UserHome (props) {
                   event={event}
                   key={event.id}
                   variant='user'
-                  favorited={user && user.favedEventsID && user.favedEventsID.includes(event.id)}
+                  favorited={eventsFavoritedIds.includes(event.id)}
                   handleCardClick={redirectToEvent}
                   handleFavorite={handleFavoriteEvent}
                   cardStyle={{ width: '40%' }}
@@ -238,7 +238,7 @@ function UserHome (props) {
                   event={event}
                   key={event.id}
                   variant='user'
-                  favorited={user && user.favedEventsID && user.favedEventsID.includes(event.id)}
+                  favorited={eventsFavoritedIds.includes(event.id)}
                   handleCardClick={redirectToEvent}
                   handleFavorite={handleFavoriteEvent}
                   cardStyle={{ width: '40%' }}
@@ -253,7 +253,7 @@ function UserHome (props) {
                   event={event}
                   key={event.id}
                   variant='user'
-                  favorited={user && user.favedEventsID && user.favedEventsID.includes(event.id)}
+                  favorited={eventsFavoritedIds.includes(event.id)}
                   handleCardClick={redirectToEvent}
                   handleFavorite={handleFavoriteEvent}
                   cardStyle={{ width: '40%' }}
