@@ -62,11 +62,17 @@ const theme = createMuiTheme({
     MuiButton: {
       containedPrimary: {
         backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
-        color: COLOR.WHITE
+        color: COLOR.WHITE,
+        '&:hover': {
+          backgroundColor:COLOR.LIGHT_BACKGROUND_COLOR,
+        },
       },
       containedSecondary: {
         backgroundColor: "#303960",
-        color: COLOR.WHITE
+        color: COLOR.WHITE,
+        '&:hover': {
+          backgroundColor: "#303960",
+        },
       }
     },
     MuiPaper: {

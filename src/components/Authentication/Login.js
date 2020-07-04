@@ -116,7 +116,7 @@ function Login (props) {
             <Button style={styles.facebookIconBtn}
               onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
               variant='contained'
-              color='primary'
+              color='secondary'
             >
               <div style={styles.left}>
                 <img
