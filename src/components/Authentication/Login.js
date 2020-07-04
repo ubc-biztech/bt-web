@@ -27,15 +27,9 @@ const styles = {
   },
   facebookIconBtn: {
     marginTop: "10px",
-    backgroundColor: "#303960",
     paddingLeft: "10px",
     paddingRight: "10px",
-    color: '#ffffff'
   },
-
-  googleIconBtn: {
-    backgroundColor: "#fafafa",
-  }
 }
 
 const useStyles = makeStyles(theme => ({
@@ -121,7 +115,8 @@ function Login (props) {
             </Button>
             <Button style={styles.facebookIconBtn}
               onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
-              variant="contained"
+              variant='contained'
+              color='primary'
             >
               <div style={styles.left}>
                 <img

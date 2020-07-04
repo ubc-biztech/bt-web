@@ -63,6 +63,10 @@ const theme = createMuiTheme({
       containedPrimary: {
         backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
         color: COLOR.WHITE
+      },
+      containedSecondary: {
+        backgroundColor: "#303960",
+        color: COLOR.WHITE
       }
     },
     MuiPaper: {
