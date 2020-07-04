@@ -62,8 +62,19 @@ const theme = createMuiTheme({
     MuiButton: {
       containedPrimary: {
         backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
-        color: COLOR.WHITE
+        color: COLOR.WHITE,
+        '&:hover': {
+          backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
+        },
+      },
+      containedSecondary: {
+        backgroundColor: COLOR.BIZTECH_GREEN,
+        color:COLOR.WHITE,
+        '&:hover': {
+          backgroundColor: COLOR.BIZTECH_GREEN,
+        },
       }
+      
     },
     MuiPaper: {
       root: {

@@ -117,5 +117,5 @@ export default function EventNew () {
           alert('Failed. Event with that slug/id already exists')
         } else alert(err.message + ' Please contact a dev')
       })
-  }
+    }
 }

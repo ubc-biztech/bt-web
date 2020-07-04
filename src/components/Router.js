@@ -27,6 +27,7 @@ import NewMember from '../pages/member/NewMember'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
+import EventDetails from '../pages/admin/EventDetails'
 
 import { setUser } from '../actions/UserActions'
 import {
@@ -125,6 +126,10 @@ class Router extends Component {
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
 
+              <Route
+                path='/eventDetails/:id'
+                render={props => <EventDetails {...props} user={user} />} />
+
               {/* ADMIN ROUTES */}
               <AdminRoute
                 path='/user-dashboard'
@@ -138,6 +143,8 @@ class Router extends Component {
               <AdminRoute
                 path='/event/:id' // Need to make sure that this comes after 'new' and 'edit'
                 render={props => <EventView {...props} />} />
+
+              
 
               {/* HOME */}
               <AdminRoute
