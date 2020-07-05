@@ -22,9 +22,6 @@ function EventDetails(props) {
 
   // Like componentDidUpdate/DidMount
   useEffect(() => {
-    console.log("events obj====>", events);
-
-    console.log("event id====>", eventId);
     if (events && eventId) {
       setEvent(events.find(event => event.id === eventId));
     }

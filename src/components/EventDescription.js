@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
-import { makeStyles} from "@material-ui/core/styles";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Markdown from "./Markdown";
 import Paper from "@material-ui/core/Paper";
 import { COLOR } from "../constants/Constants";
-
+import { fetchBackend } from "../utils";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
@@ -46,29 +46,69 @@ const useStyles = makeStyles(theme => ({
   },
 
   button: {
-    marginLeft: "10px",
+    marginLeft: "10px"
   },
 
   buttonGroup: {
     position: "absolute",
     right: "100px"
-  },
+  }
 }));
 
-const handleClickFavouriteEvent = (favLogo, event, user) => {
-    console.log(event);
-    console.log(user);
-    //favLogo.style.fill = COLOR.BIZTECH_GREEN;
-}
+const handleClickReturnEvent = event => {};
 
-const handleClickReturnEvent = (event) => {
-   
-}
+/* updates stats and the rows in the table
+     faculty, gender, dietary, and year stats are only computed on the initial render of the component
+     # of registered/checkedin etc. is computed every single time this function is called
+  */
 
+let settingFavouriteData = false;
+const setFavouriteData = async (userID, eventID, isFavourite) => {
+  if(settingFavouriteData === true) {
+    return Promise.resolve('in_progress');
+  }
+  settingFavouriteData = true;
+  const bodyData = {
+    eventID: eventID,
+    isFavourite: isFavourite
+  }
+  try{
+    const response = await fetchBackend(`/users/favEvent/${userID}`, "PATCH", bodyData);
+    settingFavouriteData = false;
+    return Promise.resolve('succeed');
+  } catch(error) {
+    settingFavouriteData = false;
+    return Promise.reject(error);
+  }
+};
 
 const EventDescription = ({ user, event, children }) => {
   const classes = useStyles();
   const favLogo = useRef(null);
+  let [eventFavStatus, setEventFavStatus] = useState(false);
+
+  //called after the first dom mutation
+  useLayoutEffect(() => {
+    if (event && user && user.favedEventsID) {
+      if (user.favedEventsID.indexOf(event.id) !== -1) {
+        console.log("set to true");
+        setEventFavStatus(true);
+      }
+    }
+  }, [event, user]);
+
+  const handleClickFavouriteEvent = async (userID, eventID) => {
+    const currFavStatus = eventFavStatus; 
+    try{
+      const favResult = await setFavouriteData(userID, eventID, !currFavStatus);
+      if(favResult === 'succeed') {
+        setEventFavStatus(!currFavStatus);
+      }
+    }catch(error){
+      console.error(error);
+    }
+  };
+
   return (
     <div className={classes.content}>
       <div style={{ color: COLOR.WHITE }}>return</div>
@@ -77,7 +117,6 @@ const EventDescription = ({ user, event, children }) => {
           <Typography variant="h1" className={classes.title}>
             {event.id}
           </Typography>
-
           <svg
             className={classes.viewLogo}
             width="38"
@@ -102,9 +141,11 @@ const EventDescription = ({ user, event, children }) => {
             width="32"
             height="32"
             viewBox="0 0 32 32"
-            fill="none"
+            fill={eventFavStatus ? COLOR.BIZTECH_GREEN : "none"}
             xmlns="http://www.w3.org/2000/svg"
-            onClick={()=>{handleClickFavouriteEvent(favLogo, event, user)}}
+            onClick={() => {
+              handleClickFavouriteEvent(user.id, event.id);
+            }}
           >
             <path
               d="M15.8188 25.7411L23.0056 30.2748C24.3218 31.1056 25.9323 29.8774 25.586 28.324L23.681 19.7985L30.0367 14.0547C31.197 13.007 30.5735 11.0202 29.0495 10.8937L20.6851 10.1532L17.412 2.0973C16.8232 0.634235 14.8143 0.634235 14.2255 2.0973L10.9525 10.1351L2.58797 10.8757C1.064 11.0021 0.440562 12.989 1.60085 14.0366L7.95648 19.7805L6.05153 28.306C5.70517 29.8593 7.31572 31.0876 8.63188 30.2567L15.8188 25.7411Z"
@@ -114,10 +155,18 @@ const EventDescription = ({ user, event, children }) => {
         </div>
         <Markdown className={classes.description}>{event.description}</Markdown>
         <div className={classes.buttonGroup}>
-          <Button variant="contained" color="primary" className={classes.button}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
             see more
           </Button>
-          <Button variant="contained" color="secondary" className={classes.button}>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.button}
+          >
             sign me up
           </Button>
         </div>
