@@ -6,6 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import { COLOR } from "../constants/Constants";
 import { fetchBackend } from "../utils";
 import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import Slide from "@material-ui/core/Slide";
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -57,36 +59,62 @@ const useStyles = makeStyles(theme => ({
 
 const handleClickReturnEvent = event => {};
 
-/* updates stats and the rows in the table
-     faculty, gender, dietary, and year stats are only computed on the initial render of the component
-     # of registered/checkedin etc. is computed every single time this function is called
-  */
-
 let settingFavouriteData = false;
-const setFavouriteData = async (userID, eventID, isFavourite) => {
-  if(settingFavouriteData === true) {
-    return Promise.resolve('in_progress');
+const sendFavouriteData = async (userID, eventID, isFavourite) => {
+  if (settingFavouriteData === true) {
+    return Promise.resolve("in_progress");
   }
   settingFavouriteData = true;
   const bodyData = {
     eventID: eventID,
     isFavourite: isFavourite
-  }
-  try{
-    const response = await fetchBackend(`/users/favEvent/${userID}`, "PATCH", bodyData);
+  };
+  try {
+    const response = await fetchBackend(
+      `/users/favEvent/${userID}`,
+      "PATCH",
+      bodyData
+    );
     settingFavouriteData = false;
-    return Promise.resolve('succeed');
-  } catch(error) {
+    let responesMsg = "";
+    isFavourite ? (responesMsg = "favourite") : (responesMsg = "unfavourite");
+    responesMsg += " succeed";
+    return Promise.resolve(responesMsg);
+  } catch (error) {
     settingFavouriteData = false;
     return Promise.reject(error);
   }
 };
 
+const sendRegistrationData = async (id, eventID, heardFrom) => {
+  const body = {
+    id,
+    eventID,
+    heardFrom,
+    registrationStatus: "registered"
+  };
+  try {
+    await fetchBackend("/registrations", "POST", body);
+    alert("Signed Up");
+  } catch (err) {
+    if (err.status === 409) {
+      alert("You cannot sign up for this event again!");
+    } else {
+      alert("Signup failed");
+    }
+  }
+};
+
+const TransitionUp = props => {
+  return <Slide {...props} direction="up" />;
+};
+
 const EventDescription = ({ user, event, children }) => {
   const classes = useStyles();
   const favLogo = useRef(null);
-  let [eventFavStatus, setEventFavStatus] = useState(false);
-
+  const [eventFavStatus, setEventFavStatus] = useState(false);
+  const [snackOpen, setSnackOpen] = React.useState(false);
+  const [snackMsg, setSnackMsg] = React.useState("");
   //called after the first dom mutation
   useLayoutEffect(() => {
     if (event && user && user.favedEventsID) {
@@ -98,15 +126,28 @@ const EventDescription = ({ user, event, children }) => {
   }, [event, user]);
 
   const handleClickFavouriteEvent = async (userID, eventID) => {
-    const currFavStatus = eventFavStatus; 
-    try{
-      const favResult = await setFavouriteData(userID, eventID, !currFavStatus);
-      if(favResult === 'succeed') {
-        setEventFavStatus(!currFavStatus);
-      }
-    }catch(error){
+    const currFavStatus = eventFavStatus;
+    try {
+      const favResult = await sendFavouriteData(
+        userID,
+        eventID,
+        !currFavStatus
+      );
+      setEventFavStatus(!currFavStatus);
+      openSnackBar(favResult);
+    } catch (error) {
       console.error(error);
+      setSnackMsg(error);
+      openSnackBar(error);
     }
+  };
+
+  const openSnackBar = msg => {
+    setSnackMsg(msg);
+    setSnackOpen(true);
+    setTimeout(() => {
+      setSnackOpen(false);
+    }, 1000);
   };
 
   return (
@@ -171,6 +212,12 @@ const EventDescription = ({ user, event, children }) => {
           </Button>
         </div>
       </Paper>
+      <Snackbar
+        open={snackOpen}
+        TransitionComponent={TransitionUp}
+        message={snackMsg}
+        key="favourite"
+      />
     </div>
   );
 };
