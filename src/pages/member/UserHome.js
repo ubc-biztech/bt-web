@@ -53,7 +53,6 @@ const useStyles = makeStyles({
 })
 
 function UserHome (props) {
-  console.log(props)
   const classes = useStyles()
   const [featuredEvent, setFeaturedEvent] = useState({})
   const [nextEvent, setNextEvent] = useState({})
