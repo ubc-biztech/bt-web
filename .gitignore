@@ -43,3 +43,7 @@ awsconfiguration.json
 
 #firebase
 .firebase
+
+#vscode
+.vscode/launch.json
+.vscode/settings.json
