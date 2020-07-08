@@ -22,6 +22,7 @@ import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
 import EventRegister from '../pages/member/EventRegister'
+import QuickRegister from '../pages/member/QuickRegister'
 import Signup from '../pages/member/Signup'
 import NewMember from '../pages/member/NewMember'
 import EventView from '../pages/admin/EventView'
@@ -124,6 +125,9 @@ class Router extends Component {
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
+              <Route
+                path='/event/:id/quickregister'
+                render={() => <QuickRegister />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute

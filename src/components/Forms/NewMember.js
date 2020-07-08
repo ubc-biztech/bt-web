@@ -128,11 +128,10 @@ export default function NewMemberForm (props) {
         <Grid item xs={12}>
           <RadioGroupButtons
             {...props}
-            otherOption={false}
-            options={['Male', 'Female', 'Other/Prefer not to say']}
+            otherOption={true}
+            options={['He/Him/His', 'She/Her/Hers', 'Them/Them/Their', 'Prefer not to say']}
             groupName={'gender'}
-            displayName={'Gender'}
-          />
+            displayName={'Preferred Pronouns'} />
         </Grid>
 
         <Grid item xs={12}>

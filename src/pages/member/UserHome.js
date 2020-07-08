@@ -12,7 +12,6 @@ import { connect } from 'react-redux'
 
 const useStyles = makeStyles({
   root: {
-    width: '719px',
     marginTop: '27px'
   },
   home: {
@@ -45,6 +44,11 @@ const useStyles = makeStyles({
     position: 'absolute',
     left: '685px',
     top: '99px'
+  },
+  houseAlert: {
+    position: 'absolute',
+    left: '685px',
+    top: '170px'
   }
 })
 
@@ -92,6 +96,11 @@ function UserHome (props) {
           })
         }
       })
+      .catch(() => {
+        setNextEvent({
+          ename: 'None Registered!'
+        })
+      })
   }
 
   // set featured event and nextEvent on initial render
@@ -110,7 +119,7 @@ function UserHome (props) {
           <Typography variant='h2' className={classes.header}>Hi {props.user.fname}!</Typography>
           <Typography className={classes.reward}>You are X events away from a reward!</Typography>
         </CardContent>
-        <img src={House} className={classes.house} alt='BizTech House' />
+        <img src={House} className={!props.user.admin && !props.user.id ? classes.houseAlert : classes.house} alt='BizTech House' />
       </Card>
     )
   }
@@ -131,11 +140,11 @@ function UserHome (props) {
       </Helmet>
       <Typography className={classes.home} variant='h3'>Home</Typography>
       <div className={classes.container}>
-        <div style={{ marginLeft: '85px' }}>
+        <div style={{ marginLeft: '90px', flex: '1' }}>
           <Greeting user={props.user} />
           <SubComponent header='Progress' />
         </div>
-        <div style={{ marginLeft: '34px' }}>
+        <div style={{ marginLeft: '34px', marginRight: '90px', flex: '1' }}>
           <SubComponent header='Sticker Collection' />
           <SubComponent header='Prizes' />
           <div className={classes.container}>

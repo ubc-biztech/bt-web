@@ -21,7 +21,7 @@ import { COLOR } from '../constants/Constants'
 
 const styles = {
   list: {
-    width: '150px',
+    width: '140px',
     paddingTop: '95px'
   },
   icon: {
