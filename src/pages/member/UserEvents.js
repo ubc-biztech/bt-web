@@ -40,9 +40,14 @@ const TAB_STATES = {
 }
 
 const styles = ({
+  header: {
+    color: COLOR.BIZTECH_GREEN
+  },
   flex: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    paddingTop: '14px',
+    paddingBottom: '14px'
   },
   sidePanel: {
     layout: {
@@ -102,7 +107,7 @@ function EventPanel (props) {
   )
 }
 
-function UserHome (props) {
+function UserEvents (props) {
   const [tabIndex, setTabIndex] = useState(TAB_STATES.ALL)
   const [selectedPanel, setSelectedPanel] = useState(PANEL_STATES.ALL)
 
@@ -180,7 +185,7 @@ function UserHome (props) {
       </Helmet>
       <div style={styles.flex}>
         <div style={styles.sidePanel.layout}>
-          <Typography style={styles.sidePanel.title}>Events</Typography>
+          <Typography variant='h1' style={styles.header}>Events</Typography>
           <List>
             <ListItem
               style={selectedPanel === PANEL_STATES.FAVORITES
@@ -284,4 +289,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { setUser })(withStyles(styles)(UserHome))
+export default connect(mapStateToProps, { setUser })(withStyles(styles)(UserEvents))
