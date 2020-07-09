@@ -26,11 +26,20 @@ const useStyles = makeStyles(theme => ({
     padding: "80px 10px 0px 10px"
   },
 
+  returnDiv: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "20px"
+  },
+
+  returnText: {
+    fontSize: "24px",
+    paddingLeft: "15px"
+  },
+
   title: {
-    color: COLOR.WHITE,
     display: "inline-block",
-    fontSize: "36px",
-    fontStyle: "bold"
+    fontSize: "36px"
   },
 
   description: {
@@ -41,6 +50,7 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     right: "100px"
   },
+
   viewLogo: {
     position: "absolute",
     right: "150px",
@@ -152,7 +162,15 @@ const EventDescription = ({ user, event, children }) => {
 
   return (
     <div className={classes.content}>
-      <div style={{ color: COLOR.WHITE }}>return</div>
+      <div className={classes.returnDiv}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.845299 11.8453C0.207577 12.483 0.207577 13.517 0.845299 14.1547L11.2376 24.547C11.8753 25.1847 12.9093 25.1847 13.547 24.547C14.1847 23.9093 14.1847 22.8753 13.547 22.2376L4.3094 13L13.547 3.76239C14.1847 3.12467 14.1847 2.09072 13.547 1.45299C12.9093 0.81527 11.8753 0.81527 11.2376 1.45299L0.845299 11.8453ZM26 11.367L2 11.367L2 14.633L26 14.633L26 11.367Z" fill="white"/>
+        </svg>
+        <Typography className={classes.returnText}>
+            All Events
+        </Typography>
+        {/* <span style={{ color: COLOR.WHITE }}>return</span> */}
+      </div>
       <Paper className={classes.paper}>
         <div style={{ position: "relative" }}>
           <Typography variant="h1" className={classes.title}>
