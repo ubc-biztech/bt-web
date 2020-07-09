@@ -5,7 +5,9 @@ import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
 import EventCard from '../../components/Cards/Event'
-import { fetchBackend, updateEvents, updateRegisteredEvents, updateUser } from '../../utils'
+import { fetchBackend, updateEvents, updateRegisteredEvents } from '../../utils'
+
+import { setUser } from '../../actions/UserActions'
 
 import { COLOR } from '../../constants/Constants'
 import { withStyles } from '@material-ui/core/styles'
@@ -116,7 +118,13 @@ function UserHome (props) {
   const handleFavoriteEvent = async (eventId, toggle) => {
     const body = { eventID: eventId, isFavourite: toggle }
     await fetchBackend(`/users/favEvent/${user.id}`, 'PATCH', body)
-    updateUser()
+    const newEventsId = toggle
+      ? [...user.favedEventsID, eventId]
+      : user.favedEventsID.filter((id) => id !== eventId)
+    props.setUser({
+      ...user,
+      favedEventsID: newEventsId
+    })
   }
 
   const handleTabChange = (event, newIndex) => {
@@ -276,4 +284,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {})(withStyles(styles)(UserHome))
+export default connect(mapStateToProps, { setUser })(withStyles(styles)(UserHome))
