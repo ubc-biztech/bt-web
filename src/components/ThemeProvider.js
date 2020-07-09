@@ -67,7 +67,17 @@ const theme = createMuiTheme({
     MuiButton: {
       containedPrimary: {
         backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
-        color: COLOR.WHITE
+        color: COLOR.WHITE,
+        '&:hover': {
+          backgroundColor:COLOR.LIGHT_BACKGROUND_COLOR,
+        },
+      },
+      containedSecondary: {
+        backgroundColor: "#303960",
+        color: COLOR.WHITE,
+        '&:hover': {
+          backgroundColor: "#303960",
+        },
       }
     },
     MuiPaper: {
@@ -85,14 +95,15 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
     fontFamily,
-    fontSize: 12,
+    fontSize: 14,
     h1: {
       fontWeight: 700,
-      fontSize: '1.5rem',
+      fontSize: '36px',
       fontFamily
     },
     h2: {
-      fontSize: '36px',
+      fontWeight: 700,
+      fontSize: '28px',
       fontFamily
     },
     h5: {
