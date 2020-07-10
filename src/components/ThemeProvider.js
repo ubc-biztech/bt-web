@@ -24,6 +24,13 @@ const theme = createMuiTheme({
         color: COLOR.WHITE
       }
     },
+    MuiCardContent: {
+      root: {
+        '&:last-child': {
+          paddingBottom: 'reset'
+        }
+      }
+    },
     MuiInput: {
       root: {
         color: COLOR.WHITE
@@ -64,15 +71,15 @@ const theme = createMuiTheme({
         backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
         color: COLOR.WHITE,
         '&:hover': {
-          backgroundColor:COLOR.LIGHT_BACKGROUND_COLOR,
-        },
+          backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR
+        }
       },
       containedSecondary: {
-        backgroundColor: "#303960",
+        backgroundColor: '#303960',
         color: COLOR.WHITE,
         '&:hover': {
-          backgroundColor: "#303960",
-        },
+          backgroundColor: '#303960'
+        }
       }
     },
     MuiPaper: {

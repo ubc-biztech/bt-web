@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
+import UserProgress from '../../components/UserProgress'
 
 const useStyles = makeStyles({
   container: {
@@ -138,6 +139,7 @@ function UserHome (props) {
           </CardComponent>
           <CardComponent>
             <Typography variant='h2'>Progress</Typography>
+            <UserProgress />
           </CardComponent>
         </div>
         <div className={classes.column}>
