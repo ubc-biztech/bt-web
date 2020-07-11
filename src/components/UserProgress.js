@@ -1,9 +1,17 @@
 import React from 'react'
-import { COLOR } from '../constants/Constants'
 import { connect } from 'react-redux'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import { makeWidthFlexible, XYPlot, XAxis, YAxis, LineSeries, MarkSeries } from 'react-vis'
+import { COLOR } from '../constants/Constants'
+import { Typography } from '@material-ui/core'
 
 const FlexibleXYPlot = makeWidthFlexible(XYPlot)
+
+const classes = {
+  progressBar: {
+    margin: '12px 0'
+  }
+}
 
 const getData = () => {
   const data = {}
@@ -68,37 +76,43 @@ const UserProgress = ({ registeredEvents, events }) => {
   })
 
   return (
-    <FlexibleXYPlot
-      xType='time'
-      xDomain={[sixMonthsAgo(), Date.now()]}
-      yDomain={[0, 3]}
-      height={250}
-    >
-      <XAxis
-        tickTotal={6}
-        tickSize={0}
-        style={{
-          text: { fill: 'white' }
-        }}
-      />
-      <YAxis
-        tickTotal={3}
-        tickSize={0}
-        style={{
-          text: { fill: 'white' }
-        }}
-      />
-      <LineSeries
-        data={timestampData}
-        stroke={COLOR.FONT_COLOR}
-        color={COLOR.BIZTECH_GREEN}
-        style={{}}
-      />
-      <MarkSeries
-        data={timestampData}
-        color={COLOR.BIZTECH_GREEN}
-      />
-    </FlexibleXYPlot>
+    <React.Fragment>
+      <div style={classes.progressBar}>
+        <Typography>Events Attended</Typography>
+        <LinearProgress variant='determinate' value={Math.max(registeredEventIDs.length * 10, 10)} />
+      </div>
+      <FlexibleXYPlot
+        xType='time'
+        xDomain={[sixMonthsAgo(), Date.now()]}
+        yDomain={[0, 3]}
+        height={250}
+      >
+        <XAxis
+          tickTotal={6}
+          tickSize={0}
+          style={{
+            text: { fill: 'white' }
+          }}
+        />
+        <YAxis
+          tickTotal={3}
+          tickSize={0}
+          style={{
+            text: { fill: 'white' }
+          }}
+        />
+        <LineSeries
+          data={timestampData}
+          stroke={COLOR.FONT_COLOR}
+          color={COLOR.BIZTECH_GREEN}
+          style={{}}
+        />
+        <MarkSeries
+          data={timestampData}
+          color={COLOR.BIZTECH_GREEN}
+        />
+      </FlexibleXYPlot>
+    </React.Fragment>
   )
 }
 
