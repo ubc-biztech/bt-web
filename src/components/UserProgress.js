@@ -21,27 +21,26 @@ const getData = () => {
   return data
 }
 
+const sixMonthsAgo = () => {
+  const today = new Date()
+  const month = today.getMonth() - 5
+  if (month >= 0) {
+    const year = today.getFullYear()
+    return new Date(year, month)
+  } else {
+    const year = today.getFullYear() - 1
+    return new Date(year, 11 - month)
+  }
+}
+
 const UserProgress = ({ registeredEvents, events }) => {
   const registeredEventIDs = registeredEvents && registeredEvents.map(event => {
     return event.eventID
   })
 
-  // Only include events that are newer than 6 months old and user is registered for
+  // Find events user is registered for
   const filteredEvents = events && events.filter(event => {
-    const sixMonthsAgo = () => {
-      const today = new Date()
-      const month = today.getMonth() - 5
-      if (month >= 0) {
-        const year = today.getFullYear()
-        return new Date(year, month)
-      } else {
-        const year = today.getFullYear() - 1
-        return new Date(year, 11 - month)
-      }
-    }
-    const startTime = Date.parse(event.startDate)
-    const isNewerThanSixMonths = startTime > sixMonthsAgo()
-    return registeredEventIDs.includes(event.id) && isNewerThanSixMonths
+    return registeredEventIDs.includes(event.id)
   })
 
   const data = getData()
@@ -71,6 +70,7 @@ const UserProgress = ({ registeredEvents, events }) => {
   return (
     <FlexibleXYPlot
       xType='time'
+      xDomain={[sixMonthsAgo(), Date.now()]}
       yDomain={[0, 4]}
       height={300}
     >
