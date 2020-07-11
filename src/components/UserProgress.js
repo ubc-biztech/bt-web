@@ -71,11 +71,23 @@ const UserProgress = ({ registeredEvents, events }) => {
     <FlexibleXYPlot
       xType='time'
       xDomain={[sixMonthsAgo(), Date.now()]}
-      yDomain={[0, 4]}
-      height={300}
+      yDomain={[0, 3]}
+      height={250}
     >
-      <XAxis/>
-      <YAxis/>
+      <XAxis
+        tickTotal={6}
+        tickSize={0}
+        style={{
+          text: { fill: 'white' }
+        }}
+      />
+      <YAxis
+        tickTotal={3}
+        tickSize={0}
+        style={{
+          text: { fill: 'white' }
+        }}
+      />
       <LineSeries
         data={timestampData}
         stroke={COLOR.FONT_COLOR}
