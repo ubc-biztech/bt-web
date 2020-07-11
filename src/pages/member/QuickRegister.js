@@ -52,6 +52,7 @@ const EventFormContainer = (props) => {
   const { id: eventId } = useParams()
 
   const [event, setEvent] = useState(null)
+  const [isSignedUp, setIsSignedUp] = useState(false)
 
   const handleReturnClick = (e) => {
     history.push('/events')
@@ -79,32 +80,38 @@ const EventFormContainer = (props) => {
 
   if (event) {
     return (
-      <div className={classes.layout}>
-        <Helmet>
-          <title>{event.ename} - Register</title>
-        </Helmet>
-        <div style={{ display: 'flex', cursor: 'pointer' }} onClick={handleReturnClick}>
-          <ArrowBackIcon style={{ fontSize: '32px', paddingRight: '5px' }}/>
-          <Typography style={{ fontSize: '24px' }}>All Events</Typography>
-        </div>
+      // assumes that the event details component that uses this component (QuickRegister) does not allow
+      // the user to get to this page if they are already signed up or the event has passed
+      isSignedUp
+        ? <div className={classes.layout}>
 
-        <Paper className={classes.paper}>
-          <div className={classes.container}>
-            <Typography variant='h2' className={classes.header}>
-              {event.ename}
-            </Typography>
-            <Typography className={classes.subHeader}>
-              Sign up Form
-            </Typography>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={submitValues}>
-              {props => <RegisterQuick {...props} />}
-            </Formik>
+        </div>
+        : <div className={classes.layout}>
+          <Helmet>
+            <title>{event.ename} - Register</title>
+          </Helmet>
+          <div style={{ display: 'flex', cursor: 'pointer' }} onClick={handleReturnClick}>
+            <ArrowBackIcon style={{ fontSize: '32px', paddingRight: '5px' }}/>
+            <Typography style={{ fontSize: '24px' }}>All Events</Typography>
           </div>
-        </Paper>
-      </div>
+
+          <Paper className={classes.paper}>
+            <div className={classes.container}>
+              <Typography variant='h2' className={classes.header}>
+                {event.ename}
+              </Typography>
+              <Typography className={classes.subHeader}>
+            Sign up Form
+              </Typography>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={submitValues}>
+                {props => <RegisterQuick {...props} />}
+              </Formik>
+            </div>
+          </Paper>
+        </div>
     )
   } else {
     return (
@@ -145,40 +152,32 @@ const EventFormContainer = (props) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
     const eventID = event.id
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+    const body = {
+      id,
+      fname,
+      lname,
+      email,
+      year,
+      faculty,
+      gender,
+      diet
+    }
     fetchBackend(`/users/${values.id}`, 'GET')
-      .then((response) => {
-        const body = {
-          id,
-          fname,
-          lname,
-          email,
-          year,
-          faculty,
-          gender,
-          diet
-        }
-        if (response === 'User not found.') {
-          // Need to create new user
-          // console.log("User not found, creating user");
-          fetchBackend('/users', 'POST', body)
-            .then((userResponse) => {
-              if (userResponse.message === 'Created!') {
-                registerUser(id, eventID, heardFrom)
-              } else {
-                alert('Signup failed')
-              }
-            })
-        } else {
-          fetchBackend(`/users/${id}`, 'PATCH', body)
-            .catch(response => {
-              console.log(response)
-            })
-          registerUser(id, eventID, heardFrom)
-        }
+      .then(() => {
+        // if get response is successful
+        fetchBackend(`/users/${id}`, 'PATCH', body)
+        registerUser(id, eventID, heardFrom)
       })
-      .catch(err => {
-        console.log('registration error', err)
-        alert('Signup failed')
+      .catch(() => {
+        // Need to create new user
+        fetchBackend('/users', 'POST', body)
+          .then((userResponse) => {
+            if (userResponse.message === 'Created!') {
+              registerUser(id, eventID, heardFrom)
+            } else {
+              alert('Signup failed')
+            }
+          })
       })
   }
 
@@ -192,6 +191,7 @@ const EventFormContainer = (props) => {
     fetchBackend('/registrations', 'POST', body)
       .then((regResponse) => {
         alert('Signed Up')
+        setIsSignedUp(true)
       })
       .catch(err => {
         if (err.status === 409) {

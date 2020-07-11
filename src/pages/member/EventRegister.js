@@ -117,37 +117,32 @@ const EventFormContainer = (props) => {
   async function submitValues (values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
     const eventID = event.id
+    const body = {
+      id,
+      fname,
+      lname,
+      email,
+      year,
+      faculty,
+      gender,
+      diet
+    }
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/${values.id}`, 'GET')
       .then((response) => {
-        if (response === 'User not found.') {
-          // Need to create new user
-          // console.log("User not found, creating user");
-          const body = {
-            id,
-            fname,
-            lname,
-            email,
-            year,
-            faculty,
-            gender,
-            diet
-          }
-          fetchBackend('/users', 'POST', body)
-            .then((userResponse) => {
-              if (userResponse.message === 'Created!') {
-                registerUser(id, eventID, heardFrom)
-              } else {
-                alert('Signup failed')
-              }
-            })
-        } else {
-          registerUser(id, eventID, heardFrom)
-        }
+        fetchBackend(`/users/${id}`, 'PATCH', body)
+        registerUser(id, eventID, heardFrom)
       })
-      .catch(err => {
-        console.log('registration error', err)
-        alert('Signup failed')
+      .catch(() => {
+        // Need to create new user
+        fetchBackend('/users', 'POST', body)
+          .then((userResponse) => {
+            if (userResponse.message === 'Created!') {
+              registerUser(id, eventID, heardFrom)
+            } else {
+              alert('Signup failed')
+            }
+          })
       })
   }
 
