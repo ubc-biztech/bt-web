@@ -5,88 +5,85 @@ import { makeWidthFlexible, XYPlot, XAxis, YAxis, LineSeries, MarkSeries } from 
 
 const FlexibleXYPlot = makeWidthFlexible(XYPlot)
 
-// Create the past 6 months in the format:
-//   year: {
-//       month: 1
-//   }
-const getYears = () => {
+const getData = () => {
+  const data = {}
   const date = new Date()
-  const currentMonth = date.getMonth()
-  const is6monthsAgoLastYear = currentMonth - 5 < 0
-  if (is6monthsAgoLastYear) {
-    const minMonth = 11 - (5 - currentMonth)
-    const years = { [date.getFullYear() - 1]: {}, [date.getFullYear()]: {} }
-    for (let i = 0; i < currentMonth; i++) {
-      years[date.getFullYear()][i] = 0
+  let month = date.getMonth()
+  let year = date.getFullYear()
+  for (let i = 0; i < 6; i++) {
+    data[`${year} ${month}`] = 0
+    month -= 1
+    if (month < 0) {
+      month = 11
+      year -= 1
     }
-    for (let i = minMonth; i < 11; i++) {
-      years[date.getFullYear() - 1][i] = 0
-    }
-    return years
-  } else {
-    const minMonth = currentMonth - 5
-    const years = { [date.getFullYear()]: {} }
-    for (let i = minMonth; i < currentMonth; i++) {
-      years[date.getFullYear()][i] = 0
-    }
-    return years
   }
+  return data
 }
 
 const UserProgress = ({ registeredEvents, events }) => {
-  const data = [
-    {
-      x: 1580515199000,
-      y: 1
-    },
-    {
-      x: 1581525199000,
-      y: 4
-    },
-    {
-      x: 1585699200000,
-      y: 3
-    },
-    {
-      x: 1587513600000,
-      y: 1
-    },
-    {
-      x: 1593561600000,
-      y: 2
-    }
-  ]
-  const eventList = registeredEvents && registeredEvents.map(event => {
+  const registeredEventIDs = registeredEvents && registeredEvents.map(event => {
     return event.eventID
   })
+
   // Only include events that are newer than 6 months old and user is registered for
   const filteredEvents = events && events.filter(event => {
-    const isNewerThanSixMonths = Date.now() - Date.parse(event.startDate) < 15552000
-    return eventList.includes(event.id) && isNewerThanSixMonths
+    const sixMonthsAgo = () => {
+      const today = new Date()
+      const month = today.getMonth() - 5
+      if (month >= 0) {
+        const year = today.getFullYear()
+        return new Date(year, month)
+      } else {
+        const year = today.getFullYear() - 1
+        return new Date(year, 11 - month)
+      }
+    }
+    const startTime = Date.parse(event.startDate)
+    const isNewerThanSixMonths = startTime > sixMonthsAgo()
+    return registeredEventIDs.includes(event.id) && isNewerThanSixMonths
   })
-  const years = getYears()
+
+  const data = getData()
+
+  // Fill in data object
   filteredEvents && filteredEvents.forEach(event => {
     const parsedDate = new Date(event.startDate)
-    // years[parsedDate.getFullYear()][parsedDate.getMonth()] += 1
-    years[parsedDate.getFullYear()] = years[parsedDate.getFullYear()] || {}
-    years[parsedDate.getFullYear()][parsedDate.getMonth()] = years[parsedDate.getFullYear()][parsedDate.getMonth()] + 1 || 1
+    const year = parsedDate.getFullYear()
+    const month = parsedDate.getMonth()
+    data[`${year} ${month}`] += 1
   })
-  console.log(years)
+
+  // convert 'date strings' to timestamped react-vis data
+  const timestampData = Object.entries(data).map(([key, value]) => {
+    const yearMonthToTimestamp = (yearMonth) => {
+      const year = yearMonth.split(' ')[0]
+      const month = yearMonth.split(' ')[1]
+      return new Date(year, month)
+    }
+
+    return {
+      x: yearMonthToTimestamp(key),
+      y: value
+    }
+  })
+
   return (
     <FlexibleXYPlot
       xType='time'
+      yDomain={[0, 4]}
       height={300}
     >
       <XAxis/>
       <YAxis/>
       <LineSeries
-        data={data}
+        data={timestampData}
         stroke={COLOR.FONT_COLOR}
         color={COLOR.BIZTECH_GREEN}
         style={{}}
       />
       <MarkSeries
-        data={data}
+        data={timestampData}
         color={COLOR.BIZTECH_GREEN}
       />
     </FlexibleXYPlot>
