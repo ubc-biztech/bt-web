@@ -64,7 +64,7 @@ const EventFormContainer = (props) => {
     return (
       <div className={classes.layout}>
         <Helmet>
-          <title>{event.name} - Register</title>
+          <title>{`${event.name} - Register`}</title>
         </Helmet>
         <Paper className={classes.paper}>
           <EventView event={event}>

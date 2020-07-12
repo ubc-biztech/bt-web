@@ -111,7 +111,7 @@ const EventFormContainer = (props) => {
       // the user to get to this page if they are already signed up or the event has passed
       <React.Fragment>
         <Helmet>
-          <title>{event.name} - Register</title>
+          <title>{`${event.name} - Register`}</title>
         </Helmet>
         {isSignedUp
           ? <div className={classes.layout}>

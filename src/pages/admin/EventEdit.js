@@ -96,7 +96,7 @@ function EventEdit (props) {
   return event && (
     <div className={classes.layout}>
       <Helmet>
-        <title>Edit {event.name} - BizTech Admin</title>
+        <title>{`Edit ${event.name} - BizTech Admin`}</title>
       </Helmet>
       <Paper className={classes.paper}>
         <div className={classes.content}>
