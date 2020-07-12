@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { Helmet } from 'react-helmet'
 import { Typography } from '@material-ui/core'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import House from '../../assets/house.svg'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -32,11 +32,38 @@ const useStyles = makeStyles(theme => ({
     width: '33vw',
     padding: '55px 0 55px 80px'
   },
+  completeContainer: {
+    position: 'relative',
+    width: '33vw',
+    height: '78vh'
+  },
   header: {
     fontWeight: 'bold'
   },
   subHeader: {
     fontSize: '24px'
+  },
+  house: {
+    width: '80%',
+    marginLeft: '-20px',
+    marginBottom: '-5px'
+  },
+  message: {
+    width: '40%',
+    position: 'absolute',
+    bottom: '35%',
+    left: '80%',
+    textAlign: 'center'
+  },
+  done: {
+    fontWeight: 'bold',
+    fontSize: '36px'
+  },
+  returnMessage: {
+    fontSize: '24px'
+  },
+  houseContainer: {
+    borderBottom: '1px solid white'
   }
 }))
 
@@ -54,7 +81,7 @@ const EventFormContainer = (props) => {
   const [event, setEvent] = useState(null)
   const [isSignedUp, setIsSignedUp] = useState(false)
 
-  const handleReturnClick = (e) => {
+  const handleReturn = () => {
     history.push('/events')
   }
 
@@ -82,36 +109,43 @@ const EventFormContainer = (props) => {
     return (
       // assumes that the event details component that uses this component (QuickRegister) does not allow
       // the user to get to this page if they are already signed up or the event has passed
-      isSignedUp
-        ? <div className={classes.layout}>
-
-        </div>
-        : <div className={classes.layout}>
-          <Helmet>
-            <title>{event.ename} - Register</title>
-          </Helmet>
-          <div style={{ display: 'flex', cursor: 'pointer' }} onClick={handleReturnClick}>
-            <ArrowBackIcon style={{ fontSize: '32px', paddingRight: '5px' }}/>
-            <Typography style={{ fontSize: '24px' }}>All Events</Typography>
+      <React.Fragment>
+        <Helmet>
+          <title>{event.ename} - Register</title>
+        </Helmet>
+        {isSignedUp
+          ? <div className={classes.layout}>
+            <Paper className={classes.paper}>
+              <div className={classes.completeContainer}>
+                <div className={classes.message}>
+                  <div className={classes.houseContainer}>
+                    <img src={House} className={classes.house} alt='BizTech House' />
+                  </div>
+                  <Typography className={classes.done}>done!</Typography>
+                  <Typography>you are now registered, click <strong onClick={handleReturn} style={{ cursor: 'pointer' }}>here</strong> <br/> to return to the previous menu.</Typography>
+                </div>
+              </div>
+            </Paper>
           </div>
-
-          <Paper className={classes.paper}>
-            <div className={classes.container}>
-              <Typography variant='h2' className={classes.header}>
-                {event.ename}
-              </Typography>
-              <Typography className={classes.subHeader}>
+          : <div className={classes.layout}>
+            <Paper className={classes.paper}>
+              <div className={classes.container}>
+                <Typography variant='h2' className={classes.header}>
+                  {event.ename}
+                </Typography>
+                <Typography className={classes.subHeader}>
             Sign up Form
-              </Typography>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={submitValues}>
-                {props => <RegisterQuick {...props} />}
-              </Formik>
-            </div>
-          </Paper>
-        </div>
+                </Typography>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={submitValues}>
+                  {props => <RegisterQuick {...props} />}
+                </Formik>
+              </div>
+            </Paper>
+          </div>}
+      </React.Fragment>
     )
   } else {
     return (
