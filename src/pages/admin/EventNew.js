@@ -32,14 +32,14 @@ export default function EventNew () {
   const [previewEvent, setPreviewEvent] = useState({})
 
   const validationSchema = Yup.object({
-    ename: Yup.string().required(),
+    name: Yup.string().required(),
     slug: Yup.string().matches(/^[a-z\-0-9]*$/, 'Slug must be lowercase and have no whitespace').required(),
     description: Yup.string().required(),
     capacity: Yup.number('Valid number required')
       .min(0, 'Valid capacity required')
       .required(),
     // partners: Yup.string().required(),
-    elocation: Yup.string().required(),
+    location: Yup.string().required(),
     longitude: Yup.number('Valid number required')
       .min(-180, 'Valid number required')
       .max(180, 'Valid number required')
@@ -53,12 +53,12 @@ export default function EventNew () {
   })
 
   const initialValues = {
-    ename: '',
+    name: '',
     slug: '',
     description: '',
     capacity: '',
     facebookUrl: '',
-    elocation: '',
+    location: '',
     longitude: '',
     latitude: '',
     imageUrl: '',
@@ -94,11 +94,11 @@ export default function EventNew () {
 
   async function submitValues (values) {
     const body = {
-      ename: values.ename,
+      name: values.name,
       id: values.slug,
       description: values.description,
       capac: values.capacity,
-      elocation: values.elocation,
+      location: values.location,
       longitude: values.longitude,
       latitude: values.latitude,
       imageUrl: values.imageUrl,

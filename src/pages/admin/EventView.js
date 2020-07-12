@@ -33,7 +33,7 @@ function EventView (props) {
   return event ? (
     <ThemeProvider>
       <Helmet>
-        <title>{event.ename} - BizTech Admin</title>
+        <title>{event.name} - BizTech Admin</title>
       </Helmet>
       <Link onClick={handleEditEventClick}>Edit Event</Link>
       <Link onClick={() => { props.history.push(`/event/${event.id}/register`) }} key={event.id}>Public Event Page</Link>

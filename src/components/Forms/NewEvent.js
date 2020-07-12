@@ -16,7 +16,7 @@ const slugify = require('slugify')
 
 export default function NewEventForm (props) {
   const {
-    values: { ename, description, imageUrl, slug, startDate, endDate, elocation, longitude, latitude }, // the only values we need to store as props are the ones that are programmatically modified
+    values: { name, description, imageUrl, slug, startDate, endDate, location, longitude, latitude }, // the only values we need to store as props are the ones that are programmatically modified
     errors,
     touched,
     handleSubmit,
@@ -30,8 +30,8 @@ export default function NewEventForm (props) {
   } = props
 
   useEffect(() => {
-    updatePreview({ ename, description, imageUrl })
-  }, [updatePreview, ename, description, imageUrl])
+    updatePreview({ name, description, imageUrl })
+  }, [updatePreview, name, description, imageUrl])
 
   const change = (name, e) => {
     e.persist()
@@ -97,7 +97,7 @@ export default function NewEventForm (props) {
         ;
     }
     e.persist()
-    setFieldValue('elocation', location)
+    setFieldValue('location', location)
     setFieldValue('longitude', longitude)
     setFieldValue('latitude', latitude)
   }
@@ -108,12 +108,12 @@ export default function NewEventForm (props) {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
-              id='ename'
+              id='name'
               label='Event Name'
               fullWidth
-              helperText={textFieldError('ename')}
-              error={!!textFieldError('ename')}
-              onChange={handleEventNameChange.bind(null, 'ename')}
+              helperText={textFieldError('name')}
+              error={!!textFieldError('name')}
+              onChange={handleEventNameChange.bind(null, 'name')}
             />
           </Grid>
           <Grid item xs={12}>
@@ -181,12 +181,12 @@ export default function NewEventForm (props) {
           </Grid>
           <Grid item xs={12} sm={4}>
             <TextField
-              id='elocation'
+              id='location'
               label='Location'
               fullWidth
               helperText={textFieldError('location')}
               error={!!textFieldError('location')}
-              value={elocation}
+              value={location}
               onChange={change.bind(null, 'location')}
             />
           </Grid>

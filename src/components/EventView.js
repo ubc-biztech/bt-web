@@ -28,7 +28,7 @@ const EventView = ({ event, children }) => {
 
       <div className={classes.content}>
         <Typography variant='h4' align='center' gutterBottom>
-          {event.ename}
+          {event.name}
         </Typography>
 
         <Markdown>

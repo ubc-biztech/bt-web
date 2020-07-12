@@ -15,7 +15,7 @@ import { Typography } from '@material-ui/core'
 
 export default function EditEventForm (props) {
   const {
-    values: { ename, slug, description, capacity, elocation, longitude, latitude, facebookUrl, imageUrl, startDate, endDate },
+    values: { name, slug, description, capacity, location, longitude, latitude, facebookUrl, imageUrl, startDate, endDate },
     errors,
     touched,
     handleSubmit,
@@ -29,8 +29,8 @@ export default function EditEventForm (props) {
   } = props
 
   useEffect(() => {
-    updatePreview({ ename, description, imageUrl })
-  }, [updatePreview, ename, description, imageUrl])
+    updatePreview({ name, description, imageUrl })
+  }, [updatePreview, name, description, imageUrl])
 
   const change = (name, e) => {
     e.persist()
@@ -87,7 +87,7 @@ export default function EditEventForm (props) {
         ;
     }
     e.persist()
-    setFieldValue('elocation', location)
+    setFieldValue('location', location)
     setFieldValue('longitude', longitude)
     setFieldValue('latitude', latitude)
   }
@@ -98,13 +98,13 @@ export default function EditEventForm (props) {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
-              id='ename'
+              id='name'
               label='Event Name'
               fullWidth
-              helperText={textFieldError('ename')}
-              error={!!textFieldError('ename')}
-              value={ename}
-              onChange={change.bind(null, 'ename')}
+              helperText={textFieldError('name')}
+              error={!!textFieldError('name')}
+              value={name}
+              onChange={change.bind(null, 'name')}
             />
           </Grid>
           <Grid item xs={12}>
@@ -172,13 +172,13 @@ export default function EditEventForm (props) {
           </Grid>
           <Grid item xs={12} sm={4}>
             <TextField
-              id='elocation'
+              id='location'
               label='Location'
               fullWidth
-              helperText={textFieldError('elocation')}
-              error={!!textFieldError('elocation')}
-              value={elocation}
-              onChange={change.bind(null, 'elocation')}
+              helperText={textFieldError('location')}
+              error={!!textFieldError('location')}
+              value={location}
+              onChange={change.bind(null, 'location')}
             />
           </Grid>
           <Grid item xs={12} sm={4}>

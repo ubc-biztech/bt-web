@@ -84,7 +84,7 @@ function UserHome (props) {
                   return setNextEvent(event)
                 } else {
                   return setNextEvent({
-                    ename: 'None Registered!'
+                    name: 'None Registered!'
                   })
                 }
               }
@@ -92,7 +92,7 @@ function UserHome (props) {
           }
         } else {
           setNextEvent({
-            ename: 'None Registered!'
+            name: 'None Registered!'
           })
         }
       })
@@ -103,7 +103,7 @@ function UserHome (props) {
   }
 
   // set featured event and nextEvent on initial render
-  if (!featuredEvent.ename && !nextEvent.ename) {
+  if (!featuredEvent.name && !nextEvent.name) {
     getFeaturedEvent()
     getNextEvent()
   }
@@ -120,7 +120,7 @@ function UserHome (props) {
 
   function eventDate (date) {
     return new Date(date)
-    .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })
+      .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })
   }
 
   return (
@@ -151,14 +151,14 @@ function UserHome (props) {
             <div className={classes.column}>
               <CardComponent>
                 <Typography variant='h2' className={classes.green}>Next Event</Typography>
-                <Typography className={classes.eventName}>{nextEvent.ename}</Typography>
+                <Typography className={classes.eventName}>{nextEvent.name}</Typography>
                 <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(nextEvent.startDate)}</Typography>
               </CardComponent>
             </div>
             <div className={classes.column}>
               <CardComponent>
                 <Typography variant='h2' className={classes.green}>Featured</Typography>
-                <Typography className={classes.eventName}>{featuredEvent.ename}</Typography>
+                <Typography className={classes.eventName}>{featuredEvent.name}</Typography>
                 <Typography className={classes.eventDate}>{featuredEvent.startDate && eventDate(featuredEvent.startDate)}</Typography>
               </CardComponent>
             </div>

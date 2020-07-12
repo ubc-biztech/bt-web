@@ -67,7 +67,7 @@ function AdminHome (props) {
 
   const handleClickDeleteEvent = () => {
     const clickedEvent = events.find(event => event.id === eventMenuClicked)
-    if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {
+    if (window.confirm(`Are you sure you want to delete ${clickedEvent.name}? This cannot be undone`)) {
       fetchBackend(`/events/${clickedEvent.id}`, 'DELETE')
         .then(response => {
           alert(response.message)
@@ -107,7 +107,7 @@ function AdminHome (props) {
               </CardActionArea>
               <CardHeader
                 classes={{ subheader: classes.cardHeader }}
-                title={event.ename}
+                title={event.name}
                 subheader={event.startDate
                   ? new Date(event.startDate)
                     .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' }) : ''}

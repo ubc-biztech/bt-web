@@ -208,7 +208,7 @@ export class EventUserTable extends Component {
         <Statistic statName='Heard about event from: ' statObj={this.state.heardFrom} />
 
         <MaterialTable
-          title={`${this.props.event.ename} Attendance`}
+          title={`${this.props.event.name} Attendance`}
           columns={[
             { title: 'First Name', field: 'fname' },
             { title: 'Last Name', field: 'lname' },

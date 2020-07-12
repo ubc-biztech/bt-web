@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { fetchBackend, updateEvents } from '../../utils'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
-import RegisterEvent from '../../components/Forms/RegisterEvent'
+import RegisterQuick from '../../components/Forms/RegisterQuick'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { Helmet } from 'react-helmet'
-import EventView from '../../components/EventView'
+import { Typography } from '@material-ui/core'
+import House from '../../assets/house.svg'
 
 const useStyles = makeStyles(theme => ({
   layout: {
     [theme.breakpoints.up('sm')]: {
-      width: 600,
+      width: '66vw',
       margin: 'auto'
     }
   },
@@ -26,18 +27,63 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     padding: theme.spacing(3)
+  },
+  container: {
+    width: '33vw',
+    padding: '55px 0 55px 80px'
+  },
+  completeContainer: {
+    position: 'relative',
+    width: '33vw',
+    height: '78vh'
+  },
+  header: {
+    fontWeight: 'bold'
+  },
+  subHeader: {
+    fontSize: '24px'
+  },
+  house: {
+    width: '80%',
+    marginLeft: '-20px',
+    marginBottom: '-5px'
+  },
+  message: {
+    width: '40%',
+    position: 'absolute',
+    bottom: '35%',
+    left: '80%',
+    textAlign: 'center'
+  },
+  done: {
+    fontWeight: 'bold',
+    fontSize: '36px'
+  },
+  returnMessage: {
+    fontSize: '24px'
+  },
+  houseContainer: {
+    borderBottom: '1px solid white'
   }
 }))
 
 const EventFormContainer = (props) => {
   const classes = useStyles()
   const { events } = props
+  const { user } = props
+  const history = useHistory()
+
   if (!events) {
     updateEvents()
   }
   const { id: eventId } = useParams()
 
   const [event, setEvent] = useState(null)
+  const [isSignedUp, setIsSignedUp] = useState(false)
+
+  const handleReturn = () => {
+    history.push('/events')
+  }
 
   useEffect(() => {
     if (eventId && events) {
@@ -53,31 +99,53 @@ const EventFormContainer = (props) => {
       .required(),
     fname: Yup.string().required('First name is required'),
     lname: Yup.string().required('Last name is required'),
-    faculty: Yup.string().required('Faculty is required'),
     year: Yup.string().required('Level of study is required'),
     diet: Yup.string().required('Dietary restriction is required')
   })
 
-  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '' }
+  const initialValues = { email: user.email, fname: user.fname, lname: user.lname, id: user.id, faculty: user.faculty, year: user.year, diet: user.diet, gender: user.gender, heardFrom: '' }
 
   if (event) {
     return (
-      <div className={classes.layout}>
+      // assumes that the event details component that uses this component (QuickRegister) does not allow
+      // the user to get to this page if they are already signed up or the event has passed
+      <React.Fragment>
         <Helmet>
           <title>{event.name} - Register</title>
         </Helmet>
-        <Paper className={classes.paper}>
-          <EventView event={event}>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={submitValues}
-            >
-              {props => <RegisterEvent {...props} />}
-            </Formik>
-          </EventView>
-        </Paper>
-      </div>
+        {isSignedUp
+          ? <div className={classes.layout}>
+            <Paper className={classes.paper}>
+              <div className={classes.completeContainer}>
+                <div className={classes.message}>
+                  <div className={classes.houseContainer}>
+                    <img src={House} className={classes.house} alt='BizTech House' />
+                  </div>
+                  <Typography className={classes.done}>done!</Typography>
+                  <Typography>you are now registered, click <strong onClick={handleReturn} style={{ cursor: 'pointer' }}>here</strong> <br/> to return to the previous menu.</Typography>
+                </div>
+              </div>
+            </Paper>
+          </div>
+          : <div className={classes.layout}>
+            <Paper className={classes.paper}>
+              <div className={classes.container}>
+                <Typography variant='h2' className={classes.header}>
+                  {event.name}
+                </Typography>
+                <Typography className={classes.subHeader}>
+            Sign up Form
+                </Typography>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={submitValues}>
+                  {props => <RegisterQuick {...props} />}
+                </Formik>
+              </div>
+            </Paper>
+          </div>}
+      </React.Fragment>
     )
   } else {
     return (
@@ -118,36 +186,32 @@ const EventFormContainer = (props) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
     const eventID = event.id
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+    const body = {
+      id,
+      fname,
+      lname,
+      email,
+      year,
+      faculty,
+      gender,
+      diet
+    }
     fetchBackend(`/users/${values.id}`, 'GET')
-      .then((response) => {
-        if (response === 'User not found.') {
-          // Need to create new user
-          // console.log("User not found, creating user");
-          const body = {
-            id,
-            fname,
-            lname,
-            email,
-            year,
-            faculty,
-            gender,
-            diet
-          }
-          fetchBackend('/users', 'POST', body)
-            .then((userResponse) => {
-              if (userResponse.message === 'Created!') {
-                registerUser(id, eventID, heardFrom)
-              } else {
-                alert('Signup failed')
-              }
-            })
-        } else {
-          registerUser(id, eventID, heardFrom)
-        }
+      .then(() => {
+        // if get response is successful
+        fetchBackend(`/users/${id}`, 'PATCH', body)
+        registerUser(id, eventID, heardFrom)
       })
-      .catch(err => {
-        console.log('registration error', err)
-        alert('Signup failed')
+      .catch(() => {
+        // Need to create new user
+        fetchBackend('/users', 'POST', body)
+          .then((userResponse) => {
+            if (userResponse.message === 'Created!') {
+              registerUser(id, eventID, heardFrom)
+            } else {
+              alert('Signup failed')
+            }
+          })
       })
   }
 
@@ -161,6 +225,7 @@ const EventFormContainer = (props) => {
     fetchBackend('/registrations', 'POST', body)
       .then((regResponse) => {
         alert('Signed Up')
+        setIsSignedUp(true)
       })
       .catch(err => {
         if (err.status === 409) {
@@ -174,7 +239,8 @@ const EventFormContainer = (props) => {
 
 const mapStateToProps = state => {
   return {
-    events: state.pageState.events
+    events: state.pageState.events,
+    user: state.userState.user
   }
 }
 

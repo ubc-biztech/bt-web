@@ -50,12 +50,12 @@ function EventEdit (props) {
   }
 
   const validationSchema = Yup.object({
-    ename: Yup.string().required(),
+    name: Yup.string().required(),
     description: Yup.string().required(),
     capacity: Yup.number('Valid number required')
       .min(0, 'Valid capacity required')
       .required(),
-    elocation: Yup.string().required(),
+    location: Yup.string().required(),
     longitude: Yup.number('Valid number required')
       .min(-180, 'Valid number required')
       .max(180, 'Valid number required')
@@ -69,23 +69,23 @@ function EventEdit (props) {
   })
 
   const initialValues = event ? {
-    ename: event.ename,
+    name: event.name,
     slug: event.id,
     description: event.description,
     capacity: event.capac,
     facebookUrl: event.facebookUrl,
-    elocation: event.elocation || '',
+    location: event.location || '',
     longitude: event.longitude || '',
     latitude: event.latitude || '',
     imageUrl: event.imageUrl,
     startDate: event.startDate,
     endDate: event.endDate
   } : {
-    ename: '',
+    name: '',
     description: '',
     capacity: '',
     facebookUrl: '',
-    elocation: '',
+    location: '',
     longitude: '',
     latitude: '',
     imageUrl: '',
@@ -96,7 +96,7 @@ function EventEdit (props) {
   return event && (
     <div className={classes.layout}>
       <Helmet>
-        <title>Edit {event.ename} - BizTech Admin</title>
+        <title>Edit {event.name} - BizTech Admin</title>
       </Helmet>
       <Paper className={classes.paper}>
         <div className={classes.content}>
@@ -121,10 +121,10 @@ function EventEdit (props) {
 
   async function submitValues (values) {
     const body = {
-      ename: values.ename,
+      name: values.name,
       description: values.description,
       capac: values.capacity,
-      elocation: values.elocation,
+      location: values.location,
       longitude: values.longitude,
       latitude: values.latitude,
       imageUrl: values.imageUrl,
