@@ -5,11 +5,15 @@ import { makeWidthFlexible, XYPlot, XAxis, YAxis, LineSeries, MarkSeries } from 
 import { COLOR } from '../constants/Constants'
 import { Typography } from '@material-ui/core'
 
+const EVENT_PROGRESS_GOAL = 10
+
 const FlexibleXYPlot = makeWidthFlexible(XYPlot)
 
 const classes = {
-  progressBar: {
-    margin: '12px 0'
+  container: {
+    display: 'flex',
+    margin: '12px 0 20px 0',
+    alignItems: 'center'
   }
 }
 
@@ -77,9 +81,14 @@ const UserProgress = ({ registeredEvents, events }) => {
 
   return (
     <React.Fragment>
-      <div style={classes.progressBar}>
-        <Typography>Events Attended</Typography>
-        <LinearProgress variant='determinate' value={Math.max(registeredEventIDs.length * 10, 10)} />
+      <div style={classes.container}>
+        <Typography style={{ marginRight: '14px' }}>Events Attended</Typography>
+        <Typography style={{ marginRight: '14px' }}><span style={{ color: COLOR.BIZTECH_GREEN }}>{registeredEventIDs.length}</span>/{EVENT_PROGRESS_GOAL}</Typography>
+        <LinearProgress
+          style={{ flex: 2 }}
+          variant='determinate'
+          value={Math.max(registeredEventIDs.length * EVENT_PROGRESS_GOAL, EVENT_PROGRESS_GOAL)}
+        />
       </div>
       <FlexibleXYPlot
         xType='time'
@@ -102,12 +111,14 @@ const UserProgress = ({ registeredEvents, events }) => {
           }}
         />
         <LineSeries
+          // animation
           data={timestampData}
           stroke={COLOR.FONT_COLOR}
           color={COLOR.BIZTECH_GREEN}
           style={{}}
         />
         <MarkSeries
+          // animation
           data={timestampData}
           color={COLOR.BIZTECH_GREEN}
         />
