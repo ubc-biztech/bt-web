@@ -38,18 +38,16 @@ export const AWS_CONFIG = {
   federationTarget: 'COGNITO_USER_POOLS'
 }
 
-export async function fetchBackend (endpoint, method, data) {
-  let headers
+export async function fetchBackend (endpoint, method, data, authenticatedCall = true) {
+  let headers = {}
   if (method === 'POST') {
     headers = {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+      'Content-Type': 'application/json'
     }
-  } else {
-    headers = {
-      Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
-    }
+  }
+  if (authenticatedCall) {
+    headers.Authorization = `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
   }
   const body = JSON.stringify(data)
   let status
@@ -80,7 +78,7 @@ export function log (message) {
 // Refresh the redux store
 export async function updateEvents () {
   try {
-    const response = await fetchBackend('/events', 'GET')
+    const response = await fetchBackend('/events', 'GET', undefined, false)
     Store.dispatch(setEvents({
       events: response
     }))
