@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { Helmet } from 'react-helmet'
 import EventView from '../../components/EventView'
+import NotFound from '../../components/Misc/NotFound'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -32,16 +33,15 @@ const useStyles = makeStyles(theme => ({
 const EventFormContainer = (props) => {
   const classes = useStyles()
   const { events } = props
-  if (!events) {
-    updateEvents()
-  }
   const { id: eventId } = useParams()
 
   const [event, setEvent] = useState(null)
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     if (eventId && events) {
       setEvent(events.find(event => event.id === eventId))
+      setLoaded(true)
     } else if (!events) {
       updateEvents()
     }
@@ -62,8 +62,8 @@ const EventFormContainer = (props) => {
 
   const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '' }
 
-  if (event) {
-    return (
+  if (loaded && events) {
+    return event ? (
       <div className={classes.layout}>
         <Helmet>
           <title>{event.ename} - Register</title>
@@ -80,6 +80,8 @@ const EventFormContainer = (props) => {
           </EventView>
         </Paper>
       </div>
+    ) : (
+      <NotFound message='The event could not be found!'/>
     )
   } else {
     return (
