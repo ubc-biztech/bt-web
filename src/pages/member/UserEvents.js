@@ -123,12 +123,12 @@ function UserEvents (props) {
   const handleFavoriteEvent = async (eventId, toggle) => {
     const body = { eventID: eventId, isFavourite: toggle }
     await fetchBackend(`/users/favEvent/${user.id}`, 'PATCH', body)
-    const newEventsId = toggle
+    const newEventIds = toggle
       ? [...user.favedEventsID, eventId]
       : user.favedEventsID.filter((id) => id !== eventId)
     props.setUser({
       ...user,
-      favedEventsID: newEventsId
+      favedEventsID: newEventIds
     })
   }
 
@@ -178,6 +178,20 @@ function UserEvents (props) {
     return AllEventCards.filter((event) => event.startDate && new Date(event.startDate) < now)
   }, [AllEventCards, selectedPanel])
 
+  const generateEventCards = (events) => {
+    return events.map((event) => (
+      <EventCard
+        event={event}
+        key={event.id}
+        variant='user'
+        favorited={eventsFavoritedIds.includes(event.id)}
+        handleCardClick={redirectToEvent}
+        handleFavorite={handleFavoriteEvent}
+        cardStyle={{ width: '40%' }}
+      />
+    ))
+  }
+
   return (
     <div>
       <Helmet>
@@ -221,7 +235,7 @@ function UserEvents (props) {
           <Tabs
             value={tabIndex}
             indicatorColor='primary'
-            textColor='primary' // TODO: Set the primary color theme
+            textColor='primary'
             onChange={handleTabChange}
             style={styles.tabs.layout}
           >
@@ -232,47 +246,17 @@ function UserEvents (props) {
 
           <EventPanel currentIndex={tabIndex} index={TAB_STATES.UPCOMING}>
             <div style={styles.rows}>
-              {UpcomingEventCards.map((event) => (
-                <EventCard
-                  event={event}
-                  key={event.id}
-                  variant='user'
-                  favorited={eventsFavoritedIds.includes(event.id)}
-                  handleCardClick={redirectToEvent}
-                  handleFavorite={handleFavoriteEvent}
-                  cardStyle={{ width: '40%' }}
-                />
-              ))}
+              {generateEventCards(UpcomingEventCards)}
             </div>
           </EventPanel>
           <EventPanel currentIndex={tabIndex} index={TAB_STATES.PAST}>
             <div style={styles.rows}>
-              {PastEventCards.map((event) => (
-                <EventCard
-                  event={event}
-                  key={event.id}
-                  variant='user'
-                  favorited={eventsFavoritedIds.includes(event.id)}
-                  handleCardClick={redirectToEvent}
-                  handleFavorite={handleFavoriteEvent}
-                  cardStyle={{ width: '40%' }}
-                />
-              ))}
+              {generateEventCards(PastEventCards)}
             </div>
           </EventPanel>
           <EventPanel currentIndex={tabIndex} index={TAB_STATES.ALL}>
             <div style={styles.rows}>
-              {AllEventCards.map((event) => (
-                <EventCard
-                  event={event}
-                  key={event.id}
-                  variant='user'
-                  favorited={eventsFavoritedIds.includes(event.id)}
-                  handleCardClick={redirectToEvent}
-                  handleFavorite={handleFavoriteEvent}
-                  cardStyle={{ width: '40%' }}
-                />
-              ))}
+              {generateEventCards(AllEventCards)}
             </div>
           </EventPanel>
         </div>
