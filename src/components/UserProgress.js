@@ -24,10 +24,10 @@ const getData = () => {
   let year = date.getFullYear()
   for (let i = 0; i < 6; i++) {
     data[`${year} ${month}`] = 0
-    month -= 1
+    --month
     if (month < 0) {
       month = 11
-      year -= 1
+      --year
     }
   }
   return data
