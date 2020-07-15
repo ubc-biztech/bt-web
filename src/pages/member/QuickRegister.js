@@ -121,8 +121,8 @@ const EventFormContainer = (props) => {
                   <div className={classes.houseContainer}>
                     <img src={House} className={classes.house} alt='BizTech House' />
                   </div>
-                  <Typography className={classes.done}>done!</Typography>
-                  <Typography>you are now registered, click <strong onClick={handleReturn} style={{ cursor: 'pointer' }}>here</strong> <br/> to return to the previous menu.</Typography>
+                  <Typography className={classes.done}>Done!</Typography>
+                  <Typography>You are now registered, click <strong onClick={handleReturn} style={{ cursor: 'pointer' }}>here</strong> <br/> to return to the previous page.</Typography>
                 </div>
               </div>
             </Paper>
@@ -223,8 +223,7 @@ const EventFormContainer = (props) => {
       registrationStatus: 'registered'
     }
     fetchBackend('/registrations', 'POST', body)
-      .then((regResponse) => {
-        alert('Signed Up')
+      .then(() => {
         setIsSignedUp(true)
       })
       .catch(err => {
