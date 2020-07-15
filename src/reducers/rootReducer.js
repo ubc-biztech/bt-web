@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import {
   SET_EVENTS,
   SET_USER,
+  SET_REGISTRATIONS,
   LOGOUT
 } from '../constants/Constants'
 
@@ -38,7 +39,20 @@ function userReducer (state = {}, action) {
   }
 }
 
+function registrationsReducer (state = {}, action) {
+  switch (action.type) {
+    case SET_REGISTRATIONS:
+      return {
+        ...state,
+        registrations: action.registrations
+      }
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   pageState: pageReducer,
-  userState: userReducer
+  userState: userReducer,
+  registrationsState: registrationsReducer
 })

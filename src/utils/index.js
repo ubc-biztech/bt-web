@@ -2,6 +2,7 @@ import { Auth } from 'aws-amplify'
 import Store from '../components/Store'
 import { setEvents } from '../actions/PageActions'
 import { setUser } from '../actions/UserActions'
+import { setRegistrations } from '../actions/RegistrationActions'
 
 // TODO: Configure travis to build a staging version
 // export const AWS_CONFIG = process.env.REACT_APP_STAGE === 'production'
@@ -93,6 +94,16 @@ export async function updateUser (id) {
   try {
     const response = await fetchBackend(`/users/${id}`, 'GET')
     Store.dispatch(setUser(response))
+  } catch (err) {
+    log(err)
+  }
+}
+
+// Refresh the redux store
+export async function updateRegistrations (id) {
+  try {
+    const response = await fetchBackend(`/registrations/?id=${id}`, 'GET')
+    Store.dispatch(setRegistrations(response))
   } catch (err) {
     log(err)
   }

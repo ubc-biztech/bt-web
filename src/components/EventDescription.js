@@ -96,7 +96,8 @@ const sendFavouriteData = async (userID, eventID, isFavourite) => {
   }
 };
 
-const sendRegistrationData = async (id, eventID, heardFrom) => {
+
+const sendRegistrationData = async (id, eventID, heardFrom, isRegister) => {
   const body = {
     id,
     eventID,
@@ -123,13 +124,13 @@ const EventDescription = ({ user, event, children }) => {
   const classes = useStyles();
   const favLogo = useRef(null);
   const [eventFavStatus, setEventFavStatus] = useState(false);
+  const [eventRegistrationStatus, setEventRegistrationStatus] = useState(false);
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [snackMsg, setSnackMsg] = React.useState("");
-  //called after the first dom mutation
+  //called after the first dom mutation, right before render()
   useLayoutEffect(() => {
     if (event && user && user.favedEventsID) {
       if (user.favedEventsID.indexOf(event.id) !== -1) {
-        console.log("set to true");
         setEventFavStatus(true);
       }
     }

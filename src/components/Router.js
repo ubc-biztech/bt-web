@@ -30,9 +30,11 @@ import EventEdit from '../pages/admin/EventEdit'
 import EventDetails from '../pages/admin/EventDetails'
 
 import { setUser } from '../actions/UserActions'
+import { setRegistrations } from '../actions/RegistrationActions'
 import {
   log,
-  updateUser
+  updateUser,
+  updateRegistrations
 } from '../utils'
 
 class Router extends Component {
@@ -56,7 +58,8 @@ class Router extends Component {
         } else {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
-            await updateUser(studentId)
+            // Perform redux actions to update user and registration states at the same time
+            await Promise.all([updateUser(studentId), updateRegistrations(studentId)]) 
           } else {
             // Parse first name and last name
             const initialName = authUser.attributes.name.split(' ')
@@ -95,7 +98,7 @@ class Router extends Component {
   }
 
   render () {
-    const { user } = this.props
+    const { user, registrations } = this.props
     const { loaded } = this.state
 
     // Alert the user about the need to register if they haven't
@@ -128,7 +131,7 @@ class Router extends Component {
 
               <Route
                 path='/eventDetails/:id'
-                render={props => <EventDetails {...props} user={user} />} />
+                render={props => <EventDetails {...props} user={user} registrations={registrations} />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
@@ -186,7 +189,8 @@ class Router extends Component {
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
-    user: state.userState.user
+    user: state.userState.user,
+    registrations: state.registrationsState.registrations
   }
 }
 
