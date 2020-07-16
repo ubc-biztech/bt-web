@@ -13,6 +13,8 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 import StarIcon from "@material-ui/icons/Star";
 
+let settingFavouriteData = false;
+let settingRegistrationData = false;
 const useStyles = makeStyles(theme => ({
   layout: {
     [theme.breakpoints.up("sm")]: {
@@ -48,7 +50,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: "32px"
   },
   button: {
-    marginLeft: "10px"
+    marginLeft: "10px",
+    color: COLOR.WHITE,
+    padding: "6px 12px"
   },
   buttonGroup: {
     position: "absolute",
@@ -56,7 +60,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-let settingFavouriteData = false;
 const sendFavouriteData = async (userID, eventID, isFavourite) => {
   if (settingFavouriteData === true) {
     return Promise.resolve("in_progress");
@@ -67,11 +70,7 @@ const sendFavouriteData = async (userID, eventID, isFavourite) => {
     isFavourite: isFavourite
   };
   try {
-    const response = await fetchBackend(
-      `/users/favEvent/${userID}`,
-      "PATCH",
-      bodyData
-    );
+    await fetchBackend(`/users/favEvent/${userID}`, "PATCH", bodyData);
     settingFavouriteData = false;
     let responesMsg = "";
     isFavourite ? (responesMsg = "favourite") : (responesMsg = "unfavourite");
@@ -83,28 +82,43 @@ const sendFavouriteData = async (userID, eventID, isFavourite) => {
   }
 };
 
-const sendRegistrationData = async (id, eventID, heardFrom, isRegister) => {
+const sendRegistrationData = async (id, eventID, isRegister, isFirstTime) => {
+  if (settingRegistrationData === true) {
+    return Promise.resolve("in_progress");
+  }
+  settingRegistrationData = true;
   let registrationStatus = "";
-  if (isRegister){
+  let method = "";
+  let path = "";
+  let body = {
+    eventID: eventID,
+    registrationStatus: registrationStatus
+  };
+  if (isRegister) {
     registrationStatus = REGISTRATION_STATUS.REGISTERED;
   } else {
     registrationStatus = REGISTRATION_STATUS.CANCELLED;
   }
-  const body = {
-    id,
-    eventID,
-    heardFrom,
-    registrationStatus: registrationStatus
-  };
+  if (isFirstTime) {
+    body["id"] = id;
+    method = "POST";
+    path = "/registrations";
+  } else {
+    method = "PUT";
+    path = `/registrations/${id}`;
+  }
   try {
-    await fetchBackend("/registrations", "POST", body);
-    alert("Signed Up");
-  } catch (err) {
-    if (err.status === 409) {
-      alert("You cannot sign up for this event again!");
-    } else {
-      alert("Signup failed");
-    }
+    await fetchBackend(path, method, body);
+    settingRegistrationData = false;
+    let responesMsg = "";
+    isRegister
+      ? (responesMsg = "registration")
+      : (responesMsg = "unregistration");
+    responesMsg += " succeed";
+    return Promise.resolve(responesMsg);
+  } catch (error) {
+    settingRegistrationData = false;
+    return Promise.reject(error);
   }
 };
 
@@ -114,7 +128,6 @@ const TransitionUp = props => {
 
 const EventDescription = ({ user, event, registration, children }) => {
   const classes = useStyles();
-  const history = useHistory();
   const [eventFavStatus, setEventFavStatus] = useState(false);
   const [eventRegistrationStatus, setEventRegistrationStatus] = useState(false);
   const [snackOpen, setSnackOpen] = React.useState(false);
@@ -126,7 +139,10 @@ const EventDescription = ({ user, event, registration, children }) => {
         setEventFavStatus(true);
       }
     }
-    if (registration && registration.registrationStatus === REGISTRATION_STATUS.REGISTERED) {
+    if (
+      registration &&
+      registration.registrationStatus === REGISTRATION_STATUS.REGISTERED
+    ) {
       setEventRegistrationStatus(true);
     }
   }, [event, user, registration]);
@@ -142,8 +158,28 @@ const EventDescription = ({ user, event, registration, children }) => {
       setEventFavStatus(!currFavStatus);
       openSnackBar(favResult);
     } catch (error) {
-      console.error(error);
-      setSnackMsg(error);
+      openSnackBar(error);
+    }
+  };
+
+  const handleClickRegisterOrUnRegisterEvent = async (
+    userID,
+    eventID,
+    isRegister
+  ) => {
+    let isFirstTime = false;
+    registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
+    
+    try {
+      const registrationResult = await sendRegistrationData(
+        userID,
+        eventID,
+        isRegister,
+        isFirstTime
+      );
+      setEventRegistrationStatus(isRegister);
+      openSnackBar(registrationResult);
+    } catch (error) {
       openSnackBar(error);
     }
   };
@@ -155,7 +191,6 @@ const EventDescription = ({ user, event, registration, children }) => {
       setSnackOpen(false);
     }, 1000);
   };
-
 
   return (
     <React.Fragment>
@@ -186,20 +221,33 @@ const EventDescription = ({ user, event, registration, children }) => {
         </div>
         <Markdown className={classes.description}>{event.description}</Markdown>
         <div className={classes.buttonGroup}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            see more
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-          >
-            sign me up
-          </Button>
+          {eventRegistrationStatus ? (
+            <React.Fragment>
+              <Button
+                style={{ backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR }}
+                className={classes.button}
+                onClick={() => {
+                  handleClickRegisterOrUnRegisterEvent(user.id, event.id, false)
+                }}
+              >
+                Unregiseter
+              </Button>
+              <Button
+                disabled
+                style={{ backgroundColor: COLOR.BIZTECH_GREEN }}
+                className={classes.button}
+              >
+                Registered
+              </Button>
+            </React.Fragment>
+          ) : (
+            <Button
+              style={{ backgroundColor: COLOR.BIZTECH_GREEN }}
+              className={classes.button}
+            >
+              sign me up
+            </Button>
+          )}
         </div>
       </Paper>
       <Snackbar

@@ -33,7 +33,6 @@ const EventDetails = (props) => {
   const history = useHistory();
   const { id: eventId } = useParams();
   const { user, events, registrations} = props;
-  console.log('all props: ', props);
   if (!events) {
     updateEvents();
   }
@@ -55,7 +54,6 @@ const EventDetails = (props) => {
   const handleClickReturnEvent = event => {
     history.push("/events");
   };
-
 
   return event ? (
     <ThemeProvider>
