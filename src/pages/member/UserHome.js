@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Typography from '@material-ui/core/Typography'
-import EventCard from './EventCard'
 import { fetchBackend, updateEvents } from '../../utils'
 import { COLOR } from '../../constants/Constants'
 import House from '../../assets/house.svg'
@@ -11,47 +10,52 @@ import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 
 const useStyles = makeStyles({
-  root: {
-    width: '719px',
-    marginTop: '27px'
-  },
-  home: {
-    color: COLOR.BIZTECH_GREEN,
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    paddingLeft: '85px',
-    paddingTop: '50px'
-  },
-  page: {
-    height: '100vh'
-  },
   container: {
-    display: 'flex'
+    maxWidth: '1200px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: 'auto',
+    padding: '14px'
   },
   header: {
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    paddingLeft: '76px',
-    paddingTop: '45px'
+    color: COLOR.BIZTECH_GREEN,
+    width: '100%'
   },
-  reward: {
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontSize: '22px',
-    paddingLeft: '76px',
-    paddingTop: '15px'
+  column: {
+    flex: '1'
+  },
+  card: {
+    position: 'relative',
+    margin: '10px 10px 0 0',
+    overflow: 'visible'
+  },
+  flexbox: {
+    display: 'flex',
+    width: '100%'
   },
   house: {
     position: 'absolute',
-    left: '685px',
-    top: '99px'
+    width: '33%',
+    bottom: '0px',
+    right: '10px'
+  },
+  green: {
+    color: COLOR.BIZTECH_GREEN
+  },
+  eventName: {
+    fontSize: '24px',
+    fontWeight: 'normal'
+  },
+  eventDate: {
+    fontWeight: 'normal',
+    color: COLOR.FONT_COLOR
   }
 })
 
 function UserHome (props) {
   const classes = useStyles()
-  const [featuredEvent, setFeaturedEvent] = useState()
-  const [nextEvent, setNextEvent] = useState()
+  const [featuredEvent, setFeaturedEvent] = useState({})
+  const [nextEvent, setNextEvent] = useState({})
   const getFeaturedEvent = () => {
     if (props.events && props.events.length) {
       setFeaturedEvent(props.events[Math.floor(Math.random() * (props.events.length - 1))])
@@ -59,10 +63,10 @@ function UserHome (props) {
   }
 
   /**
-             * gets the next event that the user is registered for
-             * verifies that the event is after the current time
-             * sets next event to 'None Registered!' if no events found
-             */
+   * gets the next event that the user is registered for
+   * verifies that the event is after the current time
+   * sets next event to 'None Registered!' if no events found
+   */
   const getNextEvent = async () => {
     const params = new URLSearchParams({
       id: props.user.id
@@ -94,58 +98,74 @@ function UserHome (props) {
       })
   }
 
+  if (!props.events) {
+    updateEvents()
+  }
+
   // set featured event and nextEvent on initial render
-  if (!featuredEvent && !nextEvent) {
-    if (!props.events) {
-      updateEvents()
-    }
+  if (!featuredEvent.ename && !nextEvent.ename) {
     getFeaturedEvent()
     getNextEvent()
   }
 
-  function Greeting (props) {
+  function CardComponent (props) {
     return (
-      <Card className={classes.root}>
+      <Card className={classes.card}>
         <CardContent>
-          <Typography variant='h2' className={classes.header}>Hi {props.user.fname}!</Typography>
-          <Typography className={classes.reward}>You are X events away from a reward!</Typography>
+          {props.children}
         </CardContent>
-        <img src={House} className={classes.house} alt='BizTech House' />
       </Card>
     )
   }
 
-  function SubComponent (props) {
-    return (
-      <Card classes={{ root: classes.root }}>
-        <Typography variant='h2' className={classes.header}>{props.header}</Typography>
-        {props.content}
-      </Card>
-    )
+  function eventDate (date) {
+    return new Date(date)
+    .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })
   }
 
   return (
-    <div className={classes.page}>
+    <React.Fragment>
       <Helmet>
         <title>Biztech User Dashboard</title>
       </Helmet>
-      <Typography className={classes.home} variant='h3'>Home</Typography>
       <div className={classes.container}>
-        <div style={{ marginLeft: '85px' }}>
-          <Greeting user={props.user} />
-          <SubComponent header='Progress' />
+        <Typography variant='h1' className={classes.header}>Home</Typography>
+        <div className={classes.column}>
+          <CardComponent>
+            <Typography variant='h2'>Hi {props.user.fname}!</Typography>
+            <Typography>You are X events away from a reward!</Typography>
+            <img src={House} className={classes.house} alt='BizTech House' />
+          </CardComponent>
+          <CardComponent>
+            <Typography variant='h2'>Progress</Typography>
+          </CardComponent>
         </div>
-        <div style={{ marginLeft: '34px' }}>
-          <SubComponent header='Sticker Collection' />
-          <SubComponent header='Prizes' />
-          <div className={classes.container}>
-            <EventCard type={'Next Event'} event={nextEvent} />
-            <EventCard type={'Featured'} event={featuredEvent} />
+        <div className={classes.column}>
+          <CardComponent>
+            <Typography variant='h2'>Sticker Collection</Typography>
+          </CardComponent>
+          <CardComponent>
+            <Typography variant='h2'>Prizes</Typography>
+          </CardComponent>
+          <div className={classes.flexbox}>
+            <div className={classes.column}>
+              <CardComponent>
+                <Typography variant='h2' className={classes.green}>Next Event</Typography>
+                <Typography className={classes.eventName}>{nextEvent.ename}</Typography>
+                <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(nextEvent.startDate)}</Typography>
+              </CardComponent>
+            </div>
+            <div className={classes.column}>
+              <CardComponent>
+                <Typography variant='h2' className={classes.green}>Featured</Typography>
+                <Typography className={classes.eventName}>{featuredEvent.ename}</Typography>
+                <Typography className={classes.eventDate}>{featuredEvent.startDate && eventDate(featuredEvent.startDate)}</Typography>
+              </CardComponent>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
+    </React.Fragment>
   )
 }
 

@@ -64,17 +64,16 @@ const theme = createMuiTheme({
         backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
         color: COLOR.WHITE,
         '&:hover': {
-          backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
+          backgroundColor:COLOR.LIGHT_BACKGROUND_COLOR,
         },
       },
       containedSecondary: {
-        backgroundColor: COLOR.BIZTECH_GREEN,
-        color:COLOR.WHITE,
+        backgroundColor: "#303960",
+        color: COLOR.WHITE,
         '&:hover': {
-          backgroundColor: COLOR.BIZTECH_GREEN,
+          backgroundColor: "#303960",
         },
       }
-      
     },
     MuiPaper: {
       root: {
@@ -91,14 +90,15 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
     fontFamily,
-    fontSize: 12,
+    fontSize: 14,
     h1: {
       fontWeight: 700,
-      fontSize: '1.5rem',
+      fontSize: '36px',
       fontFamily
     },
     h2: {
-      fontSize: '36px',
+      fontWeight: 700,
+      fontSize: '28px',
       fontFamily
     },
     h5: {
