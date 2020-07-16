@@ -21,10 +21,15 @@ const styles = {
     float: 'left'
   },
   socialIcon: {
-    marginTop: '5px',
-    marginRight: '8px',
-    width: '19px'
-  }
+    marginTop: "5px",
+    marginRight: "8px",
+    width: "19px"
+  },
+  facebookIconBtn: {
+    marginTop: "10px",
+    paddingLeft: "10px",
+    paddingRight: "10px",
+  },
 }
 
 const useStyles = makeStyles(theme => ({
@@ -37,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: '#54D260'
+    backgroundColor: "#3fb5a3"
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -68,9 +73,9 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+
 function Login (props) {
   const classes = useStyles()
-
   return (
     <Container component='main' maxWidth='xs'>
       <Helmet>
@@ -78,8 +83,8 @@ function Login (props) {
       </Helmet>
       <CssBaseline />
       <div className={classes.paper}>
-        <Card className={classes.root} width='400px'>
 
+        <Card className={classes.root} width='400px'>
           <div
             style={{
               display: 'flex',
@@ -108,8 +113,21 @@ function Login (props) {
               </div>
               Sign In with Google
             </Button>
+            <Button style={styles.facebookIconBtn}
+              onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
+              variant='contained'
+              color='secondary'
+            >
+              <div style={styles.left}>
+                <img
+                  style={styles.socialIcon}
+                  alt="Facebook"
+                  src="./facebook.png"
+                />
+              </div>
+              Sign In with Facebook
+            </Button>
           </CardContent>
-          <Divider variant='middle' />
         </Card>
       </div>
     </Container>
