@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
-import { useHistory, withRouter } from "react-router-dom";
+import React, { useState, useLayoutEffect } from "react";
+import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Markdown from "./Markdown";

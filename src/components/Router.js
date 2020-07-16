@@ -30,7 +30,6 @@ import EventEdit from '../pages/admin/EventEdit'
 import EventDetails from '../pages/admin/EventDetails'
 
 import { setUser } from '../actions/UserActions'
-import { setRegistrations } from '../actions/RegistrationActions'
 import {
   log,
   updateUser,
