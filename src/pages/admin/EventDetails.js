@@ -1,45 +1,75 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { useParams, useHistory, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
-
 import CircularProgress from "@material-ui/core/CircularProgress";
-// import Link from '@material-ui/core/Link'
-// import EventUserTable from '../../components/EventUserTable'
 import ThemeProvider from "../../components/ThemeProvider";
-import { updateEvents } from "../../utils";
+import { updateEvents, updateRegistrations } from "../../utils";
 import EventDescription from "../../components/EventDescription";
-function EventDetails(props) {
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import Typography from "@material-ui/core/Typography";
+
+const useStyles = makeStyles(theme => ({
+  content: {
+    padding: "80px 10px 0px 10px"
+  },
+  returnDiv: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "20px"
+  },
+  returnText: {
+    fontSize: "24px",
+    paddingLeft: "15px"
+  },
+  backArrowIcon: {
+    fontSize: "32px"
+  },
+}));
+
+const EventDetails = (props) => {
+  const classes = useStyles();
   const history = useHistory();
   const { id: eventId } = useParams();
-  const { user, events } = props;
+  const { user, events, registrations} = props;
   console.log('all props: ', props);
   if (!events) {
     updateEvents();
   }
-
+  if (!registrations) {
+    updateRegistrations();
+  }
   const [event, setEvent] = useState(null);
+  const [registration, setRegistration] = useState(null);
 
-  // Like componentDidUpdate/DidMount
   useEffect(() => {
     if (events && eventId) {
       setEvent(events.find(event => event.id === eventId));
     }
-  }, [event, events, setEvent, eventId]);
+    if (registrations && eventId) {
+      setRegistration(registrations.find(registration => registration.eventID === eventId));
+    }
+  }, [event, events, setEvent, registration, registrations, setRegistration, eventId]);
 
-  function handleEditEventClick() {
-    if (eventId) history.push(`/event/${eventId}/edit`);
-  }
+  const handleClickReturnEvent = event => {
+    history.push("/events");
+  };
+
 
   return event ? (
     <ThemeProvider>
       <Helmet>
         <title>{event.ename} - BizTech Members</title>
       </Helmet>
-      {/* <Link onClick={handleEditEventClick}>Edit Event</Link>
-      <Link onClick={() => { props.history.push(`/event/${event.id}/register`) }} key={event.id}>Public Event Page</Link> */}
-      {/* <EventUserTable event={event} /> */}
-      <EventDescription event={event} user={user}></EventDescription>
+      <div className={classes.returnDiv}>
+        <ArrowBackIcon
+          className={classes.backArrowIcon}
+          onClick={handleClickReturnEvent}
+        ></ArrowBackIcon>
+        <Typography className={classes.returnText}>All Events</Typography>
+      </div>
+      <EventDescription event={event} user={user} registration={registration}></EventDescription>
     </ThemeProvider>
   ) : (
     <CircularProgress />
