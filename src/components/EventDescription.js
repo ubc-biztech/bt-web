@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const handleClickReturnEvent = event => {};
+
 
 let settingFavouriteData = false;
 const sendFavouriteData = async (userID, eventID, isFavourite) => {
@@ -134,6 +134,8 @@ const EventDescription = ({ user, event, children }) => {
         setEventFavStatus(true);
       }
     }
+
+
   }, [event, user]);
 
   const handleClickFavouriteEvent = async (userID, eventID) => {
@@ -159,6 +161,11 @@ const EventDescription = ({ user, event, children }) => {
     setTimeout(() => {
       setSnackOpen(false);
     }, 1000);
+  };
+
+  const handleClickReturnEvent = event => {
+    
+
   };
 
   return (
