@@ -21,7 +21,7 @@ const styles = ({
   media: {
     height: 250
   },
-  favoriteButton: {
+  favouriteButton: {
     cursor: 'pointer'
   }
 })
@@ -31,10 +31,10 @@ function EventCard (props) {
     classes,
     cardStyle = {},
     event,
-    favorited = false,
+    favourited = false,
     handleCardClick,
     handleSubMenuClick = () => {},
-    handleFavorite = () => {},
+    handleFavourite = () => {},
     variant = 'admin'
   } = props
 
@@ -62,9 +62,9 @@ function EventCard (props) {
               <MoreVertIcon />
             </IconButton>
           ) : (
-            favorited
-              ? <Star fontSize='large' onClick={() => { handleFavorite(event.id, false) }} style={styles.favoriteButton}/>
-              : <StarBorder fontSize='large' onClick={() => { handleFavorite(event.id, true) }} style={styles.favoriteButton}/>
+            favourited
+              ? <Star fontSize='large' onClick={() => { handleFavourite(event.id, false) }} style={styles.favouriteButton}/>
+              : <StarBorder fontSize='large' onClick={() => { handleFavourite(event.id, true) }} style={styles.favouriteButton}/>
           )
         }>
       </CardHeader>

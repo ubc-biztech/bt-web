@@ -28,7 +28,7 @@ import {
 
 // States for the filters
 const PANEL_STATES = {
-  FAVORITES: 'FAVORITES',
+  FAVOURITES: 'FAVOURITES',
   REGISTERED: 'REGISTERED',
   ALL: 'ALL'
 }
@@ -120,7 +120,7 @@ function UserEvents (props) {
     if (user.id) updateRegisteredEvents(user.id)
   }, [])
 
-  const handleFavoriteEvent = async (eventId, toggle) => {
+  const handleFavouriteEvent = async (eventId, toggle) => {
     const body = { eventID: eventId, isFavourite: toggle }
     await fetchBackend(`/users/favEvent/${user.id}`, 'PATCH', body)
     const newEventIds = toggle
@@ -152,7 +152,7 @@ function UserEvents (props) {
     return eventsRegistered
   }, [eventsRegistered])
 
-  const eventsFavoritedIds = useMemo(() => {
+  const eventsFavouritedIds = useMemo(() => {
     if (user && user.favedEventsID && user.favedEventsID.length) {
       return user.favedEventsID
     }
@@ -162,7 +162,7 @@ function UserEvents (props) {
 
   const AllEventCards = useMemo(() => {
     if (selectedPanel === PANEL_STATES.REGISTERED) return events.filter((event) => eventsRegisteredIds.includes(event.id))
-    else if (selectedPanel === PANEL_STATES.FAVORITES) return events.filter((event) => eventsFavoritedIds.includes(event.id))
+    else if (selectedPanel === PANEL_STATES.FAVOURITES) return events.filter((event) => eventsFavouritedIds.includes(event.id))
     else return events
   }, [events, selectedPanel, user.favedEventsID])
 
@@ -184,9 +184,9 @@ function UserEvents (props) {
         event={event}
         key={event.id}
         variant='user'
-        favorited={eventsFavoritedIds.includes(event.id)}
+        favourited={eventsFavouritedIds.includes(event.id)}
         handleCardClick={redirectToEvent}
-        handleFavorite={handleFavoriteEvent}
+        handleFavourite={handleFavouriteEvent}
         cardStyle={{ width: '40%' }}
       />
     ))
@@ -202,13 +202,13 @@ function UserEvents (props) {
           <Typography variant='h1' style={styles.header}>Events</Typography>
           <List>
             <ListItem
-              style={selectedPanel === PANEL_STATES.FAVORITES
+              style={selectedPanel === PANEL_STATES.FAVOURITES
                 ? styles.sidePanel.activeButton
                 : styles.sidePanel.button}
-              onClick={() => handlePanelChange(PANEL_STATES.FAVORITES)}
+              onClick={() => handlePanelChange(PANEL_STATES.FAVOURITES)}
               button
             >
-              <ListItemText><StarBorder fontSize='small' />&nbsp;Favorites</ListItemText>
+              <ListItemText><StarBorder fontSize='small' />&nbsp;Favourites</ListItemText>
             </ListItem>
             <ListItem
               style={selectedPanel === PANEL_STATES.REGISTERED
