@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import { COLOR } from '../../constants/Constants'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
       '&.Mui-focused fieldset': {
         borderColor: COLOR.FONT_COLOR
       }
-    }
+    },
+    height: '40px'
   },
   button: {
     backgroundColor: COLOR.BIZTECH_GREEN,
@@ -38,12 +40,18 @@ export default function RegisterEventForm (props) {
     handleSubmit,
     handleChange,
     setFieldTouched,
-    isSubmitting
+    isSubmitting,
+    setFieldValue
   } = props
 
   const change = (name, e) => {
     e.persist()
     handleChange(e)
+    setFieldTouched(name, true, false)
+  }
+
+  const autoCompleteChange = (name, value) => {
+    setFieldValue(name, value, false)
     setFieldTouched(name, true, false)
   }
 
@@ -115,77 +123,126 @@ export default function RegisterEventForm (props) {
         </Grid>
 
         <Grid item xs={12}>
-          <TextField
-            className={classes.root}
-            variant='outlined'
-            label='Faculty*'
-            helperText={touched.faculty ? errors.faculty : ''}
-            error={touched.faculty && Boolean(errors.faculty)}
-            id='faculty'
-            onChange={change.bind(null, 'faculty')}
+          <Autocomplete
             defaultValue={initialValues.faculty}
-            margin='dense'
-            fullWidth
+            onChange={(e, value) => { autoCompleteChange('faculty', value) }}
+            handleHomeEndKeys
+            freeSolo
+            onInputChange={(e, value) => { setFieldValue('faculty', value, false) }}
+            options={['Science', 'Commerce', 'Arts', 'Engineering', 'Kinesiology', 'Land and Food Systems', 'Forestry']}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                className={classes.root}
+                variant='outlined'
+                label='Faculty*'
+                helperText={touched.faculty ? errors.faculty : ''}
+                error={touched.faculty && Boolean(errors.faculty)}
+                id='faculty'
+                margin='dense'
+                fullWidth
+              />
+            )}
           />
         </Grid>
 
         <Grid item xs={12}>
-          <TextField
-            className={classes.root}
-            variant='outlined'
-            label='Level of study*'
-            helperText={touched.year ? errors.year : ''}
-            error={touched.year && Boolean(errors.year)}
-            id='year'
-            onChange={change.bind(null, 'year')}
+          <Autocomplete
             defaultValue={initialValues.year}
-            margin='dense'
-            fullWidth
+            onChange={(e, value) => { autoCompleteChange('year', value) }}
+            handleHomeEndKeys
+            freeSolo
+            onInputChange={(e, value) => { setFieldValue('year', value, false) }}
+            options={['1st Year', '2nd Year', '3rd Year', '4th Year', '5+ Year']}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                className={classes.root}
+                variant='outlined'
+                label='Level of study*'
+                helperText={touched.year ? errors.year : ''}
+                error={touched.year && Boolean(errors.year)}
+                id='year'
+                onChange={change.bind(null, 'year')}
+                margin='dense'
+                fullWidth
+              />
+            )}
           />
         </Grid>
 
         <Grid item xs={12}>
-          <TextField
-            className={classes.root}
-            variant='outlined'
-            label='Dietary restrictions*'
-            helperText={touched.diet ? errors.diet : ''}
-            error={touched.diet && Boolean(errors.diet)}
-            id='diet'
-            onChange={change.bind(null, 'diet')}
+          <Autocomplete
             defaultValue={initialValues.diet}
-            margin='dense'
-            fullWidth
+            onChange={(e, value) => { autoCompleteChange('diet', value) }}
+            handleHomeEndKeys
+            freeSolo
+            onInputChange={(e, value) => { setFieldValue('diet', value, false) }}
+            options={['None', 'Vegetarian', 'Vegan', 'Gluten Free']}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                className={classes.root}
+                variant='outlined'
+                label='Dietary restrictions*'
+                helperText={touched.diet ? errors.diet : ''}
+                error={touched.diet && Boolean(errors.diet)}
+                id='diet'
+                onChange={change.bind(null, 'diet')}
+                margin='dense'
+                fullWidth
+              />
+            )}
           />
         </Grid>
 
         <Grid item xs={12}>
-          <TextField
-            className={classes.root}
-            variant='outlined'
-            label='Preferred Pronouns'
-            helperText={touched.gender ? errors.gender : ''}
-            error={touched.gender && Boolean(errors.gender)}
-            id='gender'
-            onChange={change.bind(null, 'gender')}
+          <Autocomplete
             defaultValue={initialValues.gender}
-            margin='dense'
-            fullWidth
+            onChange={(e, value) => { autoCompleteChange('gender', value) }}
+            handleHomeEndKeys
+            freeSolo
+            onInputChange={(e, value) => { setFieldValue('gender', value, false) }}
+            options={['He/Him/His', 'She/Her/Hers', 'They/Them/Their', 'Prefer not to say']}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                className={classes.root}
+                variant='outlined'
+                label='Preferred Pronouns'
+                helperText={touched.gender ? errors.gender : ''}
+                error={touched.gender && Boolean(errors.gender)}
+                id='gender'
+                onChange={change.bind(null, 'gender')}
+                margin='dense'
+                fullWidth
+              />
+            )}
           />
         </Grid>
 
         <Grid item xs={12}>
-          <TextField
-            className={classes.root}
-            variant='outlined'
-            label='How did you hear about this event?'
-            helperText={touched.heardFrom ? errors.heardFrom : ''}
-            error={touched.heardFrom && Boolean(errors.heardFrom)}
-            id='heardFrom'
-            onChange={change.bind(null, 'heardFrom')}
+          <Autocomplete
             defaultValue={initialValues.heardFrom}
-            margin='dense'
-            fullWidth
+            onChange={(e, value) => { autoCompleteChange('heardFrom', value) }}
+            handleHomeEndKeys
+            freeSolo
+            onInputChange={(e, value) => { setFieldValue('heardFrom', value, false) }}
+            options={['Facebook', 'Boothing', 'Friends', 'BizTech Newsletter', 'Faculty Newsletter']}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                className={classes.root}
+                variant='outlined'
+                label='How did you hear about this event?'
+                helperText={touched.heardFrom ? errors.heardFrom : ''}
+                error={touched.heardFrom && Boolean(errors.heardFrom)}
+                id='heardFrom'
+                onChange={change.bind(null, 'heardFrom')}
+                margin='dense'
+                fullWidth
+              />
+            )}
           />
         </Grid>
 
