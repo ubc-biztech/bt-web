@@ -26,9 +26,8 @@ const useStyles = makeStyles(theme => ({
     fontSize: "36px"
   },
   description: {
-    margin: "50px 0px 67px 0px"
+    margin: "50px 100px 67px 0px",
   },
-
   favLogo: {
     position: "absolute",
     top: "4.5px",
@@ -50,7 +49,8 @@ const useStyles = makeStyles(theme => ({
   buttonGroup: {
     position: "absolute",
     right: "100px"
-  }
+  },
+  
 }));
 
 const sendFavouriteData = async (userID, eventID, isFavourite) => {
