@@ -16,14 +16,7 @@ import StarIcon from "@material-ui/icons/Star";
 let settingFavouriteData = false;
 let settingRegistrationData = false;
 const useStyles = makeStyles(theme => ({
-  layout: {
-    [theme.breakpoints.up("sm")]: {
-      width: 600,
-      margin: "auto"
-    }
-  },
   paper: {
-    maxWidth: "1274px",
     padding: "60px 0 80px 95px",
     position: "relative"
   },
@@ -161,14 +154,10 @@ const EventDescription = ({ user, event, registration, children }) => {
     }
   };
 
-  const handleClickRegisterEvent = async (
-    userID,
-    eventID,
-    isRegister
-  ) => {
+  const handleClickRegisterEvent = async (userID, eventID, isRegister) => {
     let isFirstTime = false;
     registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
-    
+
     try {
       const registrationResult = await sendRegistrationData(
         userID,
@@ -198,10 +187,7 @@ const EventDescription = ({ user, event, registration, children }) => {
           <Typography variant="h1" className={classes.title}>
             {event.id}
           </Typography>
-          <VisibilityIcon
-            className={classes.viewLogo}
-            fill="none"
-          />
+          <VisibilityIcon className={classes.viewLogo} fill="none" />
           {eventFavStatus ? (
             <StarIcon
               className={classes.favLogo}
@@ -226,7 +212,7 @@ const EventDescription = ({ user, event, registration, children }) => {
                 style={{ backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR }}
                 className={classes.button}
                 onClick={() => {
-                  handleClickRegisterEvent(user.id, event.id, false)
+                  handleClickRegisterEvent(user.id, event.id, false);
                 }}
               >
                 Unregiseter

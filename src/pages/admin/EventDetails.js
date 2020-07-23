@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useParams, useHistory, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -10,13 +10,17 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
-  content: {
-    padding: "80px 10px 0px 10px"
+  layout: {
+    [theme.breakpoints.up("sm")]: {
+      width: "66vw",
+      margin: "auto"
+    }
   },
   returnDiv: {
     display: "flex",
     alignItems: "center",
-    marginBottom: "20px"
+    marginBottom: "20px",
+    width: "66vw"
   },
   returnText: {
     fontSize: "24px",
@@ -24,14 +28,14 @@ const useStyles = makeStyles(theme => ({
   },
   backArrowIcon: {
     fontSize: "32px"
-  },
+  }
 }));
 
-const EventDetails = (props) => {
+const EventDetails = props => {
   const classes = useStyles();
   const history = useHistory();
   const { id: eventId } = useParams();
-  const { user, events, registrations} = props;
+  const { user, events, registrations } = props;
   if (!events) {
     updateEvents();
   }
@@ -46,9 +50,19 @@ const EventDetails = (props) => {
       setEvent(events.find(event => event.id === eventId));
     }
     if (registrations && eventId) {
-      setRegistration(registrations.find(registration => registration.eventID === eventId));
+      setRegistration(
+        registrations.find(registration => registration.eventID === eventId)
+      );
     }
-  }, [event, events, setEvent, registration, registrations, setRegistration, eventId]);
+  }, [
+    event,
+    events,
+    setEvent,
+    registration,
+    registrations,
+    setRegistration,
+    eventId
+  ]);
 
   const handleClickReturnEvent = event => {
     history.push("/events");
@@ -59,19 +73,25 @@ const EventDetails = (props) => {
       <Helmet>
         <title>{event.ename} - BizTech Members</title>
       </Helmet>
-      <div className={classes.returnDiv}>
-        <ArrowBackIcon
-          className={classes.backArrowIcon}
-          onClick={handleClickReturnEvent}
-        ></ArrowBackIcon>
-        <Typography className={classes.returnText}>All Events</Typography>
+      <div className={classes.layout}>
+        <div className={classes.returnDiv}>
+          <ArrowBackIcon
+            className={classes.backArrowIcon}
+            onClick={handleClickReturnEvent}
+          ></ArrowBackIcon>
+          <Typography className={classes.returnText}>All Events</Typography>
+        </div>
+        <EventDescription
+          event={event}
+          user={user}
+          registration={registration}
+        ></EventDescription>
       </div>
-      <EventDescription event={event} user={user} registration={registration}></EventDescription>
     </React.Fragment>
   ) : (
     <CircularProgress />
   );
-}
+};
 
 const mapStateToProps = state => {
   return {
