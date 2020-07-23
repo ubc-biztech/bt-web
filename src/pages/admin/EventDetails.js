@@ -56,7 +56,7 @@ const EventDetails = (props) => {
   };
 
   return event ? (
-    <ThemeProvider>
+    <React.Fragment>
       <Helmet>
         <title>{event.ename} - BizTech Members</title>
       </Helmet>
@@ -68,7 +68,7 @@ const EventDetails = (props) => {
         <Typography className={classes.returnText}>All Events</Typography>
       </div>
       <EventDescription event={event} user={user} registration={registration}></EventDescription>
-    </ThemeProvider>
+    </React.Fragment>
   ) : (
     <CircularProgress />
   );

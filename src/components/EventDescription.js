@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const sendFavouriteData = async (userID, eventID, isFavourite) => {
-  if (settingFavouriteData === true) {
+  if (settingFavouriteData) {
     return Promise.resolve("in_progress");
   }
   settingFavouriteData = true;
@@ -148,21 +148,20 @@ const EventDescription = ({ user, event, registration, children }) => {
   }, [event, user, registration]);
 
   const handleClickFavouriteEvent = async (userID, eventID) => {
-    const currFavStatus = eventFavStatus;
     try {
       const favResult = await sendFavouriteData(
         userID,
         eventID,
-        !currFavStatus
+        !eventFavStatus
       );
-      setEventFavStatus(!currFavStatus);
+      setEventFavStatus(!eventFavStatus);
       openSnackBar(favResult);
     } catch (error) {
       openSnackBar(error);
     }
   };
 
-  const handleClickRegisterOrUnRegisterEvent = async (
+  const handleClickRegisterEvent = async (
     userID,
     eventID,
     isRegister
@@ -202,21 +201,21 @@ const EventDescription = ({ user, event, registration, children }) => {
           <VisibilityIcon
             className={classes.viewLogo}
             fill="none"
-          ></VisibilityIcon>
+          />
           {eventFavStatus ? (
             <StarIcon
               className={classes.favLogo}
               onClick={() => {
                 handleClickFavouriteEvent(user.id, event.id);
               }}
-            ></StarIcon>
+            />
           ) : (
             <StarBorderOutlinedIcon
               className={classes.favLogo}
               onClick={() => {
                 handleClickFavouriteEvent(user.id, event.id);
               }}
-            ></StarBorderOutlinedIcon>
+            />
           )}
         </div>
         <Markdown className={classes.description}>{event.description}</Markdown>
@@ -227,7 +226,7 @@ const EventDescription = ({ user, event, registration, children }) => {
                 style={{ backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR }}
                 className={classes.button}
                 onClick={() => {
-                  handleClickRegisterOrUnRegisterEvent(user.id, event.id, false)
+                  handleClickRegisterEvent(user.id, event.id, false)
                 }}
               >
                 Unregiseter
