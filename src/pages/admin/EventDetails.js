@@ -4,7 +4,6 @@ import { useParams, useHistory, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import ThemeProvider from "../../components/ThemeProvider";
 import { updateEvents, updateRegistrations } from "../../utils";
 import EventDescription from "../../components/EventDescription";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
