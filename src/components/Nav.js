@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import {
-  Drawer,
   List,
   ListItem
 } from '@material-ui/core'
-import './Nav.scss'
 import { withStyles } from '@material-ui/styles'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import AddBoxIcon from '@material-ui/icons/AddBox'
@@ -13,6 +11,7 @@ import PersonIcon from '@material-ui/icons/Person'
 import { useHistory, withRouter } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
+import './Nav.scss'
 import { logout } from '../actions/UserActions'
 import { COLOR } from '../constants/Constants'
 import Biztech from './Icons/Biztech'
@@ -20,12 +19,6 @@ import Biztech from './Icons/Biztech'
 const ICON_SIZE = '32px'
 
 const styles = {
-  list: {
-    height: '100%',
-    width: '100px',
-    display: 'flex',
-    flexDirection: 'column'
-  },
   listItem: {
     justifyContent: 'center',
     cursor: 'pointer'
@@ -36,7 +29,6 @@ const styles = {
 }
 
 function Nav (props) {
-  const { classes } = props
   const history = useHistory()
 
   const selected = { color: COLOR.BIZTECH_GREEN, fontSize: ICON_SIZE }
@@ -74,8 +66,7 @@ function Nav (props) {
   }
 
   return (
-    <Drawer variant='permanent' classes={{ paper: classes.paper }}>
-      <List style={styles.list}>
+      <List className='navList'>
         {props.admin
           ? <React.Fragment>
             <MenuItem
@@ -118,7 +109,6 @@ function Nav (props) {
               bar={barUnselected} />
           </React.Fragment>}
       </List>
-    </Drawer>
   )
 }
 

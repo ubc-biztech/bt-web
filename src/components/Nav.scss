@@ -1,3 +1,25 @@
+@import '../constants/Colours.scss';
+
+.navList {
+    height: 100%;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    position: absolute !important;
+
+    @media screen and (max-width: 960px){
+        height: 100px;
+        width: 100vw;
+        flex-direction: row;
+        bottom: 0;
+        background-color: $background_color;
+
+        .navItem {
+            border-left: none !important;
+        }
+    }
+}
+
 .navItem {
     margin: 12px 0;
     justify-content: center;
