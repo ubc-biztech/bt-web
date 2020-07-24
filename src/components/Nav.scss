@@ -1,16 +1,19 @@
-@import '../constants/Colours.scss';
+@import '../constants/Constants.scss';
 
 .navList {
     height: 100%;
     width: 100px;
     display: flex;
     flex-direction: column;
-    position: absolute !important;
+    position: fixed !important;
 
-    @media screen and (max-width: 960px){
-        height: 100px;
+    @media screen and (max-width: $md){
+        border-top: 1px solid $card_paper_color;
+        z-index: 999;
+        height: $bottom_nav_size;
         width: 100vw;
         flex-direction: row;
+        align-items: center;
         bottom: 0;
         background-color: $background_color;
 
@@ -18,14 +21,16 @@
             border-left: none !important;
         }
     }
-}
 
-.navItem {
-    margin: 12px 0;
-    justify-content: center;
-    cursor: pointer;
-}
+    .navItem {
+        margin: 12px 0;
+        justify-content: center;
+        cursor: pointer;
+    }
 
-.navItem:last-child {
-    margin-top: auto;
+    @media screen and (min-width: $md){
+        .navItem:last-child {
+            margin-top: auto;
+        }
+    }
 }
