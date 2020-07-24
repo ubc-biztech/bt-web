@@ -46,8 +46,9 @@ const sixMonthsAgo = () => {
 }
 
 const UserProgress = ({ registeredEvents, events }) => {
-  const registeredEventIDs = registeredEvents && registeredEvents.map(event => {
-    return event.eventID
+  // filter only checkedIn events, and only return event IDs 
+  const registeredEventIDs = registeredEvents && registeredEvents.flatMap(event => {
+    return event.registrationStatus === 'checkedIn' ? [event.eventID] : []
   })
 
   // Find events user is registered for
@@ -87,7 +88,7 @@ const UserProgress = ({ registeredEvents, events }) => {
         <LinearProgress
           style={{ flex: 2 }}
           variant='determinate'
-          value={Math.max(registeredEventIDs.length * EVENT_PROGRESS_GOAL, EVENT_PROGRESS_GOAL)}
+          value={(registeredEventIDs.length * EVENT_PROGRESS_GOAL) > 100 ? EVENT_PROGRESS_GOAL : (registeredEventIDs.length * EVENT_PROGRESS_GOAL)}
         />
       </div>
       <FlexibleXYPlot
