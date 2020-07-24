@@ -3,11 +3,12 @@ import {
   List,
   ListItem
 } from '@material-ui/core'
-import { withStyles } from '@material-ui/styles'
+import { useTheme, withStyles } from '@material-ui/styles'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import AddBoxIcon from '@material-ui/icons/AddBox'
 import DateRangeIcon from '@material-ui/icons/DateRange'
 import PersonIcon from '@material-ui/icons/Person'
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useHistory, withRouter } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
@@ -29,6 +30,8 @@ const styles = {
 }
 
 function Nav (props) {
+  const theme = useTheme();
+  const renderDesktopOnly = useMediaQuery(theme.breakpoints.up('md'));
   const history = useHistory()
 
   const selected = { color: COLOR.BIZTECH_GREEN, fontSize: ICON_SIZE }
@@ -80,10 +83,10 @@ function Nav (props) {
               icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />}
               onClick={handleItemClick.bind(null, '/event/new')}
               bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
-            <MenuItem
+            {renderDesktopOnly && <MenuItem
               label='Logout'
               icon={<ExitToAppIcon />}
-              onClick={logout} />
+              onClick={logout} />}
           </React.Fragment>
           : <React.Fragment>
             <MenuItem
@@ -102,12 +105,13 @@ function Nav (props) {
               icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />}
               onClick={handleItemClick.bind(null, '/profile')}
               bar={selectedItem === '/profile' ? barSelected : barUnselected} />
-            <MenuItem
+            {renderDesktopOnly && <MenuItem
               label='Logout'
               icon={<ExitToAppIcon style={unselected} />}
               onClick={logout}
-              bar={barUnselected} />
-          </React.Fragment>}
+              bar={barUnselected} />}
+          </React.Fragment>
+        }
       </List>
   )
 }
