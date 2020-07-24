@@ -47,13 +47,13 @@ const sixMonthsAgo = () => {
 
 const UserProgress = ({ registeredEvents, events }) => {
   // filter only checkedIn events, and only return event IDs 
-  const registeredEventIDs = registeredEvents && registeredEvents.flatMap(event => {
+  const checkedInEventIDs = registeredEvents && registeredEvents.flatMap(event => {
     return event.registrationStatus === 'checkedIn' ? [event.eventID] : []
   })
 
   // Find events user is registered for
   const filteredEvents = events && events.filter(event => {
-    return registeredEventIDs.includes(event.id)
+    return checkedInEventIDs.includes(event.id)
   })
 
   const data = getData()
@@ -84,11 +84,11 @@ const UserProgress = ({ registeredEvents, events }) => {
     <React.Fragment>
       <div style={classes.container}>
         <Typography style={{ marginRight: '14px' }}>Events Attended</Typography>
-        <Typography style={{ marginRight: '14px' }}><span style={{ color: COLOR.BIZTECH_GREEN }}>{registeredEventIDs.length}</span>/{EVENT_PROGRESS_GOAL}</Typography>
+        <Typography style={{ marginRight: '14px' }}><span style={{ color: COLOR.BIZTECH_GREEN }}>{checkedInEventIDs.length}</span>/{EVENT_PROGRESS_GOAL}</Typography>
         <LinearProgress
           style={{ flex: 2 }}
           variant='determinate'
-          value={(registeredEventIDs.length * EVENT_PROGRESS_GOAL) > 100 ? EVENT_PROGRESS_GOAL : (registeredEventIDs.length * EVENT_PROGRESS_GOAL)}
+          value={(checkedInEventIDs.length * EVENT_PROGRESS_GOAL) > 100 ? EVENT_PROGRESS_GOAL : (checkedInEventIDs.length * EVENT_PROGRESS_GOAL)}
         />
       </div>
       <FlexibleXYPlot
