@@ -1,5 +1,5 @@
 /* eslint react-hooks/exhaustive-deps: 0 */
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
@@ -10,14 +10,16 @@ import { fetchBackend, updateEvents, updateRegisteredEvents } from '../../utils'
 import { setUser } from '../../actions/UserActions'
 
 import { COLOR } from '../../constants/Constants'
-import { withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   Tabs,
   Tab,
   List,
   ListItem,
   ListItemText,
-  Typography
+  Typography,
+  IconButton,
+  InputBase
 } from '@material-ui/core'
 
 import {
@@ -39,58 +41,92 @@ const TAB_STATES = {
   ALL: 2
 }
 
-const styles = ({
+const useStyles = makeStyles(theme => ({
   header: {
     color: COLOR.BIZTECH_GREEN
   },
-  flex: {
+  container: {
     display: 'flex',
     flexDirection: 'row',
     paddingTop: '14px',
     paddingBottom: '14px'
   },
-  sidePanel: {
-    layout: {
-      display: 'flex',
-      float: 'right',
-      flexDirection: 'column',
-      textAlign: 'right',
-      marginRight: '3em',
-      minWidth: '15em'
-    },
-    title: {
-      fontSize: '3em'
-    },
-    button: {
-      textAlign: 'right'
-    },
-    activeButton: {
-      textAlign: 'right',
-      borderRight: `2px solid ${COLOR.BIZTECH_GREEN}`
+  sidePanelLayout: {
+    display: 'flex',
+    float: 'right',
+    flexDirection: 'column',
+    textAlign: 'right',
+    marginRight: '3em'
+  },
+  sidePanelTitle: {
+    fontSize: '3em'
+  },
+  sidePanelButton: {
+    textAlign: 'right',
+    whiteSpace: 'nowrap'
+  },
+  sidePanelActiveButton: {
+    textAlign: 'right',
+    whiteSpace: 'nowrap',
+    borderRight: `2px solid ${COLOR.BIZTECH_GREEN}`
+  },
+  tabsLayout: {
+    width: '80%'
+  },
+  tabsContainer: {
+    marginBottom: '2em',
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  tab: {
+    fontSize: '0.9rem',
+    marginLeft: '1em',
+    marginRight: '1em',
+    textTransform: 'none',
+    maxWidth: '5em',
+    width: '100%',
+    color: `${COLOR.WHITE} !important`
+  },
+  search: {
+    display: 'flex',
+    height: '100%',
+    marginLeft: 'auto',
+    marginRight: '3em'
+  },
+  searchActive: {
+    display: 'flex',
+    height: '100%',
+    marginLeft: 'auto',
+    marginRight: '30px',
+    background: 'white',
+    borderRadius: '3em'
+  },
+  searchIcon: {
+    display: 'flex',
+    background: 'white',
+    borderRadius: '50%',
+    padding: '0.5em',
+    '&:hover': {
+      backgroundColor: '#0069d9',
+      borderColor: '#0062cc',
+      boxShadow: 'none'
     }
   },
-  tabs: {
-    container: {
-      width: '100%'
-    },
-    layout: {
-      marginBottom: '2em'
-    },
-    tab: {
-      fontSize: '0.9rem',
-      marginLeft: '1em',
-      marginRight: '1em',
-      textTransform: 'none',
-      maxWidth: '5em',
-      width: '100%',
-      color: COLOR.WHITE
-    }
+  searchInput: {
+    width: '0',
+    color: COLOR.CARD_PAPER_COLOR,
+    transition: theme.transitions.create('width')
+  },
+  searchInputActive: {
+    width: '70vw',
+    color: COLOR.CARD_PAPER_COLOR,
+    transition: theme.transitions.create('width')
   },
   rows: {
     display: 'flex',
     flexWrap: 'wrap'
   }
-})
+}))
 
 function EventPanel (props) {
   const { children, currentIndex, index, ...rest } = props
@@ -108,10 +144,14 @@ function EventPanel (props) {
 }
 
 function UserEvents (props) {
+  const [isSearch, setIsSearch] = useState(false)
+  const [searchText, setSearchText] = useState('')
   const [tabIndex, setTabIndex] = useState(TAB_STATES.ALL)
   const [selectedPanel, setSelectedPanel] = useState(PANEL_STATES.ALL)
 
   const history = useHistory()
+  const classes = useStyles()
+  const searchInput = useRef()
 
   const { events = [], eventsRegistered = [], user } = props
 
@@ -140,6 +180,15 @@ function UserEvents (props) {
     setSelectedPanel(newIndex)
   }
 
+  const handleStartSearch = () => {
+    setIsSearch(true)
+    searchInput.current.focus()
+  }
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value)
+  }
+
   const redirectToEvent = (e, eventId) => {
     history.push(`/event/${eventId}/register`)
   }
@@ -160,11 +209,17 @@ function UserEvents (props) {
     return []
   }, [user.favedEventsID])
 
+  const eventsFilteredBySearch = useMemo(() => {
+    if (!isSearch || !searchText) return events
+
+    return events.filter((event) => (event.ename || '').toLowerCase().includes(searchText.toLowerCase()))
+  }, [events, isSearch, searchText])
+
   const AllEventCards = useMemo(() => {
-    if (selectedPanel === PANEL_STATES.REGISTERED) return events.filter((event) => eventsRegisteredIds.includes(event.id))
-    else if (selectedPanel === PANEL_STATES.FAVOURITES) return events.filter((event) => eventsFavouritedIds.includes(event.id))
-    else return events
-  }, [events, selectedPanel, user.favedEventsID])
+    if (selectedPanel === PANEL_STATES.REGISTERED) return eventsFilteredBySearch.filter((event) => eventsRegisteredIds.includes(event.id))
+    else if (selectedPanel === PANEL_STATES.FAVOURITES) return eventsFilteredBySearch.filter((event) => eventsFavouritedIds.includes(event.id))
+    else return eventsFilteredBySearch
+  }, [eventsFilteredBySearch, selectedPanel, user.favedEventsID])
 
   const UpcomingEventCards = useMemo(() => {
     // filter events by the date
@@ -187,7 +242,7 @@ function UserEvents (props) {
         favourited={eventsFavouritedIds.includes(event.id)}
         handleCardClick={redirectToEvent}
         handleFavourite={handleFavouriteEvent}
-        cardStyle={{ width: '40%' }}
+        cardStyle={{ width: 'calc(50% - 30px)' }}
       />
     ))
   }
@@ -197,32 +252,32 @@ function UserEvents (props) {
       <Helmet>
         <title>Biztech User Events Dashboard</title>
       </Helmet>
-      <div style={styles.flex}>
-        <div style={styles.sidePanel.layout}>
-          <Typography variant='h1' style={styles.header}>Events</Typography>
+      <div className={classes.container}>
+        <div className={classes.sidePanelLayout}>
+          <Typography variant='h1' className={classes.header}>Events</Typography>
           <List>
             <ListItem
-              style={selectedPanel === PANEL_STATES.FAVOURITES
-                ? styles.sidePanel.activeButton
-                : styles.sidePanel.button}
+              className={selectedPanel === PANEL_STATES.FAVOURITES
+                ? classes.sidePanelActiveButton
+                : classes.sidePanelButton}
               onClick={() => handlePanelChange(PANEL_STATES.FAVOURITES)}
               button
             >
               <ListItemText><StarBorder fontSize='small' />&nbsp;Favourites</ListItemText>
             </ListItem>
             <ListItem
-              style={selectedPanel === PANEL_STATES.REGISTERED
-                ? styles.sidePanel.activeButton
-                : styles.sidePanel.button}
+              className={selectedPanel === PANEL_STATES.REGISTERED
+                ? classes.sidePanelActiveButton
+                : classes.sidePanelButton}
               onClick={() => handlePanelChange(PANEL_STATES.REGISTERED)}
               button
             >
               <ListItemText><PlaylistAddCheck fontSize='small' />&nbsp;Registered</ListItemText>
             </ListItem>
             <ListItem
-              style={selectedPanel === PANEL_STATES.ALL
-                ? styles.sidePanel.activeButton
-                : styles.sidePanel.button}
+              className={selectedPanel === PANEL_STATES.ALL
+                ? classes.sidePanelActiveButton
+                : classes.sidePanelButton}
               onClick={() => handlePanelChange(PANEL_STATES.ALL)}
               button
             >
@@ -230,32 +285,45 @@ function UserEvents (props) {
             </ListItem>
           </List>
         </div>
-        <div style={styles.tabs.container}>
+        <div className={classes.tabsLayout}>
 
-          <Tabs
-            value={tabIndex}
-            indicatorColor='primary'
-            textColor='primary'
-            onChange={handleTabChange}
-            style={styles.tabs.layout}
-          >
-            <Tab label='Upcoming' style={styles.tabs.tab} />
-            <Tab label='Past' style={styles.tabs.tab} />
-            <Tab label='All' style={styles.tabs.tab} />
-          </Tabs>
+          <div className={classes.tabsContainer}>
+            <Tabs
+              value={tabIndex}
+              indicatorColor='primary'
+              textColor='primary'
+              onChange={handleTabChange}
+            >
+              <Tab label='Upcoming' className={classes.tab} />
+              <Tab label='Past' className={classes.tab} />
+              <Tab label='All' className={classes.tab} />
+            </Tabs>
+            <div className={isSearch ? classes.searchActive : classes.search}>
+              <IconButton className={classes.searchIcon} onClick={handleStartSearch}>
+                <Search style={{ color: COLOR.CARD_PAPER_COLOR }}/>
+              </IconButton>
+              <InputBase
+                inputRef={searchInput}
+                placeholder='Search…'
+                classes={{ input: isSearch ? classes.searchInputActive : classes.searchInput }}
+                onChange={handleSearchChange}
+                onBlur={() => setIsSearch(false)}
+              />
+            </div>
+          </div>
 
           <EventPanel currentIndex={tabIndex} index={TAB_STATES.UPCOMING}>
-            <div style={styles.rows}>
+            <div className={classes.rows}>
               {generateEventCards(UpcomingEventCards)}
             </div>
           </EventPanel>
           <EventPanel currentIndex={tabIndex} index={TAB_STATES.PAST}>
-            <div style={styles.rows}>
+            <div className={classes.rows}>
               {generateEventCards(PastEventCards)}
             </div>
           </EventPanel>
           <EventPanel currentIndex={tabIndex} index={TAB_STATES.ALL}>
-            <div style={styles.rows}>
+            <div className={classes.rows}>
               {generateEventCards(AllEventCards)}
             </div>
           </EventPanel>
@@ -273,4 +341,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { setUser })(withStyles(styles)(UserEvents))
+export default connect(mapStateToProps, { setUser })(UserEvents)
