@@ -96,6 +96,11 @@ function UserHome (props) {
           })
         }
       })
+      .catch(() => {
+        setNextEvent({
+          ename: 'None Registered!'
+        })
+      })
   }
 
   if (!props.events) {
@@ -120,7 +125,7 @@ function UserHome (props) {
 
   function eventDate (date) {
     return new Date(date)
-    .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })
+      .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })
   }
 
   return (

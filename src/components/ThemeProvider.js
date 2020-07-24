@@ -27,6 +27,9 @@ const theme = createMuiTheme({
     MuiInput: {
       root: {
         color: COLOR.WHITE
+      },
+      input: {
+        borderColor: COLOR.FONT_COLOR
       }
     },
     MuiFormLabel: {
