@@ -163,7 +163,6 @@ export default function RegisterEventForm (props) {
                 helperText={touched.year ? errors.year : ''}
                 error={touched.year && Boolean(errors.year)}
                 id='year'
-                onChange={change.bind(null, 'year')}
                 margin='dense'
                 fullWidth
               />
@@ -188,7 +187,6 @@ export default function RegisterEventForm (props) {
                 helperText={touched.diet ? errors.diet : ''}
                 error={touched.diet && Boolean(errors.diet)}
                 id='diet'
-                onChange={change.bind(null, 'diet')}
                 margin='dense'
                 fullWidth
               />
