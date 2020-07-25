@@ -12,6 +12,7 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import { Helmet } from 'react-helmet'
 import { Typography } from '@material-ui/core'
 import House from '../../assets/house.svg'
+import Switch from '@material-ui/core/Switch'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -64,6 +65,9 @@ const useStyles = makeStyles(theme => ({
   },
   houseContainer: {
     borderBottom: '1px solid white'
+  },
+  switch: {
+    order: '2'
   }
 }))
 
@@ -80,6 +84,7 @@ const EventFormContainer = (props) => {
 
   const [event, setEvent] = useState(null)
   const [isSignedUp, setIsSignedUp] = useState(false)
+  const [isUBCStudent, setIsUBCStudent] = useState(true)
 
   const handleReturn = () => {
     history.push('/events')
@@ -100,6 +105,13 @@ const EventFormContainer = (props) => {
     fname: Yup.string().required('First name is required'),
     lname: Yup.string().required('Last name is required'),
     year: Yup.string().required('Level of study is required'),
+    diet: Yup.string().required('Dietary restriction is required')
+  })
+
+  const validationNonUBCStudent = Yup.object({
+    email: Yup.string().email().required(),
+    fname: Yup.string().required('First name is required'),
+    lname: Yup.string().required('Last name is required'),
     diet: Yup.string().required('Dietary restriction is required')
   })
 
@@ -130,17 +142,25 @@ const EventFormContainer = (props) => {
           : <div className={classes.layout}>
             <Paper className={classes.paper}>
               <div className={classes.container}>
-                <Typography variant='h2' className={classes.header}>
-                  {event.ename}
-                </Typography>
-                <Typography className={classes.subHeader}>
-            Sign up Form
-                </Typography>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Switch
+                    className={classes.switch}
+                    checked={isUBCStudent}
+                    onChange={() => { setIsUBCStudent(!isUBCStudent) }}
+                    color='primary'
+                  />
+                  <div>
+                    <Typography variant='h2' className={classes.header}>
+                      {event.ename}
+                    </Typography>
+                    <Typography className={classes.subHeader}>Sign up Form</Typography>
+                  </div>
+                </div>
                 <Formik
                   initialValues={initialValues}
-                  validationSchema={validationSchema}
+                  validationSchema={isUBCStudent ? validationSchema : validationNonUBCStudent}
                   onSubmit={submitValues}>
-                  {props => <RegisterQuick {...props} />}
+                  {props => <RegisterQuick {...props} isUBCStudent={isUBCStudent}/>}
                 </Formik>
               </div>
             </Paper>

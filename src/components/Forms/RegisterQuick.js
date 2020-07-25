@@ -41,7 +41,8 @@ export default function RegisterEventForm (props) {
     handleChange,
     setFieldTouched,
     isSubmitting,
-    setFieldValue
+    setFieldValue,
+    isUBCStudent
   } = props
 
   const change = (name, e) => {
@@ -107,7 +108,9 @@ export default function RegisterEventForm (props) {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        {console.log(isUBCStudent)}
+
+        {isUBCStudent && <Grid item xs={12}>
           <TextField
             className={classes.root}
             variant='outlined'
@@ -120,9 +123,9 @@ export default function RegisterEventForm (props) {
             margin='dense'
             fullWidth
           />
-        </Grid>
+        </Grid>}
 
-        <Grid item xs={12}>
+        {isUBCStudent && <Grid item xs={12}>
           <Autocomplete
             defaultValue={initialValues.faculty}
             onChange={(e, value) => { autoCompleteChange('faculty', value) }}
@@ -144,9 +147,9 @@ export default function RegisterEventForm (props) {
               />
             )}
           />
-        </Grid>
+        </Grid>}
 
-        <Grid item xs={12}>
+        {isUBCStudent && <Grid item xs={12}>
           <Autocomplete
             defaultValue={initialValues.year}
             onChange={(e, value) => { autoCompleteChange('year', value) }}
@@ -168,7 +171,7 @@ export default function RegisterEventForm (props) {
               />
             )}
           />
-        </Grid>
+        </Grid>}
 
         <Grid item xs={12}>
           <Autocomplete
