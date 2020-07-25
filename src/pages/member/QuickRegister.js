@@ -66,8 +66,8 @@ const useStyles = makeStyles(theme => ({
   houseContainer: {
     borderBottom: '1px solid white'
   },
-  switch: {
-    order: '2'
+  isStudent: {
+    marginTop: '5px'
   }
 }))
 
@@ -143,17 +143,20 @@ const EventFormContainer = (props) => {
             <Paper className={classes.paper}>
               <div className={classes.container}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Switch
-                    className={classes.switch}
-                    checked={isUBCStudent}
-                    onChange={() => { setIsUBCStudent(!isUBCStudent) }}
-                    color='primary'
-                  />
                   <div>
                     <Typography variant='h2' className={classes.header}>
                       {event.ename}
                     </Typography>
                     <Typography className={classes.subHeader}>Sign up Form</Typography>
+                  </div>
+                  <div style={{ display: 'flex' }}>
+                    <Typography className={classes.isStudent}>UBC Student</Typography>
+                    <Switch
+                      className={classes.switch}
+                      checked={isUBCStudent}
+                      onChange={() => { setIsUBCStudent(!isUBCStudent) }}
+                      color='primary'
+                    />
                   </div>
                 </div>
                 <Formik
