@@ -88,7 +88,7 @@ const UserProgress = ({ registeredEvents, events }) => {
         <LinearProgress
           style={{ flex: 2 }}
           variant='determinate'
-          value={(checkedInEventIDs.length * EVENT_PROGRESS_GOAL) > 100 ? EVENT_PROGRESS_GOAL : (checkedInEventIDs.length * EVENT_PROGRESS_GOAL)}
+          value={(checkedInEventIDs.length * EVENT_PROGRESS_GOAL) > 100 ? 100 : (checkedInEventIDs.length * EVENT_PROGRESS_GOAL)}
         />
       </div>
       <FlexibleXYPlot
