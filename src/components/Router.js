@@ -27,6 +27,7 @@ import NewMember from '../pages/member/NewMember'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
+import MProfile from '../pages/member/MProfile'
 
 import { setUser } from '../actions/UserActions'
 import {
@@ -124,6 +125,9 @@ class Router extends Component {
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
+              <Route
+                path='/profile'
+                render={() => <MProfile />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
