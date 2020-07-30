@@ -67,11 +67,18 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const QuickRegister = (props) => {
+const QuickRegister = ({
+  user,
+  event,
+  registration,
+  handleRegisterClickedCallback,
+  children
+}) => {
   const classes = useStyles()
   // const { events } = props
-  const { user } = props
+  // const { user } = props
   const history = useHistory()
+  const [eventRegistrationStatus, setEventRegistrationStatus] = useState(false);
 
   // if (!events) {
   //   updateEvents()
@@ -91,6 +98,15 @@ const QuickRegister = (props) => {
   //   }
   // }, [events, eventId])
   
+  //called after the first dom mutation, right before render()
+  useLayoutEffect(() => {
+    if (
+      registration &&
+      registration.registrationStatus === REGISTRATION_STATUS.REGISTERED
+    ) {
+      setEventRegistrationStatus(true);
+    }
+  }, [event, registration]);
 
 
   const validationSchema = Yup.object({
@@ -181,7 +197,7 @@ const QuickRegister = (props) => {
     )
   }
 
-  async function submitValues (values) {
+  const submitValues = async (values) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
     const eventID = event.id
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
@@ -199,14 +215,14 @@ const QuickRegister = (props) => {
       .then(() => {
         // if get response is successful
         fetchBackend(`/users/${id}`, 'PATCH', body)
-        registerUser(id, eventID, heardFrom)
+        sendRegistrationData(id, eventID, heardFrom)
       })
       .catch(() => {
         // Need to create new user
         fetchBackend('/users', 'POST', body)
           .then((userResponse) => {
             if (userResponse.message === 'Created!') {
-              registerUser(id, eventID, heardFrom)
+              sendRegistrationData(id, eventID, heardFrom)
             } else {
               alert('Signup failed')
             }
@@ -214,25 +230,68 @@ const QuickRegister = (props) => {
       })
   }
 
-  async function registerUser (id, eventID, heardFrom) {
-    const body = {
-      id,
-      eventID,
-      heardFrom,
-      registrationStatus: 'registered'
+  // async function registerUser (id, eventID, heardFrom) {
+  //   const body = {
+  //     id,
+  //     eventID,
+  //     heardFrom,
+  //     registrationStatus: 'registered'
+  //   }
+  //   fetchBackend('/registrations', 'POST', body)
+  //     .then(() => {
+  //       setIsSignedUp(true)
+  //     })
+  //     .catch(err => {
+  //       if (err.status === 409) {
+  //         alert('You cannot sign up for this event again!')
+  //       } else {
+  //         alert('Signup failed')
+  //       }
+  //     })
+  // }
+
+  const sendRegistrationData = async (id, eventID, heardFrom, isRegister) => {
+    if (settingRegistrationData === true) {
+      return Promise.resolve("in_progress");
     }
-    fetchBackend('/registrations', 'POST', body)
-      .then(() => {
-        setIsSignedUp(true)
-      })
-      .catch(err => {
-        if (err.status === 409) {
-          alert('You cannot sign up for this event again!')
-        } else {
-          alert('Signup failed')
-        }
-      })
-  }
+    settingRegistrationData = true;
+    let registrationStatus = "";
+    let method = "";
+    let path = "";
+    let body = {
+      eventID: eventID,
+      registrationStatus: registrationStatus
+    };
+    if (isRegister) {
+      registrationStatus = REGISTRATION_STATUS.REGISTERED;
+    } else {
+      registrationStatus = REGISTRATION_STATUS.CANCELLED;
+    }
+    let isFirstTime = false;
+    registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
+    if (isFirstTime) {
+      body["id"] = id;
+      body["heardFrom"] = heardFrom;
+      method = "POST";
+      path = "/registrations";
+    } else {
+      method = "PUT";
+      path = `/registrations/${id}`;
+    }
+    try {
+      await fetchBackend(path, method, body);
+      settingRegistrationData = false;
+      let responesMsg = "";
+      isRegister
+        ? (responesMsg = "registration")
+        : (responesMsg = "unregistration");
+      responesMsg += " succeed";
+      return Promise.resolve(responesMsg);
+    } catch (error) {
+      settingRegistrationData = false;
+      return Promise.reject(error);
+    }
+  };
 }
 
 const mapStateToProps = state => {
