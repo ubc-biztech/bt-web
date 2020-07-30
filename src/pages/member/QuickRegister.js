@@ -12,17 +12,16 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import { Helmet } from 'react-helmet'
 import { Typography } from '@material-ui/core'
 import House from '../../assets/house.svg'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useTheme } from '@material-ui/styles'
+
+import './QuickRegister.scss'
+import { COLOR } from '../../constants/Constants'
 
 const useStyles = makeStyles(theme => ({
-  layout: {
-    [theme.breakpoints.up('sm')]: {
-      width: '66vw',
-      margin: 'auto'
-    }
-  },
   paper: {
-    [theme.breakpoints.up('sm')]: {
-      margin: theme.spacing(3)
+    [theme.breakpoints.down('sm')]: {
+      backgroundColor: COLOR.BACKGROUND_COLOR
     }
   },
   content: {
@@ -30,12 +29,19 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     width: '33vw',
-    padding: '55px 0 55px 80px'
+    padding: '55px 0 55px 80px',
+    [theme.breakpoints.down('sm')]: {
+      width: '80vw',
+      padding: '10px 0 10px 10px'
+    }
   },
   completeContainer: {
     position: 'relative',
     width: '33vw',
-    height: '78vh'
+    height: '78vh',
+    [theme.breakpoints.down('sm')]: {
+      width: '80vw'
+    }
   },
   header: {
     fontWeight: 'bold'
@@ -46,14 +52,21 @@ const useStyles = makeStyles(theme => ({
   house: {
     width: '80%',
     marginLeft: '-20px',
-    marginBottom: '-5px'
+    marginBottom: '-5px',
+    [theme.breakpoints.down('sm')]: {
+      width: '53%'
+    }
   },
   message: {
     width: '40%',
     position: 'absolute',
     bottom: '35%',
     left: '80%',
-    textAlign: 'center'
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      left: '15%',
+      width: '85%'
+    }
   },
   done: {
     fontWeight: 'bold',
@@ -64,10 +77,17 @@ const useStyles = makeStyles(theme => ({
   },
   houseContainer: {
     borderBottom: '1px solid white'
+  },
+  divider: {
+    border: '1px solid #496093',
+    marginTop: '10px',
+    marginBottom: '20px'
   }
 }))
 
 const EventFormContainer = (props) => {
+  const theme = useTheme()
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down('sm'))
   const classes = useStyles()
   const { events } = props
   const { user } = props
@@ -113,10 +133,18 @@ const EventFormContainer = (props) => {
         <Helmet>
           <title>{event.ename} - Register</title>
         </Helmet>
-        {isSignedUp
-          ? <div className={classes.layout}>
-            <Paper className={classes.paper}>
-              <div className={classes.completeContainer}>
+        <div className='layout'>
+          <Paper className={classes.paper}>
+            {isSignedUp
+              ? <div className={classes.completeContainer}>
+                {renderMobileOnly &&
+                  <div style={{ paddingBottom: '10vh' }}>
+                    <Typography variant='h2' className={classes.header}>
+                      {event.ename}
+                    </Typography>
+                    <div className={classes.divider} />
+                  </div>
+                }
                 <div className={classes.message}>
                   <div className={classes.houseContainer}>
                     <img src={House} className={classes.house} alt='BizTech House' />
@@ -125,17 +153,12 @@ const EventFormContainer = (props) => {
                   <Typography>You are now registered, click <strong onClick={handleReturn} style={{ cursor: 'pointer' }}>here</strong> <br/> to return to the previous page.</Typography>
                 </div>
               </div>
-            </Paper>
-          </div>
-          : <div className={classes.layout}>
-            <Paper className={classes.paper}>
-              <div className={classes.container}>
+              : <div className={classes.container}>
                 <Typography variant='h2' className={classes.header}>
                   {event.ename}
                 </Typography>
-                <Typography className={classes.subHeader}>
-            Sign up Form
-                </Typography>
+                <Typography className={classes.subHeader}>Sign up Form</Typography>
+                <div className={classes.divider} />
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
@@ -143,8 +166,9 @@ const EventFormContainer = (props) => {
                   {props => <RegisterQuick {...props} />}
                 </Formik>
               </div>
-            </Paper>
-          </div>}
+            }
+          </Paper>
+        </div>
       </React.Fragment>
     )
   } else {
