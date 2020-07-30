@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import { fetchBackend, updateEvents } from '../../utils'
@@ -67,11 +67,54 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+let settingRegistrationData = false;
+const sendRegistrationData = async (id, eventID, heardFrom, isRegister) => {
+  if (settingRegistrationData === true) {
+    return Promise.resolve("in_progress");
+  }
+  settingRegistrationData = true;
+  let registrationStatus = "";
+  let method = "";
+  let path = "";
+  let body = {
+    eventID: eventID,
+    registrationStatus: registrationStatus
+  };
+  if (isRegister) {
+    registrationStatus = REGISTRATION_STATUS.REGISTERED;
+  } else {
+    registrationStatus = REGISTRATION_STATUS.CANCELLED;
+  }
+  let isFirstTime = false;
+  registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
+  if (isFirstTime) {
+    body["id"] = id;
+    body["heardFrom"] = heardFrom;
+    method = "POST";
+    path = "/registrations";
+  } else {
+    method = "PUT";
+    path = `/registrations/${id}`;
+  }
+  try {
+    await fetchBackend(path, method, body);
+    settingRegistrationData = false;
+    let responesMsg = "";
+    isRegister
+      ? (responesMsg = "registration")
+      : (responesMsg = "unregistration");
+    responesMsg += " succeed";
+    return Promise.resolve(responesMsg);
+  } catch (error) {
+    settingRegistrationData = false;
+    return Promise.reject(error);
+  }
+};
+
 const QuickRegister = ({
   user,
   event,
   registration,
-  handleRegisterClickedCallback,
   children
 }) => {
   const classes = useStyles()
@@ -108,7 +151,39 @@ const QuickRegister = ({
     }
   }, [event, registration]);
 
-
+  const submitValues = async (values) => {
+    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
+    const eventID = event.id
+    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+    const body = {
+      id,
+      fname,
+      lname,
+      email,
+      year,
+      faculty,
+      gender,
+      diet
+    }
+    fetchBackend(`/users/${values.id}`, 'GET')
+      .then(() => {
+        // if get response is successful
+        fetchBackend(`/users/${id}`, 'PATCH', body)
+        sendRegistrationData(id, eventID, heardFrom, true)
+      })
+      .catch(() => {
+        // Need to create new user
+        fetchBackend('/users', 'POST', body)
+          .then((userResponse) => {
+            if (userResponse.message === 'Created!') {
+              sendRegistrationData(id, eventID, heardFrom, true)
+            } else {
+              alert('Signup failed')
+            }
+          })
+      })
+  }
+  
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     id: Yup.number('Valid Student ID required')
@@ -197,108 +272,7 @@ const QuickRegister = ({
     )
   }
 
-  const submitValues = async (values) => {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
-    const eventID = event.id
-    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    const body = {
-      id,
-      fname,
-      lname,
-      email,
-      year,
-      faculty,
-      gender,
-      diet
-    }
-    fetchBackend(`/users/${values.id}`, 'GET')
-      .then(() => {
-        // if get response is successful
-        fetchBackend(`/users/${id}`, 'PATCH', body)
-        sendRegistrationData(id, eventID, heardFrom, true)
-      })
-      .catch(() => {
-        // Need to create new user
-        fetchBackend('/users', 'POST', body)
-          .then((userResponse) => {
-            if (userResponse.message === 'Created!') {
-              sendRegistrationData(id, eventID, heardFrom, true)
-            } else {
-              alert('Signup failed')
-            }
-          })
-      })
-  }
-
-  // async function registerUser (id, eventID, heardFrom) {
-  //   const body = {
-  //     id,
-  //     eventID,
-  //     heardFrom,
-  //     registrationStatus: 'registered'
-  //   }
-  //   fetchBackend('/registrations', 'POST', body)
-  //     .then(() => {
-  //       setIsSignedUp(true)
-  //     })
-  //     .catch(err => {
-  //       if (err.status === 409) {
-  //         alert('You cannot sign up for this event again!')
-  //       } else {
-  //         alert('Signup failed')
-  //       }
-  //     })
-  // }
-
-  const sendRegistrationData = async (id, eventID, heardFrom, isRegister) => {
-    if (settingRegistrationData === true) {
-      return Promise.resolve("in_progress");
-    }
-    settingRegistrationData = true;
-    let registrationStatus = "";
-    let method = "";
-    let path = "";
-    let body = {
-      eventID: eventID,
-      registrationStatus: registrationStatus
-    };
-    if (isRegister) {
-      registrationStatus = REGISTRATION_STATUS.REGISTERED;
-    } else {
-      registrationStatus = REGISTRATION_STATUS.CANCELLED;
-    }
-    let isFirstTime = false;
-    registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
-    if (isFirstTime) {
-      body["id"] = id;
-      body["heardFrom"] = heardFrom;
-      method = "POST";
-      path = "/registrations";
-    } else {
-      method = "PUT";
-      path = `/registrations/${id}`;
-    }
-    try {
-      await fetchBackend(path, method, body);
-      settingRegistrationData = false;
-      let responesMsg = "";
-      isRegister
-        ? (responesMsg = "registration")
-        : (responesMsg = "unregistration");
-      responesMsg += " succeed";
-      return Promise.resolve(responesMsg);
-    } catch (error) {
-      settingRegistrationData = false;
-      return Promise.reject(error);
-    }
-  };
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.pageState.events,
-    user: state.userState.user
-  }
-}
 
-export default connect(mapStateToProps, {})(QuickRegister)
+export default withRouter(QuickRegister);
