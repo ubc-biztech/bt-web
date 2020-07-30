@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { updateEvents, updateRegistrations } from "../../utils";
 import EventDescription from "../../components/EventDescription";
+import QuickRegister from "./QuickRegister";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Typography from "@material-ui/core/Typography";
 
@@ -44,6 +45,7 @@ const EventDetails = props => {
   }
   const [event, setEvent] = useState(null);
   const [registration, setRegistration] = useState(null);
+  const [isRegister, setIsRegister] = useState(false);
 
   useEffect(() => {
     if (events && eventId) {
@@ -64,8 +66,13 @@ const EventDetails = props => {
     eventId
   ]);
 
-  const handleClickReturnEvent = event => {
+  const handleReturnClicked = () => {
     history.push("/events");
+  };
+
+  const handleRegisterClickedCallback = (isRegister) => {
+    console.log('handleRegisterClickedCallback');
+    setIsRegister(isRegister);
   };
 
   return event ? (
@@ -77,15 +84,20 @@ const EventDetails = props => {
         <div className={classes.returnDiv}>
           <ArrowBackIcon
             className={classes.backArrowIcon}
-            onClick={handleClickReturnEvent}
+            onClick={handleReturnClicked}
           ></ArrowBackIcon>
           <Typography className={classes.returnText}>All Events</Typography>
         </div>
-        <EventDescription
-          event={event}
-          user={user}
-          registration={registration}
-        ></EventDescription>
+        {isRegister ? (
+          <QuickRegister />
+        ) : (
+          <EventDescription
+            event={event}
+            user={user}
+            registration={registration}
+            handleRegisterClickedCallback={handleRegisterClickedCallback}
+          />
+        )}
       </div>
     </React.Fragment>
   ) : (

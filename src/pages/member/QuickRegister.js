@@ -159,7 +159,6 @@ const EventFormContainer = (props) => {
               <Grid item xs={12}>
                 <Skeleton animation='wave' variant='rect' width={300} height={30} />
               </Grid>
-
               {[1, 2, 3].map((e) =>
                 <Grid item container spacing={1} key={e}>
                   <Grid item xs={12}>
@@ -170,11 +169,9 @@ const EventFormContainer = (props) => {
                   </Grid>
                 </Grid>)
               }
-
               <Grid item xs={12}>
                 <Skeleton animation='wave' variant='rect' width={90} height={36} />
               </Grid>
-
             </Grid>
           </div>
         </Paper>

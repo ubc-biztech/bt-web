@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: "36px"
   },
   description: {
-    margin: "50px 100px 67px 0px",
+    margin: "50px 100px 67px 0px"
   },
   favLogo: {
     position: "absolute",
@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
   buttonGroup: {
     position: "absolute",
     right: "100px"
-  },
+  }
 }));
 
 const sendFavouriteData = async (userID, eventID, isFavourite) => {
@@ -118,7 +118,13 @@ const TransitionUp = props => {
   return <Slide {...props} direction="up" />;
 };
 
-const EventDescription = ({ user, event, registration, children }) => {
+const EventDescription = ({
+  user,
+  event,
+  registration,
+  handleRegisterClickedCallback,
+  children
+}) => {
   const classes = useStyles();
   const [eventFavStatus, setEventFavStatus] = useState(false);
   const [eventRegistrationStatus, setEventRegistrationStatus] = useState(false);
@@ -154,6 +160,12 @@ const EventDescription = ({ user, event, registration, children }) => {
   };
 
   const handleClickRegisterEvent = async (userID, eventID, isRegister) => {
+    if (isRegister) {
+      //if user is trying to register, display the quick register component
+      handleRegisterClickedCallback(isRegister);
+      return;
+    }
+    //otherwise unregister the user
     let isFirstTime = false;
     registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
     try {
@@ -227,6 +239,9 @@ const EventDescription = ({ user, event, registration, children }) => {
             <Button
               style={{ backgroundColor: COLOR.BIZTECH_GREEN }}
               className={classes.button}
+              onClick={() => {
+                handleClickRegisterEvent(user.id, event.id, true);
+              }}
             >
               sign me up
             </Button>
