@@ -67,29 +67,31 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const EventFormContainer = (props) => {
+const QuickRegister = (props) => {
   const classes = useStyles()
-  const { events } = props
+  // const { events } = props
   const { user } = props
   const history = useHistory()
 
-  if (!events) {
-    updateEvents()
-  }
-  const { id: eventId } = useParams()
+  // if (!events) {
+  //   updateEvents()
+  // }
+  // const { id: eventId } = useParams()
 
-  const [event, setEvent] = useState(null)
-  const [isSignedUp, setIsSignedUp] = useState(false)
+  // const [event, setEvent] = useState(null)
+  // const [isSignedUp, setIsSignedUp] = useState(false)
 
   const handleReturn = () => {
     history.push('/events')
   }
 
-  useEffect(() => {
-    if (eventId && events) {
-      setEvent(events.find(event => event.id === eventId))
-    }
-  }, [events, eventId])
+  // useEffect(() => {
+  //   if (eventId && events) {
+  //     setEvent(events.find(event => event.id === eventId))
+  //   }
+  // }, [events, eventId])
+  
+
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -240,4 +242,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {})(EventFormContainer)
+export default connect(mapStateToProps, {})(QuickRegister)
