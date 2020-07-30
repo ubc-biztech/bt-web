@@ -27,7 +27,7 @@ import NewMember from '../pages/member/NewMember'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
-import EventDetails from '../pages/admin/EventDetails'
+import EventDetails from '../pages/member/EventDetails'
 
 import { setUser } from '../actions/UserActions'
 import {
