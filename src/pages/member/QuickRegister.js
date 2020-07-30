@@ -215,14 +215,14 @@ const QuickRegister = ({
       .then(() => {
         // if get response is successful
         fetchBackend(`/users/${id}`, 'PATCH', body)
-        sendRegistrationData(id, eventID, heardFrom)
+        sendRegistrationData(id, eventID, heardFrom, true)
       })
       .catch(() => {
         // Need to create new user
         fetchBackend('/users', 'POST', body)
           .then((userResponse) => {
             if (userResponse.message === 'Created!') {
-              sendRegistrationData(id, eventID, heardFrom)
+              sendRegistrationData(id, eventID, heardFrom, true)
             } else {
               alert('Signup failed')
             }
