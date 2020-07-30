@@ -50,7 +50,6 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     right: "100px"
   },
-  
 }));
 
 const sendFavouriteData = async (userID, eventID, isFavourite) => {
@@ -157,7 +156,6 @@ const EventDescription = ({ user, event, registration, children }) => {
   const handleClickRegisterEvent = async (userID, eventID, isRegister) => {
     let isFirstTime = false;
     registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
-
     try {
       const registrationResult = await sendRegistrationData(
         userID,
