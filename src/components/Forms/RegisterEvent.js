@@ -106,7 +106,7 @@ export default function RegisterEventForm (props) {
           <RadioGroupButtons
             {...props}
             otherOption={true}
-            options={['He/Him/His', 'She/Her/Hers']}
+            options={['He/Him/His', 'She/Her/Hers', 'They/Them/Their', 'Prefer not to say']}
             groupName={'gender'}
             displayName={'Preferred Pronouns'} />
         </Grid>
