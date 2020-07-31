@@ -125,10 +125,6 @@ class Router extends Component {
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
-              <Route
-                path='/event/:id/quickregister'
-                render={() => <QuickRegister />}
-              />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
