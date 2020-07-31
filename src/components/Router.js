@@ -19,7 +19,6 @@ import Login from './Authentication/Login'
 import LoginRedirect from './Authentication/LoginRedirect'
 
 import Forbidden from '../pages/Forbidden'
-import QuickRegister from '../pages/member/QuickRegister'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
 import EventRegister from '../pages/member/EventRegister'
