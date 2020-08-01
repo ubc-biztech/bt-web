@@ -1,5 +1,5 @@
 /* eslint react-hooks/exhaustive-deps: 0 */
-import React, { useState, useMemo, useEffect, useRef, useLayoutEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
@@ -10,7 +10,8 @@ import { fetchBackend, updateEvents, updateRegisteredEvents } from '../../utils'
 import { setUser } from '../../actions/UserActions'
 
 import { COLOR } from '../../constants/Constants'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import {
   Tabs,
   Tab,
@@ -71,12 +72,19 @@ const useStyles = makeStyles(theme => ({
     borderRight: `2px solid ${COLOR.BIZTECH_GREEN}`
   },
   tabsLayout: {
-    width: '80%'
+    width: '80%',
+    margin: 'auto',
+    [theme.breakpoints.up('sm')]: {
+      margin: 'unset'
+    }
   },
   tabsContainer: {
     marginBottom: '2em',
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    [theme.breakpoints.up('sm')]: {
+      marginRight: '30px'
+    }
   },
   tab: {
     fontSize: '0.9rem',
@@ -90,16 +98,10 @@ const useStyles = makeStyles(theme => ({
   search: {
     display: 'flex',
     height: '100%',
-    marginLeft: 'auto',
-    marginRight: '3em'
-  },
-  searchActive: {
-    display: 'flex',
-    height: '100%',
-    marginLeft: 'auto',
-    marginRight: '30px',
+    maxWidth: '100%',
     background: 'white',
-    borderRadius: '3em'
+    borderRadius: '3em',
+    marginLeft: 'auto'
   },
   searchIcon: {
     display: 'flex',
@@ -144,8 +146,6 @@ function EventPanel (props) {
 }
 
 function UserEvents (props) {
-  const [isMobile, setIsMobile] = useState(false)
-
   const [isSearch, setIsSearch] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [tabIndex, setTabIndex] = useState(TAB_STATES.ALL)
@@ -155,20 +155,14 @@ function UserEvents (props) {
   const classes = useStyles()
   const searchInput = useRef()
 
+  const theme = useTheme()
+  const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
+
   const { events = [], eventsRegistered = [], user } = props
 
   useEffect(() => {
     if (!props.events) updateEvents()
     if (user.id) updateRegisteredEvents(user.id)
-  }, [])
-
-  useLayoutEffect(() => {
-    function updateSize () {
-      setIsMobile(window.outerWidth <= 414)
-    }
-    window.addEventListener('resize', updateSize)
-    updateSize()
-    return () => window.removeEventListener('resize', updateSize)
   }, [])
 
   const handleFavouriteEvent = async (eventId, toggle) => {
@@ -253,7 +247,7 @@ function UserEvents (props) {
         favourited={eventsFavouritedIds.includes(event.id)}
         handleCardClick={redirectToEvent}
         handleFavourite={handleFavouriteEvent}
-        cardStyle={isMobile ? { width: 'calc(100% - 30px)' } : { width: 'calc(50% - 30px)' }}
+        cardStyle={isNotMobile ? { width: 'calc(50% - 30px)' } : { width: '100%', marginRight: 0 }}
       />
     ))
   }
@@ -264,7 +258,7 @@ function UserEvents (props) {
         <title>Biztech User Events Dashboard</title>
       </Helmet>
       <div className={classes.container}>
-        {!isMobile && <div className={classes.sidePanelLayout}>
+        {isNotMobile && <div className={classes.sidePanelLayout}>
           <Typography variant='h1' className={classes.header}>Events</Typography>
           <List>
             <ListItem
@@ -309,7 +303,7 @@ function UserEvents (props) {
               <Tab label='Past' className={classes.tab} />
               <Tab label='All' className={classes.tab} />
             </Tabs>
-            <div className={isSearch ? classes.searchActive : classes.search}>
+            <div className={classes.search}>
               <IconButton className={classes.searchIcon} onClick={handleStartSearch}>
                 <Search style={{ color: COLOR.CARD_PAPER_COLOR }}/>
               </IconButton>
