@@ -61,16 +61,18 @@ export class EventUserTable extends Component {
     let params = new URLSearchParams({
       eventID: eventID
     })
-    await fetchBackend(`/registrations/?${params}`, 'GET')
+    await fetchBackend(`/registrations?${params}`, 'GET')
       .then(response => {
         const heardFrom = {}
         response.data.forEach(user => {
           if (user.heardFromData) {
-            heardFrom[user.heardFrom] = heardFrom[user.heardFrom]
-              ? heardFrom[user.heardFrom] + 1 : 1
+            heardFrom[user.heardFrom] = heardFrom[user.heardFrom] ? heardFrom[user.heardFrom] + 1 : 1
           }
         })
         this.setState({ heardFrom })
+      })
+      .catch(() => {
+        console.log('No registrations for this event')
       })
 
     params = new URLSearchParams({

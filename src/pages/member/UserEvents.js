@@ -1,5 +1,5 @@
 /* eslint react-hooks/exhaustive-deps: 0 */
-import React, { useState, useMemo, useEffect, useRef } from 'react'
+import React, { useState, useMemo, useEffect, useRef, useLayoutEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
@@ -144,6 +144,8 @@ function EventPanel (props) {
 }
 
 function UserEvents (props) {
+  const [isMobile, setIsMobile] = useState(false)
+
   const [isSearch, setIsSearch] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [tabIndex, setTabIndex] = useState(TAB_STATES.ALL)
@@ -158,6 +160,15 @@ function UserEvents (props) {
   useEffect(() => {
     if (!props.events) updateEvents()
     if (user.id) updateRegisteredEvents(user.id)
+  }, [])
+
+  useLayoutEffect(() => {
+    function updateSize () {
+      setIsMobile(window.outerWidth <= 414)
+    }
+    window.addEventListener('resize', updateSize)
+    updateSize()
+    return () => window.removeEventListener('resize', updateSize)
   }, [])
 
   const handleFavouriteEvent = async (eventId, toggle) => {
@@ -242,7 +253,7 @@ function UserEvents (props) {
         favourited={eventsFavouritedIds.includes(event.id)}
         handleCardClick={redirectToEvent}
         handleFavourite={handleFavouriteEvent}
-        cardStyle={{ width: 'calc(50% - 30px)' }}
+        cardStyle={isMobile ? { width: 'calc(100% - 30px)' } : { width: 'calc(50% - 30px)' }}
       />
     ))
   }
@@ -253,7 +264,7 @@ function UserEvents (props) {
         <title>Biztech User Events Dashboard</title>
       </Helmet>
       <div className={classes.container}>
-        <div className={classes.sidePanelLayout}>
+        {!isMobile && <div className={classes.sidePanelLayout}>
           <Typography variant='h1' className={classes.header}>Events</Typography>
           <List>
             <ListItem
@@ -284,7 +295,7 @@ function UserEvents (props) {
               <ListItemText><Search fontSize='small' />&nbsp;All</ListItemText>
             </ListItem>
           </List>
-        </div>
+        </div>}
         <div className={classes.tabsLayout}>
 
           <div className={classes.tabsContainer}>

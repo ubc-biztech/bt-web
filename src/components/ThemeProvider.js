@@ -24,9 +24,19 @@ const theme = createMuiTheme({
         color: COLOR.WHITE
       }
     },
+    MuiCardContent: {
+      root: {
+        '&:last-child': {
+          paddingBottom: 'reset'
+        }
+      }
+    },
     MuiInput: {
       root: {
         color: COLOR.WHITE
+      },
+      input: {
+        borderColor: COLOR.FONT_COLOR
       }
     },
     MuiFormLabel: {
@@ -82,13 +92,25 @@ const theme = createMuiTheme({
     },
     MuiPaper: {
       root: {
-        backgroundColor: COLOR.CARD_PAPER_COLOR,
+        backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
         color: COLOR.WHITE
       }
     },
     MuiCardHeader: {
       subheader: {
         color: COLOR.FONT_COLOR
+      }
+    },
+    MuiLinearProgress: {
+      root: {
+        height: '8px',
+        borderRadius: '4px'
+      },
+      colorPrimary: {
+        backgroundColor: '#627295'
+      },
+      barColorPrimary: {
+        backgroundColor: COLOR.BIZTECH_GREEN
       }
     }
   },
