@@ -112,6 +112,16 @@ const theme = createMuiTheme({
       barColorPrimary: {
         backgroundColor: COLOR.BIZTECH_GREEN
       }
+    },
+    MuiChip: {
+      colorPrimary: {
+        color: COLOR.WHITE,
+        backgroundColor: COLOR.BIZTECH_GREEN
+      },
+      colorSecondary: {
+        color: COLOR.BLACK,
+        backgroundColor: COLOR.WHITE
+      }
     }
   },
   typography: {

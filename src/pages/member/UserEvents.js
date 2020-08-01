@@ -20,7 +20,8 @@ import {
   ListItemText,
   Typography,
   IconButton,
-  InputBase
+  InputBase,
+  Chip
 } from '@material-ui/core'
 
 import {
@@ -147,8 +148,16 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create('width')
   },
   mobileFilters: {
-    marginRight: '1em',
-    overflow: 'scroll'
+    overflow: 'scroll',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    scrollbarWidth: 'none',
+    '-ms-overflow-style': 'none'
+  },
+  chipFilter: {
+    width: '100%',
+    marginRight: '0.5em'
   },
   rows: {
     display: 'flex',
@@ -324,6 +333,44 @@ function UserEvents (props) {
           {/* Filters in mobile view */}
           {!isNotMobile &&
             <div className={classes.mobileFilters}>
+              {Object.values(TIME_STATES).map((tState) =>
+                tState.displayName !== 'All' && // don't render "All"
+                (timeIndex === tState.index
+                  ? <Chip
+                    key={tState.displayName}
+                    className={classes.chipFilter}
+                    size='small'
+                    color='primary'
+                    label={tState.displayName}
+                    onDelete={() => handleTimeChange({}, TIME_STATES.ALL.index)}/>
+                  : <Chip
+                    key={tState.displayName}
+                    className={classes.chipFilter}
+                    size='small'
+                    color='secondary'
+                    label={tState.displayName}
+                    onClick={() => handleTimeChange({}, tState.index)}/>
+                )
+              )}
+              {Object.values(PERSONALIZATION_STATES).map((pState) =>
+                pState.displayName !== 'All' && // don't render "All"
+                (personalizationIndex === pState.index
+                  ? <Chip
+                    key={pState.displayName}
+                    className={classes.chipFilter}
+                    size='small'
+                    color='primary'
+                    label={pState.displayName}
+                    onDelete={() => handlePersonalizationChange(PERSONALIZATION_STATES.ALL.index)}/>
+                  : <Chip
+                    key={pState.displayName}
+                    className={classes.chipFilter}
+                    size='small'
+                    color='secondary'
+                    label={pState.displayName}
+                    onClick={() => handlePersonalizationChange(pState.index)}/>
+                )
+              )}
             </div>
           }
 
