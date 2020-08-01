@@ -1,5 +1,5 @@
 /* eslint react-hooks/exhaustive-deps: 0 */
-import React, { useState, useMemo, useEffect, useRef } from 'react'
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
@@ -30,21 +30,45 @@ import {
 } from '@material-ui/icons'
 
 // States for the filters
-const PANEL_STATES = {
-  FAVOURITES: 'FAVOURITES',
-  REGISTERED: 'REGISTERED',
-  ALL: 'ALL'
+const PERSONALIZATION_STATES = {
+  FAVOURITES: {
+    index: 0,
+    displayName: 'Favourites',
+    icon: <StarBorder fontSize='small' />
+  },
+  REGISTERED: {
+    index: 1,
+    displayName: 'Registered',
+    icon: <PlaylistAddCheck fontSize='small' />
+  },
+  ALL: {
+    index: 2,
+    displayName: 'All',
+    icon: <Search fontSize='small' />
+  }
 }
 
-const TAB_STATES = {
-  UPCOMING: 0,
-  PAST: 1,
-  ALL: 2
+const TIME_STATES = {
+  UPCOMING: {
+    index: 0,
+    displayName: 'Upcoming',
+    filterFunction: (event) => event.startDate && new Date(event.startDate) >= new Date()
+  },
+  PAST: {
+    index: 1,
+    displayName: 'Past',
+    filterFunction: (event) => event.startDate && new Date(event.startDate) < new Date()
+  },
+  ALL: {
+    index: 2,
+    displayName: 'All',
+    filterFunction: () => true
+  }
 }
 
 const useStyles = makeStyles(theme => ({
-  header: {
-    color: COLOR.BIZTECH_GREEN
+  headerMobile: {
+    position: 'absolute'
   },
   container: {
     display: 'flex',
@@ -58,9 +82,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     textAlign: 'right',
     marginRight: '3em'
-  },
-  sidePanelTitle: {
-    fontSize: '3em'
   },
   sidePanelButton: {
     textAlign: 'right',
@@ -101,7 +122,8 @@ const useStyles = makeStyles(theme => ({
     maxWidth: '100%',
     background: 'white',
     borderRadius: '3em',
-    marginLeft: 'auto'
+    marginLeft: 'auto',
+    zIndex: '100'
   },
   searchIcon: {
     display: 'flex',
@@ -124,32 +146,21 @@ const useStyles = makeStyles(theme => ({
     color: COLOR.CARD_PAPER_COLOR,
     transition: theme.transitions.create('width')
   },
+  mobileFilters: {
+    marginRight: '1em',
+    overflow: 'scroll'
+  },
   rows: {
     display: 'flex',
     flexWrap: 'wrap'
   }
 }))
 
-function EventPanel (props) {
-  const { children, currentIndex, index, ...rest } = props
-
-  return (
-    <div
-      role='tabpanel'
-      hidden={currentIndex !== index}
-      id={`tabpanel-${index}`}
-      { ...rest }
-    >
-      {children}
-    </div>
-  )
-}
-
 function UserEvents (props) {
   const [isSearch, setIsSearch] = useState(false)
   const [searchText, setSearchText] = useState('')
-  const [tabIndex, setTabIndex] = useState(TAB_STATES.ALL)
-  const [selectedPanel, setSelectedPanel] = useState(PANEL_STATES.ALL)
+  const [timeIndex, setTimeIndex] = useState(TIME_STATES.ALL.index)
+  const [personalizationIndex, setPersonalizationIndex] = useState(PERSONALIZATION_STATES.ALL.index)
 
   const history = useHistory()
   const classes = useStyles()
@@ -177,12 +188,12 @@ function UserEvents (props) {
     })
   }
 
-  const handleTabChange = (event, newIndex) => {
-    setTabIndex(newIndex)
+  const handleTimeChange = (event, newIndex) => {
+    setTimeIndex(newIndex)
   }
 
-  const handlePanelChange = (newIndex) => {
-    setSelectedPanel(newIndex)
+  const handlePersonalizationChange = (newIndex) => {
+    setPersonalizationIndex(newIndex)
   }
 
   const handleStartSearch = () => {
@@ -220,26 +231,23 @@ function UserEvents (props) {
     return events.filter((event) => (event.ename || '').toLowerCase().includes(searchText.toLowerCase()))
   }, [events, isSearch, searchText])
 
-  const AllEventCards = useMemo(() => {
-    if (selectedPanel === PANEL_STATES.REGISTERED) return eventsFilteredBySearch.filter((event) => eventsRegisteredIds.includes(event.id))
-    else if (selectedPanel === PANEL_STATES.FAVOURITES) return eventsFilteredBySearch.filter((event) => eventsFavouritedIds.includes(event.id))
-    else return eventsFilteredBySearch
-  }, [eventsFilteredBySearch, selectedPanel, user.favedEventsID])
+  const generateEventCards = useCallback(() => {
+    // filter events by personalization
+    let eventsFilteredByPersonalization = eventsFilteredBySearch
 
-  const UpcomingEventCards = useMemo(() => {
-    // filter events by the date
-    const now = new Date()
-    return AllEventCards.filter((event) => event.startDate && new Date(event.startDate) >= now)
-  }, [AllEventCards, selectedPanel])
+    if (personalizationIndex === PERSONALIZATION_STATES.REGISTERED.index) {
+      eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) => eventsRegisteredIds.includes(event.id))
+    } else if (personalizationIndex === PERSONALIZATION_STATES.FAVOURITES.index) {
+      eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) => eventsFavouritedIds.includes(event.id))
+    }
 
-  const PastEventCards = useMemo(() => {
-    // filter events by the date
-    const now = new Date()
-    return AllEventCards.filter((event) => event.startDate && new Date(event.startDate) < now)
-  }, [AllEventCards, selectedPanel])
+    // determine which option is clicked by the personalization index
+    const timeOption = Object.values(TIME_STATES).find((option) => option.index === timeIndex)
 
-  const generateEventCards = (events) => {
-    return events.map((event) => (
+    // filter events by time
+    const eventsFilteredByTime = eventsFilteredByPersonalization.filter(timeOption.filterFunction)
+
+    return eventsFilteredByTime.map((event) => (
       <EventCard
         event={event}
         key={event.id}
@@ -250,7 +258,7 @@ function UserEvents (props) {
         cardStyle={isNotMobile ? { width: 'calc(50% - 30px)' } : { width: '100%', marginRight: 0 }}
       />
     ))
-  }
+  }, [eventsFilteredBySearch, eventsFavouritedIds, personalizationIndex, timeIndex])
 
   return (
     <div>
@@ -258,51 +266,47 @@ function UserEvents (props) {
         <title>Biztech User Events Dashboard</title>
       </Helmet>
       <div className={classes.container}>
-        {isNotMobile && <div className={classes.sidePanelLayout}>
-          <Typography variant='h1' className={classes.header}>Events</Typography>
-          <List>
-            <ListItem
-              className={selectedPanel === PANEL_STATES.FAVOURITES
-                ? classes.sidePanelActiveButton
-                : classes.sidePanelButton}
-              onClick={() => handlePanelChange(PANEL_STATES.FAVOURITES)}
-              button
-            >
-              <ListItemText><StarBorder fontSize='small' />&nbsp;Favourites</ListItemText>
-            </ListItem>
-            <ListItem
-              className={selectedPanel === PANEL_STATES.REGISTERED
-                ? classes.sidePanelActiveButton
-                : classes.sidePanelButton}
-              onClick={() => handlePanelChange(PANEL_STATES.REGISTERED)}
-              button
-            >
-              <ListItemText><PlaylistAddCheck fontSize='small' />&nbsp;Registered</ListItemText>
-            </ListItem>
-            <ListItem
-              className={selectedPanel === PANEL_STATES.ALL
-                ? classes.sidePanelActiveButton
-                : classes.sidePanelButton}
-              onClick={() => handlePanelChange(PANEL_STATES.ALL)}
-              button
-            >
-              <ListItemText><Search fontSize='small' />&nbsp;All</ListItemText>
-            </ListItem>
-          </List>
-        </div>}
-        <div className={classes.tabsLayout}>
 
+        {/* Left panel for additional event filters (only on desktop view) */}
+        {isNotMobile &&
+          <div className={classes.sidePanelLayout}>
+            <Typography variant='h1'>Events</Typography>
+            <List>
+              {Object.values(PERSONALIZATION_STATES).map(pState => (
+                <ListItem
+                  key={pState.index}
+                  className={personalizationIndex === pState.index
+                    ? classes.sidePanelActiveButton
+                    : classes.sidePanelButton}
+                  onClick={() => handlePersonalizationChange(pState.index)}
+                  button
+                >
+                  <ListItemText>{pState.icon}&nbsp;{pState.displayName}</ListItemText>
+                </ListItem>
+              ))}
+            </List>
+          </div>
+        }
+
+        <div className={classes.tabsLayout}>
+          {/* Upper tabs for filtering (only on desktop view) and searching for events */}
           <div className={classes.tabsContainer}>
-            <Tabs
-              value={tabIndex}
-              indicatorColor='primary'
-              textColor='primary'
-              onChange={handleTabChange}
-            >
-              <Tab label='Upcoming' className={classes.tab} />
-              <Tab label='Past' className={classes.tab} />
-              <Tab label='All' className={classes.tab} />
-            </Tabs>
+            {isNotMobile ? (
+              <Tabs
+                value={timeIndex}
+                indicatorColor='primary'
+                textColor='primary'
+                onChange={handleTimeChange}
+              >
+                {Object.values(TIME_STATES).map((tState) =>
+                  <Tab key={tState.index} label={tState.displayName} className={classes.tab} />
+                )}
+              </Tabs>
+            ) : (
+              <Typography variant='h1' className={classes.headerMobile}>Events</Typography>
+            )}
+
+            {/* The search button */}
             <div className={classes.search}>
               <IconButton className={classes.searchIcon} onClick={handleStartSearch}>
                 <Search style={{ color: COLOR.CARD_PAPER_COLOR }}/>
@@ -317,21 +321,16 @@ function UserEvents (props) {
             </div>
           </div>
 
-          <EventPanel currentIndex={tabIndex} index={TAB_STATES.UPCOMING}>
-            <div className={classes.rows}>
-              {generateEventCards(UpcomingEventCards)}
+          {/* Filters in mobile view */}
+          {!isNotMobile &&
+            <div className={classes.mobileFilters}>
             </div>
-          </EventPanel>
-          <EventPanel currentIndex={tabIndex} index={TAB_STATES.PAST}>
-            <div className={classes.rows}>
-              {generateEventCards(PastEventCards)}
-            </div>
-          </EventPanel>
-          <EventPanel currentIndex={tabIndex} index={TAB_STATES.ALL}>
-            <div className={classes.rows}>
-              {generateEventCards(AllEventCards)}
-            </div>
-          </EventPanel>
+          }
+
+          {/* The list of events */}
+          <div className={classes.rows}>
+            {generateEventCards()}
+          </div>
         </div>
       </div>
     </div>
