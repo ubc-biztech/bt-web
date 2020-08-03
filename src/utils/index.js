@@ -1,6 +1,6 @@
 import { Auth } from 'aws-amplify'
 import Store from '../components/Store'
-import { setEvents } from '../actions/PageActions'
+import { setEvents, setEventsRegistered } from '../actions/PageActions'
 import { setUser } from '../actions/UserActions'
 
 // TODO: Configure travis to build a staging version
@@ -38,18 +38,16 @@ export const AWS_CONFIG = {
   federationTarget: 'COGNITO_USER_POOLS'
 }
 
-export async function fetchBackend (endpoint, method, data) {
-  let headers
+export async function fetchBackend (endpoint, method, data, authenticatedCall = true) {
+  let headers = {}
   if (method === 'POST') {
     headers = {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+      'Content-Type': 'application/json'
     }
-  } else {
-    headers = {
-      Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
-    }
+  }
+  if (authenticatedCall) {
+    headers.Authorization = `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`
   }
   const body = JSON.stringify(data)
   let status
@@ -61,6 +59,7 @@ export async function fetchBackend (endpoint, method, data) {
     .then(response => {
       // Actually throw an error (so catch block will run) when the response is an error
       if (status < 200 || status >= 300) {
+        // eslint-disable-next-line
         return Promise.reject({
           status: status,
           message: response
@@ -79,7 +78,7 @@ export function log (message) {
 // Refresh the redux store
 export async function updateEvents () {
   try {
-    const response = await fetchBackend('/events', 'GET')
+    const response = await fetchBackend('/events', 'GET', undefined, false)
     Store.dispatch(setEvents({
       events: response
     }))
@@ -93,6 +92,26 @@ export async function updateUser (id) {
   try {
     const response = await fetchBackend(`/users/${id}`, 'GET')
     Store.dispatch(setUser(response))
+  } catch (err) {
+    log(err)
+  }
+}
+
+// Refresh the redux store
+export async function updateRegisteredEvents (userId) {
+  try {
+    const response = await fetchBackend(`/registrations?id=${userId}`, 'GET')
+
+    let data = []
+
+    // TODO: Better API response? Shouldn't return 404 if empty
+    if (response.status !== 404) {
+      data = response.data
+    }
+
+    Store.dispatch(setEventsRegistered({
+      eventsRegistered: Object.values(data)
+    }))
   } catch (err) {
     log(err)
   }

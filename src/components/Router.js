@@ -12,7 +12,7 @@ import './Router.scss'
 import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
 import RegisterAlert from './Messages/RegisterAlert'
-import Loading from './Loading'
+import Loading from './Misc/Loading'
 
 import AdminRoute from './Authentication/AdminRoute'
 import Login from './Authentication/Login'
@@ -21,6 +21,7 @@ import LoginRedirect from './Authentication/LoginRedirect'
 import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
+import UserEvents from '../pages/member/UserEvents'
 import EventRegister from '../pages/member/EventRegister'
 import Signup from '../pages/member/Signup'
 import NewMember from '../pages/member/NewMember'
@@ -124,6 +125,9 @@ class Router extends Component {
               <Route
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
+              <Route
+                path='/events'
+                render={() => <UserEvents />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
