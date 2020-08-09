@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -82,15 +82,15 @@ const sendRegistrationData = async (id, eventID, isRegister, isFirstTime) => {
   let registrationStatus = "";
   let method = "";
   let path = "";
-  let body = {
-    eventID: eventID,
-    registrationStatus: registrationStatus
-  };
   if (isRegister) {
     registrationStatus = REGISTRATION_STATUS.REGISTERED;
   } else {
     registrationStatus = REGISTRATION_STATUS.CANCELLED;
   }
+  let body = {
+    eventID: eventID,
+    registrationStatus: registrationStatus
+  };
   if (isFirstTime) {
     body["id"] = id;
     method = "POST";
@@ -122,26 +122,21 @@ const EventDescription = ({
   user,
   event,
   registration,
+  eventRegistrationStatus,
   handleRegisterClickedCallback,
+  handleRegisterStateChangedCallback,
   children
 }) => {
   const classes = useStyles();
-  const [eventFavStatus, setEventFavStatus] = useState(false);
-  const [eventRegistrationStatus, setEventRegistrationStatus] = useState(false);
+  const [eventFavStatus, setEventFavStatus] = useState(false);  
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [snackMsg, setSnackMsg] = React.useState("");
   //called after the first dom mutation, right before render()
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (event && user && user.favedEventsID) {
       if (user.favedEventsID.indexOf(event.id) !== -1) {
         setEventFavStatus(true);
       }
-    }
-    if (
-      registration &&
-      registration.registrationStatus === REGISTRATION_STATUS.REGISTERED
-    ) {
-      setEventRegistrationStatus(true);
     }
   }, [event, user, registration]);
 
@@ -175,7 +170,9 @@ const EventDescription = ({
         isRegister,
         isFirstTime
       );
-      setEventRegistrationStatus(isRegister);
+      if(registrationResult === 'unregistration succeed'){
+        handleRegisterStateChangedCallback(false);
+      }
       openSnackBar(registrationResult);
     } catch (error) {
       openSnackBar(error);

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useHistory, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
-import { fetchBackend, updateEvents } from '../../utils'
+import { fetchBackend } from '../../utils'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import RegisterQuick from '../../components/Forms/RegisterQuick'
@@ -12,6 +11,7 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import { Helmet } from 'react-helmet'
 import { Typography } from '@material-ui/core'
 import House from '../../assets/house.svg'
+import { REGISTRATION_STATUS } from "../../constants/Constants";
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -68,7 +68,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 let settingRegistrationData = false;
-const sendRegistrationData = async (id, eventID, heardFrom, isRegister) => {
+
+const sendRegistrationData = async (id, eventID, heardFrom, isRegister, isFirstTime) => {
   if (settingRegistrationData === true) {
     return Promise.resolve("in_progress");
   }
@@ -76,17 +77,18 @@ const sendRegistrationData = async (id, eventID, heardFrom, isRegister) => {
   let registrationStatus = "";
   let method = "";
   let path = "";
-  let body = {
-    eventID: eventID,
-    registrationStatus: registrationStatus
-  };
+  
   if (isRegister) {
     registrationStatus = REGISTRATION_STATUS.REGISTERED;
   } else {
     registrationStatus = REGISTRATION_STATUS.CANCELLED;
   }
-  let isFirstTime = false;
-  registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
+
+  let body = {
+    eventID: eventID,
+    registrationStatus: registrationStatus
+  };
+  
   if (isFirstTime) {
     body["id"] = id;
     body["heardFrom"] = heardFrom;
@@ -115,13 +117,15 @@ const QuickRegister = ({
   user,
   event,
   registration,
+  eventRegistrationStatus,
+  handleRegisterStateChangedCallback,
   children
 }) => {
   const classes = useStyles()
   // const { events } = props
   // const { user } = props
   const history = useHistory()
-  const [eventRegistrationStatus, setEventRegistrationStatus] = useState(false);
+  // const [eventRegistrationStatus, setEventRegistrationStatus] = useState(false);
 
   // if (!events) {
   //   updateEvents()
@@ -142,14 +146,14 @@ const QuickRegister = ({
   // }, [events, eventId])
   
   //called after the first dom mutation, right before render()
-  useLayoutEffect(() => {
-    if (
-      registration &&
-      registration.registrationStatus === REGISTRATION_STATUS.REGISTERED
-    ) {
-      setEventRegistrationStatus(true);
-    }
-  }, [event, registration]);
+  // useLayoutEffect(() => {
+  //   if (
+  //     registration &&
+  //     registration.registrationStatus === REGISTRATION_STATUS.REGISTERED
+  //   ) {
+  //     setEventRegistrationStatus(true);
+  //   }
+  // }, [event, registration]);
 
   const submitValues = async (values) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
@@ -165,18 +169,26 @@ const QuickRegister = ({
       gender,
       diet
     }
+    let isFirstTime = false;
+    registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
     fetchBackend(`/users/${values.id}`, 'GET')
-      .then(() => {
+      .then(async () => {
         // if get response is successful
-        fetchBackend(`/users/${id}`, 'PATCH', body)
-        sendRegistrationData(id, eventID, heardFrom, true)
+        await fetchBackend(`/users/${id}`, 'PATCH', body);
+        const result = await sendRegistrationData(id, eventID, heardFrom, true, isFirstTime);
+        if (result === 'registration succeed') {
+          handleRegisterStateChangedCallback(true);
+        }
       })
       .catch(() => {
         // Need to create new user
         fetchBackend('/users', 'POST', body)
-          .then((userResponse) => {
+          .then(async (userResponse) => {
             if (userResponse.message === 'Created!') {
-              sendRegistrationData(id, eventID, heardFrom, true)
+              const result = await sendRegistrationData(id, eventID, heardFrom, true, isFirstTime);
+              if (result === 'registration succeed') {
+                handleRegisterStateChangedCallback(true);
+              }
             } else {
               alert('Signup failed')
             }
@@ -199,14 +211,16 @@ const QuickRegister = ({
   const initialValues = { email: user.email, fname: user.fname, lname: user.lname, id: user.id, faculty: user.faculty, year: user.year, diet: user.diet, gender: user.gender, heardFrom: '' }
 
   if (event) {
+    console.log('ers:', eventRegistrationStatus);
     return (
       // assumes that the event details component that uses this component (QuickRegister) does not allow
       // the user to get to this page if they are already signed up or the event has passed
+      
       <React.Fragment>
         <Helmet>
           <title>{event.ename} - Register</title>
         </Helmet>
-        {isSignedUp
+        {eventRegistrationStatus
           ? <div className={classes.layout}>
             <Paper className={classes.paper}>
               <div className={classes.completeContainer}>
@@ -271,7 +285,6 @@ const QuickRegister = ({
       </div>
     )
   }
-
 }
 
 
