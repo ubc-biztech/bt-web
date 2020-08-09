@@ -3,7 +3,6 @@ import {
   SET_EVENTS,
   SET_EVENTS_REGISTERED,
   SET_USER,
-  SET_EVENTS_REGISTERED,
   LOGOUT
 } from '../constants/Constants'
 
