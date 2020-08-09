@@ -67,58 +67,13 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-let settingRegistrationData = false;
-
-const sendRegistrationData = async (id, eventID, heardFrom, isRegister, isFirstTime) => {
-  if (settingRegistrationData === true) {
-    return Promise.resolve("in_progress");
-  }
-  settingRegistrationData = true;
-  let registrationStatus = "";
-  let method = "";
-  let path = "";
-  
-  if (isRegister) {
-    registrationStatus = REGISTRATION_STATUS.REGISTERED;
-  } else {
-    registrationStatus = REGISTRATION_STATUS.CANCELLED;
-  }
-
-  let body = {
-    eventID: eventID,
-    registrationStatus: registrationStatus
-  };
-  
-  if (isFirstTime) {
-    body["id"] = id;
-    body["heardFrom"] = heardFrom;
-    method = "POST";
-    path = "/registrations";
-  } else {
-    method = "PUT";
-    path = `/registrations/${id}`;
-  }
-  try {
-    await fetchBackend(path, method, body);
-    settingRegistrationData = false;
-    let responesMsg = "";
-    isRegister
-      ? (responesMsg = "registration")
-      : (responesMsg = "unregistration");
-    responesMsg += " succeed";
-    return Promise.resolve(responesMsg);
-  } catch (error) {
-    settingRegistrationData = false;
-    return Promise.reject(error);
-  }
-};
-
 const QuickRegister = ({
   user,
   event,
   registration,
   eventRegistrationStatus,
   handleRegisterStateChangedCallback,
+  sendRegistrationDataCallback,
   children
 }) => {
   const classes = useStyles()
@@ -148,7 +103,7 @@ const QuickRegister = ({
       .then(async () => {
         // if get response is successful
         await fetchBackend(`/users/${id}`, 'PATCH', body);
-        const result = await sendRegistrationData(id, eventID, heardFrom, true, isFirstTime);
+        const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom);
         if (result === 'registration succeed') {
           handleRegisterStateChangedCallback(true);
         }
@@ -158,7 +113,7 @@ const QuickRegister = ({
         fetchBackend('/users', 'POST', body)
           .then(async (userResponse) => {
             if (userResponse.message === 'Created!') {
-              const result = await sendRegistrationData(id, eventID, heardFrom, true, isFirstTime);
+              const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom);
               if (result === 'registration succeed') {
                 handleRegisterStateChangedCallback(true);
               }

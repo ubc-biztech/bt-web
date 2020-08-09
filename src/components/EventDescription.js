@@ -74,45 +74,45 @@ const sendFavouriteData = async (userID, eventID, isFavourite) => {
   }
 };
 
-const sendRegistrationData = async (id, eventID, isRegister, isFirstTime) => {
-  if (settingRegistrationData === true) {
-    return Promise.resolve("in_progress");
-  }
-  settingRegistrationData = true;
-  let registrationStatus = "";
-  let method = "";
-  let path = "";
-  if (isRegister) {
-    registrationStatus = REGISTRATION_STATUS.REGISTERED;
-  } else {
-    registrationStatus = REGISTRATION_STATUS.CANCELLED;
-  }
-  let body = {
-    eventID: eventID,
-    registrationStatus: registrationStatus
-  };
-  if (isFirstTime) {
-    body["id"] = id;
-    method = "POST";
-    path = "/registrations";
-  } else {
-    method = "PUT";
-    path = `/registrations/${id}`;
-  }
-  try {
-    await fetchBackend(path, method, body);
-    settingRegistrationData = false;
-    let responesMsg = "";
-    isRegister
-      ? (responesMsg = "registration")
-      : (responesMsg = "unregistration");
-    responesMsg += " succeed";
-    return Promise.resolve(responesMsg);
-  } catch (error) {
-    settingRegistrationData = false;
-    return Promise.reject(error);
-  }
-};
+// const sendRegistrationData = async (id, eventID, isRegister, isFirstTime) => {
+//   if (settingRegistrationData === true) {
+//     return Promise.resolve("in_progress");
+//   }
+//   settingRegistrationData = true;
+//   let registrationStatus = "";
+//   let method = "";
+//   let path = "";
+//   if (isRegister) {
+//     registrationStatus = REGISTRATION_STATUS.REGISTERED;
+//   } else {
+//     registrationStatus = REGISTRATION_STATUS.CANCELLED;
+//   }
+//   let body = {
+//     eventID: eventID,
+//     registrationStatus: registrationStatus
+//   };
+//   if (isFirstTime) {
+//     body["id"] = id;
+//     method = "POST";
+//     path = "/registrations";
+//   } else {
+//     method = "PUT";
+//     path = `/registrations/${id}`;
+//   }
+//   try {
+//     await fetchBackend(path, method, body);
+//     settingRegistrationData = false;
+//     let responesMsg = "";
+//     isRegister
+//       ? (responesMsg = "registration")
+//       : (responesMsg = "unregistration");
+//     responesMsg += " succeed";
+//     return Promise.resolve(responesMsg);
+//   } catch (error) {
+//     settingRegistrationData = false;
+//     return Promise.reject(error);
+//   }
+// };
 
 const TransitionUp = props => {
   return <Slide {...props} direction="up" />;
@@ -125,6 +125,7 @@ const EventDescription = ({
   eventRegistrationStatus,
   handleRegisterClickedCallback,
   handleRegisterStateChangedCallback,
+  sendRegistrationDataCallback,
   children
 }) => {
   const classes = useStyles();
@@ -164,7 +165,7 @@ const EventDescription = ({
     let isFirstTime = false;
     registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
     try {
-      const registrationResult = await sendRegistrationData(
+      const registrationResult = await sendRegistrationDataCallback(
         userID,
         eventID,
         isRegister,
