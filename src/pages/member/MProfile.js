@@ -158,7 +158,8 @@ function MemberProfile(props) {
     const [eventsAttended, setEventsAttended] = React.useState();
     const [recentEvent, setRecentEvent] = React.useState({});
     const [favouriteEventIDs, setFavouriteEventIDs] = React.useState([]); 
-    const [favouriteEventNames, setFavouriteEventNames] = React.useState([])
+    const [favouriteEventName1, setFavouriteEventName1] = React.useState({})
+    const [favouriteEventName2, setFavouriteEventName2] = React.useState({}) 
     const Fname = React.useState(props.user.fname); 
     const Lname = React.useState(props.user.lname); 
     const Year = React.useState(props.user.level); 
@@ -266,17 +267,43 @@ function MemberProfile(props) {
               fetchBackend(`/users/${props.user.id}`, 'GET')
                .then(async response => {
                    setFavouriteEventIDs(response.favedEventsID);
-                   if (favouriteEventIDs.length === 2) {
                        props.events.forEach(event => {
+                        if (favouriteEventIDs.length === 2) {
                            if (event.id === favouriteEventIDs[0]) {
-                           }
-                       })
-
-                   }
-
-
-               })
+                                setFavouriteEventName1({
+                                    ename: event.ename
+                                })
+                           } else if (event.id === favouriteEventIDs[1]) {
+                                setFavouriteEventName2({
+                                    ename: event.ename
+                           })
+                        }
+                    } else if (favouriteEventIDs.length === 1) {
+                          if (event.id === favouriteEventIDs[0]) {
+                              setFavouriteEventName1({
+                                    ename: event.ename
+                             })
+                            setFavouriteEventName2({
+                                ename: 'None Favourited!'
+                            })
+                        }
+                    } else {
+                        setFavouriteEventName1({
+                            ename: 'None Favourited!'
+                        })
+                        setFavouriteEventName2({
+                            ename: 'None Favourited!'
+                        })
+                    }
+                })
+            })
             .catch(() => {
+                setFavouriteEventName1({
+                    ename: 'None Favourited!'
+                })
+                setFavouriteEventName2({
+                    ename: 'None Favourited!'
+                })
               })
             }
         
@@ -292,7 +319,6 @@ function MemberProfile(props) {
         getFavouriteEvents(); 
       }
 
-    console.log(props.events)
     const classes = useStyles(); 
     return (
         <div className={classes.profilePageContainer}>
@@ -541,7 +567,7 @@ function MemberProfile(props) {
                                     Favourite
                                 </Typography>
                                 <Typography className={classes.eventValue}>
-                                    {favouriteEventNames[0]}
+                                    {favouriteEventName1.ename}
                                 </Typography>
                                 </div>
                                 <div>
@@ -549,7 +575,7 @@ function MemberProfile(props) {
                                     Favourite
                                 </Typography>
                                 <Typography className={classes.eventValue}>
-                                    {favouriteEventNames[1]}
+                                    {favouriteEventName2.ename}
                                 </Typography>
                                 </div>
                             </div>
