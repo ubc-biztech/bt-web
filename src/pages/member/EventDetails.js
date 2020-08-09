@@ -4,7 +4,7 @@ import { useParams, useHistory, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { updateEvents, updateRegistrations } from "../../utils";
+import { updateEvents, updateRegisteredEvents } from "../../utils";
 import EventDescription from "../../components/EventDescription";
 import QuickRegister from "./QuickRegister";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -43,7 +43,7 @@ const EventDetails = props => {
     updateEvents();
   }
   if (!registrations) {
-    updateRegistrations();
+    updateRegisteredEvents();
   }
   const [event, setEvent] = useState(null);
   const [registration, setRegistration] = useState(null);
@@ -63,7 +63,6 @@ const EventDetails = props => {
       registration &&
       registration.registrationStatus === REGISTRATION_STATUS.REGISTERED
     ) {
-      console.log('set to true');
       setEventRegistrationStatus(true);
     }
   }, [
@@ -90,10 +89,7 @@ const EventDetails = props => {
   //change registerState when current event is registered/unregistered
   //for conditionally rendering the registration status UI on BOTH EventDescription AND QuickRegister page
   const handleRegisterStateChangedCallback = (registered) => {
-    console.log("handleRegisterStateChangedCallback");
-    console.log('registered:', registered);
     setEventRegistrationStatus(registered);
-    console.log('eventRegistrationStatus:', eventRegistrationStatus);
   }
 
   let settingRegistrationData = false;

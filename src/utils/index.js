@@ -1,8 +1,7 @@
 import { Auth } from 'aws-amplify'
 import Store from '../components/Store'
-import { setEvents } from '../actions/PageActions'
-import { setUser } from '../actions/UserActions'
-import { setRegistrations } from '../actions/RegistrationActions'
+import { setEvents, setEventsRegistered} from '../actions/PageActions'
+import { setUser} from '../actions/UserActions'
 
 // TODO: Configure travis to build a staging version
 // export const AWS_CONFIG = process.env.REACT_APP_STAGE === 'production'
@@ -99,11 +98,31 @@ export async function updateUser (id) {
   }
 }
 
+// // Refresh the redux store
+// export async function updateRegistrations (id) {
+//   try {
+//     const response = await fetchBackend(`/registrations/?id=${id}`, 'GET')
+//     Store.dispatch(setRegistrations(response))
+//   } catch (err) {
+//     log(err)
+//   }
+// }
+
 // Refresh the redux store
-export async function updateRegistrations (id) {
+export async function updateRegisteredEvents (userId) {
   try {
-    const response = await fetchBackend(`/registrations/?id=${id}`, 'GET')
-    Store.dispatch(setRegistrations(response))
+    const response = await fetchBackend(`/registrations?id=${userId}`, 'GET')
+
+    let data = []
+
+    // TODO: Better API response? Shouldn't return 404 if empty
+    if (response.status !== 404) {
+      data = response.data
+    }
+
+    Store.dispatch(setEventsRegistered({
+      eventsRegistered: Object.values(data)
+    }))
   } catch (err) {
     log(err)
   }

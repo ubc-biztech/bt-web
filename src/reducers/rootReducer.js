@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import {
   SET_EVENTS,
   SET_USER,
-  SET_REGISTRATIONS,
+  SET_EVENTS_REGISTERED,
   LOGOUT
 } from '../constants/Constants'
 
@@ -16,6 +16,11 @@ function pageReducer (state = initialPageState, action) {
       return {
         ...state,
         events: action.events.events
+      }
+    case SET_EVENTS_REGISTERED:
+      return {
+        ...state,
+        eventsRegistered: action.eventsRegistered.eventsRegistered
       }
     default:
       return state
@@ -39,20 +44,20 @@ function userReducer (state = {}, action) {
   }
 }
 
-function registrationsReducer (state = {}, action) {
-  switch (action.type) {
-    case SET_REGISTRATIONS:
-      return {
-        ...state,
-        registrations: action.registrations
-      }
-    default:
-      return state
-  }
-}
+// function registrationsReducer (state = {}, action) {
+//   switch (action.type) {
+//     case SET_REGISTRATIONS:
+//       return {
+//         ...state,
+//         registrations: action.registrations
+//       }
+//     default:
+//       return state
+//   }
+// }
 
 export default combineReducers({
   pageState: pageReducer,
   userState: userReducer,
-  registrationsState: registrationsReducer
+  //registrationsState: registrationsReducer
 })

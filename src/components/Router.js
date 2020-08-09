@@ -33,7 +33,7 @@ import { setUser } from '../actions/UserActions'
 import {
   log,
   updateUser,
-  updateRegistrations
+  updateRegisteredEvents
 } from '../utils'
 
 class Router extends Component {
@@ -58,7 +58,7 @@ class Router extends Component {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
             // Perform redux actions to update user and registration states at the same time
-            await Promise.all([updateUser(studentId), updateRegistrations(studentId)]) 
+            await Promise.all([updateUser(studentId), updateRegisteredEvents(studentId)]) 
           } else {
             // Parse first name and last name
             const initialName = authUser.attributes.name.split(' ')
@@ -189,7 +189,7 @@ const mapStateToProps = state => {
   return {
     page: state.pageState.page,
     user: state.userState.user,
-    registrations: state.registrationsState.registrations
+    registrations: state.pageState.eventsRegistered
   }
 }
 
