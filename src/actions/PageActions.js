@@ -1,4 +1,4 @@
-import { SET_EVENTS, SET_EVENTS_REGISTERED} from '../constants/Constants'
+import { SET_EVENTS, SET_EVENTS_REGISTERED } from '../constants/Constants'
 
 export function setEvents (events) {
   return {

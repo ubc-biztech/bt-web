@@ -70,6 +70,7 @@ function UserHome (props) {
    * sets next event to 'None Registered!' if no events found
    */
   const getNextEvent = async () => {
+    if (!props.user) return null
     const params = new URLSearchParams({
       id: props.user.id
     })

@@ -69,6 +69,11 @@ const theme = createMuiTheme({
         color: COLOR.WHITE
       }
     },
+    MuiTabs: {
+      indicator: {
+        backgroundColor: COLOR.BIZTECH_GREEN
+      }
+    },
     MuiButton: {
       containedPrimary: {
         backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
@@ -106,6 +111,16 @@ const theme = createMuiTheme({
       },
       barColorPrimary: {
         backgroundColor: COLOR.BIZTECH_GREEN
+      }
+    },
+    MuiChip: {
+      colorPrimary: {
+        color: COLOR.WHITE,
+        backgroundColor: COLOR.BIZTECH_GREEN
+      },
+      colorSecondary: {
+        color: COLOR.BLACK,
+        backgroundColor: COLOR.WHITE
       }
     }
   },
