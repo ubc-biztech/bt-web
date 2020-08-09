@@ -122,38 +122,11 @@ const QuickRegister = ({
   children
 }) => {
   const classes = useStyles()
-  // const { events } = props
-  // const { user } = props
   const history = useHistory()
-  // const [eventRegistrationStatus, setEventRegistrationStatus] = useState(false);
-
-  // if (!events) {
-  //   updateEvents()
-  // }
-  // const { id: eventId } = useParams()
-
-  // const [event, setEvent] = useState(null)
-  // const [isSignedUp, setIsSignedUp] = useState(false)
 
   const handleReturn = () => {
     history.push('/events')
   }
-
-  // useEffect(() => {
-  //   if (eventId && events) {
-  //     setEvent(events.find(event => event.id === eventId))
-  //   }
-  // }, [events, eventId])
-  
-  //called after the first dom mutation, right before render()
-  // useLayoutEffect(() => {
-  //   if (
-  //     registration &&
-  //     registration.registrationStatus === REGISTRATION_STATUS.REGISTERED
-  //   ) {
-  //     setEventRegistrationStatus(true);
-  //   }
-  // }, [event, registration]);
 
   const submitValues = async (values) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
@@ -211,11 +184,9 @@ const QuickRegister = ({
   const initialValues = { email: user.email, fname: user.fname, lname: user.lname, id: user.id, faculty: user.faculty, year: user.year, diet: user.diet, gender: user.gender, heardFrom: '' }
 
   if (event) {
-    console.log('ers:', eventRegistrationStatus);
     return (
       // assumes that the event details component that uses this component (QuickRegister) does not allow
       // the user to get to this page if they are already signed up or the event has passed
-      
       <React.Fragment>
         <Helmet>
           <title>{event.ename} - Register</title>
