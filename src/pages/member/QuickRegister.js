@@ -11,7 +11,6 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import { Helmet } from 'react-helmet'
 import { Typography } from '@material-ui/core'
 import House from '../../assets/house.svg'
-import { REGISTRATION_STATUS } from "../../constants/Constants";
 
 const useStyles = makeStyles(theme => ({
   layout: {

@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Markdown from "./Markdown";
 import Paper from "@material-ui/core/Paper";
-import { COLOR, REGISTRATION_STATUS } from "../constants/Constants";
+import { COLOR } from "../constants/Constants";
 import { fetchBackend } from "../utils";
 import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -14,7 +14,6 @@ import StarBorderOutlinedIcon from "@material-ui/icons/StarBorderOutlined";
 import StarIcon from "@material-ui/icons/Star";
 
 let settingFavouriteData = false;
-let settingRegistrationData = false;
 const useStyles = makeStyles(theme => ({
   paper: {
     padding: "60px 0 80px 95px",
@@ -74,45 +73,6 @@ const sendFavouriteData = async (userID, eventID, isFavourite) => {
   }
 };
 
-// const sendRegistrationData = async (id, eventID, isRegister, isFirstTime) => {
-//   if (settingRegistrationData === true) {
-//     return Promise.resolve("in_progress");
-//   }
-//   settingRegistrationData = true;
-//   let registrationStatus = "";
-//   let method = "";
-//   let path = "";
-//   if (isRegister) {
-//     registrationStatus = REGISTRATION_STATUS.REGISTERED;
-//   } else {
-//     registrationStatus = REGISTRATION_STATUS.CANCELLED;
-//   }
-//   let body = {
-//     eventID: eventID,
-//     registrationStatus: registrationStatus
-//   };
-//   if (isFirstTime) {
-//     body["id"] = id;
-//     method = "POST";
-//     path = "/registrations";
-//   } else {
-//     method = "PUT";
-//     path = `/registrations/${id}`;
-//   }
-//   try {
-//     await fetchBackend(path, method, body);
-//     settingRegistrationData = false;
-//     let responesMsg = "";
-//     isRegister
-//       ? (responesMsg = "registration")
-//       : (responesMsg = "unregistration");
-//     responesMsg += " succeed";
-//     return Promise.resolve(responesMsg);
-//   } catch (error) {
-//     settingRegistrationData = false;
-//     return Promise.reject(error);
-//   }
-// };
 
 const TransitionUp = props => {
   return <Slide {...props} direction="up" />;
