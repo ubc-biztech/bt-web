@@ -4,9 +4,8 @@ import Card from '@material-ui/core/Card';
 import { setUser } from "../../actions/UserActions";
 import { connect } from "react-redux"
 import Typography from '@material-ui/core/Typography';
-import {ReactComponent as House} from './house.svg';
+import House from '../../assets/house.svg'
 import TextField from '@material-ui/core/TextField';
-import { QRCode } from "react-qr-svg"; 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton'; 
 import OutlinedPencil from '@material-ui/icons/CreateOutlined';
@@ -14,7 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import { fetchBackend } from '../../utils'
+import { fetchBackend, updateEvents } from '../../utils'
 
 
 
@@ -128,14 +127,6 @@ const useStyles = makeStyles(theme => ({
         paddingTop: 30,
 
     }, 
-    qr: {
-        bgColor: "#FFFFFF",
-        fgColor: "#000000",
-        level: "Q",
-        width: 150, 
-        height: 110, 
-        paddingTop: 30,
-    },
     eventsContent: {
         display: "flex", 
         flexDirection: "column",
@@ -164,6 +155,10 @@ function MemberProfile(props) {
     const [Faculty, setFaculty] = React.useState(props.user.faculty); 
     const [Email, setEmail] = React.useState(props.user.email);
     const [Diet, setDiet] = React.useState(props.user.diet); 
+    const [eventsAttended, setEventsAttended] = React.useState();
+    const [recentEvent, setRecentEvent] = React.useState({});
+    const [favouriteEventIDs, setFavouriteEventIDs] = React.useState([]); 
+    const [favouriteEventNames, setFavouriteEventNames] = React.useState([])
     const Fname = React.useState(props.user.fname); 
     const Lname = React.useState(props.user.lname); 
     const Year = React.useState(props.user.level); 
@@ -221,7 +216,83 @@ function MemberProfile(props) {
         }
     }
 
-    console.log(props.user); 
+    const getRecentEvent = async () => {
+        const params = new URLSearchParams({
+            id: props.user.id
+          })
+        fetchBackend(`/registrations?${params}`, 'GET')
+          .then(async response => {
+            if (response && response.size > 0) {
+                if (props.events) {
+                    var recentEventChecker = ""
+                    var eventsAttendedCounter = 0
+                    props.events.forEach(event => {
+                        const index = response.data.findIndex(registration => registration.eventID === event.id)
+                        if (index !== -1) {
+                        // checks if they have checked in at the event
+                            var recentEventCheckedInChecker = (response.data[index].registrationStatus === 'checkedIn')
+                            
+                            if (recentEventCheckedInChecker) { 
+                                eventsAttendedCounter = eventsAttendedCounter + 1
+                                if (recentEventChecker === "") {
+                                    setRecentEvent(event)
+                                }
+                                recentEventChecker = "exists"
+                            } 
+                        }
+                    })
+                    console.log(eventsAttendedCounter)
+                    if (recentEventChecker === "") {
+                        setRecentEvent({
+                            ename: 'None Registered!'
+                        })
+                    }
+                    setEventsAttended(eventsAttendedCounter)
+                } 
+            } else {
+              setRecentEvent({
+                ename: 'None Registered!'
+              })
+            }
+          })
+          .catch(() => {
+            setRecentEvent({
+              ename: 'None Registered!'
+            })
+          })
+        }
+
+        const getFavouriteEvents = async () => {
+              fetchBackend(`/users/${props.user.id}`, 'GET')
+               .then(async response => {
+                   setFavouriteEventIDs(response.favedEventsID);
+                   if (favouriteEventIDs.length === 2) {
+                       props.events.forEach(event => {
+                           if (event.id === favouriteEventIDs[0]) {
+                           }
+                       })
+
+                   }
+
+
+               })
+            .catch(() => {
+              })
+            }
+        
+
+   
+      if (!props.events) {
+        updateEvents();
+      }
+    
+      // set recentEvent and setFavouriteEvents on initial render
+      if (!recentEvent.ename && !favouriteEventIDs.ename) {
+        getRecentEvent();
+        getFavouriteEvents(); 
+      }
+
+    console.log(props.events)
     const classes = useStyles(); 
     return (
         <div className={classes.profilePageContainer}>
@@ -232,7 +303,7 @@ function MemberProfile(props) {
                  <Card className={classes.profileCard}>
                      <div className={classes.house}>
                          <div> 
-                        <House/>
+                         <img src={House} alt='BizTech House' />
                         </div>
                         <div className={classes.houseLine}>
                         <hr></hr>
@@ -435,7 +506,7 @@ function MemberProfile(props) {
                                 </Typography>
                             <div className={classes.membershipCardEventNumberText}>
                                 <Typography className={classes.membershipCardEventNumber} style={{color: '#96FF50'}}>
-                                    15  
+                                    {eventsAttended}
                                 </Typography>
                             <div style={{paddingLeft: 4}}>
                                 <Typography style={{color: '#AEC4F4', fontSize: 20}}>
@@ -443,10 +514,6 @@ function MemberProfile(props) {
                                 </Typography>
                             </div>
                             </div>
-                            </div>
-
-                            <div>
-                                <QRCode className={classes.qr}/>
                             </div>
                        </div>
                     </Card>
@@ -466,7 +533,7 @@ function MemberProfile(props) {
                                     Most Recent
                                 </Typography>
                                 <Typography className={classes.eventValue}>
-                                    Coding for Noobs
+                                   {recentEvent.ename}
                                 </Typography>
                                 </div>
                                 <div>
@@ -474,7 +541,7 @@ function MemberProfile(props) {
                                     Favourite
                                 </Typography>
                                 <Typography className={classes.eventValue}>
-                                    Blueprint
+                                    {favouriteEventNames[0]}
                                 </Typography>
                                 </div>
                                 <div>
@@ -482,7 +549,7 @@ function MemberProfile(props) {
                                     Favourite
                                 </Typography>
                                 <Typography className={classes.eventValue}>
-                                    Innovation Night
+                                    {favouriteEventNames[1]}
                                 </Typography>
                                 </div>
                             </div>
@@ -497,6 +564,7 @@ function MemberProfile(props) {
 const mapStateToProps = state => {
     return {
       user: state.userState.user,
+      events: state.pageState.events
     };
   };
   
