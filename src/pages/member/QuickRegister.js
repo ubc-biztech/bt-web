@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
-import { connect } from 'react-redux'
+import React from 'react'
+import { useHistory, withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import { fetchBackend, updateEvents } from '../../utils'
+import { fetchBackend } from '../../utils'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import RegisterQuick from '../../components/Forms/RegisterQuick'
@@ -67,30 +66,63 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const EventFormContainer = (props) => {
+const QuickRegister = ({
+  user,
+  event,
+  registration,
+  eventRegistrationStatus,
+  handleRegisterStateChangedCallback,
+  sendRegistrationDataCallback,
+  children
+}) => {
   const classes = useStyles()
-  const { events } = props
-  const { user } = props
   const history = useHistory()
-
-  if (!events) {
-    updateEvents()
-  }
-  const { id: eventId } = useParams()
-
-  const [event, setEvent] = useState(null)
-  const [isSignedUp, setIsSignedUp] = useState(false)
 
   const handleReturn = () => {
     history.push('/events')
   }
 
-  useEffect(() => {
-    if (eventId && events) {
-      setEvent(events.find(event => event.id === eventId))
+  const submitValues = async (values) => {
+    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
+    const eventID = event.id
+    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+    const body = {
+      id,
+      fname,
+      lname,
+      email,
+      year,
+      faculty,
+      gender,
+      diet
     }
-  }, [events, eventId])
-
+    let isFirstTime = false;
+    registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
+    fetchBackend(`/users/${values.id}`, 'GET')
+      .then(async () => {
+        // if get response is successful
+        await fetchBackend(`/users/${id}`, 'PATCH', body);
+        const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom);
+        if (result === 'registration succeed') {
+          handleRegisterStateChangedCallback(true);
+        }
+      })
+      .catch(() => {
+        // Need to create new user
+        fetchBackend('/users', 'POST', body)
+          .then(async (userResponse) => {
+            if (userResponse.message === 'Created!') {
+              const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom);
+              if (result === 'registration succeed') {
+                handleRegisterStateChangedCallback(true);
+              }
+            } else {
+              alert('Signup failed')
+            }
+          })
+      })
+  }
+  
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     id: Yup.number('Valid Student ID required')
@@ -113,7 +145,7 @@ const EventFormContainer = (props) => {
         <Helmet>
           <title>{event.ename} - Register</title>
         </Helmet>
-        {isSignedUp
+        {eventRegistrationStatus
           ? <div className={classes.layout}>
             <Paper className={classes.paper}>
               <div className={classes.completeContainer}>
@@ -159,7 +191,6 @@ const EventFormContainer = (props) => {
               <Grid item xs={12}>
                 <Skeleton animation='wave' variant='rect' width={300} height={30} />
               </Grid>
-
               {[1, 2, 3].map((e) =>
                 <Grid item container spacing={1} key={e}>
                   <Grid item xs={12}>
@@ -170,77 +201,16 @@ const EventFormContainer = (props) => {
                   </Grid>
                 </Grid>)
               }
-
               <Grid item xs={12}>
                 <Skeleton animation='wave' variant='rect' width={90} height={36} />
               </Grid>
-
             </Grid>
           </div>
         </Paper>
       </div>
     )
   }
-
-  async function submitValues (values) {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
-    const eventID = event.id
-    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    const body = {
-      id,
-      fname,
-      lname,
-      email,
-      year,
-      faculty,
-      gender,
-      diet
-    }
-    fetchBackend(`/users/${values.id}`, 'GET')
-      .then(() => {
-        // if get response is successful
-        fetchBackend(`/users/${id}`, 'PATCH', body)
-        registerUser(id, eventID, heardFrom)
-      })
-      .catch(() => {
-        // Need to create new user
-        fetchBackend('/users', 'POST', body)
-          .then((userResponse) => {
-            if (userResponse.message === 'Created!') {
-              registerUser(id, eventID, heardFrom)
-            } else {
-              alert('Signup failed')
-            }
-          })
-      })
-  }
-
-  async function registerUser (id, eventID, heardFrom) {
-    const body = {
-      id,
-      eventID,
-      heardFrom,
-      registrationStatus: 'registered'
-    }
-    fetchBackend('/registrations', 'POST', body)
-      .then(() => {
-        setIsSignedUp(true)
-      })
-      .catch(err => {
-        if (err.status === 409) {
-          alert('You cannot sign up for this event again!')
-        } else {
-          alert('Signup failed')
-        }
-      })
-  }
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.pageState.events,
-    user: state.userState.user
-  }
-}
 
-export default connect(mapStateToProps, {})(EventFormContainer)
+export default withRouter(QuickRegister);

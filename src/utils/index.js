@@ -1,5 +1,6 @@
 import { Auth } from 'aws-amplify'
 import Store from '../components/Store'
+
 import { setEvents, setEventsRegistered } from '../actions/PageActions'
 import { setUser } from '../actions/UserActions'
 
