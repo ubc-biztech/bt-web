@@ -176,7 +176,7 @@ function UserEvents (props) {
   const searchInput = useRef()
 
   const theme = useTheme()
-  const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const { events = [], eventsRegistered = [], user } = props
 
@@ -264,10 +264,10 @@ function UserEvents (props) {
         favourited={eventsFavouritedIds.includes(event.id)}
         handleCardClick={redirectToEvent}
         handleFavourite={handleFavouriteEvent}
-        cardStyle={isNotMobile ? { width: 'calc(50% - 30px)' } : { width: '100%', marginRight: 0 }}
+        cardStyle={isMobile ? { width: '100%', marginRight: 0 } : { width: 'calc(50% - 30px)' } }
       />
     ))
-  }, [eventsFilteredBySearch, eventsFavouritedIds, personalizationIndex, timeIndex])
+  }, [eventsFilteredBySearch, eventsFavouritedIds, personalizationIndex, timeIndex, isMobile])
 
   return (
     <div>
@@ -277,7 +277,7 @@ function UserEvents (props) {
       <div className={classes.container}>
 
         {/* Left panel for additional event filters (only on desktop view) */}
-        {isNotMobile &&
+        {!isMobile &&
           <div className={classes.sidePanelLayout}>
             <Typography variant='h1'>Events</Typography>
             <List>
@@ -300,7 +300,9 @@ function UserEvents (props) {
         <div className={classes.tabsLayout}>
           {/* Upper tabs for filtering (only on desktop view) and searching for events */}
           <div className={classes.tabsContainer}>
-            {isNotMobile ? (
+            {isMobile ? (
+              <Typography variant='h1' className={classes.headerMobile}>Events</Typography>
+            ) : (
               <Tabs
                 value={timeIndex}
                 indicatorColor='primary'
@@ -311,8 +313,6 @@ function UserEvents (props) {
                   <Tab key={tState.index} label={tState.displayName} className={classes.tab} />
                 )}
               </Tabs>
-            ) : (
-              <Typography variant='h1' className={classes.headerMobile}>Events</Typography>
             )}
 
             {/* The search button */}
@@ -331,7 +331,7 @@ function UserEvents (props) {
           </div>
 
           {/* Filters in mobile view */}
-          {!isNotMobile &&
+          {isMobile &&
             <div className={classes.mobileFilters}>
               {Object.values(TIME_STATES).map((tState) =>
                 tState.displayName !== 'All' && // don't render "All"
