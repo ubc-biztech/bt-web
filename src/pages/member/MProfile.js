@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import { setUser } from "../../actions/UserActions";
 import { connect } from "react-redux"
@@ -8,13 +8,15 @@ import House from '../../assets/house.svg'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton'; 
+import Tooltip from '@material-ui/core/Tooltip';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import OutlinedPencil from '@material-ui/icons/CreateOutlined';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { fetchBackend, updateEvents } from '../../utils'
-
 
 
 
@@ -32,6 +34,11 @@ const useStyles = makeStyles(theme => ({
     profileCard: {
         height: 680,
     }, 
+    profileBox: {
+        display: 'flex',
+        flexDirection: 'column', 
+        alignItems: 'center'
+    }, 
     header: {
         width: '100%',
         fontSize: 36, 
@@ -41,10 +48,6 @@ const useStyles = makeStyles(theme => ({
     }, 
     house: {
         paddingTop: 60,
-        marginLeft: 135,
-    }, 
-    houseLine:{
-        width: "70%"
     }, 
     memberName: {
         fontStyle: 'normal',
@@ -97,20 +100,15 @@ const useStyles = makeStyles(theme => ({
         marginLeft: 'auto',
         paddingRight: 70, 
     }, 
-
-    eventCard: {
-        height: 495,
-        marginLeft: 40, 
-    }, 
-
-    membershipCard: {
-        marginLeft: 40,
+    infoIcon: {
+        color: '#AEC4F4', 
+        variant: "contained"
     },
     
     membershipCardContent: {
         display: "flex", 
         flexDirection: "row", 
-        justifyContent: "space-around",
+        paddingLeft: 25,
         paddingTop: 30,
     }, 
     membershipCardEventNumber: {
@@ -138,7 +136,7 @@ const useStyles = makeStyles(theme => ({
         color: '#96FF50', 
         fontSize: 26, 
         fontWeight: "bold", 
-        paddingTop: 25,
+        paddingTop: 40,
     }, 
     eventValue: {
         color: '#AEC4F4',
@@ -146,12 +144,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+
 function MemberProfile(props) {
-    const [isEditingID, setIsEditingID] = React.useState(false); 
-    const [isEditingFaculty, setIsEditingFaculty] = React.useState(false);
-    const [isEditingEmail, setIsEditingEmail] = React.useState(false);
-    const [isEditingDiet, setIsEditingDiet] = React.useState(false);
-    const [ID, setID] = React.useState(props.user.id); 
+    const [isEditing, setIsEditing] = React.useState(false); 
+    const [ID] = React.useState(props.user.id); 
     const [Faculty, setFaculty] = React.useState(props.user.faculty); 
     const [Email, setEmail] = React.useState(props.user.email);
     const [Diet, setDiet] = React.useState(props.user.diet); 
@@ -160,55 +156,41 @@ function MemberProfile(props) {
     const [favouriteEventIDs, setFavouriteEventIDs] = React.useState([]); 
     const [favouriteEventName1, setFavouriteEventName1] = React.useState({})
     const [favouriteEventName2, setFavouriteEventName2] = React.useState({}) 
-    const Fname = React.useState(props.user.fname); 
-    const Lname = React.useState(props.user.lname); 
+    // Won't work unless I pass in Year param exactly like this
     const Year = React.useState(props.user.level); 
-    const Gender = React.useState(props.user.gender); 
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
     const body = {
         email: Email,
-        fname: Fname,
-        lname: Lname,  
+        fname: props.user.fname,
+        lname: props.user.lname,  
         id: ID, 
         faculty: Faculty, 
         year: Year, 
         diet: Diet,
-        gender: Gender
+        gender: props.user.gender,
       };
 
+      const defaultProps = {
+        bgcolor: 'background.paper',
+        border: 1,
+        m: 1,
+        borderColor: 'text.primary',
+        style: { width: '5rem', height: '5rem' },
+      };
     
-    const handleEdit = (type) => {
-        if (type === 'ID') {
-            if (isEditingID) {
+    const handleEdit = () => {
+          console.log(props.user.id)
+            if (isEditing) {
                 fetchBackend(`/users/${props.user.id}`, 'PATCH' , body).then(response =>
                     console.log(response))
             }
-            setIsEditingID(!isEditingID);  
-        } else if (type === 'Faculty') {
-            if (isEditingFaculty) {
-                fetchBackend(`/users/${props.user.id}`, 'PATCH' , body).then(response =>
-                    console.log(response))
-                }
-            setIsEditingFaculty(!isEditingFaculty); 
-        } else if (type === 'Email') {
-            if (isEditingEmail) {
-                fetchBackend(`/users/${props.user.id}`, 'PATCH' , body).then(response =>
-                    console.log(response))
-                }
-            setIsEditingEmail(!isEditingEmail); 
-        } else {
-            if (isEditingDiet) {
-                fetchBackend(`/users/${props.user.id}`, 'PATCH' , body).then(response =>
-                    console.log(response))
-                }
-            setIsEditingDiet(!isEditingDiet); 
-        }
+            setIsEditing(!isEditing);  
     }
 
     const handleChange = (type, value) => {
-        if (type === 'ID') {
-            setID(value); 
-        } else if (type === 'Faculty') {
+        if (type === 'Faculty') {
             setFaculty(value); 
         } else if (type === 'Email') {
             setEmail(value); 
@@ -242,7 +224,6 @@ function MemberProfile(props) {
                             } 
                         }
                     })
-                    console.log(eventsAttendedCounter)
                     if (recentEventChecker === "") {
                         setRecentEvent({
                             ename: 'None Registered!'
@@ -268,7 +249,7 @@ function MemberProfile(props) {
                .then(async response => {
                    setFavouriteEventIDs(response.favedEventsID);
                        props.events.forEach(event => {
-                        if (favouriteEventIDs.length === 2) {
+                        if (favouriteEventIDs.length >= 2) {
                            if (event.id === favouriteEventIDs[0]) {
                                 setFavouriteEventName1({
                                     ename: event.ename
@@ -313,11 +294,11 @@ function MemberProfile(props) {
         updateEvents();
       }
     
-      // set recentEvent and setFavouriteEvents on initial render
-      if (!recentEvent.ename && !favouriteEventIDs.ename) {
-        getRecentEvent();
-        getFavouriteEvents(); 
+      if (props.user.id && !recentEvent.ename) {
+            getFavouriteEvents();
+            getRecentEvent();
       }
+
 
     const classes = useStyles(); 
     return (
@@ -327,208 +308,159 @@ function MemberProfile(props) {
             </Typography>
             <div className={classes.column}>
                  <Card className={classes.profileCard}>
-                     <div className={classes.house}>
-                         <div> 
-                         <img src={House} alt='BizTech House' />
-                        </div>
-                        <div className={classes.houseLine}>
-                        <hr></hr>
-                        </div>
-                    </div>
-                        <Typography className={classes.memberName}>
-                            {props.user.fname} {props.user.lname}
-                        </Typography>
-                <div className={classes.profileInformationContainer}>
-                    <div className={classes.infoBox}>
-                        <React.Fragment>
-                            {
-                            !isEditingID ? 
-                            <React.Fragment>
-                            <div>
-                                <Typography className={classes.infoLabel}>
-                                    Student ID
-                                </Typography>
-                                <Typography className={classes.infoValue}>
-                                    {ID}
-                                </Typography>
-                            </div>
-                            <div className={classes.icon}>
-                                <IconButton onClick={() => handleEdit('ID')}>
-                                    <OutlinedPencil className={classes.pencilIcon}/>   
-                                </IconButton>
-                            </div>
-                            </React.Fragment>
-                            :
-                            <React.Fragment>
-                                <div>
-                                <TextField
-                                    id="standard-helperText"
-                                    label="Student ID"
-                                    value={ID}
-                                    inputProps={{maxLength:8}}
-                                    onChange={event => {
-                                        handleChange('ID', event.target.value)}
-                                    }
-                                />
-                                </div>
-                                <div className={classes.button}>
-                                <Button onClick={() => handleEdit('ID')} className={classes.submitButton}>
-                                    Submit
-                                </Button>
-                                </div>
-                            </React.Fragment>
-                            }
-                        </React.Fragment>
-                    </div>
-                    <div className={classes.infoBox}>
-                        <React.Fragment> 
-                            { 
-                            !isEditingFaculty ?
-                            <React.Fragment>
-                            <div>
-                                <Typography className={classes.infoLabel}>
-                                Faculty
-                                </Typography> 
-                                <Typography className={classes.infoValue} >
-                                {Faculty}
-                                </Typography>
-                            </div>
-                            <div className={classes.icon}>
-                                <IconButton onClick={() => handleEdit('Faculty')}>
-                                <OutlinedPencil className={classes.pencilIcon}/>   
-                                </IconButton> 
-                            </div>
-                            </React.Fragment>
-                            :
-                            <React.Fragment>
-                                <div>
-                                <FormControl>
-                                    <InputLabel id="demo-simple-select-label">Faculty</InputLabel>
-                                        <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={Faculty}
-                                        onChange={event => {
-                                            handleChange('Faculty', event.target.value)}
-                                        }>
-                                        <MenuItem value={"Arts"}>Arts</MenuItem>
-                                        <MenuItem value={"Commerce"}>Commerce</MenuItem>
-                                        <MenuItem value={"Science"}>Science</MenuItem>
-                                        <MenuItem value={"Engineering"}>Engineering</MenuItem>
-                                        <MenuItem value={"Kinesiology"}>Kinesiology</MenuItem>
-                                        <MenuItem value={"Land and Food Systems"}>Land and Food Systems</MenuItem>
-                                        <MenuItem value={"Forestry"}>Forestry</MenuItem>
-                                        </Select>
-                                </FormControl>
-                                </div> 
-                                <div className={classes.button}>
-                                <Button onClick={() => handleEdit('Faculty')} className={classes.submitButton}>
-                                    Submit
-                                </Button>
-                                </div> 
-                            </React.Fragment>
-                            }
-                        </React.Fragment>
-                    </div>
-                    <div className={classes.infoBox}>
-                        <React.Fragment>
-                            {
-                            !isEditingEmail ?
-                                <React.Fragment>
-                                    <div>
-                                        <Typography className={classes.infoLabel}>
-                                            Email
-                                        </Typography> 
-                                        <Typography className={classes.infoValue}>
-                                            {Email}
-                                        </Typography>
-                                    </div>
-                                    <div onClick={() => handleEdit('Email')} className={classes.icon}>
-                                            <IconButton>
-                                            <OutlinedPencil className={classes.pencilIcon}/>   
-                                            </IconButton> 
-                                    </div>
-                                </React.Fragment>
-                            :
-                                <React.Fragment>
-                                    <div>
-                                        <TextField
-                                            id="standard-helperText"
-                                            label="Email"
-                                            value={Email}
-                                            onChange={event => {
-                                                handleChange('Email', event.target.value)}
-                                            }
-                                        />
-                                    </div>
-                                <div className={classes.button}>
-                                <Button onClick={() => handleEdit('Email')} className={classes.submitButton}>
-                                    Submit
-                                </Button>
-                                </div> 
-                                </React.Fragment>
 
-                            }
-                        </React.Fragment>
-                    </div>
-                    <div className={classes.infoBox}>
-                        <React.Fragment>
-                            {
-                            !isEditingDiet ?
-                            <React.Fragment>
-                           <div>
-                                <Typography className={classes.infoLabel}>
-                                    Dietary Preference 
-                                </Typography> 
-                                <Typography className={classes.infoValue}>
-                                    {Diet}
-                                </Typography>
+                    <div>
+                        <div className={classes.profileBox}>
+
+                            <div className={classes.house}>
+                                <img src={House} alt='BizTech House'/>
                             </div>
-                            <div onClick={() => handleEdit('Diet')} className={classes.icon}>
-                                <IconButton>
-                                <OutlinedPencil className={classes.pencilIcon}/>   
-                                </IconButton> 
+
+                            <Typography className={classes.memberName}>
+                                {props.user.fname} {props.user.lname}
+                            </Typography>
+                        </div>
+
+                        <div className={classes.profileInformationContainer}>
+                                <React.Fragment>
+                                    {
+                                    !isEditing ? 
+                                    <React.Fragment>
+                                    <div className={classes.infoBox}>
+                                        <div>
+                                            <Typography className={classes.infoLabel}>
+                                                Student ID
+                                            </Typography>
+                                            <Typography className={classes.infoValue}>
+                                                {ID}
+                                            </Typography>
+                                        </div>
+                                        <div className={classes.icon}>
+                                            <IconButton onClick={() => handleEdit()}>
+                                                <OutlinedPencil className={classes.pencilIcon}/>   
+                                            </IconButton>
+                                        </div>
+                                    </div>
+                                    <div className={classes.infoBox}>
+                                        <div>
+                                            <Typography className={classes.infoLabel}>
+                                            Faculty
+                                            </Typography> 
+                                            <Typography className={classes.infoValue} >
+                                            {Faculty}
+                                            </Typography>
+                                        </div> 
+                                    </div>
+                                    <div className={classes.infoBox}>
+                                        <div>
+                                            <Typography className={classes.infoLabel}>
+                                                Email
+                                            </Typography> 
+                                            <Typography className={classes.infoValue}>
+                                                {Email}
+                                            </Typography>
+                                        </div>
+                                    </div>
+                                    <div className={classes.infoBox}>
+                                        <div>
+                                            <Typography className={classes.infoLabel}>
+                                                Dietary Preference 
+                                            </Typography> 
+                                            <Typography className={classes.infoValue}>
+                                                {Diet}
+                                            </Typography>
+                                        </div>
+                                    </div>
+                                    </React.Fragment>
+                                    :
+                                    <React.Fragment>
+                                    <div className={classes.infoBox}>
+                                        <div>
+                                            <TextField
+                                                id="standard-read-only-input"
+                                                label="Student ID"
+                                                value={ID}
+                                                inputProps={{readOnly:true}}
+                                            />
+                                            </div>
+                                            <div className={classes.button}>
+                                            <Button onClick={() => handleEdit()} className={classes.submitButton}>
+                                                Submit
+                                            </Button>
+                                            <Tooltip title="Contact a BizTech executive your student number is incorrect">
+                                                <InfoOutlinedIcon className={classes.infoIcon}></InfoOutlinedIcon>
+                                            </Tooltip>
+                                            </div>
+                                    </div>
+                                    <div className={classes.infoBox}>
+                                        <div>
+                                                <FormControl>
+                                                    <InputLabel id="demo-simple-select-label">Faculty</InputLabel>
+                                                        <Select
+                                                        labelId="demo-simple-select-label"
+                                                        id="demo-simple-select"
+                                                        value={Faculty}
+                                                        onChange={event => {
+                                                            handleChange('Faculty', event.target.value)}
+                                                        }>
+                                                        <MenuItem value={"Arts"}>Arts</MenuItem>
+                                                        <MenuItem value={"Commerce"}>Commerce</MenuItem>
+                                                        <MenuItem value={"Science"}>Science</MenuItem>
+                                                        <MenuItem value={"Engineering"}>Engineering</MenuItem>
+                                                        <MenuItem value={"Kinesiology"}>Kinesiology</MenuItem>
+                                                        <MenuItem value={"Land and Food Systems"}>Land and Food Systems</MenuItem>
+                                                        <MenuItem value={"Forestry"}>Forestry</MenuItem>
+                                                        </Select>
+                                                </FormControl>
+                                            </div> 
+                                    </div> 
+                                    <div className={classes.infoBox}>
+                                        <div>
+                                                <TextField
+                                                    id="standard-helperText"
+                                                    label="Email"
+                                                    value={Email}
+                                                    onChange={event => {
+                                                        handleChange('Email', event.target.value)}
+                                                    }
+                                                />
+                                        </div> 
+                                    </div>
+                                    <div className={classes.infoBox}>
+                                        <div>
+                                                <FormControl>
+                                                    <InputLabel id="demo-simple-select-label">Dietary Preference</InputLabel>
+                                                        <Select
+                                                        labelId="demo-simple-select-label"
+                                                        id="demo-simple-select"
+                                                        value={Diet}
+                                                        onChange={event => {
+                                                            handleChange('Diet', event.target.value)}
+                                                        }>
+                                                        <MenuItem value={"None"}>None</MenuItem>
+                                                        <MenuItem value={"Vegetarian"}>Vegetarian</MenuItem>
+                                                        <MenuItem value={"Vegan"}>Vegan</MenuItem>
+                                                        <MenuItem value={"Gluten Free"}>Gluten Free</MenuItem>
+                                                        </Select>
+                                                </FormControl>
+                                            </div>
+                                    </div>
+                                    </React.Fragment>
+                                    }
+                                </React.Fragment>
                             </div>
-                            </React.Fragment>
-                            :
-                            <React.Fragment>
-                                <div>
-                                    <FormControl>
-                                        <InputLabel id="demo-simple-select-label">Dietary Preference</InputLabel>
-                                            <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={Diet}
-                                            onChange={event => {
-                                                handleChange('Diet', event.target.value)}
-                                            }>
-                                            <MenuItem value={"None"}>None</MenuItem>
-                                            <MenuItem value={"Vegetarian"}>Vegetarian</MenuItem>
-                                            <MenuItem value={"Vegan"}>Vegan</MenuItem>
-                                            <MenuItem value={"Gluten Free"}>Gluten Free</MenuItem>
-                                            </Select>
-                                    </FormControl>
-                                </div>
-                                <div className={classes.button}>
-                                    <Button onClick={() => handleEdit('Diet')} className={classes.submitButton}>
-                                        Submit
-                                    </Button>
-                                </div> 
-                            </React.Fragment>
-                            }
-                        </React.Fragment>
-                    </div>
-                </div>
-            </Card>
-        </div>
+                        </div>
+                </Card>
+            </div>
+
 
             <div className={classes.column}>
-                <div className={classes.membershipCard}>
-                    <Card className={classes.card}>
+                <div style={isMobile ? {marginLeft: 0, paddingTop: 20} : {marginLeft: 40}}>
+                    <Card>
                         <div className={classes.membershipCardContent}>
                             <div>
                                 <Typography className={classes.label}>
-                                    Membership Card
+                                    Membership
                                 </Typography>
                             <div className={classes.membershipCardEventNumberText}>
                                 <Typography className={classes.membershipCardEventNumber} style={{color: '#96FF50'}}>
@@ -545,8 +477,8 @@ function MemberProfile(props) {
                     </Card>
                 </div>
 
-                <div style={{paddingTop: 40}}>
-                    <Card className={classes.eventCard}>
+                <div style={isMobile ? {paddingTop: 20} : {paddingTop: 40}}>
+                    <Card style={isMobile? { height: 535 , marginLeft: 0} : { height: 495, marginLeft: 40}}>
                         <div className={classes.eventsContent}>
                             <div>
                                 <Typography className={classes.label}>
