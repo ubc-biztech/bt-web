@@ -152,10 +152,9 @@ function MemberProfile(props) {
     const [Email, setEmail] = React.useState(props.user.email);
     const [Diet, setDiet] = React.useState(props.user.diet); 
     const [eventsAttended, setEventsAttended] = React.useState();
-    const [recentEvent, setRecentEvent] = React.useState({});
-    const [favouriteEventIDs, setFavouriteEventIDs] = React.useState([]); 
-    const [favouriteEventName1, setFavouriteEventName1] = React.useState({})
-    const [favouriteEventName2, setFavouriteEventName2] = React.useState({}) 
+    const [recentEvent, setRecentEvent] = React.useState();
+    const [favouriteEventName1, setFavouriteEventName1] = React.useState()
+    const [favouriteEventName2, setFavouriteEventName2] = React.useState() 
     // Won't work unless I pass in Year param exactly like this
     const Year = React.useState(props.user.level); 
     const theme = useTheme();
@@ -170,14 +169,6 @@ function MemberProfile(props) {
         year: Year, 
         diet: Diet,
         gender: props.user.gender,
-      };
-
-      const defaultProps = {
-        bgcolor: 'background.paper',
-        border: 1,
-        m: 1,
-        borderColor: 'text.primary',
-        style: { width: '5rem', height: '5rem' },
       };
     
     const handleEdit = () => {
@@ -218,75 +209,45 @@ function MemberProfile(props) {
                             if (recentEventCheckedInChecker) { 
                                 eventsAttendedCounter = eventsAttendedCounter + 1
                                 if (recentEventChecker === "") {
-                                    setRecentEvent(event)
+                                    setRecentEvent(event.ename)
                                 }
                                 recentEventChecker = "exists"
                             } 
                         }
                     })
                     if (recentEventChecker === "") {
-                        setRecentEvent({
-                            ename: 'None Registered!'
-                        })
+                        setRecentEvent('None Registered!')
                     }
                     setEventsAttended(eventsAttendedCounter)
                 } 
             } else {
-              setRecentEvent({
-                ename: 'None Registered!'
-              })
+              setRecentEvent('None Registered!')
             }
           })
-          .catch(() => {
-            setRecentEvent({
-              ename: 'None Registered!'
-            })
+          .catch((error) => {
+            setRecentEvent('None Registered!')
           })
         }
 
-        const getFavouriteEvents = async () => {
+        const getFavouriteEvents = () => {
               fetchBackend(`/users/${props.user.id}`, 'GET')
                .then(async response => {
-                   setFavouriteEventIDs(response.favedEventsID);
-                       props.events.forEach(event => {
+                     const favouriteEventIDs = response.favedEventsID
+                        props.events && props.events.forEach(event => {
                         if (favouriteEventIDs.length >= 2) {
                            if (event.id === favouriteEventIDs[0]) {
-                                setFavouriteEventName1({
-                                    ename: event.ename
-                                })
+                                setFavouriteEventName1(event.ename)
                            } else if (event.id === favouriteEventIDs[1]) {
-                                setFavouriteEventName2({
-                                    ename: event.ename
-                           })
+                                setFavouriteEventName2(event.ename)
                         }
                     } else if (favouriteEventIDs.length === 1) {
                           if (event.id === favouriteEventIDs[0]) {
-                              setFavouriteEventName1({
-                                    ename: event.ename
-                             })
-                            setFavouriteEventName2({
-                                ename: 'None Favourited!'
-                            })
+                              setFavouriteEventName1(event.ename)
                         }
-                    } else {
-                        setFavouriteEventName1({
-                            ename: 'None Favourited!'
-                        })
-                        setFavouriteEventName2({
-                            ename: 'None Favourited!'
-                        })
-                    }
+                    } 
                 })
             })
-            .catch(() => {
-                setFavouriteEventName1({
-                    ename: 'None Favourited!'
-                })
-                setFavouriteEventName2({
-                    ename: 'None Favourited!'
-                })
-              })
-            }
+        }
         
 
    
@@ -294,10 +255,11 @@ function MemberProfile(props) {
         updateEvents();
       }
     
-      if (props.user.id && !recentEvent.ename) {
+      if (props.user.id && !recentEvent && !favouriteEventName1) {
             getFavouriteEvents();
             getRecentEvent();
       }
+
 
 
     const classes = useStyles(); 
@@ -491,7 +453,7 @@ function MemberProfile(props) {
                                     Most Recent
                                 </Typography>
                                 <Typography className={classes.eventValue}>
-                                   {recentEvent.ename}
+                                   {recentEvent}
                                 </Typography>
                                 </div>
                                 <div>
@@ -499,7 +461,7 @@ function MemberProfile(props) {
                                     Favourite
                                 </Typography>
                                 <Typography className={classes.eventValue}>
-                                    {favouriteEventName1.ename}
+                                    {favouriteEventName1 || "None Favourited!"}
                                 </Typography>
                                 </div>
                                 <div>
@@ -507,7 +469,7 @@ function MemberProfile(props) {
                                     Favourite
                                 </Typography>
                                 <Typography className={classes.eventValue}>
-                                    {favouriteEventName2.ename}
+                                    {favouriteEventName2 || "None Favourited!"}
                                 </Typography>
                                 </div>
                             </div>
