@@ -1,20 +1,16 @@
 import React from 'react'
-import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
-import CardHeader from '@material-ui/core/CardHeader'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { Divider } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 
 import { Auth } from 'aws-amplify'
-import { setUser } from '../../actions/UserActions'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
+import { setUser } from '../../actions/UserActions'
 
 const styles = {
   left: {
@@ -38,7 +34,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
-    // backgroundImage: `url(${BackgroundImage})`
   },
   avatar: {
     margin: theme.spacing(1),
@@ -54,7 +49,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     borderRadius: 12,
     minWidth: 256,
-    textAlign: 'center',
     padding: '16px'
   },
   header: {
@@ -83,22 +77,10 @@ function Login (props) {
       </Helmet>
       <CssBaseline />
       <div className={classes.paper}>
-
         <Card className={classes.root} width='400px'>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-          </div>
-          <CardHeader title='Sign in' className={classes.header} />
-          <Divider variant='middle' />
           <CardContent>
+          <Typography variant='h1' color='primary'>Sign In</Typography>
+          <Typography>Don't have an account? Sign up</Typography>
             <Button
               onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
               variant='contained'
