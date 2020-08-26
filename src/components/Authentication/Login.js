@@ -11,6 +11,7 @@ import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { setUser } from '../../actions/UserActions'
+import { COLOR } from '../../constants/Constants'
 
 const styles = {
   left: {
@@ -21,11 +22,30 @@ const styles = {
     marginRight: "8px",
     width: "19px"
   },
-  facebookIconBtn: {
-    marginTop: "10px",
-    paddingLeft: "10px",
-    paddingRight: "10px",
+  googleButton: {
+    marginTop: '32px',
+    textTransform: 'none',
+    textAlign: 'left',
+    fontWeight: 'bold',
+    backgroundColor: 'white',
+    color: 'black',
+    width: '100%',
+    '&:hover': {
+      backgroundColor: '#eeeeee'
+    }
   },
+  facebookButton: {
+    marginTop: '12px',
+    textTransform: 'none',
+    textAlign: 'left',
+    fontWeight: 'bold',
+    backgroundColor: '#1778F2',
+    color: COLOR.WHITE,
+    width: '100%',
+    '&:hover': {
+      backgroundColor: '#1470E4'
+    }
+  }
 }
 
 const useStyles = makeStyles(theme => ({
@@ -49,7 +69,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     borderRadius: 12,
     minWidth: 256,
-    padding: '16px'
+    padding: '40px'
   },
   header: {
     textAlign: 'center',
@@ -77,14 +97,13 @@ function Login (props) {
       </Helmet>
       <CssBaseline />
       <div className={classes.paper}>
-        <Card className={classes.root} width='400px'>
+        <Card className={classes.root} width='600px'>
           <CardContent>
           <Typography variant='h1' color='primary'>Sign In</Typography>
           <Typography>Don't have an account? Sign up</Typography>
             <Button
               onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
-              variant='contained'
-              color='primary'
+              style={styles.googleButton}
             >
               <div style={styles.left}>
                 <img
@@ -95,16 +114,15 @@ function Login (props) {
               </div>
               Sign In with Google
             </Button>
-            <Button style={styles.facebookIconBtn}
+            <Button
               onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
-              variant='contained'
-              color='secondary'
+              style={styles.facebookButton}
             >
               <div style={styles.left}>
                 <img
                   style={styles.socialIcon}
                   alt="Facebook"
-                  src="./facebook.png"
+                  src="./fb.png"
                 />
               </div>
               Sign In with Facebook
