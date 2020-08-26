@@ -4,16 +4,36 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
 
 import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { setUser } from '../../actions/UserActions'
 import { COLOR } from '../../constants/Constants'
+import LoginImage from '../../assets/login.svg'
 
 const styles = {
+  main: {
+    display: 'flex',
+    height: '100vh',
+    alignItems: 'center'
+  },
+  columns: {
+    maxWidth: '1100px',
+    margin: 'auto',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap-reverse',
+    justifyContent: 'space-between'
+  },
+  card: {
+    borderRadius: 10,
+    minWidth: 300,
+    padding: 42,
+    margin: 30,
+    flex: 1,
+  },
   left: {
     float: 'left'
   },
@@ -45,59 +65,23 @@ const styles = {
     '&:hover': {
       backgroundColor: '#1470E4'
     }
+  },
+  loginImage: {
+    maxWidth: 500,
+    flex: 1,
+    margin:  50
   }
 }
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    marginTop: theme.spacing(10),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: "#3fb5a3"
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  },
-  root: {
-    borderRadius: 12,
-    minWidth: 256,
-    padding: '40px'
-  },
-  header: {
-    textAlign: 'center',
-    spacing: 10
-  },
-  list: {
-    padding: '20px'
-  },
-  button: {
-    margin: theme.spacing(1)
-  },
-  action: {
-    display: 'flex',
-    justifyContent: 'space-around'
-  }
-}))
-
-
-function Login (props) {
-  const classes = useStyles()
+function Login () {
   return (
-    <Container component='main' maxWidth='xs'>
+    <div style={styles.main}>
       <Helmet>
         <title>UBC BizTech - Log In or Sign Up</title>
       </Helmet>
       <CssBaseline />
-      <div className={classes.paper}>
-        <Card className={classes.root} width='600px'>
+      <div style={styles.columns}>
+        <Card style={styles.card}>
           <CardContent>
           <Typography variant='h1' color='primary'>Sign In</Typography>
           <Typography>Don't have an account? Sign up</Typography>
@@ -129,8 +113,9 @@ function Login (props) {
             </Button>
           </CardContent>
         </Card>
+        <img src={LoginImage} alt='Computer' style={styles.loginImage} />
       </div>
-    </Container>
+    </div>
   )
 }
 
