@@ -84,6 +84,9 @@ export class EventUserTable extends Component {
         this.registrationNumbers(users)
         this.notRegistrationNumbers(users)
       })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   /**

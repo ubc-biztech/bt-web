@@ -96,15 +96,16 @@ const QuickRegister = ({
       gender,
       diet
     }
-    let isFirstTime = false;
-    registration ? (isFirstTime = false) : (isFirstTime = true); //if registration prop is not undefined, the event has been registered / unregistered before
+    let isFirstTime = false
+    // if registration prop is not undefined, the event has been registered / unregistered before
+    registration ? (isFirstTime = false) : (isFirstTime = true)
     fetchBackend(`/users/${values.id}`, 'GET')
       .then(async () => {
         // if get response is successful
-        await fetchBackend(`/users/${id}`, 'PATCH', body);
-        const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom);
+        await fetchBackend(`/users/${id}`, 'PATCH', body)
+        const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom)
         if (result === 'registration succeed') {
-          handleRegisterStateChangedCallback(true);
+          handleRegisterStateChangedCallback(true)
         }
       })
       .catch(() => {
@@ -112,9 +113,9 @@ const QuickRegister = ({
         fetchBackend('/users', 'POST', body)
           .then(async (userResponse) => {
             if (userResponse.message === 'Created!') {
-              const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom);
+              const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom)
               if (result === 'registration succeed') {
-                handleRegisterStateChangedCallback(true);
+                handleRegisterStateChangedCallback(true)
               }
             } else {
               alert('Signup failed')
@@ -122,7 +123,7 @@ const QuickRegister = ({
           })
       })
   }
-  
+
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
     id: Yup.number('Valid Student ID required')
@@ -212,5 +213,4 @@ const QuickRegister = ({
   }
 }
 
-
-export default withRouter(QuickRegister);
+export default withRouter(QuickRegister)
