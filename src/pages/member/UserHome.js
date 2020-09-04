@@ -12,10 +12,10 @@ import UserProgress from '../../components/UserProgress'
 
 const useStyles = makeStyles({
   container: {
-    maxWidth: '1200px',
+    maxWidth: '85%',
     display: 'flex',
     flexWrap: 'wrap',
-    margin: 'auto',
+    margin: '75px auto',
     padding: '14px'
   },
   header: {
