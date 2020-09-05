@@ -215,7 +215,7 @@ function UserEvents (props) {
   }
 
   const redirectToEvent = (e, eventId) => {
-    history.push(`/event/${eventId}/register`)
+    history.push(`/eventDetails/${eventId}/register`)
   }
 
   const eventsRegisteredIds = useMemo(() => {
