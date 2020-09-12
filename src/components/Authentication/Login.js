@@ -1,22 +1,39 @@
 import React from 'react'
-import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
-import CardHeader from '@material-ui/core/CardHeader'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import { makeStyles } from '@material-ui/core/styles'
-import { Divider } from '@material-ui/core'
-import Container from '@material-ui/core/Container'
+import Typography from '@material-ui/core/Typography'
 
 import { Auth } from 'aws-amplify'
-import { setUser } from '../../actions/UserActions'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
+import { setUser } from '../../actions/UserActions'
+import { COLOR } from '../../constants/Constants'
+import LoginImage from '../../assets/login.svg'
 
 const styles = {
+  main: {
+    display: 'flex',
+    height: '100vh',
+    alignItems: 'center'
+  },
+  columns: {
+    maxWidth: '1100px',
+    margin: 'auto',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap-reverse',
+    justifyContent: 'space-between'
+  },
+  card: {
+    borderRadius: 10,
+    minWidth: 300,
+    padding: 42,
+    margin: 30,
+    flex: 1,
+  },
   left: {
     float: 'left'
   },
@@ -25,84 +42,52 @@ const styles = {
     marginRight: "8px",
     width: "19px"
   },
-  facebookIconBtn: {
-    marginTop: "10px",
-    paddingLeft: "10px",
-    paddingRight: "10px",
+  googleButton: {
+    marginTop: '32px',
+    textTransform: 'none',
+    textAlign: 'left',
+    fontWeight: 'bold',
+    backgroundColor: 'white',
+    color: 'black',
+    width: '100%',
+    '&:hover': {
+      backgroundColor: '#eeeeee'
+    }
   },
+  facebookButton: {
+    marginTop: '12px',
+    textTransform: 'none',
+    textAlign: 'left',
+    fontWeight: 'bold',
+    backgroundColor: '#1778F2',
+    color: COLOR.WHITE,
+    width: '100%',
+    '&:hover': {
+      backgroundColor: '#1470E4'
+    }
+  },
+  loginImage: {
+    maxWidth: 500,
+    flex: 1,
+    margin:  50
+  }
 }
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    marginTop: theme.spacing(10),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-    // backgroundImage: `url(${BackgroundImage})`
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: "#3fb5a3"
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  },
-  root: {
-    borderRadius: 12,
-    minWidth: 256,
-    textAlign: 'center',
-    padding: '16px'
-  },
-  header: {
-    textAlign: 'center',
-    spacing: 10
-  },
-  list: {
-    padding: '20px'
-  },
-  button: {
-    margin: theme.spacing(1)
-  },
-  action: {
-    display: 'flex',
-    justifyContent: 'space-around'
-  }
-}))
-
-
-function Login (props) {
-  const classes = useStyles()
+function Login () {
   return (
-    <Container component='main' maxWidth='xs'>
+    <div style={styles.main}>
       <Helmet>
         <title>UBC BizTech - Log In or Sign Up</title>
       </Helmet>
       <CssBaseline />
-      <div className={classes.paper}>
-
-        <Card className={classes.root} width='400px'>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-          </div>
-          <CardHeader title='Sign in' className={classes.header} />
-          <Divider variant='middle' />
+      <div style={styles.columns}>
+        <Card style={styles.card}>
           <CardContent>
+          <Typography variant='h1' color='primary'>Sign In</Typography>
+          <Typography>Don't have an account? Sign up</Typography>
             <Button
               onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
-              variant='contained'
-              color='primary'
+              style={styles.googleButton}
             >
               <div style={styles.left}>
                 <img
@@ -113,24 +98,24 @@ function Login (props) {
               </div>
               Sign In with Google
             </Button>
-            <Button style={styles.facebookIconBtn}
+            <Button
               onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
-              variant='contained'
-              color='secondary'
+              style={styles.facebookButton}
             >
               <div style={styles.left}>
                 <img
                   style={styles.socialIcon}
                   alt="Facebook"
-                  src="./facebook.png"
+                  src="./fb.png"
                 />
               </div>
               Sign In with Facebook
             </Button>
           </CardContent>
         </Card>
+        <img src={LoginImage} alt='Computer' style={styles.loginImage} />
       </div>
-    </Container>
+    </div>
   )
 }
 

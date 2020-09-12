@@ -2,7 +2,7 @@ import React from 'react'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { COLOR } from '../constants/Constants'
 
-const fontFamily = [
+export const fontFamily = [
   'Gilroy',
   'Roboto',
   '"Helvetica Neue"',
@@ -74,22 +74,6 @@ const theme = createMuiTheme({
         backgroundColor: COLOR.BIZTECH_GREEN
       }
     },
-    MuiButton: {
-      containedPrimary: {
-        backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
-        color: COLOR.WHITE,
-        '&:hover': {
-          backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR
-        }
-      },
-      containedSecondary: {
-        backgroundColor: '#303960',
-        color: COLOR.WHITE,
-        '&:hover': {
-          backgroundColor: '#303960'
-        }
-      }
-    },
     MuiPaper: {
       root: {
         backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
@@ -148,6 +132,9 @@ const theme = createMuiTheme({
     borderRadius: 10
   },
   palette: {
+    primary: {
+      main: COLOR.BIZTECH_GREEN,
+    },
     background: {
       default: COLOR.BACKGROUND_COLOR
     }
