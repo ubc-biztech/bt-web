@@ -90,14 +90,14 @@ const QuickRegister = ({
   registration,
   eventRegistrationStatus,
   handleRegisterStateChangedCallback,
-  sendRegistrationDataCallback,
-  children
+  sendRegistrationDataCallback
 }) => {
   const theme = useTheme()
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down('sm'))
   const classes = useStyles()
   const history = useHistory()
 
+  console.log(renderMobileOnly)
   const handleReturn = () => {
     history.push('/events')
   }
@@ -167,11 +167,11 @@ const QuickRegister = ({
         <Helmet>
           <title>{event.ename} - Register</title>
         </Helmet>
-        {eventRegistrationStatus
-          ? <div className={classes.layout}>
-            <Paper className={classes.paper}>
-              <div className={classes.completeContainer}>
-              {renderMobileOnly &&
+        <div className={classes.layout}>
+          <Paper className={classes.paper}>
+            {eventRegistrationStatus
+              ? <div className={classes.completeContainer}>
+                {renderMobileOnly &&
                   <div style={{ paddingBottom: '10vh' }}>
                     <Typography variant='h2' className={classes.header}>
                       {event.ename}
@@ -187,8 +187,6 @@ const QuickRegister = ({
                   <Typography>You are now registered, click <strong onClick={handleReturn} style={{ cursor: 'pointer' }}>here</strong> <br/> to return to the previous page.</Typography>
                 </div>
               </div>
-              </Paper>
-              </div>
               : <div className={classes.container}>
                 <Typography variant='h2' className={classes.header}>
                   {event.ename}
@@ -198,10 +196,14 @@ const QuickRegister = ({
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
-                  onSubmit={submitValues}>
-                  {props => <RegisterQuick {...props} />}></Formik>
+                  onSubmit={submitValues}
+                >
+                  {props => <RegisterQuick {...props} />}
+                </Formik>
               </div>
             }
+          </Paper>
+        </div>
       </React.Fragment>
     )
   } else {
