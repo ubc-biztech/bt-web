@@ -133,7 +133,7 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      main: COLOR.BIZTECH_GREEN,
+      main: COLOR.BIZTECH_GREEN
     },
     background: {
       default: COLOR.BACKGROUND_COLOR

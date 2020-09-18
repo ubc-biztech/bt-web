@@ -59,7 +59,7 @@ class Router extends Component {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
             // Perform redux actions to update user and registration states at the same time
-            await Promise.all([updateUser(studentId), updateRegisteredEvents(studentId)]) 
+            await Promise.all([updateUser(studentId), updateRegisteredEvents(studentId)])
           } else {
             // Parse first name and last name
             const initialName = authUser.attributes.name.split(' ')
@@ -149,8 +149,6 @@ class Router extends Component {
               <AdminRoute
                 path='/event/:id' // Need to make sure that this comes after 'new' and 'edit'
                 render={props => <EventView {...props} />} />
-
-              
 
               {/* HOME */}
               <AdminRoute

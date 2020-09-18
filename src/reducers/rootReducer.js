@@ -58,6 +58,6 @@ function userReducer (state = {}, action) {
 
 export default combineReducers({
   pageState: pageReducer,
-  userState: userReducer,
-  //registrationsState: registrationsReducer
+  userState: userReducer
+  // registrationsState: registrationsReducer
 })

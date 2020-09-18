@@ -32,15 +32,15 @@ const styles = {
     minWidth: 300,
     padding: 42,
     margin: 30,
-    flex: 1,
+    flex: 1
   },
   left: {
     float: 'left'
   },
   socialIcon: {
-    marginTop: "5px",
-    marginRight: "8px",
-    width: "19px"
+    marginTop: '5px',
+    marginRight: '8px',
+    width: '19px'
   },
   googleButton: {
     marginTop: '32px',
@@ -69,7 +69,7 @@ const styles = {
   loginImage: {
     maxWidth: 500,
     flex: 1,
-    margin:  50
+    margin: 50
   }
 }
 
@@ -83,8 +83,8 @@ function Login () {
       <div style={styles.columns}>
         <Card style={styles.card}>
           <CardContent>
-          <Typography variant='h1' color='primary'>Sign In</Typography>
-          <Typography>Don't have an account? Sign up</Typography>
+            <Typography variant='h1' color='primary'>Sign In</Typography>
+            <Typography>Don't have an account? Sign up</Typography>
             <Button
               onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
               style={styles.googleButton}
@@ -99,14 +99,14 @@ function Login () {
               Sign In with Google
             </Button>
             <Button
-              onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
+              onClick={() => Auth.federatedSignIn({ provider: 'Facebook' })}
               style={styles.facebookButton}
             >
               <div style={styles.left}>
                 <img
                   style={styles.socialIcon}
-                  alt="Facebook"
-                  src="./fb.png"
+                  alt='Facebook'
+                  src='./fb.png'
                 />
               </div>
               Sign In with Facebook
