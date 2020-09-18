@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useHistory, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
-
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Link from '@material-ui/core/Link'
 import EventUserTable from '../../components/EventUserTable'
@@ -50,4 +49,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { })(withRouter(EventView))
+export default connect(mapStateToProps, {})(withRouter(EventView))

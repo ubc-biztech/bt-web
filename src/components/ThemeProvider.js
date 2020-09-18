@@ -2,7 +2,7 @@ import React from 'react'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import { COLOR } from '../constants/Constants'
 
-const fontFamily = [
+export const fontFamily = [
   'Gilroy',
   'Roboto',
   '"Helvetica Neue"',
@@ -22,6 +22,13 @@ const theme = createMuiTheme({
       root: {
         background: COLOR.LIGHT_BACKGROUND_COLOR,
         color: COLOR.WHITE
+      }
+    },
+    MuiCardContent: {
+      root: {
+        '&:last-child': {
+          paddingBottom: 'reset'
+        }
       }
     },
     MuiInput: {
@@ -62,31 +69,42 @@ const theme = createMuiTheme({
         color: COLOR.WHITE
       }
     },
-    MuiButton: {
-      containedPrimary: {
-        backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
-        color: COLOR.WHITE,
-        '&:hover': {
-          backgroundColor:COLOR.LIGHT_BACKGROUND_COLOR,
-        },
-      },
-      containedSecondary: {
-        backgroundColor: "#303960",
-        color: COLOR.WHITE,
-        '&:hover': {
-          backgroundColor: "#303960",
-        },
+    MuiTabs: {
+      indicator: {
+        backgroundColor: COLOR.BIZTECH_GREEN
       }
     },
     MuiPaper: {
       root: {
-        backgroundColor: COLOR.CARD_PAPER_COLOR,
+        backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
         color: COLOR.WHITE
       }
     },
     MuiCardHeader: {
       subheader: {
         color: COLOR.FONT_COLOR
+      }
+    },
+    MuiLinearProgress: {
+      root: {
+        height: '8px',
+        borderRadius: '4px'
+      },
+      colorPrimary: {
+        backgroundColor: '#627295'
+      },
+      barColorPrimary: {
+        backgroundColor: COLOR.BIZTECH_GREEN
+      }
+    },
+    MuiChip: {
+      colorPrimary: {
+        color: COLOR.WHITE,
+        backgroundColor: COLOR.BIZTECH_GREEN
+      },
+      colorSecondary: {
+        color: COLOR.BLACK,
+        backgroundColor: COLOR.WHITE
       }
     }
   },
@@ -114,6 +132,9 @@ const theme = createMuiTheme({
     borderRadius: 10
   },
   palette: {
+    primary: {
+      main: COLOR.BIZTECH_GREEN
+    },
     background: {
       default: COLOR.BACKGROUND_COLOR
     }

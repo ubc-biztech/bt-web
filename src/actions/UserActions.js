@@ -11,7 +11,8 @@ export function setUser (userData) {
     diet,
     heardFrom,
     gender,
-    admin
+    admin,
+    favedEventsID
   } = userData
   return {
     type: SET_USER,
@@ -25,7 +26,8 @@ export function setUser (userData) {
       diet,
       heardFrom,
       gender,
-      admin
+      admin,
+      favedEventsID
     }
   }
 }

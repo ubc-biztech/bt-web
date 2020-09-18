@@ -8,13 +8,14 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
+import UserProgress from '../../components/UserProgress'
 
 const useStyles = makeStyles({
   container: {
-    maxWidth: '1200px',
+    maxWidth: '85%',
     display: 'flex',
     flexWrap: 'wrap',
-    margin: 'auto',
+    margin: '75px auto',
     padding: '14px'
   },
   header: {
@@ -54,6 +55,7 @@ const useStyles = makeStyles({
 
 function UserHome (props) {
   const classes = useStyles()
+  const [registeredEvents, setRegisteredEvents] = useState([])
   const [featuredEvent, setFeaturedEvent] = useState({})
   const [nextEvent, setNextEvent] = useState({})
   const getFeaturedEvent = () => {
@@ -68,12 +70,14 @@ function UserHome (props) {
    * sets next event to 'None Registered!' if no events found
    */
   const getNextEvent = async () => {
+    if (!props.user) return null
     const params = new URLSearchParams({
       id: props.user.id
     })
     await fetchBackend(`/registrations?${params}`, 'GET')
       .then(async response => {
         if (response && response.size > 0) {
+          setRegisteredEvents(response.data)
           // iterate over events - the first one that is found in registrations is the closest event assuming that events are already sorted by date
           if (props.events) {
             props.events.forEach(event => {
@@ -143,6 +147,7 @@ function UserHome (props) {
           </CardComponent>
           <CardComponent>
             <Typography variant='h2'>Progress</Typography>
+            <UserProgress registeredEvents={registeredEvents} />
           </CardComponent>
         </div>
         <div className={classes.column}>

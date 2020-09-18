@@ -2,7 +2,7 @@ import React from 'react'
 import { Auth } from 'aws-amplify'
 import { setUser } from '../../actions/UserActions'
 import { connect } from 'react-redux'
-import Loading from '../Loading'
+import Loading from '../Misc/Loading'
 import { withRouter } from 'react-router-dom'
 import { log, fetchBackend } from '../../utils'
 
@@ -44,27 +44,24 @@ function LoginRedirect (props) {
         const isAdminGroup = (authUser['cognito:groups'].includes('admin'))
         if (isAdminGroup) {
           populateUserAndRedirect(authUser, '/', true)
-        }
-        // if biztech email, set them as admin (no need for 'sign in')
-        else if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
+        } else if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
+          // if biztech email, set them as admin (no need for 'sign in')
           // attempt to assign cognito group 'admin' to this user
           await fetchBackend('/admin', 'POST')
             .then(() => {})
             .catch(err => console.log(err))
 
           populateUserAndRedirect(authUser, '/', true)
-        }
-        // If not biztech username (normal member)
-        else {
-          const student_id = authUser['custom:student_id']
+        } else { // If not biztech username (normal member)
+          const studentId = authUser['custom:student_id']
 
           // Detect if "first time sign up" by checking if custom:student_id is saved in the user pool
           // If the user's student_id exists in the user pool, check if the user is registered in the database
           // There is a possibility that a user exists in the user pool but not the database
-          if (student_id) {
+          if (studentId) {
             try {
               // check database
-              const user = await fetchBackend(`/users/${student_id}`, 'GET')
+              const user = await fetchBackend(`/users/${studentId}`, 'GET')
               clearTimeout(timeoutRedirect)
               props.setUser({ ...user, admin: false }) // save to redux
               props.history.push('/') // Redirect to the 'user home' page
