@@ -9,6 +9,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox'
 import DateRangeIcon from '@material-ui/icons/DateRange'
 import PersonIcon from '@material-ui/icons/Person'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import RedeemIcon from '@material-ui/icons/Redeem'
 import { useHistory, withRouter } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
@@ -83,6 +84,11 @@ function Nav (props) {
             icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />}
             onClick={handleItemClick.bind(null, '/event/new')}
             bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
+          <MenuItem
+            label='Manage Prizes'
+            icon={<RedeemIcon style={selectedItem === '/prizes' ? selected : unselected} />}
+            onClick={handleItemClick.bind(null, '/prizes')}
+            bar={selectedItem === '/prizes' ? barSelected : barUnselected} />
           {renderDesktopOnly && <MenuItem
             label='Logout'
             icon={<ExitToAppIcon />}

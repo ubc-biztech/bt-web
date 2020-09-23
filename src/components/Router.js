@@ -28,6 +28,7 @@ import NewMember from '../pages/member/NewMember'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
+import PrizesManager from '../pages/admin/PrizesManager'
 import EventDetails from '../pages/member/EventDetails'
 
 import { setUser } from '../actions/UserActions'
@@ -149,6 +150,9 @@ class Router extends Component {
               <AdminRoute
                 path='/event/:id' // Need to make sure that this comes after 'new' and 'edit'
                 render={props => <EventView {...props} />} />
+              <AdminRoute
+                path='/prizes'
+                render={() => <PrizesManager />} />
 
               {/* HOME */}
               <AdminRoute
