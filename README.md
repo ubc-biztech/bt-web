@@ -31,7 +31,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 * `assets/` - Images, fonts, vectors, and other static files
 * `constants/` - Abstracted constants
-* `utils/` - Any other miscellaneous functions
+* `utils/` - Functions to call our backend API, AWS services, and any other miscellaneous functions
 
 * `actions/` - Action creators for redux
 * `reducers/` - Reducers (action listeners) for redux
@@ -40,6 +40,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 Linters are put into place to exercise good and consistent coding style, regardless of developer. Editing lint rules can be done by changing the `.eslintrc.js` file.
 
+To automatically check and fix all lint problems, run:
+```
+npm run lint
+```
+You may need to install eslint first `npm i -g eslint`
 
 ## Deployment
 
@@ -54,8 +59,15 @@ or for production environment:
 ```
 npm run generate:prod
 ```
+These commands will build the app into the `build` folder accordingly (stage/production environment)
 
-## Available Scripts
+Then, to deploy from the `build` folder into AWS S3, run:
+```
+npm run deploy
+```
+
+
+## Other vailable Scripts
 
 In the project directory, you can run:
 
@@ -70,36 +82,15 @@ The page will reload if you make edits, and will log out any errors in the conso
 npm run build
 ```
 Builds the app for production to the `build` folder.
-It correctly bundles React in production mode and optimizes the build for the best performance.
+It bundles React in production mode and optimizes the build for the best performance.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-```
-npm run generate
-```
-Builds the app into the `build` folder for stage environment.
-
-```
-npm run generate:prod
-```
-Deploys the app from the `build` folder for production use.
-
-```
-npm run deploy
-```
-Deploys the app from the `build` folder to aws s3 for website hosting.
+For our app, use `npm run generate` and `npm run generate:prod` instead. See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ```
 npm run test
 ```
 Launches the test runner in the interactive watch mode.
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-```
-npm run lint
-```
-Runs linter and automatically fixes all lint problems.
-You may need to install eslint first `npm i -g eslint`
 
 
 ## Contributing
@@ -116,4 +107,9 @@ Contributions are accepted from members of the biztech team. General instruction
 
 ### Built With
 
-* [React](https://reactjs.org/) - Javascript library
+* [React](https://reactjs.org/) - Javascript (JS) library
+* [AWS Amplify](https://aws-amplify.github.io/amplify-js/api/) - JS library for building Cloud-enabled Applications
+* [Typescript](https://www.typescriptlang.org/) - Typed JS Language Extension
+* [Material UI](https://material-ui.com/) - React UI Framework
+* [Redux](https://redux.js.org/) - State Container for React/JS Apps
+* [Formik](https://formik.org/) & [Yup](https://github.com/jquense/yup)- React Form Library and Schema Validation
