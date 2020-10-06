@@ -109,7 +109,6 @@ Contributions are accepted from members of the biztech team. General instruction
 
 * [React](https://reactjs.org/) - Javascript (JS) library
 * [AWS Amplify](https://aws-amplify.github.io/amplify-js/api/) - JS library for building Cloud-enabled Applications
-* [Typescript](https://www.typescriptlang.org/) - Typed JS Language Extension
 * [Material UI](https://material-ui.com/) - React UI Framework
 * [Redux](https://redux.js.org/) - State Container for React/JS Apps
 * [Formik](https://formik.org/) & [Yup](https://github.com/jquense/yup)- React Form Library and Schema Validation
