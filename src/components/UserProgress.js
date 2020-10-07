@@ -46,7 +46,7 @@ const sixMonthsAgo = () => {
 }
 
 const UserProgress = ({ registeredEvents, events }) => {
-  // filter only checkedIn events, and only return event IDs 
+  // filter only checkedIn events, and only return event IDs
   const checkedInEventIDs = registeredEvents && registeredEvents.flatMap(event => {
     return event.registrationStatus === 'checkedIn' ? [event.eventID] : []
   })

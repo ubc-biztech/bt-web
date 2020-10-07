@@ -1,4 +1,5 @@
 export const SET_EVENTS = 'SET_EVENTS'
+export const SET_EVENTS_REGISTERED = 'SET_EVENTS_REGISTERED'
 export const SET_USER = 'SET_USER'
 export const LOGOUT = 'LOGOUT'
 export const REGISTRATION_STATUS = {
@@ -14,4 +15,5 @@ export const COLOR = {
   BACKGROUND_COLOR: '#070F21',
   LIGHT_BACKGROUND_COLOR: '#172037',
   BIZTECH_GREEN: '#7AD040'
+
 }

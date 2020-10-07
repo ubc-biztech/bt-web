@@ -12,7 +12,7 @@ import './Router.scss'
 import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
 import RegisterAlert from './Messages/RegisterAlert'
-import Loading from './Loading'
+import Loading from './Misc/Loading'
 
 import AdminRoute from './Authentication/AdminRoute'
 import Login from './Authentication/Login'
@@ -21,6 +21,7 @@ import LoginRedirect from './Authentication/LoginRedirect'
 import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
 import UserHome from '../pages/member/UserHome'
+import UserEvents from '../pages/member/UserEvents'
 import EventRegister from '../pages/member/EventRegister'
 import Signup from '../pages/member/Signup'
 import NewMember from '../pages/member/NewMember'
@@ -28,11 +29,13 @@ import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
 import MemberProfile from '../pages/member/MemberProfile'
+import EventDetails from '../pages/member/EventDetails'
 
 import { setUser } from '../actions/UserActions'
 import {
   log,
-  updateUser
+  updateUser,
+  updateRegisteredEvents
 } from '../utils'
 
 class Router extends Component {
@@ -56,7 +59,8 @@ class Router extends Component {
         } else {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
-            await updateUser(studentId)
+            // Perform redux actions to update user and registration states at the same time
+            await Promise.all([updateUser(studentId), updateRegisteredEvents(studentId)])
           } else {
             // Parse first name and last name
             const initialName = authUser.attributes.name.split(' ')
@@ -95,7 +99,7 @@ class Router extends Component {
   }
 
   render () {
-    const { user } = this.props
+    const { user, registrations } = this.props
     const { loaded } = this.state
 
     // Alert the user about the need to register if they haven't
@@ -128,6 +132,12 @@ class Router extends Component {
               <Route
                 path='/profile'
                 render={() => <MemberProfile />} />
+              <Route
+                path='/events'
+                render={() => <UserEvents />} />
+              <Route
+                path='/eventDetails/:id'
+                render={props => <EventDetails {...props} user={user} registrations={registrations} />} />
 
               {/* ADMIN ROUTES */}
               <AdminRoute
@@ -183,7 +193,8 @@ class Router extends Component {
 const mapStateToProps = state => {
   return {
     page: state.pageState.page,
-    user: state.userState.user
+    user: state.userState.user,
+    registrations: state.pageState.eventsRegistered
   }
 }
 

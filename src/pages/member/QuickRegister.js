@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
-import { connect } from 'react-redux'
+import React from 'react'
+import { useHistory, withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import { fetchBackend, updateEvents } from '../../utils'
+import { fetchBackend } from '../../utils'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import RegisterQuick from '../../components/Forms/RegisterQuick'
@@ -12,17 +11,16 @@ import Skeleton from '@material-ui/lab/Skeleton'
 import { Helmet } from 'react-helmet'
 import { Typography } from '@material-ui/core'
 import House from '../../assets/house.svg'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useTheme } from '@material-ui/styles'
+
+import './QuickRegister.scss'
+import { COLOR } from '../../constants/Constants'
 
 const useStyles = makeStyles(theme => ({
-  layout: {
-    [theme.breakpoints.up('sm')]: {
-      width: '66vw',
-      margin: 'auto'
-    }
-  },
   paper: {
-    [theme.breakpoints.up('sm')]: {
-      margin: theme.spacing(3)
+    [theme.breakpoints.down('sm')]: {
+      backgroundColor: COLOR.BACKGROUND_COLOR
     }
   },
   content: {
@@ -30,12 +28,19 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     width: '33vw',
-    padding: '55px 0 55px 80px'
+    padding: '55px 0 55px 80px',
+    [theme.breakpoints.down('sm')]: {
+      width: '80vw',
+      padding: '10px 0 10px 10px'
+    }
   },
   completeContainer: {
     position: 'relative',
     width: '33vw',
-    height: '78vh'
+    height: '78vh',
+    [theme.breakpoints.down('sm')]: {
+      width: '80vw'
+    }
   },
   header: {
     fontWeight: 'bold'
@@ -46,14 +51,21 @@ const useStyles = makeStyles(theme => ({
   house: {
     width: '80%',
     marginLeft: '-20px',
-    marginBottom: '-5px'
+    marginBottom: '-5px',
+    [theme.breakpoints.down('sm')]: {
+      width: '53%'
+    }
   },
   message: {
     width: '40%',
     position: 'absolute',
     bottom: '35%',
     left: '80%',
-    textAlign: 'center'
+    textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      left: '15%',
+      width: '85%'
+    }
   },
   done: {
     fontWeight: 'bold',
@@ -64,32 +76,73 @@ const useStyles = makeStyles(theme => ({
   },
   houseContainer: {
     borderBottom: '1px solid white'
+  },
+  divider: {
+    border: '1px solid #496093',
+    marginTop: '10px',
+    marginBottom: '20px'
   }
 }))
 
-const EventFormContainer = (props) => {
+const QuickRegister = ({
+  user,
+  event,
+  registration,
+  eventRegistrationStatus,
+  handleRegisterStateChangedCallback,
+  sendRegistrationDataCallback
+}) => {
+  const theme = useTheme()
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down('sm'))
   const classes = useStyles()
-  const { events } = props
-  const { user } = props
   const history = useHistory()
 
-  if (!events) {
-    updateEvents()
-  }
-  const { id: eventId } = useParams()
-
-  const [event, setEvent] = useState(null)
-  const [isSignedUp, setIsSignedUp] = useState(false)
-
+  console.log(renderMobileOnly)
   const handleReturn = () => {
     history.push('/events')
   }
 
-  useEffect(() => {
-    if (eventId && events) {
-      setEvent(events.find(event => event.id === eventId))
+  const submitValues = async (values) => {
+    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
+    const eventID = event.id
+    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+    const body = {
+      id,
+      fname,
+      lname,
+      email,
+      year,
+      faculty,
+      gender,
+      diet
     }
-  }, [events, eventId])
+    let isFirstTime = false
+    // if registration prop is not undefined, the event has been registered / unregistered before
+    registration ? (isFirstTime = false) : (isFirstTime = true)
+    fetchBackend(`/users/${values.id}`, 'GET')
+      .then(async () => {
+        // if get response is successful
+        await fetchBackend(`/users/${id}`, 'PATCH', body)
+        const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom)
+        if (result === 'registration succeed') {
+          handleRegisterStateChangedCallback(true)
+        }
+      })
+      .catch(() => {
+        // Need to create new user
+        fetchBackend('/users', 'POST', body)
+          .then(async (userResponse) => {
+            if (userResponse.message === 'Created!') {
+              const result = await sendRegistrationDataCallback(id, eventID, true, isFirstTime, heardFrom)
+              if (result === 'registration succeed') {
+                handleRegisterStateChangedCallback(true)
+              }
+            } else {
+              alert('Signup failed')
+            }
+          })
+      })
+  }
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -100,7 +153,8 @@ const EventFormContainer = (props) => {
     fname: Yup.string().required('First name is required'),
     lname: Yup.string().required('Last name is required'),
     year: Yup.string().required('Level of study is required'),
-    diet: Yup.string().required('Dietary restriction is required')
+    diet: Yup.string().required('Dietary restriction is required'),
+    faculty: Yup.string().required('Faculty is required')
   })
 
   const initialValues = { email: user.email, fname: user.fname, lname: user.lname, id: user.id, faculty: user.faculty, year: user.year, diet: user.diet, gender: user.gender, heardFrom: '' }
@@ -113,10 +167,18 @@ const EventFormContainer = (props) => {
         <Helmet>
           <title>{event.ename} - Register</title>
         </Helmet>
-        {isSignedUp
-          ? <div className={classes.layout}>
-            <Paper className={classes.paper}>
-              <div className={classes.completeContainer}>
+        <div className={classes.layout}>
+          <Paper className={classes.paper}>
+            {eventRegistrationStatus
+              ? <div className={classes.completeContainer}>
+                {renderMobileOnly &&
+                  <div style={{ paddingBottom: '10vh' }}>
+                    <Typography variant='h2' className={classes.header}>
+                      {event.ename}
+                    </Typography>
+                    <div className={classes.divider} />
+                  </div>
+                }
                 <div className={classes.message}>
                   <div className={classes.houseContainer}>
                     <img src={House} className={classes.house} alt='BizTech House' />
@@ -125,26 +187,23 @@ const EventFormContainer = (props) => {
                   <Typography>You are now registered, click <strong onClick={handleReturn} style={{ cursor: 'pointer' }}>here</strong> <br/> to return to the previous page.</Typography>
                 </div>
               </div>
-            </Paper>
-          </div>
-          : <div className={classes.layout}>
-            <Paper className={classes.paper}>
-              <div className={classes.container}>
+              : <div className={classes.container}>
                 <Typography variant='h2' className={classes.header}>
                   {event.ename}
                 </Typography>
-                <Typography className={classes.subHeader}>
-            Sign up Form
-                </Typography>
+                <Typography className={classes.subHeader}>Sign up Form</Typography>
+                <div className={classes.divider} />
                 <Formik
                   initialValues={initialValues}
                   validationSchema={validationSchema}
-                  onSubmit={submitValues}>
+                  onSubmit={submitValues}
+                >
                   {props => <RegisterQuick {...props} />}
                 </Formik>
               </div>
-            </Paper>
-          </div>}
+            }
+          </Paper>
+        </div>
       </React.Fragment>
     )
   } else {
@@ -159,7 +218,6 @@ const EventFormContainer = (props) => {
               <Grid item xs={12}>
                 <Skeleton animation='wave' variant='rect' width={300} height={30} />
               </Grid>
-
               {[1, 2, 3].map((e) =>
                 <Grid item container spacing={1} key={e}>
                   <Grid item xs={12}>
@@ -170,77 +228,15 @@ const EventFormContainer = (props) => {
                   </Grid>
                 </Grid>)
               }
-
               <Grid item xs={12}>
                 <Skeleton animation='wave' variant='rect' width={90} height={36} />
               </Grid>
-
             </Grid>
           </div>
         </Paper>
       </div>
     )
   }
-
-  async function submitValues (values) {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
-    const eventID = event.id
-    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    const body = {
-      id,
-      fname,
-      lname,
-      email,
-      year,
-      faculty,
-      gender,
-      diet
-    }
-    fetchBackend(`/users/${values.id}`, 'GET')
-      .then(() => {
-        // if get response is successful
-        fetchBackend(`/users/${id}`, 'PATCH', body)
-        registerUser(id, eventID, heardFrom)
-      })
-      .catch(() => {
-        // Need to create new user
-        fetchBackend('/users', 'POST', body)
-          .then((userResponse) => {
-            if (userResponse.message === 'Created!') {
-              registerUser(id, eventID, heardFrom)
-            } else {
-              alert('Signup failed')
-            }
-          })
-      })
-  }
-
-  async function registerUser (id, eventID, heardFrom) {
-    const body = {
-      id,
-      eventID,
-      heardFrom,
-      registrationStatus: 'registered'
-    }
-    fetchBackend('/registrations', 'POST', body)
-      .then(() => {
-        setIsSignedUp(true)
-      })
-      .catch(err => {
-        if (err.status === 409) {
-          alert('You cannot sign up for this event again!')
-        } else {
-          alert('Signup failed')
-        }
-      })
-  }
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.pageState.events,
-    user: state.userState.user
-  }
-}
-
-export default connect(mapStateToProps, {})(EventFormContainer)
+export default withRouter(QuickRegister)

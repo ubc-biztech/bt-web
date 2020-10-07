@@ -52,7 +52,6 @@ export default function RegisterEventForm (props) {
 
   const autoCompleteChange = (name, value) => {
     setFieldValue(name, value, false)
-    setFieldTouched(name, true, false)
   }
 
   return (

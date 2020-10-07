@@ -12,10 +12,10 @@ import UserProgress from '../../components/UserProgress'
 
 const useStyles = makeStyles({
   container: {
-    maxWidth: '1200px',
+    maxWidth: '85%',
     display: 'flex',
     flexWrap: 'wrap',
-    margin: 'auto',
+    margin: '75px auto',
     padding: '14px'
   },
   header: {
@@ -70,6 +70,7 @@ function UserHome (props) {
    * sets next event to 'None Registered!' if no events found
    */
   const getNextEvent = async () => {
+    if (!props.user) return null
     const params = new URLSearchParams({
       id: props.user.id
     })
