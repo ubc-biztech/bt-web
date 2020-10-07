@@ -28,6 +28,7 @@ import NewMember from '../pages/member/NewMember'
 import EventView from '../pages/admin/EventView'
 import EventNew from '../pages/admin/EventNew'
 import EventEdit from '../pages/admin/EventEdit'
+import MemberProfile from '../pages/member/MemberProfile'
 import EventDetails from '../pages/member/EventDetails'
 
 import { setUser } from '../actions/UserActions'
@@ -129,9 +130,11 @@ class Router extends Component {
                 path='/event/:id/register'
                 render={() => <EventRegister />} />
               <Route
+                path='/profile'
+                render={() => <MemberProfile />} />
+              <Route
                 path='/events'
                 render={() => <UserEvents />} />
-
               <Route
                 path='/eventDetails/:id'
                 render={props => <EventDetails {...props} user={user} registrations={registrations} />} />
