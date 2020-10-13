@@ -18,28 +18,39 @@ const CLIENT_URL = process.env.REACT_APP_STAGE === 'production'
   : 'http://localhost:3000/'
 
 export const AWS_CONFIG = {
-  aws_project_region: 'us-west-2',
-  aws_cognito_identity_pool_id: 'us-west-2:0bfef155-88d4-40cb-9805-de9d366d6650',
-  aws_cognito_region: 'us-west-2',
-  aws_user_pools_id: 'us-west-2_w0R176hhp',
-  aws_user_pools_web_client_id: '5tc2jshu03i3bmtl1clsov96dt',
-  oauth: {
-    domain: 'auth.ubcbiztech.com',
-    scope: [
-      'phone',
-      'email',
-      'openid',
-      'profile',
-      'aws.cognito.signin.user.admin'
-    ],
-    redirectSignIn: CLIENT_URL + 'login-redirect/',
-    redirectSignOut: CLIENT_URL,
-    responseType: 'code'
+  Auth: {
+    aws_project_region: 'us-west-2',
+    aws_cognito_identity_pool_id: 'us-west-2:0bfef155-88d4-40cb-9805-de9d366d6650',
+    aws_cognito_region: 'us-west-2',
+    aws_user_pools_id: 'us-west-2_w0R176hhp',
+    aws_user_pools_web_client_id: '5tc2jshu03i3bmtl1clsov96dt',
+    oauth: {
+      domain: 'auth.ubcbiztech.com',
+      scope: [
+        'phone',
+        'email',
+        'openid',
+        'profile',
+        'aws.cognito.signin.user.admin'
+      ],
+      redirectSignIn: CLIENT_URL + 'login-redirect/',
+      redirectSignOut: CLIENT_URL,
+      responseType: 'code'
+    },
+    federationTarget: 'COGNITO_USER_POOLS',
+    identityPoolId: 'us-west-2:0bfef155-88d4-40cb-9805-de9d366d6650',
+    region: 'us-west-2',
+    userPoolId: 'us-west-2_w0R176hhp',
+    userPoolWebClientId: '5tc2jshu03i3bmtl1clsov96dt',
   },
-  federationTarget: 'COGNITO_USER_POOLS'
+  Storage: {
+    bucket: process.env.REACT_APP_BUCKET_NAME,
+    region: 'us-west-2',
+    identityPoolId: 'us-west-2:0bfef155-88d4-40cb-9805-de9d366d6650',
+  }
 }
 
-export async function fetchBackend (endpoint, method, data, authenticatedCall = true) {
+export async function fetchBackend(endpoint, method, data, authenticatedCall = true) {
   let headers = {}
   if (method === 'POST') {
     headers = {
@@ -70,14 +81,14 @@ export async function fetchBackend (endpoint, method, data, authenticatedCall = 
     })
 }
 
-export function log (message) {
+export function log(message) {
   if (process.env.REACT_APP_STAGE !== 'production') {
     console.log(message)
   }
 }
 
 // Refresh the redux store
-export async function updateEvents () {
+export async function updateEvents() {
   try {
     const response = await fetchBackend('/events', 'GET', undefined, false)
     Store.dispatch(setEvents({
@@ -89,7 +100,7 @@ export async function updateEvents () {
 }
 
 // Refresh the redux store
-export async function updateUser (id) {
+export async function updateUser(id) {
   try {
     const response = await fetchBackend(`/users/${id}`, 'GET')
     Store.dispatch(setUser(response))
@@ -99,7 +110,7 @@ export async function updateUser (id) {
 }
 
 // Refresh the redux store
-export async function updateRegisteredEvents (userId) {
+export async function updateRegisteredEvents(userId) {
   try {
     const response = await fetchBackend(`/registrations?id=${userId}`, 'GET')
 
