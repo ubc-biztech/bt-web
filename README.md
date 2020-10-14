@@ -51,20 +51,9 @@ You may need to install eslint first `npm i -g eslint`
 Our web application can be deployed through a simple build-and-deploy process:
 
 ### Build
-The web application can be built using either of the commands:
-```
-npm run generate
-```
-or for production environment:
-```
-npm run generate:prod
-```
-These commands will build the app into the `build` folder accordingly (stage/production environment)
+The web application is automatically built and deployed by Travis CI on every merge to `master` branch.
 
-Then, to deploy from the `build` folder into AWS S3, run:
-```
-npm run deploy
-```
+Configurations for the process can be found in the `.travis.yml` file
 
 
 ## Other vailable Scripts
@@ -91,6 +80,16 @@ npm run test
 ```
 Launches the test runner in the interactive watch mode.
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+```
+npm run generate
+```
+Simply builds the application into the `build` folder.
+
+```
+npm run generate:prod
+```
+Builds the application into the `build` folder, but for production use.
 
 
 ## Contributing
