@@ -108,7 +108,7 @@ function Nav (props) {
             bar={selectedItem === '/profile' ? barSelected : barUnselected} />
           {renderDesktopOnly && <MenuItem
             label='Logout'
-            icon={<Logout fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} /> }
+            icon={<Logout fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
             onClick={logout}
             bar={barUnselected} />}
         </React.Fragment>
