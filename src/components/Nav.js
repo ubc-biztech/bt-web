@@ -4,7 +4,6 @@ import {
   ListItem
 } from '@material-ui/core'
 import { useTheme, withStyles } from '@material-ui/styles'
-// import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import Logout from './Icons/Logout'
 import AddBoxIcon from '@material-ui/icons/AddBox'
 import DateRangeIcon from '@material-ui/icons/DateRange'
