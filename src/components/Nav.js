@@ -4,7 +4,7 @@ import {
   ListItem
 } from '@material-ui/core'
 import { useTheme, withStyles } from '@material-ui/styles'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import Logout from './Icons/Logout'
 import AddBoxIcon from '@material-ui/icons/AddBox'
 import DateRangeIcon from '@material-ui/icons/DateRange'
 import PersonIcon from '@material-ui/icons/Person'
@@ -85,7 +85,7 @@ function Nav (props) {
             bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
           {renderDesktopOnly && <MenuItem
             label='Logout'
-            icon={<ExitToAppIcon />}
+            icon={<Logout />}
             onClick={logout} />}
         </React.Fragment>
         : <React.Fragment>
@@ -107,7 +107,7 @@ function Nav (props) {
             bar={selectedItem === '/profile' ? barSelected : barUnselected} />
           {renderDesktopOnly && <MenuItem
             label='Logout'
-            icon={<ExitToAppIcon style={unselected} />}
+            icon={<Logout fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
             onClick={logout}
             bar={barUnselected} />}
         </React.Fragment>
