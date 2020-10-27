@@ -20,15 +20,15 @@ import LoginRedirect from './Authentication/LoginRedirect'
 
 import Forbidden from '../pages/Forbidden'
 import AdminHome from '../pages/admin/AdminHome'
-import UserHome from '../pages/member/UserHome'
-import UserEvents from '../pages/member/UserEvents'
-import EventRegister from '../pages/member/EventRegister'
-import Signup from '../pages/member/Signup'
-import NewMember from '../pages/member/NewMember'
-import EventView from '../pages/admin/EventView'
-import EventNew from '../pages/admin/EventNew'
-import EventEdit from '../pages/admin/EventEdit'
 import EventDetails from '../pages/member/EventDetails'
+import EventEdit from '../pages/admin/EventEdit'
+import EventNew from '../pages/admin/EventNew'
+import EventRegister from '../pages/member/EventRegister'
+import EventView from '../pages/admin/EventView'
+import NewMember from '../pages/member/NewMember'
+import Signup from '../pages/member/Signup'
+import UserEvents from '../pages/member/UserEvents'
+import UserHome from '../pages/member/UserHome'
 
 import { setUser } from '../actions/UserActions'
 import {
@@ -104,86 +104,84 @@ class Router extends Component {
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.id
 
-    return loaded ? (
-      user
-        ? <BrowserRouter>
-          <ScrollToTop />
-          <Nav admin={user.admin} />
-          <div className='content'>
-            {userNeedsRegister && <RegisterAlert />}
-            <Switch>
-
-              {/* COMMON ROUTES */}
-              <Route
-                path='/login-redirect'
-                render={() => <LoginRedirect />} />
-              <Route
-                path='/forbidden'
-                render={() => <Forbidden />} />
-              <Route
-                path='/new-member'
-                render={() => user.id
-                  ? <Redirect to='/' /> /* Allow create member only if user is not yet registered in DB */
-                  : <NewMember />} />
-              <Route
-                path='/event/:id/register'
-                render={() => <EventRegister />} />
-              <Route
-                path='/events'
-                render={() => <UserEvents />} />
-
-              <Route
-                path='/eventDetails/:id'
-                render={props => <EventDetails {...props} user={user} registrations={registrations} />} />
-
-              {/* ADMIN ROUTES */}
-              <AdminRoute
-                path='/user-dashboard'
-                render={() => <UserHome />} />
-              <AdminRoute
-                path='/event/new'
-                render={() => <EventNew />} />
-              <AdminRoute
-                path='/event/:id/edit'
-                render={() => <EventEdit />} />
-              <AdminRoute
-                path='/event/:id' // Need to make sure that this comes after 'new' and 'edit'
-                render={props => <EventView {...props} />} />
-
-              {/* HOME */}
-              <AdminRoute
-                exact
-                path='/'
-                render={() => <AdminHome />}
-                altRender={() => <UserHome user={user} />} />
-
-              <Redirect to='/' />
-
-            </Switch>
-          </div>
-        </BrowserRouter>
-        : <BrowserRouter>
-          <ScrollToTop />
+    // check if the user state has been updated
+    if (!loaded) return <Loading />
+    else return user // eslint-disable-line curly
+      ? <BrowserRouter>
+        <ScrollToTop />
+        <Nav admin={user.admin} />
+        <div className='content'>
+          {userNeedsRegister && <RegisterAlert />}
           <Switch>
 
-            <Route
-              path='/event/:id/register'
-              component={EventRegister} />
+            {/* COMMON ROUTES */}
             <Route
               path='/login-redirect'
-              component={LoginRedirect} />
+              render={() => <LoginRedirect />} />
             <Route
-              path='/signup'
-              component={Signup} />
+              path='/forbidden'
+              render={() => <Forbidden />} />
             <Route
-              path='/'
-              component={Login} />
+              path='/new-member'
+              render={() => user.id
+                ? <Redirect to='/' /> /* Allow create member only if user is not yet registered in DB */
+                : <NewMember />} />
+            <Route
+              path='/event/:id/register'
+              render={() => <EventRegister />} />
+            <Route
+              path='/event/:id'
+              render={props => <EventDetails {...props} user={user} registrations={registrations} />} />
+            <Route
+              path='/events'
+              render={() => <UserEvents />} />
 
-            <Redirect to='/' />
+            {/* ADMIN ROUTES */}
+            <AdminRoute
+              path='/exec/event/new'
+              render={() => <EventNew />} />
+            <AdminRoute
+              path='/exec/event/:id/edit'
+              render={() => <EventEdit />} />
+            <AdminRoute
+              path='/exec/event/:id' // Need to make sure that this comes after 'new' and 'edit'
+              render={props => <EventView {...props} />} />
+            <AdminRoute
+              path='/exec/home'
+              render={() => <AdminHome />} />
+
+            {/* HOME */}
+            <Route
+              exact
+              path='/'
+              render={() => <UserHome user={user} />} />
+
+            <Redirect to={user.admin ? '/exec/home' : '/'} />
 
           </Switch>
-        </BrowserRouter >
-    ) : <Loading />
+        </div>
+      </BrowserRouter>
+      : <BrowserRouter>
+        <ScrollToTop />
+        <Switch>
+
+          <Route
+            path='/event/:id/register'
+            component={EventRegister} />
+          <Route
+            path='/login-redirect'
+            component={LoginRedirect} />
+          <Route
+            path='/signup'
+            component={Signup} />
+          <Route
+            path='/'
+            component={Login} />
+
+          <Redirect to='/' />
+
+        </Switch>
+      </BrowserRouter >
   }
 }
 

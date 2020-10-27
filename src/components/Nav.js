@@ -1,21 +1,22 @@
-import React, { useState } from 'react'
-import {
-  List,
-  ListItem
-} from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import { useHistory, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Auth } from 'aws-amplify'
+
+import { List, ListItem, Divider } from '@material-ui/core'
 import { useTheme, withStyles } from '@material-ui/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import AddBoxIcon from '@material-ui/icons/AddBox'
 import DateRangeIcon from '@material-ui/icons/DateRange'
 import PersonIcon from '@material-ui/icons/Person'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { useHistory, withRouter } from 'react-router-dom'
-import { Auth } from 'aws-amplify'
-import { connect } from 'react-redux'
+import LockIcon from '@material-ui/icons/Lock'
+import Biztech from './Icons/Biztech'
+
 import './Nav.scss'
 import { logout } from '../actions/UserActions'
 import { COLOR } from '../constants/Constants'
-import Biztech from './Icons/Biztech'
 
 const ICON_SIZE = '32px'
 
@@ -26,6 +27,10 @@ const styles = {
   },
   paper: {
     backgroundColor: COLOR.BACKGROUND_COLOR
+  },
+  divider: {
+    margin: '0.5em 1em',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)'
   }
 }
 
@@ -39,8 +44,11 @@ function Nav (props) {
   const barSelected = { borderLeft: `6px solid ${COLOR.BIZTECH_GREEN}` }
   const barUnselected = { borderLeft: `6px solid ${COLOR.BACKGROUND_COLOR}` }
 
-  const pathname = window.location.pathname
+  const pathname = history.location.pathname
   const [selectedItem, setSelectedItem] = useState(pathname)
+  useEffect(() => {
+    setSelectedItem(pathname)
+  }, [pathname])
 
   const logout = () => {
     Auth.signOut()
@@ -55,7 +63,6 @@ function Nav (props) {
       history.push(`/event/${event.id}`)
     } else {
       history.push(path)
-      setSelectedItem(path)
     }
   }
 
@@ -70,48 +77,47 @@ function Nav (props) {
 
   return (
     <List className='navList'>
-      {props.admin
-        ? <React.Fragment>
+      <React.Fragment>
+        {props.admin && <>
           <MenuItem
-            label='Home'
-            icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
-            onClick={handleItemClick.bind(null, '/')}
-            bar={selectedItem === '/' ? barSelected : barUnselected}
+            label='Exec Home'
+            icon={<LockIcon style={selectedItem === '/exec/home' ? selected : unselected} />}
+            onClick={handleItemClick.bind(null, '/exec/home')}
+            bar={selectedItem === '/exec/home' ? barSelected : barUnselected}
           />
           <MenuItem
             label='Create Event'
-            icon={<AddBoxIcon style={selectedItem === '/event/new' ? selected : unselected} />}
-            onClick={handleItemClick.bind(null, '/event/new')}
-            bar={selectedItem === '/event/new' ? barSelected : barUnselected} />
-          {renderDesktopOnly && <MenuItem
-            label='Logout'
-            icon={<ExitToAppIcon />}
-            onClick={logout} />}
-        </React.Fragment>
-        : <React.Fragment>
-          <MenuItem
-            label='Home'
-            icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
-            onClick={handleItemClick.bind(null, '/')}
-            bar={selectedItem === '/' ? barSelected : barUnselected}
+            icon={<AddBoxIcon style={selectedItem === '/exec/event/new' ? selected : unselected} />}
+            onClick={handleItemClick.bind(null, '/exec/event/new')}
+            bar={selectedItem === '/exec/event/new' ? barSelected : barUnselected}
           />
-          <MenuItem
-            label='Events'
-            icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />}
-            onClick={handleItemClick.bind(null, '/events')}
-            bar={selectedItem === '/events' ? barSelected : barUnselected} />
-          <MenuItem
-            label='Profile'
-            icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />}
-            onClick={handleItemClick.bind(null, '/profile')}
-            bar={selectedItem === '/profile' ? barSelected : barUnselected} />
-          {renderDesktopOnly && <MenuItem
-            label='Logout'
-            icon={<ExitToAppIcon style={unselected} />}
-            onClick={logout}
-            bar={barUnselected} />}
-        </React.Fragment>
-      }
+          <Divider style={styles.divider} />
+        </>
+        }
+        <MenuItem
+          label='Home'
+          icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
+          onClick={handleItemClick.bind(null, '/')}
+          bar={selectedItem === '/' ? barSelected : barUnselected}
+        />
+        <MenuItem
+          label='Events'
+          icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />}
+          onClick={handleItemClick.bind(null, '/events')}
+          bar={selectedItem === '/events' ? barSelected : barUnselected}
+        />
+        <MenuItem
+          label='Profile'
+          icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />}
+          onClick={handleItemClick.bind(null, '/profile')}
+          bar={selectedItem === '/profile' ? barSelected : barUnselected}
+        />
+        {renderDesktopOnly && <MenuItem
+          label='Logout'
+          icon={<ExitToAppIcon />}
+          onClick={logout}
+        />}
+      </React.Fragment>
     </List>
   )
 }

@@ -84,7 +84,7 @@ function Login () {
         <Card style={styles.card}>
           <CardContent>
             <Typography variant='h1' color='primary'>Sign In</Typography>
-            <Typography>Don't have an account? Sign up</Typography>
+            <Typography>Don&apos;t have an account? Sign up</Typography>
             <Button
               onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
               style={styles.googleButton}
