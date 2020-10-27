@@ -1,8 +1,6 @@
 import React from 'react'
-import {
-  Route,
-  Redirect
-} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
+import Route from './Route'
 import { connect } from 'react-redux'
 
 // Route Wrapper that checks first if the user has admin privileges

@@ -81,7 +81,7 @@ function AdminHome (props) {
   }
 
   const handleClickViewEventAsMember = () => {
-    props.history.push(`/event/${event.id}`)
+    props.history.push(`/event/${eventMenuClicked}`)
     handleClose()
   }
 

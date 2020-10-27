@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet'
 import { setUser } from '../../actions/UserActions'
 import { COLOR } from '../../constants/Constants'
 import LoginImage from '../../assets/login.svg'
+import { checkFeatureFlag } from '../../utils/checkFeatureFlag'
 
 const styles = {
   main: {
@@ -80,8 +81,9 @@ function Login () {
         <title>UBC BizTech - Log In or Sign Up</title>
       </Helmet>
       <CssBaseline />
+      {/* TODO: Maintenance message here for MinVP */}
       <div style={styles.columns}>
-        <Card style={styles.card}>
+        {checkFeatureFlag('REACT_APP_SHOW_MAXVP') && <Card style={styles.card}>
           <CardContent>
             <Typography variant='h1' color='primary'>Sign In</Typography>
             <Typography>Don&apos;t have an account? Sign up</Typography>
@@ -112,7 +114,7 @@ function Login () {
               Sign In with Facebook
             </Button>
           </CardContent>
-        </Card>
+        </Card>}
         <img src={LoginImage} alt='Computer' style={styles.loginImage} />
       </div>
     </div>

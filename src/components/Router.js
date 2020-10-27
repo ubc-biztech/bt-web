@@ -4,7 +4,6 @@ import { Auth } from 'aws-amplify'
 import {
   BrowserRouter,
   Switch,
-  Route,
   Redirect
 } from 'react-router-dom'
 import './Router.scss'
@@ -14,6 +13,7 @@ import ScrollToTop from './ScrollToTop'
 import RegisterAlert from './Messages/RegisterAlert'
 import Loading from './Misc/Loading'
 
+import Route from './Authentication/Route'
 import AdminRoute from './Authentication/AdminRoute'
 import Login from './Authentication/Login'
 import LoginRedirect from './Authentication/LoginRedirect'
@@ -124,9 +124,11 @@ class Router extends Component {
               render={() => <Forbidden />} />
             <Route
               path='/profile'
+              featureFlag={'REACT_APP_SHOW_MAXVP'}
               render={() => <MemberProfile />} />
             <Route
               path='/new-member'
+              featureFlag={'REACT_APP_SHOW_MAXVP'}
               render={() => user.id
                 ? <Redirect to='/' /> /* Allow create member only if user is not yet registered in DB */
                 : <NewMember />} />
@@ -135,9 +137,11 @@ class Router extends Component {
               render={() => <EventRegister />} />
             <Route
               path='/event/:id'
+              featureFlag={'REACT_APP_SHOW_MAXVP'}
               render={props => <EventDetails {...props} user={user} registrations={registrations} />} />
             <Route
               path='/events'
+              featureFlag={'REACT_APP_SHOW_MAXVP'}
               render={() => <UserEvents />} />
 
             {/* ADMIN ROUTES */}
@@ -158,6 +162,7 @@ class Router extends Component {
             <Route
               exact
               path='/'
+              featureFlag={'REACT_APP_SHOW_MAXVP'}
               render={() => <UserHome user={user} />} />
 
             <Redirect to={user.admin ? '/exec/home' : '/'} />
@@ -177,6 +182,7 @@ class Router extends Component {
             component={LoginRedirect} />
           <Route
             path='/signup'
+            featureFlag={'REACT_APP_SHOW_MAXVP'}
             component={Signup} />
           <Route
             path='/'

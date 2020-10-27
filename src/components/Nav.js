@@ -17,6 +17,7 @@ import Logout from './Icons/Logout'
 import './Nav.scss'
 import { logout } from '../actions/UserActions'
 import { COLOR } from '../constants/Constants'
+import { checkFeatureFlag } from '../utils/checkFeatureFlag'
 
 const ICON_SIZE = '32px'
 
@@ -67,12 +68,13 @@ function Nav (props) {
   }
 
   function MenuItem (props) {
-    const { label, icon, onClick, bar } = props
-    return (
+    const { label, icon, onClick, bar, featureFlag } = props
+    const isFeatureEnabled = checkFeatureFlag(featureFlag)
+    return isFeatureEnabled ? (
       <ListItem className='navItem' style={{ ...bar, ...styles.listItem }} onClick={onClick} aria-label={label} disableGutters={true}>
         {icon}
       </ListItem>
-    )
+    ) : null
   }
 
   return (
@@ -99,18 +101,21 @@ function Nav (props) {
           icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
           onClick={handleItemClick.bind(null, '/')}
           bar={selectedItem === '/' ? barSelected : barUnselected}
+          featureFlag='REACT_APP_SHOW_MAXVP'
         />
         <MenuItem
           label='Events'
           icon={<DateRangeIcon style={selectedItem === '/events' ? selected : unselected} />}
           onClick={handleItemClick.bind(null, '/events')}
           bar={selectedItem === '/events' ? barSelected : barUnselected}
+          featureFlag='REACT_APP_SHOW_MAXVP'
         />
         <MenuItem
           label='Profile'
           icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />}
           onClick={handleItemClick.bind(null, '/profile')}
           bar={selectedItem === '/profile' ? barSelected : barUnselected}
+          featureFlag='REACT_APP_SHOW_MAXVP'
         />
         {renderDesktopOnly && <MenuItem
           label='Logout'
