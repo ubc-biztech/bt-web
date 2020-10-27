@@ -7,12 +7,12 @@ import { List, ListItem, Divider } from '@material-ui/core'
 import { useTheme, withStyles } from '@material-ui/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import AddBoxIcon from '@material-ui/icons/AddBox'
 import DateRangeIcon from '@material-ui/icons/DateRange'
 import PersonIcon from '@material-ui/icons/Person'
 import LockIcon from '@material-ui/icons/Lock'
 import Biztech from './Icons/Biztech'
+import Logout from './Icons/Logout'
 
 import './Nav.scss'
 import { logout } from '../actions/UserActions'
@@ -114,7 +114,7 @@ function Nav (props) {
         />
         {renderDesktopOnly && <MenuItem
           label='Logout'
-          icon={<ExitToAppIcon />}
+          icon={<Logout />}
           onClick={logout}
         />}
       </React.Fragment>

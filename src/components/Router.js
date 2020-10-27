@@ -25,6 +25,7 @@ import EventEdit from '../pages/admin/EventEdit'
 import EventNew from '../pages/admin/EventNew'
 import EventRegister from '../pages/member/EventRegister'
 import EventView from '../pages/admin/EventView'
+import MemberProfile from '../pages/member/MemberProfile'
 import NewMember from '../pages/member/NewMember'
 import Signup from '../pages/member/Signup'
 import UserEvents from '../pages/member/UserEvents'
@@ -121,6 +122,9 @@ class Router extends Component {
             <Route
               path='/forbidden'
               render={() => <Forbidden />} />
+            <Route
+              path='/profile'
+              render={() => <MemberProfile />} />
             <Route
               path='/new-member'
               render={() => user.id

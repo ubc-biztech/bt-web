@@ -82,7 +82,8 @@ const useStyles = makeStyles(theme => ({
     float: 'right',
     flexDirection: 'column',
     textAlign: 'right',
-    marginRight: '3em'
+    marginRight: '3em',
+    width: '135px'
   },
   sidePanelButton: {
     textAlign: 'right',
