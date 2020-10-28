@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useParams, useHistory } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
-import NewEventForm from '../../components/Forms/NewEvent'
-import EventView from '../../components/EventView'
-import { fetchBackend, log } from '../../utils'
-import { Helmet } from 'react-helmet'
+
+import EventView from 'components/EventView'
+import EditEventForm from 'components/Forms/EditEvent'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+
+import { fetchBackend } from 'utils'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -27,18 +31,31 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function EventCreate () {
+const EventEdit = (props) => {
+  const { events } = props
+
   const classes = useStyles()
+  const { id: eventId } = useParams()
+  const history = useHistory()
+
+  const [event, setEvent] = useState(null)
   const [previewEvent, setPreviewEvent] = useState({})
+
+  useEffect(() => {
+    // Get the initial values
+    if (eventId) {
+      const event = events.find(event => event.id === eventId)
+      setEvent(event)
+      setPreviewEvent(event)
+    }
+  }, [])
 
   const validationSchema = Yup.object({
     ename: Yup.string().required(),
-    slug: Yup.string().matches(/^[a-z\-0-9]*$/, 'Slug must be lowercase and have no whitespace').required(),
     description: Yup.string().required(),
     capacity: Yup.number('Valid number required')
       .min(0, 'Valid capacity required')
       .required(),
-    // partners: Yup.string().required(),
     elocation: Yup.string().required(),
     longitude: Yup.number('Valid number required')
       .min(-180, 'Valid number required')
@@ -52,9 +69,20 @@ export default function EventCreate () {
     imageUrl: Yup.string().url().required()
   })
 
-  const initialValues = {
+  const initialValues = event ? {
+    ename: event.ename,
+    slug: event.id,
+    description: event.description,
+    capacity: event.capac,
+    facebookUrl: event.facebookUrl,
+    elocation: event.elocation || '',
+    longitude: event.longitude || '',
+    latitude: event.latitude || '',
+    imageUrl: event.imageUrl,
+    startDate: event.startDate,
+    endDate: event.endDate
+  } : {
     ename: '',
-    slug: '',
     description: '',
     capacity: '',
     facebookUrl: '',
@@ -62,26 +90,26 @@ export default function EventCreate () {
     longitude: '',
     latitude: '',
     imageUrl: '',
-    startDate: new Date(),
-    endDate: new Date()
+    startDate: '',
+    endDate: ''
   }
 
   return (
     <div className={classes.layout}>
       <Helmet>
-        <title>Create Event - BizTech Admin</title>
+        <title>Edit {event.ename} - BizTech Admin</title>
       </Helmet>
       <Paper className={classes.paper}>
         <div className={classes.content}>
           <Typography variant='h4' align='center' gutterBottom>
-                        New Event
+                        Edit Event
           </Typography>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={submitValues}
           >
-            {props => <NewEventForm updatePreview={setPreviewEvent} {...props} />}
+            {props => <EditEventForm updatePreview={setPreviewEvent} {...props} />}
           </Formik>
         </div>
       </Paper>
@@ -95,7 +123,6 @@ export default function EventCreate () {
   async function submitValues (values) {
     const body = {
       ename: values.ename,
-      id: values.slug,
       description: values.description,
       capac: values.capacity,
       elocation: values.elocation,
@@ -106,16 +133,17 @@ export default function EventCreate () {
       startDate: values.startDate,
       endDate: values.endDate
     }
-    fetchBackend('/events', 'POST', body)
-      .then(response => {
-        alert(response.message)
-        window.location.href = '/'
+
+    fetchBackend(`/events/${values.slug}`, 'PATCH', body)
+      .then((response) => {
+        alert(response)
+        history.push(`/event/${values.slug}/register`)
       })
       .catch(err => {
-        log(err)
-        if (err.status === 409) {
-          alert('Failed. Event with that slug/id already exists')
-        } else alert(err.message + ' Please contact a dev')
+        console.log(err)
+        alert(err.message + ' Please contact a dev')
       })
   }
 }
+
+export default EventEdit

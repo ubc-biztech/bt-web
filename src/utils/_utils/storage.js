@@ -1,5 +1,5 @@
 import Storage from '@aws-amplify/storage'
-import { log } from './index'
+import { log } from './log'
 
 export const STORAGE_PRIZES = 'prizes'
 export const STORAGE_SPONSORS = 'sponsors'

@@ -1,21 +1,24 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+
 import { withStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardMedia from '@material-ui/core/CardMedia'
-import { useHistory } from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import IconButton from '@material-ui/core/IconButton'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
-import ThemeProvider from '../../components/ThemeProvider'
 import Typography from '@material-ui/core/Typography'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import { fetchBackend, updateEvents } from '../../utils'
-import { Helmet } from 'react-helmet'
-import { COLOR } from '../../constants/Constants'
+
+import ThemeProvider from 'components/ThemeProvider'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+
+import { COLORS } from 'constants/index'
+import { fetchBackend, updateEvents } from 'utils'
 
 const styles = ({
   card: {
@@ -133,8 +136,8 @@ function AdminHome (props) {
 
       <div style={styles.row}>
         <div style={styles.columnLeft}>
-          <Typography variant='h1' style={{ color: COLOR.BIZTECH_GREEN }}>BizTech Admins</Typography>
-          <Typography style={{ color: COLOR.BIZTECH_GREEN }}>BizTech Admins</Typography>
+          <Typography variant='h1' style={{ color: COLORS.BIZTECH_GREEN }}>BizTech Admins</Typography>
+          <Typography style={{ color: COLORS.BIZTECH_GREEN }}>BizTech Admins</Typography>
         </div>
       </div>
 

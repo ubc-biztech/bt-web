@@ -4,14 +4,14 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
-import EventCard from '../../components/Cards/Event'
-import { fetchBackend, updateEvents, updateRegisteredEvents } from '../../utils'
+import EventCard from 'components/Cards/Event'
 
-import { setUser } from '../../actions/UserActions'
-
-import { COLOR } from '../../constants/Constants'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+
+import { COLORS } from 'constants/index'
+import { setUser } from 'actions/UserActions'
+import { fetchBackend, updateEvents, updateRegisteredEvents } from 'utils'
 import {
   Tabs,
   Tab,
@@ -92,7 +92,7 @@ const useStyles = makeStyles(theme => ({
   sidePanelActiveButton: {
     textAlign: 'right',
     whiteSpace: 'nowrap',
-    borderRight: `2px solid ${COLOR.BIZTECH_GREEN}`
+    borderRight: `2px solid ${COLORS.BIZTECH_GREEN}`
   },
   tabsLayout: {
     width: '80%',
@@ -116,7 +116,7 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'none',
     maxWidth: '5em',
     width: '100%',
-    color: `${COLOR.WHITE} !important`
+    color: `${COLORS.WHITE} !important`
   },
   search: {
     display: 'flex',
@@ -140,12 +140,12 @@ const useStyles = makeStyles(theme => ({
   },
   searchInput: {
     width: '0',
-    color: COLOR.CARD_PAPER_COLOR,
+    color: COLORS.CARD_PAPER_COLOR,
     transition: theme.transitions.create('width')
   },
   searchInputActive: {
     width: '70vw',
-    color: COLOR.CARD_PAPER_COLOR,
+    color: COLORS.CARD_PAPER_COLOR,
     transition: theme.transitions.create('width')
   },
   mobileFilters: {
@@ -319,7 +319,7 @@ function EventsDashboard (props) {
             {/* The search button */}
             <div className={classes.search}>
               <IconButton className={classes.searchIcon} onClick={handleStartSearch}>
-                <Search style={{ color: COLOR.CARD_PAPER_COLOR }}/>
+                <Search style={{ color: COLORS.CARD_PAPER_COLOR }}/>
               </IconButton>
               <InputBase
                 inputRef={searchInput}

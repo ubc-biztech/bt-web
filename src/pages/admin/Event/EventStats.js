@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Link from '@material-ui/core/Link'
-import EventUserTable from '../../components/EventUserTable'
-import ThemeProvider from '../../components/ThemeProvider'
-import { updateEvents } from '../../utils'
 
-function EventStats (props) {
+import EventUserTable from 'components/EventUserTable'
+import ThemeProvider from 'components/ThemeProvider'
+
+import Link from '@material-ui/core/Link'
+
+const EventStats = (props) => {
+  const { events } = props
+
   const history = useHistory()
   const { id: eventId } = useParams()
-  const { events } = props
-  if (!events) {
-    updateEvents()
-  }
 
   const [event, setEvent] = useState(null)
 
   // Like componentDidUpdate/DidMount
   useEffect(() => {
-    if (events && eventId) {
-      setEvent(events.find(event => event.id === eventId))
+    if (eventId) {
+      const event = events.find(event => event.id === eventId)
+      setEvent(event)
     }
-  }, [event, events, setEvent, eventId])
+  }, [])
 
   const handleEditEventClick = () => {
     if (eventId) history.push(`/event/${eventId}/edit`)
@@ -32,7 +31,7 @@ function EventStats (props) {
     if (eventId) history.push(`/event/${eventId}/register`)
   }
 
-  return event ? (
+  return (
     <ThemeProvider>
       <Helmet>
         <title>{event.ename} - BizTech Admin</title>
@@ -41,8 +40,6 @@ function EventStats (props) {
       <Link onClick={handleEventRegisterClick}>Public Event Page</Link>
       <EventUserTable event={event} />
     </ThemeProvider>
-  ) : (
-    <CircularProgress />
   )
 }
 

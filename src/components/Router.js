@@ -8,30 +8,30 @@ import {
 } from 'react-router-dom'
 import './Router.scss'
 
-import Nav from './Nav'
-import ScrollToTop from './ScrollToTop'
-import RegisterAlert from './Messages/RegisterAlert'
+import Nav from 'components/Nav'
+import ScrollToTop from 'components/ScrollToTop'
+import RegisterAlert from 'components/alerts/RegisterAlert'
+import Route from 'components/routing/Route'
 
-import Route from './Authentication/Route'
-import Login from '../pages/public/Login'
-import LoginRedirect from '../pages/public/LoginRedirect'
+import Login from 'pages/public/Login'
+import LoginRedirect from 'pages/public/LoginRedirect'
 // import Signup from '../pages/public/Signup'
-import EventDetails from '../pages/public/EventDetails'
-import EventRegister from '../pages/public/EventRegister'
-import EventsList from '../pages/public/EventsDashboard'
+import EventDetails from 'pages/public/Event/EventDetails'
+import EventRegister from 'pages/public/Event/EventRegister'
+import EventsList from 'pages/public/Event/EventsDashboard'
 
-import Forbidden from '../pages/Forbidden'
-import Loading from '../pages/Loading'
-import NotFound from '../pages/NotFound'
-import AdminRoutes from '../pages/admin'
-import MemberRoutes from '../pages/member'
+import Forbidden from 'pages/Forbidden'
+import Loading from 'pages/Loading'
+import NotFound from 'pages/NotFound'
+import AdminRoutes from 'pages/admin'
+import MemberRoutes from 'pages/member'
 
-import { setUser } from '../actions/UserActions'
+import { setUser } from 'actions/UserActions'
 import {
   log,
   updateUser,
   updateRegisteredEvents
-} from '../utils'
+} from 'utils'
 
 class Router extends Component {
   constructor () {

@@ -3,29 +3,29 @@ import { Button, TextField } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
-import { COLOR } from '../../constants/Constants'
+import { COLORS } from 'constants/index'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& label.Mui-focused': {
-      color: COLOR.FONT_COLOR
+      color: COLORS.FONT_COLOR
     },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: COLOR.FONT_COLOR
+        borderColor: COLORS.FONT_COLOR
       },
       '&:hover fieldset': {
-        borderColor: COLOR.FONT_COLOR
+        borderColor: COLORS.FONT_COLOR
       },
       '&.Mui-focused fieldset': {
-        borderColor: COLOR.FONT_COLOR
+        borderColor: COLORS.FONT_COLOR
       }
     },
     height: '40px'
   },
   button: {
-    backgroundColor: COLOR.BIZTECH_GREEN,
+    backgroundColor: COLORS.BIZTECH_GREEN,
     fontWeight: 'bold'
   }
 }))

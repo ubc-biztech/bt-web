@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Markdown from './Markdown'
 import Paper from '@material-ui/core/Paper'
-import { COLOR } from '../constants/Constants'
+import { COLORS } from 'constants/index'
 import { fetchBackend } from '../utils'
 import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: '4.5px',
     right: '100px',
-    fill: COLOR.BIZTECH_GREEN,
+    fill: COLORS.BIZTECH_GREEN,
     fontSize: '32px'
   },
   viewLogo: {
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     marginLeft: '10px',
-    color: COLOR.WHITE,
+    color: COLORS.WHITE,
     padding: '6px 12px'
   },
   buttonGroup: {
@@ -176,7 +176,7 @@ const EventDescription = ({
           {eventRegistrationStatus ? (
             <React.Fragment>
               <Button
-                style={{ backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR }}
+                style={{ backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR }}
                 className={classes.button}
                 onClick={() => {
                   handleClickRegisterEvent(user.id, event.id, false)
@@ -186,7 +186,7 @@ const EventDescription = ({
               </Button>
               <Button
                 disabled
-                style={{ backgroundColor: COLOR.BIZTECH_GREEN }}
+                style={{ backgroundColor: COLORS.BIZTECH_GREEN }}
                 className={classes.button}
               >
                 Registered
@@ -194,7 +194,7 @@ const EventDescription = ({
             </React.Fragment>
           ) : (
             <Button
-              style={{ backgroundColor: COLOR.BIZTECH_GREEN }}
+              style={{ backgroundColor: COLORS.BIZTECH_GREEN }}
               className={classes.button}
               onClick={() => {
                 handleClickRegisterEvent(user.id, event.id, true)

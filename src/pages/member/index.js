@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Switch } from 'react-router-dom'
 
-import Route from '../../components/Authentication/Route'
+import Route from 'components/routing/Route'
 
 import MemberCreate from './MemberCreate'
 import MemberProfile from './MemberProfile'

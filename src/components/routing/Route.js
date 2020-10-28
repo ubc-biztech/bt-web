@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import { checkFeatureFlag } from '../../utils/checkFeatureFlag'
+import { checkFeatureFlag } from 'utils'
 
 // CustomRoute accepts "featureFlag", causes the route to not be instantiated
 // The "featureFlag" flag should be used to disable certain routes related to features we don't want on production yet

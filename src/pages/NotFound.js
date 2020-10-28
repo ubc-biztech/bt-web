@@ -5,8 +5,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
-import { COLOR } from '../constants/Constants'
-import SadImage from '../assets/sad.png'
+import { COLORS } from 'constants/index'
+import SadImage from 'assets/sad.png'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     width: '100vw'
   },
   h1: {
-    color: COLOR.BIZTECH_GREEN,
+    color: COLORS.BIZTECH_GREEN,
     fontSize: '5em',
     marginTop: 0,
     marginBottom: 0,

@@ -1,4 +1,4 @@
-import { SET_USER, LOGOUT } from '../constants/Constants'
+import { SET_USER, LOGOUT } from 'constants/index'
 
 export function setUser (userData) {
   const {

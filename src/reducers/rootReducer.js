@@ -4,7 +4,7 @@ import {
   SET_EVENTS_REGISTERED,
   SET_USER,
   LOGOUT
-} from '../constants/Constants'
+} from 'constants/index'
 
 const initialPageState = {
   page: 'login'

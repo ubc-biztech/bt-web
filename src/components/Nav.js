@@ -11,13 +11,13 @@ import AddBoxIcon from '@material-ui/icons/AddBox'
 import DateRangeIcon from '@material-ui/icons/DateRange'
 import PersonIcon from '@material-ui/icons/Person'
 import LockIcon from '@material-ui/icons/Lock'
-import Biztech from './Icons/Biztech'
-import Logout from './Icons/Logout'
+import BiztechIcon from 'components/icons/BiztechIcon'
+import LogoutIcon from 'components/icons/LogoutIcon'
 
 import './Nav.scss'
-import { logout } from '../actions/UserActions'
-import { COLOR } from '../constants/Constants'
-import { checkFeatureFlag } from '../utils/checkFeatureFlag'
+import { COLORS } from 'constants/index'
+import { logout } from 'actions/UserActions'
+import { checkFeatureFlag } from 'utils'
 
 const ICON_SIZE = '32px'
 
@@ -27,7 +27,7 @@ const styles = {
     cursor: 'pointer'
   },
   paper: {
-    backgroundColor: COLOR.BACKGROUND_COLOR
+    backgroundColor: COLORS.BACKGROUND_COLOR
   },
   divider: {
     margin: '0.5em 1em',
@@ -40,10 +40,10 @@ function Nav (props) {
   const renderDesktopOnly = useMediaQuery(theme.breakpoints.up('md'))
   const history = useHistory()
 
-  const selected = { color: COLOR.BIZTECH_GREEN, fontSize: ICON_SIZE }
-  const unselected = { color: COLOR.WHITE, fontSize: ICON_SIZE }
-  const barSelected = { borderLeft: `6px solid ${COLOR.BIZTECH_GREEN}` }
-  const barUnselected = { borderLeft: `6px solid ${COLOR.BACKGROUND_COLOR}` }
+  const selected = { color: COLORS.BIZTECH_GREEN, fontSize: ICON_SIZE }
+  const unselected = { color: COLORS.WHITE, fontSize: ICON_SIZE }
+  const barSelected = { borderLeft: `6px solid ${COLORS.BIZTECH_GREEN}` }
+  const barUnselected = { borderLeft: `6px solid ${COLORS.BACKGROUND_COLOR}` }
 
   const pathname = history.location.pathname
   const [selectedItem, setSelectedItem] = useState(pathname)
@@ -98,7 +98,7 @@ function Nav (props) {
         }
         <MenuItem
           label='Home'
-          icon={<Biztech fill={selectedItem !== '/member/home' && '#fff'} size={ICON_SIZE} />}
+          icon={<BiztechIcon fill={selectedItem !== '/member/home' && '#fff'} size={ICON_SIZE} />}
           onClick={handleItemClick.bind(null, '/member/home')}
           bar={selectedItem === '/member/home' ? barSelected : barUnselected}
           featureFlag='REACT_APP_SHOW_MAXVP'
@@ -119,7 +119,7 @@ function Nav (props) {
         />
         {renderDesktopOnly && <MenuItem
           label='Logout'
-          icon={<Logout />}
+          icon={<LogoutIcon />}
           onClick={logout}
         />}
       </React.Fragment>

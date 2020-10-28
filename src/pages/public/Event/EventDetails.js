@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import { useParams, useHistory, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
+
+import EventDescription from 'components/EventDescription'
+import QuickRegister from 'pages/member/Event/QuickRegister'
+
+import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { updateEvents, updateRegisteredEvents, fetchBackend } from '../../utils'
-import EventDescription from '../../components/EventDescription'
-import QuickRegister from '../member/QuickRegister'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import Typography from '@material-ui/core/Typography'
-import { REGISTRATION_STATUS } from '../../constants/Constants'
+
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+
+import { REGISTRATION_STATUS } from 'constants/index'
+import { updateEvents, updateRegisteredEvents, fetchBackend } from 'utils'
 
 const useStyles = makeStyles(theme => ({
   layout: {

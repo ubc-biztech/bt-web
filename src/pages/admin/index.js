@@ -1,19 +1,25 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Switch } from 'react-router-dom'
 
-import Route from '../../components/Authentication/Route'
+import Route from 'components/routing/Route'
 
-import EventCreate from './EventCreate'
-import EventEdit from './EventEdit'
-import EventStats from './EventStats'
 import AdminHome from './Home'
+import EventCreate from './Event/EventCreate'
+import EventEdit from './Event//EventEdit'
+import EventStats from './Event//EventStats'
+
+import { updateEvents } from 'utils'
 
 const AdminRoutes = (props) => {
   const {
     events,
     user
   } = props
+
+  useEffect(() => {
+    updateEvents()
+  }, [])
 
   return user.admin ? (
     <Switch>

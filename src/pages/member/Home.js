@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
-import Typography from '@material-ui/core/Typography'
-import { fetchBackend, updateEvents } from '../../utils'
-import { COLOR } from '../../constants/Constants'
-import House from '../../assets/house.svg'
+
+import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
-import { makeStyles } from '@material-ui/core/styles'
-import { connect } from 'react-redux'
-import UserProgress from '../../components/UserProgress'
+import Typography from '@material-ui/core/Typography'
+
+import UserProgress from 'components/UserProgress'
+
+import House from 'assets/house.svg'
+import { COLORS } from 'constants/index'
+import { fetchBackend, updateEvents } from 'utils'
 
 const useStyles = makeStyles({
   container: {
@@ -19,7 +22,7 @@ const useStyles = makeStyles({
     padding: '14px'
   },
   header: {
-    color: COLOR.BIZTECH_GREEN,
+    color: COLORS.BIZTECH_GREEN,
     width: '100%'
   },
   column: {
@@ -41,7 +44,7 @@ const useStyles = makeStyles({
     right: '10px'
   },
   green: {
-    color: COLOR.BIZTECH_GREEN
+    color: COLORS.BIZTECH_GREEN
   },
   eventName: {
     fontSize: '24px',
@@ -49,7 +52,7 @@ const useStyles = makeStyles({
   },
   eventDate: {
     fontWeight: 'normal',
-    color: COLOR.FONT_COLOR
+    color: COLORS.FONT_COLOR
   }
 })
 

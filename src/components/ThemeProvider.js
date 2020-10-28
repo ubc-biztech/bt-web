@@ -1,6 +1,6 @@
 import React from 'react'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import { COLOR } from '../constants/Constants'
+import { COLORS } from 'constants/index'
 
 export const fontFamily = [
   'Gilroy',
@@ -20,8 +20,8 @@ const theme = createMuiTheme({
     },
     MuiCard: {
       root: {
-        background: COLOR.LIGHT_BACKGROUND_COLOR,
-        color: COLOR.WHITE
+        background: COLORS.LIGHT_BACKGROUND_COLOR,
+        color: COLORS.WHITE
       }
     },
     MuiCardContent: {
@@ -33,56 +33,56 @@ const theme = createMuiTheme({
     },
     MuiInput: {
       root: {
-        color: COLOR.WHITE
+        color: COLORS.WHITE
       },
       input: {
-        borderColor: COLOR.FONT_COLOR
+        borderColor: COLORS.FONT_COLOR
       }
     },
     MuiFormLabel: {
       root: {
-        color: COLOR.FONT_COLOR
+        color: COLORS.FONT_COLOR
       }
     },
     MuiSvgIcon: {
       root: {
-        color: COLOR.WHITE
+        color: COLORS.WHITE
       }
     },
     MuiIcon: {
       root: {
-        color: COLOR.WHITE
+        color: COLORS.WHITE
       }
     },
     MuiSelect: {
       root: {
-        color: COLOR.WHITE
+        color: COLORS.WHITE
       }
     },
     MuiInputBase: {
       root: {
-        color: COLOR.WHITE
+        color: COLORS.WHITE
       }
     },
     MuiTypography: {
       root: {
-        color: COLOR.WHITE
+        color: COLORS.WHITE
       }
     },
     MuiTabs: {
       indicator: {
-        backgroundColor: COLOR.BIZTECH_GREEN
+        backgroundColor: COLORS.BIZTECH_GREEN
       }
     },
     MuiPaper: {
       root: {
-        backgroundColor: COLOR.LIGHT_BACKGROUND_COLOR,
-        color: COLOR.WHITE
+        backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR,
+        color: COLORS.WHITE
       }
     },
     MuiCardHeader: {
       subheader: {
-        color: COLOR.FONT_COLOR
+        color: COLORS.FONT_COLOR
       }
     },
     MuiLinearProgress: {
@@ -94,17 +94,17 @@ const theme = createMuiTheme({
         backgroundColor: '#627295'
       },
       barColorPrimary: {
-        backgroundColor: COLOR.BIZTECH_GREEN
+        backgroundColor: COLORS.BIZTECH_GREEN
       }
     },
     MuiChip: {
       colorPrimary: {
-        color: COLOR.WHITE,
-        backgroundColor: COLOR.BIZTECH_GREEN
+        color: COLORS.WHITE,
+        backgroundColor: COLORS.BIZTECH_GREEN
       },
       colorSecondary: {
-        color: COLOR.BLACK,
-        backgroundColor: COLOR.WHITE
+        color: COLORS.BLACK,
+        backgroundColor: COLORS.WHITE
       }
     }
   },
@@ -133,10 +133,10 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      main: COLOR.BIZTECH_GREEN
+      main: COLORS.BIZTECH_GREEN
     },
     background: {
-      default: COLOR.BACKGROUND_COLOR
+      default: COLORS.BACKGROUND_COLOR
     }
   },
   shadows: [

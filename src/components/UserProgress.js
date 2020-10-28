@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { makeWidthFlexible, XYPlot, XAxis, YAxis, LineSeries, MarkSeries } from 'react-vis'
-import { COLOR } from '../constants/Constants'
+import { COLORS } from 'constants/index'
 import { Typography } from '@material-ui/core'
 
 const EVENT_PROGRESS_GOAL = 10
@@ -84,7 +84,7 @@ const UserProgress = ({ registeredEvents, events }) => {
     <React.Fragment>
       <div style={classes.container}>
         <Typography style={{ marginRight: '14px' }}>Events Attended</Typography>
-        <Typography style={{ marginRight: '14px' }}><span style={{ color: COLOR.BIZTECH_GREEN }}>{checkedInEventIDs.length}</span>/{EVENT_PROGRESS_GOAL}</Typography>
+        <Typography style={{ marginRight: '14px' }}><span style={{ color: COLORS.BIZTECH_GREEN }}>{checkedInEventIDs.length}</span>/{EVENT_PROGRESS_GOAL}</Typography>
         <LinearProgress
           style={{ flex: 2 }}
           variant='determinate'
@@ -114,14 +114,14 @@ const UserProgress = ({ registeredEvents, events }) => {
         <LineSeries
           // animation
           data={timestampData}
-          stroke={COLOR.FONT_COLOR}
-          color={COLOR.BIZTECH_GREEN}
+          stroke={COLORS.FONT_COLOR}
+          color={COLORS.BIZTECH_GREEN}
           style={{}}
         />
         <MarkSeries
           // animation
           data={timestampData}
-          color={COLOR.BIZTECH_GREEN}
+          color={COLORS.BIZTECH_GREEN}
         />
       </FlexibleXYPlot>
     </React.Fragment>

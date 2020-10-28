@@ -1,26 +1,28 @@
 import React from 'react'
 import { useHistory, withRouter } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
-import { fetchBackend } from '../../utils'
+import { Helmet } from 'react-helmet'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
-import RegisterQuick from '../../components/Forms/RegisterQuick'
+
+import RegisterQuick from 'components/Forms/RegisterQuick'
+
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
-import Skeleton from '@material-ui/lab/Skeleton'
-import { Helmet } from 'react-helmet'
 import { Typography } from '@material-ui/core'
-import House from '../../assets/house.svg'
+import { makeStyles } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import Skeleton from '@material-ui/lab/Skeleton'
 import { useTheme } from '@material-ui/styles'
 
 import './QuickRegister.scss'
-import { COLOR } from '../../constants/Constants'
+import House from 'assets/house.svg'
+import { COLORS } from 'constants/index'
+import { fetchBackend } from 'utils'
 
 const useStyles = makeStyles(theme => ({
   paper: {
     [theme.breakpoints.down('sm')]: {
-      backgroundColor: COLOR.BACKGROUND_COLOR
+      backgroundColor: COLORS.BACKGROUND_COLOR
     }
   },
   content: {

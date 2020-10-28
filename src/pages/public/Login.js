@@ -1,17 +1,18 @@
 import React from 'react'
+import { Auth } from 'aws-amplify'
+import { connect } from 'react-redux'
+import { Helmet } from 'react-helmet'
+
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 
-import { Auth } from 'aws-amplify'
-import { connect } from 'react-redux'
-import { Helmet } from 'react-helmet'
-import { setUser } from '../../actions/UserActions'
-import { COLOR } from '../../constants/Constants'
-import LoginImage from '../../assets/login.svg'
-import { checkFeatureFlag } from '../../utils/checkFeatureFlag'
+import LoginImage from 'assets/login.svg'
+import { setUser } from 'actions/UserActions'
+import { COLORS } from 'constants/index'
+import { checkFeatureFlag } from 'utils'
 
 const styles = {
   main: {
@@ -61,7 +62,7 @@ const styles = {
     textAlign: 'left',
     fontWeight: 'bold',
     backgroundColor: '#1778F2',
-    color: COLOR.WHITE,
+    color: COLORS.WHITE,
     width: '100%',
     '&:hover': {
       backgroundColor: '#1470E4'

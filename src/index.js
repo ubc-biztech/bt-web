@@ -6,7 +6,7 @@ import App from './App'
 import Store from './components/Store'
 import * as serviceWorker from './serviceWorker'
 import Amplify from 'aws-amplify'
-import { AWS_CONFIG } from './utils'
+import { AWS_CONFIG } from './constants'
 
 Amplify.configure(AWS_CONFIG)
 

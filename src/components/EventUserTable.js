@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
+
 import MaterialTable from 'material-table'
-import { fetchBackend } from '../utils'
-import { REGISTRATION_STATUS, COLOR } from '../constants/Constants'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
 import { RadialChart, XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, VerticalBarSeries } from 'react-vis'
+
+import MenuItem from '@material-ui/core/MenuItem'
+import Paper from '@material-ui/core/Paper'
+import Select from '@material-ui/core/Select'
+import Typography from '@material-ui/core/Typography'
+
+import { REGISTRATION_STATUS, COLORS } from 'constants/index'
+import { fetchBackend } from 'utils'
 
 const styles = {
   stats: {
@@ -242,7 +245,7 @@ export class EventUserTable extends Component {
                             ? '#F7D055'
                             : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
                               ? '#E15453'
-                              : COLOR.LIGHT_BACKGROUND_COLOR,
+                              : COLORS.LIGHT_BACKGROUND_COLOR,
                       paddingLeft: '10px'
                     }}>
                     <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>Waitlisted</MenuItem>
@@ -266,8 +269,8 @@ export class EventUserTable extends Component {
             exportButton: true,
             headerStyle: {
               fontWeight: 'bold',
-              backgroundColor: COLOR.CARD_PAPER_COLOR,
-              color: COLOR.FONT_COLOR
+              backgroundColor: COLORS.CARD_PAPER_COLOR,
+              color: COLORS.FONT_COLOR
             },
             rowStyle: rowData => ({
 
