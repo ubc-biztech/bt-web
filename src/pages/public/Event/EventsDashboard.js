@@ -1,17 +1,9 @@
 /* eslint react-hooks/exhaustive-deps: 0 */
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
-import EventCard from 'components/Cards/Event'
-
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-
-import { COLORS } from 'constants/index'
-import { setUser } from 'actions/UserActions'
-import { fetchBackend, updateEvents, updateRegisteredEvents } from 'utils'
 import {
   Tabs,
   Tab,
@@ -23,12 +15,19 @@ import {
   InputBase,
   Chip
 } from '@material-ui/core'
-
 import {
   StarBorder,
   PlaylistAddCheck,
   Search
 } from '@material-ui/icons'
+import EventCard from 'components/Cards/Event'
+
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+
+import { COLORS } from 'constants/index'
+import { setUser } from 'actions/UserActions'
+import { fetchBackend, updateEvents, updateRegisteredEvents } from 'utils'
 
 // States for the filters
 const PERSONALIZATION_STATES = {

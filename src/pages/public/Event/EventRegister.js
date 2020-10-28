@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import * as Yup from 'yup'
 import { Formik } from 'formik'
+import * as Yup from 'yup'
 
 import EventView from 'components/EventView'
 import RegisterEvent from 'components/Forms/RegisterEvent'
 import NotFound from 'pages/NotFound'
 
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import Skeleton from '@material-ui/lab/Skeleton'
 import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 import { fetchBackend, updateEvents } from 'utils'
 

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
+import Link from '@material-ui/core/Link'
+
 import EventUserTable from 'components/EventUserTable'
 import ThemeProvider from 'components/ThemeProvider'
-
-import Link from '@material-ui/core/Link'
 
 const EventStats = (props) => {
   const { events } = props

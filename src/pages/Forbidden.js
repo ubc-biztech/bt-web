@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Button from '@material-ui/core/Button'
 import { Helmet } from 'react-helmet'
+import Button from '@material-ui/core/Button'
 
 const styles = {
   container: {

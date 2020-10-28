@@ -1,18 +1,18 @@
 import React from 'react'
-import { Auth } from 'aws-amplify'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import * as Yup from 'yup'
+import { useHistory } from 'react-router-dom'
+import { Auth } from 'aws-amplify'
 import { Formik } from 'formik'
+import * as Yup from 'yup'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 
 import NewMember from '../../components/Forms/NewMember'
 
-import { fetchBackend } from '../../utils'
 import { setUser } from '../../actions/UserActions'
+import { fetchBackend } from '../../utils'
 
 const useStyles = makeStyles(theme => ({
   layout: {

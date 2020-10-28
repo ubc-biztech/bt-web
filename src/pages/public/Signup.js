@@ -1,19 +1,19 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { Auth } from 'aws-amplify'
+import { Helmet } from 'react-helmet'
+
+import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-
-import CssBaseline from '@material-ui/core/CssBaseline'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
-import Person from '@material-ui/icons/Person'
-import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Person from '@material-ui/icons/Person'
 import Typography from '@material-ui/core/Typography'
 
-import { Auth } from 'aws-amplify'
-import { setUser } from '../../actions/UserActions'
-import { connect } from 'react-redux'
-import { Helmet } from 'react-helmet'
+import { setUser } from 'actions/UserActions'
 
 const useStyles = makeStyles(theme => ({
   paper: {

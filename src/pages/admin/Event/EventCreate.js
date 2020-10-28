@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
-import * as Yup from 'yup'
 import { Formik } from 'formik'
+import * as Yup from 'yup'
 
 import EventView from 'components/EventView'
 import NewEventForm from 'components/Forms/NewEvent'

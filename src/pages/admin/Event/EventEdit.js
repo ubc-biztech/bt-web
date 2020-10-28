@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import * as Yup from 'yup'
 import { Formik } from 'formik'
+import * as Yup from 'yup'
 
 import EventView from 'components/EventView'
 import EditEventForm from 'components/Forms/EditEvent'

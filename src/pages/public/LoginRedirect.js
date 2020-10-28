@@ -1,10 +1,12 @@
 import React from 'react'
-import { Auth } from 'aws-amplify'
-import { setUser } from '../../actions/UserActions'
 import { connect } from 'react-redux'
-import Loading from '../Loading'
 import { withRouter } from 'react-router-dom'
-import { log, fetchBackend } from '../../utils'
+import { Auth } from 'aws-amplify'
+
+import Loading from 'pages/Loading'
+
+import { setUser } from 'actions/UserActions'
+import { log, fetchBackend } from 'utils'
 
 function LoginRedirect (props) {
   // we don't want to keep polling forever

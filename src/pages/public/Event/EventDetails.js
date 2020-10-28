@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useHistory, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { useParams, useHistory, withRouter } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 import EventDescription from 'components/EventDescription'

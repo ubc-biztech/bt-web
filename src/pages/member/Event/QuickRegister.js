@@ -1,18 +1,18 @@
 import React from 'react'
 import { useHistory, withRouter } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import * as Yup from 'yup'
 import { Formik } from 'formik'
+import * as Yup from 'yup'
 
 import RegisterQuick from 'components/Forms/RegisterQuick'
 
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import Skeleton from '@material-ui/lab/Skeleton'
 import { useTheme } from '@material-ui/styles'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Skeleton from '@material-ui/lab/Skeleton'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import './QuickRegister.scss'
 import House from 'assets/house.svg'
