@@ -58,7 +58,7 @@ function AdminHome (props) {
   }
 
   const handleClickEditEvent = () => {
-    history.push(`/exec/event/${eventMenuClicked}/edit`)
+    history.push(`/admin/event/${eventMenuClicked}/edit`)
     handleClose()
   }
 
@@ -79,7 +79,7 @@ function AdminHome (props) {
   }
 
   const handleClickViewEvent = (eventId) => {
-    history.push(`/exec/event/${eventId}/register`)
+    history.push(`/admin/event/${eventId}`)
     handleClose()
   }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory, withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -241,4 +241,4 @@ const QuickRegister = ({
   }
 }
 
-export default withRouter(QuickRegister)
+export default QuickRegister

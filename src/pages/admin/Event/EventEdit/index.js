@@ -4,12 +4,14 @@ import { Helmet } from 'react-helmet'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
-import EventView from 'components/EventView'
-import EditEventForm from 'components/Forms/EditEvent'
-
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+
+import Loading from 'pages/Loading'
+import NotFound from 'pages/NotFound'
+import EventView from 'components/EventView'
+import EditEventForm from 'components/Forms/EditEvent'
 
 import { fetchBackend } from 'utils'
 
@@ -39,6 +41,7 @@ const EventEdit = (props) => {
   const history = useHistory()
 
   const [event, setEvent] = useState(null)
+  const [loaded, setLoaded] = useState(false)
   const [previewEvent, setPreviewEvent] = useState({})
 
   useEffect(() => {
@@ -47,8 +50,9 @@ const EventEdit = (props) => {
       const event = events.find(event => event.id === eventId)
       setEvent(event)
       setPreviewEvent(event)
+      setLoaded(true)
     }
-  }, [])
+  }, [eventId])
 
   const validationSchema = Yup.object({
     ename: Yup.string().required(),
@@ -94,7 +98,8 @@ const EventEdit = (props) => {
     endDate: ''
   }
 
-  return (
+  if (!loaded) return <Loading message={`Loading event with id '${eventId}'`}/>
+  return event ? (
     <div className={classes.layout}>
       <Helmet>
         <title>Edit {event.ename} - BizTech Admin</title>
@@ -102,7 +107,7 @@ const EventEdit = (props) => {
       <Paper className={classes.paper}>
         <div className={classes.content}>
           <Typography variant='h4' align='center' gutterBottom>
-                        Edit Event
+            Edit Event
           </Typography>
           <Formik
             initialValues={initialValues}
@@ -118,7 +123,7 @@ const EventEdit = (props) => {
         <EventView event={previewEvent}/>
       </Paper>
     </div>
-  )
+  ) : <NotFound message={`The event with id ${eventId} could not be found`}/>
 
   async function submitValues (values) {
     const body = {

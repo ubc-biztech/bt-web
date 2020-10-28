@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory, withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 
@@ -127,4 +127,4 @@ function Nav (props) {
   )
 }
 
-export default (withStyles(styles))(withRouter(connect(null, { logout })(Nav)))
+export default withStyles(styles)(connect(null, { logout })(Nav))

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useParams, useHistory, withRouter } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 import EventDescription from 'components/EventDescription'
@@ -187,7 +187,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {}
-)(withRouter(EventDetails))
+export default connect(mapStateToProps, {})(EventDetails)

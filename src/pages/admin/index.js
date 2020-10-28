@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import { Redirect, Switch } from 'react-router-dom'
 
 import Route from 'components/routing/Route'
+import Loading from 'pages/Loading'
 
 import AdminHome from './Home'
 import EventCreate from './Event/EventCreate'
-import EventEdit from './Event//EventEdit'
-import EventStats from './Event//EventStats'
+import EventEdit from './Event/EventEdit'
+import EventStats from './Event/EventStats'
 
 import { updateEvents } from 'utils'
 
@@ -21,6 +22,9 @@ const AdminRoutes = (props) => {
     updateEvents()
   }, [])
 
+  // Loading state
+  if (!events) return <Loading message='Loading events...'/>
+  // After loaded
   return user.admin ? (
     <Switch>
       <Route

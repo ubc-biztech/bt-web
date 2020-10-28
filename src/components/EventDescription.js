@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
+
+import Markdown from 'components/Markdown'
+
 import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import Markdown from './Markdown'
-import Paper from '@material-ui/core/Paper'
-import { COLORS } from 'constants/index'
-import { fetchBackend } from '../utils'
 import Button from '@material-ui/core/Button'
-import Snackbar from '@material-ui/core/Snackbar'
+import Paper from '@material-ui/core/Paper'
 import Slide from '@material-ui/core/Slide'
-import VisibilityIcon from '@material-ui/icons/Visibility'
+import Snackbar from '@material-ui/core/Snackbar'
+import Typography from '@material-ui/core/Typography'
+
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined'
 import StarIcon from '@material-ui/icons/Star'
+import VisibilityIcon from '@material-ui/icons/Visibility'
+
+import { COLORS } from 'constants/index'
+import { fetchBackend } from 'utils'
 
 let settingFavouriteData = false
 const useStyles = makeStyles(theme => ({
@@ -215,4 +218,4 @@ const EventDescription = ({
   )
 }
 
-export default withRouter(EventDescription)
+export default EventDescription

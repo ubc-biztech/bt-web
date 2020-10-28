@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles(theme => ({
   layout: {
+    position: 'absolute',
+    left: 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

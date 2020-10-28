@@ -157,7 +157,7 @@ class Router extends Component {
               path='/'
               render={() => user
                 ? user.admin
-                  ? <Redirect to='/exec/home' />
+                  ? <Redirect to='/admin/home' />
                   : <Redirect to='/member/home' />
                 : <Login />
               } />

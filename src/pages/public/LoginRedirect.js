@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
 
 import Loading from 'pages/Loading'
@@ -9,10 +9,12 @@ import { setUser } from 'actions/UserActions'
 import { log, fetchBackend } from 'utils'
 
 function LoginRedirect (props) {
+  const history = useHistory()
+
   // we don't want to keep polling forever
   const timeoutRedirect = setTimeout(() => {
     log('Timed out!')
-    props.history.push('/')
+    history.push('/')
   }, 6000)
 
   const populateUserAndRedirect = (authUser, redirectRoute, admin = false) => {
@@ -32,7 +34,7 @@ function LoginRedirect (props) {
       admin
     }
     props.setUser(userObject)
-    props.history.push(redirectRoute)
+    history.push(redirectRoute)
   }
 
   const pollForAuthenticatedUser = () => {
@@ -66,7 +68,7 @@ function LoginRedirect (props) {
               const user = await fetchBackend(`/users/${studentId}`, 'GET')
               clearTimeout(timeoutRedirect)
               props.setUser({ ...user, admin: false }) // save to redux
-              props.history.push('/') // Redirect to the 'user home' page
+              history.push('/') // Redirect to the 'user home' page
             } catch (err) {
               // if the user exists in the user pool, but not the database, remove the user pool's student_id
               if (err.status === 404) {
@@ -103,4 +105,4 @@ function LoginRedirect (props) {
   )
 }
 
-export default connect(null, { setUser })(withRouter(LoginRedirect))
+export default connect(null, { setUser })(LoginRedirect)

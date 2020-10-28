@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import './components/mui-overwrites.scss'
 import './index.scss'
 import App from './App'
 import Store from './components/Store'
