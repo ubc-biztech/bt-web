@@ -4,10 +4,10 @@ import { checkFeatureFlag } from '../../utils/checkFeatureFlag'
 
 // CustomRoute accepts "featureFlag", causes the route to not be instantiated
 // The "featureFlag" flag should be used to disable certain routes related to features we don't want on production yet
-const CustomRoute = ({ featureFlag, ...rest }) => {
+const CustomRoute = ({ children, featureFlag, ...rest }) => {
   const isFeatureEnabled = checkFeatureFlag(featureFlag)
   return isFeatureEnabled ? (
-    <Route {...rest} />
+    <Route {...rest}>{children}</Route>
   ) : null
 }
 

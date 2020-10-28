@@ -11,25 +11,20 @@ import './Router.scss'
 import Nav from './Nav'
 import ScrollToTop from './ScrollToTop'
 import RegisterAlert from './Messages/RegisterAlert'
-import Loading from './Misc/Loading'
 
 import Route from './Authentication/Route'
-import AdminRoute from './Authentication/AdminRoute'
-import Login from './Authentication/Login'
-import LoginRedirect from './Authentication/LoginRedirect'
+import Login from '../pages/public/Login'
+import LoginRedirect from '../pages/public/LoginRedirect'
+// import Signup from '../pages/public/Signup'
+import EventDetails from '../pages/public/EventDetails'
+import EventRegister from '../pages/public/EventRegister'
+import EventsList from '../pages/public/EventsDashboard'
 
 import Forbidden from '../pages/Forbidden'
-import AdminHome from '../pages/admin/AdminHome'
-import EventDetails from '../pages/member/EventDetails'
-import EventEdit from '../pages/admin/EventEdit'
-import EventNew from '../pages/admin/EventNew'
-import EventRegister from '../pages/member/EventRegister'
-import EventView from '../pages/admin/EventView'
-import MemberProfile from '../pages/member/MemberProfile'
-import NewMember from '../pages/member/NewMember'
-import Signup from '../pages/member/Signup'
-import UserEvents from '../pages/member/UserEvents'
-import UserHome from '../pages/member/UserHome'
+import Loading from '../pages/Loading'
+import NotFound from '../pages/NotFound'
+import AdminRoutes from '../pages/admin'
+import MemberRoutes from '../pages/member'
 
 import { setUser } from '../actions/UserActions'
 import {
@@ -107,91 +102,70 @@ class Router extends Component {
 
     // check if the user state has been updated
     if (!loaded) return <Loading />
-    else return user // eslint-disable-line curly
-      ? <BrowserRouter>
+    else return (// eslint-disable-line curly
+      <BrowserRouter>
         <ScrollToTop />
-        <Nav admin={user.admin} />
+        {user && <Nav admin={user.admin} />}
         <div className='content'>
-          {userNeedsRegister && <RegisterAlert />}
+          {user && userNeedsRegister && <RegisterAlert />}
           <Switch>
+
+            {/* ADMIN ROUTES */}
+            {user && <Route path='/admin' component={AdminRoutes} />}
+
+            {/* MEMBER ROUTES */}
+            {/* We don't use route here because we don't need to check a path */}
+            {user && <Route path='/member' component={MemberRoutes} />}
 
             {/* COMMON ROUTES */}
             <Route
-              path='/login-redirect'
-              render={() => <LoginRedirect />} />
-            <Route
-              path='/forbidden'
-              render={() => <Forbidden />} />
-            <Route
-              path='/profile'
-              featureFlag={'REACT_APP_SHOW_MAXVP'}
-              render={() => <MemberProfile />} />
-            <Route
-              path='/new-member'
-              featureFlag={'REACT_APP_SHOW_MAXVP'}
-              render={() => user.id
-                ? <Redirect to='/' /> /* Allow create member only if user is not yet registered in DB */
-                : <NewMember />} />
-            <Route
+              exact
               path='/event/:id/register'
               render={() => <EventRegister />} />
             <Route
+              exact
               path='/event/:id'
-              featureFlag={'REACT_APP_SHOW_MAXVP'}
               render={props => <EventDetails {...props} user={user} registrations={registrations} />} />
             <Route
+              exact
               path='/events'
               featureFlag={'REACT_APP_SHOW_MAXVP'}
-              render={() => <UserEvents />} />
+              render={() => <EventsList />} />
 
-            {/* ADMIN ROUTES */}
-            <AdminRoute
-              path='/exec/event/new'
-              render={() => <EventNew />} />
-            <AdminRoute
-              path='/exec/event/:id/edit'
-              render={() => <EventEdit />} />
-            <AdminRoute
-              path='/exec/event/:id' // Need to make sure that this comes after 'new' and 'edit'
-              render={props => <EventView {...props} />} />
-            <AdminRoute
-              path='/exec/home'
-              render={() => <AdminHome />} />
+            {/* MISCELLANEOUS ROUTES */}
+            <Route
+              exact
+              path='/forbidden'
+              render={() => <Forbidden />} />
+            <Route
+              exact
+              path='/404'
+              render={() => <NotFound message='That page could not be found!'/>} />
 
-            {/* HOME */}
+            {/* AUTHENTICATION ROUTES */}
+            {/* <Route (SIGNUP LOOKS DEPRECATED)
+              exact
+              path='/signup'
+              featureFlag={'REACT_APP_SHOW_MAXVP'}
+              render={() => <Signup />} /> */}
+            <Route
+              exact
+              path='/login-redirect'
+              render={() => <LoginRedirect />} />
             <Route
               exact
               path='/'
-              featureFlag={'REACT_APP_SHOW_MAXVP'}
-              render={() => <UserHome user={user} />} />
-
-            <Redirect to={user.admin ? '/exec/home' : '/'} />
+              render={() => user
+                ? user.admin
+                  ? <Redirect to='/exec/home' />
+                  : <Redirect to='/member/home' />
+                : <Login />
+              } />
 
           </Switch>
         </div>
       </BrowserRouter>
-      : <BrowserRouter>
-        <ScrollToTop />
-        <Switch>
-
-          <Route
-            path='/event/:id/register'
-            component={EventRegister} />
-          <Route
-            path='/login-redirect'
-            component={LoginRedirect} />
-          <Route
-            path='/signup'
-            featureFlag={'REACT_APP_SHOW_MAXVP'}
-            component={Signup} />
-          <Route
-            path='/'
-            component={Login} />
-
-          <Redirect to='/' />
-
-        </Switch>
-      </BrowserRouter >
+    )
   }
 }
 

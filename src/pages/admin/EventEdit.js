@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { useParams, useHistory, withRouter } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import EditEventForm from '../../components/Forms/EditEvent'
 import EventView from '../../components/EventView'
 import { fetchBackend, updateEvents } from '../../utils'
-import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -144,10 +143,5 @@ function EventEdit (props) {
       })
   }
 }
-const mapStateToProps = state => {
-  return {
-    events: state.pageState.events
-  }
-}
 
-export default withRouter(connect(mapStateToProps, {})(EventEdit))
+export default EventEdit

@@ -5,11 +5,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
-import { COLOR } from '../../constants/Constants'
-import SadImage from '../../assets/sad.png'
+import { COLOR } from '../constants/Constants'
+import SadImage from '../assets/sad.png'
 
 const useStyles = makeStyles(theme => ({
   layout: {
+    position: 'absolute',
+    left: 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

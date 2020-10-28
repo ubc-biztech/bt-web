@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useHistory, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useParams, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Link from '@material-ui/core/Link'
@@ -8,7 +7,7 @@ import EventUserTable from '../../components/EventUserTable'
 import ThemeProvider from '../../components/ThemeProvider'
 import { updateEvents } from '../../utils'
 
-function EventView (props) {
+function EventStats (props) {
   const history = useHistory()
   const { id: eventId } = useParams()
   const { events } = props
@@ -25,8 +24,12 @@ function EventView (props) {
     }
   }, [event, events, setEvent, eventId])
 
-  function handleEditEventClick () {
+  const handleEditEventClick = () => {
     if (eventId) history.push(`/event/${eventId}/edit`)
+  }
+
+  const handleEventRegisterClick = () => {
+    if (eventId) history.push(`/event/${eventId}/register`)
   }
 
   return event ? (
@@ -35,7 +38,7 @@ function EventView (props) {
         <title>{event.ename} - BizTech Admin</title>
       </Helmet>
       <Link onClick={handleEditEventClick}>Edit Event</Link>
-      <Link onClick={() => { props.history.push(`/event/${event.id}/register`) }} key={event.id}>Public Event Page</Link>
+      <Link onClick={handleEventRegisterClick}>Public Event Page</Link>
       <EventUserTable event={event} />
     </ThemeProvider>
   ) : (
@@ -43,10 +46,4 @@ function EventView (props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.pageState.events
-  }
-}
-
-export default connect(mapStateToProps, {})(withRouter(EventView))
+export default EventStats

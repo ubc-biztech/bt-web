@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 // Route Wrapper that checks first if the user has admin privileges
 // "User" should be obtained from redux through the "connect" function
-const PrivateRoute = ({ render, user = { admin: false }, nonAdminRender = null, ...rest }) => {
+const AdminRoute = ({ render, user = { admin: false }, nonAdminRender = null, ...rest }) => {
   return (
     <Route {...rest} render={() => (
       user.admin === true
@@ -19,4 +19,4 @@ const mapStateToProps = state => ({
   user: state.userState.user
 })
 
-export default connect(mapStateToProps)(PrivateRoute)
+export default connect(mapStateToProps)(AdminRoute)

@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid'
 import Skeleton from '@material-ui/lab/Skeleton'
 import { Helmet } from 'react-helmet'
 import EventView from '../../components/EventView'
-import NotFound from '../../components/Misc/NotFound'
+import NotFound from '../NotFound'
 
 const useStyles = makeStyles(theme => ({
   layout: {

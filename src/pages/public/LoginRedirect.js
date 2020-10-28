@@ -2,7 +2,7 @@ import React from 'react'
 import { Auth } from 'aws-amplify'
 import { setUser } from '../../actions/UserActions'
 import { connect } from 'react-redux'
-import Loading from '../Misc/Loading'
+import Loading from '../Loading'
 import { withRouter } from 'react-router-dom'
 import { log, fetchBackend } from '../../utils'
 
@@ -75,7 +75,7 @@ function LoginRedirect (props) {
                 await Auth.updateUserAttributes(user, { 'custom:student_id': '' })
                 authUser['custom:student_id'] = null
 
-                populateUserAndRedirect(authUser, '/new-member')
+                populateUserAndRedirect(authUser, '/member/create')
               } else {
                 console.log('Encountered an error querying database!', err.status)
               }
@@ -83,7 +83,7 @@ function LoginRedirect (props) {
           } else {
             clearTimeout(timeoutRedirect)
             // If the user doesn't exist in the user pool, redirect to the 'user register' form
-            populateUserAndRedirect(authUser, '/new-member')
+            populateUserAndRedirect(authUser, '/member/create')
           }
         }
       })

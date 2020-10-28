@@ -1,12 +1,11 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardMedia from '@material-ui/core/CardMedia'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import IconButton from '@material-ui/core/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
@@ -42,6 +41,7 @@ function AdminHome (props) {
     updateEvents()
   }
 
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [eventMenuClicked, setEventMenuClicked] = React.useState(null)
 
@@ -55,7 +55,7 @@ function AdminHome (props) {
   }
 
   const handleClickEditEvent = () => {
-    props.history.push(`/exec/event/${eventMenuClicked}/edit`)
+    history.push(`/exec/event/${eventMenuClicked}/edit`)
     handleClose()
   }
 
@@ -76,12 +76,12 @@ function AdminHome (props) {
   }
 
   const handleClickViewEvent = (eventId) => {
-    props.history.push(`/exec/event/${eventId}/register`)
+    history.push(`/exec/event/${eventId}/register`)
     handleClose()
   }
 
   const handleClickViewEventAsMember = () => {
-    props.history.push(`/event/${eventMenuClicked}`)
+    history.push(`/event/${eventMenuClicked}`)
     handleClose()
   }
 
@@ -156,10 +156,4 @@ function AdminHome (props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.pageState.events
-  }
-}
-
-export default connect(mapStateToProps, {})(withStyles(styles)(withRouter(AdminHome)))
+export default withStyles(styles)(AdminHome)

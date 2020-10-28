@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function EventNew () {
+export default function EventCreate () {
   const classes = useStyles()
   const [previewEvent, setPreviewEvent] = useState({})
 

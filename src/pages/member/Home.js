@@ -53,7 +53,7 @@ const useStyles = makeStyles({
   }
 })
 
-function UserHome (props) {
+function MemberHome (props) {
   const classes = useStyles()
   const [registeredEvents, setRegisteredEvents] = useState([])
   const [featuredEvent, setFeaturedEvent] = useState({})
@@ -185,4 +185,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(UserHome)
+export default connect(mapStateToProps)(MemberHome)

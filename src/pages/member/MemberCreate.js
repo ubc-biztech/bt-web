@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const NewMemberRegisterFormContainer = (props) => {
+const MemberCreate = (props) => {
   const classes = useStyles()
 
   const history = useHistory()
@@ -144,4 +144,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { setUser })(NewMemberRegisterFormContainer)
+export default connect(mapStateToProps, { setUser })(MemberCreate)

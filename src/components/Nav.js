@@ -78,29 +78,29 @@ function Nav (props) {
   }
 
   return (
-    <List className='navList'>
+    <List className='Navigation'>
       <React.Fragment>
         {props.admin && <>
           <MenuItem
-            label='Exec Home'
-            icon={<LockIcon style={selectedItem === '/exec/home' ? selected : unselected} />}
-            onClick={handleItemClick.bind(null, '/exec/home')}
-            bar={selectedItem === '/exec/home' ? barSelected : barUnselected}
+            label='Admin Home'
+            icon={<LockIcon style={selectedItem === '/admin/home' ? selected : unselected} />}
+            onClick={handleItemClick.bind(null, '/admin/home')}
+            bar={selectedItem === '/admin/home' ? barSelected : barUnselected}
           />
           <MenuItem
             label='Create Event'
-            icon={<AddBoxIcon style={selectedItem === '/exec/event/new' ? selected : unselected} />}
-            onClick={handleItemClick.bind(null, '/exec/event/new')}
-            bar={selectedItem === '/exec/event/new' ? barSelected : barUnselected}
+            icon={<AddBoxIcon style={selectedItem === '/admin/event/new' ? selected : unselected} />}
+            onClick={handleItemClick.bind(null, '/admin/event/new')}
+            bar={selectedItem === '/admin/event/new' ? barSelected : barUnselected}
           />
           <Divider style={styles.divider} />
         </>
         }
         <MenuItem
           label='Home'
-          icon={<Biztech fill={selectedItem !== '/' && '#fff'} size={ICON_SIZE} />}
-          onClick={handleItemClick.bind(null, '/')}
-          bar={selectedItem === '/' ? barSelected : barUnselected}
+          icon={<Biztech fill={selectedItem !== '/member/home' && '#fff'} size={ICON_SIZE} />}
+          onClick={handleItemClick.bind(null, '/member/home')}
+          bar={selectedItem === '/member/home' ? barSelected : barUnselected}
           featureFlag='REACT_APP_SHOW_MAXVP'
         />
         <MenuItem
@@ -112,9 +112,9 @@ function Nav (props) {
         />
         <MenuItem
           label='Profile'
-          icon={<PersonIcon style={selectedItem === '/profile' ? selected : unselected} />}
-          onClick={handleItemClick.bind(null, '/profile')}
-          bar={selectedItem === '/profile' ? barSelected : barUnselected}
+          icon={<PersonIcon style={selectedItem === '/member/profile' ? selected : unselected} />}
+          onClick={handleItemClick.bind(null, '/member/profile')}
+          bar={selectedItem === '/member/profile' ? barSelected : barUnselected}
           featureFlag='REACT_APP_SHOW_MAXVP'
         />
         {renderDesktopOnly && <MenuItem

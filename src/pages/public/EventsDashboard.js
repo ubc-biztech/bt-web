@@ -166,7 +166,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function UserEvents (props) {
+function EventsDashboard (props) {
   const [isSearch, setIsSearch] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [timeIndex, setTimeIndex] = useState(TIME_STATES.ALL.index)
@@ -393,4 +393,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { setUser })(UserEvents)
+export default connect(mapStateToProps, { setUser })(EventsDashboard)
