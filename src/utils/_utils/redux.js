@@ -1,7 +1,7 @@
 import Store from 'store/rootStore'
 
-import { setEvents, setEventsRegistered } from 'store/events/EventActions'
-import { setUser } from 'store/user/UserActions'
+import { setEvents, setEventsRegistered } from 'store/event/eventActions'
+import { setUser } from 'store/user/userActions'
 import { fetchBackend } from './fetchBackend'
 import { log } from './log'
 

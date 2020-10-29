@@ -21,7 +21,7 @@ import {
   CreateOutlined as OutlinedPencilIcon
 } from '@material-ui/icons'
 import House from 'assets/house.svg'
-import { setUser } from 'store/user/UserActions'
+import { setUser } from 'store/user/userActions'
 import { fetchBackend, updateEvents } from 'utils'
 
 const useStyles = makeStyles(theme => ({
@@ -484,7 +484,7 @@ function MemberProfile (props) {
 const mapStateToProps = state => {
   return {
     user: state.userState.user,
-    events: state.pageState.events
+    events: state.eventState.events
   }
 }
 

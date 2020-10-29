@@ -130,7 +130,7 @@ const UserProgress = ({ registeredEvents, events }) => {
 
 const mapStateToProps = state => {
   return {
-    events: state.pageState.events
+    events: state.eventState.events
   }
 }
 

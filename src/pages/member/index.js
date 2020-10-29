@@ -40,9 +40,9 @@ const MemberRoutes = (props) => {
 
 const mapStateToProps = state => {
   return {
-    events: state.pageState.events,
+    events: state.eventState.events,
     user: state.userState.user,
-    registrations: state.pageState.eventsRegistered
+    registrations: state.eventState.eventsRegistered
   }
 }
 

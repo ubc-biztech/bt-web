@@ -25,7 +25,7 @@ import NotFound from 'pages/NotFound'
 import AdminRoutes from 'pages/admin'
 import MemberRoutes from 'pages/member'
 
-import { setUser } from 'store/user/UserActions'
+import { setUser } from 'store/user/userActions'
 import {
   log,
   updateUser,

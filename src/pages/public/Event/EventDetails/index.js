@@ -183,7 +183,7 @@ const EventDetails = props => {
 const mapStateToProps = state => {
   return {
     user: state.userState.user,
-    events: state.pageState.events,
+    events: state.eventState.events,
     registrations: state.userState.registeredEvents
   }
 }

@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core'
 import { Person as PersonIcon } from '@material-ui/icons'
 
-import { setUser } from 'store/user/UserActions'
+import { setUser } from 'store/user/userActions'
 
 const useStyles = makeStyles(theme => ({
   paper: {

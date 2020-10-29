@@ -175,7 +175,7 @@ const EventFormContainer = (props) => {
 
 const mapStateToProps = state => {
   return {
-    events: state.pageState.events
+    events: state.eventState.events
   }
 }
 

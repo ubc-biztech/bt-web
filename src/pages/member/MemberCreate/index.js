@@ -10,7 +10,7 @@ import { Paper, Typography } from '@material-ui/core'
 
 import MemberCreateForm from './MemberCreateForm'
 
-import { setUser } from 'store/user/UserActions'
+import { setUser } from 'store/user/userActions'
 import { fetchBackend } from 'utils'
 
 const useStyles = makeStyles(theme => ({

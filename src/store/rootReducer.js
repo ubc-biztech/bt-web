@@ -1,63 +1,9 @@
 import { combineReducers } from 'redux'
-import {
-  SET_EVENTS,
-  SET_EVENTS_REGISTERED,
-  SET_USER,
-  LOGOUT
-} from 'constants/index'
 
-const initialPageState = {
-  page: 'login'
-}
-
-function pageReducer (state = initialPageState, action) {
-  switch (action.type) {
-    case SET_EVENTS:
-      return {
-        ...state,
-        events: action.events.events
-      }
-    case SET_EVENTS_REGISTERED:
-      return {
-        ...state,
-        eventsRegistered: action.eventsRegistered.eventsRegistered
-      }
-    default:
-      return state
-  }
-}
-
-function userReducer (state = {}, action) {
-  switch (action.type) {
-    case SET_USER:
-      return {
-        ...state,
-        user: action.user
-      }
-    case LOGOUT:
-      return {
-        ...state,
-        user: null
-      }
-    default:
-      return state
-  }
-}
-
-// function registrationsReducer (state = {}, action) {
-//   switch (action.type) {
-//     case SET_REGISTRATIONS:
-//       return {
-//         ...state,
-//         registrations: action.registrations
-//       }
-//     default:
-//       return state
-//   }
-// }
+import eventReducer from './event/eventReducer'
+import userReducer from './user/userReducer'
 
 export default combineReducers({
-  pageState: pageReducer,
+  eventState: eventReducer,
   userState: userReducer
-  // registrationsState: registrationsReducer
 })

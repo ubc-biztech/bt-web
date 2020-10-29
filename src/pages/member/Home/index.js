@@ -182,7 +182,7 @@ function MemberHome (props) {
 
 function mapStateToProps (state) {
   return {
-    events: state.pageState.events
+    events: state.eventState.events
   }
 }
 

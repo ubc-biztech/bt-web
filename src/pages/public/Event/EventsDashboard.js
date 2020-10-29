@@ -25,7 +25,7 @@ import {
 import EventCard from 'components/Event/EventCard'
 
 import { COLORS } from 'constants/index'
-import { setUser } from 'store/user/UserActions'
+import { setUser } from 'store/user/userActions'
 import { fetchBackend, updateEvents, updateRegisteredEvents } from 'utils'
 
 // States for the filters
@@ -385,8 +385,8 @@ function EventsDashboard (props) {
 
 const mapStateToProps = state => {
   return {
-    events: state.pageState.events,
-    eventsRegistered: state.pageState.eventsRegistered,
+    events: state.eventState.events,
+    eventsRegistered: state.eventState.eventsRegistered,
     user: state.userState.user
   }
 }
