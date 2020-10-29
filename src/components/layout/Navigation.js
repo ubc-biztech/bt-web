@@ -51,8 +51,10 @@ function Nav (props) {
   const pathname = history.location.pathname
   const [selectedItem, setSelectedItem] = useState(pathname)
   useEffect(() => {
-    setSelectedItem(pathname)
-  }, [pathname])
+    history.listen((location) => {
+      setSelectedItem(location.pathname)
+    })
+  }, [])
 
   const logout = () => {
     Auth.signOut()
