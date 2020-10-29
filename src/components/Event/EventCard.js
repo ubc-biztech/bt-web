@@ -38,7 +38,7 @@ function EventCard (props) {
     variant = 'admin'
   } = props
 
-  const image = event.imageUrl || require('../../assets/default.png')
+  const image = event.imageUrl || require('assets/default.png')
 
   return (
     <Card className={classes.card} style={cardStyle} key={event.id}>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import Markdown from './Markdown'
+import Markdown from 'components/layout/Markdown'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -24,7 +24,7 @@ const EventView = ({ event, children }) => {
   const classes = useStyles()
   return (
     <React.Fragment>
-      <img src={event.imageUrl || require('../assets/placeholder.jpg')} alt='Event' style={{ maxWidth: '100%' }} />
+      <img src={event.imageUrl || require('assets/placeholder.jpg')} alt='Event' style={{ maxWidth: '100%' }} />
 
       <div className={classes.content}>
         <Typography variant='h4' align='center' gutterBottom>

@@ -18,7 +18,7 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import OutlinedPencil from '@material-ui/icons/CreateOutlined'
 
 import House from 'assets/house.svg'
-import { setUser } from 'actions/UserActions'
+import { setUser } from 'store/user/UserActions'
 import { fetchBackend, updateEvents } from 'utils'
 
 const useStyles = makeStyles(theme => ({

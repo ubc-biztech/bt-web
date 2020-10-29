@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function RegisterEventForm (props) {
+export default function QuickRegisterForm (props) {
   const classes = useStyles()
 
   const {

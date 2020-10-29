@@ -20,13 +20,13 @@ import {
   PlaylistAddCheck,
   Search
 } from '@material-ui/icons'
-import EventCard from 'components/Cards/Event'
+import EventCard from 'components/Event/EventCard'
 
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import { COLORS } from 'constants/index'
-import { setUser } from 'actions/UserActions'
+import { setUser } from 'store/user/UserActions'
 import { fetchBackend, updateEvents, updateRegisteredEvents } from 'utils'
 
 // States for the filters

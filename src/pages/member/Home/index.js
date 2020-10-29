@@ -7,7 +7,7 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 
-import UserProgress from 'components/UserProgress'
+import UserProgress from './UserProgress'
 
 import House from 'assets/house.svg'
 import { COLORS } from 'constants/index'

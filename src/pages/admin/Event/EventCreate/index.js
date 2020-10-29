@@ -3,12 +3,12 @@ import { Helmet } from 'react-helmet'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
-import EventView from 'components/EventView'
-import NewEventForm from 'components/Forms/NewEvent'
-
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+
+import EventView from 'components/Event/EventView'
+import EventCreateForm from './EventCreateForm'
 
 import { fetchBackend, log } from 'utils'
 
@@ -84,7 +84,7 @@ export default function EventCreate () {
             validationSchema={validationSchema}
             onSubmit={submitValues}
           >
-            {props => <NewEventForm updatePreview={setPreviewEvent} {...props} />}
+            {props => <EventCreateForm updatePreview={setPreviewEvent} {...props} />}
           </Formik>
         </div>
       </Paper>

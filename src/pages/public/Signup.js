@@ -13,7 +13,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Person from '@material-ui/icons/Person'
 import Typography from '@material-ui/core/Typography'
 
-import { setUser } from 'actions/UserActions'
+import { setUser } from 'store/user/UserActions'
 
 const useStyles = makeStyles(theme => ({
   paper: {

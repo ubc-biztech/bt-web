@@ -1,5 +1,5 @@
 import React from 'react'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import { COLORS } from 'constants/index'
 
 export const fontFamily = [
@@ -168,12 +168,12 @@ const theme = createMuiTheme({
   ]
 })
 
-function OverridesCss (props) {
+function ThemeProvider (props) {
   return (
-    <ThemeProvider theme={theme}>
+    <MuiThemeProvider theme={theme}>
       {props.children}
-    </ThemeProvider>
+    </MuiThemeProvider>
   )
 }
 
-export default OverridesCss
+export default ThemeProvider

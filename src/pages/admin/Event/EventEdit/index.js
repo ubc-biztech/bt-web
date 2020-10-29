@@ -10,8 +10,8 @@ import Typography from '@material-ui/core/Typography'
 
 import Loading from 'pages/Loading'
 import NotFound from 'pages/NotFound'
-import EventView from 'components/EventView'
-import EditEventForm from 'components/Forms/EditEvent'
+import EventView from 'components/Event/EventView'
+import EventEditForm from './EventEditForm'
 
 import { fetchBackend } from 'utils'
 
@@ -114,7 +114,7 @@ const EventEdit = (props) => {
             validationSchema={validationSchema}
             onSubmit={submitValues}
           >
-            {props => <EditEventForm updatePreview={setPreviewEvent} {...props} />}
+            {props => <EventEditForm updatePreview={setPreviewEvent} {...props} />}
           </Formik>
         </div>
       </Paper>

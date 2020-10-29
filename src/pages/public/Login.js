@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography'
 
 import LoginImage from 'assets/login.svg'
 import { COLORS } from 'constants/index'
-import { setUser } from 'actions/UserActions'
+import { setUser } from 'store/user/UserActions'
 import { checkFeatureFlag } from 'utils'
 
 const styles = {

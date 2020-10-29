@@ -1,10 +1,8 @@
 import React from 'react'
-import { Button, TextField } from '@material-ui/core'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import RadioGroupButtons from '../RadioGroupButtons'
+import { Button, Grid, TextField, Typography } from '@material-ui/core'
+import RadioGroupButtons from 'components/buttons/RadioGroupButtons'
 
-export default function NewMemberForm (props) {
+export default function MemberCreateForm (props) {
   const {
     initialValues,
     errors,

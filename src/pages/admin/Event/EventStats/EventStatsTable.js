@@ -26,7 +26,7 @@ const styles = {
  * Class component that displays event user table populated from the backend
  * When a user check-in status is changed, the backend is updated and it fetches new data
  */
-export class EventUserTable extends Component {
+export class EventStatsTable extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -355,4 +355,4 @@ class Statistic extends React.Component {
     )
   }
 }
-export default EventUserTable
+export default EventStatsTable

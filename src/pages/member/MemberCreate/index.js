@@ -9,10 +9,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-import NewMember from '../../components/Forms/NewMember'
+import MemberCreateForm from './MemberCreateForm'
 
-import { setUser } from '../../actions/UserActions'
-import { fetchBackend } from '../../utils'
+import { setUser } from 'store/user/UserActions'
+import { fetchBackend } from 'utils'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -130,7 +130,7 @@ const MemberCreate = (props) => {
             validationSchema={validationSchema}
             onSubmit={submitValues}
           >
-            {props => <NewMember {...props} />}
+            {props => <MemberCreateForm {...props} />}
           </Formik>
         </div>
       </Paper>

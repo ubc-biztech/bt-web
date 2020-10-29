@@ -8,8 +8,8 @@ import {
 } from 'react-router-dom'
 import './Router.scss'
 
-import Nav from 'components/Nav'
-import ScrollToTop from 'components/ScrollToTop'
+import Nav from 'components/layout/Navigation'
+import ScrollToTop from 'components/layout/ScrollToTop'
 import RegisterAlert from 'components/alerts/RegisterAlert'
 import Route from 'components/routing/Route'
 
@@ -26,7 +26,7 @@ import NotFound from 'pages/NotFound'
 import AdminRoutes from 'pages/admin'
 import MemberRoutes from 'pages/member'
 
-import { setUser } from 'actions/UserActions'
+import { setUser } from 'store/user/UserActions'
 import {
   log,
   updateUser,

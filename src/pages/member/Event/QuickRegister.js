@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
-import RegisterQuick from 'components/Forms/RegisterQuick'
+import QuickRegisterForm from './QuickRegisterForm'
 
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -200,7 +200,7 @@ const QuickRegister = ({
                   validationSchema={validationSchema}
                   onSubmit={submitValues}
                 >
-                  {props => <RegisterQuick {...props} />}
+                  {props => <QuickRegisterForm {...props} />}
                 </Formik>
               </div>
             }

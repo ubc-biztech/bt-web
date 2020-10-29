@@ -1,12 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
-import './components/mui-overwrites.scss'
-import './index.scss'
-import App from './App'
-import Store from './components/Store'
-import * as serviceWorker from './serviceWorker'
 import Amplify from 'aws-amplify'
+import { Provider } from 'react-redux'
+
+import App from './App'
+import * as serviceWorker from './serviceWorker'
+import Store from './store/rootStore'
+
+import './index.scss'
+import './mui-overwrites.scss'
 import { AWS_CONFIG } from './constants'
 
 Amplify.configure(AWS_CONFIG)

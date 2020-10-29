@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
-import EventDescription from 'components/EventDescription'
+import EventDescription from './EventDescription'
 import QuickRegister from 'pages/member/Event/QuickRegister'
 
 import { makeStyles } from '@material-ui/core/styles'

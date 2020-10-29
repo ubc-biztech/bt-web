@@ -14,9 +14,9 @@ import LockIcon from '@material-ui/icons/Lock'
 import BiztechIcon from 'components/icons/BiztechIcon'
 import LogoutIcon from 'components/icons/LogoutIcon'
 
-import './Nav.scss'
+import './Navigation.scss'
 import { COLORS } from 'constants/index'
-import { logout } from 'actions/UserActions'
+import { logout } from 'store/user/UserActions'
 import { checkFeatureFlag } from 'utils'
 
 const ICON_SIZE = '32px'

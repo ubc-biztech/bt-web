@@ -1,7 +1,7 @@
-import Store from 'components/Store'
+import Store from 'store/rootStore'
 
-import { setEvents, setEventsRegistered } from 'actions/PageActions'
-import { setUser } from 'actions/UserActions'
+import { setEvents, setEventsRegistered } from 'store/events/EventActions'
+import { setUser } from 'store/user/UserActions'
 import { fetchBackend } from './fetchBackend'
 import { log } from './log'
 

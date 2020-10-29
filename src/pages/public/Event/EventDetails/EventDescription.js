@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import Markdown from 'components/Markdown'
+import Markdown from 'components/layout/Markdown'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'

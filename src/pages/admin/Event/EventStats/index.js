@@ -5,8 +5,7 @@ import { Helmet } from 'react-helmet'
 import Link from '@material-ui/core/Link'
 
 import NotFound from 'pages/NotFound'
-import EventUserTable from 'components/EventUserTable'
-import ThemeProvider from 'components/ThemeProvider'
+import EventStatsTable from './EventStatsTable'
 import EventStatsSkeleton from './skeleton'
 
 const EventStats = (props) => {
@@ -37,14 +36,14 @@ const EventStats = (props) => {
 
   if (!loaded) return <EventStatsSkeleton />
   return event ? (
-    <ThemeProvider>
+    <>
       <Helmet>
         <title>{event.ename} - BizTech Admin</title>
       </Helmet>
       <Link onClick={handleEditEventClick}>Edit Event</Link>
       <Link onClick={handleEventRegisterClick}>Public Event Page</Link>
-      <EventUserTable event={event} />
-    </ThemeProvider>
+      <EventStatsTable event={event} />
+    </>
   ) : <NotFound message={`The event with id ${eventId} could not be found`}/>
 }
 

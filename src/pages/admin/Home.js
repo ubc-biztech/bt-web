@@ -14,7 +14,6 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 
-import ThemeProvider from 'components/ThemeProvider'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 
 import { COLORS } from 'constants/index'
@@ -94,7 +93,7 @@ function AdminHome (props) {
     if (events) {
       return <Box flexWrap='wrap' display='flex'>
         {events.map(event => {
-          const image = event.imageUrl || require('../../assets/placeholder.jpg')
+          const image = event.imageUrl || require('assets/placeholder.jpg')
           return (
             <Card className={classes.card} key={event.id}>
               <CardActionArea onClick={() => handleClickViewEvent(event.id)} >
@@ -129,7 +128,7 @@ function AdminHome (props) {
   }
 
   return events !== null ? (
-    <ThemeProvider>
+    <>
       <Helmet>
         <title>BizTech Admin Dashboard</title>
       </Helmet>
@@ -153,7 +152,7 @@ function AdminHome (props) {
         <MenuItem onClick={handleClickDeleteEvent}>Delete Event</MenuItem>
         <MenuItem onClick={handleClickViewEventAsMember}>View Event as a Member</MenuItem>
       </Menu>
-    </ThemeProvider>
+    </>
   ) : (
     <CircularProgress />
   )
