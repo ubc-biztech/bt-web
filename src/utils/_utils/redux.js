@@ -9,9 +9,7 @@ import { log } from './log'
 export async function updateEvents () {
   try {
     const response = await fetchBackend('/events', 'GET', undefined, false)
-    Store.dispatch(setEvents({
-      events: response
-    }))
+    Store.dispatch(setEvents(response))
   } catch (err) {
     log(err)
   }
@@ -39,9 +37,7 @@ export async function updateRegisteredEvents (userId) {
       data = response.data
     }
 
-    Store.dispatch(setEventsRegistered({
-      eventsRegistered: Object.values(data)
-    }))
+    Store.dispatch(setEventsRegistered(Object.values(data)))
   } catch (err) {
     log(err)
   }

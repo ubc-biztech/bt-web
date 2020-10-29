@@ -9,11 +9,13 @@ const initialUserState = {
 }
 
 const userReducer = (state = initialUserState, action) => {
-  switch (action.type) {
+  const { type, payload } = action
+
+  switch (type) {
     case SET_USER:
       return {
         ...state,
-        user: action.user
+        user: payload.user
       }
     case LOGOUT:
       return {

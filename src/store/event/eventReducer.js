@@ -10,16 +10,17 @@ const initialEventState = {
 }
 
 const eventReducer = (state = initialEventState, action) => {
-  switch (action.type) {
+  const { type, payload } = action
+  switch (type) {
     case SET_EVENTS:
       return {
         ...state,
-        events: action.events.events
+        events: payload.events
       }
     case SET_EVENTS_REGISTERED:
       return {
         ...state,
-        eventsRegistered: action.eventsRegistered.eventsRegistered
+        eventsRegistered: payload.eventsRegistered
       }
     default:
       return state

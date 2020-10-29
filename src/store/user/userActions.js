@@ -14,25 +14,28 @@ export function setUser (userData) {
     admin,
     favedEventsID
   } = userData
+
   return {
     type: SET_USER,
-    user: {
-      email,
-      fname,
-      lname,
-      id,
-      faculty,
-      year,
-      diet,
-      heardFrom,
-      gender,
-      admin,
-      favedEventsID
+    payload: {
+      user: {
+        email,
+        fname,
+        lname,
+        id,
+        faculty,
+        year,
+        diet,
+        heardFrom,
+        gender,
+        admin,
+        favedEventsID
+      }
     }
   }
 }
 
-export function logout (user) {
+export function logout () {
   return {
     type: LOGOUT
   }
