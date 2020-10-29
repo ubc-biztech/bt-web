@@ -1,22 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Amplify from 'aws-amplify'
-import { Provider } from 'react-redux'
 
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import Store from './store/rootStore'
 
 import './index.scss'
-import './mui-overwrites.scss'
+import './overwrites.scss'
 import { AWS_CONFIG } from './constants'
 
 Amplify.configure(AWS_CONFIG)
 
 ReactDOM.render(
-  <Provider store={Store}>
-    <App />
-  </Provider>
+  <App />
   , document.getElementById('root')
 )
 

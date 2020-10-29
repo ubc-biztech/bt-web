@@ -153,12 +153,15 @@ class Router extends Component {
               render={() => <LoginRedirect />} />
             <Route
               exact
+              path='/login'
+              render={() => <Login />} />
+            <Route
               path='/'
               render={() => user
                 ? user.admin
                   ? <Redirect to='/admin/home' />
                   : <Redirect to='/member/home' />
-                : <Login />
+                : <Redirect to='/login' />
               } />
 
           </Switch>

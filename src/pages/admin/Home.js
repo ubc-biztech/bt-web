@@ -91,8 +91,6 @@ function AdminHome (props) {
   }
 
   function createEventCards () {
-    const { classes } = props
-
     if (events) {
       return <Box flexWrap='wrap' display='flex'>
         {events.map(event => {
