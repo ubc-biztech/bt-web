@@ -6,7 +6,6 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom'
-import './Router.scss'
 
 import Nav from 'components/layout/Navigation'
 import ScrollToTop from 'components/layout/ScrollToTop'

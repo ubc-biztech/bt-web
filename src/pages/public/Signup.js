@@ -4,14 +4,16 @@ import { Auth } from 'aws-amplify'
 import { Helmet } from 'react-helmet'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import Container from '@material-ui/core/Container'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Person from '@material-ui/icons/Person'
-import Typography from '@material-ui/core/Typography'
+import {
+  Avatar,
+  Button,
+  Card,
+  CardHeader,
+  Container,
+  CssBaseline,
+  Typography
+} from '@material-ui/core'
+import { Person as PersonIcon } from '@material-ui/icons'
 
 import { setUser } from 'store/user/UserActions'
 
@@ -64,7 +66,7 @@ function Signup (props) {
       <div className={classes.paper}>
         <Card className={classes.root} width='400px'>
           <Avatar className={classes.avatar}>
-            <Person />
+            <PersonIcon />
           </Avatar>
           <CardHeader title='Sign Up' className={classes.header} />
           {

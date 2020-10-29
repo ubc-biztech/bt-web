@@ -1,10 +1,8 @@
 import React from 'react'
-import { Button, TextField } from '@material-ui/core'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
+import { Button, Grid, TextField, Typography } from '@material-ui/core'
+import { Autocomplete } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/core/styles'
 import { COLORS } from 'constants/index'
-import Autocomplete from '@material-ui/lab/Autocomplete'
 
 const useStyles = makeStyles((theme) => ({
   root: {

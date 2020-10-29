@@ -15,15 +15,14 @@ import {
   InputBase,
   Chip
 } from '@material-ui/core'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import {
   StarBorder,
   PlaylistAddCheck,
   Search
 } from '@material-ui/icons'
 import EventCard from 'components/Event/EventCard'
-
-import { makeStyles, useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import { COLORS } from 'constants/index'
 import { setUser } from 'store/user/UserActions'

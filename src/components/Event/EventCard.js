@@ -1,19 +1,20 @@
 import React from 'react'
 
-import { withStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardMedia from '@material-ui/core/CardMedia'
+import { makeStyles } from '@material-ui/core/styles'
 import {
-  Star,
-  StarBorder
+  Card,
+  CardActionArea,
+  CardHeader,
+  CardMedia,
+  IconButton
+} from '@material-ui/core'
+import {
+  MoreVert as MoreVertIcon,
+  Star as StarIcon,
+  StarBorder as StarBorderIcon
 } from '@material-ui/icons'
 
-import IconButton from '@material-ui/core/IconButton'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
-
-const styles = ({
+const useStyles = makeStyles({
   card: {
     width: '30%',
     margin: '15px 30px 15px 0'
@@ -28,7 +29,6 @@ const styles = ({
 
 function EventCard (props) {
   const {
-    classes,
     cardStyle = {},
     event,
     favourited = false,
@@ -37,6 +37,7 @@ function EventCard (props) {
     handleFavourite = () => {},
     variant = 'admin'
   } = props
+  const classes = useStyles()
 
   const image = event.imageUrl || require('assets/default.png')
 
@@ -63,8 +64,8 @@ function EventCard (props) {
             </IconButton>
           ) : (
             favourited
-              ? <Star fontSize='large' onClick={() => { handleFavourite(event.id, false) }} style={styles.favouriteButton}/>
-              : <StarBorder fontSize='large' onClick={() => { handleFavourite(event.id, true) }} style={styles.favouriteButton}/>
+              ? <StarIcon fontSize='large' onClick={() => { handleFavourite(event.id, false) }} className={classes.favouriteButton}/>
+              : <StarBorderIcon fontSize='large' onClick={() => { handleFavourite(event.id, true) }} className={classes.favouriteButton}/>
           )
         }>
       </CardHeader>
@@ -72,4 +73,4 @@ function EventCard (props) {
   )
 }
 
-export default withStyles(styles)(EventCard)
+export default EventCard

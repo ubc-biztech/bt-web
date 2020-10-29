@@ -2,13 +2,12 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
+import { Button, Typography } from '@material-ui/core'
 
 import SadImage from 'assets/sad.png'
 import { COLORS } from 'constants/index'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   layout: {
     position: 'absolute',
     left: 0,
@@ -36,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     filter: 'invert(65%) sepia(79%) saturate(378%) hue-rotate(51deg) brightness(97%) contrast(88%)'
     // convert black go biztech green (https://codepen.io/sosuke/pen/Pjoqqp)
   }
-}))
+})
 
 export default function NotFound (props) {
   const classes = useStyles()

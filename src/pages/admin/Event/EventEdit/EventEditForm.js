@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react'
 import DateFnsUtils from '@date-io/date-fns'
 
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import {
+  Button,
+  Grid,
+  MenuItem,
+  Select,
+  TextField,
+  Typography
+} from '@material-ui/core'
 import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker
 } from '@material-ui/pickers'
-import InfoIcon from '@material-ui/icons/Info'
+import { Info as InfoIcon } from '@material-ui/icons'
 
 export default function EventEditForm (props) {
   const {

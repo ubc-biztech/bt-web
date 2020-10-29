@@ -4,8 +4,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
+import { Paper, Typography } from '@material-ui/core'
 
 import EventView from 'components/Event/EventView'
 import EventCreateForm from './EventCreateForm'

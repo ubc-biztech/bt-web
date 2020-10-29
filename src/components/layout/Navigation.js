@@ -3,14 +3,16 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 
+import { useTheme, makeStyles } from '@material-ui/styles'
 import { List, ListItem, Divider } from '@material-ui/core'
-import { useTheme, withStyles } from '@material-ui/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-import AddBoxIcon from '@material-ui/icons/AddBox'
-import DateRangeIcon from '@material-ui/icons/DateRange'
-import PersonIcon from '@material-ui/icons/Person'
-import LockIcon from '@material-ui/icons/Lock'
+import {
+  AddBox as AddBoxIcon,
+  DateRange as DateRangeIcon,
+  Person as PersonIcon,
+  Lock as LockIcon
+} from '@material-ui/icons'
 import BiztechIcon from 'components/icons/BiztechIcon'
 import LogoutIcon from 'components/icons/LogoutIcon'
 
@@ -21,7 +23,7 @@ import { checkFeatureFlag } from 'utils'
 
 const ICON_SIZE = '32px'
 
-const styles = {
+const useStyles = makeStyles((theme) => ({
   listItem: {
     justifyContent: 'center',
     cursor: 'pointer'
@@ -33,12 +35,13 @@ const styles = {
     margin: '0.5em 1em',
     backgroundColor: 'rgba(255, 255, 255, 0.5)'
   }
-}
+}))
 
 function Nav (props) {
   const theme = useTheme()
   const renderDesktopOnly = useMediaQuery(theme.breakpoints.up('md'))
   const history = useHistory()
+  const classes = useStyles()
 
   const selected = { color: COLORS.BIZTECH_GREEN, fontSize: ICON_SIZE }
   const unselected = { color: COLORS.WHITE, fontSize: ICON_SIZE }
@@ -71,7 +74,7 @@ function Nav (props) {
     const { label, icon, onClick, bar, featureFlag } = props
     const isFeatureEnabled = checkFeatureFlag(featureFlag)
     return isFeatureEnabled ? (
-      <ListItem className='navItem' style={{ ...bar, ...styles.listItem }} onClick={onClick} aria-label={label} disableGutters={true}>
+      <ListItem className={classes.listItem + ' navItem'} style={bar} onClick={onClick} aria-label={label} disableGutters={true}>
         {icon}
       </ListItem>
     ) : null
@@ -93,7 +96,7 @@ function Nav (props) {
             onClick={handleItemClick.bind(null, '/admin/event/new')}
             bar={selectedItem === '/admin/event/new' ? barSelected : barUnselected}
           />
-          <Divider style={styles.divider} />
+          <Divider className={classes.divider} />
         </>
         }
         <MenuItem
@@ -127,4 +130,4 @@ function Nav (props) {
   )
 }
 
-export default withStyles(styles)(connect(null, { logout })(Nav))
+export default connect(null, { logout })(Nav)

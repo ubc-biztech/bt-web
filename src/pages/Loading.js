@@ -1,10 +1,9 @@
 import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Typography from '@material-ui/core/Typography'
+import { CircularProgress, Typography } from '@material-ui/core'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   layout: {
     position: 'absolute',
     left: 0,
@@ -19,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '1em',
     fontSize: '1.25em'
   }
-}))
+})
 
 export default function Loading (props) {
   const classes = useStyles()

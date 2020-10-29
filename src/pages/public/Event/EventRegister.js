@@ -10,9 +10,8 @@ import EventRegisterForm from './EventRegisterForm'
 import NotFound from 'pages/NotFound'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-import Skeleton from '@material-ui/lab/Skeleton'
+import { Grid, Paper } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 
 import { fetchBackend, updateEvents } from 'utils'
 

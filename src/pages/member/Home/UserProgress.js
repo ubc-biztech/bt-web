@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import LinearProgress from '@material-ui/core/LinearProgress'
 import { makeWidthFlexible, XYPlot, XAxis, YAxis, LineSeries, MarkSeries } from 'react-vis'
+
+import { LinearProgress, Typography } from '@material-ui/core'
 import { COLORS } from 'constants/index'
-import { Typography } from '@material-ui/core'
 
 const EVENT_PROGRESS_GOAL = 10
 

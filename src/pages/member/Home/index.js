@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
+import { Card, CardContent, Typography } from '@material-ui/core'
 
 import UserProgress from './UserProgress'
 

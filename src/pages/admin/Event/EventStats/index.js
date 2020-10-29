@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
-import Link from '@material-ui/core/Link'
+import { Link } from '@material-ui/core'
 
 import NotFound from 'pages/NotFound'
 import EventStatsTable from './EventStatsTable'

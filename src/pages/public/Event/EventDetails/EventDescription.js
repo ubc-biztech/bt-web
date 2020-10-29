@@ -3,15 +3,19 @@ import React, { useState, useEffect } from 'react'
 import Markdown from 'components/layout/Markdown'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
-import Paper from '@material-ui/core/Paper'
-import Slide from '@material-ui/core/Slide'
-import Snackbar from '@material-ui/core/Snackbar'
-import Typography from '@material-ui/core/Typography'
+import {
+  Button,
+  Paper,
+  Slide,
+  Snackbar,
+  Typography
+} from '@material-ui/core'
 
-import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined'
-import StarIcon from '@material-ui/icons/Star'
-import VisibilityIcon from '@material-ui/icons/Visibility'
+import {
+  Star as StarIcon,
+  StarBorderOutlined as StarBorderOutlinedIcon,
+  Visibility as VisibilityIcon
+} from '@material-ui/icons'
 
 import { COLORS } from 'constants/index'
 import { fetchBackend } from 'utils'

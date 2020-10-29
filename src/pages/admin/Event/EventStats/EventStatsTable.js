@@ -3,10 +3,7 @@ import React, { Component } from 'react'
 import MaterialTable from 'material-table'
 import { RadialChart, XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, VerticalBarSeries } from 'react-vis'
 
-import MenuItem from '@material-ui/core/MenuItem'
-import Paper from '@material-ui/core/Paper'
-import Select from '@material-ui/core/Select'
-import Typography from '@material-ui/core/Typography'
+import { MenuItem, Paper, Select, Typography } from '@material-ui/core'
 
 import { REGISTRATION_STATUS, COLORS } from 'constants/index'
 import { fetchBackend } from 'utils'

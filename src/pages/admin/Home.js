@@ -2,24 +2,26 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
-import { withStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardMedia from '@material-ui/core/CardMedia'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import IconButton from '@material-ui/core/IconButton'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import {
+  Box,
+  Card,
+  CardHeader,
+  CardActionArea,
+  CardMedia,
+  CircularProgress,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography
+} from '@material-ui/core'
 
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+import { MoreVert as MoreVertIcon } from '@material-ui/icons'
 
 import { COLORS } from 'constants/index'
 import { fetchBackend, updateEvents } from 'utils'
 
-const styles = ({
+const useStyles = makeStyles({
   card: {
     width: '30%',
     margin: '15px 30px 15px 0'
@@ -39,6 +41,7 @@ const styles = ({
 
 function AdminHome (props) {
   const { events } = props
+  const classes = useStyles()
   if (!events) {
     updateEvents()
   }
@@ -133,8 +136,8 @@ function AdminHome (props) {
         <title>BizTech Admin Dashboard</title>
       </Helmet>
 
-      <div style={styles.row}>
-        <div style={styles.columnLeft}>
+      <div className={classes.row}>
+        <div className={classes.columnLeft}>
           <Typography variant='h1' style={{ color: COLORS.BIZTECH_GREEN }}>BizTech Admins</Typography>
           <Typography style={{ color: COLORS.BIZTECH_GREEN }}>BizTech Admins</Typography>
         </div>
@@ -158,4 +161,4 @@ function AdminHome (props) {
   )
 }
 
-export default withStyles(styles)(AdminHome)
+export default AdminHome

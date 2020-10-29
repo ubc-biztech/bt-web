@@ -2,21 +2,24 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import FormControl from '@material-ui/core/FormControl'
-import IconButton from '@material-ui/core/IconButton'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import TextField from '@material-ui/core/TextField'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
+import {
+  Button,
+  Card,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Tooltip,
+  Typography
+} from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
-import OutlinedPencil from '@material-ui/icons/CreateOutlined'
-
+import {
+  InfoOutlined as InfoOutlinedIcon,
+  CreateOutlined as OutlinedPencilIcon
+} from '@material-ui/icons'
 import House from 'assets/house.svg'
 import { setUser } from 'store/user/UserActions'
 import { fetchBackend, updateEvents } from 'utils'
@@ -295,7 +298,7 @@ function MemberProfile (props) {
                         </div>
                         <div className={classes.icon}>
                           <IconButton onClick={() => handleEdit()}>
-                            <OutlinedPencil className={classes.pencilIcon}/>
+                            <OutlinedPencilIcon className={classes.pencilIcon}/>
                           </IconButton>
                         </div>
                       </div>

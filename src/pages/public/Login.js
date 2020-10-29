@@ -3,11 +3,13 @@ import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 import { Helmet } from 'react-helmet'
 
-import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Typography from '@material-ui/core/Typography'
+import {
+  Button,
+  Card,
+  CardContent,
+  CssBaseline,
+  Typography
+} from '@material-ui/core'
 
 import LoginImage from 'assets/login.svg'
 import { COLORS } from 'constants/index'

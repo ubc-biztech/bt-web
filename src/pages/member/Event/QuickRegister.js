@@ -6,12 +6,10 @@ import * as Yup from 'yup'
 
 import QuickRegisterForm from './QuickRegisterForm'
 
-import { Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import { useTheme } from '@material-ui/styles'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-import Skeleton from '@material-ui/lab/Skeleton'
+import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Paper, Typography } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import './QuickRegister.scss'

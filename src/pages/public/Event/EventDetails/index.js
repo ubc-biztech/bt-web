@@ -7,10 +7,9 @@ import EventDescription from './EventDescription'
 import QuickRegister from 'pages/member/Event/QuickRegister'
 
 import { makeStyles } from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Typography from '@material-ui/core/Typography'
+import { CircularProgress, Typography } from '@material-ui/core'
 
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import { ArrowBack as ArrowBackIcon } from '@material-ui/icons'
 
 import { REGISTRATION_STATUS } from 'constants/index'
 import { updateEvents, updateRegisteredEvents, fetchBackend } from 'utils'
