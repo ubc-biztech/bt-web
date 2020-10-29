@@ -24,7 +24,7 @@ const EventStats = (props) => {
       setEvent(event)
       setLoaded(true)
     }
-  }, [eventId])
+  }, [eventId, events])
 
   const handleEditEventClick = () => {
     if (eventId) history.push(`/admin/event/${eventId}/edit`)

@@ -51,7 +51,7 @@ const EventEdit = (props) => {
       setPreviewEvent(event)
       setLoaded(true)
     }
-  }, [eventId])
+  }, [eventId, events])
 
   const validationSchema = Yup.object({
     ename: Yup.string().required(),

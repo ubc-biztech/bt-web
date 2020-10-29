@@ -54,7 +54,7 @@ function Nav (props) {
     history.listen((location) => {
       setSelectedItem(location.pathname)
     })
-  }, [])
+  }, [history])
 
   const logout = () => {
     Auth.signOut()
