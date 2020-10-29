@@ -45,7 +45,7 @@ const EventDetails = props => {
     updateEvents()
   }
   if (!registrations) {
-    updateRegisteredEvents()
+    updateRegisteredEvents(user.id)
   }
   const [event, setEvent] = useState(null)
   const [registration, setRegistration] = useState(null)
@@ -182,7 +182,9 @@ const EventDetails = props => {
 
 const mapStateToProps = state => {
   return {
-    events: state.pageState.events
+    user: state.userState.user,
+    events: state.pageState.events,
+    registrations: state.userState.registeredEvents
   }
 }
 

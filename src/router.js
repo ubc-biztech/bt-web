@@ -93,7 +93,7 @@ class Router extends Component {
   }
 
   render () {
-    const { user, registrations } = this.props
+    const { user } = this.props
     const { loaded } = this.state
 
     // Alert the user about the need to register if they haven't
@@ -124,7 +124,7 @@ class Router extends Component {
             <Route
               exact
               path='/event/:id'
-              render={props => <EventDetails {...props} user={user} registrations={registrations} />} />
+              render={() => <EventDetails />} />
             <Route
               exact
               path='/events'
@@ -173,9 +173,7 @@ class Router extends Component {
 
 const mapStateToProps = state => {
   return {
-    page: state.pageState.page,
-    user: state.userState.user,
-    registrations: state.pageState.eventsRegistered
+    user: state.userState.user
   }
 }
 
