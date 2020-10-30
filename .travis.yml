@@ -18,7 +18,7 @@ jobs:
         provider: firebase
         edge: true
         skip_cleanup: true
-        token: $PROD_FIREBASE_TOKEN
+        token: $FIREBASE_TOKEN
         project: bt-web-staging
     - stage: "Build & Deploy Production"
       script: npm run generate:prod
@@ -26,7 +26,7 @@ jobs:
         provider: firebase
         edge: true
         skip_cleanup: true
-        token: $PROD_FIREBASE_TOKEN
+        token: $FIREBASE_TOKEN
         project: bt-web-19a7b
 stages:
   - "Test & Build"
