@@ -1,26 +1,57 @@
-
 import {
-  SET_EVENTS,
-  SET_EVENTS_REGISTERED
+  FETCH_EVENTS_REQUEST,
+  FETCH_EVENTS_SUCCESS,
+  FETCH_EVENTS_ERROR
 } from 'constants/index'
 
 const initialEventState = {
-  events: null,
-  eventsRegistered: null
+  events: {
+    data: [],
+    fetched: false,
+    loading: false,
+    refreshing: false,
+    error: '',
+    lastUpdated: null
+  }
 }
 
 const eventReducer = (state = initialEventState, action) => {
-  const { type, payload } = action
+  const { type, payload, refresh = false } = action
+
   switch (type) {
-    case SET_EVENTS:
+    // fetch events
+    case FETCH_EVENTS_REQUEST:
       return {
         ...state,
-        events: payload.events
+        events: {
+          ...state.events,
+          loading: !refresh,
+          refreshing: refresh
+        }
       }
-    case SET_EVENTS_REGISTERED:
+    case FETCH_EVENTS_SUCCESS:
       return {
         ...state,
-        eventsRegistered: payload.eventsRegistered
+        events: {
+          ...state.events,
+          fetched: true,
+          loading: false,
+          refreshing: false,
+          data: payload,
+          lastUpdated: new Date()
+        }
+      }
+    case FETCH_EVENTS_ERROR:
+      return {
+        ...state,
+        events: {
+          ...state.events,
+          fetched: true,
+          loading: false,
+          refreshing: false,
+          error: payload,
+          lastUpdated: new Date()
+        }
       }
     default:
       return state
