@@ -1,10 +1,11 @@
 import React from 'react'
 import { Auth } from 'aws-amplify'
-import { setUser } from '../../actions/UserActions'
+import { setUser, logout } from '../../actions/UserActions'
 import { connect } from 'react-redux'
 import Loading from '../Misc/Loading'
 import { withRouter } from 'react-router-dom'
 import { log, fetchBackend } from '../../utils'
+import { checkFeatureFlag } from '../../utils/checkFeatureFlag'
 
 function LoginRedirect (props) {
   // we don't want to keep polling forever
@@ -55,6 +56,14 @@ function LoginRedirect (props) {
         } else { // If not biztech username (normal member)
           const studentId = authUser['custom:student_id']
 
+          // if maxvp is hidden, log out because we only want to allow biztech exec logins
+          if (!checkFeatureFlag('REACT_APP_SHOW_MAXVP')) {
+            alert('Sorry, login currently restricted to biztech executives!')
+            await Auth.signOut()
+            await props.logout()
+            return null
+          }
+
           // Detect if "first time sign up" by checking if custom:student_id is saved in the user pool
           // If the user's student_id exists in the user pool, check if the user is registered in the database
           // There is a possibility that a user exists in the user pool but not the database
@@ -101,4 +110,4 @@ function LoginRedirect (props) {
   )
 }
 
-export default connect(null, { setUser })(withRouter(LoginRedirect))
+export default connect(null, { setUser, logout })(withRouter(LoginRedirect))
