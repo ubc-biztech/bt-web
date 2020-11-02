@@ -111,7 +111,6 @@ class Router extends Component {
             {user && <Route path='/admin' component={AdminRoutes} />}
 
             {/* MEMBER ROUTES */}
-            {/* We don't use route here because we don't need to check a path */}
             {user && <Route path='/member' component={MemberRoutes} />}
 
             {/* PUBLIC EVENT-SPECIFIC ROUTES */}
@@ -134,7 +133,7 @@ class Router extends Component {
               render={() => <NotFound message='That page could not be found!'/>} />
 
             {/* AUTHENTICATION ROUTES */}
-            {/* <Route (SIGNUP LOOKS DEPRECATED)
+            {/* <Route (SIGNUP LOOKS UNUSED)
               exact
               path='/signup'
               featureFlag={'REACT_APP_SHOW_MAXVP'}
