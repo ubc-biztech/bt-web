@@ -140,8 +140,8 @@ const EventEdit = (props) => {
 
     fetchBackend(`/events/${values.slug}`, 'PATCH', body)
       .then((response) => {
-        alert(response)
-        history.push(`/event/${values.slug}/register`)
+        alert(response.message)
+        history.push(`/event/${values.slug}`)
       })
       .catch(err => {
         console.log(err)

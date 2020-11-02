@@ -16,7 +16,7 @@ const AdminRoute = ({ render, user = { admin: false }, nonAdminRender = null, ..
 }
 
 const mapStateToProps = state => ({
-  user: state.userState.user
+  user: state.userState.user.data
 })
 
 export default connect(mapStateToProps)(AdminRoute)

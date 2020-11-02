@@ -98,7 +98,7 @@ function Signup (props) {
 
 const mapStateToProps = state => {
   return {
-    user: state.userState.user
+    user: state.userState.user.data
   }
 }
 

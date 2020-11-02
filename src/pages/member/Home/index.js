@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,7 +8,6 @@ import UserProgress from './UserProgress'
 
 import House from 'assets/house.svg'
 import { COLORS } from 'constants/index'
-import { fetchBackend, updateEvents } from 'utils'
 
 const useStyles = makeStyles({
   container: {
@@ -55,74 +53,59 @@ const useStyles = makeStyles({
 })
 
 function MemberHome (props) {
+  const {
+    user,
+    registered,
+    events
+  } = props
+
+  const userName = user.admin ? 'Biztech exec!' : user.fname
+
   const classes = useStyles()
-  const [registeredEvents, setRegisteredEvents] = useState([])
+
   const [featuredEvent, setFeaturedEvent] = useState({})
   const [nextEvent, setNextEvent] = useState({})
+
   const getFeaturedEvent = () => {
-    if (props.events && props.events.length) {
-      setFeaturedEvent(props.events[Math.floor(Math.random() * (props.events.length - 1))])
+    if (events.length) {
+      const randomEvent = events[Math.floor(Math.random() * (events.length - 1))]
+      setFeaturedEvent(randomEvent)
     }
   }
 
   /**
    * gets the next event that the user is registered for
    * verifies that the event is after the current time
-   * sets next event to 'None Registered!' if no events found
+   * sets next event to 'None Registered!' if no registered events found
    */
   const getNextEvent = async () => {
-    if (!props.user) return null
-    const params = new URLSearchParams({
-      id: props.user.id
+    if (!user || !registered) {
+      setNextEvent({ ename: 'None Registered!' })
+      return
+    }
+    events.forEach(event => {
+      const index = registered.findIndex(registration => registration.eventID === event.id)
+      if (index !== -1) {
+        // if the event has not passed yet
+        if (new Date(event.startDate).getTime() > new Date().getTime()) return setNextEvent(event)
+        else return setNextEvent({ ename: 'None Registered!' })
+      }
     })
-    await fetchBackend(`/registrations?${params}`, 'GET')
-      .then(async response => {
-        if (response && response.size > 0) {
-          setRegisteredEvents(response.data)
-          // iterate over events - the first one that is found in registrations is the closest event assuming that events are already sorted by date
-          if (props.events) {
-            props.events.forEach(event => {
-              const index = response.data.findIndex(registration => registration.eventID === event.id)
-              if (index !== -1) {
-                // if the event has not passed yet
-                if (new Date(event.startDate).getTime() > new Date().getTime()) {
-                  return setNextEvent(event)
-                } else {
-                  return setNextEvent({
-                    ename: 'None Registered!'
-                  })
-                }
-              }
-            })
-          }
-        } else {
-          setNextEvent({
-            ename: 'None Registered!'
-          })
-        }
-      })
-      .catch(() => {
-        setNextEvent({
-          ename: 'None Registered!'
-        })
-      })
   }
 
-  if (!props.events) {
-    updateEvents()
-  }
+  // set featured event and nextEvent based on events
+  useEffect(() => {
+    if (events) {
+      getFeaturedEvent()
+      getNextEvent()
+    }
+  }, [events]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // set featured event and nextEvent on initial render
-  if (!featuredEvent.ename && !nextEvent.ename) {
-    getFeaturedEvent()
-    getNextEvent()
-  }
-
-  function CardComponent (props) {
+  function CardComponent ({ children }) {
     return (
       <Card className={classes.card}>
         <CardContent>
-          {props.children}
+          {children}
         </CardContent>
       </Card>
     )
@@ -142,13 +125,15 @@ function MemberHome (props) {
         <Typography variant='h1' className={classes.header}>Home</Typography>
         <div className={classes.column}>
           <CardComponent>
-            <Typography variant='h2'>Hi {props.user.fname}!</Typography>
+            <Typography variant='h2'>Hi {userName}!</Typography>
             <Typography>You are X events away from a reward!</Typography>
             <img src={House} className={classes.house} alt='BizTech House' />
           </CardComponent>
           <CardComponent>
             <Typography variant='h2'>Progress</Typography>
-            <UserProgress registeredEvents={registeredEvents} />
+            {registered
+              ? <UserProgress registeredEvents={registered} events={events} />
+              : <Typography>No Registration Data found</Typography>}
           </CardComponent>
         </div>
         <div className={classes.column}>
@@ -180,10 +165,4 @@ function MemberHome (props) {
   )
 }
 
-function mapStateToProps (state) {
-  return {
-    events: state.eventState.events
-  }
-}
-
-export default connect(mapStateToProps)(MemberHome)
+export default MemberHome

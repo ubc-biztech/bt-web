@@ -5,11 +5,9 @@ import {
   Card,
   CardActionArea,
   CardHeader,
-  CardMedia,
-  IconButton
+  CardMedia
 } from '@material-ui/core'
 import {
-  MoreVert as MoreVertIcon,
   Star as StarIcon,
   StarBorder as StarBorderIcon
 } from '@material-ui/icons'
@@ -33,9 +31,8 @@ function EventCard (props) {
     event,
     favourited = false,
     handleCardClick,
-    handleSubMenuClick = () => {},
     handleFavourite = () => {},
-    variant = 'admin'
+    variant = 'none'
   } = props
   const classes = useStyles()
 
@@ -57,12 +54,7 @@ function EventCard (props) {
           ? new Date(event.startDate)
             .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' }) : ''}
         action={
-          variant === 'admin' ? (
-            <IconButton aria-label='more options'
-              onClick={e => { handleSubMenuClick(e, event.id) }}>
-              <MoreVertIcon />
-            </IconButton>
-          ) : (
+          variant === 'user' && (
             favourited
               ? <StarIcon fontSize='large' onClick={() => { handleFavourite(event.id, false) }} className={classes.favouriteButton}/>
               : <StarBorderIcon fontSize='large' onClick={() => { handleFavourite(event.id, true) }} className={classes.favouriteButton}/>

@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardActionArea,
   CardMedia,
-  CircularProgress,
   IconButton,
   Menu,
   MenuItem,
@@ -19,7 +18,7 @@ import {
 import { MoreVert as MoreVertIcon } from '@material-ui/icons'
 
 import { COLORS } from 'constants/index'
-import { fetchBackend, updateEvents } from 'utils'
+import { deleteEvent } from 'store/event/eventActions'
 
 const useStyles = makeStyles({
   card: {
@@ -42,9 +41,6 @@ const useStyles = makeStyles({
 function AdminHome (props) {
   const { events } = props
   const classes = useStyles()
-  if (!events) {
-    updateEvents()
-  }
 
   const history = useHistory()
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -64,18 +60,10 @@ function AdminHome (props) {
     handleClose()
   }
 
-  const handleClickDeleteEvent = () => {
+  const handleClickDeleteEvent = async () => {
     const clickedEvent = events.find(event => event.id === eventMenuClicked)
     if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {
-      fetchBackend(`/events/${clickedEvent.id}`, 'DELETE')
-        .then(response => {
-          alert(response.message)
-          updateEvents()
-        })
-        .catch(err => {
-          console.log(err)
-          alert(err.message + ' Please contact a dev')
-        })
+      await deleteEvent({ eventId: clickedEvent.id })
     }
     handleClose()
   }
@@ -90,45 +78,38 @@ function AdminHome (props) {
     handleClose()
   }
 
-  function createEventCards () {
-    if (events) {
-      return <Box flexWrap='wrap' display='flex'>
-        {events.map(event => {
-          const image = event.imageUrl || require('assets/placeholder.jpg')
-          return (
-            <Card className={classes.card} key={event.id}>
-              <CardActionArea onClick={() => handleClickViewEvent(event.id)} >
-                <CardMedia
-                  className={classes.media}
-                  component='img'
-                  image={image}
-                  title='Event photo'
-                />
-              </CardActionArea>
-              <CardHeader
-                classes={{ subheader: classes.cardHeader }}
-                title={event.ename}
-                subheader={event.startDate
-                  ? new Date(event.startDate)
-                    .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' }) : ''}
-                action={
-                  <IconButton aria-label='more options'
-                    onClick={e => {
-                      handleClick(e, event.id)
-                    }}>
-                    <MoreVertIcon />
-                  </IconButton>
-                }>
-              </CardHeader>
-            </Card >
-          )
-        })
-        }
-      </Box >
-    }
+  function createEventCard (event) {
+    const image = event.imageUrl || require('assets/placeholder.jpg')
+    return (
+      <Card className={classes.card} key={event.id}>
+        <CardActionArea onClick={() => handleClickViewEvent(event.id)} >
+          <CardMedia
+            className={classes.media}
+            component='img'
+            image={image}
+            title='Event photo'
+          />
+        </CardActionArea>
+        <CardHeader
+          classes={{ subheader: classes.cardHeader }}
+          title={event.ename}
+          subheader={event.startDate
+            ? new Date(event.startDate)
+              .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' }) : ''}
+          action={
+            <IconButton aria-label='more options'
+              onClick={e => {
+                handleClick(e, event.id)
+              }}>
+              <MoreVertIcon />
+            </IconButton>
+          }>
+        </CardHeader>
+      </Card >
+    )
   }
 
-  return events !== null ? (
+  return (
     <>
       <Helmet>
         <title>BizTech Admin Dashboard</title>
@@ -141,7 +122,10 @@ function AdminHome (props) {
         </div>
       </div>
 
-      {createEventCards()}
+      <Box flexWrap='wrap' display='flex'>
+        {events.map(event => createEventCard(event))}
+      </Box>
+
       <Menu
         id='simple-menu'
         anchorEl={anchorEl}
@@ -154,8 +138,6 @@ function AdminHome (props) {
         <MenuItem onClick={handleClickViewEventAsMember}>View Event as a Member</MenuItem>
       </Menu>
     </>
-  ) : (
-    <CircularProgress />
   )
 }
 
