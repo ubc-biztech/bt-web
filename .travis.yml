@@ -12,14 +12,25 @@ jobs:
   include:
     - stage: "Test & Build"
       script: npm run test && npm run build
+    - stage: "Build & Deploy Staging"
+      script: npm run generate:prod
+      deploy:
+        provider: firebase
+        edge: true
+        skip_cleanup: true
+        token: $FIREBASE_TOKEN
+        project: bt-web-staging
     - stage: "Build & Deploy Production"
       script: npm run generate:prod
       deploy:
         provider: firebase
         edge: true
         skip_cleanup: true
-        token: $PROD_FIREBASE_TOKEN
+        token: $FIREBASE_TOKEN
+        project: bt-web-19a7b
 stages:
   - "Test & Build"
-  - name: "Build & Deploy Production"
+  - name: "Build & Deploy Staging"
     if: (branch = master) AND (type = push)
+  - name: "Build & Deploy Production"
+    if: (branch = prod) AND (type = push)
