@@ -46,14 +46,19 @@ npm run lint
 ```
 You may need to install eslint first `npm i -g eslint`
 
-## Deployment
+## Build and Deployment
 
-Our web application can be deployed through a simple build-and-deploy process:
+Our web application can be built and deployed to two different enviroments: `staging` and `production`, which are both hosted on firebase using our dev account (dev@ubcbiztech.com)
 
-### Build
-The web application is automatically built and deployed by Travis CI on every merge to `master` branch.
+### Staging
 
-Configurations for the process can be found in the `.travis.yml` file
+The web application is automatically built and deployed to our `staging` environment by Travis CI on every merge to `master` branch. This process is handled entirely by travis CI.
+
+### Production
+
+Triggering a build and deployment to our `production` environment can be done by creating a github release. Github actions are set up to automatically trigger a deploy during a release (this is done through the use of the `prod` branch). For more information on creating a release, take a look at our [notion doc](https://www.notion.so/76b97d59214d4d29b4db6b9e5c4692e1).
+
+Configurations for both build-and-deploy processes can be found in the `.travis.yml` file
 
 
 ## Other vailable Scripts
