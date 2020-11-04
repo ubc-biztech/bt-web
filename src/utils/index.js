@@ -9,13 +9,17 @@ import { setUser } from '../actions/UserActions'
 //     ? aws_config
 //     : aws_exports
 
-const API_URL = process.env.REACT_APP_STAGE === 'production'
+const apiUrl = process.env.REACT_APP_STAGE === 'production'
   ? process.env.REACT_APP_PROD_API
   : process.env.REACT_APP_STAGING_API
 
-const CLIENT_URL = process.env.REACT_APP_STAGE === 'production'
-  ? 'https://app.ubcbiztech.com/'
-  : 'http://localhost:3000/'
+export const API_URL = apiUrl
+
+let clientUrl = 'http://localhost:3000/'
+if (process.env.REACT_APP_STAGE === 'production') clientUrl = 'https://app.ubcbiztech.com/'
+else if (process.env.REACT_APP_STAGE === 'stage') clientUrl = 'https://bt-web-staging.web.app/'
+
+export const CLIENT_URL = clientUrl
 
 export const AWS_CONFIG = {
   Auth: {
