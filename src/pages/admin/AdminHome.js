@@ -1,13 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardMedia from '@material-ui/core/CardMedia'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import IconButton from '@material-ui/core/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
@@ -34,16 +33,11 @@ const styles = ({
   columnLeft: {
     flex: '50%',
     textAlign: 'left'
-  },
-  columnRight: {
-    flex: '50%',
-    textAlign: 'right',
-    marginRight: '72px'
   }
 })
 
 function AdminHome (props) {
-  const { user, events } = props
+  const { events } = props
   if (!events) {
     updateEvents()
   }
@@ -61,7 +55,7 @@ function AdminHome (props) {
   }
 
   const handleClickEditEvent = () => {
-    props.history.push(`/event/${eventMenuClicked}/edit`)
+    props.history.push(`/exec/event/${eventMenuClicked}/edit`)
     handleClose()
   }
 
@@ -81,8 +75,13 @@ function AdminHome (props) {
     handleClose()
   }
 
-  const handleClickViewEvent = () => {
-    props.history.push(`/event/${eventMenuClicked}/register`)
+  const handleClickViewEvent = (eventId) => {
+    props.history.push(`/exec/event/${eventId}/register`)
+    handleClose()
+  }
+
+  const handleClickViewEventAsMember = () => {
+    props.history.push(`/event/${eventMenuClicked}`)
     handleClose()
   }
 
@@ -95,9 +94,7 @@ function AdminHome (props) {
           const image = event.imageUrl || require('../../assets/placeholder.jpg')
           return (
             <Card className={classes.card} key={event.id}>
-              <CardActionArea onClick={() => {
-                props.history.push(`/event/${event.id}`)
-              }} >
+              <CardActionArea onClick={() => handleClickViewEvent(event.id)} >
                 <CardMedia
                   className={classes.media}
                   component='img'
@@ -139,12 +136,6 @@ function AdminHome (props) {
           <Typography variant='h1' style={{ color: COLOR.BIZTECH_GREEN }}>BizTech Admins</Typography>
           <Typography style={{ color: COLOR.BIZTECH_GREEN }}>BizTech Admins</Typography>
         </div>
-        <div style={styles.columnRight}>
-          {/* Link to user dashboard */}
-          {user.admin && <Link to='/user-dashboard'>
-            <Button variant='contained' color='primary'>User Dashboard</Button>
-          </Link>}
-        </div>
       </div>
 
       {createEventCards()}
@@ -157,7 +148,7 @@ function AdminHome (props) {
       >
         <MenuItem onClick={handleClickEditEvent}>Edit Event</MenuItem>
         <MenuItem onClick={handleClickDeleteEvent}>Delete Event</MenuItem>
-        <MenuItem onClick={handleClickViewEvent}>View Event</MenuItem>
+        <MenuItem onClick={handleClickViewEventAsMember}>View Event as a Member</MenuItem>
       </Menu>
     </ThemeProvider>
   ) : (
@@ -167,7 +158,6 @@ function AdminHome (props) {
 
 const mapStateToProps = state => {
   return {
-    user: state.userState.user,
     events: state.pageState.events
   }
 }
