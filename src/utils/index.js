@@ -9,8 +9,6 @@ import { setUser } from '../actions/UserActions'
 //     ? aws_config
 //     : aws_exports
 
-console.log(`Running biztech app in ${process.env.REACT_APP_STAGE}`)
-
 const apiUrl = process.env.REACT_APP_STAGE === 'production'
   ? process.env.REACT_APP_PROD_API
   : process.env.REACT_APP_STAGING_API
