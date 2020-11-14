@@ -74,6 +74,8 @@ class Router extends Component {
   // User needs to be checked before the page physically renders
   // (otherwise, the login page will initially show on every refresh)
   componentDidMount () {
+    log(`Running biztech app in '${process.env.REACT_APP_STAGE || 'local'}' environment`)
+
     if (!this.props.user) {
       // If the user doesn't already exist in react, get the authenticated user
       // also get events at the same time

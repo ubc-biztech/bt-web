@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "bt-web-19a7b"
+    "default": "bt-web-staging",
+    "staging": "bt-web-staging",
+    "production": "bt-web-19a7b"
   }
 }
