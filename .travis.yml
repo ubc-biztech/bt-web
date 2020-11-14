@@ -13,7 +13,7 @@ jobs:
     - stage: "Test & Build"
       script: npm run test && npm run build
     - stage: "Build & Deploy Staging"
-      script: npm run generate:prod
+      script: npm run generate:stage
       deploy:
         provider: firebase
         edge: true

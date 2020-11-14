@@ -31,6 +31,7 @@
     "build": "react-scripts build",
     "generate": "cross-env REACT_APP_STAGE=dev npm run build",
     "generate:prod": "cross-env GENERATE_SOURCEMAP=false REACT_APP_STAGE=production npm run build",
+    "generate:stage": "cross-env REACT_APP_STAGE=stage npm run build",
     "deploy": "aws s3 sync build/ s3://biztech-web",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

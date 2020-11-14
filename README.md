@@ -78,7 +78,7 @@ npm run build
 Builds the app for production to the `build` folder.
 It bundles React in production mode and optimizes the build for the best performance.
 
-For our app, use `npm run generate` and `npm run generate:prod` instead. See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+For our app, use `npm run generate:stage` or `npm run generate:prod` instead. See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ```
 npm run test
@@ -90,6 +90,11 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 npm run generate
 ```
 Simply builds the application into the `build` folder.
+
+```
+npm run generate:stage
+```
+Builds the application into the `build` folder with the staging environmental variable.
 
 ```
 npm run generate:prod
