@@ -10,20 +10,21 @@ import EventCreate from './Event/EventCreate'
 import EventEdit from './Event/EventEdit'
 import EventStats from './Event/EventStats'
 
-import { updateEvents } from 'utils'
+import { fetchEvents } from 'store/event/eventActions'
 
 const AdminRoutes = (props) => {
   const {
     events,
+    eventsLoading,
     user
   } = props
 
   useEffect(() => {
-    updateEvents()
+    fetchEvents()
   }, [])
 
   // Loading state
-  if (!events) return <Loading message='Loading events...'/>
+  if (eventsLoading) return <Loading message='Loading events...'/>
   // After loaded
   return user.admin ? (
     <Switch>
@@ -51,8 +52,9 @@ const AdminRoutes = (props) => {
 
 const mapStateToProps = state => {
   return {
-    events: state.pageState.events,
-    user: state.userState.user
+    events: state.eventState.events.data,
+    eventsLoading: state.eventState.events.loading,
+    user: state.userState.user.data
   }
 }
 

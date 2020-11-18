@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { useParams, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 import EventDescription from './EventDescription'
 import QuickRegister from 'pages/member/Event/QuickRegister'
+import Loading from 'pages/Loading'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { CircularProgress, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 
 import { ArrowBack as ArrowBackIcon } from '@material-ui/icons'
 
 import { REGISTRATION_STATUS } from 'constants/index'
-import { updateEvents, updateRegisteredEvents, fetchBackend } from 'utils'
+import { fetchUserRegisteredEvents } from 'store/user/userActions'
+import { fetchBackend } from 'utils'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -39,42 +41,31 @@ const useStyles = makeStyles(theme => ({
 const EventDetails = props => {
   const classes = useStyles()
   const history = useHistory()
-  const { id: eventId } = useParams()
-  const { user, events, registrations } = props
-  if (!events) {
-    updateEvents()
-  }
-  if (!registrations) {
-    updateRegisteredEvents(user.id)
-  }
-  const [event, setEvent] = useState(null)
+  const { eventId, event, loading, user, userRegisteredEvents } = props
+
   const [registration, setRegistration] = useState(null)
+  const [registrationStatus, setRegistrationStatus] = useState(false)
   const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false)
-  const [eventRegistrationStatus, setEventRegistrationStatus] = useState(false)
 
   useEffect(() => {
-    if (events && eventId) {
-      setEvent(events.find(event => event.id === eventId))
+    // first, check if the user is logged in
+    if (!user.id) return
+    if (!userRegisteredEvents) {
+      fetchUserRegisteredEvents({ userId: user.id })
+    } else {
+      const userRegistrationObject = userRegisteredEvents.find(registration => registration.eventID === eventId)
+      setRegistration(userRegistrationObject)
     }
-    if (registrations && eventId) {
-      setRegistration(
-        registrations.find(registration => registration.eventID === eventId)
-      )
-    }
-    if (
-      registration &&
-      registration.registrationStatus === REGISTRATION_STATUS.REGISTERED
-    ) {
-      setEventRegistrationStatus(true)
+    if (registration && registration.registrationStatus === REGISTRATION_STATUS.REGISTERED) {
+      setRegistrationStatus(true)
     }
   }, [
+    user,
     event,
-    events,
-    setEvent,
     registration,
-    registrations,
+    userRegisteredEvents,
     setRegistration,
-    setEventRegistrationStatus,
+    setRegistrationStatus,
     eventId
   ])
 
@@ -91,7 +82,7 @@ const EventDetails = props => {
   // change registerState when current event is registered/unregistered
   // for conditionally rendering the registration status UI on BOTH EventDescription AND QuickRegister page
   const handleRegisterStateChangedCallback = (registered) => {
-    setEventRegistrationStatus(registered)
+    setRegistrationStatus(registered)
   }
 
   let settingRegistrationData = false
@@ -138,8 +129,9 @@ const EventDetails = props => {
       return Promise.reject(error)
     }
   }
-
-  return event ? (
+  // Loading state
+  if (loading) return <Loading message='Loading event data...'/>
+  return (
     <React.Fragment>
       <Helmet>
         <title>{event.ename} - BizTech Members</title>
@@ -157,7 +149,7 @@ const EventDetails = props => {
             event={event}
             user={user}
             registration={registration}
-            eventRegistrationStatus={eventRegistrationStatus}
+            eventRegistrationStatus={registrationStatus}
             handleRegisterStateChangedCallback={handleRegisterStateChangedCallback}
             handleRegisterClickedCallback={handleRegisterClickedCallback}
             sendRegistrationDataCallback={sendRegistrationDataCallback}
@@ -167,7 +159,7 @@ const EventDetails = props => {
             event={event}
             user={user}
             registration={registration}
-            eventRegistrationStatus={eventRegistrationStatus}
+            registrationStatus={registrationStatus}
             handleRegisterStateChangedCallback={handleRegisterStateChangedCallback}
             handleRegisterClickedCallback={handleRegisterClickedCallback}
             sendRegistrationDataCallback={sendRegistrationDataCallback}
@@ -175,16 +167,12 @@ const EventDetails = props => {
         )}
       </div>
     </React.Fragment>
-  ) : (
-    <CircularProgress />
   )
 }
 
 const mapStateToProps = state => {
   return {
-    user: state.userState.user,
-    events: state.pageState.events,
-    registrations: state.userState.registeredEvents
+    user: state.userState.user.data
   }
 }
 

@@ -88,7 +88,7 @@ const EventDescription = ({
   user,
   event,
   registration,
-  eventRegistrationStatus,
+  registrationStatus,
   handleRegisterClickedCallback,
   handleRegisterStateChangedCallback,
   sendRegistrationDataCallback,
@@ -128,8 +128,7 @@ const EventDescription = ({
       return
     }
     // otherwise unregister the user
-    let isFirstTime = false
-    registration ? (isFirstTime = false) : (isFirstTime = true) // if registration prop is not undefined, the event has been registered / unregistered before
+    const isFirstTime = !registration
     try {
       const registrationResult = await sendRegistrationDataCallback(
         userID,
@@ -180,7 +179,7 @@ const EventDescription = ({
         </div>
         <Markdown className={classes.description}>{event.description}</Markdown>
         <div className={classes.buttonGroup}>
-          {eventRegistrationStatus ? (
+          {registrationStatus ? (
             <React.Fragment>
               <Button
                 style={{ backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR }}

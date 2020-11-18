@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import React from 'react'
 import { Helmet } from 'react-helmet'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -13,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Paper } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 
-import { fetchBackend, updateEvents } from 'utils'
+import { fetchBackend } from 'utils'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -34,20 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 const EventFormContainer = (props) => {
   const classes = useStyles()
-  const { events } = props
-  const { id: eventId } = useParams()
-
-  const [event, setEvent] = useState(null)
-  const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    if (eventId && events) {
-      setEvent(events.find(event => event.id === eventId))
-      setLoaded(true)
-    } else if (!events) {
-      updateEvents()
-    }
-  }, [events, eventId])
+  const { eventId, event, loading } = props
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -64,28 +49,7 @@ const EventFormContainer = (props) => {
 
   const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '' }
 
-  if (loaded && events) {
-    return event ? (
-      <div className={classes.layout}>
-        <Helmet>
-          <title>{event.ename} - Register</title>
-        </Helmet>
-        <Paper className={classes.paper}>
-          <EventView event={event}>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={submitValues}
-            >
-              {props => <EventRegisterForm {...props} />}
-            </Formik>
-          </EventView>
-        </Paper>
-      </div>
-    ) : (
-      <NotFound message='The event could not be found!'/>
-    )
-  } else {
+  if (loading) {
     return (
       <div className={classes.layout}>
         <Paper className={classes.paper}>
@@ -119,6 +83,26 @@ const EventFormContainer = (props) => {
       </div>
     )
   }
+  return event ? (
+    <div className={classes.layout}>
+      <Helmet>
+        <title>{event.ename} - Register</title>
+      </Helmet>
+      <Paper className={classes.paper}>
+        <EventView event={event}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={submitValues}
+          >
+            {props => <EventRegisterForm {...props} />}
+          </Formik>
+        </EventView>
+      </Paper>
+    </div>
+  ) : (
+    <NotFound message={`The event with id ${eventId} could not be found!`}/>
+  )
 
   async function submitValues (values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
@@ -135,7 +119,7 @@ const EventFormContainer = (props) => {
     }
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/${values.id}`, 'GET')
-      .then((response) => {
+      .then(() => {
         fetchBackend(`/users/${id}`, 'PATCH', body)
         registerUser(id, eventID, heardFrom)
       })
@@ -160,7 +144,7 @@ const EventFormContainer = (props) => {
       registrationStatus: 'registered'
     }
     fetchBackend('/registrations', 'POST', body)
-      .then((regResponse) => {
+      .then(() => {
         alert('Signed Up')
       })
       .catch(err => {
@@ -173,10 +157,4 @@ const EventFormContainer = (props) => {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.pageState.events
-  }
-}
-
-export default connect(mapStateToProps, {})(EventFormContainer)
+export default EventFormContainer

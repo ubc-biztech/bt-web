@@ -88,7 +88,7 @@ const QuickRegister = ({
   user,
   event,
   registration,
-  eventRegistrationStatus,
+  registrationStatus,
   handleRegisterStateChangedCallback,
   sendRegistrationDataCallback
 }) => {
@@ -169,7 +169,7 @@ const QuickRegister = ({
         </Helmet>
         <div className={classes.layout}>
           <Paper className={classes.paper}>
-            {eventRegistrationStatus
+            {registrationStatus
               ? <div className={classes.completeContainer}>
                 {renderMobileOnly &&
                   <div style={{ paddingBottom: '10vh' }}>

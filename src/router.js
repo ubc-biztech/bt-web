@@ -15,22 +15,17 @@ import Route from 'components/routing/Route'
 import Login from 'pages/public/Login'
 import LoginRedirect from 'pages/public/LoginRedirect'
 // import Signup from '../pages/public/Signup'
-import EventDetails from 'pages/public/Event/EventDetails'
-import EventRegister from 'pages/public/Event/EventRegister'
-import EventsList from 'pages/public/Event/EventsDashboard'
+import EventsDashboard from 'pages/public/EventsDashboard'
 
 import Forbidden from 'pages/Forbidden'
 import Loading from 'pages/Loading'
 import NotFound from 'pages/NotFound'
 import AdminRoutes from 'pages/admin'
 import MemberRoutes from 'pages/member'
+import PublicEventRoutes from 'pages/public/Event'
 
-import { setUser } from 'store/user/UserActions'
-import {
-  log,
-  updateUser,
-  updateRegisteredEvents
-} from 'utils'
+import { setUser, fetchUser, fetchUserRegisteredEvents } from 'store/user/userActions'
+import { log } from 'utils'
 
 class Router extends Component {
   constructor () {
@@ -45,7 +40,7 @@ class Router extends Component {
       .then(async authUser => {
         const email = authUser.attributes.email
         if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
-          this.props.setUser({
+          await this.props.setUser({
             // name: authUser.attributes.name, // we don't need admin name for now
             email: authUser.attributes.email,
             admin: true
@@ -54,7 +49,10 @@ class Router extends Component {
           const studentId = authUser.attributes['custom:student_id']
           if (studentId) {
             // Perform redux actions to update user and registration states at the same time
-            await Promise.all([updateUser(studentId), updateRegisteredEvents(studentId)])
+            await Promise.all([
+              fetchUser({ userId: studentId }),
+              fetchUserRegisteredEvents({ userId: studentId })
+            ])
           } else {
             // Parse first name and last name
             const initialName = authUser.attributes.name.split(' ')
@@ -62,7 +60,7 @@ class Router extends Component {
             const lname = initialName[1]
 
             // save only essential info to redux
-            this.props.setUser({
+            await setUser({
               email: authUser.attributes.email,
               fname,
               lname
@@ -117,20 +115,14 @@ class Router extends Component {
             {/* MEMBER ROUTES */}
             {user && <Route path='/member' component={MemberRoutes} />}
 
+            {/* PUBLIC EVENT-SPECIFIC ROUTES */}
+            {<Route path='/event/:id' component={PublicEventRoutes} />}
             {/* COMMON ROUTES */}
-            <Route
-              exact
-              path='/event/:id/register'
-              render={() => <EventRegister />} />
-            <Route
-              exact
-              path='/event/:id'
-              render={() => <EventDetails />} />
             <Route
               exact
               path='/events'
               featureFlag={'REACT_APP_SHOW_MAXVP'}
-              render={() => <EventsList />} />
+              render={() => <EventsDashboard />} />
 
             {/* MISCELLANEOUS ROUTES */}
             <Route
@@ -174,7 +166,7 @@ class Router extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.userState.user
+    user: state.userState.user.data
   }
 }
 

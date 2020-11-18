@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Switch } from 'react-router-dom'
 
@@ -8,10 +8,18 @@ import MemberCreate from './MemberCreate'
 import MemberProfile from './MemberProfile'
 import MemberHome from './Home'
 
+import { fetchEvents } from 'store/event/eventActions'
+
 const MemberRoutes = (props) => {
   const {
-    user
+    events,
+    user,
+    userEventsRegistered
   } = props
+
+  useEffect(() => {
+    fetchEvents()
+  }, [])
 
   return (
     <Switch>
@@ -19,7 +27,7 @@ const MemberRoutes = (props) => {
         exact
         path='/member/profile'
         featureFlag={'REACT_APP_SHOW_MAXVP'}
-        render={() => <MemberProfile />} />
+        render={() => <MemberProfile user={user} registered={userEventsRegistered} events={events} />} />
       <Route
         exact
         path='/member/create'
@@ -31,7 +39,7 @@ const MemberRoutes = (props) => {
         exact
         path='/member/home'
         featureFlag={'REACT_APP_SHOW_MAXVP'}
-        render={() => <MemberHome user={user} />} />
+        render={() => <MemberHome user={user} registered={userEventsRegistered} events={events} />} />
 
       <Redirect to='/404' />
     </Switch>
@@ -40,9 +48,9 @@ const MemberRoutes = (props) => {
 
 const mapStateToProps = state => {
   return {
-    events: state.pageState.events,
-    user: state.userState.user,
-    registrations: state.pageState.eventsRegistered
+    events: state.eventState.events.data,
+    user: state.userState.user.data,
+    userEventsRegistered: state.userState.eventsRegistered
   }
 }
 

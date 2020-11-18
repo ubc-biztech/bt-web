@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { makeWidthFlexible, XYPlot, XAxis, YAxis, LineSeries, MarkSeries } from 'react-vis'
 
 import { LinearProgress, Typography } from '@material-ui/core'
@@ -47,7 +46,7 @@ const sixMonthsAgo = () => {
 
 const UserProgress = ({ registeredEvents, events }) => {
   // filter only checkedIn events, and only return event IDs
-  const checkedInEventIDs = registeredEvents && registeredEvents.flatMap(event => {
+  const checkedInEventIDs = registeredEvents.flatMap(event => {
     return event.registrationStatus === 'checkedIn' ? [event.eventID] : []
   })
 
@@ -128,10 +127,4 @@ const UserProgress = ({ registeredEvents, events }) => {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.pageState.events
-  }
-}
-
-export default connect(mapStateToProps, {})(UserProgress)
+export default UserProgress

@@ -5,7 +5,7 @@ import { Auth } from 'aws-amplify'
 
 import Loading from 'pages/Loading'
 
-import { setUser, logout } from 'store/user/UserActions'
+import { setUser, logout } from 'store/user/userActions'
 import { log, fetchBackend, checkFeatureFlag } from 'utils'
 
 function LoginRedirect (props) {

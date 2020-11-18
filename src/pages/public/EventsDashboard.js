@@ -23,10 +23,12 @@ import {
   Search
 } from '@material-ui/icons'
 import EventCard from 'components/Event/EventCard'
+import Loading from 'pages/Loading'
 
 import { COLORS } from 'constants/index'
-import { setUser } from 'store/user/UserActions'
-import { fetchBackend, updateEvents, updateRegisteredEvents } from 'utils'
+import { setUser, fetchUserRegisteredEvents } from 'store/user/userActions'
+import { fetchEvents } from 'store/event/eventActions'
+import { fetchBackend } from 'utils'
 
 // States for the filters
 const PERSONALIZATION_STATES = {
@@ -177,11 +179,11 @@ function EventsDashboard (props) {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const { events = [], eventsRegistered = [], user } = props
+  const { events, user, userRegisteredEvents, loading } = props
 
   useEffect(() => {
-    if (!props.events) updateEvents()
-    if (user.id) updateRegisteredEvents(user.id)
+    fetchEvents()
+    if (user && user.id) fetchUserRegisteredEvents({ userId: user.id })
   }, [])
 
   const handleFavouriteEvent = async (eventId, toggle) => {
@@ -190,7 +192,7 @@ function EventsDashboard (props) {
     const newEventIds = toggle
       ? [...user.favedEventsID, eventId]
       : user.favedEventsID.filter((id) => id !== eventId)
-    props.setUser({
+    await props.setUser({
       ...user,
       favedEventsID: newEventIds
     })
@@ -217,21 +219,21 @@ function EventsDashboard (props) {
     history.push(`/event/${eventId}/register`)
   }
 
-  const eventsRegisteredIds = useMemo(() => {
-    if (eventsRegistered.length && typeof eventsRegistered[0] === 'object') {
-      return eventsRegistered.map((event) => event.eventID)
+  const userRegisteredEventIds = useMemo(() => {
+    if (userRegisteredEvents && typeof userRegisteredEvents[0] === 'object') {
+      return userRegisteredEvents.map((event) => event.eventID)
     }
 
-    return eventsRegistered
-  }, [eventsRegistered])
+    return []
+  }, [userRegisteredEvents])
 
-  const eventsFavouritedIds = useMemo(() => {
+  const userFavouritedEventIds = useMemo(() => {
     if (user && user.favedEventsID && user.favedEventsID.length) {
       return user.favedEventsID
     }
 
     return []
-  }, [user.favedEventsID])
+  }, [user])
 
   const eventsFilteredBySearch = useMemo(() => {
     if (!isSearch || !searchText) return events
@@ -244,9 +246,9 @@ function EventsDashboard (props) {
     let eventsFilteredByPersonalization = eventsFilteredBySearch
 
     if (personalizationIndex === PERSONALIZATION_STATES.REGISTERED.index) {
-      eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) => eventsRegisteredIds.includes(event.id))
+      eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) => userRegisteredEventIds.includes(event.id))
     } else if (personalizationIndex === PERSONALIZATION_STATES.FAVOURITES.index) {
-      eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) => eventsFavouritedIds.includes(event.id))
+      eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) => userFavouritedEventIds.includes(event.id))
     }
 
     // determine which option is clicked by the personalization index
@@ -259,15 +261,18 @@ function EventsDashboard (props) {
       <EventCard
         event={event}
         key={event.id}
-        variant='user'
-        favourited={eventsFavouritedIds.includes(event.id)}
+        variant={!user || user.admin ? 'none' : 'user'}
+        favourited={userFavouritedEventIds.includes(event.id)}
         handleCardClick={redirectToEvent}
         handleFavourite={handleFavouriteEvent}
         cardStyle={isMobile ? { width: '100%', marginRight: 0 } : { width: 'calc(50% - 30px)' } }
       />
     ))
-  }, [eventsFilteredBySearch, eventsFavouritedIds, personalizationIndex, timeIndex, isMobile])
+  }, [eventsFilteredBySearch, userFavouritedEventIds, personalizationIndex, timeIndex, isMobile])
 
+  console.log(events, user, userRegisteredEvents, loading)
+
+  if (loading) return <Loading message='Loading user &amp; event data...'/>
   return (
     <div>
       <Helmet>
@@ -385,9 +390,10 @@ function EventsDashboard (props) {
 
 const mapStateToProps = state => {
   return {
-    events: state.pageState.events,
-    eventsRegistered: state.pageState.eventsRegistered,
-    user: state.userState.user
+    events: state.eventState.events.data,
+    user: state.userState.user.data,
+    userRegisteredEvents: state.userState.userRegisteredEvents.data,
+    loading: state.eventState.events.loading || state.userState.userRegisteredEvents.loading
   }
 }
 

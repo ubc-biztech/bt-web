@@ -18,7 +18,7 @@ import LogoutIcon from 'components/icons/LogoutIcon'
 
 import './Navigation.scss'
 import { COLORS } from 'constants/index'
-import { logout } from 'store/user/UserActions'
+import { logout } from 'store/user/userActions'
 import { checkFeatureFlag } from 'utils'
 
 const ICON_SIZE = '32px'

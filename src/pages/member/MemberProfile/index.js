@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import {
@@ -21,8 +20,7 @@ import {
   CreateOutlined as OutlinedPencilIcon
 } from '@material-ui/icons'
 import House from 'assets/house.svg'
-import { setUser } from 'store/user/UserActions'
-import { fetchBackend, updateEvents } from 'utils'
+import { fetchBackend } from 'utils'
 
 const useStyles = makeStyles(theme => ({
   profilePageContainer: {
@@ -149,35 +147,40 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function MemberProfile (props) {
+  const {
+    events,
+    user
+    // userEventsRegistered,
+  } = props
+
   const [isEditing, setIsEditing] = React.useState(false)
-  const [ID] = React.useState(props.user.id)
-  const [Faculty, setFaculty] = React.useState(props.user.faculty)
-  const [Email, setEmail] = React.useState(props.user.email)
-  const [Diet, setDiet] = React.useState(props.user.diet)
+  const [ID] = React.useState(user.id)
+  const [Faculty, setFaculty] = React.useState(user.faculty)
+  const [Email, setEmail] = React.useState(user.email)
+  const [Diet, setDiet] = React.useState(user.diet)
   const [eventsAttended, setEventsAttended] = React.useState()
   const [recentEvent, setRecentEvent] = React.useState()
   const [favouriteEventName1, setFavouriteEventName1] = React.useState()
   const [favouriteEventName2, setFavouriteEventName2] = React.useState()
   // Won't work unless I pass in Year param exactly like this
-  const Year = React.useState(props.user.level)
+  const Year = React.useState(user.level)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
 
   const body = {
     email: Email,
-    fname: props.user.fname,
-    lname: props.user.lname,
+    fname: user.fname,
+    lname: user.lname,
     id: ID,
     faculty: Faculty,
     year: Year,
     diet: Diet,
-    gender: props.user.gender
+    gender: user.gender
   }
 
   const handleEdit = () => {
-    console.log(props.user.id)
     if (isEditing) {
-      fetchBackend(`/users/${props.user.id}`, 'PATCH', body).then(response =>
+      fetchBackend(`/users/${user.id}`, 'PATCH', body).then(response =>
         console.log(response))
     }
     setIsEditing(!isEditing)
@@ -195,15 +198,15 @@ function MemberProfile (props) {
 
   const getRecentEvent = async () => {
     const params = new URLSearchParams({
-      id: props.user.id
+      id: user.id
     })
     fetchBackend(`/registrations?${params}`, 'GET')
       .then(async response => {
         if (response && response.size > 0) {
-          if (props.events) {
+          if (events) {
             var recentEventChecker = ''
             var eventsAttendedCounter = 0
-            props.events.forEach(event => {
+            events.forEach(event => {
               const index = response.data.findIndex(registration => registration.eventID === event.id)
               if (index !== -1) {
                 // checks if they have checked in at the event
@@ -233,10 +236,10 @@ function MemberProfile (props) {
   }
 
   const getFavouriteEvents = () => {
-    fetchBackend(`/users/${props.user.id}`, 'GET')
+    fetchBackend(`/users/${user.id}`, 'GET')
       .then(async response => {
         const favouriteEventIDs = response.favedEventsID
-        props.events && props.events.forEach(event => {
+        events && events.forEach(event => {
           if (favouriteEventIDs.length >= 2) {
             if (event.id === favouriteEventIDs[0]) {
               setFavouriteEventName1(event.ename)
@@ -252,11 +255,7 @@ function MemberProfile (props) {
       })
   }
 
-  if (!props.events) {
-    updateEvents()
-  }
-
-  if (props.user.id && !recentEvent && !favouriteEventName1) {
+  if (user.id && !recentEvent && !favouriteEventName1) {
     getFavouriteEvents()
     getRecentEvent()
   }
@@ -278,7 +277,7 @@ function MemberProfile (props) {
               </div>
 
               <Typography className={classes.memberName}>
-                {props.user.fname} {props.user.lname}
+                {user.fname} {user.lname}
               </Typography>
             </div>
 
@@ -296,11 +295,11 @@ function MemberProfile (props) {
                             {ID}
                           </Typography>
                         </div>
-                        <div className={classes.icon}>
+                        {user && user.id && <div className={classes.icon}>
                           <IconButton onClick={() => handleEdit()}>
                             <OutlinedPencilIcon className={classes.pencilIcon}/>
                           </IconButton>
-                        </div>
+                        </div>}
                       </div>
                       <div className={classes.infoBox}>
                         <div>
@@ -481,11 +480,4 @@ function MemberProfile (props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.userState.user,
-    events: state.pageState.events
-  }
-}
-
-export default connect(mapStateToProps, { setUser })(MemberProfile)
+export default MemberProfile

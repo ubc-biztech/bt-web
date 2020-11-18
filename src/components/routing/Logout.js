@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 
 import { Button } from '@material-ui/core'
-import { logout } from 'store/user/UserActions'
+import { logout } from 'store/user/userActions'
 
 export function Logout (props) {
   return (

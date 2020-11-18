@@ -13,7 +13,7 @@ import {
 
 import LoginImage from 'assets/login.svg'
 import { COLORS } from 'constants/index'
-import { setUser } from 'store/user/UserActions'
+import { setUser } from 'store/user/userActions'
 import { checkFeatureFlag } from 'utils'
 
 const styles = {
@@ -126,7 +126,7 @@ function Login () {
 
 const mapStateToProps = state => {
   return {
-    user: state.userState.user
+    user: state.userState.user.data
   }
 }
 
