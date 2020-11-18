@@ -1,4 +1,5 @@
 @import "./node_modules/react-vis/dist/style";
+@import '~constants/index.scss';
 
 @font-face {
 	font-family: 'Gilroy';
@@ -23,3 +24,14 @@
         url('./assets/font/Gilroy-Bold.ttf') format('truetype');
 	font-weight: 700;
 }
+
+.content {
+    padding-top: 14px;
+    margin-left: 110px;
+
+    @media screen and (max-width: $md){
+        margin-left: 10px;
+        margin-bottom: $bottom_nav_size;
+    }
+}
+

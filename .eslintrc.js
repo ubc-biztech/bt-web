@@ -26,5 +26,12 @@ module.exports = {
     'react/prop-types': 0,
     quotes: ['error', 'single'],
     'jsx-quotes': ['error', 'prefer-single']
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        moduleDirectory: ['node_modules', 'src/']
+      }
+    }
   }
 }

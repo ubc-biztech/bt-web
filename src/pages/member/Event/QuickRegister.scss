@@ -1,0 +1,11 @@
+@import '~constants/index.scss';
+
+.layout {
+    width: 66vw;
+    margin: auto;
+    
+    @media screen and (max-width: $md) {
+        width: 90vw;
+        margin: auto;
+    }
+}
