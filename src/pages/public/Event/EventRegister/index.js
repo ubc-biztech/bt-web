@@ -6,9 +6,10 @@ import * as Yup from 'yup'
 import EventView from 'components/Event/EventView'
 import EventRegisterForm from './EventRegisterForm'
 import NotFound from 'pages/NotFound'
+import { COLORS } from '../../../../constants/_constants/theme'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, Typography } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 
 import { fetchBackend } from 'utils'
@@ -16,7 +17,7 @@ import { fetchBackend } from 'utils'
 const useStyles = makeStyles(theme => ({
   layout: {
     [theme.breakpoints.up('sm')]: {
-      width: 600,
+      width: 850,
       margin: 'auto'
     }
   },
@@ -27,6 +28,12 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     padding: theme.spacing(3)
+  },
+  registrationHeader: {
+    borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
+    marginTop: '35px',
+    paddingLeft: '28px',
+    marginLeft: '11px'
   }
 }))
 
@@ -88,17 +95,19 @@ const EventFormContainer = (props) => {
       <Helmet>
         <title>{event.ename} - Register</title>
       </Helmet>
-      <Paper className={classes.paper}>
-        <EventView event={event}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={submitValues}
-          >
-            {props => <EventRegisterForm {...props} />}
-          </Formik>
-        </EventView>
-      </Paper>
+      <EventView event={event}>
+        <div className={classes.registrationHeader}>
+          <Typography>Registration</Typography>
+          <Typography>We need to know a little bit about you to get started.</Typography>
+        </div>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={submitValues}
+        >
+          {props => <EventRegisterForm {...props} />}
+        </Formik>
+      </EventView>
     </div>
   ) : (
     <NotFound message={`The event with id ${eventId} could not be found!`}/>

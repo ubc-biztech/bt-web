@@ -18,6 +18,7 @@ const options = {
       props: { gutterBottom: true, variant: 'caption', paragraph: true }
     },
     p: { component: Typography },
+    span: { component: Typography },
     a: { component: Link },
     li: {
       // eslint-disable-next-line
