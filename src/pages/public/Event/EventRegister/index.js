@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   registrationHeader: {
     borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
     marginTop: '35px',
-    paddingLeft: '28px',
+    paddingLeft: '19px',
     marginLeft: '11px'
   }
 }))

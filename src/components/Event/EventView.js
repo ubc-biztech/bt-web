@@ -21,12 +21,22 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     padding: theme.spacing(3)
+  },
+  arrowStyle: {
+    color: COLORS.BIZTECH_GREEN,
+    fontSize: '36px'
+  },
+  dropDown: { 
+    display: 'flex', 
+    cursor: 'pointer',
+    marginLeft: '-6px'
+  },
+  infoText: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
   }
 }))
-
-const greenStyle = {
-  color: COLORS.BIZTECH_GREEN
-}
 
 const EventView = ({ event, children }) => {
   const classes = useStyles()
@@ -34,16 +44,16 @@ const EventView = ({ event, children }) => {
 
   return (
     <React.Fragment>
-      <img src={event.imageUrl || require('assets/placeholder.jpg')} alt='Event' style={{ maxWidth: '100%' }} />
+      <img src={event.imageUrl || require('assets/placeholder.jpg')} alt='Event' style={{ maxWidth: '100%', borderRadius: '5px' }} />
 
       <div className={classes.content}>
         <Typography variant='h4' align='left' gutterBottom>
           {event.ename}
         </Typography>
 
-        <div style={{ display: 'flex', cursor: 'pointer' }} onClick={() => setShowDescription(!showDescription)}>
-          {showDescription ? <ArrowDropDown style={greenStyle} /> : <ArrowRight style={greenStyle} />}
-          <Typography variant='h5'>Info</Typography>
+        <div className={classes.dropDown} onClick={() => setShowDescription(!showDescription)}>
+          {showDescription ? <ArrowDropDown className={classes.arrowStyle} /> : <ArrowRight className={classes.arrowStyle} />}
+          <Typography className={classes.infoText} variant='h5'>Info</Typography>
         </div>
 
         {showDescription ? (

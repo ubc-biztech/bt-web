@@ -10,7 +10,8 @@ const ICON_SIZE = '28px'
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
-    marginTop: '15px'
+    marginTop: '15px',
+    marginBottom: '20px'
   },
   biztechText: {
     marginLeft: '14px',
