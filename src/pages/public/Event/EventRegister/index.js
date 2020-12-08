@@ -50,8 +50,8 @@ const EventFormContainer = (props) => {
     fname: Yup.string().required('First name is required'),
     lname: Yup.string().required('Last name is required'),
     faculty: Yup.string().required('Faculty is required'),
-    year: Yup.string().required('Level of study is required'),
-    diet: Yup.string().required('Dietary restriction is required')
+    year: Yup.string().required('Level of study is required')
+    // diet: Yup.string().required('Dietary restriction is required')
   })
 
   const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '' }

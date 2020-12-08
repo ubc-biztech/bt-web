@@ -26,15 +26,15 @@ const useStyles = makeStyles(theme => ({
     color: COLORS.BIZTECH_GREEN,
     fontSize: '36px'
   },
-  dropDown: { 
-    display: 'flex', 
+  dropDown: {
+    display: 'flex',
     cursor: 'pointer',
     marginLeft: '-6px'
   },
   infoText: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center"
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   }
 }))
 

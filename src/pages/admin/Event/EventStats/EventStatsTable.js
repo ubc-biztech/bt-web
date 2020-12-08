@@ -7,6 +7,7 @@ import { MenuItem, Paper, Select, Typography } from '@material-ui/core'
 
 import { REGISTRATION_STATUS, COLORS } from 'constants/index'
 import { fetchBackend } from 'utils'
+import { InvertColorsSharp } from '@material-ui/icons'
 
 const styles = {
   stats: {
@@ -237,11 +238,11 @@ export class EventStatsTable extends Component {
                     style={{
                       backgroundColor:
                         rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
-                          ? '#54D26E'
+                          ? COLORS.LIGHT_GREEN
                           : rowData.registrationStatus === REGISTRATION_STATUS.WAITLISTED
-                            ? '#F7D055'
+                            ? COLORS.LIGHT_YELLOW
                             : rowData.registrationStatus === REGISTRATION_STATUS.CANCELLED
-                              ? '#E15453'
+                              ? COLORS.LIGHT_RED
                               : COLORS.LIGHT_BACKGROUND_COLOR,
                       paddingLeft: '10px'
                     }}>
