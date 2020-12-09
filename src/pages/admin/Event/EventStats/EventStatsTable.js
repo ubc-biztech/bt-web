@@ -7,7 +7,6 @@ import { MenuItem, Paper, Select, Typography } from '@material-ui/core'
 
 import { REGISTRATION_STATUS, COLORS } from 'constants/index'
 import { fetchBackend } from 'utils'
-import { InvertColorsSharp } from '@material-ui/icons'
 
 const styles = {
   stats: {

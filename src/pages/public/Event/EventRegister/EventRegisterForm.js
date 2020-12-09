@@ -8,6 +8,7 @@ import {
   Select,
   FormHelperText
 } from '@material-ui/core'
+import EventAvailableIcon from '@material-ui/icons/EventAvailable'
 import { makeStyles } from '@material-ui/core/styles'
 import { COLORS } from '../../../../constants/_constants/theme'
 
@@ -36,14 +37,33 @@ const useStyles = makeStyles((theme) => ({
   select: {
     backgroundColor: COLORS.TEXTFIELD,
     borderRadius: '4px',
-    marginBottom: '20px',
     paddingLeft: '10px'
+  },
+  errorSelect: {
+    backgroundColor: COLORS.TEXTFIELD,
+    borderRadius: '4px',
+    paddingLeft: '10px',
+    border: `1px solid ${COLORS.ERROR_RED}`
   },
   icon: {
     fill: COLORS.BIZTECH_GREEN
   },
   errorMsg: {
-    color: '#d8362d'
+    color: COLORS.ERROR_RED
+  },
+  registerButton: {
+    textTransform: 'none'
+  },
+  registerIcon: {
+    color: COLORS.FONT_COLOR,
+    marginRight: '5px'
+  },
+  input: {
+    "&:-webkit-autofill": {
+      WebkitBoxShadow: `0 0 0 1000px ${COLORS.TEXTFIELD} inset`,
+      WebkitTextFillColor: COLORS.WHITE,
+      caretColor: COLORS.WHITE
+    }
   }
 }))
 
@@ -51,13 +71,11 @@ export default function RegisterEventForm (props) {
   const classes = useStyles()
 
   const {
-    values,
     errors,
     touched,
     handleSubmit,
     handleChange,
     setFieldTouched,
-    dirty,
     isSubmitting,
     setFieldValue
   } = props
@@ -71,15 +89,11 @@ export default function RegisterEventForm (props) {
   const handleSelectChange = (e, groupName) => {
     e.preventDefault()
     const value = e.target.value
-    console.log('values')
-    console.log(values)
-    console.log('errors')
-    console.log(errors)
-    console.log('touched')
-    console.log(touched)
 
-    setFieldTouched(groupName, true, false)
-    setFieldValue(groupName, value)
+    if (value) {
+      setFieldTouched(groupName, true, false)
+      setFieldValue(groupName, value)
+    }
   }
 
   function createTextField (label, groupName, autoComplete) {
@@ -99,7 +113,8 @@ export default function RegisterEventForm (props) {
           inputProps={{
             style: {
               padding: '7px'
-            }
+            }, 
+            className: classes.input
           }}
         />
       </React.Fragment>
@@ -108,10 +123,10 @@ export default function RegisterEventForm (props) {
 
   function createSelect (label, listOfOptions, groupName) {
     return (
-      <React.Fragment>
+      <div style={{ marginBottom: '20px' }}>
         <Typography>{label}</Typography>
         <Select
-          className={classes.select}
+          className={touched[groupName] && Boolean(errors[groupName]) ? classes.errorSelect : classes.select}
           disableUnderline={true}
           MenuProps={{
             getContentAnchorEl: null,
@@ -132,7 +147,7 @@ export default function RegisterEventForm (props) {
           {listOfOptions.map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
         </Select>
         {touched[groupName] && Boolean(errors[groupName]) ? <FormHelperText className={classes.errorMsg}>This is required!</FormHelperText> : null}
-      </React.Fragment>
+      </div>
     )
   }
 
@@ -192,12 +207,14 @@ export default function RegisterEventForm (props) {
       </Grid>
       <br />
       <Button
+        className={classes.registerButton}
         variant='contained'
         color='primary'
         type='submit'
-        disabled={!dirty || isSubmitting}
+        disabled={isSubmitting}
       >
-                Submit
+        <EventAvailableIcon style={{color: COLORS.BACKGROUND_COLOR, marginRight: '5px'}} />
+                register
       </Button>
     </form>
   )
