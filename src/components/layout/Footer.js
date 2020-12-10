@@ -1,14 +1,14 @@
 import React from 'react'
 import Heart from '../../assets/heart.svg'
 import BiztechIcon from '../icons/BiztechIcon'
-import LinkedIn from '../icons/linkedin.svg'
 import Discord from '../icons/discord.svg'
-import Facebook from '../icons/facebook.svg'
-import Instagram from '../icons/instagram.svg'
 import { COLORS } from '../../constants/_constants/theme'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import FacebookIcon from '@material-ui/icons/Facebook'
+import InstagramIcon from '@material-ui/icons/Instagram'
+import LinkedInIcon from '@material-ui/icons/LinkedIn'
 
 const ICON_SIZE = '24px'
 
@@ -56,16 +56,16 @@ function Header () {
           <BiztechIcon fill={COLORS.WHITE} size={ICON_SIZE} margin='5px' />
         </a>
         <a href='https://www.linkedin.com/company/ubcbiztech/' target='_blank' rel='noopener noreferrer'>
-          <img src={LinkedIn} className={classes.icon} alt='LinkedIn' />
+          <LinkedInIcon className={classes.icon} />
         </a>
         <a href='https://discord.gg/tP6kbkmK5D' target='_blank' rel='noopener noreferrer'>
           <img src={Discord} className={classes.icon} alt='Discord' />
         </a>
         <a href='https://www.facebook.com/BizTechUBC/' target='_blank' rel='noopener noreferrer'>
-          <img src={Facebook} className={classes.icon} alt='Facebook' />
+          <FacebookIcon className={classes.icon} />
         </a>
         <a href='https://www.instagram.com/ubcbiztech/' target='_blank' rel='noopener noreferrer'>
-          <img src={Instagram} className={classes.icon} alt='Instagram'/>
+          <InstagramIcon className={classes.icon} />
         </a>
       </div>
     </div>

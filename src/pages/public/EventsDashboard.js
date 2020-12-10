@@ -216,6 +216,7 @@ function EventsDashboard (props) {
   }
 
   const redirectToEvent = (e, eventId) => {
+    console.log('HELLO I AM HANDLING A CARD CLICK')
     history.push(`/event/${eventId}/register`)
   }
 

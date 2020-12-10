@@ -7,8 +7,7 @@ const options = {
     h1: {
       component: Typography,
       props: {
-        gutterBottom: true,
-        variant: 'h5'
+        gutterBottom: true
       }
     },
     h2: { component: Typography, props: { gutterBottom: true, variant: 'h6' } },

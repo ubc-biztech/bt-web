@@ -6,10 +6,9 @@ import * as Yup from 'yup'
 import EventView from 'components/Event/EventView'
 import EventRegisterForm from './EventRegisterForm'
 import NotFound from 'pages/NotFound'
-import { COLORS } from '../../../../constants/_constants/theme'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Paper, Typography } from '@material-ui/core'
+import { Grid, Paper } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 
 import { fetchBackend } from 'utils'
@@ -28,12 +27,6 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     padding: theme.spacing(3)
-  },
-  registrationHeader: {
-    borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
-    marginTop: '35px',
-    paddingLeft: '19px',
-    marginLeft: '11px'
   }
 }))
 
@@ -96,10 +89,6 @@ const EventFormContainer = (props) => {
         <title>{event.ename} - Register</title>
       </Helmet>
       <EventView event={event}>
-        <div className={classes.registrationHeader}>
-          <Typography>Registration</Typography>
-          <Typography>We need to know a little bit about you to get started.</Typography>
-        </div>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -117,14 +106,15 @@ const EventFormContainer = (props) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
     const eventID = event.id
     const body = {
-      id,
+      id: parseInt(id),
       fname,
       lname,
       email,
-      year,
+      userYear: year,
       faculty,
       gender,
-      diet
+      diet,
+      heardFrom
     }
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/${values.id}`, 'GET')
