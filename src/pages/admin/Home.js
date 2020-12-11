@@ -56,20 +56,20 @@ function AdminHome (props) {
   }
 
   const handleClickEditEvent = () => {
-    history.push(`/admin/event/${eventMenuClicked}/edit`)
+    history.push(`/admin/event/${eventMenuClicked.id}/${eventMenuClicked.year}/edit`)
     handleClose()
   }
 
   const handleClickDeleteEvent = async () => {
-    const clickedEvent = events.find(event => event.id === eventMenuClicked)
+    const clickedEvent = events.find(event => event.id === eventMenuClicked.id && event.year === eventMenuClicked.year)
     if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {
-      await deleteEvent({ eventId: clickedEvent.id })
+      await deleteEvent({ eventId: clickedEvent.id, eventYear: clickedEvent.year})
     }
     handleClose()
   }
 
-  const handleClickViewEvent = (eventId) => {
-    history.push(`/admin/event/${eventId}`)
+  const handleClickViewEvent = (eventId,eventYear) => {
+    history.push(`/admin/event/${eventId}/${eventYear}`)
     handleClose()
   }
 
@@ -81,8 +81,8 @@ function AdminHome (props) {
   function createEventCard (event) {
     const image = event.imageUrl || require('assets/placeholder.jpg')
     return (
-      <Card className={classes.card} key={event.id}>
-        <CardActionArea onClick={() => handleClickViewEvent(event.id)} >
+      <Card className={classes.card} key={event.id+event.year}>
+        <CardActionArea onClick={() => handleClickViewEvent(event.id,event.year)} >
           <CardMedia
             className={classes.media}
             component='img'
@@ -99,7 +99,7 @@ function AdminHome (props) {
           action={
             <IconButton aria-label='more options'
               onClick={e => {
-                handleClick(e, event.id)
+                handleClick(e, event)
               }}>
               <MoreVertIcon />
             </IconButton>

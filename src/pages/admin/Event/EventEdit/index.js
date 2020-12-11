@@ -36,7 +36,7 @@ const EventEdit = (props) => {
   const { events } = props
 
   const classes = useStyles()
-  const { id: eventId } = useParams()
+  const { id: eventId, year: eventYear } = useParams()
   const history = useHistory()
 
   const [event, setEvent] = useState(null)
@@ -45,13 +45,13 @@ const EventEdit = (props) => {
 
   useEffect(() => {
     // Get the initial values
-    if (eventId) {
-      const event = events.find(event => event.id === eventId)
+    if (eventId && eventYear) {
+      const event = events.find(event => event.id === eventId && event.year.toString() === eventYear)
       setEvent(event)
       setPreviewEvent(event)
       setLoaded(true)
     }
-  }, [eventId, events])
+  }, [eventId, eventYear, events])
 
   const validationSchema = Yup.object({
     ename: Yup.string().required(),
@@ -97,7 +97,7 @@ const EventEdit = (props) => {
     endDate: ''
   }
 
-  if (!loaded) return <Loading message={`Loading event with id '${eventId}'`}/>
+  if (!loaded) return <Loading message={`Loading event with id ${eventId} and year ${eventYear}`}/>
   return event ? (
     <div className={classes.layout}>
       <Helmet>
@@ -122,7 +122,7 @@ const EventEdit = (props) => {
         <EventView event={previewEvent}/>
       </Paper>
     </div>
-  ) : <NotFound message={`The event with id ${eventId} could not be found`}/>
+  ) : <NotFound message={`The event with id ${eventId} and ${eventYear} could not be found`}/>
 
   async function submitValues (values) {
     const body = {
@@ -138,10 +138,10 @@ const EventEdit = (props) => {
       endDate: values.endDate
     }
 
-    fetchBackend(`/events/${values.slug}`, 'PATCH', body)
+    fetchBackend(`/events/${values.slug}/${parseInt(values.startDate)}`, 'PATCH', body)
       .then((response) => {
         alert(response.message)
-        history.push(`/event/${values.slug}`)
+        history.push(`/event/${values.slug}/${parseInt(values.startDate)}`)
       })
       .catch(err => {
         console.log(err)

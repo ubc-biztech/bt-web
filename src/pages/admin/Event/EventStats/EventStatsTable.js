@@ -43,8 +43,10 @@ export class EventStatsTable extends Component {
   }
 
   async updateUserRegistrationStatus (id, registrationStatus) {
+    console.log(id)
     const body = {
       eventID: this.props.event.id,
+      eventYear: this.props.event.year,
       registrationStatus
     }
 
@@ -57,12 +59,15 @@ export class EventStatsTable extends Component {
      faculty, gender, dietary, and year stats are only computed on the initial render of the component
      # of registered/checkedin etc. is computed every single time this function is called
   */
-  async getEventTableData (eventID) {
+  async getEventTableData (eventID, eventYear) {
     let params = new URLSearchParams({
-      eventID: eventID
+      eventID: eventID,
+      year: eventYear
+
     })
     await fetchBackend(`/registrations?${params}`, 'GET')
       .then(response => {
+        console.log("here")
         const heardFrom = {}
         response.data.forEach(user => {
           if (user.heardFromData) {
@@ -71,7 +76,8 @@ export class EventStatsTable extends Component {
         })
         this.setState({ heardFrom })
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         console.log('No registrations for this event')
       })
 
@@ -156,7 +162,7 @@ export class EventStatsTable extends Component {
   }
 
   componentDidMount () {
-    this.getEventTableData(this.props.event.id)
+    this.getEventTableData(this.props.event.id,this.props.event.year)
   }
 
   /*
