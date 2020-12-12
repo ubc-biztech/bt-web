@@ -4,8 +4,6 @@ import { Redirect, Switch, useParams } from 'react-router-dom'
 
 import Route from 'components/routing/Route'
 import NotFound from 'pages/NotFound'
-import Header from '../../../components/layout/Header'
-import Footer from '../../../components/layout/Footer'
 
 import EventDetails from './EventDetails'
 import EventRegister from './EventRegister'
@@ -38,22 +36,18 @@ const MemberRoutes = (props) => {
   // Loading state
   if (!eventsLoading && !currentEvent) return <NotFound message={`Could not obtain data on the event with id '${eventId}'`}/>
   return (
-    <div>
-      <Header />
-      <Switch>
+    <Switch>
 
-        <Route
-          exact
-          path='/event/:id/:year'
-          render={() => <EventRegister eventId={eventId} event={currentEvent} loading={eventsLoading} />} />
-        <Route
-          exact
-          path='/event/:id'
-          render={() => <EventDetails eventId={eventId} event={currentEvent} loading={eventsLoading} />} />
-        <Redirect to='/404' />
-      </Switch>
-      <Footer />
-    </div>
+      <Route
+        exact
+        path='/event/:id/:year/register'
+        render={() => <EventRegister eventId={eventId} event={currentEvent} loading={eventsLoading} />} />
+      <Route
+        exact
+        path='/event/:id/:year'
+        render={() => <EventDetails eventId={eventId} event={currentEvent} loading={eventsLoading} />} />
+      <Redirect to='/404' />
+    </Switch>
   )
 }
 

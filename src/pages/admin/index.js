@@ -34,11 +34,11 @@ const AdminRoutes = (props) => {
         render={() => <EventCreate />} />
       <Route
         exact
-        path='/admin/event/:id/edit'
+        path='/admin/event/:id/:year/edit'
         render={() => <EventEdit events={events} />} />
       <Route
         exact
-        path='/admin/event/:id' // Need to make sure that this comes after 'new' and 'edit'
+        path='/admin/event/:id/:year' // Need to make sure that this comes after 'new' and 'edit'
         render={() => <EventStats events={events} />} />
       <Route
         exact

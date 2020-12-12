@@ -45,21 +45,23 @@ export class EventStatsTable extends Component {
   async updateUserRegistrationStatus (id, registrationStatus) {
     const body = {
       eventID: this.props.event.id,
+      year: this.props.event.year,
       registrationStatus
     }
-
     await fetchBackend(`/registrations/${id}`, 'PUT', body)
 
-    this.getEventTableData(this.props.event.id)
+    this.getEventTableData(this.props.event.id, this.props.event.year)
   }
 
   /* updates stats and the rows in the table
      faculty, gender, dietary, and year stats are only computed on the initial render of the component
      # of registered/checkedin etc. is computed every single time this function is called
   */
-  async getEventTableData (eventID) {
+  async getEventTableData (eventID, eventYear) {
     let params = new URLSearchParams({
-      eventID: eventID
+      eventID: eventID,
+      year: eventYear
+
     })
     await fetchBackend(`/registrations?${params}`, 'GET')
       .then(response => {
@@ -71,15 +73,14 @@ export class EventStatsTable extends Component {
         })
         this.setState({ heardFrom })
       })
-      .catch(() => {
+      .catch((err) => {
         console.log('No registrations for this event')
       })
 
     params = new URLSearchParams({
       users: true
     })
-
-    await fetchBackend(`/events/${eventID}?${params}`, 'GET')
+    await fetchBackend(`/events/${eventID}/${eventYear.toString()}?${params}`, 'GET')
       .then(async users => {
         this.registrationNumbers(users)
         this.notRegistrationNumbers(users)
@@ -156,7 +157,7 @@ export class EventStatsTable extends Component {
   }
 
   componentDidMount () {
-    this.getEventTableData(this.props.event.id)
+    this.getEventTableData(this.props.event.id,this.props.event.year)
   }
 
   /*

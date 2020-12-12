@@ -24,10 +24,10 @@ export async function fetchEvents (params = {}) {
 
 export async function deleteEvent (params = {}) {
   try {
-    const { eventId } = params
+    const { eventId, eventYear } = params
     if (!eventId) return
     // do the delete
-    const response = await fetchBackend(`/events/${eventId}`, 'DELETE')
+    const response = await fetchBackend(`/events/${eventId}/${eventYear}`, 'DELETE')
     // update events state after
     await fetchEvents({ refresh: true })
     // display the response

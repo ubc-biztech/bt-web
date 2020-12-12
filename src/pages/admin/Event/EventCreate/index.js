@@ -95,9 +95,11 @@ export default function EventCreate () {
   )
 
   async function submitValues (values) {
+
     const body = {
       ename: values.ename,
       id: values.slug,
+      year: values.startDate.getFullYear(),
       description: values.description,
       capac: values.capacity,
       elocation: values.elocation,
@@ -116,7 +118,7 @@ export default function EventCreate () {
       .catch(err => {
         log(err)
         if (err.status === 409) {
-          alert('Failed. Event with that slug/id already exists')
+          alert('Failed. Event with that slug/id and year already exists')
         } else alert(err.message + ' Please contact a dev')
       })
   }

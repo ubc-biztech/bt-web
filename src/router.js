@@ -117,8 +117,6 @@ class Router extends Component {
 
             {/* PUBLIC EVENT-SPECIFIC ROUTES */}
             {<Route path='/event/:id/:year' component={PublicEventRoutes} />}
-            {<Route path='/event/:id' component={PublicEventRoutes} />}
-
             {/* COMMON ROUTES */}
             <Route
               exact

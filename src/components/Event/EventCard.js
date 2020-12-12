@@ -40,7 +40,7 @@ function EventCard (props) {
 
   return (
     <Card className={classes.card} style={cardStyle} key={event.id}>
-      <CardActionArea onClick={e => { handleCardClick(e, event.id) }} >
+      <CardActionArea onClick={e => { handleCardClick(e, event.id, event.year) }} >
         <CardMedia
           className={classes.media}
           component='img'

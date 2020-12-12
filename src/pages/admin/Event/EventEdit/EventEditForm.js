@@ -31,8 +31,8 @@ export default function EventEditForm (props) {
   } = props
 
   useEffect(() => {
-    updatePreview({ ename, description, imageUrl })
-  }, [updatePreview, ename, description, imageUrl])
+    updatePreview({ ename, description, imageUrl, startDate, endDate })
+  }, [updatePreview, ename, description, imageUrl, startDate, endDate])
 
   const change = (name, e) => {
     e.persist()

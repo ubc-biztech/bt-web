@@ -44,7 +44,7 @@ const MemberCreate = (props) => {
     fname: Yup.string().required('First name is required'),
     lname: Yup.string().required('Last name is required'),
     faculty: Yup.string().required('Faculty is required'),
-    year: Yup.string().required('Level of study is required'),
+    userYear: Yup.string().required('Level of study is required'),
     diet: Yup.string().required('Dietary restriction is required')
   })
 
@@ -59,6 +59,7 @@ const MemberCreate = (props) => {
   }
 
   const submitValues = async (values) => {
+    console.log(values)
     const { email, fname, lname, id, inviteCode, faculty, year, diet, heardFrom, gender } = values
 
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
