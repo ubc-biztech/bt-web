@@ -4,8 +4,6 @@ import { Redirect, Switch, useParams } from 'react-router-dom'
 
 import Route from 'components/routing/Route'
 import NotFound from 'pages/NotFound'
-import Header from '../../../components/layout/Header'
-import Footer from '../../../components/layout/Footer'
 
 import EventDetails from './EventDetails'
 import EventRegister from './EventRegister'
