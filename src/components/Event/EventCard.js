@@ -39,7 +39,7 @@ function EventCard (props) {
   const image = event.imageUrl || require('assets/default.png')
 
   return (
-    <Card className={classes.card} style={cardStyle} key={"TEST"}>
+    <Card className={classes.card} style={cardStyle} key={event.id}>
       <CardActionArea onClick={e => { handleCardClick(e, event.id, event.year) }} >
         <CardMedia
           className={classes.media}

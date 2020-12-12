@@ -48,8 +48,6 @@ export class EventStatsTable extends Component {
       year: this.props.event.year,
       registrationStatus
     }
-    console.log(body)
-    console.log("HERE")
     await fetchBackend(`/registrations/${id}`, 'PUT', body)
 
     this.getEventTableData(this.props.event.id, this.props.event.year)
@@ -76,14 +74,12 @@ export class EventStatsTable extends Component {
         this.setState({ heardFrom })
       })
       .catch((err) => {
-        console.log(err)
         console.log('No registrations for this event')
       })
 
     params = new URLSearchParams({
       users: true
     })
-    console.log(eventYear)
     await fetchBackend(`/events/${eventID}/${eventYear.toString()}?${params}`, 'GET')
       .then(async users => {
         this.registrationNumbers(users)
