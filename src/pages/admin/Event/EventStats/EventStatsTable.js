@@ -43,16 +43,16 @@ export class EventStatsTable extends Component {
   }
 
   async updateUserRegistrationStatus (id, registrationStatus) {
-    console.log(id)
     const body = {
       eventID: this.props.event.id,
-      eventYear: this.props.event.year,
+      year: this.props.event.year,
       registrationStatus
     }
-
+    console.log(body)
+    console.log("HERE")
     await fetchBackend(`/registrations/${id}`, 'PUT', body)
 
-    this.getEventTableData(this.props.event.id)
+    this.getEventTableData(this.props.event.id, this.props.event.year)
   }
 
   /* updates stats and the rows in the table
@@ -67,7 +67,6 @@ export class EventStatsTable extends Component {
     })
     await fetchBackend(`/registrations?${params}`, 'GET')
       .then(response => {
-        console.log("here")
         const heardFrom = {}
         response.data.forEach(user => {
           if (user.heardFromData) {
@@ -84,8 +83,8 @@ export class EventStatsTable extends Component {
     params = new URLSearchParams({
       users: true
     })
-
-    await fetchBackend(`/events/${eventID}?${params}`, 'GET')
+    console.log(eventYear)
+    await fetchBackend(`/events/${eventID}/${eventYear.toString()}?${params}`, 'GET')
       .then(async users => {
         this.registrationNumbers(users)
         this.notRegistrationNumbers(users)
