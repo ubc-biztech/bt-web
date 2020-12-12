@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import DateFnsUtils from '@date-io/date-fns'
 import slugify from 'slugify'
+import { COLORS } from '../../../../constants/_constants/theme'
 
 import {
   Button,
@@ -104,6 +105,16 @@ export default function EventCreateForm (props) {
     setFieldValue('latitude', latitude)
   }
 
+  const createMenuItems = (listOfMenuItems) => {
+    return listOfMenuItems.map((menuItem) =>
+      <MenuItem
+        style={{ backgroundColor: COLORS.CARD_PAPER_COLOR }}
+        key={menuItem}
+        value={menuItem}>
+        {menuItem}
+      </MenuItem>)
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <Grid container spacing={3}>
@@ -172,12 +183,17 @@ export default function EventCreateForm (props) {
         </MuiPickersUtilsProvider>
         <Grid item xs={12}>
           <Typography>Some common event locations (optional):</Typography>
-          <Select fullWidth defaultValue='' onClick={handleLocation.bind(null)}>
-            <MenuItem value={'Nest'}>Nest</MenuItem>
-            <MenuItem value={'Hennings'}>Hennings</MenuItem>
-            <MenuItem value={'Sauder'}>Sauder</MenuItem>
-            <MenuItem value={'Birmingham'}>Birmingham, HA</MenuItem>
-            <MenuItem value={'Orchard'}>Orchard</MenuItem>
+          <Select MenuProps={{
+            getContentAnchorEl: null,
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left'
+            }
+          }}
+          fullWidth
+          defaultValue=''
+          onClick={handleLocation.bind(null)}>
+            {createMenuItems(['Nest', 'Hennings', 'Sauder', 'Birmingham', 'Orchard'])}
           </Select>
         </Grid>
         <Grid item xs={12} sm={4}>

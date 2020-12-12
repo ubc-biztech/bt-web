@@ -7,8 +7,7 @@ const options = {
     h1: {
       component: Typography,
       props: {
-        gutterBottom: true,
-        variant: 'h5'
+        gutterBottom: true
       }
     },
     h2: { component: Typography, props: { gutterBottom: true, variant: 'h6' } },
@@ -18,6 +17,7 @@ const options = {
       props: { gutterBottom: true, variant: 'caption', paragraph: true }
     },
     p: { component: Typography },
+    span: { component: Typography },
     a: { component: Link },
     li: {
       // eslint-disable-next-line

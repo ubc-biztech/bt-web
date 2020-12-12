@@ -16,7 +16,7 @@ import { fetchBackend } from 'utils'
 const useStyles = makeStyles(theme => ({
   layout: {
     [theme.breakpoints.up('sm')]: {
-      width: 600,
+      width: 850,
       margin: 'auto'
     }
   },
@@ -43,8 +43,8 @@ const EventFormContainer = (props) => {
     fname: Yup.string().required('First name is required'),
     lname: Yup.string().required('Last name is required'),
     faculty: Yup.string().required('Faculty is required'),
-    year: Yup.string().required('Level of study is required'),
-    diet: Yup.string().required('Dietary restriction is required')
+    year: Yup.string().required('Level of study is required')
+    // diet: Yup.string().required('Dietary restriction is required')
   })
 
   const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '' }
@@ -88,17 +88,15 @@ const EventFormContainer = (props) => {
       <Helmet>
         <title>{event.ename} - Register</title>
       </Helmet>
-      <Paper className={classes.paper}>
-        <EventView event={event}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={submitValues}
-          >
-            {props => <EventRegisterForm {...props} />}
-          </Formik>
-        </EventView>
-      </Paper>
+      <EventView event={event}>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={submitValues}
+        >
+          {props => <EventRegisterForm {...props} />}
+        </Formik>
+      </EventView>
     </div>
   ) : (
     <NotFound message={`The event with id ${eventId} could not be found!`}/>
@@ -108,14 +106,15 @@ const EventFormContainer = (props) => {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
     const eventID = event.id
     const body = {
-      id,
+      id: parseInt(id),
       fname,
       lname,
       email,
-      year,
+      userYear: year,
       faculty,
       gender,
-      diet
+      diet,
+      heardFrom
     }
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     fetchBackend(`/users/${values.id}`, 'GET')
