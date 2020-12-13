@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
         backgroundRepeat: 'none',
         backgroundSize: 'cover',
         position: 'relative',
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('sm')]: {
             marginLeft: '-10px',
         },
     },
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         top: '60%',
         left: '50%',
-        width: '80%',
+        width: '90%',
         transform: 'translate(-50%, -50%)',
     },
     houseImage: {
@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         [theme.breakpoints.down('xs')]: {
-            width: '60%',
+            width: '70%',
             top: '70%', //avoids being hidden by bottom bar on mobile
         }
     },
