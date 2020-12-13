@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => ({
         backgroundRepeat: 'none',
         backgroundSize: 'cover',
         position: 'relative',
+        [theme.breakpoints.down('md')]: {
+            marginLeft: '-10px',
+        },
     },
     images: {
         position: 'absolute',
@@ -26,13 +29,10 @@ const useStyles = makeStyles(theme => ({
         left: '50%',
         width: '80%',
         transform: 'translate(-50%, -50%)',
-        [theme.breakpoints.down('xs')]: {
-            left: '60%',
-        },
     },
     houseImage: {
         position:'absolute',
-        left: '50%',
+        left: '50%', //anchor in the middle
         bottom: '0',
         transform: 'translate(-15%, 0%)',
         [theme.breakpoints.down('xs')]: {
@@ -62,14 +62,13 @@ const useStyles = makeStyles(theme => ({
     linkbar: {
         position: 'absolute',
         top: '80%',
-        left: '50%', //anchor in the middle
+        left: '50%', 
         transform: 'translateX(-50%)',
         display: 'flex',
         flexDirection: 'column',
         [theme.breakpoints.down('xs')]: {
             width: '60%',
             top: '70%', //avoids being hidden by bottom bar on mobile
-            left: '60%',
         }
     },
     divider: {
