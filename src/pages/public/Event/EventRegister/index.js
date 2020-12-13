@@ -105,6 +105,7 @@ const EventFormContainer = (props) => {
   async function submitValues (values) {
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
     const eventID = event.id
+    const eventYear = event.year
     const body = {
       id: parseInt(id),
       fname,
@@ -113,38 +114,38 @@ const EventFormContainer = (props) => {
       userYear: year,
       faculty,
       gender,
-      diet,
-      heardFrom
+      diet
     }
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    fetchBackend(`/users/${values.id}`, 'GET')
-      .then(() => {
-        fetchBackend(`/users/${id}`, 'PATCH', body)
-        registerUser(id, eventID, heardFrom)
-      })
-      .catch(() => {
-        // Need to create new user
-        fetchBackend('/users', 'POST', body)
-          .then((userResponse) => {
-            if (userResponse.message === 'Created!') {
-              registerUser(id, eventID, heardFrom)
-            } else {
-              alert('Signup failed')
-            }
-          })
-      })
+      fetchBackend('/users', 'POST', body)
+        .then((userResponse) => {
+          if (userResponse.message === 'Created!') {
+            registerUser(id, eventID, eventYear, heardFrom)
+          } else {
+            alert('Signup failed')
+          }
+        })
+        .catch(err => {
+          // If the error is not "User could not be created because it already exists"
+          if(err.status !== 409){
+            alert('Can not create user')
+          }
+          registerUser(id, eventID, eventYear, heardFrom)
+        })
+     
   }
 
-  async function registerUser (id, eventID, heardFrom) {
+  async function registerUser (id, eventID, eventYear, heardFrom) {
     const body = {
-      id,
+      id: parseInt(id),
       eventID,
+      year: eventYear,
       heardFrom,
       registrationStatus: 'registered'
     }
     fetchBackend('/registrations', 'POST', body)
       .then(() => {
-        alert('Signed Up')
+        alert('Congratulations! You are now signed up.')
       })
       .catch(err => {
         if (err.status === 409) {
