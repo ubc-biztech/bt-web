@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
   iconContainer: {
     display: 'flex',
     marginLeft: 'auto',
-    marginRight: '70px'
+    marginRight: props => props.centerIcons ? 'auto' : '70px'
   },
   icon: {
     height: ICON_SIZE,
@@ -23,8 +23,8 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-function Header () {
-  const classes = useStyles()
+function IconContainer (props) {
+  const classes = useStyles(props)
 
   return (
       <div className={classes.iconContainer}>
@@ -47,4 +47,4 @@ function Header () {
   )
 }
 
-export default Header
+export default IconContainer

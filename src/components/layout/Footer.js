@@ -7,20 +7,14 @@ import IconContainer from './IconContainer'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
-const ICON_SIZE = '24px'
 
 const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
-    width: '100%'
+    width: '100%',
   },
   careContainer: {
     display: 'flex'
-  },
-  iconContainer: {
-    display: 'flex',
-    marginLeft: 'auto',
-    marginRight: '70px'
   },
   careText: {
     color: COLORS.FONT_GRAY,
@@ -32,14 +26,10 @@ const useStyles = makeStyles(() => ({
     marginTop: '3px',
     marginLeft: '5px'
   },
-  icon: {
-    height: ICON_SIZE,
-    width: ICON_SIZE,
-    margin: '5px'
-  }
+
 }))
 
-function Header () {
+function Footer () {
   const classes = useStyles()
 
   return (
@@ -48,9 +38,9 @@ function Header () {
         <Typography className={classes.careText}>Made with care</Typography>
         <img src={Heart} className={classes.heart} alt='Love' />
       </div>
-      <IconContainer/>
+      <IconContainer centerIcons={false}/>
     </div>
   )
 }
 
-export default Header
+export default Footer
