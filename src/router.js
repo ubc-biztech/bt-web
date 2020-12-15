@@ -23,6 +23,7 @@ import NotFound from 'pages/NotFound'
 import AdminRoutes from 'pages/admin'
 import MemberRoutes from 'pages/member'
 import PublicEventRoutes from 'pages/public/Event'
+import Landing from 'pages/public/Landing'
 
 import { setUser, fetchUser, fetchUserRegisteredEvents } from 'store/user/userActions'
 import { log } from 'utils'
@@ -148,6 +149,7 @@ class Router extends Component {
               exact
               path='/login'
               render={() => <Login />} />
+            {/*
             <Route
               path='/'
               render={() => user
@@ -156,6 +158,18 @@ class Router extends Component {
                   : <Redirect to='/member/home' />
                 : <Redirect to='/login' />
               } />
+              */
+            }
+            <Route
+              path='/'
+              render={() => user
+                ? user.admin
+                  ? <Redirect to='/admin/home' />
+                  : <Landing />
+                : <Landing />
+              } />
+              
+
 
           </Switch>
         </div>
