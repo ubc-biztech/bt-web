@@ -28,6 +28,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "cross-env REACT_APP_STAGE=development react-scripts start",
+    "stg": "cross-env REACT_APP_STAGE=staging react-scripts start",
     "build": "react-scripts build",
     "generate": "cross-env REACT_APP_STAGE=dev npm run build",
     "generate:prod": "cross-env GENERATE_SOURCEMAP=false REACT_APP_STAGE=production npm run build",

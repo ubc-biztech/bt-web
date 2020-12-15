@@ -4,9 +4,21 @@
 //     ? aws_config
 //     : aws_exports
 
-export const API_URL = process.env.REACT_APP_STAGE === 'production'
-  ? process.env.REACT_APP_PROD_API
-  : process.env.REACT_APP_STAGING_API
+export let API_URL;
+
+switch (process.env.REACT_APP_STAGE){
+  case 'production':
+    API_URL = process.env.REACT_APP_PROD_API;
+    break;
+  case 'development':
+    API_URL = process.env.REACT_APP_DEV_API;
+    break;
+  case 'staging':
+    API_URL = process.env.REACT_APP_STAGING_API;
+    break;
+  default:
+    API_URL = process.env.REACT_APP_STAGING_API
+}
 
 export const CLIENT_URL = process.env.REACT_APP_STAGE === 'production'
   ? 'https://app.ubcbiztech.com/'
