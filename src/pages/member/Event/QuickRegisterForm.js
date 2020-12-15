@@ -223,7 +223,7 @@ export default function QuickRegisterForm (props) {
             handleHomeEndKeys
             freeSolo
             onInputChange={(e, value) => { setFieldValue('heardFrom', value, false) }}
-            options={['Facebook', 'Boothing', 'Friends', 'BizTech Newsletter', 'Faculty Newsletter']}
+            options={['Facebook', 'Boothing', 'Friends', 'BizTech Newsletter', 'Faculty Newsletter', 'Other']}
             renderInput={(params) => (
               <TextField
                 {...params}

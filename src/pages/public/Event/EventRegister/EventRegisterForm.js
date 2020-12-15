@@ -104,7 +104,7 @@ export default function RegisterEventForm (props) {
             <CustomSelect
               {...props}
               label='How did you hear about this event?'
-              listOfOptions={['Facebook', 'Boothing', 'Friends', 'BizTech Newsletter', 'Faculty Newsletter']}
+              listOfOptions={['Facebook', 'Boothing', 'Friends', 'BizTech Newsletter', 'Faculty Newsletter', 'Other']}
               groupName='heardFrom'
             />
           </Grid>

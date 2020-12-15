@@ -136,7 +136,7 @@ export default function MemberCreateForm (props) {
           <RadioGroupButtons
             {...props}
             otherOption={true}
-            options={['Facebook', 'Boothing', 'Friends', 'BizTech Newsletter', 'Faculty Newsletter']}
+            options={['Facebook', 'Boothing', 'Friends', 'BizTech Newsletter', 'Faculty Newsletter', 'Other']}
             groupName={'heardFrom'}
             displayName={'How did you hear about UBC BizTech?'}
           />
