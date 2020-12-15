@@ -13,8 +13,8 @@ const ICON_SIZE = '24px'
 const useStyles = makeStyles(() => ({
   iconContainer: {
     display: 'flex',
-    marginLeft: 'auto',
-    marginRight: props => props.centerIcons ? 'auto' : '70px'
+    marginLeft: props => props.marginLeft || 'auto',
+    marginRight: props => props.marginRight || 'auto' 
   },
   icon: {
     height: ICON_SIZE,

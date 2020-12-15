@@ -92,7 +92,7 @@ function Landing(props) {
             <div className={classes.linkbar}>
                 <Markdown align="center">In the meantime, you can find us here: </Markdown>
                 <hr className={classes.divider}/>
-                <IconContainer centerIcons={true} />
+                <IconContainer />
             </div>
         </div>
         

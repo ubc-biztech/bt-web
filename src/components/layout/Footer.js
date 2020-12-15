@@ -7,6 +7,7 @@ import IconContainer from './IconContainer'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
+const ICONS_MARGIN_RIGHT = '70px'
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -38,7 +39,7 @@ function Footer () {
         <Typography className={classes.careText}>Made with care</Typography>
         <img src={Heart} className={classes.heart} alt='Love' />
       </div>
-      <IconContainer centerIcons={false}/>
+      <IconContainer marginRight={ICONS_MARGIN_RIGHT}/>
     </div>
   )
 }
