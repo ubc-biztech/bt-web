@@ -36,7 +36,7 @@ const EventFormContainer = (props) => {
   const { eventId, event, loading } = props
 
   const [registration, setRegistration] = useState({
-    isRegistered: false,
+    isRegistered: true,
     registeredEmail: undefined
   });
 

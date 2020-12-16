@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -11,14 +11,15 @@ import Discord from '../../../../components/icons/discord.svg'
 import { COLORS } from '../../../../constants/_constants/theme'
 
 const ICON_SIZE = '24px';
+const FLASH_TIME = '50';
 
 const useStyles = makeStyles(theme => ({
-  successMsgContainer: {
+  successMessageContainer: {
     marginTop: '35px',
     paddingLeft: '19px',
-    marginLeft: '11px'
+    marginLeft: '13px'
   },
-  successMsgHeading: {
+  successMessageHeading: {
     fontWeight: 'bold',
     fontSize: '24px'
   },
@@ -36,28 +37,54 @@ const useStyles = makeStyles(theme => ({
     height: ICON_SIZE,
     width: ICON_SIZE,
     marginLeft: '5px',
-    verticalAlign: 'text-bottom',
+    verticalAlign: 'bottom',
   },
   linkIcon: {
     height: ICON_SIZE,
     width: ICON_SIZE,
     marginLeft: '5px',
-    verticalAlign: 'text-bottom',
+    verticalAlign: 'bottom',
     '&:hover': {
-      transform: 'rotate(-20deg)'
-    }
+      transform: 'rotate(-20deg)',
+      cursor: 'pointer',
+    },
+    '&:active': {
+      transform: 'rotate(-90deg)'
+    },
+  },
+  linkCopiedMessage: {
+    color: `${COLORS.LIGHT_YELLOW}`,
+    paddingLeft: '19px',
+    marginLeft: '13px'
+  },
+  linkCopiedMessageHidden: {
+    color: `${COLORS.LIGHT_YELLOW}`,
+    paddingLeft: '19px',
+    marginLeft: '13px',
+    visibility: 'hidden'
   }
 }))
 
 const EventRegisterSuccess = ({email, location}) => {
     const classes = useStyles();
 
-    console.log(location.pathname);
+    const [displayLinkMessage, setDisplayLinkMessage] = useState(false);
+
+    let blinkingTimer = undefined;
+
+    const copyLinkToClipboard = () => {
+      navigator.clipboard.writeText(`https://app.ubcbiztech.com${location.pathname}`);
+      if(blinkingTimer) clearTimeout(blinkingTimer);
+
+      //Create blinking effect, for better UX experience
+      setDisplayLinkMessage(false); 
+      blinkingTimer = setTimeout(() => setDisplayLinkMessage(true), FLASH_TIME);
+    }
 
     return (
         <React.Fragment>
-            <div className={classes.successMsgContainer}>
-                <Typography className={classes.successMsgHeading}>See you soon!</Typography>
+            <div className={classes.successMessageContainer}>
+                <Typography className={classes.successMessageHeading}>See you soon!</Typography>
                 <Typography>You've successfully registered with <b>{email}</b>.</Typography>
                 <Typography>We've sent you an email.</Typography>
             </div>
@@ -66,7 +93,7 @@ const EventRegisterSuccess = ({email, location}) => {
                 <Typography>Share the event with friends! 
                     {/*TODO: Add clipboard icon to copy registration link to user's clipboard when clicked */}
                     <LinkIcon className={classes.linkIcon} 
-                      onClick={() => navigator.clipboard.writeText(`https://app.ubcbiztech.com${location.pathname}`)}
+                      onClick={() => copyLinkToClipboard()}
                     />
                     <a href='https://www.facebook.com/BizTechUBC/' target='_blank' rel='noopener noreferrer'>
                         <FacebookIcon className={classes.icon} />
@@ -77,6 +104,12 @@ const EventRegisterSuccess = ({email, location}) => {
 
                 </Typography>
             </div>
+            {displayLinkMessage ?  
+                <Typography className={classes.linkCopiedMessage} variant='caption'>
+                  Registration Link Copied to Clipboard!</Typography> :
+                <Typography className={classes.linkCopiedMessageHidden} variant='caption'>
+                  Registration Link Copied to Clipboard!</Typography> 
+            } 
         </React.Fragment>
     )
 
