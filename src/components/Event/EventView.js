@@ -74,7 +74,7 @@ function formatAMPM (date) {
   return hour + ':' + minute + ' ' + ampm
 }
 
-const EventView = ({ event, children }) => {
+const EventView = ({ event, isRegistered, children }) => {
   const classes = useStyles()
   const [showDescription, setShowDescription] = useState(false)
 
@@ -116,10 +116,10 @@ const EventView = ({ event, children }) => {
           <div />
         )}
 
-        <div className={classes.registrationHeader}>
+        {!isRegistered && <div className={classes.registrationHeader}>
           <Typography className={classes.registrationText}>Registration</Typography>
           <Typography>We need to know a little bit about you to get started.</Typography>
-        </div>
+        </div>}
         {children}
       </div>
     </React.Fragment>
