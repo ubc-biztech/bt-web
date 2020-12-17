@@ -40,7 +40,7 @@ const MemberRoutes = (props) => {
       const currentDate = new Date();
       const eventDate = new Date(event.startDate);
       return eventDate >= currentDate && !(event.id === eventId && event.year.toString() === eventYear);
-    }).slice(0, 2) //Return first two upcoming events
+    }).slice(0, 3) //Return up to the first three upcoming events
   ), [eventId, eventYear, events, eventsFetched])
 
   // Loading state

@@ -36,7 +36,7 @@ const EventFormContainer = (props) => {
   const { eventId, event, upcomingEvents, loading } = props
 
   const [registration, setRegistration] = useState({
-    isRegistered: true,
+    isRegistered: false,
     registeredEmail: undefined
   });
 
@@ -163,7 +163,6 @@ const EventFormContainer = (props) => {
           alert('You cannot sign up for this event again!')
         } else {
           alert('Signup failed')
-          setRegistration({...registration, isRegistered: true, registeredEmail: email});
         }
       })
   }

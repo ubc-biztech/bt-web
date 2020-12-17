@@ -76,13 +76,11 @@ const useStyles = makeStyles(theme => ({
   upcomingEventsContainer: {
     border: `1px solid #485A78`, 
     borderRadius: '5px',
-    marginBottom: '24px',
-    padding: '13px',
-    flex: '1 0 100px',
-    overflowY: 'auto'
+    padding: '19px',
   },
   upcomingEventsHeading: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: '20px'
   },
   upcomingEventsItem: {
     marginTop: '10px'
@@ -124,7 +122,7 @@ const EventRegisterSuccess = ({email, upcomingEvents, location}) => {
     }
 
     return (
-        <Grid container spacing={4} >
+        <Grid container spacing={4} className={classes.main} >
           <Grid item xs={12} lg={7} className={classes.leftColumn}>
             <div className={classes.successMessageContainer}>
                 <Typography className={classes.successMessageHeading}>See you soon!</Typography>
