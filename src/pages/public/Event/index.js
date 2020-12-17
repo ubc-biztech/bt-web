@@ -35,6 +35,14 @@ const MemberRoutes = (props) => {
     events && eventsFetched && events.find(event => event.id === eventId && event.year.toString() === eventYear)
   ), [eventId, eventYear, events, eventsFetched])
 
+  const upcomingEvents = useMemo(() => (
+    events && eventsFetched && events.filter(event => {
+      const currentDate = new Date();
+      const eventDate = new Date(event.startDate);
+      return eventDate >= currentDate && !(event.id === eventId && event.year.toString() === eventYear);
+    }).slice(0, 2) //Return first two upcoming events
+  ), [eventId, eventYear, events, eventsFetched])
+
   // Loading state
   if (!eventsLoading && !currentEvent) return <NotFound message={`Could not obtain data on the event with id '${eventId}'`}/>
   return (
@@ -46,7 +54,8 @@ const MemberRoutes = (props) => {
         <Route
           exact
           path='/event/:id/:year/register'
-          render={() => <EventRegister eventId={eventId} event={currentEvent} loading={eventsLoading} />} />
+          render={() => <EventRegister eventId={eventId} event={currentEvent} 
+            upcomingEvents={upcomingEvents} loading={eventsLoading} />} />
         <Route
           exact
           path='/event/:id/:year'

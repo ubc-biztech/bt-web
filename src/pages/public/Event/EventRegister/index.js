@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 const EventFormContainer = (props) => {
   const classes = useStyles()
-  const { eventId, event, loading } = props
+  const { eventId, event, upcomingEvents, loading } = props
 
   const [registration, setRegistration] = useState({
     isRegistered: true,
@@ -97,7 +97,7 @@ const EventFormContainer = (props) => {
         <title>{event.ename} - Register</title>
       </Helmet>
       <EventView event={event} isRegistered={isRegistered}>
-        { isRegistered ? <EventRegisterSuccess email={registeredEmail}/>: 
+        { isRegistered ? <EventRegisterSuccess email={registeredEmail} upcomingEvents={upcomingEvents}/>: 
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
