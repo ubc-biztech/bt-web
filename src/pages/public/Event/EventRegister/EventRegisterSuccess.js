@@ -16,6 +16,9 @@ const ICON_SIZE = '24px';
 const FLASH_TIME = '50';
 
 const useStyles = makeStyles(theme => ({
+  main: {
+    margin: '10px 0'
+  },
   leftColumn: {
     //border: '1px solid yellow'
   },
@@ -25,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
   },
   successMessageContainer: {
-    marginTop: '70px',
+    marginTop: '75px',
     paddingLeft: '19px',
     marginLeft: '13px'
   },
@@ -83,7 +86,14 @@ const useStyles = makeStyles(theme => ({
     fontSize: '20px'
   },
   upcomingEventsItem: {
-    marginTop: '10px'
+    marginTop: '13px'
+  },
+  upcomingEventsEname: {
+    cursor: 'pointer',
+    color: `${COLORS.FONT_COLOR}`
+  },
+  upcomingEventsDate: {
+
   },
   imageContainer: {
     display: 'flex',
@@ -105,7 +115,13 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const EventRegisterSuccess = ({email, upcomingEvents, location}) => {
+const EventRegisterSuccess = ({
+  email, 
+  upcomingEvents, 
+  resetRegistration, 
+  history, 
+  location
+}) => {
     const classes = useStyles();
 
     const [displayLinkMessage, setDisplayLinkMessage] = useState(false);
@@ -119,6 +135,11 @@ const EventRegisterSuccess = ({email, upcomingEvents, location}) => {
       //Create blinking effect when link icon clicked multiple times, for better UX experience
       setDisplayLinkMessage(false); 
       blinkingTimer = setTimeout(() => setDisplayLinkMessage(true), FLASH_TIME);
+    }
+
+    const redirectEvent = (id, year) => {
+      resetRegistration();
+      history.push(`/event/${id}/${year}/register`); //Could redirect to main page instead
     }
 
     return (
@@ -171,8 +192,9 @@ const EventRegisterSuccess = ({email, upcomingEvents, location}) => {
 
                   return (
                   <div key={`${event.id};${event.year}`} className={classes.upcomingEventsItem}>
-                    <Typography>{event.ename}</Typography>
-                    <Typography variant='caption' >
+                    <Typography className={classes.upcomingEventsEname} 
+                      onClick={() => redirectEvent(event.id, event.year)}>{event.ename}</Typography>
+                    <Typography className={classes.upcomingEventsDate} variant='caption' >
                       {eventStart}
                       {(eventEnd && (eventEnd !== eventStart)) ? ` - ${eventEnd}` : ''}
                     </Typography>

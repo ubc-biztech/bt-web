@@ -35,10 +35,14 @@ const EventFormContainer = (props) => {
   const classes = useStyles()
   const { eventId, event, upcomingEvents, loading } = props
 
-  const [registration, setRegistration] = useState({
+  const initialRegistrationState = {
     isRegistered: false,
     registeredEmail: undefined
-  });
+  }
+
+  const [registration, setRegistration] = useState(initialRegistrationState);
+
+  const resetRegistration = () => setRegistration(initialRegistrationState);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -97,8 +101,10 @@ const EventFormContainer = (props) => {
         <title>{event.ename} - Register</title>
       </Helmet>
       <EventView event={event} isRegistered={isRegistered}>
-        { isRegistered ? <EventRegisterSuccess email={registeredEmail} upcomingEvents={upcomingEvents}/>: 
-        <Formik
+        { isRegistered ? 
+        <EventRegisterSuccess email={registeredEmail} upcomingEvents={upcomingEvents}
+          resetRegistration={resetRegistration}/>
+        : <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={submitValues}
