@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
+import Markdown from 'components/layout/Markdown'
+import { COLORS } from '../../constants/_constants/theme'
+
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
-import Markdown from 'components/layout/Markdown'
 import ArrowRight from '@material-ui/icons/ArrowRight'
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown'
 import DateComponent from '../../components/icons/DateComponent'
-
-import { COLORS } from '../../constants/_constants/theme'
+import EventIcon from '@material-ui/icons/Event'
 
 const useStyles = makeStyles(theme => ({
   layout: {
@@ -50,7 +51,26 @@ const useStyles = makeStyles(theme => ({
   },
   descDate: {
     color: COLORS.BIZTECH_GREEN,
-    fontSize: '14px'
+    fontSize: '14px',
+    marginLeft: '5px'
+  },
+  desc: {
+    [theme.breakpoints.down('sm')]: {
+      border: `1px solid ${COLORS.CARD_PAPER_COLOR}`,
+      padding: '10px'
+    }
+  },
+  registrationText: {
+    fontWeight: 'bold',
+    fontSize: '24px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '20px'
+    }
+  },
+  subText: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   }
 }))
 
@@ -81,7 +101,7 @@ const EventView = ({ event, children }) => {
       <div style={{ position: 'relative' }}>
         <img src={event.imageUrl || require('assets/placeholder.jpg')} className={classes.banner} alt='Event' />
         <div className={classes.date}>
-          <DateComponent month={month} dayOfMonth={dayOfMonth} dayOfWeek={dayOfWeek} />
+          <DateComponent month={month} dayOfMonth={dayOfMonth} dayOfWeek={dayOfWeek} width={104} height={126} />
         </div>
       </div>
 
@@ -96,16 +116,23 @@ const EventView = ({ event, children }) => {
         </div>
 
         {showDescription ? (
-          <React.Fragment>
-            <Typography className={classes.descDate}>{dayOfWeek}, {month}. {dayOfMonth} {startTime}-{endTime}</Typography>
+          <div className={classes.desc}>
+            <div style={{ display: 'flex' }}>
+              <EventIcon fontSize='small' style={{ color: COLORS.BIZTECH_GREEN }}/>
+              <Typography className={classes.descDate}>{dayOfWeek}, {month}. {dayOfMonth} {startTime}-{endTime}</Typography>
+            </div>
             <Markdown>
               {event.description}
             </Markdown>
-          </React.Fragment>
+          </div>
         ) : (
           <div />
         )}
 
+        <div className={classes.registrationHeader}>
+          <Typography className={classes.registrationText}>Registration</Typography>
+          <Typography className={classes.subText}>We need to know a little bit about you to get started.</Typography>
+        </div>
         {children}
       </div>
     </React.Fragment>

@@ -7,7 +7,7 @@ import NotFound from 'pages/NotFound'
 import Header from '../../../components/layout/Header'
 import Footer from '../../../components/layout/Footer'
 
-import EventDetails from './EventDetails'
+// import EventDetails from './EventDetails'
 import EventRegister from './EventRegister'
 import { fetchEvents } from 'store/event/eventActions'
 
@@ -49,19 +49,18 @@ const MemberRoutes = (props) => {
     <div>
       <Header/>
       <Switch>
-
         <Route
           exact
           path='/event/:id/:year/register'
-          render={() => <EventRegister eventId={eventId} event={currentEvent}
-            upcomingEvents={upcomingEvents} loading={eventsLoading} />} />
+          render={() => <EventRegister eventId={eventId} event={currentEvent} upcomingEvents={upcomingEvents} loading={eventsLoading} />} />
+        {/*
+        MAXVP
         <Route
           exact
           path='/event/:id/:year'
-          render={() => <EventDetails eventId={eventId} event={currentEvent} loading={eventsLoading} />} />
+          render={() => <EventDetails eventId={eventId} event={currentEvent} loading={eventsLoading} />} /> */}
         <Redirect to='/404' />
       </Switch>
-      <Footer/>
     </div>
   )
 }

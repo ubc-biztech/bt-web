@@ -1,10 +1,13 @@
 import React from 'react'
+import { COLORS } from '../../constants/_constants/theme'
+
 import {
   Typography,
   TextField
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { COLORS } from '../../constants/_constants/theme'
+import { useTheme } from '@material-ui/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles(() => ({
   textField: {
@@ -25,19 +28,38 @@ const useStyles = makeStyles(() => ({
       }
     }
   },
+  mobileTextField: {
+    padding: '10px',
+    backgroundColor: COLORS.CARD_PAPER_COLOR,
+    borderRadius: '4px',
+    '& .MuiInputBase-root': {
+      backgroundColor: COLORS.CARD_PAPER_COLOR
+    }
+  },
   input: {
     '&:-webkit-autofill': {
       WebkitBoxShadow: `0 0 0 1000px ${COLORS.TEXTFIELD} inset`,
       WebkitTextFillColor: COLORS.WHITE,
       caretColor: COLORS.WHITE,
       backgroundColor: COLORS.TEXTFIELD,
-      borderRadius: '4px'
+      borderRadius: '0px'
+    }
+  },
+  mobileInput: {
+    '&:-webkit-autofill': {
+      WebkitBoxShadow: `0 0 0 1000px ${COLORS.CARD_PAPER_COLOR} inset`,
+      WebkitTextFillColor: COLORS.WHITE,
+      caretColor: COLORS.WHITE,
+      backgroundColor: `${COLORS.CARD_PAPER_COLOR} !important`,
+      borderRadius: '0px'
     }
   }
 }))
 
 export default function CustomTextField (props) {
   const classes = useStyles()
+  const theme = useTheme()
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down('sm'))
 
   const {
     errors,
@@ -55,26 +77,51 @@ export default function CustomTextField (props) {
     setFieldTouched(name, true, false)
   }
 
-  return (
-    <React.Fragment>
-      <Typography>{label}</Typography>
+  function createTextField (className, variant, inputProps, label) {
+    return (
       <TextField
-        className={classes.textField}
+        label={label}
         margin='none'
+        className={className}
         autoComplete={autoComplete}
         helperText={touched[groupName] ? errors[groupName] : ''}
         error={touched[groupName] && Boolean(errors[groupName])}
         id={groupName}
         onChange={change.bind(null, groupName)}
         fullWidth
-        variant='outlined'
-        inputProps={{
-          style: {
-            padding: '7px'
-          },
-          className: classes.input
+        variant={variant}
+        inputProps={inputProps}
+        InputLabelProps={{
+          shrink: true
         }}
       />
+    )
+  }
+
+  return (
+    <React.Fragment>
+      {!renderMobileOnly && <Typography>{label}</Typography>}
+      {renderMobileOnly
+        ? createTextField(
+          classes.mobileTextField,
+          'filled',
+          {
+            style: {
+              padding: '7px',
+              backgroundColor: COLORS.CARD_PAPER_COLOR,
+              marginTop: '10px'
+            },
+            className: classes.mobileInput
+          },
+          label) : createTextField(
+          classes.textField,
+          'outlined',
+          {
+            style: {
+              padding: '7px'
+            },
+            className: classes.input
+          })}
     </React.Fragment>
   )
 }

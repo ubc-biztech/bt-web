@@ -5,10 +5,14 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { COLORS } from '../../constants/_constants/theme'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: '104px',
-    height: '126px'
+    height: '126px',
+    [theme.breakpoints.down('sm')]: {
+      width: '56px',
+      height: '72px'
+    }
   },
   monthContainer: {
     width: '100%',
@@ -24,11 +28,14 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     transform: 'translate(-50%, -50%)',
     fontSize: '18px',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '10px'
+    }
   },
   dayContainer: {
     width: '100%',
-    height: '70%',
+    height: '62%',
     backgroundColor: COLORS.WHITE,
     borderBottomLeftRadius: '5px',
     borderBottomRightRadius: '5px',
@@ -41,7 +48,10 @@ const useStyles = makeStyles(() => ({
     transform: 'translate(-50%, -50%)',
     color: COLORS.BACKGROUND_COLOR,
     fontSize: '49px',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '26px'
+    }
   },
   dayOfWeek: {
     top: '90%',
@@ -49,7 +59,10 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     transform: 'translate(-50%, -90%)',
     color: COLORS.BACKGROUND_COLOR,
-    fontSize: '11px'
+    fontSize: '11px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '8px'
+    }
   }
 }))
 

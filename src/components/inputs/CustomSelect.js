@@ -1,4 +1,6 @@
 import React from 'react'
+import { COLORS } from '../../constants/_constants/theme'
+
 import {
   Typography,
   MenuItem,
@@ -6,9 +8,10 @@ import {
   FormHelperText
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { COLORS } from '../../constants/_constants/theme'
+import { useTheme } from '@material-ui/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   errorSelect: {
     backgroundColor: COLORS.TEXTFIELD,
     borderRadius: '4px',
@@ -25,11 +28,21 @@ const useStyles = makeStyles(() => ({
   },
   icon: {
     fill: COLORS.BIZTECH_GREEN
+  },
+  container: {
+    marginBottom: '20px'
+  },
+  mobileContainer: {
+    marginBottom: '20px',
+    padding: '20px',
+    backgroundColor: COLORS.CARD_PAPER_COLOR
   }
 }))
 
 export default function CustomSelect (props) {
   const classes = useStyles()
+  const theme = useTheme()
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down('sm'))
 
   const {
     errors,
@@ -52,7 +65,7 @@ export default function CustomSelect (props) {
   }
 
   return (
-    <div style={{ marginBottom: '20px' }}>
+    <div className={renderMobileOnly ? classes.mobileContainer : classes.container}>
       <Typography>{label}</Typography>
       <Select
         className={touched[groupName] && Boolean(errors[groupName]) ? classes.errorSelect : classes.select}

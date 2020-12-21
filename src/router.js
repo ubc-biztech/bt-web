@@ -168,7 +168,6 @@ class Router extends Component {
                   : <Landing />
                 : <Landing />
               } />
-
           </Switch>
         </div>
       </BrowserRouter>
