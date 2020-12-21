@@ -101,7 +101,7 @@ const EventView = ({ event, children }) => {
       <div style={{ position: 'relative' }}>
         <img src={event.imageUrl || require('assets/placeholder.jpg')} className={classes.banner} alt='Event' />
         <div className={classes.date}>
-          <DateComponent month={month} dayOfMonth={dayOfMonth} dayOfWeek={dayOfWeek} width={104} height={126} />
+          <DateComponent month={month} dayOfMonth={dayOfMonth} dayOfWeek={dayOfWeek} />
         </div>
       </div>
 
