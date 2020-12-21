@@ -97,7 +97,6 @@ const QuickRegister = ({
   const classes = useStyles()
   const history = useHistory()
 
-  console.log(renderMobileOnly)
   const handleReturn = () => {
     history.push('/events')
   }

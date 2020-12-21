@@ -44,9 +44,19 @@ const darkTheme = createMuiTheme({
         color: COLORS.FONT_COLOR
       }
     },
+    MuiInputLabel: {
+      filled: {
+        backgroundColor: COLORS.CARD_PAPER_COLOR
+      }
+    },
     MuiSvgIcon: {
       root: {
         color: COLORS.WHITE
+      }
+    },
+    MuiFilledInput: {
+      underline: {
+        borderBottom: `1px solid ${COLORS.FONT_COLOR}`
       }
     },
     MuiIcon: {

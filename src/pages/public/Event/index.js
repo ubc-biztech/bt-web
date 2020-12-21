@@ -5,7 +5,7 @@ import { Redirect, Switch, useParams } from 'react-router-dom'
 import Route from 'components/routing/Route'
 import NotFound from 'pages/NotFound'
 
-import EventDetails from './EventDetails'
+// import EventDetails from './EventDetails'
 import EventRegister from './EventRegister'
 import { fetchEvents } from 'store/event/eventActions'
 
@@ -42,10 +42,12 @@ const MemberRoutes = (props) => {
         exact
         path='/event/:id/:year/register'
         render={() => <EventRegister eventId={eventId} event={currentEvent} loading={eventsLoading} />} />
+      {/*
+      MAXVP
       <Route
         exact
         path='/event/:id/:year'
-        render={() => <EventDetails eventId={eventId} event={currentEvent} loading={eventsLoading} />} />
+        render={() => <EventDetails eventId={eventId} event={currentEvent} loading={eventsLoading} />} /> */}
       <Redirect to='/404' />
     </Switch>
   )

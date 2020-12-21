@@ -117,22 +117,21 @@ const EventFormContainer = (props) => {
       diet
     }
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-      fetchBackend('/users', 'POST', body)
-        .then((userResponse) => {
-          if (userResponse.message === 'Created!') {
-            registerUser(id, eventID, eventYear, heardFrom)
-          } else {
-            alert('Signup failed')
-          }
-        })
-        .catch(err => {
-          // If the error is not "User could not be created because it already exists"
-          if(err.status !== 409){
-            alert('Can not create user')
-          }
+    fetchBackend('/users', 'POST', body)
+      .then((userResponse) => {
+        if (userResponse.message === 'Created!') {
           registerUser(id, eventID, eventYear, heardFrom)
-        })
-     
+        } else {
+          alert('Signup failed')
+        }
+      })
+      .catch(err => {
+        // If the error is not "User could not be created because it already exists"
+        if (err.status !== 409) {
+          alert('Can not create user')
+        }
+        registerUser(id, eventID, eventYear, heardFrom)
+      })
   }
 
   async function registerUser (id, eventID, eventYear, heardFrom) {
