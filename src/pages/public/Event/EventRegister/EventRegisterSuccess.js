@@ -58,11 +58,8 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '5px',
     verticalAlign: 'bottom',
     '&:hover': {
-      transform: 'rotate(-20deg)',
+      transform: 'rotate(-30deg)',
       cursor: 'pointer',
-    },
-    '&:active': {
-      transform: 'rotate(-90deg)'
     },
   },
   linkCopiedMessageContainer: {
