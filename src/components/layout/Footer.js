@@ -7,27 +7,33 @@ import IconContainer from './IconContainer'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
-const ICONS_MARGIN_RIGHT = '70px'
+const ICONS_MARGIN_RIGHT = '10px'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
-    width: '100%',
+    width: '100%'
   },
   careContainer: {
     display: 'flex'
   },
   careText: {
     color: COLORS.FONT_GRAY,
-    fontSize: '14px'
+    fontSize: '14px',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '8px'
+    }
   },
   heart: {
     height: '15px',
     width: '15px',
     marginTop: '3px',
-    marginLeft: '5px'
-  },
-
+    marginLeft: '5px',
+    [theme.breakpoints.down('sm')]: {
+      height: '8px',
+      width: '8px'
+    }
+  }
 }))
 
 function Footer () {
