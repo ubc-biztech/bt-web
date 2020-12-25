@@ -11,7 +11,10 @@ const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
     marginTop: '15px',
-    marginBottom: '20px'
+    marginBottom: '20px',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    }
   },
   biztechText: {
     marginLeft: '14px',

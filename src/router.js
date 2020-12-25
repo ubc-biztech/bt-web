@@ -9,6 +9,8 @@ import {
 
 import Nav from 'components/layout/Navigation'
 import ScrollToTop from 'components/layout/ScrollToTop'
+import Header from 'components/layout/Header'
+import Footer from 'components/layout/Footer'
 import RegisterAlert from 'components/alerts/RegisterAlert'
 import Route from 'components/routing/Route'
 
@@ -96,6 +98,7 @@ class Router extends Component {
   render () {
     const { user } = this.props
     const { loaded } = this.state
+    const pathname = window.location.pathname
 
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.id
@@ -108,6 +111,7 @@ class Router extends Component {
         {user && <Nav admin={user.admin} />}
         <div className='content'>
           {user && userNeedsRegister && <RegisterAlert />}
+          {pathname === '/' ? null : <Header />}
           <Switch>
 
             {/* ADMIN ROUTES */}
@@ -169,6 +173,7 @@ class Router extends Component {
                 : <Landing />
               } />
           </Switch>
+          {pathname === '/' ? null : <Footer />}
         </div>
       </BrowserRouter>
     )
