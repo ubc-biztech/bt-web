@@ -5,8 +5,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Typography } from '@material-ui/core'
 
 import LinkIcon from '@material-ui/icons/Link'
-import FacebookIcon from '@material-ui/icons/Facebook'
-import Discord from '../../../../components/icons/discord.svg'
 import HouseChef from 'assets/housechef.svg'
 import SpeechBubble from 'assets/registrationpagespeech.svg'
 
@@ -19,11 +17,7 @@ const useStyles = makeStyles(theme => ({
   main: {
     margin: '10px 0'
   },
-  leftColumn: {
-    //border: '1px solid yellow'
-  },
   rightColumn: {
-    //border: '1px solid orange',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -126,7 +120,7 @@ const EventRegisterSuccess = ({
     let blinkingTimer = undefined;
 
     const copyLinkToClipboard = () => {
-      navigator.clipboard.writeText(`https://app.ubcbiztech.com${location.pathname}`);
+      navigator.clipboard.writeText(`${window.location.host}${location.pathname}`);
       if(blinkingTimer) clearTimeout(blinkingTimer);
 
       //Create blinking effect when link icon clicked multiple times, for better UX experience
@@ -154,13 +148,6 @@ const EventRegisterSuccess = ({
                     <LinkIcon className={classes.linkIcon} 
                       onClick={() => copyLinkToClipboard()}
                     />
-                    <a href='https://www.facebook.com/BizTechUBC/' target='_blank' rel='noopener noreferrer'>
-                        <FacebookIcon className={classes.icon} />
-                    </a>
-                    <a href='https://discord.gg/tP6kbkmK5D' target='_blank' rel='noopener noreferrer'>
-                        <img src={Discord} className={classes.icon} alt='Discord' />
-                    </a>
-
                 </Typography>
             </div>
             <div className={classes.linkCopiedMessageContainer}>

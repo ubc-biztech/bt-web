@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, Fragment} from 'react'
 import { Helmet } from 'react-helmet'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -9,8 +9,10 @@ import EventRegisterSuccess from './EventRegisterSuccess'
 import NotFound from 'pages/NotFound'
 
 import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Paper } from '@material-ui/core'
+import { Grid, Paper, Typography } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
+
+import { COLORS } from '../../../../constants/_constants/theme'
 
 import { fetchBackend } from 'utils'
 
@@ -28,6 +30,16 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     padding: theme.spacing(3)
+  },
+  registrationHeader: {
+    borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
+    marginTop: '35px',
+    paddingLeft: '19px',
+    marginLeft: '11px'
+  },
+  registrationText: {
+    fontWeight: 'bold',
+    fontSize: '24px'
   }
 }))
 
@@ -36,7 +48,7 @@ const EventFormContainer = (props) => {
   const { eventId, event, upcomingEvents, loading } = props
 
   const initialRegistrationState = {
-    isRegistered: false,
+    isRegistered: true,
     registeredEmail: undefined
   }
 
@@ -100,17 +112,23 @@ const EventFormContainer = (props) => {
       <Helmet>
         <title>{event.ename} - Register</title>
       </Helmet>
-      <EventView event={event} isRegistered={isRegistered}>
+      <EventView event={event} >
         { isRegistered ? 
         <EventRegisterSuccess email={registeredEmail} upcomingEvents={upcomingEvents}
           resetRegistration={resetRegistration}/>
-        : <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={submitValues}
-        >
-          {props => <EventRegisterForm {...props} />}
-        </Formik> }
+        : <Fragment>
+            <div className={classes.registrationHeader}>
+              <Typography className={classes.registrationText}>Registration</Typography>
+              <Typography>We need to know a little bit about you to get started.</Typography>
+            </div>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={submitValues}
+              >
+              {props => <EventRegisterForm {...props} />}
+            </Formik>
+          </Fragment> }
       </EventView> 
       
     </div>
