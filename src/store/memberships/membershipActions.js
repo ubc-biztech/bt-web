@@ -13,6 +13,7 @@ export async function fetchMemberships (params = {}) {
         // "request" sets the loading/refreshing states
         await Store.dispatch({ type: FETCH_MEMBERSHIPS_REQUEST, refresh })
         const response = await fetchBackend('/memberships', 'GET', undefined, false)
+        const data = await response.json()
         // "success" saves the response data
         await Store.dispatch({ type: FETCH_MEMBERSHIPS_SUCCESS, payload: response })
     } catch (err) {

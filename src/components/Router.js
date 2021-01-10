@@ -31,6 +31,7 @@ import NewMember from '../pages/member/NewMember'
 import Signup from '../pages/member/Signup'
 import UserEvents from '../pages/member/UserEvents'
 import UserHome from '../pages/member/UserHome'
+import IndividualMember from '../pages/member/IndividualMember'
 
 import { setUser } from '../actions/UserActions'
 import {
@@ -163,6 +164,9 @@ class Router extends Component {
             <AdminRoute
               path='/exec/memberships'
               render={() => <Memberships />} />
+            <AdminRoute
+              path='/exec/indmembership'
+              render={() => <IndividualMember />} />
 
             {/* HOME */}
             <Route

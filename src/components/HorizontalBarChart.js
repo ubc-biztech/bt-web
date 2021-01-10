@@ -2,10 +2,10 @@ import React from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 
 export default class HorizontalBarChart extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-          chartData:props.chartData
+            chartData: props.chartData,
         }
     }
     render() {
@@ -14,16 +14,29 @@ export default class HorizontalBarChart extends React.Component {
                 <HorizontalBar
                     data={this.props.data}
                     options={{
+                        plugins: {
+                            datalabels: {
+                                formatter: (value, ctx) => {
+                                    let sum = 0;
+                                    let dataArr = ctx.chart.data.datasets[0].data;
+                                    dataArr.map(data => {
+                                        sum += data;
+                                    });
+                                    let percentage = value + " (" + (value * 100 / sum).toFixed(0) + "%)";
+                                    return percentage;
+                                },
+                                color: '#AEC4F4',
+                                font: {
+                                    size: 14,
+                                    family: "Gilroy",
+                                    weight: "bold"
+                                },
+                                anchor: 'end',
+                                align: 'right'
+                            }
+                        },
                         title: {
-                            display: false,
-                            text: this.props.title,
-                            align: 'left',
-                            fontSize: 25,
-                            fontColor: '#FFFFFF',
-                            fontFamily: "Gilroy",
-                            position: 'top',
-                            fontStyle: 'normal',
-                            offset: true
+                            display: false
                         },
                         legend: {
                             display: false,
@@ -38,15 +51,15 @@ export default class HorizontalBarChart extends React.Component {
                         },
                         layout: {
                             padding: {
-                                left: 100,
+                                left: 20,
                                 right: 20,
                                 top: 10,
                                 bottom: 30
                             }
                         },
-                        responsive:true,
-                        maintainAspectRatio:true,
-                        scales:{
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
                             yAxes: [{
                                 gridLines: {
                                     display: false
@@ -54,11 +67,11 @@ export default class HorizontalBarChart extends React.Component {
                                 ticks: {
                                     fontColor: '#AEC4F4',
                                     fontFamily: "Gilroy",
-                                    fontSize: 20,
+                                    fontSize: 17,
                                     stepSize: 1,
                                     beginAtZero: true,
                                     max: this.props.max,
-                                    padding:0
+                                    padding: 0
                                 }
                             }],
                             xAxes: [{
@@ -66,7 +79,7 @@ export default class HorizontalBarChart extends React.Component {
                                     display: false
                                 },
                                 ticks: {
-                                    display:false,
+                                    display: false,
                                     fontColor: '#FFFFFF',
                                     fontFamily: "Gilroy",
                                     fontSize: 15,

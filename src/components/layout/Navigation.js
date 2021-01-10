@@ -15,6 +15,7 @@ import {
 } from '@material-ui/icons'
 import BiztechIcon from 'components/icons/BiztechIcon'
 import LogoutIcon from 'components/icons/LogoutIcon'
+import AssessmentIcon from '@material-ui/icons/Assessment'
 
 import './Navigation.scss'
 import { COLORS } from 'constants/index'
@@ -97,6 +98,12 @@ function Nav (props) {
             icon={<AddBoxIcon style={selectedItem === '/admin/event/new' ? selected : unselected} />}
             onClick={handleItemClick.bind(null, '/admin/event/new')}
             bar={selectedItem === '/admin/event/new' ? barSelected : barUnselected}
+          />
+          <MenuItem
+            label='Memberships'
+            icon={<AssessmentIcon style={selectedItem === '/admin/memberships' ? selected : unselected} />}
+            onClick={handleItemClick.bind(null, '/admin/memberships')}
+            bar={selectedItem === '/admin/memberships' ? barSelected : barUnselected}
           />
           <Divider className={classes.divider} />
         </>

@@ -17,12 +17,15 @@ import LoginRedirect from 'pages/public/LoginRedirect'
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from 'pages/public/EventsDashboard'
 
+import Memberships from 'pages/admin/Memberships/Memberships'
+
 import Forbidden from 'pages/Forbidden'
 import Loading from 'pages/Loading'
 import NotFound from 'pages/NotFound'
 import AdminRoutes from 'pages/admin'
 import MemberRoutes from 'pages/member'
 import PublicEventRoutes from 'pages/public/Event'
+
 
 import { setUser, fetchUser, fetchUserRegisteredEvents } from 'store/user/userActions'
 import { log } from 'utils'
