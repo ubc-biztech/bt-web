@@ -190,11 +190,10 @@ const useStyles = makeStyles(theme => ({
   },
   individualDropDown: {
     background: '#d4e7fa',
-    border: COLORS.BIZTECH_GREEN,
+    // border: COLORS.BIZTECH_GREEN,
     color: COLORS.BACKGROUND_COLOR,
   },
-  numResponses:
-  {
+  numResponses: {
     color: '#AEC4F4',
     fontFamily: "Gilroy",
     fontStyle: 'normal',
@@ -612,7 +611,7 @@ function Memberships(props) {
                     <Box py={3} px={4}>
                       <div className={classes.questionLabel}>
                         <Typography>I am a current/prospective UBC student</Typography>
-                        <Box classes={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UBC").length}
+                        <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UBC").length}
                         </Box>
                       </div>
                     </Box>
@@ -622,7 +621,7 @@ function Memberships(props) {
                     <Box py={3} px={4}>
                       <div className={classes.questionLabel}>
                         <Typography>I am a current/prospective university student</Typography>
-                        <Box classes={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UNI").length}
+                        <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UNI").length}
                         </Box>
                       </div>
                     </Box>
@@ -632,7 +631,7 @@ function Memberships(props) {
                     <Box py={3} px={4}>
                       <div className={classes.questionLabel}>
                         <Typography>I am a high school student</Typography>
-                        <Box classes={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "HS").length}
+                        <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "HS").length}
                         </Box>
                       </div>
                     </Box>
@@ -641,7 +640,7 @@ function Memberships(props) {
                     <Box py={3} px={4}>
                       <div className={classes.questionLabel}>
                         <Typography>None of the above</Typography>
-                        <Box classes={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "NA").length}
+                        <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "NA").length}
                         </Box>
                       </div>
                     </Box>
@@ -1141,6 +1140,8 @@ function Memberships(props) {
                         className={classes.individualDropDown}
                         options={membershipData}
                         values={[]}
+                        border={COLORS.BACKGROUND_COLOR}
+                        color={COLORS.BIZTECH_GREEN}
                         marginTop={50}
                         placeholder='Enter email to search'
                         addPlaceholder='Enter email to search'
@@ -1161,34 +1162,7 @@ function Memberships(props) {
                   <Grid item xs={1} align='left'>
                     <Box paddingTop={2} color='#AEC4F4' fontFamily="Gilroy" fontStyle='normal' fontWeight='bold' fontSize='18px'>{membershipData.length - memberID}</Box>
                   </Grid>
-                  {/* <Grid item xs={1} align='right'>
-                      <Box paddingTop={2} color='#AEC4F4' fontFamily="Gilroy" fontStyle='normal' fontWeight='bold' fontSize='18px'>{memberID}</Box>
-                    </Grid>
-                    <Grid item xs={1}>
-                      <div onClick={() => decreaseMemberID()}>
-                        <IconButton >
-                          <LeftArrowIcon></LeftArrowIcon>
-                        </IconButton>
-                      </div>
-                    </Grid>
-                    <Grid item xs={8} >
-                      {/* <Card className={classes.card} style={{ textAlign: 'center', height: '3vw', width: '40vw', paddingTop: 10 }} > */}
-                  {/* <Select options={membershipData.map(x => x.email)} onChange={(values) => this.onChange(values)}></Select> */}
-                  {/* <Typography variant='h5'> {membershipData.map(x => x.email)[memberID]} </Typography> */}
-                  {/* </Card> */}
-                  {/* </Grid>
-                  <Grid item xs={1}>
-                    <div onClick={() => increaseMemberID()}>
-                      <IconButton >
-                        <RightArrowIcon> </RightArrowIcon>
-                      </IconButton>
-                    </div>
-                  </Grid>
-                  <Grid item xs={1} align='left'>
-                    <Box paddingTop={2} color='#AEC4F4' fontFamily="Gilroy" fontStyle='normal' fontWeight='bold' fontSize='18px'>{membershipData.length - memberID}</Box>
-                  </Grid> */}
                 </Grid>
-                {/* </Card> */}
 
                 {/* Type of Member */}
                 <Card className={classes.card} style={{ textAlign: 'left', backgroundColor: '#293B61', width: '67vw', marginLeft: 25, paddingTop: 20, paddingBottom: 10, marginTop: 10, paddingLeft: 25, paddingTop: 10 }}>
