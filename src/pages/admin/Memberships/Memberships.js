@@ -12,10 +12,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import ListIcon from '@material-ui/icons/List';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import SearchIcon from '@material-ui/icons/Search';
 import PieChart from '../../../components/PieChart';
 import HorizontalBarChart from '../../../components/HorizontalBarChart';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Divider from '@material-ui/core/Divider'
@@ -23,6 +23,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { ReactComponent as LeftArrowIcon } from '../../../assets/leftarrow.svg'
 import { ReactComponent as RightArrowIcon } from '../../../assets/rightarrow.svg'
 import FormControl from '@material-ui/core/FormControl';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Select from 'react-dropdown-select';
 
@@ -76,7 +78,8 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('sm')]: {
       backgroundColor: COLORS.BACKGROUND_COLOR
     },
-    paddingBottom: '12px'
+    paddingBottom: '12px',
+    marginTop: '60px'
   },
   content: {
     padding: theme.spacing(3)
@@ -181,7 +184,10 @@ const useStyles = makeStyles(theme => ({
   questionScrollBox: {
     display: 'flex',
     flexDirection: 'row',
-    // justifyContent: 'space-around'
+    justifyContent: 'space-around'
+  },
+  navigateButton: {
+    fontSize: 'large'
   },
   questionLabel: {
     display: 'flex',
@@ -190,7 +196,6 @@ const useStyles = makeStyles(theme => ({
   },
   individualDropDown: {
     background: '#d4e7fa',
-    // border: COLORS.BIZTECH_GREEN,
     color: COLORS.BACKGROUND_COLOR,
   },
   numResponses: {
@@ -201,8 +206,7 @@ const useStyles = makeStyles(theme => ({
   }
 })
 )
-
-const chartColors = (['#9CC6F4', '#56CCF2', '#6489F1', '#5EB1FD', '#6FF9E0', '#34C0A5'])
+const chartColors = (['#56CCF2', '#F2C027', '#6489F1', '#7AD040', '#0C73EA', '#E8FC67'])
 
 function Memberships(props) {
 
@@ -277,7 +281,6 @@ function Memberships(props) {
     let isSubscribed = true
     const getMemberships = async () => {
       const res = await fetchBackend(`/memberships`, 'GET')
-      // const sorted = await res.sort((a, b) => a.id - b.id)
       if (isSubscribed) {
         setMembershipData(res);
       }
@@ -318,21 +321,6 @@ function Memberships(props) {
           {/* Upper tabs for filtering (only on desktop view) and searching for events */}
           <div className={classes.tabsContainer}>
 
-
-            {/* The search button */}
-            <div className={classes.search}>
-              <IconButton className={classes.searchIcon} onClick={handleStartSearch}>
-                <SearchIcon style={{ color: COLORS.CARD_PAPER_COLOR }} />
-              </IconButton>
-              <InputBase
-                inputRef={searchInput}
-                placeholder='Search…'
-                classes={{ input: isSearch ? classes.searchInputActive : classes.searchInput }}
-                onChange={handleSearchChange}
-                onBlur={() => setIsSearch(false)}
-              />
-            </div>
-
           </div>
           {/* Filters in mobile view */}
           {isMobile &&
@@ -366,9 +354,8 @@ function Memberships(props) {
                 {/* 1. Type of Member */}
                 <Box m={2} px={4}>
                   <Card className={classes.card}>
-                    <Box py={3} px={4}> <Typography align='left' variant='h6'> Type of Member</Typography> </Box>
+                    <Box pt={3} px={4}> <Typography align='left' variant='h6'> Type of Member</Typography> </Box>
                     <div >
-                      {/* <PieChart data={myData.membershipTypeData}/> */}
                       <PieChart data={{
                         labels: ['UBC student', 'University student', 'High school student', 'Other'],
                         datasets: [
@@ -392,7 +379,7 @@ function Memberships(props) {
                 {/* 2. Academic Year Level */}
                 <Box m={2} px={4}>
                   <Card className={classes.card}>
-                    <Box py={3} px={4}> <Typography align='left' variant='h6'> Academic Year Level</Typography> </Box>
+                    <Box pt={3} px={4}> <Typography align='left' variant='h6'> Academic Year Level</Typography> </Box>
                     <div>
                       <PieChart data={{
                         labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5+', 'Pre-university'],
@@ -420,7 +407,7 @@ function Memberships(props) {
                 {/* 3. Faculty */}
                 <Box m={2} px={4}>
                   <Card className={classes.card}>
-                    <Box py={3} px={4}> <Typography align='left' variant='h6'> Faculty</Typography> </Box>
+                    <Box pt={3} px={4}> <Typography align='left' variant='h6'> Faculty</Typography> </Box>
                     <div>
                       <PieChart data={{
                         labels: ['Commerce', 'Sciences', 'Arts', 'Engineering', 'LFS', 'Kinesiology'],
@@ -470,7 +457,7 @@ function Memberships(props) {
                 {/* 5. Are you an international student? */}
                 <Box m={2} py={2} px={4}>
                   <Card className={classes.card}>
-                    <Box py={3} px={4}> <Typography align='left' variant='h6'> Are you an international student?</Typography> </Box>
+                    <Box pt={3} px={4}> <Typography align='left' variant='h6'> Are you an international student?</Typography> </Box>
                     <div>
                       <PieChart data={{
                         labels: ['Yes', 'No'],
@@ -491,7 +478,7 @@ function Memberships(props) {
                 {/* 6. What topics did you want to see the most discussed in the future? */}
                 <Box m={2} py={2} px={4}>
                   <Card className={classes.card}>
-                    <Box py={3} px={4}> <Typography align='left' variant='h6'> What topics did you want to see the most discussed in the future?</Typography> </Box>
+                    <Box pt={3} px={4}> <Typography align='left' variant='h6'> What topics did you want to see the most discussed in the future?</Typography> </Box>
                     <div>
                       <HorizontalBarChart max={446} data={{
                         labels: ['Careers in Tech', 'Tech Startups', 'AI', 'eCommerce', 'Cyber Security', 'Health Tech'],
@@ -515,7 +502,7 @@ function Memberships(props) {
                 {/* 7. How did you hear about us? */}
                 <Box m={2} px={4}>
                   <Card className={classes.card}>
-                    <Box py={3} px={4}> <Typography align='left' variant='h6'> How did you hear about us?</Typography> </Box>
+                    <Box pt={3} px={4}> <Typography align='left' variant='h6'> How did you hear about us?</Typography> </Box>
                     <div>
                       <HorizontalBarChart max={236} data={{
                         labels: ['Facebook', 'Friends', 'Events', 'Instagram'],
@@ -540,580 +527,564 @@ function Memberships(props) {
           {personalizationIndex == 1 &&
             <Paper className={classes.paper}>
               <div className={classes.content}>
-                <Box className={classes.numResponses} fontSize='26px'>{membershipData.length} Responses</Box>
-                <Grid container xs={12} align='center'>
-                  <Grid item xs={1} align='right'>
-                    <Box color='#AEC4F4' fontWeight='bold' fontFamily='Gilroy' paddingTop={2} fontSize='18px'>{questionIndex}</Box>
-                  </Grid>
-                  <div className={classes.questionScrollBox}>
-                    <Grid item xs={1}>
-                      <div className={classes.navigateButton}>
-                        <IconButton onClick={handleNavigateBefore}>
-                          <LeftArrowIcon></LeftArrowIcon>
-                        </IconButton>
-                      </div>
-                    </Grid>
-                  </div>
+                <Box className={classes.numResponses} color='#AEC4F4' fontFamily="Gilroy" fontStyle='normal' fontWeight='bold' fontSize='26px'>{membershipData.length} Responses</Box>
 
-                  <Grid item xs={8}>
-                    <Card className={classes.card} style={{ textAlign: 'center', height: '4vw', width: '45vw', paddingTop: 10 }} >
-                      <Box px={4} className={classes.questionsDropDown}>
-                        <FormControl className={classes.questionsForm}>
-                          <NativeSelect
-                            value={questionIndex}
-                            onChange={handleQuestionChange}
-                            name="questions"
-                            className={classes.selectEmpty}
-                            inputProps={{
-                              'aria-label': 'questions',
-                              style: {
-                                fontSize: 16,
-                                fontWeight: 'bold',
-                                fontFamily: 'Gilroy',
-                                textAlignLast: 'center'
-                              },
-                            }}
-                          >
-                            <option value={0}>Please choose the option that's most relevant to you</option>
-                            <option value={1}>Academic Year Level</option>
-                            <option value={2}>Faculty</option>
-                            <option value={3}>Major</option>
-                            <option value={4}>Were you a BizTech member last year?</option>
-                            <option value={5}>Are you an international student?</option>
-                            <option value={6}>What topics did you want to see the most discussed in the future?</option>
-                            <option value={7}>How did you hear about us?</option>
-                          </NativeSelect>
-                        </FormControl>
+                <div className={classes.questionScrollBox}>
+                  <IconButton className={classes.navigateButton} onClick={handleNavigateBefore}>
+                    <LeftArrowIcon />
+                  </IconButton>
+                  <div>
+                    <Box mx={2} px={4}>
+                      <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                        <Box py={2} px={4} className={classes.questionsDropDown}>
+                          <FormControl className={classes.questionsForm}>
+                            <NativeSelect
+                              value={questionIndex}
+                              onChange={handleQuestionChange}
+                              name="questions"
+                              className={classes.selectEmpty}
+                              inputProps={{
+                                'aria-label': 'questions',
+                                style: {
+                                  fontSize: 16,
+                                  fontWeight: 'bold',
+                                  fontFamily: 'Gilroy',
+                                  textAlignLast: 'center'
+                                },
+                              }}
+                            >
+                              <option value={0}>Please choose the option that's most relevant to you</option>
+                              <option value={1}>Academic Year Level</option>
+                              <option value={2}>Faculty</option>
+                              <option value={3}>Major</option>
+                              <option value={4}>Were you a BizTech member last year?</option>
+                              <option value={5}>Are you an international student?</option>
+                              <option value={6}>What topics did you want to see the most discussed in the future?</option>
+                              <option value={7}>How did you hear about us?</option>
+                            </NativeSelect>
+                          </FormControl>
+                        </Box>
+                      </Card>
+                    </Box>
+                  </div>
+                  <IconButton className={classes.navigateButton} onClick={handleNavigateAfter}>
+                    <RightArrowIcon />
+                  </IconButton>
+                </div>
+
+
+
+                {questionIndex == 0 &&
+
+                  <Box px={4}>
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
+                        <div className={classes.questionLabel}>
+                          <Typography>I am a current/prospective UBC student</Typography>
+                          <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UBC").length}
+                          </Box>
+                        </div>
                       </Box>
                     </Card>
-                  </Grid>
 
-                  <Grid item xs={1}>
-                    <div>
-                      <IconButton onClick={handleNavigateAfter}>
-                        <RightArrowIcon> </RightArrowIcon>
-                      </IconButton>
-                    </div>
-                  </Grid>
-                  <Grid item xs={1} align='left'>
-                    <Box color='#AEC4F4' fontWeight='bold' fontFamily='Gilroy' paddingTop={2} fontSize='18px'>{8 - questionIndex}</Box>
-                  </Grid>
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
+                        <div className={classes.questionLabel}>
+                          <Typography>I am a current/prospective university student</Typography>
+                          <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UNI").length}
+                          </Box>
+                        </div>
+                      </Box>
+                    </Card>
 
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
+                        <div className={classes.questionLabel}>
+                          <Typography>I am a high school student</Typography>
+                          <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "HS").length}
+                          </Box>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
+                        <div className={classes.questionLabel}>
+                          <Typography>None of the above</Typography>
+                          <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "NA").length}
+                          </Box>
+                        </div>
+                      </Box>
+                    </Card>
+                  </Box>
+                }
 
-                </Grid>
+                {questionIndex == 1 &&
+                  <Box mx={2} px={4}>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Year 1</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.year === '1').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Year 2</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.year === '2').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Year 3</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.year === '3').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Year 4</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.year === '4').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Year 5+</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.year === '5+').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Pre-University</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.year === 'Grade 10' ||
+                              x.year === 'Grade 11' ||
+                              x.year === 'Grade 12' ||
+                              x.year === 'Pre-University').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                  </Box>
+                }
 
+                {questionIndex == 2 &&
+                  <Box mx={2} px={4}>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Commerce</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.faculty === 'Commerce').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Sciences</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.faculty === 'Sciences').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Arts</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.faculty === 'Arts').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Engineering</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.faculty === 'Engineering').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>LFS</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.faculty === 'LFS').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Kinesiology</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.faculty === 'Kinesiology').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                  </Box>
+                }
+
+                {questionIndex == 3 &&
+                  <Box mx={2} px={4}>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Computer Science</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('computer science') || x.major.toLowerCase().includes('compsci') || x.major.toLowerCase() === ('cs') || x.major.toLowerCase() === ('cpsc')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>BUCS</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('bucs') || x.major.toLowerCase().includes('business and computer science')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Undeclared</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('undeclared') || x.major.toLowerCase().includes('undecided') || x.major.toLowerCase().includes('n/a') || x.major.toLowerCase().includes('yet') || x.major.toLowerCase().includes('not')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>BTM</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('btm') || x.major.toLowerCase().includes('business technology management')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Finance</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('finance')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Marketing</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('marketing')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>COGS</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('cogs') || x.major.toLowerCase().includes('cognitive systems')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Accounting</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('accounting')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Electrical Engineering</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('electrical')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>OpLog</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('oplog') || x.major.toLowerCase().includes('operations') || x.major.toLowerCase().includes('logistics')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                  </Box>
+                }
+
+                {questionIndex == 4 &&
+                  <Box mx={2} px={4}>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Yes</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.prev_member).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>No</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => !x.prev_member).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                  </Box>
+                }
+                {questionIndex == 5 &&
+                  <Box mx={2} px={4}>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Yes</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.international).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>No</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => !x.international).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                  </Box>
+                }
+                {questionIndex == 6 &&
+                  <Box mx={2} px={4}>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Careers in Tech</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.topics.includes('Careers in the Tech Industry')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Tech Startups</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.topics.includes('Tech Startups')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>AI</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.topics.includes('AI')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>eCommerce</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.topics.includes('eCommerce')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Cyber Security</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.topics.includes('Cyber Security')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Health Tech</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.topics.includes('Health Tech')).length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                  </Box>
+                }
+                {questionIndex == 7 &&
+                  <Box mx={2} px={4}>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Facebook</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.heard_from === 'Facebook').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Friends</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.heard_from === 'Friends').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Events</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.heard_from === 'Events').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                      <Box py={3} px={4}>
+                        <div className={classes.questionLabel}>
+                          <div>
+                            <Typography>Instagram</Typography>
+                          </div>
+                          <div>
+                            <Typography>{membershipData.filter(x => x.heard_from === 'Instagram').length}</Typography>
+                          </div>
+                        </div>
+                      </Box>
+                    </Card>
+                  </Box>
+                }
               </div>
-
-              {questionIndex == 0 &&
-
-                <Box px={4}>
-                  <Card className={classes.card} style={cardStyle}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <Typography>I am a current/prospective UBC student</Typography>
-                        <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UBC").length}
-                        </Box>
-                      </div>
-                    </Box>
-                  </Card>
-
-                  <Card className={classes.card} style={cardStyle}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <Typography>I am a current/prospective university student</Typography>
-                        <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UNI").length}
-                        </Box>
-                      </div>
-                    </Box>
-                  </Card>
-
-                  <Card className={classes.card} style={cardStyle}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <Typography>I am a high school student</Typography>
-                        <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "HS").length}
-                        </Box>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <Typography>None of the above</Typography>
-                        <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "NA").length}
-                        </Box>
-                      </div>
-                    </Box>
-                  </Card>
-                </Box>
-              }
-
-              {questionIndex == 1 &&
-                <Box mx={2} px={4}>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Year 1</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.year === '1').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Year 2</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.year === '2').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Year 3</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.year === '3').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Year 4</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.year === '4').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Year 5+</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.year === '5+').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Pre-University</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.year === 'Grade 10' ||
-                            x.year === 'Grade 11' ||
-                            x.year === 'Grade 12' ||
-                            x.year === 'Pre-University').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                </Box>
-              }
-
-              {questionIndex == 2 &&
-                <Box mx={2} px={4}>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Commerce</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.faculty === 'Commerce').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Sciences</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.faculty === 'Sciences').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Arts</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.faculty === 'Arts').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Engineering</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.faculty === 'Engineering').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>LFS</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.faculty === 'LFS').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Kinesiology</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.faculty === 'Kinesiology').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                </Box>
-              }
-
-              {questionIndex == 3 &&
-                <Box mx={2} px={4}>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Computer Science</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('computer science') || x.major.toLowerCase().includes('compsci') || x.major.toLowerCase() === ('cs') || x.major.toLowerCase() === ('cpsc')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>BUCS</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('bucs') || x.major.toLowerCase().includes('business and computer science')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Undeclared</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('undeclared') || x.major.toLowerCase().includes('undecided') || x.major.toLowerCase().includes('n/a') || x.major.toLowerCase().includes('yet') || x.major.toLowerCase().includes('not')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>BTM</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('btm') || x.major.toLowerCase().includes('business technology management')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Finance</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('finance')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Marketing</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('marketing')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>COGS</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('cogs') || x.major.toLowerCase().includes('cognitive systems')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Accounting</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('accounting')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Electrical Engineering</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('electrical')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>OpLog</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('oplog') || x.major.toLowerCase().includes('operations') || x.major.toLowerCase().includes('logistics')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                </Box>
-              }
-
-              {questionIndex == 4 &&
-                <Box mx={2} px={4}>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Yes</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.prev_member).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>No</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => !x.prev_member).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                </Box>
-              }
-              {questionIndex == 5 &&
-                <Box mx={2} px={4}>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Yes</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.international).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>No</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => !x.international).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                </Box>
-              }
-              {questionIndex == 6 &&
-                <Box mx={2} px={4}>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Careers in Tech</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.topics.includes('Careers in the Tech Industry')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Tech Startups</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.topics.includes('Tech Startups')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>AI</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.topics.includes('AI')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>eCommerce</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.topics.includes('eCommerce')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Cyber Security</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.topics.includes('Cyber Security')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Health Tech</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.topics.includes('Health Tech')).length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                </Box>
-              }
-              {questionIndex == 7 &&
-                <Box mx={2} px={4}>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Facebook</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.heard_from === 'Facebook').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Friends</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.heard_from === 'Friends').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Events</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.heard_from === 'Events').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                  <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                    <Box py={3} px={4}>
-                      <div className={classes.questionLabel}>
-                        <div>
-                          <Typography>Instagram</Typography>
-                        </div>
-                        <div>
-                          <Typography>{membershipData.filter(x => x.heard_from === 'Instagram').length}</Typography>
-                        </div>
-                      </div>
-                    </Box>
-                  </Card>
-                </Box>
-              }
             </Paper>
           }
           {/* Questions Page */}
@@ -1122,20 +1093,11 @@ function Memberships(props) {
             <Paper className={classes.paper}>
               <div className={classes.content}>
                 <Box className={classes.numResponses} color='#AEC4F4' fontFamily="Gilroy" fontStyle='normal' fontWeight='bold' fontSize='26px'>{membershipData.length} Responses</Box>
-                {/* <Card > */}
                 <Grid container xs={12} align='center'>
-                  <Grid item xs={1} align='right'>
-                    <Box paddingTop={2} color='#AEC4F4' fontFamily="Gilroy" fontStyle='normal' fontWeight='bold' fontSize='18px'>{memberID}</Box>
-                  </Grid>
-                  <Grid item xs={1}>
-                    <div onClick={() => decreaseMemberID()}>
-                      <IconButton >
-                        <LeftArrowIcon></LeftArrowIcon>
-                      </IconButton>
-                    </div>
+                  <Grid item xs={2}>
                   </Grid>
                   <Grid item xs={8} align='center'>
-                    <Box paddingTop={1.5}>
+                    <Box paddingTop={1} marginBottom={1}>
                       <Select
                         className={classes.individualDropDown}
                         options={membershipData}
@@ -1144,7 +1106,7 @@ function Memberships(props) {
                         color={COLORS.BIZTECH_GREEN}
                         marginTop={50}
                         placeholder='Enter email to search'
-                        addPlaceholder='Enter email to search'
+                        clearable={true}
                         searchBy="email"
                         valueField="id"
                         labelField="email"
@@ -1152,15 +1114,7 @@ function Memberships(props) {
                       </Select>
                     </Box>
                   </Grid>
-                  <Grid item xs={1}>
-                    <div onClick={() => increaseMemberID()}>
-                      <IconButton >
-                        <RightArrowIcon> </RightArrowIcon>
-                      </IconButton>
-                    </div>
-                  </Grid>
-                  <Grid item xs={1} align='left'>
-                    <Box paddingTop={2} color='#AEC4F4' fontFamily="Gilroy" fontStyle='normal' fontWeight='bold' fontSize='18px'>{membershipData.length - memberID}</Box>
+                  <Grid item xs={2}>
                   </Grid>
                 </Grid>
 
@@ -1174,13 +1128,11 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.education) == 'UBC' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
-                        {/* <IconButton> <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} />
-                        </IconButton> */}
                       </Grid>
                       <Grid item xs={11}>
                         <Box paddingTop={1.5} alignItems='left' color='FFFFFF' fontFamily="Gilroy" fontStyle='normal' fontWeight='normal' fontSize='19px'>
@@ -1191,10 +1143,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.education) == 'UNI' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1206,10 +1158,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.education) == 'HS' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1221,10 +1173,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.education) == 'NA' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1274,10 +1226,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.pronouns) == 'She/Her/Hers' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                         {/* <IconButton> <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} />
                         </IconButton> */}
@@ -1291,10 +1243,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.pronouns) == 'He/Him/His' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1306,10 +1258,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.pronouns) == 'They/Them/Theirs' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1321,10 +1273,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.pronouns) == 'Prefer not to answer' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1336,12 +1288,13 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
-                          {(membershipData.filter(x => x.id === memberID).map(x => x.pronouns) == 'She/Her/Hers')
+                        <IconButton disabled={true}>
+                          {((membershipData.filter(x => x.id === memberID).map(x => x.pronouns) == 'She/Her/Hers')
                             || (membershipData.filter(x => x.id === memberID).map(x => x.pronouns) == 'He/Him/His')
-                            || (membershipData.filter(x => x.id === memberID).map(x => x.pronouns) == 'They/Them/Theirs')
-                            ? <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} />}
+                            || (membershipData.filter(x => x.id === memberID).map(x => x.pronouns) == 'They/Them/Theirs'))
+                            || membershipData.filter(x => x.id === memberID).map(x => x.first_name.length < 1)
+                            ? <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} /> :
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1383,10 +1336,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.year) == '1' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1398,10 +1351,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.year) == '2' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1413,10 +1366,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.year) == '3' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1428,10 +1381,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.year) == '4' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1443,10 +1396,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.year) == '5+' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1458,11 +1411,11 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {(membershipData.filter(x => x.id === memberID).map(x => x.year) == ('Grade 10' || 'Grade 11' || 'Grade 12' || 'Pre-university')) ||
                             (membershipData.filter(x => x.id === memberID).map(x => x.education) == 'HS') ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1474,13 +1427,11 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.year) == 'Other' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
-                        {/* <IconButton> <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} />
-                        </IconButton> */}
                       </Grid>
                       <Grid item xs={11}>
                         <Box paddingTop={1.5} alignItems='left' color='FFFFFF' fontFamily="Gilroy" fontStyle='normal' fontWeight='normal' fontSize='19px'>
@@ -1503,10 +1454,10 @@ function Memberships(props) {
 
                       <Grid item spacing={0} xs={12} container>
                         <Grid item xs={1}>
-                          <IconButton>
+                          <IconButton disabled={true}>
                             {membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Commerce' ?
-                              <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                              <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                              <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                              <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                           </IconButton>
                         </Grid>
                         <Grid item xs={11}>
@@ -1518,10 +1469,10 @@ function Memberships(props) {
 
                       <Grid item spacing={0} xs={12} container>
                         <Grid item xs={1}>
-                          <IconButton>
+                          <IconButton disabled={true}>
                             {membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Sciences' ?
-                              <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                              <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                              <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                              <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                           </IconButton>
                         </Grid>
                         <Grid item xs={11}>
@@ -1533,10 +1484,10 @@ function Memberships(props) {
 
                       <Grid item spacing={0} xs={12} container>
                         <Grid item xs={1}>
-                          <IconButton>
+                          <IconButton disabled={true}>
                             {membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Arts' ?
-                              <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                              <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                              <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                              <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                           </IconButton>
                         </Grid>
                         <Grid item xs={11}>
@@ -1548,10 +1499,10 @@ function Memberships(props) {
 
                       <Grid item spacing={0} xs={12} container>
                         <Grid item xs={1}>
-                          <IconButton>
+                          <IconButton disabled={true}>
                             {membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Engineering' ?
-                              <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                              <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                              <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                              <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                           </IconButton>
                         </Grid>
                         <Grid item xs={11}>
@@ -1563,10 +1514,10 @@ function Memberships(props) {
 
                       <Grid item spacing={0} xs={12} container>
                         <Grid item xs={1}>
-                          <IconButton>
+                          <IconButton disabled={true}>
                             {membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'LFS' ?
-                              <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                              <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                              <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                              <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                           </IconButton>
                         </Grid>
                         <Grid item xs={11}>
@@ -1578,10 +1529,10 @@ function Memberships(props) {
 
                       <Grid item spacing={0} xs={12} container>
                         <Grid item xs={1}>
-                          <IconButton>
+                          <IconButton disabled={true}>
                             {membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Kinesiology' ?
-                              <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                              <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                              <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                              <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                           </IconButton>
                         </Grid>
                         <Grid item xs={11}>
@@ -1593,10 +1544,10 @@ function Memberships(props) {
 
                       <Grid item spacing={0} xs={12} container>
                         <Grid item xs={1}>
-                          <IconButton>
+                          <IconButton disabled={true}>
                             {membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Forestry' ?
-                              <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                              <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                              <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                              <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                           </IconButton>
                         </Grid>
                         <Grid item xs={11}>
@@ -1608,7 +1559,7 @@ function Memberships(props) {
 
                       <Grid item spacing={0} xs={12} container>
                         <Grid item xs={1}>
-                          <IconButton>
+                          <IconButton disabled={true}>
                             {(membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Commerce')
                               || (membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Sciences')
                               || (membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Arts')
@@ -1616,8 +1567,8 @@ function Memberships(props) {
                               || (membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'LFS')
                               || (membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Kinesiology')
                               || (membershipData.filter(x => x.id === memberID).map(x => x.faculty) == 'Forestry')
-                              ? <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} /> :
-                              <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} />}
+                              ? <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} /> :
+                              <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} />}
                           </IconButton>
                         </Grid>
                         <Grid item xs={11}>
@@ -1664,10 +1615,11 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
-                          {membershipData.filter(x => x.id === memberID).map(x => x.prev_member) ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                        <IconButton disabled={true}>
+                          {(membershipData.filter(x => x.id === memberID).map(x => x.prev_member)) &&
+                            (membershipData.filter(x => x.id === memberID).map(x => x.first_name).length > 0) ?
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1679,10 +1631,11 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
-                          {!membershipData.filter(x => x.id === memberID).map(x => x.prev_member) ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                        <IconButton disabled={true}>
+                          {!membershipData.filter(x => x.id === memberID).map(x => x.prev_member) &&
+                            (membershipData.filter(x => x.id === memberID).map(x => x.first_name).length > 0) ?
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1704,10 +1657,11 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
-                          {membershipData.filter(x => x.id === memberID).map(x => x.international) ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                        <IconButton disabled={true}>
+                          {membershipData.filter(x => x.id === memberID).map(x => x.international) &&
+                            (membershipData.filter(x => x.id === memberID).map(x => x.first_name).length > 0) ?
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1719,10 +1673,11 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
-                          {!membershipData.filter(x => x.id === memberID).map(x => x.international) ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                        <IconButton disabled={true}>
+                          {!membershipData.filter(x => x.id === memberID).map(x => x.international) &&
+                            (membershipData.filter(x => x.id === memberID).map(x => x.first_name).length > 0) ?
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1744,7 +1699,7 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('Cyber Security') ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
@@ -1759,8 +1714,8 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
-                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('AI') ?
+                        <IconButton disabled={true}>
+                          {membershipData.filter(x => x.id == memberID).map(x => x.topics).includes('AI') ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
                         </IconButton>
@@ -1774,7 +1729,7 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('Tech Startups') ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
@@ -1789,7 +1744,7 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('eCommerce') ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
@@ -1804,7 +1759,7 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('Health Tech') ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
@@ -1819,7 +1774,7 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('Careers in the Tech Industry') ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
@@ -1834,7 +1789,7 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.topics).filter(y => !['Cyber Security', 'AI', 'Tech Startups', 'eCommerce', 'Health Tech', 'Careers in the Tech Industry'].some(topicList => y.includes(topicList))).length >= 1 ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
@@ -1861,10 +1816,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.heard_from) == 'Facebook' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1876,10 +1831,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.heard_from) == 'Friends' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1891,10 +1846,10 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {membershipData.filter(x => x.id === memberID).map(x => x.heard_from) == 'Instagram' ?
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} /> :
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
@@ -1906,12 +1861,13 @@ function Memberships(props) {
 
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
-                        <IconButton>
+                        <IconButton disabled={true}>
                           {(membershipData.filter(x => x.id === memberID).map(x => x.heard_from) == 'Facebook')
                             || (membershipData.filter(x => x.id === memberID).map(x => x.heard_from) == 'Friends')
-                            || (membershipData.filter(x => x.id === memberID).map(x => x.heard_from) == 'Instagram') ?
-                            <FiberManualRecordIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} /> :
-                            <FiberManualRecordIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} />}
+                            || (membershipData.filter(x => x.id === memberID).map(x => x.heard_from) == 'Instagram')
+                            || (membershipData.filter(x => x.id === memberID).map(x => x.first_name).length < 1) ?
+                            <RadioButtonUncheckedIcon style={{ color: 'C4C4C4', width: 25, height: 25 }} /> :
+                            <RadioButtonCheckedIcon style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }} />}
                         </IconButton>
                       </Grid>
                       <Grid item xs={11}>
