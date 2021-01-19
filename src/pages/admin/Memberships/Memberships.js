@@ -1700,7 +1700,7 @@ function Memberships(props) {
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
                         <IconButton disabled={true}>
-                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('Cyber Security') ?
+                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).filter(y => ['Cyber Security'].some(topicList => y.includes(topicList))).length >= 1 ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
                         </IconButton>
@@ -1715,7 +1715,7 @@ function Memberships(props) {
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
                         <IconButton disabled={true}>
-                          {membershipData.filter(x => x.id == memberID).map(x => x.topics).includes('AI') ?
+                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).filter(y => ['AI'].some(topicList => y.includes(topicList))).length >= 1 ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
                         </IconButton>
@@ -1730,7 +1730,7 @@ function Memberships(props) {
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
                         <IconButton disabled={true}>
-                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('Tech Startups') ?
+                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).filter(y => ['Tech Startups'].some(topicList => y.includes(topicList))).length >= 1 ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
                         </IconButton>
@@ -1745,7 +1745,7 @@ function Memberships(props) {
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
                         <IconButton disabled={true}>
-                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('eCommerce') ?
+                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).filter(y => ['eCommerce'].some(topicList => y.includes(topicList))).length >= 1 ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
                         </IconButton>
@@ -1760,7 +1760,7 @@ function Memberships(props) {
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
                         <IconButton disabled={true}>
-                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('Health Tech') ?
+                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).filter(y => ['Health Tech'].some(topicList => y.includes(topicList))).length >= 1 ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
                         </IconButton>
@@ -1775,7 +1775,7 @@ function Memberships(props) {
                     <Grid item spacing={0} xs={12} container>
                       <Grid item xs={1}>
                         <IconButton disabled={true}>
-                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).includes('Careers in the Tech Industry') ?
+                          {membershipData.filter(x => x.id === memberID).map(x => x.topics).filter(y => ['Careers in the Tech Industry'].some(topicList => y.includes(topicList))).length >= 1 ?
                             <CheckBoxIcon style={{ color: COLORS.BIZTECH_GREEN, width: 30, height: 30 }} /> :
                             <CheckBoxOutlineBlankIcon style={{ color: 'C4C4C4', width: 30, height: 30 }} />}
                         </IconButton>
