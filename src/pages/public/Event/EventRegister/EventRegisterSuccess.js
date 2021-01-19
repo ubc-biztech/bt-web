@@ -10,8 +10,8 @@ import SpeechBubble from 'assets/registrationpagespeech.svg'
 
 import { COLORS } from '../../../../constants/_constants/theme'
 
-const ICON_SIZE = '24px';
-const FLASH_TIME = '50';
+const ICON_SIZE = '24px'
+const FLASH_TIME = '50'
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
   rightColumn: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   successMessageContainer: {
     marginTop: '75px',
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'bold',
     fontSize: '24px'
   },
-  whereToNextContainer: { 
+  whereToNextContainer: {
     borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
     marginTop: '35px',
     paddingLeft: '19px',
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     height: ICON_SIZE,
     width: ICON_SIZE,
     marginLeft: '5px',
-    verticalAlign: 'bottom',
+    verticalAlign: 'bottom'
   },
   linkIcon: {
     height: ICON_SIZE,
@@ -53,24 +53,24 @@ const useStyles = makeStyles(theme => ({
     verticalAlign: 'bottom',
     '&:hover': {
       transform: 'rotate(-30deg)',
-      cursor: 'pointer',
-    },
+      cursor: 'pointer'
+    }
   },
   linkCopiedMessageContainer: {
     paddingLeft: '19px',
-    marginLeft: '13px',
+    marginLeft: '13px'
   },
   linkCopiedMessage: {
-    color: `${COLORS.LIGHT_YELLOW}`,
+    color: `${COLORS.LIGHT_YELLOW}`
   },
   linkCopiedMessageHidden: {
     color: `${COLORS.LIGHT_YELLOW}`,
     visibility: 'hidden'
   },
   upcomingEventsContainer: {
-    border: `1px solid #485A78`, 
+    border: '1px solid #485A78',
     borderRadius: '5px',
-    padding: '19px',
+    padding: '19px'
   },
   upcomingEventsHeading: {
     fontWeight: 'bold',
@@ -88,109 +88,108 @@ const useStyles = makeStyles(theme => ({
   },
   imageContainer: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   houseChefImage: {
     width: '30%',
     marginLeft: '5%',
-    [theme.breakpoints.between('sm', 'md')] : {
-      width: '15%' //On small and medium screens, images need to be shrunk a bit
+    [theme.breakpoints.between('sm', 'md')]: {
+      width: '15%' // On small and medium screens, images need to be shrunk a bit
     }
   },
   speechBubble: {
     alignSelf: 'start',
     width: '55%',
-    [theme.breakpoints.between('sm', 'md')] : {
-      width: '27.5%' //On small and medium screens, images need to be shrunk a bit
+    [theme.breakpoints.between('sm', 'md')]: {
+      width: '27.5%' // On small and medium screens, images need to be shrunk a bit
     }
   }
 }))
 
 const EventRegisterSuccess = ({
-  email, 
-  upcomingEvents, 
-  resetRegistration, 
-  history, 
+  email,
+  upcomingEvents,
+  resetRegistration,
+  history,
   location
 }) => {
-    const classes = useStyles();
+  const classes = useStyles()
 
-    const [displayLinkMessage, setDisplayLinkMessage] = useState(false);
+  const [displayLinkMessage, setDisplayLinkMessage] = useState(false)
 
-    let blinkingTimer = undefined;
+  let blinkingTimer
 
-    const copyLinkToClipboard = () => {
-      navigator.clipboard.writeText(`${window.location.host}${location.pathname}`);
-      if(blinkingTimer) clearTimeout(blinkingTimer);
+  const copyLinkToClipboard = () => {
+    navigator.clipboard.writeText(`${window.location.host}${location.pathname}`)
+    if (blinkingTimer) clearTimeout(blinkingTimer)
 
-      //Create blinking effect when link icon clicked multiple times, for better UX experience
-      setDisplayLinkMessage(false); 
-      blinkingTimer = setTimeout(() => setDisplayLinkMessage(true), FLASH_TIME);
-    }
+    // Create blinking effect when link icon clicked multiple times, for better UX experience
+    setDisplayLinkMessage(false)
+    blinkingTimer = setTimeout(() => setDisplayLinkMessage(true), FLASH_TIME)
+  }
 
-    const redirectEvent = (id, year) => {
-      resetRegistration();
-      history.push(`/event/${id}/${year}/register`); //Could redirect to main page instead
-    }
+  const redirectEvent = (id, year) => {
+    resetRegistration()
+    history.push(`/event/${id}/${year}/register`) // Could redirect to main page instead
+  }
 
-    return (
-        <Grid container spacing={4} className={classes.main} >
-          <Grid item xs={12} lg={7} className={classes.leftColumn}>
-            <div className={classes.successMessageContainer}>
-                <Typography className={classes.successMessageHeading}>See you soon!</Typography>
-                <Typography>You've successfully registered with <b>{email}</b>.</Typography>
-                <Typography>We've sent you an email!</Typography>
-            </div>
-            <div className={classes.whereToNextContainer}>
-                <Typography className={classes.whereToNextHeading}>What's next?</Typography>
-                <Typography>Share the event with friends! 
-                    {/*TODO: Add clipboard icon to copy registration link to user's clipboard when clicked */}
-                    <LinkIcon className={classes.linkIcon} 
-                      onClick={() => copyLinkToClipboard()}
-                    />
+  return (
+    <Grid container spacing={4} className={classes.main} >
+      <Grid item xs={12} lg={7} className={classes.leftColumn}>
+        <div className={classes.successMessageContainer}>
+          <Typography className={classes.successMessageHeading}>See you soon!</Typography>
+          <Typography>You've successfully registered with <b>{email}</b>.</Typography>
+          <Typography>We've sent you an email!</Typography>
+        </div>
+        <div className={classes.whereToNextContainer}>
+          <Typography className={classes.whereToNextHeading}>What's next?</Typography>
+          <Typography>Share the event with friends!
+            {/* TODO: Add clipboard icon to copy registration link to user's clipboard when clicked */}
+            <LinkIcon className={classes.linkIcon}
+              onClick={() => copyLinkToClipboard()}
+            />
+          </Typography>
+        </div>
+        <div className={classes.linkCopiedMessageContainer}>
+          {displayLinkMessage
+            ? <Typography className={classes.linkCopiedMessage} variant='caption'>
+                  Registration Link Copied to Clipboard!</Typography>
+            : <Typography className={classes.linkCopiedMessageHidden} variant='caption'>
+                  Registration Link Copied to Clipboard!</Typography>
+          }
+        </div>
+      </Grid>
+      <Grid item xs={12} lg={5} className={classes.rightColumn}>
+        <div className={classes.imageContainer}>
+          <img src={SpeechBubble} alt='Speech Bubble' className={classes.speechBubble}/>
+          <img src={HouseChef} alt='House with Chef Hat' className={classes.houseChefImage}/>
+        </div>
+        {/* TODO: Put some upcoming events in here. */}
+        <div className={classes.upcomingEventsContainer}>
+          <Typography className={classes.upcomingEventsHeading}>Upcoming Events:</Typography>
+
+          {upcomingEvents.map(event => {
+            const eventStart = event.startDate && new Date(event.startDate)
+              .toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+            const eventEnd = event.endDate && new Date(event.endDate)
+              .toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+
+            return (
+              <div key={`${event.id};${event.year}`} className={classes.upcomingEventsItem}>
+                <Typography className={classes.upcomingEventsEname}
+                  onClick={() => redirectEvent(event.id, event.year)}>{event.ename}</Typography>
+                <Typography className={classes.upcomingEventsDate} variant='caption' >
+                  {eventStart}
+                  {(eventEnd && (eventEnd !== eventStart)) ? ` - ${eventEnd}` : ''}
                 </Typography>
-            </div>
-            <div className={classes.linkCopiedMessageContainer}>
-            {displayLinkMessage ?  
-                <Typography className={classes.linkCopiedMessage} variant='caption'>
-                  Registration Link Copied to Clipboard!</Typography> :
-                <Typography className={classes.linkCopiedMessageHidden} variant='caption'>
-                  Registration Link Copied to Clipboard!</Typography> 
-            }
-            </div>
-          </Grid>
-          <Grid item xs={12} lg={5} className={classes.rightColumn}>
-              <div className={classes.imageContainer}>
-                <img src={SpeechBubble} alt="Speech Bubble" className={classes.speechBubble}/>
-                <img src={HouseChef} alt="House with Chef Hat" className={classes.houseChefImage}/>
               </div>
-              {/* TODO: Put some upcoming events in here. */}
-              <div className={classes.upcomingEventsContainer}>
-                <Typography className={classes.upcomingEventsHeading}>Upcoming Events:</Typography>
+            )
+          })}
 
-                {upcomingEvents.map(event => {
-                  const eventStart = event.startDate && new Date(event.startDate)
-                        .toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-                  const eventEnd = event.endDate && new Date(event.endDate)
-                        .toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-
-                  return (
-                  <div key={`${event.id};${event.year}`} className={classes.upcomingEventsItem}>
-                    <Typography className={classes.upcomingEventsEname} 
-                      onClick={() => redirectEvent(event.id, event.year)}>{event.ename}</Typography>
-                    <Typography className={classes.upcomingEventsDate} variant='caption' >
-                      {eventStart}
-                      {(eventEnd && (eventEnd !== eventStart)) ? ` - ${eventEnd}` : ''}
-                    </Typography>
-                  </div>
-                  )
-                })}
-
-              </div>
-          </Grid>
-        </Grid>
-    )
-
+        </div>
+      </Grid>
+    </Grid>
+  )
 }
 
 export default withRouter(EventRegisterSuccess)

@@ -157,7 +157,7 @@ export class EventStatsTable extends Component {
   }
 
   componentDidMount () {
-    this.getEventTableData(this.props.event.id,this.props.event.year)
+    this.getEventTableData(this.props.event.id, this.props.event.year)
   }
 
   /*

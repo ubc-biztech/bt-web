@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react'
+import React, { useState, Fragment } from 'react'
 import { Helmet } from 'react-helmet'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -52,9 +52,9 @@ const EventFormContainer = (props) => {
     registeredEmail: undefined
   }
 
-  const [registration, setRegistration] = useState(initialRegistrationState);
+  const [registration, setRegistration] = useState(initialRegistrationState)
 
-  const resetRegistration = () => setRegistration(initialRegistrationState);
+  const resetRegistration = () => setRegistration(initialRegistrationState)
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -70,8 +70,8 @@ const EventFormContainer = (props) => {
   })
 
   const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '' }
-  
-  const {isRegistered, registeredEmail} = registration;
+
+  const { isRegistered, registeredEmail } = registration
 
   if (loading) {
     return (
@@ -113,10 +113,10 @@ const EventFormContainer = (props) => {
         <title>{event.ename} - Register</title>
       </Helmet>
       <EventView event={event} >
-        { isRegistered ? 
-        <EventRegisterSuccess email={registeredEmail} upcomingEvents={upcomingEvents}
-          resetRegistration={resetRegistration}/>
-        : <Fragment>
+        { isRegistered
+          ? <EventRegisterSuccess email={registeredEmail} upcomingEvents={upcomingEvents}
+            resetRegistration={resetRegistration}/>
+          : <Fragment>
             <div className={classes.registrationHeader}>
               <Typography className={classes.registrationText}>Registration</Typography>
               <Typography>We need to know a little bit about you to get started.</Typography>
@@ -125,12 +125,12 @@ const EventFormContainer = (props) => {
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={submitValues}
-              >
+            >
               {props => <EventRegisterForm {...props} />}
             </Formik>
           </Fragment> }
-      </EventView> 
-      
+      </EventView>
+
     </div>
   ) : (
     <NotFound message={`The event with id ${eventId} could not be found!`}/>
@@ -151,22 +151,21 @@ const EventFormContainer = (props) => {
       diet
     }
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-      fetchBackend('/users', 'POST', body)
-        .then((userResponse) => {
-          if (userResponse.message === 'Created!') {
-            registerUser(id, eventID, eventYear, heardFrom)
-          } else {
-            alert('Signup failed')
-          }
-        })
-        .catch(err => {
-          // If the error is not "User could not be created because it already exists"
-          if(err.status !== 409){
-            alert('Can not create user');
-          }
-          registerUser(id, eventID, eventYear, heardFrom, email)
-        })
-     
+    fetchBackend('/users', 'POST', body)
+      .then((userResponse) => {
+        if (userResponse.message === 'Created!') {
+          registerUser(id, eventID, eventYear, heardFrom)
+        } else {
+          alert('Signup failed')
+        }
+      })
+      .catch(err => {
+        // If the error is not "User could not be created because it already exists"
+        if (err.status !== 409) {
+          alert('Can not create user')
+        }
+        registerUser(id, eventID, eventYear, heardFrom, email)
+      })
   }
 
   async function registerUser (id, eventID, eventYear, heardFrom, email) {
@@ -179,8 +178,8 @@ const EventFormContainer = (props) => {
     }
     fetchBackend('/registrations', 'POST', body)
       .then(() => {
-        alert('Congratulations! You are now signed up.');
-        setRegistration({...registration, isRegistered: true, registeredEmail: email});
+        alert('Congratulations! You are now signed up.')
+        setRegistration({ ...registration, isRegistered: true, registeredEmail: email })
       })
       .catch(err => {
         if (err.status === 409) {

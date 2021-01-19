@@ -4,7 +4,7 @@ import { Redirect, Switch, useParams } from 'react-router-dom'
 
 import Route from 'components/routing/Route'
 import NotFound from 'pages/NotFound'
-import Header from '../../../components/layout/Header'	
+import Header from '../../../components/layout/Header'
 import Footer from '../../../components/layout/Footer'
 
 import EventDetails from './EventDetails'
@@ -37,10 +37,10 @@ const MemberRoutes = (props) => {
 
   const upcomingEvents = useMemo(() => (
     events && eventsFetched && events.filter(event => {
-      const currentDate = new Date();
-      const eventDate = new Date(event.startDate);
-      return eventDate >= currentDate && !(event.id === eventId && event.year.toString() === eventYear);
-    }).slice(0, 3) //Return up to the first three upcoming events
+      const currentDate = new Date()
+      const eventDate = new Date(event.startDate)
+      return eventDate >= currentDate && !(event.id === eventId && event.year.toString() === eventYear)
+    }).slice(0, 3) // Return up to the first three upcoming events
   ), [eventId, eventYear, events, eventsFetched])
 
   // Loading state
@@ -49,12 +49,11 @@ const MemberRoutes = (props) => {
     <div>
       <Header/>
       <Switch>
-        
 
         <Route
           exact
           path='/event/:id/:year/register'
-          render={() => <EventRegister eventId={eventId} event={currentEvent} 
+          render={() => <EventRegister eventId={eventId} event={currentEvent}
             upcomingEvents={upcomingEvents} loading={eventsLoading} />} />
         <Route
           exact

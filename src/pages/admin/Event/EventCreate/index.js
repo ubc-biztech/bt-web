@@ -95,7 +95,6 @@ export default function EventCreate () {
   )
 
   async function submitValues (values) {
-
     const body = {
       ename: values.ename,
       id: values.slug,
