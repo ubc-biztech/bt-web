@@ -48,7 +48,7 @@ const EventFormContainer = (props) => {
   const { eventId, event, upcomingEvents, loading } = props
 
   const initialRegistrationState = {
-    isRegistered: true,
+    isRegistered: false,
     registeredEmail: undefined
   }
 
@@ -154,7 +154,7 @@ const EventFormContainer = (props) => {
     fetchBackend('/users', 'POST', body)
       .then((userResponse) => {
         if (userResponse.message === 'Created!') {
-          registerUser(id, eventID, eventYear, heardFrom)
+          registerUser(id, eventID, eventYear, heardFrom, email)
         } else {
           alert('Signup failed')
         }
