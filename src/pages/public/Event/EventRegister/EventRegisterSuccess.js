@@ -144,7 +144,6 @@ const EventRegisterSuccess = ({
         <div className={classes.whereToNextContainer}>
           <Typography className={classes.whereToNextHeading}>What's next?</Typography>
           <Typography>Share the event with friends!
-            {/* TODO: Add clipboard icon to copy registration link to user's clipboard when clicked */}
             <LinkIcon className={classes.linkIcon}
               onClick={() => copyLinkToClipboard()}
             />
@@ -164,7 +163,6 @@ const EventRegisterSuccess = ({
           <img src={SpeechBubble} alt='Speech Bubble' className={classes.speechBubble}/>
           <img src={HouseChef} alt='House with Chef Hat' className={classes.houseChefImage}/>
         </div>
-        {/* TODO: Put some upcoming events in here. */}
         <div className={classes.upcomingEventsContainer}>
           <Typography className={classes.upcomingEventsHeading}>Upcoming Events:</Typography>
 
