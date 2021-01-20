@@ -58,7 +58,6 @@ function LoginRedirect (props) {
           populateUserAndRedirect(authUser, '/', true)
         } else { // If not biztech username (normal member)
           const studentId = authUser['custom:student_id']
-
           // if maxvp is hidden, log out because we only want to allow biztech exec logins
           if (!checkFeatureFlag('REACT_APP_SHOW_MAXVP')) {
             alert('Sorry, login currently restricted to biztech executives!')

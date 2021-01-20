@@ -14,7 +14,6 @@ import {
 import LoginImage from 'assets/login.svg'
 import { COLORS } from 'constants/index'
 import { setUser } from 'store/user/userActions'
-import { checkFeatureFlag } from 'utils'
 
 const styles = {
   main: {
@@ -86,7 +85,7 @@ function Login () {
       <CssBaseline />
       {/* TODO: Maintenance message here for MinVP */}
       <div style={styles.columns}>
-        {checkFeatureFlag('REACT_APP_SHOW_MAXVP') && <Card style={styles.card}>
+        <Card style={styles.card}>
           <CardContent>
             <Typography variant='h1' color='primary'>Sign In</Typography>
             <Typography>Don&apos;t have an account? Sign up</Typography>
@@ -117,7 +116,7 @@ function Login () {
               Sign In with Facebook
             </Button>
           </CardContent>
-        </Card>}
+        </Card>
         <img src={LoginImage} alt='Computer' style={styles.loginImage} />
       </div>
     </div>
