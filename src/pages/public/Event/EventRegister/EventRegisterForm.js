@@ -6,6 +6,8 @@ import {
 } from '@material-ui/core'
 import EventAvailableIcon from '@material-ui/icons/EventAvailable'
 import { makeStyles } from '@material-ui/core/styles'
+import { useTheme } from '@material-ui/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import { COLORS } from '../../../../constants/_constants/theme'
 import CustomTextField from '../../../../components/inputs/CustomTextField'
@@ -26,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RegisterEventForm (props) {
   const classes = useStyles()
+  const theme = useTheme()
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down('sm'))
 
   const {
     handleSubmit,
@@ -72,7 +76,7 @@ export default function RegisterEventForm (props) {
           />
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid item xs={renderMobileOnly ? 12 : 4}>
           <Grid item xs={12}>
             <CustomSelect
               {...props}
