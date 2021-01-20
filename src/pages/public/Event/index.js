@@ -46,22 +46,20 @@ const MemberRoutes = (props) => {
   // Loading state
   if (!eventsLoading && !currentEvent) return <NotFound message={`Could not obtain data on the event with id '${eventId}'`}/>
   return (
-    <div>
-      <Header/>
-      <Switch>
-        <Route
-          exact
-          path='/event/:id/:year/register'
-          render={() => <EventRegister eventId={eventId} event={currentEvent} upcomingEvents={upcomingEvents} loading={eventsLoading} />} />
-        {/*
-        MAXVP
-        <Route
-          exact
-          path='/event/:id/:year'
-          render={() => <EventDetails eventId={eventId} event={currentEvent} loading={eventsLoading} />} /> */}
-        <Redirect to='/404' />
-      </Switch>
-    </div>
+    <Switch>
+
+      <Route
+        exact
+        path='/event/:id/:year/register'
+        render={() => <EventRegister eventId={eventId} event={currentEvent} upcomingEvents={upcomingEvents} loading={eventsLoading} />} />
+      {/*
+      MAXVP
+      <Route
+        exact
+        path='/event/:id/:year'
+        render={() => <EventDetails eventId={eventId} event={currentEvent} loading={eventsLoading} />} /> */}
+      <Redirect to='/404' />
+    </Switch>
   )
 }
 
