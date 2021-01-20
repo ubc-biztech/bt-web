@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
   iconContainer: {
     display: 'flex',
     marginLeft: props => props.marginLeft || 'auto',
-    marginRight: props => props.marginRight || 'auto' 
+    marginRight: props => props.marginRight || 'auto'
   },
   icon: {
     height: ICON_SIZE,
@@ -27,23 +27,23 @@ function IconContainer (props) {
   const classes = useStyles(props)
 
   return (
-      <div className={classes.iconContainer}>
-        <a href='https://www.ubcbiztech.com' target='_blank' rel='noopener noreferrer'>
-          <BiztechIcon fill={COLORS.WHITE} size={ICON_SIZE} margin='5px' />
-        </a>
-        <a href='https://www.linkedin.com/company/ubcbiztech/' target='_blank' rel='noopener noreferrer'>
-          <LinkedInIcon className={classes.icon} />
-        </a>
-        <a href='https://discord.gg/tP6kbkmK5D' target='_blank' rel='noopener noreferrer'>
-          <img src={Discord} className={classes.icon} alt='Discord' />
-        </a>
-        <a href='https://www.facebook.com/BizTechUBC/' target='_blank' rel='noopener noreferrer'>
-          <FacebookIcon className={classes.icon} />
-        </a>
-        <a href='https://www.instagram.com/ubcbiztech/' target='_blank' rel='noopener noreferrer'>
-          <InstagramIcon className={classes.icon} />
-        </a>
-      </div>
+    <div className={classes.iconContainer}>
+      <a href='https://www.ubcbiztech.com' target='_blank' rel='noopener noreferrer'>
+        <BiztechIcon fill={COLORS.WHITE} size={ICON_SIZE} margin='5px' />
+      </a>
+      <a href='https://www.linkedin.com/company/ubcbiztech/' target='_blank' rel='noopener noreferrer'>
+        <LinkedInIcon className={classes.icon} />
+      </a>
+      <a href='https://discord.gg/tP6kbkmK5D' target='_blank' rel='noopener noreferrer'>
+        <img src={Discord} className={classes.icon} alt='Discord' />
+      </a>
+      <a href='https://www.facebook.com/BizTechUBC/' target='_blank' rel='noopener noreferrer'>
+        <FacebookIcon className={classes.icon} />
+      </a>
+      <a href='https://www.instagram.com/ubcbiztech/' target='_blank' rel='noopener noreferrer'>
+        <InstagramIcon className={classes.icon} />
+      </a>
+    </div>
   )
 }
 

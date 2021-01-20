@@ -37,12 +37,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center'
   },
-  registrationHeader: {
-    borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
-    marginTop: '35px',
-    paddingLeft: '19px',
-    marginLeft: '11px'
-  },
   banner: {
     maxWidth: '100%',
     borderRadius: '5px',
@@ -57,10 +51,6 @@ const useStyles = makeStyles(theme => ({
   descDate: {
     color: COLORS.BIZTECH_GREEN,
     fontSize: '14px'
-  },
-  registrationText: {
-    fontWeight: 'bold',
-    fontSize: '24px'
   }
 }))
 
@@ -116,10 +106,6 @@ const EventView = ({ event, children }) => {
           <div />
         )}
 
-        <div className={classes.registrationHeader}>
-          <Typography className={classes.registrationText}>Registration</Typography>
-          <Typography>We need to know a little bit about you to get started.</Typography>
-        </div>
         {children}
       </div>
     </React.Fragment>

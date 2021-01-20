@@ -260,7 +260,7 @@ function EventsDashboard (props) {
     return eventsFilteredByTime.map((event) => (
       <EventCard
         event={event}
-        key={event.id+event.year}
+        key={event.id + event.year}
         variant={!user || user.admin ? 'none' : 'user'}
         favourited={userFavouritedEventIds.includes(event.id)}
         handleCardClick={redirectToEvent}

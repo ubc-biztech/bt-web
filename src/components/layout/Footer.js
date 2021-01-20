@@ -12,7 +12,7 @@ const ICONS_MARGIN_RIGHT = '70px'
 const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
-    width: '100%',
+    width: '100%'
   },
   careContainer: {
     display: 'flex'
@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
     width: '15px',
     marginTop: '3px',
     marginLeft: '5px'
-  },
+  }
 
 }))
 

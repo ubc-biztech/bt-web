@@ -63,12 +63,12 @@ function AdminHome (props) {
   const handleClickDeleteEvent = async () => {
     const clickedEvent = events.find(event => event.id === eventMenuClicked.id && event.year === eventMenuClicked.year)
     if (window.confirm(`Are you sure you want to delete ${clickedEvent.ename}? This cannot be undone`)) {
-      await deleteEvent({ eventId: clickedEvent.id, eventYear: clickedEvent.year})
+      await deleteEvent({ eventId: clickedEvent.id, eventYear: clickedEvent.year })
     }
     handleClose()
   }
 
-  const handleClickViewEvent = (eventId,eventYear) => {
+  const handleClickViewEvent = (eventId, eventYear) => {
     history.push(`/admin/event/${eventId}/${eventYear}`)
     handleClose()
   }
@@ -81,8 +81,8 @@ function AdminHome (props) {
   function createEventCard (event) {
     const image = event.imageUrl || require('assets/placeholder.jpg')
     return (
-      <Card className={classes.card} key={event.id+event.year}>
-        <CardActionArea onClick={() => handleClickViewEvent(event.id,event.year)} >
+      <Card className={classes.card} key={event.id + event.year}>
+        <CardActionArea onClick={() => handleClickViewEvent(event.id, event.year)} >
           <CardMedia
             className={classes.media}
             component='img'
