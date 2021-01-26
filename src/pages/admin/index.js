@@ -9,6 +9,7 @@ import AdminHome from './Home'
 import EventCreate from './Event/EventCreate'
 import EventEdit from './Event/EventEdit'
 import EventStats from './Event/EventStats'
+import Memberships from './Memberships/Memberships'
 
 import { fetchEvents } from 'store/event/eventActions'
 
@@ -44,6 +45,10 @@ const AdminRoutes = (props) => {
         exact
         path='/admin/home'
         render={() => <AdminHome events={events} />} />
+      <Route
+        exact
+        path='/admin/memberships'
+        render={() => <Memberships />} />
 
       <Redirect to='/404' />
     </Switch>
