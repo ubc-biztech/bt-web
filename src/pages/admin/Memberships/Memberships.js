@@ -201,6 +201,7 @@ const useStyles = makeStyles(theme => ({
   numResponses: {
     color: '#AEC4F4',
     fontFamily: "Gilroy",
+    fontSize: '18px',
     fontStyle: 'normal',
     fontWeight: 'bold'
   }
@@ -535,7 +536,7 @@ function Memberships(props) {
                   </IconButton>
                   <div>
                     <Box mx={2} px={4}>
-                      <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                      <Card className={classes.card} style={cardStyle}>
                         <Box py={2} px={4} className={classes.questionsDropDown}>
                           <FormControl className={classes.questionsForm}>
                             <NativeSelect
@@ -575,13 +576,12 @@ function Memberships(props) {
 
 
                 {questionIndex == 0 &&
-
                   <Box px={4}>
                     <Card className={classes.card} style={cardStyle}>
                       <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
                           <Typography>I am a current/prospective UBC student</Typography>
-                          <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UBC").length}
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.education === "UBC").length}
                           </Box>
                         </div>
                       </Box>
@@ -591,7 +591,7 @@ function Memberships(props) {
                       <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
                           <Typography>I am a current/prospective university student</Typography>
-                          <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "UNI").length}
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.education === "UNI").length}
                           </Box>
                         </div>
                       </Box>
@@ -601,16 +601,17 @@ function Memberships(props) {
                       <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
                           <Typography>I am a high school student</Typography>
-                          <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "HS").length}
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.education === "HS").length}
                           </Box>
                         </div>
                       </Box>
                     </Card>
+
                     <Card className={classes.card} style={cardStyle}>
                       <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
                           <Typography>None of the above</Typography>
-                          <Box className={classes.numResponses} fontSize='18px'>{membershipData.filter(x => x.education === "NA").length}
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.education === "NA").length}
                           </Box>
                         </div>
                       </Box>
@@ -619,79 +620,66 @@ function Memberships(props) {
                 }
 
                 {questionIndex == 1 &&
-                  <Box mx={2} px={4}>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                      <Box py={3} px={4}>
+                  <Box px={4}>
+                   <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Year 1</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.year === '1').length}</Typography>
-                          </div>
+                          <Typography>Year 1</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === '1').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+                    
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Year 2</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.year === '2').length}</Typography>
-                          </div>
+                          <Typography>Year 2</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === '2').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Year 3</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.year === '3').length}</Typography>
-                          </div>
+                          <Typography>Year 3</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === '3').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Year 4</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.year === '4').length}</Typography>
-                          </div>
+                          <Typography>Year 4</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === '4').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Year 5+</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.year === '5+').length}</Typography>
-                          </div>
+                          <Typography>Year 5+</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === '5+').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Pre-University</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.year === 'Grade 10' ||
+                          <Typography>Pre-University</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === 'Grade 10' ||
                               x.year === 'Grade 11' ||
                               x.year === 'Grade 12' ||
-                              x.year === 'Pre-University').length}</Typography>
-                          </div>
+                              x.year === 'Pre-University').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
@@ -699,76 +687,63 @@ function Memberships(props) {
                 }
 
                 {questionIndex == 2 &&
-                  <Box mx={2} px={4}>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                      <Box py={3} px={4}>
+                  <Box px={4}>
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Commerce</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.faculty === 'Commerce').length}</Typography>
-                          </div>
+                          <Typography>Commerce</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === 'Commerce').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Sciences</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.faculty === 'Sciences').length}</Typography>
-                          </div>
+                          <Typography>Sciences</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === 'Sciences').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Arts</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.faculty === 'Arts').length}</Typography>
-                          </div>
+                          <Typography>Arts</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === 'Arts').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Engineering</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.faculty === 'Engineering').length}</Typography>
-                          </div>
+                          <Typography>Engineering</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === 'Engineering').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>LFS</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.faculty === 'LFS').length}</Typography>
-                          </div>
+                          <Typography>LFS</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === 'LFS').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Kinesiology</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.faculty === 'Kinesiology').length}</Typography>
-                          </div>
+                          <Typography>Kinesiology</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.year === 'Kinesiology').length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
@@ -777,31 +752,28 @@ function Memberships(props) {
 
                 {questionIndex == 3 &&
                   <Box mx={2} px={4}>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
-                      <Box py={3} px={4}>
+                   <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>Computer Science</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('computer science') || x.major.toLowerCase().includes('compsci') || x.major.toLowerCase() === ('cs') || x.major.toLowerCase() === ('cpsc')).length}</Typography>
-                          </div>
+                          <Typography>Computer Science</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.major.toLowerCase().includes('computer science') || x.major.toLowerCase().includes('compsci') || x.major.toLowerCase() === ('cs') || x.major.toLowerCase() === ('cpsc')).length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
-                      <Box py={3} px={4}>
+
+                    <Box mx={2} px={4}>
+                   <Card className={classes.card} style={cardStyle}>
+                      <Box py={2} px={4}>
                         <div className={classes.questionLabel}>
-                          <div>
-                            <Typography>BUCS</Typography>
-                          </div>
-                          <div>
-                            <Typography>{membershipData.filter(x => x.major.toLowerCase().includes('bucs') || x.major.toLowerCase().includes('business and computer science')).length}</Typography>
-                          </div>
+                          <Typography>Computer Science</Typography>
+                          <Box className={classes.numResponses}>{membershipData.filter(x => x.major.toLowerCase().includes('computer science') || x.major.toLowerCase().includes('compsci') || x.major.toLowerCase() === ('cs') || x.major.toLowerCase() === ('cpsc')).length}
+                          </Box>
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -813,7 +785,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -825,7 +797,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -837,7 +809,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -849,7 +821,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -861,7 +833,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -873,7 +845,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -885,7 +857,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -902,7 +874,7 @@ function Memberships(props) {
 
                 {questionIndex == 4 &&
                   <Box mx={2} px={4}>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -914,7 +886,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -930,7 +902,7 @@ function Memberships(props) {
                 }
                 {questionIndex == 5 &&
                   <Box mx={2} px={4}>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -942,7 +914,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -958,7 +930,7 @@ function Memberships(props) {
                 }
                 {questionIndex == 6 &&
                   <Box mx={2} px={4}>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -970,7 +942,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -982,7 +954,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -994,7 +966,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -1006,7 +978,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -1018,7 +990,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -1034,7 +1006,7 @@ function Memberships(props) {
                 }
                 {questionIndex == 7 &&
                   <Box mx={2} px={4}>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61' }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -1046,7 +1018,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -1058,7 +1030,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
@@ -1070,7 +1042,7 @@ function Memberships(props) {
                         </div>
                       </Box>
                     </Card>
-                    <Card className={classes.card} style={cardStyle} style={{ backgroundColor: '#293B61', marginTop: 40 }}>
+                    <Card className={classes.card} style={cardStyle}>
                       <Box py={3} px={4}>
                         <div className={classes.questionLabel}>
                           <div>
