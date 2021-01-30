@@ -8,21 +8,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set tag version env
-      run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
-    - name: Set github identity
-      run: |
-        git switch -c master
-        git config --global user.name "biztechDev"
-        git config --global user.email "dev@ubcbiztech.com"
-        git config --global --list
-        git config --local --list
-    - name: Update version
-      run: |
-        echo "Releasing $RELEASE_VERSION to netlify production"
-        npm version $RELEASE_VERSION --no-git-tag-version
-        git add .
-        git commit -m "$RELEASE_VERSION"
-    - name: Push to prod
-      run: git push origin master && git push origin master:prod --force
+      - uses: actions/checkout@v2
+      - name: Set tag version env
+        run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
+      - name: Set github identity
+        run: |
+          git switch -c master
+          git config --global user.name "biztechDev"
+          git config --global user.email "dev@ubcbiztech.com"
+          git config --global --list
+          git config --local --list
+      - name: Update version
+        run: |
+          echo "Releasing $RELEASE_VERSION to netlify production"
+          npm version $RELEASE_VERSION --no-git-tag-version
+          git add .
+          git commit -m "$RELEASE_VERSION"
+      - name: Push to prod
+        run: git push origin master && git push origin master:prod --force
