@@ -33,7 +33,8 @@ export default function RegisterEventForm (props) {
 
   const {
     handleSubmit,
-    isSubmitting
+    isSubmitting,
+    isUBCStudent
   } = props
 
   return (
@@ -67,14 +68,14 @@ export default function RegisterEventForm (props) {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        {isUBCStudent && <Grid item xs={12}>
           <CustomTextField
             {...props}
             label='Student Number *'
             groupName='id'
             autoComplete='id'
           />
-        </Grid>
+        </Grid>}
 
         <Grid item xs={renderMobileOnly ? 12 : 4}>
           <Grid item xs={12}>
