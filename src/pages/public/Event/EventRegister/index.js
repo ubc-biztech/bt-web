@@ -146,7 +146,7 @@ const EventFormContainer = (props) => {
                 <FormControl className={classes.formControl}>
                   <FormGroup>
                     <FormControlLabel
-                    label="Current UBC Student"
+                    label="UBC Student"
                     control={
                       <Checkbox
                         checked={isUBCStudent}
