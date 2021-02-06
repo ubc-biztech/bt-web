@@ -5,8 +5,8 @@
 //     : aws_exports
 
 export const API_URL = process.env.REACT_APP_STAGE === 'production'
-  ? process.env.REACT_APP_PROD_API
-  : process.env.REACT_APP_DEV_API
+  ? "https://nuidax7451.execute-api.us-west-2.amazonaws.com/prod"
+  : "https://api-dev.ubcbiztech.com"
 
 export const CLIENT_URL = process.env.REACT_APP_STAGE === 'production'
   ? 'https://app.ubcbiztech.com/'
