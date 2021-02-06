@@ -21,21 +21,20 @@ import {
 
 const PERSONALIZATION_STATES = {
   SUMMARY: {
-    index: 0,
     displayName: "Summary",
     icon: <StarBorderIcon fontSize="small" />,
-  },
-  QUESTION: {
-    index: 1,
+    component: <Summary />
+  }, QUESTION: {
     displayName: "Question",
     icon: <HelpOutlineIcon fontSize="small" />,
-  },
-  INDIVIDUAL: {
-    index: 2,
+    component: <Questions />
+  }, INDIVIDUAL: {
     displayName: "Individual",
     icon: <ListIcon fontSize="small" />,
+    component: <Individual />
   },
 };
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -91,16 +90,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Memberships() {
-  const [personalizationIndex, setPersonalizationIndex] = useState(
-    PERSONALIZATION_STATES.SUMMARY.index
+
+  const [personalizationState, setPersonalizationState] = useState(
+    PERSONALIZATION_STATES.SUMMARY
   );
 
   const classes = useStyles();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const handlePersonalizationChange = (newIndex) => {
-    setPersonalizationIndex(newIndex);
+  const handlePersonalizationChange = (newState) => {
+    setPersonalizationState(newState);
   };
 
   const [membershipData, setMembershipData] = useState([]);
@@ -131,13 +131,13 @@ function Memberships() {
             <List>
               {Object.values(PERSONALIZATION_STATES).map((pState) => (
                 <ListItem
-                  key={pState.index}
+                  key={pState}
                   className={
-                    personalizationIndex === pState.index
+                    personalizationState === pState
                       ? classes.sidePanelActiveButton
                       : classes.sidePanelButton
                   }
-                  onClick={() => handlePersonalizationChange(pState.index)}
+                  onClick={() => handlePersonalizationChange(pState)}
                   button
                 >
                   <ListItemText>
@@ -157,7 +157,7 @@ function Memberships() {
               {Object.values(PERSONALIZATION_STATES).map(
                 (pState) =>
                   pState.displayName !== "Individual" && // don't render "All"
-                  (personalizationIndex === pState.index ? (
+                  (personalizationState === pState ? (
                     <Chip
                       key={pState.displayName}
                       className={classes.chipFilter}
@@ -166,36 +166,26 @@ function Memberships() {
                       label={pState.displayName}
                       onDelete={() =>
                         handlePersonalizationChange(
-                          PERSONALIZATION_STATES.INDIVIDUAL.index
+                          PERSONALIZATION_STATES.INDIVIDUAL
                         )
                       }
                     />
                   ) : (
-                    <Chip
-                      key={pState.displayName}
-                      className={classes.chipFilter}
-                      size="small"
-                      color="secondary"
-                      label={pState.displayName}
-                      onClick={() => handlePersonalizationChange(pState.index)}
-                    />
-                  ))
+                      <Chip
+                        key={pState.displayName}
+                        className={classes.chipFilter}
+                        size="small"
+                        color="secondary"
+                        label={pState.displayName}
+                        onClick={() => handlePersonalizationChange(pState)}
+                      />
+                    ))
               )}
             </div>
           )}
 
-          {personalizationIndex === 0 && (
-            <Summary membershipData={membershipData} />
-          )}
+          {React.cloneElement(personalizationState.component, { membershipData: membershipData })}
 
-          {personalizationIndex === 1 && (
-            <Questions membershipData={membershipData} />
-          )}
-          {/* Questions Page */}
-
-          {personalizationIndex === 2 && (
-              <Individual membershipData={membershipData} />
-          )}
         </div>
       </div>
     </div>

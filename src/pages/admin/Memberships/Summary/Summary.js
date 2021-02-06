@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import SummaryPieChart from "./SummaryPieChart";
 import SummaryHBarChart from "./SummaryHBarChart";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -79,10 +80,10 @@ const Summary = (props) => {
             props.membershipData.filter((x) => x.year === "4").length,
             props.membershipData.filter((x) => x.year === "5+").length,
             props.membershipData.filter((x) => x.year === "Grade 10").length +
-              props.membershipData.filter((x) => x.year === "Grade 11").length +
-              props.membershipData.filter((x) => x.year === "Grade 12").length +
-              props.membershipData.filter((x) => x.year === "Pre-university")
-                .length,
+            props.membershipData.filter((x) => x.year === "Grade 11").length +
+            props.membershipData.filter((x) => x.year === "Grade 12").length +
+            props.membershipData.filter((x) => x.year === "Pre-university")
+              .length,
           ]}
         />
 

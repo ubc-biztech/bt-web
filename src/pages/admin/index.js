@@ -46,8 +46,8 @@ const AdminRoutes = (props) => {
       <Redirect to="/404" />
     </Switch>
   ) : (
-    <Redirect to="/forbidden" />
-  );
+      <Redirect to="/forbidden" />
+    );
 };
 
 const mapStateToProps = (state) => {
