@@ -111,7 +111,7 @@ class Router extends Component {
         {user && <Nav admin={user.admin} />}
         <div className='content'>
           {user && userNeedsRegister && <RegisterAlert />}
-          {pathname === '/' ? null : <Header />}
+          {pathname === '/' || pathname === '' ? null : <Header />}
           <Switch>
 
             {/* ADMIN ROUTES */}
@@ -173,7 +173,7 @@ class Router extends Component {
                 : <Landing />
               } />
           </Switch>
-          {pathname === '/' ? null : <Footer />}
+          {pathname === '/' || pathname === '' ? null : <Footer />}
         </div>
       </BrowserRouter>
     )
