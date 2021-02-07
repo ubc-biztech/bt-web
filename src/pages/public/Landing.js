@@ -92,7 +92,7 @@ function Landing(props) {
       </div>
       <div className={classes.linkbar}>
         <Markdown align="center">
-          In the meantime, you can find us here:{" "}
+          {"In the meantime, you can find us here: "}
         </Markdown>
         <hr className={classes.divider} />
         <IconContainer />
