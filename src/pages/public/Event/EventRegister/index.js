@@ -190,7 +190,7 @@ const EventFormContainer = (props) => {
       diet,
       optTradingGroup
     }
-    fetchBackend('/users', 'POST', body)
+    fetchBackend('/users', 'POST', body, false)
       .catch(err => {
         // If the error is not "User could not be created because it already exists"
         if (err.status !== 409) {
@@ -210,7 +210,7 @@ const EventFormContainer = (props) => {
       heardFrom,
       registrationStatus: 'registered'
     }
-    fetchBackend('/registrations', 'POST', body)
+    fetchBackend('/registrations', 'POST', body, false)
       .then(() => {
         // alert('Congratulations! You are now signed up.')
         setRegistration({ ...registration, isRegistered: true, registeredEmail: email })
