@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import SummaryPieChart from "./SummaryPieChart";
 import SummaryHBarChart from "./SummaryHBarChart";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+import 'chartjs-plugin-datalabels';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

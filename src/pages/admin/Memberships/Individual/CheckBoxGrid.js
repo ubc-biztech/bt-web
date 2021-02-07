@@ -11,15 +11,15 @@ const CheckBoxGrid = (props) => {
     <Grid item spacing={0} xs={12} container>
       <Grid item xs={1}>
         <IconButton disabled={true}>
-          {props.filter == props.condition ? (
+          {props.filter === props.condition ? (
             <CheckBoxIcon
               style={{ color: COLORS.BIZTECH_GREEN, width: 25, height: 25 }}
             />
           ) : (
-            <CheckBoxOutlineBlankIcon
-              style={{ color: "C4C4C4", width: 25, height: 25 }}
-            />
-          )}
+              <CheckBoxOutlineBlankIcon
+                style={{ color: "C4C4C4", width: 25, height: 25 }}
+              />
+            )}
         </IconButton>
       </Grid>
       <Grid item xs={11}>

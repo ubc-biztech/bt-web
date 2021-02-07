@@ -229,28 +229,28 @@ const Individual = (props) => {
                 <IconButton disabled={true}>
                   {props.membershipData
                     .filter((x) => x.id === memberID)
-                    .map((x) => x.pronouns) == "She/Her/Hers" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.pronouns) == "He/Him/His" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.pronouns) == "They/Them/Theirs" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.first_name.length < 1) ? (
-                    <RadioButtonUncheckedIcon
-                      style={{ color: "C4C4C4", width: 25, height: 25 }}
-                    />
-                  ) : (
-                    <RadioButtonCheckedIcon
-                      style={{
-                        color: COLORS.BIZTECH_GREEN,
-                        width: 25,
-                        height: 25,
-                      }}
-                    />
-                  )}
+                    .map((x) => x.pronouns) === "She/Her/Hers" ||
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.pronouns) === "He/Him/His" ||
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.pronouns) === "They/Them/Theirs" ||
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.first_name.length < 1) ? (
+                      <RadioButtonUncheckedIcon
+                        style={{ color: "C4C4C4", width: 25, height: 25 }}
+                      />
+                    ) : (
+                      <RadioButtonCheckedIcon
+                        style={{
+                          color: COLORS.BIZTECH_GREEN,
+                          width: 25,
+                          height: 25,
+                        }}
+                      />
+                    )}
                 </IconButton>
               </Grid>
               <Grid item xs={11}>
@@ -266,18 +266,18 @@ const Individual = (props) => {
                   Other
                   {props.membershipData
                     .filter((x) => x.id === memberID)
-                    .map((x) => x.pronouns) == "She/Her/Hers" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.pronouns) == "He/Him/His" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.pronouns) == "They/Them/Theirs"
+                    .map((x) => x.pronouns) === "She/Her/Hers" ||
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.pronouns) === "He/Him/His" ||
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.pronouns) === "They/Them/Theirs"
                     ? ""
                     : ": " +
-                      props.membershipData
-                        .filter((x) => x.id === memberID)
-                        .map((x) => x.pronouns)}
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.pronouns)}
                 </Box>
               </Grid>
             </Grid>
@@ -287,36 +287,36 @@ const Individual = (props) => {
         {/* UBC Student Number */}
         {props.membershipData
           .filter((x) => x.id === memberID)
-          .map((x) => x.education) == "UBC" && (
-          <Card className={classes.card}>
-            <Grid container spacing={0} xs={12}>
-              <IndividualHeaderBox label="UBC Student Number" />
-              <Grid item xs={12}>
-                <Box
-                  paddingLeft={1}
-                  paddingTop={1.5}
-                  alignItems="left"
-                  color="FFFFFF"
-                  fontFamily="Gilroy"
-                  fontStyle="normal"
-                  fontWeight="normal"
-                  fontSize="19px"
-                >
-                  {props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.student_number) !== 0 ? (
-                    props.membershipData
+          .map((x) => x.education) === "UBC" && (
+            <Card className={classes.card}>
+              <Grid container spacing={0} xs={12}>
+                <IndividualHeaderBox label="UBC Student Number" />
+                <Grid item xs={12}>
+                  <Box
+                    paddingLeft={1}
+                    paddingTop={1.5}
+                    alignItems="left"
+                    color="FFFFFF"
+                    fontFamily="Gilroy"
+                    fontStyle="normal"
+                    fontWeight="normal"
+                    fontSize="19px"
+                  >
+                    {props.membershipData
                       .filter((x) => x.id === memberID)
-                      .map((x) => x.student_number)
-                  ) : (
-                    <p></p>
-                  )}
-                  <Divider color="DADADA"></Divider>
-                </Box>
+                      .map((x) => x.student_number) !== 0 ? (
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.student_number)
+                      ) : (
+                        <p></p>
+                      )}
+                    <Divider color="DADADA"></Divider>
+                  </Box>
+                </Grid>
               </Grid>
-            </Grid>
-          </Card>
-        )}
+            </Card>
+          )}
 
         {/* Academic Year Level */}
         <Card className={classes.card}>
@@ -364,14 +364,14 @@ const Individual = (props) => {
               filter={
                 props.membershipData
                   .filter((x) => x.id === memberID)
-                  .map((x) => x.year) ==
-                  ("Grade 10" ||
-                    "Grade 11" ||
-                    "Grade 12" ||
-                    "Pre-University") ||
+                  .map((x) => x.year) ===
+                ("Grade 10" ||
+                  "Grade 11" ||
+                  "Grade 12" ||
+                  "Pre-University") ||
                 props.membershipData
                   .filter((x) => x.id === memberID)
-                  .map((x) => x.education) == "HS"
+                  .map((x) => x.education) === "HS"
               }
               condition={true}
               label="Pre-University"
@@ -391,175 +391,175 @@ const Individual = (props) => {
         {props.membershipData
           .filter((x) => x.id === memberID)
           .map((x) => x.education) === ("UBC" || "UNI") && (
-          <Card className={classes.card}>
-            <Grid container spacing={0} xs={12}>
-              <Grid item xs={12}>
-                <IndividualHeaderBox label="Faculty" />
-              </Grid>
-
-              <IndividualGrid
-                filter={props.membershipData
-                  .filter((x) => x.id === memberID)
-                  .map((x) => x.faculty)}
-                condition="Commerce"
-                label="Commerce"
-              />
-              <IndividualGrid
-                filter={props.membershipData
-                  .filter((x) => x.id === memberID)
-                  .map((x) => x.faculty)}
-                condition="Sciences"
-                label="Sciences"
-              />
-              <IndividualGrid
-                filter={props.membershipData
-                  .filter((x) => x.id === memberID)
-                  .map((x) => x.faculty)}
-                condition="Engineering"
-                label="Engineering"
-              />
-              <IndividualGrid
-                filter={props.membershipData
-                  .filter((x) => x.id === memberID)
-                  .map((x) => x.faculty)}
-                condition="Sciences"
-                label="Sciences"
-              />
-              <IndividualGrid
-                filter={props.membershipData
-                  .filter((x) => x.id === memberID)
-                  .map((x) => x.faculty)}
-                condition="LFS"
-                label="LFS"
-              />
-              <IndividualGrid
-                filter={props.membershipData
-                  .filter((x) => x.id === memberID)
-                  .map((x) => x.faculty)}
-                condition="Kinesiology"
-                label="Kinesiology"
-              />
-              <IndividualGrid
-                filter={props.membershipData
-                  .filter((x) => x.id === memberID)
-                  .map((x) => x.faculty)}
-                condition="Forestry"
-                label="Forestry"
-              />
-
-              <Grid item spacing={0} xs={12} container>
-                <Grid item xs={1}>
-                  <IconButton disabled={true}>
-                    {props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Commerce" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Sciences" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Arts" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Engineering" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "LFS" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Kinesiology" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Forestry" ? (
-                      <RadioButtonUncheckedIcon
-                        style={{
-                          color: "C4C4C4",
-                          width: 25,
-                          height: 25,
-                        }}
-                      />
-                    ) : (
-                      <RadioButtonCheckedIcon
-                        style={{
-                          color: COLORS.BIZTECH_GREEN,
-                          width: 25,
-                          height: 25,
-                        }}
-                      />
-                    )}
-                  </IconButton>
+            <Card className={classes.card}>
+              <Grid container spacing={0} xs={12}>
+                <Grid item xs={12}>
+                  <IndividualHeaderBox label="Faculty" />
                 </Grid>
-                <Grid item xs={11}>
+
+                <IndividualGrid
+                  filter={props.membershipData
+                    .filter((x) => x.id === memberID)
+                    .map((x) => x.faculty)}
+                  condition="Commerce"
+                  label="Commerce"
+                />
+                <IndividualGrid
+                  filter={props.membershipData
+                    .filter((x) => x.id === memberID)
+                    .map((x) => x.faculty)}
+                  condition="Sciences"
+                  label="Sciences"
+                />
+                <IndividualGrid
+                  filter={props.membershipData
+                    .filter((x) => x.id === memberID)
+                    .map((x) => x.faculty)}
+                  condition="Engineering"
+                  label="Engineering"
+                />
+                <IndividualGrid
+                  filter={props.membershipData
+                    .filter((x) => x.id === memberID)
+                    .map((x) => x.faculty)}
+                  condition="Sciences"
+                  label="Sciences"
+                />
+                <IndividualGrid
+                  filter={props.membershipData
+                    .filter((x) => x.id === memberID)
+                    .map((x) => x.faculty)}
+                  condition="LFS"
+                  label="LFS"
+                />
+                <IndividualGrid
+                  filter={props.membershipData
+                    .filter((x) => x.id === memberID)
+                    .map((x) => x.faculty)}
+                  condition="Kinesiology"
+                  label="Kinesiology"
+                />
+                <IndividualGrid
+                  filter={props.membershipData
+                    .filter((x) => x.id === memberID)
+                    .map((x) => x.faculty)}
+                  condition="Forestry"
+                  label="Forestry"
+                />
+
+                <Grid item spacing={0} xs={12} container>
+                  <Grid item xs={1}>
+                    <IconButton disabled={true}>
+                      {props.membershipData
+                        .filter((x) => x.id === memberID)
+                        .map((x) => x.faculty) === "Commerce" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Sciences" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Arts" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Engineering" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "LFS" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Kinesiology" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Forestry" ? (
+                          <RadioButtonUncheckedIcon
+                            style={{
+                              color: "C4C4C4",
+                              width: 25,
+                              height: 25,
+                            }}
+                          />
+                        ) : (
+                          <RadioButtonCheckedIcon
+                            style={{
+                              color: COLORS.BIZTECH_GREEN,
+                              width: 25,
+                              height: 25,
+                            }}
+                          />
+                        )}
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={11}>
+                    <Box
+                      paddingTop={1.5}
+                      alignItems="left"
+                      color="C4C4C4"
+                      fontFamily="Gilroy"
+                      fontStyle="normal"
+                      fontWeight="normal"
+                      fontSize="19px"
+                    >
+                      Other
+                    {props.membershipData
+                        .filter((x) => x.id === memberID)
+                        .map((x) => x.faculty) === "Commerce" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Sciences" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Arts" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Engineering" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "LFS" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Kinesiology" ||
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty) === "Forestry"
+                        ? ""
+                        : ": " +
+                        props.membershipData
+                          .filter((x) => x.id === memberID)
+                          .map((x) => x.faculty)}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Card>
+          )}
+
+        {/* Major */}
+        {props.membershipData
+          .filter((x) => x.id === memberID)
+          .map((x) => x.education) === ("UBC" || "UNI") && (
+            <Card className={classes.card}>
+              <Grid container spacing={0} xs={12}>
+                <IndividualHeaderBox label="Major" />
+                <Grid item xs={12}>
                   <Box
+                    paddingLeft={1}
                     paddingTop={1.5}
                     alignItems="left"
-                    color="C4C4C4"
+                    color="FFFFFF"
                     fontFamily="Gilroy"
                     fontStyle="normal"
                     fontWeight="normal"
                     fontSize="19px"
                   >
-                    Other
                     {props.membershipData
                       .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Commerce" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Sciences" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Arts" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Engineering" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "LFS" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Kinesiology" ||
-                    props.membershipData
-                      .filter((x) => x.id === memberID)
-                      .map((x) => x.faculty) === "Forestry"
-                      ? ""
-                      : ": " +
-                        props.membershipData
-                          .filter((x) => x.id === memberID)
-                          .map((x) => x.faculty)}
+                      .map((x) => x.major)}
+                    <Divider color="DADADA"></Divider>
                   </Box>
                 </Grid>
               </Grid>
-            </Grid>
-          </Card>
-        )}
-
-        {/* Major */}
-        {props.membershipData
-          .filter((x) => x.id === memberID)
-          .map((x) => x.education) == ("UBC" || "UNI") && (
-          <Card className={classes.card}>
-            <Grid container spacing={0} xs={12}>
-              <IndividualHeaderBox label="Major" />
-              <Grid item xs={12}>
-                <Box
-                  paddingLeft={1}
-                  paddingTop={1.5}
-                  alignItems="left"
-                  color="FFFFFF"
-                  fontFamily="Gilroy"
-                  fontStyle="normal"
-                  fontWeight="normal"
-                  fontSize="19px"
-                >
-                  {props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.major)}
-                  <Divider color="DADADA"></Divider>
-                </Box>
-              </Grid>
-            </Grid>
-          </Card>
-        )}
+            </Card>
+          )}
 
         {/* Were you a BizTech member last year? */}
         <Card className={classes.card}>
@@ -728,18 +728,18 @@ const Individual = (props) => {
                           "Careers in the Tech Industry",
                         ].some((topicList) => y.includes(topicList))
                     ).length >= 1 ? (
-                    <CheckBoxIcon
-                      style={{
-                        color: COLORS.BIZTECH_GREEN,
-                        width: 30,
-                        height: 30,
-                      }}
-                    />
-                  ) : (
-                    <CheckBoxOutlineBlankIcon
-                      style={{ color: "C4C4C4", width: 30, height: 30 }}
-                    />
-                  )}
+                      <CheckBoxIcon
+                        style={{
+                          color: COLORS.BIZTECH_GREEN,
+                          width: 30,
+                          height: 30,
+                        }}
+                      />
+                    ) : (
+                      <CheckBoxOutlineBlankIcon
+                        style={{ color: "C4C4C4", width: 30, height: 30 }}
+                      />
+                    )}
                 </IconButton>
               </Grid>
               <Grid item xs={11}>
@@ -769,20 +769,20 @@ const Individual = (props) => {
                     ).length < 1
                     ? ""
                     : ": " +
-                      props.membershipData
-                        .filter((x) => x.id === memberID)
-                        .map((x) => x.topics)
-                        .filter(
-                          (y) =>
-                            ![
-                              "Cyber Security",
-                              "AI",
-                              "Tech Startups",
-                              "eCommerce",
-                              "Health Tech",
-                              "Careers in the Tech Industry",
-                            ].some((topicList) => y.includes(topicList))
-                        )}
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.topics)
+                      .filter(
+                        (y) =>
+                          ![
+                            "Cyber Security",
+                            "AI",
+                            "Tech Startups",
+                            "eCommerce",
+                            "Health Tech",
+                            "Careers in the Tech Industry",
+                          ].some((topicList) => y.includes(topicList))
+                      )}
                 </Box>
               </Grid>
             </Grid>
@@ -824,27 +824,27 @@ const Individual = (props) => {
                   {props.membershipData
                     .filter((x) => x.id === memberID)
                     .map((x) => x.heard_from) === "Facebook" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.heard_from) === "Friends" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.heard_from) === "Instagram" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.first_name).length < 1 ? (
-                    <RadioButtonUncheckedIcon
-                      style={{ color: "C4C4C4", width: 25, height: 25 }}
-                    />
-                  ) : (
-                    <RadioButtonCheckedIcon
-                      style={{
-                        color: COLORS.BIZTECH_GREEN,
-                        width: 25,
-                        height: 25,
-                      }}
-                    />
-                  )}
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.heard_from) === "Friends" ||
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.heard_from) === "Instagram" ||
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.first_name).length < 1 ? (
+                      <RadioButtonUncheckedIcon
+                        style={{ color: "C4C4C4", width: 25, height: 25 }}
+                      />
+                    ) : (
+                      <RadioButtonCheckedIcon
+                        style={{
+                          color: COLORS.BIZTECH_GREEN,
+                          width: 25,
+                          height: 25,
+                        }}
+                      />
+                    )}
                 </IconButton>
               </Grid>
               <Grid item xs={11}>
@@ -861,17 +861,17 @@ const Individual = (props) => {
                   {props.membershipData
                     .filter((x) => x.id === memberID)
                     .map((x) => x.heard_from) === "Facebook" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.heard_from) === "Friends" ||
-                  props.membershipData
-                    .filter((x) => x.id === memberID)
-                    .map((x) => x.heard_from) === "Instagram"
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.heard_from) === "Friends" ||
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.heard_from) === "Instagram"
                     ? ""
                     : ": " +
-                      props.membershipData
-                        .filter((x) => x.id === memberID)
-                        .map((x) => x.heard_from)}
+                    props.membershipData
+                      .filter((x) => x.id === memberID)
+                      .map((x) => x.heard_from)}
                 </Box>
               </Grid>
             </Grid>
