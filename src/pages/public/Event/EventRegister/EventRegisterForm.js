@@ -113,6 +113,14 @@ export default function RegisterEventForm (props) {
               groupName='heardFrom'
             />
           </Grid>
+
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              label="Do you want to opt in for UBC Trading Group Membership?"
+              listOfOptions={['Yes', 'No']}
+              groupName='optTradingGroup'/>
+          </Grid>
         </Grid>
       </Grid>
       <br />

@@ -92,7 +92,7 @@ const EventFormContainer = (props) => {
     year: Yup.string().required('Level of study is required')
   })
 
-  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '' }
+  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '', optTradingGroup: '' }
 
   const { isRegistered, registeredEmail } = registration
 
@@ -176,7 +176,7 @@ const EventFormContainer = (props) => {
   )
 
   async function submitValues (values) {
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
+    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender, optTradingGroup } = values
     const eventID = event.id
     const eventYear = event.year
     const body = {
@@ -187,7 +187,8 @@ const EventFormContainer = (props) => {
       year,
       faculty,
       gender,
-      diet
+      diet,
+      optTradingGroup
     }
     fetchBackend('/users', 'POST', body)
       .catch(err => {
