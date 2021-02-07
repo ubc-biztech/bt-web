@@ -190,7 +190,6 @@ const EventFormContainer = (props) => {
       diet,
       optTradingGroup
     }
-    console.log(body)
     fetchBackend('/users', 'POST', body)
       .catch(err => {
         // If the error is not "User could not be created because it already exists"
