@@ -1,37 +1,36 @@
 @import "./node_modules/react-vis/dist/style";
-@import '~constants/index.scss';
+@import "~constants/index.scss";
 
 @font-face {
-	font-family: 'Gilroy';
-    src: url('./assets/font/Gilroy-Medium.eot') format('embedded-opentype'),
-        url('./assets/font/Gilroy-Medium.woff') format('woff'),
-        url('./assets/font/Gilroy-Medium.ttf') format('truetype');
-	font-weight: 400;
+  font-family: "Gilroy";
+  src: url("./assets/font/Gilroy-Medium.eot") format("embedded-opentype"),
+    url("./assets/font/Gilroy-Medium.woff") format("woff"),
+    url("./assets/font/Gilroy-Medium.ttf") format("truetype");
+  font-weight: 400;
 }
 
 @font-face {
-	font-family: 'Gilroy';
-    src: url('./assets/font/Gilroy-Regular.eot') format('embedded-opentype'),
-        url('./assets/font/Gilroy-Regular.woff') format('woff'),
-        url('./assets/font/Gilroy-Regular.ttf') format('truetype');
-	font-weight: 300;
+  font-family: "Gilroy";
+  src: url("./assets/font/Gilroy-Regular.eot") format("embedded-opentype"),
+    url("./assets/font/Gilroy-Regular.woff") format("woff"),
+    url("./assets/font/Gilroy-Regular.ttf") format("truetype");
+  font-weight: 300;
 }
 
 @font-face {
-	font-family: 'Gilroy';
-    src: url('./assets/font/Gilroy-Bold.eot') format('embedded-opentype'),
-        url('./assets/font/Gilroy-Bold.woff') format('woff'),
-        url('./assets/font/Gilroy-Bold.ttf') format('truetype');
-	font-weight: 700;
+  font-family: "Gilroy";
+  src: url("./assets/font/Gilroy-Bold.eot") format("embedded-opentype"),
+    url("./assets/font/Gilroy-Bold.woff") format("woff"),
+    url("./assets/font/Gilroy-Bold.ttf") format("truetype");
+  font-weight: 700;
 }
 
 .content {
-    padding-top: 14px;
-    margin-left: 110px;
+  padding-top: 14px;
+  margin-left: 110px;
 
-    @media screen and (max-width: $md){
-        margin-left: 10px;
-        margin-bottom: $bottom_nav_size;
-    }
+  @media screen and (max-width: $md) {
+    margin-left: 10px;
+    margin-bottom: $bottom_nav_size;
+  }
 }
-

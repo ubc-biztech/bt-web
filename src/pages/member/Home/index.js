@@ -1,77 +1,74 @@
-import React, { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
+import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 
-import { makeStyles } from '@material-ui/core/styles'
-import { Card, CardContent, Typography } from '@material-ui/core'
+import { makeStyles } from "@material-ui/core/styles";
+import { Card, CardContent, Typography } from "@material-ui/core";
 
-import UserProgress from './UserProgress'
+import UserProgress from "./UserProgress";
 
-import House from 'assets/house.svg'
-import { COLORS } from 'constants/index'
+import House from "assets/house.svg";
+import { COLORS } from "constants/index";
 
 const useStyles = makeStyles({
   container: {
-    maxWidth: '85%',
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: '75px auto',
-    padding: '14px'
+    maxWidth: "85%",
+    display: "flex",
+    flexWrap: "wrap",
+    margin: "75px auto",
+    padding: "14px",
   },
   header: {
     color: COLORS.BIZTECH_GREEN,
-    width: '100%'
+    width: "100%",
   },
   column: {
-    flex: '1'
+    flex: "1",
   },
   card: {
-    position: 'relative',
-    margin: '10px 10px 0 0',
-    overflow: 'visible'
+    position: "relative",
+    margin: "10px 10px 0 0",
+    overflow: "visible",
   },
   flexbox: {
-    display: 'flex',
-    width: '100%'
+    display: "flex",
+    width: "100%",
   },
   house: {
-    position: 'absolute',
-    width: '33%',
-    bottom: '0px',
-    right: '10px'
+    position: "absolute",
+    width: "33%",
+    bottom: "0px",
+    right: "10px",
   },
   green: {
-    color: COLORS.BIZTECH_GREEN
+    color: COLORS.BIZTECH_GREEN,
   },
   eventName: {
-    fontSize: '24px',
-    fontWeight: 'normal'
+    fontSize: "24px",
+    fontWeight: "normal",
   },
   eventDate: {
-    fontWeight: 'normal',
-    color: COLORS.FONT_COLOR
-  }
-})
+    fontWeight: "normal",
+    color: COLORS.FONT_COLOR,
+  },
+});
 
-function MemberHome (props) {
-  const {
-    user,
-    registered,
-    events
-  } = props
+function MemberHome(props) {
+  const { user, registered, events } = props;
 
-  const userName = user.admin ? 'Biztech exec!' : user.fname
+  const userName = user.admin ? "Biztech exec!" : user.fname;
 
-  const classes = useStyles()
+  const classes = useStyles();
 
-  const [featuredEvent, setFeaturedEvent] = useState({})
-  const [nextEvent, setNextEvent] = useState({})
+  const [featuredEvent, setFeaturedEvent] = useState({});
+  const [nextEvent, setNextEvent] = useState({});
 
   const getFeaturedEvent = () => {
     if (events.length) {
-      const randomEvent = events[Math.floor(Math.random() * (events.length - 1))]
-      setFeaturedEvent(randomEvent)
+      const randomEvent =
+        events[Math.floor(Math.random() * (events.length - 1))];
+      setFeaturedEvent(randomEvent);
     }
-  }
+  };
 
   /**
    * gets the next event that the user is registered for
@@ -80,40 +77,45 @@ function MemberHome (props) {
    */
   const getNextEvent = async () => {
     if (!user || !registered) {
-      setNextEvent({ ename: 'None Registered!' })
-      return
+      setNextEvent({ ename: "None Registered!" });
+      return;
     }
-    events.forEach(event => {
-      const index = registered.findIndex(registration => registration.eventID === event.id)
+    events.forEach((event) => {
+      const index = registered.findIndex(
+        (registration) => registration.eventID === event.id
+      );
       if (index !== -1) {
         // if the event has not passed yet
-        if (new Date(event.startDate).getTime() > new Date().getTime()) return setNextEvent(event)
-        else return setNextEvent({ ename: 'None Registered!' })
+        if (new Date(event.startDate).getTime() > new Date().getTime())
+          return setNextEvent(event);
+        else return setNextEvent({ ename: "None Registered!" });
       }
-    })
-  }
+    });
+  };
 
   // set featured event and nextEvent based on events
   useEffect(() => {
     if (events) {
-      getFeaturedEvent()
-      getNextEvent()
+      getFeaturedEvent();
+      getNextEvent();
     }
-  }, [events]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [events]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function CardComponent ({ children }) {
+  function CardComponent({ children }) {
     return (
       <Card className={classes.card}>
-        <CardContent>
-          {children}
-        </CardContent>
+        <CardContent>{children}</CardContent>
       </Card>
-    )
+    );
   }
 
-  function eventDate (date) {
-    return new Date(date)
-      .toLocaleDateString('en-US', { day: 'numeric', weekday: 'long', month: 'long', year: 'numeric' })
+  function eventDate(date) {
+    return new Date(date).toLocaleDateString("en-US", {
+      day: "numeric",
+      weekday: "long",
+      month: "long",
+      year: "numeric",
+    });
   }
 
   return (
@@ -122,47 +124,64 @@ function MemberHome (props) {
         <title>Biztech User Dashboard</title>
       </Helmet>
       <div className={classes.container}>
-        <Typography variant='h1' className={classes.header}>Home</Typography>
+        <Typography variant="h1" className={classes.header}>
+          Home
+        </Typography>
         <div className={classes.column}>
           <CardComponent>
-            <Typography variant='h2'>Hi {userName}!</Typography>
+            <Typography variant="h2">Hi {userName}!</Typography>
             <Typography>You are X events away from a reward!</Typography>
-            <img src={House} className={classes.house} alt='BizTech House' />
+            <img src={House} className={classes.house} alt="BizTech House" />
           </CardComponent>
           <CardComponent>
-            <Typography variant='h2'>Progress</Typography>
-            {registered
-              ? <UserProgress registeredEvents={registered} events={events} />
-              : <Typography>No Registration Data found</Typography>}
+            <Typography variant="h2">Progress</Typography>
+            {registered ? (
+              <UserProgress registeredEvents={registered} events={events} />
+            ) : (
+              <Typography>No Registration Data found</Typography>
+            )}
           </CardComponent>
         </div>
         <div className={classes.column}>
           <CardComponent>
-            <Typography variant='h2'>Sticker Collection</Typography>
+            <Typography variant="h2">Sticker Collection</Typography>
           </CardComponent>
           <CardComponent>
-            <Typography variant='h2'>Prizes</Typography>
+            <Typography variant="h2">Prizes</Typography>
           </CardComponent>
           <div className={classes.flexbox}>
             <div className={classes.column}>
               <CardComponent>
-                <Typography variant='h2' className={classes.green}>Next Event</Typography>
-                <Typography className={classes.eventName}>{nextEvent.ename}</Typography>
-                <Typography className={classes.eventDate}>{nextEvent.startDate && eventDate(nextEvent.startDate)}</Typography>
+                <Typography variant="h2" className={classes.green}>
+                  Next Event
+                </Typography>
+                <Typography className={classes.eventName}>
+                  {nextEvent.ename}
+                </Typography>
+                <Typography className={classes.eventDate}>
+                  {nextEvent.startDate && eventDate(nextEvent.startDate)}
+                </Typography>
               </CardComponent>
             </div>
             <div className={classes.column}>
               <CardComponent>
-                <Typography variant='h2' className={classes.green}>Featured</Typography>
-                <Typography className={classes.eventName}>{featuredEvent.ename}</Typography>
-                <Typography className={classes.eventDate}>{featuredEvent.startDate && eventDate(featuredEvent.startDate)}</Typography>
+                <Typography variant="h2" className={classes.green}>
+                  Featured
+                </Typography>
+                <Typography className={classes.eventName}>
+                  {featuredEvent.ename}
+                </Typography>
+                <Typography className={classes.eventDate}>
+                  {featuredEvent.startDate &&
+                    eventDate(featuredEvent.startDate)}
+                </Typography>
               </CardComponent>
             </div>
           </div>
         </div>
       </div>
     </React.Fragment>
-  )
+  );
 }
 
-export default MemberHome
+export default MemberHome;

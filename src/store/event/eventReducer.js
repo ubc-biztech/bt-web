@@ -1,8 +1,8 @@
 import {
   FETCH_EVENTS_REQUEST,
   FETCH_EVENTS_SUCCESS,
-  FETCH_EVENTS_ERROR
-} from 'constants/index'
+  FETCH_EVENTS_ERROR,
+} from "constants/index";
 
 const initialEventState = {
   events: {
@@ -10,13 +10,13 @@ const initialEventState = {
     fetched: false,
     loading: false,
     refreshing: false,
-    error: '',
-    lastUpdated: null
-  }
-}
+    error: "",
+    lastUpdated: null,
+  },
+};
 
 const eventReducer = (state = initialEventState, action) => {
-  const { type, payload, refresh = false } = action
+  const { type, payload, refresh = false } = action;
 
   switch (type) {
     // fetch events
@@ -26,9 +26,9 @@ const eventReducer = (state = initialEventState, action) => {
         events: {
           ...state.events,
           loading: !refresh,
-          refreshing: refresh
-        }
-      }
+          refreshing: refresh,
+        },
+      };
     case FETCH_EVENTS_SUCCESS:
       return {
         ...state,
@@ -38,9 +38,9 @@ const eventReducer = (state = initialEventState, action) => {
           loading: false,
           refreshing: false,
           data: payload,
-          lastUpdated: new Date()
-        }
-      }
+          lastUpdated: new Date(),
+        },
+      };
     case FETCH_EVENTS_ERROR:
       return {
         ...state,
@@ -50,12 +50,12 @@ const eventReducer = (state = initialEventState, action) => {
           loading: false,
           refreshing: false,
           error: payload,
-          lastUpdated: new Date()
-        }
-      }
+          lastUpdated: new Date(),
+        },
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default eventReducer
+export default eventReducer;
