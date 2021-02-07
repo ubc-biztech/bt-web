@@ -8,9 +8,17 @@ import EventRegisterForm from "./EventRegisterForm";
 import EventRegisterSuccess from "./EventRegisterSuccess";
 import NotFound from "pages/NotFound";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
+import { makeStyles } from '@material-ui/core/styles'
+import {
+  Grid,
+  Paper,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+  FormControl,
+  FormGroup
+} from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 
 import { COLORS } from "../../../../constants/_constants/theme";
 
@@ -38,10 +46,17 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "11px",
   },
   registrationText: {
-    fontWeight: "bold",
-    fontSize: "24px",
+    fontWeight: 'bold',
+    fontSize: '24px'
   },
-}));
+  registrationContainer: {
+    display: 'flex',
+    width: '100%'
+  },
+  formControl: {
+    marginLeft: 'auto'
+  }
+}))
 
 const EventFormContainer = (props) => {
   const classes = useStyles();
@@ -52,36 +67,35 @@ const EventFormContainer = (props) => {
     registeredEmail: undefined,
   };
 
-  const [registration, setRegistration] = useState(initialRegistrationState);
+  const [registration, setRegistration] = useState(initialRegistrationState)
+  const [isUBCStudent, setIsUBCStudent] = useState(true)
 
   const resetRegistration = () => setRegistration(initialRegistrationState);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
-    id: Yup.number("Valid Student ID required")
-      .min(9999999, "Valid Student ID required")
-      .max(100000000, "Valid Student ID required")
+
+    fname: Yup.string().required('First name is required'),
+    lname: Yup.string().required('Last name is required'),
+    faculty: Yup.string().required('Faculty is required'),
+    year: Yup.string().required('Level of study is required')
+  })
+
+  const UBCValidationSchema = Yup.object({
+    email: Yup.string().email().required(),
+    id: Yup.number('Valid Student ID required')
+      .min(9999999, 'Valid Student ID required')
+      .max(100000000, 'Valid Student ID required')
       .required(),
-    fname: Yup.string().required("First name is required"),
-    lname: Yup.string().required("Last name is required"),
-    faculty: Yup.string().required("Faculty is required"),
-    year: Yup.string().required("Level of study is required"),
-    // diet: Yup.string().required('Dietary restriction is required')
-  });
+    fname: Yup.string().required('First name is required'),
+    lname: Yup.string().required('Last name is required'),
+    faculty: Yup.string().required('Faculty is required'),
+    year: Yup.string().required('Level of study is required')
+  })
 
-  const initialValues = {
-    email: "",
-    fname: "",
-    lname: "",
-    id: "",
-    faculty: "",
-    year: "",
-    diet: "",
-    gender: "",
-    heardFrom: "",
-  };
+  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '', optTradingGroup: '' }
 
-  const { isRegistered, registeredEmail } = registration;
+  const { isRegistered, registeredEmail } = registration
 
   if (loading) {
     return (
@@ -154,19 +168,31 @@ const EventFormContainer = (props) => {
         ) : (
           <Fragment>
             <div className={classes.registrationHeader}>
-              <Typography className={classes.registrationText}>
-                Registration
-              </Typography>
-              <Typography>
-                We need to know a little bit about you to get started.
-              </Typography>
+              <div className={classes.registrationContainer}>
+                <Typography className={classes.registrationText}>Registration</Typography>
+                <FormControl className={classes.formControl}>
+                  <FormGroup>
+                    <FormControlLabel
+                    label="UBC Student"
+                    control={
+                      <Checkbox
+                        checked={isUBCStudent}
+                        onChange={() => setIsUBCStudent(!isUBCStudent)}
+                        color='primary'
+                      />
+                    } />
+                  </FormGroup>
+                </FormControl>
+
+              </div>
+              <Typography>We need to know a little bit about you to get started.</Typography>
             </div>
             <Formik
               initialValues={initialValues}
-              validationSchema={validationSchema}
+              validationSchema={isUBCStudent ? UBCValidationSchema : validationSchema}
               onSubmit={submitValues}
             >
-              {(props) => <EventRegisterForm {...props} />}
+              {props => <EventRegisterForm {...props} isUBCStudent={isUBCStudent} />}
             </Formik>
           </Fragment>
         )}
@@ -176,70 +202,51 @@ const EventFormContainer = (props) => {
     <NotFound message={`The event with id ${eventId} could not be found!`} />
   );
 
-  async function submitValues(values) {
-    const {
-      email,
-      fname,
-      lname,
-      id,
-      faculty,
-      year,
-      diet,
-      heardFrom,
-      gender,
-    } = values;
-    const eventID = event.id;
-    const eventYear = event.year;
+  async function submitValues (values) {
+    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender, optTradingGroup } = values
+    const eventID = event.id
+    const eventYear = event.year
     const body = {
-      id: parseInt(id),
+      studentId: parseInt(id),
       fname,
       lname,
       email,
-      userYear: year,
+      year,
       faculty,
       gender,
       diet,
-    };
-    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    fetchBackend("/users", "POST", body)
-      .then((userResponse) => {
-        if (userResponse.message === "Created!") {
-          registerUser(id, eventID, eventYear, heardFrom, email);
-        } else {
-          alert("Signup failed");
-        }
-      })
-      .catch((err) => {
+      optTradingGroup
+    }
+    fetchBackend('/users', 'POST', body, false)
+      .catch(err => {
         // If the error is not "User could not be created because it already exists"
         if (err.status !== 409) {
-          alert("Can not create user");
+          alert('An error occured while trying to register. Please try again or contact UBC BizTech.')
         }
-        registerUser(id, eventID, eventYear, heardFrom, email);
-      });
+      })
+      .finally(() => {
+        registerUser(eventID, eventYear, heardFrom, email)
+      })
   }
 
-  async function registerUser(id, eventID, eventYear, heardFrom, email) {
+  async function registerUser (eventID, eventYear, heardFrom, email) {
     const body = {
-      id: parseInt(id),
+      email,
       eventID,
       year: eventYear,
       heardFrom,
-      registrationStatus: "registered",
-    };
-    fetchBackend("/registrations", "POST", body)
+      registrationStatus: 'registered'
+    }
+    fetchBackend('/registrations', 'POST', body, false)
       .then(() => {
-        alert("Congratulations! You are now signed up.");
-        setRegistration({
-          ...registration,
-          isRegistered: true,
-          registeredEmail: email,
-        });
+        // alert('Congratulations! You are now signed up.')
+        setRegistration({ ...registration, isRegistered: true, registeredEmail: email })
       })
       .catch((err) => {
         if (err.status === 409) {
-          alert("You cannot sign up for this event again!");
+          alert('You are already registered for this event.')
         } else {
-          alert("Signup failed");
+          alert('An error occured while trying to register. Please try again or contact UBC BizTech.')
         }
       });
   }

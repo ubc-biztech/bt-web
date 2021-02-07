@@ -108,45 +108,43 @@ class Router extends Component {
     const userNeedsRegister = user && !user.admin && !user.id;
 
     // check if the user state has been updated
-    if (!loaded) return <Loading />;
-    else
-      return (
-        // eslint-disable-line curly
-        <BrowserRouter>
-          <ScrollToTop />
-          {user && <Nav admin={user.admin} />}
-          <div className="content">
-            {user && userNeedsRegister && <RegisterAlert />}
-            {pathname === "/" ? null : <Header />}
-            <Switch>
-              {/* ADMIN ROUTES */}
-              {user && <Route path="/admin" component={AdminRoutes} />}
+    if (!loaded) return <Loading />
+    else return (// eslint-disable-line curly
+      <BrowserRouter>
+        <ScrollToTop />
+        {user && <Nav admin={user.admin} />}
+        <div className='content'>
+          {user && userNeedsRegister && <RegisterAlert />}
+          {pathname === '/' || pathname === '' ? null : <Header />}
+          <Switch>
 
-              {/* MEMBER ROUTES */}
-              {user && <Route path="/member" component={MemberRoutes} />}
+            {/* ADMIN ROUTES */}
+            {user && <Route path='/admin' component={AdminRoutes} />}
 
-              {/* PUBLIC EVENT-SPECIFIC ROUTES */}
-              {<Route path="/event/:id/:year" component={PublicEventRoutes} />}
-              {/* COMMON ROUTES */}
-              <Route
-                exact
-                path="/events"
-                featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <EventsDashboard />}
-              />
+            {/* MEMBER ROUTES */}
+            {user && <Route path='/member' component={MemberRoutes} />}
 
-              {/* MISCELLANEOUS ROUTES */}
-              <Route exact path="/forbidden" render={() => <Forbidden />} />
-              <Route
-                exact
-                path="/404"
-                render={() => (
-                  <NotFound message="That page could not be found!" />
-                )}
-              />
+            {/* PUBLIC EVENT-SPECIFIC ROUTES */}
+            {<Route path='/event/:id/:year' component={PublicEventRoutes} />}
+            {/* COMMON ROUTES */}
+            <Route
+              exact
+              path='/events'
+              featureFlag={'REACT_APP_SHOW_MAXVP'}
+              render={() => <EventsDashboard />} />
 
-              {/* AUTHENTICATION ROUTES */}
-              {/* <Route (SIGNUP LOOKS UNUSED)
+            {/* MISCELLANEOUS ROUTES */}
+            <Route
+              exact
+              path='/forbidden'
+              render={() => <Forbidden />} />
+            <Route
+              exact
+              path='/404'
+              render={() => <NotFound message='That page could not be found!'/>} />
+
+            {/* AUTHENTICATION ROUTES */}
+            {/* <Route (SIGNUP LOOKS UNUSED)
               exact
               path='/signup'
               featureFlag={'REACT_APP_SHOW_MAXVP'}
@@ -166,26 +164,21 @@ class Router extends Component {
                   : <Redirect to='/member/home' />
                 : <Redirect to='/login' />
               } />
-              */}
-              <Route
-                path="/"
-                render={() =>
-                  user ? (
-                    user.admin ? (
-                      <Redirect to="/admin/home" />
-                    ) : (
-                      <Landing />
-                    )
-                  ) : (
-                    <Landing />
-                  )
-                }
-              />
-            </Switch>
-            {pathname === "/" ? null : <Footer />}
-          </div>
-        </BrowserRouter>
-      );
+              */
+            }
+            <Route
+              path='/'
+              render={() => user
+                ? user.admin
+                  ? <Redirect to='/admin/home' />
+                  : <Landing />
+                : <Landing />
+              } />
+          </Switch>
+          {pathname === '/' || pathname === '' ? null : <Footer />}
+        </div>
+      </BrowserRouter>
+    )
   }
 }
 

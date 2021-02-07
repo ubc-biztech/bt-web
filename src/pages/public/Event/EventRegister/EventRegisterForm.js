@@ -27,7 +27,11 @@ export default function RegisterEventForm(props) {
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { handleSubmit, isSubmitting } = props;
+  const {
+    handleSubmit,
+    isSubmitting,
+    isUBCStudent
+  } = props
 
   return (
     <form onSubmit={handleSubmit}>
@@ -62,14 +66,14 @@ export default function RegisterEventForm(props) {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        {isUBCStudent && <Grid item xs={12}>
           <CustomTextField
             {...props}
             label="Student Number *"
             groupName="id"
             autoComplete="id"
           />
-        </Grid>
+        </Grid>}
 
         <Grid item xs={renderMobileOnly ? 12 : 4}>
           <Grid item xs={12}>
@@ -132,6 +136,14 @@ export default function RegisterEventForm(props) {
               ]}
               groupName="heardFrom"
             />
+          </Grid>
+
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              label="Do you want to opt in for UBC Trading Group Membership?"
+              listOfOptions={['Yes', 'No']}
+              groupName='optTradingGroup'/>
           </Grid>
         </Grid>
       </Grid>

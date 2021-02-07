@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, Component } from 'react'
 
 import MaterialTable from "material-table";
 import {
@@ -11,7 +11,7 @@ import {
   VerticalBarSeries,
 } from "react-vis";
 
-import { MenuItem, Paper, Select, Typography } from "@material-ui/core";
+import { MenuItem, Paper, Select, Typography, makeStyles } from '@material-ui/core'
 
 import { REGISTRATION_STATUS, COLORS } from "constants/index";
 import { fetchBackend } from "utils";
@@ -24,9 +24,13 @@ const styles = {
     cursor: "pointer",
   },
   stat: {
-    margin: "10px",
+    margin: '10px'
   },
-};
+  container: {
+    marginRight: '30px'
+  }
+}
+
 /**
  * Class component that displays event user table populated from the backend
  * When a user check-in status is changed, the backend is updated and it fetches new data
@@ -57,6 +61,7 @@ export class EventStatsTable extends Component {
       registrationStatus,
     };
     await fetchBackend(`/registrations/${id}`, "PUT", body);
+
 
     this.getEventTableData(this.props.event.id, this.props.event.year);
   }
@@ -108,9 +113,10 @@ export class EventStatsTable extends Component {
    * calculates the stats for registration and updates the data for charts
    * each data set is an array of data (arrays) sets b/c different charts accept different data
    */
-  async registrationNumbers(users) {
-    const registrations = {};
-    users.forEach((user) => {
+  
+  async registrationNumbers (users) {
+    const registrations = {}
+    users.forEach(user => {
       if (user.registrationStatus) {
         registrations[user.registrationStatus] = registrations[
           user.registrationStatus
@@ -198,6 +204,7 @@ export class EventStatsTable extends Component {
      * @param {*} rowData data about the current row
      */
     const changeRegistration = (event, rowData) => {
+      // TODO: refactor code smell
       switch (event.target.value) {
         case REGISTRATION_STATUS.REGISTERED:
           if (
@@ -257,19 +264,13 @@ export class EventStatsTable extends Component {
      * Creates event table using MaterialTable library
      */
     return (
-      <React.Fragment>
-        <Statistic
-          statName="Registration status: "
-          statObj={this.state.registrations}
-        />
-        <Statistic statName="Faculty: " statObj={this.state.faculties} />
-        <Statistic statName="Year level: " statObj={this.state.years} />
-        <Statistic statName="Dietary: " statObj={this.state.dietary} />
-        <Statistic statName="Gender: " statObj={this.state.genders} />
-        <Statistic
-          statName="Heard about event from: "
-          statObj={this.state.heardFrom}
-        />
+      <div style={styles.container}>
+        <Statistic statName='Registration status: ' statObj={this.state.registrations} />
+        <Statistic statName='Faculty: ' statObj={this.state.faculties} />
+        <Statistic statName='Year level: ' statObj={this.state.years} />
+        {/* <Statistic statName='Dietary: ' statObj={this.state.dietary} /> */}
+        <Statistic statName='Gender: ' statObj={this.state.genders} />
+        <Statistic statName='Heard about event from: ' statObj={this.state.heardFrom} />
 
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
@@ -277,12 +278,12 @@ export class EventStatsTable extends Component {
             { title: "First Name", field: "fname" },
             { title: "Last Name", field: "lname" },
             {
-              title: "Student Number",
-              field: "id",
-              type: "numeric",
-              sorting: false,
+              title: 'Student Number',
+              field: 'studentId',
+              type: 'numeric',
+              sorting: false
             },
-            { title: "Email", field: "email", sorting: false },
+            { title: 'Email', field: 'id', sorting: false },
             {
               title: "Registration Status",
               field: "registrationStatus",
@@ -342,77 +343,48 @@ export class EventStatsTable extends Component {
             rowStyle: (rowData) => ({}),
           }}
         />
-      </React.Fragment>
-    );
+      </div>
+    )
   }
 }
+
+const useStyles = makeStyles(theme => ({
+  paperRoot: {
+    borderRadius: '4px',
+    marginBottom: '5px'
+  }
+}))
 
 /**
  * represents a statistic and shows a row of the stats with a dropdown for charts
  */
-class Statistic extends React.Component {
-  constructor(props) {
-    super(props);
-    this.changeVisibility = this.changeVisibility.bind(this);
-    this.state = {
-      visibility: { visible: false, style: { display: "none" } },
-    };
-  }
+const Statistic = (props) => {
+  const classes = useStyles()
+  const [visible, setVisible] = useState(false)
 
-  /*
-  changes the visibility of the stats of whichever div was selected
-  */
-  changeVisibility() {
-    const invisible = { visible: false, style: { display: "none" } };
-    const visible = {
-      visible: true,
-      style: { display: "flex", paddingBottom: "20px", paddingLeft: "50px" },
-    };
-
-    if (this.state.visibility.visible) {
-      this.setState({ visibility: invisible });
-    } else {
-      this.setState({ visibility: visible });
-    }
-  }
-
-  render() {
     const chartData = [
-      Object.keys(this.props.statObj).map((key) => {
+      Object.keys(props.statObj).map(key => {
         return {
           label: key,
-          angle: this.props.statObj[key],
-        };
+          angle: props.statObj[key]
+        }
       }),
-      Object.keys(this.props.statObj).map((key) => {
+      Object.keys(props.statObj).map(key => {
         return {
           x: key,
-          y: this.props.statObj[key],
-        };
-      }),
-    ];
+          y: props.statObj[key]
+        }
+      })
+    ]
+
     return (
-      <Paper>
-        <div style={styles.stats} onClick={this.changeVisibility}>
-          <Typography style={styles.stat}>{this.props.statName} </Typography>
-          {Object.keys(this.props.statObj).map((key) => (
-            <Typography key={key} style={styles.stat}>
-              {key}: {this.props.statObj[key]}
-            </Typography>
-          ))}
-          {this.props.statName === "Registration status: " ? (
-            <Typography style={styles.stat}>
-              Total:{" "}
-              {Object.values(this.props.statObj).reduce(
-                (total, amount) => total + amount,
-                0
-              )}
-            </Typography>
-          ) : (
-            <Typography />
-          )}
+      <Paper className={classes.paperRoot}>
+        <div style={styles.stats} onClick={() => setVisible(!visible)}>
+          <Typography style={styles.stat}>{props.statName} </Typography>
+          {Object.keys(props.statObj).map(key => (<Typography key={key} style={styles.stat}>{key}: {props.statObj[key]}</Typography>))}
+          {props.statName === 'Registration status: ' ? <Typography style={styles.stat}>Total: {Object.values(props.statObj).reduce((total, amount) => total + amount, 0)}</Typography> : <Typography />}
         </div>
-        <div style={this.state.visibility.style}>
+        <div style={visible ? { display: 'flex', paddingBottom: '20px', paddingLeft: '50px' } : { display: 'none' }}>
           <RadialChart
             width={300}
             height={300}
@@ -435,7 +407,6 @@ class Statistic extends React.Component {
           </XYPlot>
         </div>
       </Paper>
-    );
-  }
+    )
 }
 export default EventStatsTable;
