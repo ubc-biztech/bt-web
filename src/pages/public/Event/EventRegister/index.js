@@ -12,11 +12,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import {
   Grid,
   Paper,
-  Typography,
-  Checkbox,
-  FormControlLabel,
-  FormControl,
-  FormGroup
+  Typography
 } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
 
@@ -48,13 +44,6 @@ const useStyles = makeStyles(theme => ({
   registrationText: {
     fontWeight: 'bold',
     fontSize: '24px'
-  },
-  registrationContainer: {
-    display: 'flex',
-    width: '100%'
-  },
-  formControl: {
-    marginLeft: 'auto'
   }
 }))
 
@@ -141,23 +130,7 @@ const EventFormContainer = (props) => {
             resetRegistration={resetRegistration}/>
           : <Fragment>
             <div className={classes.registrationHeader}>
-              <div className={classes.registrationContainer}>
                 <Typography className={classes.registrationText}>Registration</Typography>
-                <FormControl className={classes.formControl}>
-                  <FormGroup>
-                    <FormControlLabel
-                    label="UBC Student"
-                    control={
-                      <Checkbox
-                        checked={isUBCStudent}
-                        onChange={() => setIsUBCStudent(!isUBCStudent)}
-                        color='primary'
-                      />
-                    } />
-                  </FormGroup>
-                </FormControl>
-
-              </div>
               <Typography>We need to know a little bit about you to get started.</Typography>
             </div>
             <Formik
@@ -165,7 +138,7 @@ const EventFormContainer = (props) => {
               validationSchema={isUBCStudent ? UBCValidationSchema : validationSchema}
               onSubmit={submitValues}
             >
-              {props => <EventRegisterForm {...props} isUBCStudent={isUBCStudent} />}
+              {props => <EventRegisterForm {...props} isUBCStudent={isUBCStudent} setIsUBCStudent={setIsUBCStudent} />}
             </Formik>
           </Fragment> }
       </EventView>

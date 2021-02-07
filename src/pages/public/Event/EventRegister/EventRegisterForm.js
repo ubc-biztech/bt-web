@@ -7,7 +7,13 @@ import {
 import EventAvailableIcon from '@material-ui/icons/EventAvailable'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTheme } from '@material-ui/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import {
+  useMediaQuery,
+  Checkbox,
+  FormControlLabel,
+  FormControl,
+  FormGroup
+} from '@material-ui/core'
 
 import { COLORS } from '../../../../constants/_constants/theme'
 import CustomTextField from '../../../../components/inputs/CustomTextField'
@@ -34,13 +40,29 @@ export default function RegisterEventForm (props) {
   const {
     handleSubmit,
     isSubmitting,
-    isUBCStudent
+    isUBCStudent,
+    setIsUBCStudent
   } = props
 
   return (
     <form onSubmit={handleSubmit}>
       <Typography variant='caption' color={'error'}>* Indicates required field</Typography>
       <Grid className={classes.gridContainer} container spacing={3}>
+        <Grid item xs={12}>
+          <FormControl>
+            <FormGroup>
+              <FormControlLabel
+              label="UBC Student"
+              control={
+                <Checkbox
+                  checked={isUBCStudent}
+                  onChange={() => setIsUBCStudent(!isUBCStudent)}
+                  color='primary'
+                />
+              } />
+            </FormGroup>
+          </FormControl>
+        </Grid>
         <Grid item xs={12}>
           <CustomTextField
             {...props}
