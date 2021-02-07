@@ -11,13 +11,10 @@ import {
   CardMedia,
   IconButton,
   Menu,
-  MenuItem,
-  Typography
+  MenuItem
 } from '@material-ui/core'
 
 import { MoreVert as MoreVertIcon } from '@material-ui/icons'
-
-import { COLORS } from 'constants/index'
 import { deleteEvent } from 'store/event/eventActions'
 
 const useStyles = makeStyles({
@@ -114,13 +111,6 @@ function AdminHome (props) {
       <Helmet>
         <title>BizTech Admin Dashboard</title>
       </Helmet>
-
-      <div className={classes.row}>
-        <div className={classes.columnLeft}>
-          <Typography variant='h1' style={{ color: COLORS.BIZTECH_GREEN }}>BizTech Admins</Typography>
-          <Typography style={{ color: COLORS.BIZTECH_GREEN }}>BizTech Admins</Typography>
-        </div>
-      </div>
 
       <Box flexWrap='wrap' display='flex'>
         {events.map(event => createEventCard(event))}

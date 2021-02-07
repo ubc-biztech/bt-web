@@ -35,13 +35,7 @@ export class EventStatsTable extends Component {
       years: {},
       dietary: {},
       genders: {},
-      heardFrom: {},
-      registrationVisible: { visible: false, style: { display: 'none' } },
-      facultyVisible: { visible: false, style: { display: 'none' } },
-      yearVisible: { visible: false, style: { display: 'none' } },
-      dietaryVisible: { visible: false, style: { display: 'none' } },
-      gendersVisible: { visible: false, style: { display: 'none' } },
-      heardFromVisible: { visible: false, style: { display: 'none' } }
+      heardFrom: {}
     }
   }
 
@@ -285,7 +279,8 @@ export class EventStatsTable extends Component {
 
 const useStyles = makeStyles(theme => ({
   paperRoot: {
-    borderRadius: '4px'
+    borderRadius: '4px',
+    marginBottom: '5px'
   }
 }))
 
