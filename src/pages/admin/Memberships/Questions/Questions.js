@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled from "styled-components"; 
 import Paper from "@material-ui/core/Paper";
 import { ReactComponent as LeftArrowIcon } from "../../../../assets/leftarrow.svg";
 import { ReactComponent as RightArrowIcon } from "../../../../assets/rightarrow.svg";
@@ -44,16 +45,36 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "18px",
     fontStyle: "normal",
     fontWeight: "bold",
-  }
+  },
+  underline: {
+    "&:before": {
+      borderBottom: "1px solid white"
+    },
+    "&:hover:not($disabled):not($focused):not($error):before": {
+      borderBottom: `2px solid ${COLORS.BIZTECH_GREEN}`
+    },
+    "&:after": {
+      borderBottom: "1px solid white"
+    }
+  },
+  disabled: {},
+  focused: {},
+  error: {}
 }));
+
+const StyledOption = styled.option`
+  background-color: #293B61 !important
+`;
 
 const Questions = (props) => {
   const classes = useStyles();
 
   const [questionIndex, setQuestionIndex] = useState(0);
+  console.log(questionIndex)
+
 
   const handleQuestionChange = (event) => {
-    setQuestionIndex(event.target.value);
+    setQuestionIndex(parseInt(event.target.value));
   };
 
   const handleNavigateBefore = () => {
@@ -93,39 +114,40 @@ const Questions = (props) => {
             <Box mx={2} px={4}>
               <Card className={classes.card}>
                 <Box py={2} px={4} className={classes.questionsDropDown}>
-                  <FormControl className={classes.questionsForm}>
+                  <FormControl>
                     <NativeSelect
                       value={questionIndex}
                       onChange={handleQuestionChange}
                       name="questions"
-                      className={classes.selectEmpty}
+                      className={classes.underline}
                       inputProps={{
                         "aria-label": "questions",
                         style: {
+                          backgroundColor: "#293B61",
                           fontSize: 16,
                           fontWeight: "bold",
                           fontFamily: "Gilroy",
-                          textAlignLast: "center",
+                          textAlignLast: "center"
                         },
                       }}
                     >
-                      <option value={0}>
+                      <StyledOption value={0}>
                         Please choose the option that's most relevant to you
-                      </option>
-                      <option value={1}>Academic Year Level</option>
-                      <option value={2}>Faculty</option>
-                      <option value={3}>Major</option>
-                      <option value={4}>
+                      </StyledOption>
+                      <StyledOption value={1}>Academic Year Level</StyledOption>
+                      <StyledOption value={2}>Faculty</StyledOption>
+                      <StyledOption value={3}>Major</StyledOption>
+                      <StyledOption value={4}>
                         Were you a BizTech member last year?
-                      </option>
-                      <option value={5}>
+                      </StyledOption>
+                      <StyledOption value={5}>
                         Are you an international student?
-                      </option>
-                      <option value={6}>
+                      </StyledOption>
+                      <StyledOption value={6}>
                         What topics did you want to see the most discussed in
                         the future?
-                      </option>
-                      <option value={7}>How did you hear about us?</option>
+                      </StyledOption>
+                      <StyledOption value={7}>How did you hear about us?</StyledOption>
                     </NativeSelect>
                   </FormControl>
                 </Box>
@@ -139,7 +161,7 @@ const Questions = (props) => {
             <RightArrowIcon />
           </IconButton>
         </div>
-
+        
         {questionIndex === 0 && (
           <Box px={4}>
             <QuestionsBox

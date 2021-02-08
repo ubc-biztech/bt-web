@@ -15,6 +15,20 @@ export const fontFamily = [
 
 const darkTheme = createMuiTheme({
   overrides: {
+    MuiPickersCalendarHeader: {
+      iconButton: {
+        backgroundColor: "transparent",
+        color: COLORS.WHITE,
+      },
+      dayLabel: {
+        color: COLORS.WHITE,
+      }
+  },
+  MuiPickersDay: {
+    day: {
+      color: COLORS.WHITE,
+    }
+  },
     MuiTooltip: {
       tooltip: {
         fontFamily,
