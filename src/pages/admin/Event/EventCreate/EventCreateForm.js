@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
 import slugify from "slugify";
 import { COLORS } from "../../../../constants/_constants/theme";
@@ -17,7 +18,28 @@ import {
 } from "@material-ui/pickers";
 import { Info as InfoIcon } from "@material-ui/icons";
 
+const useStyles = makeStyles(() => ({
+  underline: {
+    "&:before": {
+      borderBottom: "1px solid white",
+    },
+    "&:hover:not($disabled):not($focused):not($error):before": {
+      borderBottom: `2px solid ${COLORS.BIZTECH_GREEN}`,
+    },
+    "&:after": {
+      borderBottom: "1px solid white",
+    },
+    iconButton: {
+      backgroundColor: "transparent"
+    }
+  },
+  disabled: {},
+  focused: {},
+  error: {},
+}));
+
 export default function EventCreateForm(props) {
+  const classes = useStyles();
   const {
     values: {
       ename,
@@ -137,6 +159,9 @@ export default function EventCreateForm(props) {
             helperText={textFieldError("ename")}
             error={!!textFieldError("ename")}
             onChange={handleEventNameChange.bind(null, "ename")}
+            InputProps={{
+              className: classes.underline,
+          }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -148,6 +173,9 @@ export default function EventCreateForm(props) {
             error={!!textFieldError("slug")}
             onChange={change.bind(null, "slug")}
             value={slug}
+            InputProps={{
+              className: classes.underline,
+          }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -159,6 +187,9 @@ export default function EventCreateForm(props) {
             helperText={textFieldError("description")}
             error={!!textFieldError("description")}
             onChange={change.bind(null, "description")}
+            InputProps={{
+              className: classes.underline,
+          }}
           />
         </Grid>
         <Grid item xs={12}>
@@ -170,6 +201,9 @@ export default function EventCreateForm(props) {
             helperText={textFieldError("capacity")}
             error={!!textFieldError("capacity")}
             onChange={change.bind(null, "capacity")}
+            InputProps={{
+              className: classes.underline,
+          }}
           />
         </Grid>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -180,6 +214,9 @@ export default function EventCreateForm(props) {
               minDate={new Date()}
               value={startDate}
               onChange={handleStartDateChange}
+              InputProps={{
+                className: classes.underline
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -189,6 +226,9 @@ export default function EventCreateForm(props) {
               minDate={startDate}
               value={endDate}
               onChange={handleEndDateChange}
+              InputProps={{
+                className: classes.underline
+              }}
             />
           </Grid>
         </MuiPickersUtilsProvider>
@@ -205,6 +245,7 @@ export default function EventCreateForm(props) {
             fullWidth
             defaultValue=""
             onClick={handleLocation.bind(null)}
+            className={classes.underline}
           >
             {createMenuItems([
               "Nest",
@@ -224,6 +265,9 @@ export default function EventCreateForm(props) {
             error={!!textFieldError("location")}
             value={elocation}
             onChange={change.bind(null, "location")}
+            InputProps={{
+              className: classes.underline,
+          }}
           />
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -235,6 +279,9 @@ export default function EventCreateForm(props) {
             error={!!textFieldError("longitude")}
             value={longitude}
             onChange={change.bind(null, "longitude")}
+            InputProps={{
+              className: classes.underline,
+          }}
           />
         </Grid>
         <Grid item xs={12} sm={4} style={{ display: "flex" }}>
@@ -246,6 +293,9 @@ export default function EventCreateForm(props) {
             error={!!textFieldError("latitude")}
             value={latitude}
             onChange={change.bind(null, "latitude")}
+            InputProps={{
+              className: classes.underline,
+          }}
           />
           <InfoIcon onClick={handleInfoClick} style={{ cursor: "pointer" }} />
         </Grid>
@@ -257,6 +307,9 @@ export default function EventCreateForm(props) {
             helperText={textFieldError("facebookUrl")}
             error={!!textFieldError("facebookUrl")}
             onChange={change.bind(null, "facebookUrl")}
+            InputProps={{
+              className: classes.underline,
+          }}
           />
         </Grid>
         <Grid></Grid>
@@ -268,6 +321,9 @@ export default function EventCreateForm(props) {
             helperText={textFieldError("imageUrl")}
             error={!!textFieldError("imageUrl")}
             onChange={change.bind(null, "imageUrl")}
+            InputProps={{
+              className: classes.underline,
+          }}
           />
         </Grid>
       </Grid>
