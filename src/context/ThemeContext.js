@@ -29,6 +29,11 @@ const darkTheme = createMuiTheme({
       color: COLORS.WHITE,
     }
   },
+  MuiPickersClockNumber: {
+    clockNumber: {
+      color: COLORS.WHITE
+    }
+  },
     MuiTooltip: {
       tooltip: {
         fontFamily,
