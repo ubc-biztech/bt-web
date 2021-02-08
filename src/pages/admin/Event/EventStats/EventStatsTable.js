@@ -13,7 +13,7 @@ import {
 
 import { MenuItem, Paper, Select, Typography, makeStyles } from '@material-ui/core'
 
-import { REGISTRATION_STATUS, COLORS } from "constants/index";
+import { REGISTRATION_STATUS, REGISTRATION_LABELS, COLORS } from "constants/index";
 import { fetchBackend } from "utils";
 
 const styles = {
@@ -113,8 +113,8 @@ export class EventStatsTable extends Component {
    * calculates the stats for registration and updates the data for charts
    * each data set is an array of data (arrays) sets b/c different charts accept different data
    */
-  
-  async registrationNumbers (users) {
+
+  async registrationNumbers(users) {
     const registrations = {}
     users.forEach(user => {
       if (user.registrationStatus) {
@@ -169,7 +169,7 @@ export class EventStatsTable extends Component {
       faculties,
       years,
       genders,
-      dietary,
+      dietary
     });
   }
 
@@ -296,15 +296,15 @@ export class EventStatsTable extends Component {
                     style={{
                       backgroundColor:
                         rowData.registrationStatus ===
-                        REGISTRATION_STATUS.CHECKED_IN
+                          REGISTRATION_STATUS.CHECKED_IN
                           ? COLORS.LIGHT_GREEN
                           : rowData.registrationStatus ===
                             REGISTRATION_STATUS.WAITLISTED
-                          ? COLORS.LIGHT_YELLOW
-                          : rowData.registrationStatus ===
-                            REGISTRATION_STATUS.CANCELLED
-                          ? COLORS.LIGHT_RED
-                          : COLORS.LIGHT_BACKGROUND_COLOR,
+                            ? COLORS.LIGHT_YELLOW
+                            : rowData.registrationStatus ===
+                              REGISTRATION_STATUS.CANCELLED
+                              ? COLORS.LIGHT_RED
+                              : COLORS.LIGHT_BACKGROUND_COLOR,
                       paddingLeft: "10px",
                     }}
                   >
@@ -342,6 +342,15 @@ export class EventStatsTable extends Component {
             },
             rowStyle: (rowData) => ({}),
           }}
+          localization={{
+            body: {
+              emptyDataSourceMessage: <h2 style={{
+                color: COLORS.WHITE
+              }}
+              >No attendees to display.
+              </h2>
+            }
+          }}
         />
       </div>
     )
@@ -362,51 +371,51 @@ const Statistic = (props) => {
   const classes = useStyles()
   const [visible, setVisible] = useState(false)
 
-    const chartData = [
-      Object.keys(props.statObj).map(key => {
-        return {
-          label: key,
-          angle: props.statObj[key]
-        }
-      }),
-      Object.keys(props.statObj).map(key => {
-        return {
-          x: key,
-          y: props.statObj[key]
-        }
-      })
-    ]
+  const chartData = [
+    Object.keys(props.statObj).map(key => {
+      return {
+        label: key,
+        angle: props.statObj[key]
+      }
+    }),
+    Object.keys(props.statObj).map(key => {
+      return {
+        x: key,
+        y: props.statObj[key]
+      }
+    })
+  ]
 
-    return (
-      <Paper className={classes.paperRoot}>
-        <div style={styles.stats} onClick={() => setVisible(!visible)}>
-          <Typography style={styles.stat}>{props.statName} </Typography>
-          {Object.keys(props.statObj).map(key => (<Typography key={key} style={styles.stat}>{key}: {props.statObj[key]}</Typography>))}
-          {props.statName === 'Registration status: ' ? <Typography style={styles.stat}>Total: {Object.values(props.statObj).reduce((total, amount) => total + amount, 0)}</Typography> : <Typography />}
-        </div>
-        <div style={visible ? { display: 'flex', paddingBottom: '20px', paddingLeft: '50px' } : { display: 'none' }}>
-          <RadialChart
-            width={300}
-            height={300}
-            data={chartData[0]}
-            showLabels={true}
-            radius={140}
-            innerRadius={100}
-          />
-          <XYPlot
-            margin={{ left: 40, right: 30, top: 30, bottom: 70 }}
-            xType="ordinal"
-            width={300}
-            height={300}
-          >
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis tickLabelAngle={-45} />
-            <YAxis />
-            <VerticalBarSeries width={300} height={300} data={chartData[1]} />
-          </XYPlot>
-        </div>
-      </Paper>
-    )
+  return (
+    <Paper className={classes.paperRoot}>
+      <div style={styles.stats} onClick={() => setVisible(!visible)}>
+        <Typography style={styles.stat}>{props.statName} </Typography>
+        {Object.keys(props.statObj).map(key => (<Typography key={key} style={styles.stat}>{(key in REGISTRATION_LABELS ? REGISTRATION_LABELS[key] : key)}: {props.statObj[key]}</Typography>))}
+        {props.statName === 'Registration status: ' ? <Typography style={styles.stat}>Total: {Object.values(props.statObj).reduce((total, amount) => total + amount, 0)}</Typography> : <Typography />}
+      </div>
+      <div style={visible ? { display: 'flex', paddingBottom: '20px', paddingLeft: '50px' } : { display: 'none' }}>
+        <RadialChart
+          width={300}
+          height={300}
+          data={chartData[0]}
+          showLabels={true}
+          radius={140}
+          innerRadius={100}
+        />
+        <XYPlot
+          margin={{ left: 40, right: 30, top: 30, bottom: 70 }}
+          xType="ordinal"
+          width={300}
+          height={300}
+        >
+          <VerticalGridLines />
+          <HorizontalGridLines />
+          <XAxis tickLabelAngle={-45} />
+          <YAxis />
+          <VerticalBarSeries width={300} height={300} data={chartData[1]} />
+        </XYPlot>
+      </div>
+    </Paper>
+  )
 }
 export default EventStatsTable;

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "@material-ui/core";
+import { Link, Typography } from "@material-ui/core";
+import { COLORS } from "../../../../constants/_constants/theme";
 
 import NotFound from "pages/NotFound";
 import EventStatsTable from "./EventStatsTable";
@@ -13,6 +14,11 @@ const useStyles = makeStyles({
     margin: "5px",
     cursor: "pointer",
   },
+  text: {
+    margin: "2px",
+    display: 'inline-block',
+    color: COLORS.BIZTECH_GREEN
+  }
 });
 
 const EventStats = (props) => {
@@ -53,16 +59,17 @@ const EventStats = (props) => {
       <Link className={classes.link} onClick={handleEditEventClick}>
         Edit Event
       </Link>
+      <Typography className={classes.text}>|</Typography>
       <Link className={classes.link} onClick={handleEventRegisterClick}>
         Public Event Page
       </Link>
       <EventStatsTable event={event} />
     </>
   ) : (
-    <NotFound
-      message={`The event with id ${eventId} and year ${eventYear} could not be found`}
-    />
-  );
+      <NotFound
+        message={`The event with id ${eventId} and year ${eventYear} could not be found`}
+      />
+    );
 };
 
 export default EventStats;
