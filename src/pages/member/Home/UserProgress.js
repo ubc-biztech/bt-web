@@ -1,97 +1,116 @@
-import React from 'react'
-import { makeWidthFlexible, XYPlot, XAxis, YAxis, LineSeries, MarkSeries } from 'react-vis'
+import React from "react";
+import {
+  makeWidthFlexible,
+  XYPlot,
+  XAxis,
+  YAxis,
+  LineSeries,
+  MarkSeries,
+} from "react-vis";
 
-import { LinearProgress, Typography } from '@material-ui/core'
-import { COLORS } from 'constants/index'
+import { LinearProgress, Typography } from "@material-ui/core";
+import { COLORS } from "constants/index";
 
-const EVENT_PROGRESS_GOAL = 10
+const EVENT_PROGRESS_GOAL = 10;
 
-const FlexibleXYPlot = makeWidthFlexible(XYPlot)
+const FlexibleXYPlot = makeWidthFlexible(XYPlot);
 
 const classes = {
   container: {
-    display: 'flex',
-    margin: '12px 0 20px 0',
-    alignItems: 'center'
-  }
-}
+    display: "flex",
+    margin: "12px 0 20px 0",
+    alignItems: "center",
+  },
+};
 
 const getData = () => {
-  const data = {}
-  const date = new Date()
-  let month = date.getMonth()
-  let year = date.getFullYear()
+  const data = {};
+  const date = new Date();
+  let month = date.getMonth();
+  let year = date.getFullYear();
   for (let i = 0; i < 6; i++) {
-    data[`${year} ${month}`] = 0
-    --month
+    data[`${year} ${month}`] = 0;
+    --month;
     if (month < 0) {
-      month = 11
-      --year
+      month = 11;
+      --year;
     }
   }
-  return data
-}
+  return data;
+};
 
 const sixMonthsAgo = () => {
-  const today = new Date()
-  const month = today.getMonth() - 5
+  const today = new Date();
+  const month = today.getMonth() - 5;
   if (month >= 0) {
-    const year = today.getFullYear()
-    return new Date(year, month)
+    const year = today.getFullYear();
+    return new Date(year, month);
   } else {
-    const year = today.getFullYear() - 1
-    return new Date(year, 11 - month)
+    const year = today.getFullYear() - 1;
+    return new Date(year, 11 - month);
   }
-}
+};
 
 const UserProgress = ({ registeredEvents, events }) => {
   // filter only checkedIn events, and only return event IDs
-  const checkedInEventIDs = registeredEvents.flatMap(event => {
-    return event.registrationStatus === 'checkedIn' ? [event.eventID] : []
-  })
+  const checkedInEventIDs = registeredEvents.flatMap((event) => {
+    return event.registrationStatus === "checkedIn" ? [event.eventID] : [];
+  });
 
   // Find events user is registered for
-  const filteredEvents = events && events.filter(event => {
-    return checkedInEventIDs.includes(event.id)
-  })
+  const filteredEvents =
+    events &&
+    events.filter((event) => {
+      return checkedInEventIDs.includes(event.id);
+    });
 
-  const data = getData()
+  const data = getData();
 
   // Fill in data object
-  filteredEvents && filteredEvents.forEach(event => {
-    const parsedDate = new Date(event.startDate)
-    const year = parsedDate.getFullYear()
-    const month = parsedDate.getMonth()
-    data[`${year} ${month}`] += 1
-  })
+  filteredEvents &&
+    filteredEvents.forEach((event) => {
+      const parsedDate = new Date(event.startDate);
+      const year = parsedDate.getFullYear();
+      const month = parsedDate.getMonth();
+      data[`${year} ${month}`] += 1;
+    });
 
   // convert 'date strings' to timestamped react-vis data
   const timestampData = Object.entries(data).map(([key, value]) => {
     const yearMonthToTimestamp = (yearMonth) => {
-      const year = yearMonth.split(' ')[0]
-      const month = yearMonth.split(' ')[1]
-      return new Date(year, month)
-    }
+      const year = yearMonth.split(" ")[0];
+      const month = yearMonth.split(" ")[1];
+      return new Date(year, month);
+    };
 
     return {
       x: yearMonthToTimestamp(key),
-      y: value
-    }
-  })
+      y: value,
+    };
+  });
 
   return (
     <React.Fragment>
       <div style={classes.container}>
-        <Typography style={{ marginRight: '14px' }}>Events Attended</Typography>
-        <Typography style={{ marginRight: '14px' }}><span style={{ color: COLORS.BIZTECH_GREEN }}>{checkedInEventIDs.length}</span>/{EVENT_PROGRESS_GOAL}</Typography>
+        <Typography style={{ marginRight: "14px" }}>Events Attended</Typography>
+        <Typography style={{ marginRight: "14px" }}>
+          <span style={{ color: COLORS.BIZTECH_GREEN }}>
+            {checkedInEventIDs.length}
+          </span>
+          /{EVENT_PROGRESS_GOAL}
+        </Typography>
         <LinearProgress
           style={{ flex: 2 }}
-          variant='determinate'
-          value={(checkedInEventIDs.length * EVENT_PROGRESS_GOAL) > 100 ? 100 : (checkedInEventIDs.length * EVENT_PROGRESS_GOAL)}
+          variant="determinate"
+          value={
+            checkedInEventIDs.length * EVENT_PROGRESS_GOAL > 100
+              ? 100
+              : checkedInEventIDs.length * EVENT_PROGRESS_GOAL
+          }
         />
       </div>
       <FlexibleXYPlot
-        xType='time'
+        xType="time"
         xDomain={[sixMonthsAgo(), Date.now()]}
         yDomain={[0, 3]}
         height={250}
@@ -100,14 +119,14 @@ const UserProgress = ({ registeredEvents, events }) => {
           tickTotal={6}
           tickSize={0}
           style={{
-            text: { fill: 'white' }
+            text: { fill: "white" },
           }}
         />
         <YAxis
           tickTotal={3}
           tickSize={0}
           style={{
-            text: { fill: 'white' }
+            text: { fill: "white" },
           }}
         />
         <LineSeries
@@ -124,7 +143,7 @@ const UserProgress = ({ registeredEvents, events }) => {
         />
       </FlexibleXYPlot>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default UserProgress
+export default UserProgress;

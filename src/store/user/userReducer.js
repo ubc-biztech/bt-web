@@ -6,8 +6,8 @@ import {
   FETCH_USER_REGISTERED_EVENTS_SUCCESS,
   FETCH_USER_REGISTERED_EVENTS_ERROR,
   SET_USER,
-  LOGOUT
-} from 'constants/index'
+  LOGOUT,
+} from "constants/index";
 
 const initialUserState = {
   user: {
@@ -15,21 +15,21 @@ const initialUserState = {
     fetched: false,
     loading: false,
     refreshing: false,
-    error: '',
-    lastUpdated: null
+    error: "",
+    lastUpdated: null,
   },
   userRegisteredEvents: {
     data: null,
     fetched: false,
     loading: false,
     refreshing: false,
-    error: '',
-    lastUpdated: null
-  }
-}
+    error: "",
+    lastUpdated: null,
+  },
+};
 
 const userReducer = (state = initialUserState, action) => {
-  const { type, payload, refresh = false } = action
+  const { type, payload, refresh = false } = action;
 
   switch (type) {
     case SET_USER:
@@ -39,9 +39,9 @@ const userReducer = (state = initialUserState, action) => {
           ...state.user,
           data: payload,
           loading: !refresh,
-          refreshing: refresh
-        }
-      }
+          refreshing: refresh,
+        },
+      };
     case FETCH_USER_REQUEST:
       return {
         ...state,
@@ -49,9 +49,9 @@ const userReducer = (state = initialUserState, action) => {
           ...state.user,
           data: payload,
           loading: !refresh,
-          refreshing: refresh
-        }
-      }
+          refreshing: refresh,
+        },
+      };
     case FETCH_USER_SUCCESS:
       return {
         ...state,
@@ -61,9 +61,9 @@ const userReducer = (state = initialUserState, action) => {
           fetched: true,
           loading: false,
           refreshing: false,
-          lastUpdated: new Date()
-        }
-      }
+          lastUpdated: new Date(),
+        },
+      };
     case FETCH_USER_ERROR:
       return {
         ...state,
@@ -73,9 +73,9 @@ const userReducer = (state = initialUserState, action) => {
           fetched: true,
           loading: false,
           refreshing: false,
-          lastUpdated: new Date()
-        }
-      }
+          lastUpdated: new Date(),
+        },
+      };
     case FETCH_USER_REGISTERED_EVENTS_REQUEST:
       return {
         ...state,
@@ -83,9 +83,9 @@ const userReducer = (state = initialUserState, action) => {
           ...state.userRegisteredEvents,
           data: payload,
           loading: !refresh,
-          refreshing: refresh
-        }
-      }
+          refreshing: refresh,
+        },
+      };
     case FETCH_USER_REGISTERED_EVENTS_SUCCESS:
       return {
         ...state,
@@ -95,9 +95,9 @@ const userReducer = (state = initialUserState, action) => {
           fetched: true,
           loading: false,
           refreshing: false,
-          lastUpdated: new Date()
-        }
-      }
+          lastUpdated: new Date(),
+        },
+      };
     case FETCH_USER_REGISTERED_EVENTS_ERROR:
       return {
         ...state,
@@ -107,9 +107,9 @@ const userReducer = (state = initialUserState, action) => {
           fetched: true,
           loading: false,
           refreshing: false,
-          lastUpdated: new Date()
-        }
-      }
+          lastUpdated: new Date(),
+        },
+      };
     case LOGOUT:
       return {
         ...state,
@@ -119,12 +119,12 @@ const userReducer = (state = initialUserState, action) => {
           fetched: false,
           loading: false,
           refreshing: false,
-          lastUpdated: new Date()
-        }
-      }
+          lastUpdated: new Date(),
+        },
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default userReducer
+export default userReducer;

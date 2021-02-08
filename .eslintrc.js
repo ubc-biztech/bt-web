@@ -1,37 +1,31 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true
+    es6: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'standard'
-  ],
+  extends: ["plugin:react/recommended", "standard"],
   globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
   },
   parserOptions: {
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
     ecmaVersion: 2018,
-    sourceType: 'module'
+    sourceType: "module",
   },
-  plugins: [
-    'react',
-    'react-hooks'
-  ],
+  plugins: ["react", "react-hooks"],
   rules: {
-    'react/prop-types': 0,
-    quotes: ['error', 'single'],
-    'jsx-quotes': ['error', 'prefer-single']
+    "react/prop-types": 0,
+    quotes: ["error", "single"],
+    "jsx-quotes": ["error", "prefer-single"],
   },
   settings: {
-    'import/resolver': {
+    "import/resolver": {
       node: {
-        moduleDirectory: ['node_modules', 'src/']
-      }
-    }
-  }
-}
+        moduleDirectory: ["node_modules", "src/"],
+      },
+    },
+  },
+};

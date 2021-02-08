@@ -1,9 +1,9 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { Auth } from 'aws-amplify'
-import { Helmet } from 'react-helmet'
+import React from "react";
+import { connect } from "react-redux";
+import { Auth } from "aws-amplify";
+import { Helmet } from "react-helmet";
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Avatar,
   Button,
@@ -11,95 +11,96 @@ import {
   CardHeader,
   Container,
   CssBaseline,
-  Typography
-} from '@material-ui/core'
-import { Person as PersonIcon } from '@material-ui/icons'
+  Typography,
+} from "@material-ui/core";
+import { Person as PersonIcon } from "@material-ui/icons";
 
-import { setUser } from 'store/user/userActions'
+import { setUser } from "store/user/userActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(10),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   root: {
     borderRadius: 12,
     minWidth: 256,
-    textAlign: 'center',
-    padding: theme.spacing(4)
+    textAlign: "center",
+    padding: theme.spacing(4),
   },
   avatar: {
-    margin: 'auto',
-    backgroundColor: '#54D260'
+    margin: "auto",
+    backgroundColor: "#54D260",
   },
   header: {
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(1),
   },
   button: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
   left: {
-    float: 'left'
+    float: "left",
   },
   socialIcon: {
-    marginTop: '5px',
-    marginRight: '8px',
-    width: '19px'
-  }
-}))
+    marginTop: "5px",
+    marginRight: "8px",
+    width: "19px",
+  },
+}));
 
-function Signup (props) {
-  const classes = useStyles()
-  const inviteCode = new URLSearchParams(props.location.search).get('invite')
+function Signup(props) {
+  const classes = useStyles();
+  const inviteCode = new URLSearchParams(props.location.search).get("invite");
   if (inviteCode) {
-    sessionStorage.setItem('inviteCode', inviteCode)
+    sessionStorage.setItem("inviteCode", inviteCode);
   }
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component="main" maxWidth="xs">
       <Helmet>
         <title>UBC BizTech - Sign Up</title>
       </Helmet>
       <CssBaseline />
       <div className={classes.paper}>
-        <Card className={classes.root} width='400px'>
+        <Card className={classes.root} width="400px">
           <Avatar className={classes.avatar}>
             <PersonIcon />
           </Avatar>
-          <CardHeader title='Sign Up' className={classes.header} />
-          {
-            inviteCode
-              ? <Typography className={classes.subtext}>
-                To complete your registration, please sign up
-              </Typography> : ''
-          }
+          <CardHeader title="Sign Up" className={classes.header} />
+          {inviteCode ? (
+            <Typography className={classes.subtext}>
+              To complete your registration, please sign up
+            </Typography>
+          ) : (
+            ""
+          )}
           <Button
             className={classes.button}
-            onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
-            variant='contained'
-            color='primary'
+            onClick={() => Auth.federatedSignIn({ provider: "Google" })}
+            variant="contained"
+            color="primary"
           >
             <div className={classes.left}>
               <img
                 className={classes.socialIcon}
-                alt='Google'
-                src='./google.png'
+                alt="Google"
+                src="./google.png"
               />
             </div>
-              Sign Up with Google
+            Sign Up with Google
           </Button>
         </Card>
       </div>
     </Container>
-  )
+  );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.userState.user.data
-  }
-}
+    user: state.userState.user.data,
+  };
+};
 
-export default connect(mapStateToProps, { setUser })(Signup)
+export default connect(mapStateToProps, { setUser })(Signup);

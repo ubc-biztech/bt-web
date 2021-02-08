@@ -11,5 +11,6 @@ Wait! Before you merge, have you checked the following:
 (prefer animated gif)
 
 ## Checklist
+
 - [ ] Looks good on large screens
 - [ ] Looks good on mobile
