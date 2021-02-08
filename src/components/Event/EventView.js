@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   date: {
     position: "absolute",
     top: "80%",
-    right: "8%",
+    right: "4%",
   },
   descDate: {
     color: COLORS.BIZTECH_GREEN,
