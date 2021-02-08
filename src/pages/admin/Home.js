@@ -86,7 +86,7 @@ function AdminHome(props) {
   };
 
   const handleClickViewEventAsMember = () => {
-    history.push(`/event/${eventMenuClicked}`);
+    history.push(`/event/${eventMenuClicked.id}/${eventMenuClicked.year}/register`);
     handleClose();
   };
 
