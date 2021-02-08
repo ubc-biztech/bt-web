@@ -90,7 +90,8 @@ function Login() {
             <Typography variant="h1" color="primary">
               Sign In
             </Typography>
-            <Typography>Don&apos;t have an account? Sign up</Typography>
+            {/* <Typography>Don&apos;t have an account? Sign up</Typography> */}
+            <Typography>Sign in as a BizTech Exec</Typography>
             <Button
               onClick={() => Auth.federatedSignIn({ provider: "Google" })}
               style={styles.googleButton}
