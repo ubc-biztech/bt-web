@@ -79,7 +79,7 @@ export class EventStatsTable extends Component {
       .then((response) => {
         const heardFrom = {};
         response.data.forEach((user) => {
-          if (user.heardFromData) {
+          if (user.heardFrom) {
             heardFrom[user.heardFrom] = heardFrom[user.heardFrom]
               ? heardFrom[user.heardFrom] + 1
               : 1;
