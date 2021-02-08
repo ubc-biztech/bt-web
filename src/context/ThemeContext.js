@@ -20,6 +20,14 @@ const darkTheme = createMuiTheme({
         backgroundColor: "transparent",
         color: COLORS.WHITE,
       },
+      dayLabel: {
+        color: COLORS.WHITE,
+      }
+  },
+  MuiPickersDay: {
+    day: {
+      color: COLORS.WHITE,
+    }
   },
     MuiTooltip: {
       tooltip: {
