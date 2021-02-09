@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     color: COLORS.FONT_COLOR,
     marginRight: "5px",
   },
+  lumaContainer: {
+    width: '100%'
+  }
 }));
 
 export default function RegisterEventForm(props) {
@@ -41,7 +44,9 @@ export default function RegisterEventForm(props) {
     handleSubmit,
     isSubmitting,
     isUBCStudent,
-    setIsUBCStudent
+    setIsUBCStudent,
+    isRegisteredOnLuma,
+    setIsRegisteredOnLuma
   } = props
 
   return (
@@ -65,6 +70,27 @@ export default function RegisterEventForm(props) {
             </FormGroup>
           </FormControl>
         </Grid>
+
+        <Grid item xs={12}>
+            <FormControl>
+              <FormGroup>
+                <div style={{display: 'flex'}}>
+                  <FormControlLabel
+                  label="In order to receive the Zoom link for this event, you must sign up here: "
+                  control={
+                    <Checkbox
+                      checked={isRegisteredOnLuma}
+                      onChange={() => setIsRegisteredOnLuma(!isRegisteredOnLuma)}
+                      color='primary'
+                    />
+                  } />
+                  <a href={'https://lu.ma/fintech'} target="_blank" rel="noopener noreferrer" style={{margin: 'auto'}}><Typography>lu.ma/fintech</Typography></a>
+                </div>
+
+              </FormGroup>
+            </FormControl>
+          </Grid>
+
         <Grid item xs={12}>
           <CustomTextField
             {...props}
@@ -168,7 +194,7 @@ export default function RegisterEventForm(props) {
             <CustomSelect
               {...props}
               label="Do you want to opt in for UBC Trading Group Membership?"
-              listOfOptions={['Yes', 'No']}
+              listOfOptions={['Yes', 'No', 'I\'m already a member']}
               groupName='optTradingGroup'/>
           </Grid>
         </Grid>

@@ -58,6 +58,7 @@ const EventFormContainer = (props) => {
 
   const [registration, setRegistration] = useState(initialRegistrationState)
   const [isUBCStudent, setIsUBCStudent] = useState(true)
+  const [isRegisteredOnLuma, setIsRegisteredOnLuma] = useState(false)
 
   const resetRegistration = () => setRegistration(initialRegistrationState);
 
@@ -165,7 +166,11 @@ const EventFormContainer = (props) => {
               validationSchema={isUBCStudent ? UBCValidationSchema : validationSchema}
               onSubmit={submitValues}
             >
-              {props => <EventRegisterForm {...props} isUBCStudent={isUBCStudent} setIsUBCStudent={setIsUBCStudent} />}
+              {(props) => {
+                  props = {...props, isUBCStudent, setIsUBCStudent, isRegisteredOnLuma, setIsRegisteredOnLuma}
+                  return <EventRegisterForm {...props} />
+                }
+              }
             </Formik>
           </Fragment>
         )}
@@ -176,6 +181,10 @@ const EventFormContainer = (props) => {
   );
 
   async function submitValues (values) {
+    if (!isRegisteredOnLuma) {
+      alert("In order to receive the Zoom link for this event, you must sign up here: lu.ma/fintech")
+      return
+    }
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender, optTradingGroup } = values
     const eventID = event.id
     const eventYear = event.year
