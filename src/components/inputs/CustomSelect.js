@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "20px",
     padding: "20px",
     backgroundColor: COLORS.CARD_PAPER_COLOR,
+    borderRadius: "4px"
   },
 }));
 
