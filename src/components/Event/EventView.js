@@ -41,8 +41,12 @@ const useStyles = makeStyles((theme) => ({
   banner: {
     maxWidth: "100%",
     borderRadius: "5px",
-    height: "234px",
+    // height: "234px",
+    height: "400px",
     width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      height: "234px",
+    },
   },
   date: {
     position: "absolute",
