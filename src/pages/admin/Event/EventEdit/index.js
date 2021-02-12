@@ -160,7 +160,9 @@ const EventEdit = (props) => {
     )
       .then((response) => {
         alert(response.message);
-        history.push(`/event/${values.slug}/${parseInt(values.startDate)}`);
+        // TODO: refactor using redux to update the event
+        history.push(`/admin/home`);
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
