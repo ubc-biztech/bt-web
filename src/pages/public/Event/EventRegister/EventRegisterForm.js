@@ -127,7 +127,7 @@ export default function RegisterEventForm(props) {
           />
         </Grid>}
 
-        <Grid item xs={renderMobileOnly ? 12 : 4}>
+        <Grid item xs={renderMobileOnly ? 12 : 8}>
           <Grid item xs={12}>
             <CustomSelect
               {...props}
@@ -193,8 +193,8 @@ export default function RegisterEventForm(props) {
           <Grid item xs={12}>
             <CustomSelect
               {...props}
-              label="Do you want to opt in for UBC Trading Group Membership?"
-              listOfOptions={['Yes', 'No', 'I\'m already a member']}
+              label="In order to fully register for this event, you first need to be a member of UBC Trading Group. Membership is FREE. Please fill out the following member registration form before continuing: https://forms.gle/Zu4bXZDxiYd2331z7 *"
+              listOfOptions={['I\'m already a member', 'I have yet to fill out the member registration form and will do so here: https://forms.gle/Zu4bXZDxiYd2331z7']}
               groupName='optTradingGroup'/>
           </Grid>
         </Grid>
