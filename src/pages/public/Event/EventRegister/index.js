@@ -186,6 +186,10 @@ const EventFormContainer = (props) => {
       return
     }
     const { email, fname, lname, id, faculty, year, diet, heardFrom, gender, optTradingGroup } = values
+    if (optTradingGroup === '') {
+      alert("In order to register for this event, you must be a member of UBC Trading Group.")
+      return
+    }
     const eventID = event.id
     const eventYear = event.year
     const body = {
