@@ -59,23 +59,23 @@ export default function RegisterEventForm(props) {
           <FormControl>
             <FormGroup>
               <FormControlLabel
-              label="UBC Student"
-              control={
-                <Checkbox
-                  checked={isUBCStudent}
-                  onChange={() => setIsUBCStudent(!isUBCStudent)}
-                  color='primary'
-                />
-              } />
+                label="UBC Student"
+                control={
+                  <Checkbox
+                    checked={isUBCStudent}
+                    onChange={() => setIsUBCStudent(!isUBCStudent)}
+                    color='primary'
+                  />
+                } />
             </FormGroup>
           </FormControl>
         </Grid>
 
         <Grid item xs={12}>
-            <FormControl>
-              <FormGroup>
-                <div style={{display: 'flex'}}>
-                  <FormControlLabel
+          <FormControl>
+            <FormGroup>
+              <div style={{ display: 'flex' }}>
+                <FormControlLabel
                   label="In order to receive the Zoom link for this event, you must sign up here: "
                   control={
                     <Checkbox
@@ -84,12 +84,12 @@ export default function RegisterEventForm(props) {
                       color='primary'
                     />
                   } />
-                  <a href={'https://lu.ma/fintech'} target="_blank" rel="noopener noreferrer" style={{margin: 'auto'}}><Typography>lu.ma/fintech</Typography></a>
-                </div>
+                <a href={'https://lu.ma/fintech'} target="_blank" rel="noopener noreferrer" style={{ margin: 'auto' }}><Typography>lu.ma/fintech</Typography></a>
+              </div>
 
-              </FormGroup>
-            </FormControl>
-          </Grid>
+            </FormGroup>
+          </FormControl>
+        </Grid>
 
         <Grid item xs={12}>
           <CustomTextField
@@ -140,6 +140,8 @@ export default function RegisterEventForm(props) {
                 "Kinesiology",
                 "Land and Food Systems",
                 "Forestry",
+                "Other",
+                "Not Applicable"
               ]}
               groupName="faculty"
             />
@@ -155,6 +157,8 @@ export default function RegisterEventForm(props) {
                 "3rd Year",
                 "4th Year",
                 "5+ Year",
+                "Other",
+                "Not Applicable"
               ]}
               groupName="year"
             />
@@ -184,7 +188,7 @@ export default function RegisterEventForm(props) {
                 "Friends",
                 "BizTech Newsletter",
                 "Faculty Newsletter",
-                "Other",
+                "Other"
               ]}
               groupName="heardFrom"
             />
@@ -195,7 +199,7 @@ export default function RegisterEventForm(props) {
               {...props}
               label="In order to fully register for this event, you first need to be a member of UBC Trading Group. Membership is FREE. Please fill out the following member registration form before continuing: https://forms.gle/Zu4bXZDxiYd2331z7 *"
               listOfOptions={['I\'m already a member', 'I have yet to fill out the member registration form and will do so here: https://forms.gle/Zu4bXZDxiYd2331z7']}
-              groupName='optTradingGroup'/>
+              groupName='optTradingGroup' />
           </Grid>
         </Grid>
       </Grid>

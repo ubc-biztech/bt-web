@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components"; 
+import styled from "styled-components";
 import Paper from "@material-ui/core/Paper";
 import { ReactComponent as LeftArrowIcon } from "../../../../assets/leftarrow.svg";
 import { ReactComponent as RightArrowIcon } from "../../../../assets/rightarrow.svg";
@@ -161,7 +161,7 @@ const Questions = (props) => {
             <RightArrowIcon />
           </IconButton>
         </div>
-        
+
         {questionIndex === 0 && (
           <Box px={4}>
             <QuestionsBox
