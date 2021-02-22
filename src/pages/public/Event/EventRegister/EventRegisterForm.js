@@ -180,6 +180,8 @@ export default function RegisterEventForm(props) {
               label="How did you hear about this event?"
               listOfOptions={[
                 "Facebook",
+                "Instagram",
+                "LinkedIn",
                 "Boothing",
                 "Friends",
                 "BizTech Newsletter",
