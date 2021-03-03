@@ -63,19 +63,7 @@ const useStyles = makeStyles((theme) => ({
       border: `1px solid ${COLORS.CARD_PAPER_COLOR}`,
       padding: "10px",
     },
-  },
-  registrationText: {
-    fontWeight: "bold",
-    fontSize: "24px",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "20px",
-    },
-  },
-  subText: {
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
-  },
+  }
 }));
 
 function formatAMPM(date) {
