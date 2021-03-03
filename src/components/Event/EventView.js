@@ -154,15 +154,6 @@ const EventView = ({ event, children }) => {
         ) : (
           <div />
         )}
-
-        <div className={classes.registrationHeader}>
-          <Typography className={classes.registrationText}>
-            Registration
-          </Typography>
-          <Typography className={classes.subText}>
-            We need to know a little bit about you to get started.
-          </Typography>
-        </div>
         {children}
       </div>
     </React.Fragment>
