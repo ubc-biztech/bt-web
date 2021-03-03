@@ -63,19 +63,7 @@ const useStyles = makeStyles((theme) => ({
       border: `1px solid ${COLORS.CARD_PAPER_COLOR}`,
       padding: "10px",
     },
-  },
-  registrationText: {
-    fontWeight: "bold",
-    fontSize: "24px",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "20px",
-    },
-  },
-  subText: {
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
-    },
-  },
+  }
 }));
 
 function formatAMPM(date) {
@@ -154,15 +142,6 @@ const EventView = ({ event, children }) => {
         ) : (
           <div />
         )}
-
-        <div className={classes.registrationHeader}>
-          <Typography className={classes.registrationText}>
-            Registration
-          </Typography>
-          <Typography className={classes.subText}>
-            We need to know a little bit about you to get started.
-          </Typography>
-        </div>
         {children}
       </div>
     </React.Fragment>
