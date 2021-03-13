@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
@@ -9,14 +10,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Typography } from "@material-ui/core";
 
 import MemberCreateForm from "./MemberCreateForm";
+import { COLORS } from "../../../constants/_constants/theme";
 
 import { setUser } from "store/user/userActions";
 import { fetchBackend } from "utils";
 
+import * as biztechBanner from "../../../assets/biztechbanner.png";
+
 const useStyles = makeStyles((theme) => ({
   layout: {
     [theme.breakpoints.up("sm")]: {
-      width: 600,
+      width: 850,
       margin: "auto",
     },
   },
@@ -28,7 +32,27 @@ const useStyles = makeStyles((theme) => ({
   content: {
     padding: theme.spacing(3),
   },
-}));
+  registrationHeader: {
+    borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
+    marginTop: "35px",
+    paddingLeft: "19px",
+    marginLeft: "11px",
+  },
+  registrationText: {
+    fontWeight: 'bold',
+    fontSize: '24px'
+  },
+  banner: {
+    maxWidth: "100%",
+    borderRadius: "5px",
+    // height: "234px",
+    width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      height: "234px",
+    },
+    paddingBottom: "20px"
+  }
+}))
 
 const MemberCreate = (props) => {
   const classes = useStyles();
@@ -130,7 +154,38 @@ const MemberCreate = (props) => {
 
   return (
     <div className={classes.layout}>
-      <Paper className={classes.paper}>
+      <Helmet>
+        <title>UBC BizTech Membership</title>
+      </Helmet>
+      <React.Fragment>
+      {/* <div style={{ position: "relative" }}>
+        <img
+          src={biztechWordmark}
+          className={classes.banner}
+          alt="Event"
+        />
+        </div> */}
+    </React.Fragment>
+    <Typography variant="h4" align="left" gutterBottom>
+      UBC BizTech Membership
+        </Typography>
+      <Fragment>
+            <div>
+                {/* <Typography className={classes.registrationText}>UBC BizTech Membership</Typography> */}
+              <Typography>We need to know a little bit about you to get started.</Typography>
+            </div>
+            <Formik
+              initialValues={initialValues}
+              onSubmit={submitValues}
+            >
+              {(props) => {
+                  props = {...props}
+                  return <MemberCreateForm {...props} />
+                }
+              }
+            </Formik>
+          </Fragment>
+      {/* <Paper className={classes.paper}>
         <div className={classes.content}>
           <Typography variant="h4" align="center" gutterBottom>
             Member Information
@@ -151,7 +206,7 @@ const MemberCreate = (props) => {
             {(props) => <MemberCreateForm {...props} />}
           </Formik>
         </div>
-      </Paper>
+      </Paper> */}
     </div>
   );
 };

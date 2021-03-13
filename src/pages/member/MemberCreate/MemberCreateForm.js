@@ -1,8 +1,36 @@
 import React from "react";
-import { Button, Grid, TextField, Typography } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  useMediaQuery
+} from "@material-ui/core";
 import RadioGroupButtons from "components/buttons/RadioGroupButtons";
+import { makeStyles } from '@material-ui/core/styles'
+import { useTheme } from '@material-ui/styles'
+import { COLORS } from "../../../constants/_constants/theme";
+import CustomTextField from "../../../components/inputs/CustomTextField";
+import CustomSelect from "../../../components/inputs/CustomSelect";
+
+const useStyles = makeStyles((theme) => ({
+  gridContainer: {
+    marginTop: "5px",
+  },
+  submitButton: {
+    textTransform: "none",
+  },
+  submitIcon: {
+    color: COLORS.FONT_COLOR,
+    marginRight: "5px",
+  }
+}));
 
 export default function MemberCreateForm(props) {
+  const classes = useStyles();
+  const theme = useTheme();
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
+
   const {
     initialValues,
     errors,
@@ -31,69 +59,69 @@ export default function MemberCreateForm(props) {
       <Typography variant="caption" color={"error"}>
         * Indicates required field
       </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            defaultValue={initialValues.fname}
-            label="First Name*"
+      <Grid className={classes.gridContainer} container spacing={3}>
+     
+      <Grid item xs={12}>
+          <RadioGroupButtons
+            {...props}
+            otherOption={true}
+            options={[
+              "I am a current/prospective UBC student",
+              "I am a current/prospective university student",
+              "I am a high school student",
+              "None of the above"
+            ]}
+            groupName={"faculty"}
+            displayName={"Please choose the option that's most relevant to you *"}
+          />
+        </Grid>
+        
+        <Grid item xs={12}>
+          <CustomTextField
+            {...props}
+            label="First Name *"
+            groupName="fname"
             autoComplete="given-name"
-            helperText={textFieldError("fname")}
-            error={!!textFieldError("fname")}
-            id="fname"
-            onChange={change.bind(null, "fname")}
-            fullWidth
           />
         </Grid>
 
-        <Grid item xs={12} sm={6}>
-          <TextField
-            defaultValue={initialValues.lname}
-            label="Last Name*"
+        <Grid item xs={12}>
+          <CustomTextField
+            {...props}
+            label="Last Name *"
+            groupName="lname"
             autoComplete="family-name"
-            helperText={textFieldError("lname")}
-            error={!!textFieldError("lname")}
-            id="lname"
-            onChange={change.bind(null, "lname")}
-            fullWidth
           />
         </Grid>
 
         <Grid item xs={12}>
-          <TextField
-            disabled={!!initialValues.email}
-            defaultValue={initialValues.email}
-            label="Email Address*"
+          <CustomTextField
+            {...props}
+            label="Email Address *"
+            groupName="email"
             autoComplete="email"
-            helperText={textFieldError("email")}
-            error={!!textFieldError("email")}
-            id="email"
-            onChange={change.bind(null, "email")}
-            fullWidth
           />
         </Grid>
 
         <Grid item xs={12}>
-          <TextField
-            label="Student Number*"
-            helperText={textFieldError("id")}
-            error={!!textFieldError("id")}
-            id="id"
-            onChange={change.bind(null, "id")}
-            fullWidth
+          <CustomTextField
+            {...props}
+            label="Student Number *"
+            groupName="id"
+            autoComplete="id"
           />
         </Grid>
 
         <Grid item xs={12}>
-          <TextField
+          <CustomTextField
+            {...props}
             defaultValue={initialValues.inviteCode}
             label="Membership Code"
-            helperText={textFieldError("inviteCode")}
-            error={!!textFieldError("inviteCode")}
-            id="inviteCode"
-            onChange={change.bind(null, "inviteCode")}
-            fullWidth
+            groupName="inviteCode"
+            autoComplete="inviteCode"
           />
         </Grid>
+        
 
         <Grid item xs={12}>
           <RadioGroupButtons
@@ -163,8 +191,7 @@ export default function MemberCreateForm(props) {
               "Boothing",
               "Friends",
               "BizTech Newsletter",
-              "Faculty Newsletter",
-              "Other",
+              "Faculty Newsletter"
             ]}
             groupName={"heardFrom"}
             displayName={"How did you hear about UBC BizTech?"}
@@ -173,10 +200,12 @@ export default function MemberCreateForm(props) {
       </Grid>
       <br></br>
       <Button
+      className={classes.registerButton}
         variant="contained"
         color="primary"
         type="submit"
         disabled={!dirty || isSubmitting}
+        style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px"}}
       >
         Submit
       </Button>

@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Memberships() {
 
-  const [personalizationState, setPersonalizationState] = useState(
+  const [personalizationState, setPersonalizationState] = React.useState(
     PERSONALIZATION_STATES.SUMMARY
   );
 
