@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Markdown from "components/layout/Markdown";
 import { COLORS } from "../../constants/_constants/theme";
 
@@ -79,17 +79,36 @@ function formatAMPM(date) {
 const EventView = ({ event, children }) => {
   const classes = useStyles();
   const [showDescription, setShowDescription] = useState(false);
-
-  const startDate = new Date(event.startDate);
-  const month = startDate.toLocaleDateString("default", { month: "short" });
-  const dayOfMonth = startDate.getDate();
-  const dayOfWeek = startDate.toLocaleDateString("default", {
-    weekday: "long",
+  const [dateObj, setDateObj] = useState({
+    month: "Jan",
+    dayOfWeek: "Sunday",
+    dayOfMonth: 1,
+    startTime: "start time",
+    endTime: "end time"
   });
-  const startTime = formatAMPM(startDate);
 
-  const endDate = new Date(event.endDate);
-  const endTime = formatAMPM(endDate);
+  useEffect(() => {
+    const startDate = new Date(event.startDate);
+    const month = startDate.toLocaleDateString("default", { month: "short" });
+    const dayOfMonth = startDate.getDate();
+    const dayOfWeek = startDate.toLocaleDateString("default", {
+      weekday: "long",
+    });
+    const startTime = formatAMPM(startDate);
+
+    const endDate = new Date(event.endDate);
+    const endTime = formatAMPM(endDate);
+
+    const date = {
+      month,
+      dayOfWeek,
+      dayOfMonth,
+      startTime,
+      endTime
+    }
+    setDateObj(date);
+  }, [event.startDate, event.endDate]);
+
   return (
     <React.Fragment>
       <div style={{ position: "relative" }}>
@@ -100,9 +119,9 @@ const EventView = ({ event, children }) => {
         />
         <div className={classes.date}>
           <DateComponent
-            month={month}
-            dayOfMonth={dayOfMonth}
-            dayOfWeek={dayOfWeek}
+            month={dateObj.month}
+            dayOfMonth={dateObj.dayOfMonth}
+            dayOfWeek={dateObj.dayOfWeek}
           />
         </div>
       </div>
@@ -134,7 +153,7 @@ const EventView = ({ event, children }) => {
                 style={{ color: COLORS.BIZTECH_GREEN }}
               />
               <Typography className={classes.descDate}>
-                {dayOfWeek}, {month}. {dayOfMonth} {startTime}-{endTime}
+                {dateObj.dayOfWeek}, {dateObj.month}. {dateObj.dayOfMonth} {dateObj.startTime}-{dateObj.endTime}
               </Typography>
             </div>
             <Markdown>{event.description}</Markdown>

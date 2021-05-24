@@ -6,13 +6,13 @@ import {
 } from '@material-ui/core'
 import EventAvailableIcon from '@material-ui/icons/EventAvailable'
 import { makeStyles } from '@material-ui/core/styles'
-import { useTheme } from '@material-ui/styles'
 import {
   useMediaQuery,
   Checkbox,
   FormControlLabel,
   FormControl,
-  FormGroup
+  FormGroup,
+  useTheme
 } from '@material-ui/core'
 
 import { COLORS } from "../../../../constants/_constants/theme";
