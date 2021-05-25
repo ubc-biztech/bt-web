@@ -226,18 +226,10 @@ const EventEdit = (props) => {
 
   async function submitValues() {
     const body = {
-      ename: initialValues.ename,
+      ...initialValues,
       id: initialValues.slug,
       year: initialValues.startDate.getFullYear(),
-      description: initialValues.description,
-      capac: parseInt(initialValues.capacity),
-      elocation: initialValues.elocation,
-      longitude: initialValues.longitude,
-      latitude: initialValues.latitude,
-      imageUrl: initialValues.imageUrl,
-      facebookUrl: initialValues.facebookUrl,
-      startDate: initialValues.startDate,
-      endDate: initialValues.endDate
+      capac: parseInt(initialValues.capacity)
     };
 
     const endpoint = isEditing ? `/events/${body.id}/${parseInt(body.year)}`: "/events";
