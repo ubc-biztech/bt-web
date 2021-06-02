@@ -7,6 +7,7 @@ import Route from "components/routing/Route";
 import MemberCreate from "./MemberCreate";
 import MemberProfile from "./MemberProfile";
 import MemberHome from "./Home";
+import MemberStickers from "./Stickers";
 
 import { fetchEvents } from "store/event/eventActions";
 
@@ -40,6 +41,15 @@ const MemberRoutes = (props) => {
             <Redirect to="/member/home" /> /* Allow create member only if user is not yet registered in DB */
           ) : (
             <MemberCreate />
+          )
+        }
+      />
+      <Route
+        exact
+        path="/member/stickers"
+        // featureFlag={"REACT_APP_SHOW_MAXVP"}
+        render={() => (
+            <MemberStickers />
           )
         }
       />

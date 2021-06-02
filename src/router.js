@@ -20,6 +20,7 @@ import Loading from "pages/Loading";
 import NotFound from "pages/NotFound";
 import AdminRoutes from "pages/admin";
 import MemberRoutes from "pages/member";
+import Stickers from "pages/member/Stickers";
 import PublicEventRoutes from "pages/public/Event";
 import Landing from "pages/public/Landing";
 
@@ -132,6 +133,11 @@ class Router extends Component {
               path='/events'
               featureFlag={'REACT_APP_SHOW_MAXVP'}
               render={() => <EventsDashboard />} />
+            <Route 
+              exact
+              path='/stickers'
+              render={() => <Stickers />} />
+
 
             {/* MISCELLANEOUS ROUTES */}
             <Route
