@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
   dropDownButton: {
     cursor: "pointer",
     fontSize: "20px",
+  },
+  submitButton: {
+    margin: theme.spacing(3)
   }
 }));
 
@@ -172,6 +175,7 @@ const EventEdit = (props) => {
         </DropDown>
 
         <Button
+          className={classes.submitButton}
           variant="contained"
           color="primary"
           onClick={() => {submitValues()}}>
