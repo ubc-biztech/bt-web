@@ -52,7 +52,7 @@ export default function EventEditTextFields(props) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <CustomTextField
@@ -108,6 +108,6 @@ export default function EventEditTextFields(props) {
               ))}
           </TableBody>
       </Table>
-    </React.Fragment>
+    </>
   );
 }

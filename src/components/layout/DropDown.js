@@ -38,13 +38,7 @@ export default function DropDown(props) {
             {dropDownName}
             </Typography>
             <SlideDown>
-              {
-                showDropDown ? (
-                  children
-                ) : (
-                  null
-                )
-              }
+              {showDropDown && children}
             </SlideDown>
           </div>
         </Paper>

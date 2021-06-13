@@ -52,7 +52,7 @@ export default function EventEditCheckBoxFields(props) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Typography>Note: required checkboxes are boxes that MUST be checked for the form to be submitted</Typography>
       <br />
       <br />
@@ -111,6 +111,6 @@ export default function EventEditCheckBoxFields(props) {
               ))}
           </TableBody>
       </Table>
-    </React.Fragment>
+    </>
   );
 }

@@ -58,7 +58,7 @@ export default function EventEditForm(props) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <CustomTextField
@@ -141,6 +141,6 @@ export default function EventEditForm(props) {
         </Grid>
       </Grid>
       <br />
-    </React.Fragment>
+    </>
   );
 }
