@@ -3,8 +3,8 @@ import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
 
-import { useTheme, makeStyles } from "@material-ui/styles";
-import { List, ListItem, Divider } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import { List, ListItem, Divider, useTheme } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import {

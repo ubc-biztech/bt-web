@@ -20,8 +20,9 @@ import {
   IconButton,
   InputBase,
   Chip,
+  useTheme
 } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { StarBorder, PlaylistAddCheck, Search } from "@material-ui/icons";
 import EventCard from "components/Event/EventCard";

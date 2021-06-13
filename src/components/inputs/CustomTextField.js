@@ -1,9 +1,8 @@
 import React from "react";
 import { COLORS } from "../../constants/_constants/theme";
 
-import { Typography, TextField } from "@material-ui/core";
+import { Typography, TextField, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(() => ({
@@ -65,38 +64,75 @@ export default function CustomTextField(props) {
     setFieldTouched,
     groupName,
     label,
-    autoComplete,
+    handleEvent,
+    disabled,
+    value,
+    type,
+    min,
+    multiline,
+    defaultValue
   } = props;
 
   const change = (name, e) => {
     e.persist();
-    handleChange(e);
-    setFieldTouched(name, true, false);
+    if (handleChange) {
+      handleChange(e);
+    }
+    if (setFieldTouched) {
+      setFieldTouched(name, true, false);
+    }
   };
 
   function createTextField(className, variant, inputProps, label) {
     return (
-      <TextField
-        label={label}
-        margin="none"
-        className={className}
-        autoComplete={autoComplete}
-        helperText={touched[groupName] ? errors[groupName] : ""}
-        error={touched[groupName] && Boolean(errors[groupName])}
-        id={groupName}
-        onChange={change.bind(null, groupName)}
-        fullWidth
-        variant={variant}
-        inputProps={inputProps}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
+      defaultValue ? (
+        <TextField
+          label={label}
+          margin="none"
+          className={className}
+          helperText={touched[groupName] ? errors[groupName] : ""}
+          error={touched[groupName] && Boolean(errors[groupName])}
+          id={groupName}
+          onChange={handleEvent ? handleEvent : change.bind(null, groupName)}
+          disabled={disabled ? disabled : false}
+          fullWidth
+          variant={variant}
+          type={type}
+          min={min}
+          defaultValue={defaultValue}
+          multiline={multiline}
+          inputProps={inputProps}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      ) : (
+        <TextField
+          label={label}
+          margin="none"
+          className={className}
+          helperText={touched && errors && touched[groupName] ? errors[groupName] : ""}
+          error={touched && errors && touched[groupName] && Boolean(errors[groupName])}
+          id={groupName}
+          onChange={handleEvent ? handleEvent : change.bind(null, groupName)}
+          disabled={disabled ? disabled : false}
+          fullWidth
+          variant={variant}
+          value={value}
+          type={type}
+          min={min}
+          multiline={multiline}
+          inputProps={inputProps}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      )
     );
   }
 
   return (
-    <React.Fragment>
+    <div>
       {!renderMobileOnly && <Typography>{label}</Typography>}
       {renderMobileOnly
         ? createTextField(
@@ -118,6 +154,6 @@ export default function CustomTextField(props) {
             },
             className: classes.input,
           })}
-    </React.Fragment>
+    </div>
   );
 }

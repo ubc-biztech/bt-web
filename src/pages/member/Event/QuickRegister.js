@@ -6,9 +6,8 @@ import * as Yup from "yup";
 
 import QuickRegisterForm from "./QuickRegisterForm";
 
-import { useTheme } from "@material-ui/styles";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography, useTheme } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
