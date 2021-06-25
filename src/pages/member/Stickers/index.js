@@ -47,6 +47,39 @@ const useStyles = makeStyles({
   divider: {
     background: "white",
   },
+  inputbox: {
+    // border: "1px solid red",
+  },
+  buttonbox: {
+    // border: "1px solid red",
+  },
+  button: {
+    width: "100%",
+    height: "100%",
+    marginLeft: "0",
+  },
+  textField: {
+    borderColor: "1px solid white",
+  },
+  root: {
+    // "& label.Mui-focused": {
+    //   color: "white",
+    // },
+    // "& .MuiInput-underline:after": {
+    //   borderBottomColor: "yellow",
+    // },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "white",
+      },
+      "&:hover fieldset": {
+        borderColor: "white",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "white",
+      },
+    },
+  },
 });
 
 function StickerCodeForm(props) {
@@ -58,7 +91,7 @@ function StickerCodeForm(props) {
     <>
       <form onSubmit={onSubmit}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={8} md={6} className={classes.inputbox}>
             <TextField
               // defaultValue={initialValues.fname}
               variant="outlined"
@@ -67,17 +100,22 @@ function StickerCodeForm(props) {
               // error={!!textFieldError("fname")}
               id="stickerCode"
               onChange={() => console.log("changing sticker code")}
+              classes={{
+                root: classes.root,
+              }}
               fullWidth
             />
           </Grid>
-          <Button
-            // className={classes.button}
-            variant="contained"
-            color="primary"
-            type="submit"
-          >
-            Submit
-          </Button>
+          <Grid item xs={12} sm={3} md={2} className={classes.buttonbox}>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Submit
+            </Button>
+          </Grid>
         </Grid>
       </form>
     </>
