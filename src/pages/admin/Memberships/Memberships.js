@@ -8,8 +8,8 @@ import ListIcon from "@material-ui/icons/List";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import Questions from "./Questions/Questions";
-import Summary from './Summary/Summary';
-import Individual from './Individual/Individual';
+import Summary from "./Summary/Summary";
+import Individual from "./Individual/Individual";
 
 import {
   List,
@@ -23,18 +23,19 @@ const PERSONALIZATION_STATES = {
   SUMMARY: {
     displayName: "Summary",
     icon: <StarBorderIcon fontSize="small" />,
-    component: <Summary />
-  }, QUESTION: {
+    component: <Summary />,
+  },
+  QUESTION: {
     displayName: "Question",
     icon: <HelpOutlineIcon fontSize="small" />,
-    component: <Questions />
-  }, INDIVIDUAL: {
+    component: <Questions />,
+  },
+  INDIVIDUAL: {
     displayName: "Individual",
     icon: <ListIcon fontSize="small" />,
-    component: <Individual />
+    component: <Individual />,
   },
 };
-
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -90,7 +91,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Memberships() {
-
   const [personalizationState, setPersonalizationState] = React.useState(
     PERSONALIZATION_STATES.SUMMARY
   );
@@ -171,21 +171,22 @@ function Memberships() {
                       }
                     />
                   ) : (
-                      <Chip
-                        key={pState.displayName}
-                        className={classes.chipFilter}
-                        size="small"
-                        color="secondary"
-                        label={pState.displayName}
-                        onClick={() => handlePersonalizationChange(pState)}
-                      />
-                    ))
+                    <Chip
+                      key={pState.displayName}
+                      className={classes.chipFilter}
+                      size="small"
+                      color="secondary"
+                      label={pState.displayName}
+                      onClick={() => handlePersonalizationChange(pState)}
+                    />
+                  ))
               )}
             </div>
           )}
 
-          {React.cloneElement(personalizationState.component, { membershipData: membershipData })}
-
+          {React.cloneElement(personalizationState.component, {
+            membershipData: membershipData,
+          })}
         </div>
       </div>
     </div>
