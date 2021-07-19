@@ -237,6 +237,36 @@ export default function MemberCreateForm(props) {
               </FormControl>
             </Grid>
           )}
+          <FormControl>
+            <FormLabel>
+              What topics did you want to see the most discussed in future
+              events?{" "}
+            </FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox name="Cyber Security" />}
+                label="Cyber Security"
+              />
+              <FormControlLabel control={<Checkbox name="AI" />} label="AI" />
+              <FormControlLabel
+                control={<Checkbox name="Tech Startups" />}
+                label="Tech Startups"
+              />
+              <FormControlLabel
+                control={<Checkbox name="eCommerce" />}
+                label="eCommerce"
+              />
+              <FormControlLabel
+                control={<Checkbox name="Health Tech" />}
+                label="Health Tech"
+              />
+              <FormControlLabel
+                control={<Checkbox name="Careers in the Tech Industry" />}
+                label="Careers in the Tech Industry"
+              />
+            </FormGroup>
+            <FormHelperText>Be careful</FormHelperText>
+          </FormControl>
           <Grid item xs={12}>
             <CustomSelect
               {...props}
