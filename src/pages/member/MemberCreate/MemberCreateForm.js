@@ -16,7 +16,7 @@ import {
 import { COLORS } from "../../../constants/_constants/theme";
 import CustomTextField from "../../../components/inputs/CustomTextField";
 import CustomSelect from "../../../components/inputs/CustomSelect";
-import { MEMBER_TYPES } from "constants/_constants/memberTypes";
+import { MEMBER_TYPES, MEMBER_LABELS } from "constants/_constants/memberTypes";
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
@@ -58,22 +58,22 @@ export default function MemberCreateForm(props) {
               <FormControlLabel
                 value={MEMBER_TYPES.UBC}
                 control={<Radio />}
-                label={MEMBER_TYPES.UBC}
+                label={MEMBER_LABELS.UBC}
               />
               <FormControlLabel
                 value={MEMBER_TYPES.UNIVERSITY}
                 control={<Radio />}
-                label={MEMBER_TYPES.UNIVERSITY}
+                label={MEMBER_LABELS.UNIVERSITY}
               />
               <FormControlLabel
                 value={MEMBER_TYPES.HIGH_SCHOOL}
                 control={<Radio />}
-                label={MEMBER_TYPES.HIGH_SCHOOL}
+                label={MEMBER_LABELS.HIGH_SCHOOL}
               />
               <FormControlLabel
                 value={MEMBER_TYPES.OTHER}
                 control={<Radio />}
-                label={MEMBER_TYPES.OTHER}
+                label={MEMBER_LABELS.OTHER}
               />
             </RadioGroup>
           </FormControl>
@@ -92,7 +92,7 @@ export default function MemberCreateForm(props) {
           <CustomTextField
             {...props}
             label="First Name *"
-            groupName="fname"
+            groupName="first_name"
             autoComplete="given-name"
           />
         </Grid>
@@ -116,7 +116,7 @@ export default function MemberCreateForm(props) {
               "They/Them/Their",
               "Other/Prefer not to say",
             ]}
-            groupName="gender"
+            groupName="pronouns"
           />
         </Grid>
 
@@ -125,8 +125,8 @@ export default function MemberCreateForm(props) {
             <CustomTextField
               {...props}
               label="Student Number *"
-              groupName="id"
-              autoComplete="id"
+              groupName="student_number"
+              autoComplete="student_number"
             />
           </Grid>
         )}
@@ -136,8 +136,8 @@ export default function MemberCreateForm(props) {
             <CustomTextField
               {...props}
               label="Which university do you currently attend? *"
-              groupName="major"
-              autoComplete="major"
+              groupName="university"
+              autoComplete="university"
             />
           </Grid>
         )}
@@ -147,8 +147,8 @@ export default function MemberCreateForm(props) {
             <CustomTextField
               {...props}
               label="Which high school do you currently attend? *"
-              groupName="major"
-              autoComplete="major"
+              groupName="high_school"
+              autoComplete="high_school"
             />
           </Grid>
         )}
@@ -228,11 +228,11 @@ export default function MemberCreateForm(props) {
                 <FormLabel>Are you an international student?</FormLabel>
                 <RadioGroup>
                   <FormControlLabel
-                    value="yes"
+                    value="Yes"
                     control={<Radio />}
                     label="Yes"
                   />
-                  <FormControlLabel value="no" control={<Radio />} label="No" />
+                  <FormControlLabel value="No" control={<Radio />} label="No" />
                 </RadioGroup>
               </FormControl>
             </Grid>
@@ -253,7 +253,7 @@ export default function MemberCreateForm(props) {
                 "Events",
                 "Other",
               ]}
-              groupName="heardFrom"
+              groupName="heard_from"
             />
           </Grid>
         </Grid>

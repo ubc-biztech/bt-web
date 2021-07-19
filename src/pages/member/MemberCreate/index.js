@@ -1,21 +1,21 @@
-import React, { Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { Helmet } from "react-helmet";
+import { Formik } from "formik";
+import * as Yup from "yup";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import MemberCreateForm from "./MemberCreateForm";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 
-import MemberCreateForm from "./MemberCreateForm";
 import { COLORS } from "../../../constants/_constants/theme";
+import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
 
 import { setUser } from "store/user/userActions";
 import { fetchBackend } from "utils";
-
-import * as biztechBanner from "../../../assets/biztechbanner.png";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -32,86 +32,103 @@ const useStyles = makeStyles((theme) => ({
   content: {
     padding: theme.spacing(3),
   },
-  registrationHeader: {
-    borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
-    marginTop: "35px",
-    paddingLeft: "19px",
-    marginLeft: "11px",
-  },
-  registrationText: {
-    fontWeight: 'bold',
-    fontSize: '24px'
-  },
-  banner: {
-    maxWidth: "100%",
-    borderRadius: "5px",
-    // height: "234px",
-    width: "100%",
-    [theme.breakpoints.down("sm")]: {
-      height: "234px",
-    },
-    paddingBottom: "20px"
-  }
-}))
+}));
 
-const MemberCreate = (props) => {
+const MemberCreateFormContainer = (props) => {
   const classes = useStyles();
-
   const history = useHistory();
+
+  const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
-    id: Yup.number("Valid Student ID required")
+    first_name: Yup.string().required("First name is required"),
+    last_name: Yup.string().required("Last name is required"),
+    year: Yup.string().required("Level of study is required"),
+  });
+
+  const UBCValidationSchema = Yup.object({
+    email: Yup.string().email().required(),
+    student_id: Yup.number("Valid Student ID required")
       .min(9999999, "Valid Student ID required")
       .max(100000000, "Valid Student ID required")
       .required(),
-    fname: Yup.string().required("First name is required"),
-    lname: Yup.string().required("Last name is required"),
+    first_name: Yup.string().required("First name is required"),
+    last_name: Yup.string().required("Last name is required"),
     faculty: Yup.string().required("Faculty is required"),
-    userYear: Yup.string().required("Level of study is required"),
-    diet: Yup.string().required("Dietary restriction is required"),
+    year: Yup.string().required("Level of study is required"),
+    isInternational: Yup.string().required(
+      "International or domestic student indication is required"
+    ),
   });
 
-  // form initial values (if exist). If email exists will disable email field
+  const UniversityValidationSchema = Yup.object({
+    email: Yup.string().email().required(),
+    first_name: Yup.string().required("First name is required"),
+    last_name: Yup.string().required("Last name is required"),
+    university: Yup.string().required("University name is required"),
+    faculty: Yup.string().required("Faculty is required"),
+    year: Yup.string().required("Level of study is required"),
+    major: Yup.string().required("Major is required"),
+  });
+
+  const HighSchoolValidationSchema = Yup.object({
+    email: Yup.string().email().required(),
+    first_name: Yup.string().required("First name is required"),
+    last_name: Yup.string().required("Last name is required"),
+    year: Yup.string().required("Level of study is required"),
+    high_school: Yup.string().required("High School is required"),
+  });
+
   const { user } = props;
-  const initialInviteCode = sessionStorage.getItem("inviteCode");
   const initialValues = {
     email: (user && user.email) || "",
     fname: (user && user.fname) || "",
     lname: (user && user.lname) || "",
-    inviteCode: initialInviteCode || "",
   };
 
   const submitValues = async (values) => {
     console.log(values);
     const {
+      education,
       email,
-      fname,
-      lname,
-      id,
-      inviteCode,
+      first_name,
+      last_name,
+      pronouns,
+      student_number,
       faculty,
       year,
-      diet,
-      heardFrom,
-      gender,
+      major,
+      prev_member,
+      topics,
+      heard_from,
+      university,
+      high_school,
+      admin,
     } = values;
 
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     const body = {
+      education,
       email,
-      fname,
-      lname,
-      id,
-      inviteCode,
+      first_name,
+      last_name,
+      pronouns,
+      student_number,
       faculty,
       year,
-      diet,
-      heardFrom,
-      gender,
+      major,
+      prev_member,
+      topics,
+      heard_from,
+      university,
+      high_school,
+      admin,
     };
     const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
-    await Auth.updateUserAttributes(authUser, { "custom:student_id": id });
+    await Auth.updateUserAttributes(authUser, {
+      "custom:student_number": student_number,
+    });
 
     fetchBackend("/users", "POST", body)
       .then(async () => {
@@ -122,19 +139,25 @@ const MemberCreate = (props) => {
         const authUser = await Auth.currentAuthenticatedUser({
           bypassCache: true,
         });
-        await Auth.updateUserAttributes(authUser, { "custom:student_id": id });
+        await Auth.updateUserAttributes(authUser, {
+          "custom:student_number": student_number,
+        });
 
         props.setUser({
+          education,
           email,
-          fname,
-          lname,
-          id,
-          inviteCode,
+          first_name,
+          last_name,
+          pronouns,
+          student_number,
           faculty,
           year,
-          diet,
-          heardFrom,
-          gender,
+          major,
+          prev_member,
+          topics,
+          heard_from,
+          university,
+          high_school,
           admin,
         });
         alert("Thanks for signing up!");
@@ -155,66 +178,43 @@ const MemberCreate = (props) => {
   return (
     <div className={classes.layout}>
       <Helmet>
-        <title>UBC BizTech Membership</title>
+        <title>BizTech Member Sign Up</title>
       </Helmet>
-      <React.Fragment>
-      {/* <div style={{ position: "relative" }}>
-        <img
-          src={biztechWordmark}
-          className={classes.banner}
-          alt="Event"
-        />
-        </div> */}
-    </React.Fragment>
-    <Typography variant="h4" align="left" gutterBottom>
-      UBC BizTech Membership
-        </Typography>
       <Fragment>
-            <div>
-                {/* <Typography className={classes.registrationText}>UBC BizTech Membership</Typography> */}
-              <Typography>We need to know a little bit about you to get started.</Typography>
-            </div>
-            <Formik
-              initialValues={initialValues}
-              onSubmit={submitValues}
-            >
-              {(props) => {
-                  props = {...props}
-                  return <MemberCreateForm {...props} />
-                }
-              }
-            </Formik>
-          </Fragment>
-      {/* <Paper className={classes.paper}>
-        <div className={classes.content}>
-          <Typography variant="h4" align="center" gutterBottom>
-            Member Information
-          </Typography>
-
-          <Typography variant="subtitle1" gutterBottom>
+        <div className={classes.registrationHeader}>
+          <Typography className={classes.registrationText}>Sign Up</Typography>
+          <Typography>
             To avoid having to provide your information every time you sign up
             for an event, please fill out the form below. The given information
             will allow UBC BizTech to better our future events and cater content
             towards our members needs.
           </Typography>
-
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={submitValues}
-          >
-            {(props) => <MemberCreateForm {...props} />}
-          </Formik>
         </div>
-      </Paper> */}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={
+            memberType === MEMBER_TYPES.UBC
+              ? UBCValidationSchema
+              : memberType === MEMBER_TYPES.UNIVERSITY
+              ? UniversityValidationSchema
+              : memberType === MEMBER_TYPES.HIGH_SCHOOL
+              ? HighSchoolValidationSchema
+              : validationSchema
+          }
+          onSubmit={submitValues}
+        >
+          {(props) => {
+            props = {
+              ...props,
+              memberType,
+              setMemberType,
+            };
+            return <MemberCreateForm {...props} />;
+          }}
+        </Formik>
+      </Fragment>
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.userState.user,
-  };
-};
-
-export default connect(mapStateToProps, { setUser })(MemberCreate);
+export default MemberCreateFormContainer;
