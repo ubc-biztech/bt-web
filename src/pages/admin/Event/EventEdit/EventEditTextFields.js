@@ -39,11 +39,38 @@ export default function EventEditTextFields(props) {
     setCurrTextField(e.target.value);
   };
 
+  function TextFieldsDisplay({textFields, isRequiredField}) {
+    return (
+      textFields.map((textField, index) => (
+          <TableRow key={textField + index}>
+              <TableCell style={{color: "white", maxWidth: "0"}}>
+                <div style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
+                  {textField}
+                </div>
+              </TableCell>
+              <TableCell style={{color: "white"}} align="right">
+                {isRequiredField ? "Yes" : "No"}
+              </TableCell>
+              <TableCell>
+                <DeleteIcon className={classes.deleteIcon} onClick={() => {
+                  const removedObj = textFields.filter(obj => obj !== textField);
+                  setInitialValues({
+                    ...props.initialValues,
+                    [isRequiredField ? "requiredTextFields" : "unrequiredTextFields"]: removedObj
+                  });
+                }}/>
+              </TableCell>
+          </TableRow>
+      ))
+    )
+  }
+
   const handleAddTextField = () => {
-    initialValues.textFields.push({
-      value: currTextField,
-      isRequired
-    });
+    if (isRequired) {
+      initialValues.requiredTextFields.push(currTextField);
+    } else {
+      initialValues.unrequiredTextFields.push(currTextField);
+    }
     setInitialValues({
       ...props.initialValues,
     })
@@ -85,27 +112,8 @@ export default function EventEditTextFields(props) {
           </TableHead>
 
           <TableBody>
-              {initialValues.textFields.map((textField, index) => (
-                  <TableRow key={textField.value + index}>
-                      <TableCell style={{color: "white", maxWidth: "0"}}>
-                        <div style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
-                          {textField["value"]}
-                        </div>
-                      </TableCell>
-                      <TableCell style={{color: "white"}} align="right">
-                        {textField["isRequired"] ? "Yes" : "No"}
-                      </TableCell>
-                      <TableCell>
-                        <DeleteIcon className={classes.deleteIcon} onClick={() => {
-                          const removedObj = initialValues.textFields.filter(obj => obj !== textField);
-                          setInitialValues({
-                            ...props.initialValues,
-                            textFields: removedObj
-                          });
-                        }}/>
-                      </TableCell>
-                  </TableRow>
-              ))}
+              <TextFieldsDisplay textFields={initialValues.requiredTextFields} isRequiredField={true} />
+              <TextFieldsDisplay textFields={initialValues.unrequiredTextFields} isRequiredField={false} />
           </TableBody>
       </Table>
     </>

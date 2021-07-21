@@ -55,6 +55,51 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+function CheckBoxes({checkBoxes}) {
+  return (
+    checkBoxes.map((checkBoxField, index) =>
+      <div style={{marginBottom: "15px"}} key={checkBoxField.value + index}>
+        <FormControl>
+          <FormGroup>
+            <FormControlLabel
+              label={checkBoxField}
+              control={
+                <Checkbox />
+              } />
+          </FormGroup>
+        </FormControl>
+      </div>
+    )
+  )
+}
+
+function TextFields({textFields}) {
+  return (
+    textFields.map((textField, index) =>
+        <div style={{marginBottom: "15px"}} key={textField.value + index}>
+          <CustomTextField
+            label={textField}
+            touched={{}}
+          />
+        </div>
+      )
+    )
+}
+
+function SelectFields({selectFields}) {
+  return (
+    selectFields.map((selectField, index) =>
+      <div style={{marginBottom: "15px"}} key={selectField.value + index}>
+        <CustomSelect
+          label={selectField.question}
+          listOfOptions={selectField.options}
+          touched={{}}
+        />
+      </div>
+    )
+  )
+}
+
 const EventEdit = (props) => {
   const { events } = props;
 
@@ -91,10 +136,12 @@ const EventEdit = (props) => {
           imageUrl: event.imageUrl,
           startDate: new Date(event.startDate),
           endDate: new Date(event.endDate),
-          textFields: event.textFields ?? [],
-          selectFields: event.selectFields ?? [],
-          checkBoxFields: event.checkBoxFields ?? []
-
+          requiredTextFields: event.requiredTextFields ?? [],
+          unrequiredTextFields: event.unrequiredTextFields ?? [],
+          requiredSelectFields: event.requiredSelectFields ?? [],
+          unrequiredSelectFields: event.unrequiredSelectFields ?? [],
+          requiredCheckBoxFields: event.requiredCheckBoxFields ?? [],
+          unrequiredCheckBoxFields: event.unrequiredCheckBoxFields ?? []
         }
       : {
           ename: "",
@@ -108,9 +155,12 @@ const EventEdit = (props) => {
           imageUrl: "",
           startDate: new Date(),
           endDate: new Date(),
-          textFields: [],
-          selectFields: [],
-          checkBoxFields: []
+          requiredTextFields: [],
+          unrequiredTextFields: [],
+          requiredSelectFields: [],
+          unrequiredSelectFields: [],
+          requiredCheckBoxFields: [],
+          unrequiredCheckBoxFields: []
         });
   }, [eventId, eventYear, events]);
 
@@ -186,38 +236,14 @@ const EventEdit = (props) => {
       <div>
         <Paper className={classes.paper}>
           <EventView event={initialValues}>
-            {initialValues.checkBoxFields.map((checkBoxField, index) =>
-              <div style={{marginBottom: "15px"}} key={checkBoxField.value + index}>
-                <FormControl>
-                  <FormGroup>
-                    <FormControlLabel
-                      label={checkBoxField.value}
-                      control={
-                        <Checkbox />
-                      } />
-                  </FormGroup>
-                </FormControl>
-              </div>
-            )}
+            <CheckBoxes checkBoxes={initialValues.requiredCheckBoxFields} />
+            <CheckBoxes checkBoxes={initialValues.unrequiredCheckBoxFields} />
 
-            {initialValues.textFields.map((textField, index) =>
-              <div style={{marginBottom: "15px"}} key={textField.value + index}>
-                <CustomTextField
-                  label={textField.value}
-                  touched={{}}
-                />
-              </div>
-            )}
+            <TextFields textFields={initialValues.requiredTextFields} />
+            <TextFields textFields={initialValues.unrequiredTextFields} />
 
-            {initialValues.selectFields.map((selectField, index) =>
-              <div style={{marginBottom: "15px"}} key={selectField.value + index}>
-                <CustomSelect
-                  label={selectField.value}
-                  listOfOptions={selectField.options}
-                  touched={{}}
-                />
-              </div>
-            )}
+            <SelectFields selectFields={initialValues.requiredSelectFields} />
+            <SelectFields selectFields={initialValues.unrequiredSelectFields} />
           </EventView>
         </Paper>
       </div>
@@ -235,6 +261,7 @@ const EventEdit = (props) => {
       year: initialValues.startDate.getFullYear(),
       capac: parseInt(initialValues.capacity)
     };
+    console.log(initialValues)
 
     const endpoint = isEditing ? `/events/${body.id}/${parseInt(body.year)}`: "/events";
     const method = isEditing ? "PATCH" : "POST";

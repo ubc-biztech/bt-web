@@ -45,9 +45,95 @@ export default function RegisterEventForm(props) {
     isSubmitting,
     isUBCStudent,
     setIsUBCStudent,
-    isRegisteredOnLuma,
-    setIsRegisteredOnLuma
+    customFields,
+    customFields: {requiredCheckBoxFields},
+    customFields: {unrequiredCheckBoxFields},
+    customFields: {requiredSelectFields},
+    customFields: {unrequiredSelectFields},
+    setCustomFields
   } = props
+
+  function CheckBoxFields({checkboxes, checkboxType}) {
+    return Object.keys(checkboxes).map((question) => {
+      console.log(checkboxes)
+      return (
+        <>
+          <Grid item xs={12}>
+            <FormControl>
+              <FormGroup>
+                <FormControlLabel
+                  label={question}
+                  control={
+                    <Checkbox
+                      checked={checkboxes[question]}
+                      onChange={() => {
+                        setCustomFields({
+                          ...customFields,
+                          [checkboxType]: {
+                            ...checkboxes,
+                            [question]: !checkboxes[question]
+                          }
+                        })
+                      }}
+                      color='primary'
+                    />
+                  } />
+              </FormGroup>
+            </FormControl>
+          </Grid>
+        </>
+      )
+    })
+  }
+
+  function SelectFields({selectFields, selectFieldType}) {
+    return Object.keys(selectFields).map((question) => {
+      console.log(selectFields)
+      return (
+        <>
+          <Grid item xs={12}>
+            <CustomSelect
+                {...props}
+                label="Faculty *"
+                listOfOptions={[
+                  "Arts",
+                  "Commerce",
+                  "Science",
+                  "Engineering",
+                  "Kinesiology",
+                  "Land and Food Systems",
+                  "Forestry",
+                  "Other",
+                  "Not Applicable"
+                ]}
+                groupName="faculty"
+              />
+            <FormControl>
+              <FormGroup>
+                <FormControlLabel
+                  label={question}
+                  control={
+                    <Checkbox
+                      checked={selectFields[question]}
+                      onChange={() => {
+                        setCustomFields({
+                          ...customFields,
+                          [selectFieldType]: {
+                            ...selectFields,
+                            [question]: !selectFields[question]
+                          }
+                        })
+                      }}
+                      color='primary'
+                    />
+                  } />
+              </FormGroup>
+            </FormControl>
+          </Grid>
+        </>
+      )
+    })
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -71,25 +157,11 @@ export default function RegisterEventForm(props) {
           </FormControl>
         </Grid>
 
-        <Grid item xs={12}>
-          <FormControl>
-            <FormGroup>
-              <div style={{ display: 'flex' }}>
-                <FormControlLabel
-                  label="In order to receive the Zoom link for this event, you must sign up here: "
-                  control={
-                    <Checkbox
-                      checked={isRegisteredOnLuma}
-                      onChange={() => setIsRegisteredOnLuma(!isRegisteredOnLuma)}
-                      color='primary'
-                    />
-                  } />
-                <a href={'https://lu.ma/fintech'} target="_blank" rel="noopener noreferrer" style={{ margin: 'auto' }}><Typography>lu.ma/fintech</Typography></a>
-              </div>
+        {/* generate required checkboxes */}
+        {requiredCheckBoxFields && <CheckBoxFields checkboxes={requiredCheckBoxFields} checkboxType="requiredCheckBoxFields" />}
 
-            </FormGroup>
-          </FormControl>
-        </Grid>
+        {/* generate unrequired checkboxes */}
+        {unrequiredCheckBoxFields && <CheckBoxFields checkboxes={unrequiredCheckBoxFields} checkboxType="unrequiredCheckBoxFields" />}
 
         <Grid item xs={12}>
           <CustomTextField
@@ -194,14 +266,6 @@ export default function RegisterEventForm(props) {
               ]}
               groupName="heardFrom"
             />
-          </Grid>
-
-          <Grid item xs={12}>
-            <CustomSelect
-              {...props}
-              label="In order to fully register for this event, you first need to be a member of UBC Trading Group. Membership is FREE. Please fill out the following member registration form before continuing: https://forms.gle/Zu4bXZDxiYd2331z7 *"
-              listOfOptions={['I\'m already a member', 'I have yet to fill out the member registration form and will do so here: https://forms.gle/Zu4bXZDxiYd2331z7']}
-              groupName='optTradingGroup' />
           </Grid>
         </Grid>
       </Grid>

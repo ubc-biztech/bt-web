@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Helmet } from "react-helmet";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -56,11 +56,51 @@ const EventFormContainer = (props) => {
     registeredEmail: undefined,
   };
 
-  const [registration, setRegistration] = useState(initialRegistrationState)
-  const [isUBCStudent, setIsUBCStudent] = useState(true)
-  const [isRegisteredOnLuma, setIsRegisteredOnLuma] = useState(false)
+  const [registration, setRegistration] = useState(initialRegistrationState);
+  const [isUBCStudent, setIsUBCStudent] = useState(true);
+  // object that stores checkbox, select, and text fields Q and A
+  const [customFields, setCustomFields] = useState({});
 
   const resetRegistration = () => setRegistration(initialRegistrationState);
+
+  console.log(event)
+
+  useEffect(() => {
+    // unwrap custom fields
+    const requiredCheckBoxFields = {};
+    const unrequiredCheckBoxFields = {};
+    const requiredSelectFields = {};
+
+    if (event["requiredCheckBoxFields"]) {
+      event["requiredCheckBoxFields"].forEach((checkBoxField) => {
+        requiredCheckBoxFields[checkBoxField] = false;
+      });
+    }
+    if (event["unrequiredCheckBoxFields"]) {
+      event["unrequiredCheckBoxFields"].forEach((checkBoxField) => {
+        unrequiredCheckBoxFields[checkBoxField] = false;
+      });
+    }
+    if (event["requiredSelectFields"]) {
+      event["requiredSelectFields"].forEach((selectField) => {
+        requiredSelectFields[selectField] = {
+          answer: "",
+          options: selectField["options"]
+        }
+      })
+    }
+    if (event["unrequiredSelectFields"]) {
+      event["unrequiredSelectFields"].forEach((selectField) => {
+        requiredSelectFields[selectField] = "";
+      })
+    }
+
+    const initialCustomFields = {
+      requiredCheckBoxFields,
+      unrequiredCheckBoxFields
+    }
+    setCustomFields(initialCustomFields)
+  }, [event]);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -83,7 +123,7 @@ const EventFormContainer = (props) => {
     year: Yup.string().required('Level of study is required')
   })
 
-  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '', optTradingGroup: '' }
+  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '' }
 
   const { isRegistered, registeredEmail } = registration
 
@@ -167,7 +207,13 @@ const EventFormContainer = (props) => {
               onSubmit={submitValues}
             >
               {(props) => {
-                  props = {...props, isUBCStudent, setIsUBCStudent, isRegisteredOnLuma, setIsRegisteredOnLuma}
+                  props = {
+                    ...props,
+                    isUBCStudent,
+                    setIsUBCStudent,
+                    customFields,
+                    setCustomFields
+                  }
                   return <EventRegisterForm {...props} />
                 }
               }
@@ -181,15 +227,13 @@ const EventFormContainer = (props) => {
   );
 
   async function submitValues (values) {
-    if (!isRegisteredOnLuma) {
-      alert("In order to receive the Zoom link for this event, you must sign up here: lu.ma/fintech")
-      return
+    if (!validatedRequiredCheckBoxes()) {
+      alert("In order to sign up for this event, one or more of the checkboxes are required.");
+      return;
     }
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender, optTradingGroup } = values
-    if (optTradingGroup === '') {
-      alert("In order to register for this event, you must be a member of UBC Trading Group.")
-      return
-    }
+
+    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender } = values
+
     const eventID = event.id
     const eventYear = event.year
     const body = {
@@ -200,8 +244,7 @@ const EventFormContainer = (props) => {
       year,
       faculty,
       gender,
-      diet,
-      optTradingGroup
+      diet
     }
     fetchBackend('/users', 'POST', body, false)
       .catch(err => {
@@ -235,6 +278,17 @@ const EventFormContainer = (props) => {
           alert('An error occured while trying to register. Please try again or contact UBC BizTech.')
         }
       });
+  }
+
+  // confirm that all required checkboxes have been checked
+  function validatedRequiredCheckBoxes () {
+    for (const key in Object.keys(customFields.requiredCheckBoxFields)) {
+      if (!customFields.requiredCheckBoxFields[key]) {
+        return false;
+      }
+    }
+
+    return true;
   }
 };
 

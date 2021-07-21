@@ -45,13 +45,50 @@ export default function EventEditSelectFields(props) {
       setOptions(e.target.value);
   }
 
+  function SelectFieldsDisplay({selectFields, isRequiredField}) {
+    return (
+      selectFields?.map((selectField, index) => (
+        <TableRow key={selectField.value + index}>
+            <TableCell style={{color: "white", maxWidth: "0"}}>
+              <div style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
+                {selectField["question"]}
+              </div>
+            </TableCell>
+            <TableCell style={{color: "white", maxWidth: "0"}}>
+              <div style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
+                {selectField["options"].map((option) => <p>{option}</p>)}
+              </div>
+            </TableCell>
+            <TableCell style={{color: "white"}} align="right">
+              {isRequiredField ? "Yes" : "No"}
+            </TableCell>
+            <TableCell>
+              <DeleteIcon className={classes.deleteIcon} onClick={() => {
+                const removedObj = selectFields.filter(obj => obj !== selectField);
+                setInitialValues({
+                  ...initialValues,
+                  [isRequiredField ? "requiredSelectFields" : "unrequiredSelectFields"]: removedObj
+                });
+              }}/>
+            </TableCell>
+        </TableRow>
+    ))
+    )
+  }
+
   const handleAddSelectField = () => {
     const selectOptions = options.split(/,\s*/);
-    initialValues.selectFields.push({
-      value: currSelectField,
-      options: selectOptions,
-      isRequired
-    });
+    if (isRequired) {
+      initialValues.requiredSelectFields.push({
+        question: currSelectField,
+        options: selectOptions,
+      })
+    } else {
+      initialValues.unrequiredSelectFields.push({
+        question: currSelectField,
+        options: selectOptions,
+      })
+    }
     setInitialValues({
       ...props.initialValues,
     })
@@ -104,32 +141,8 @@ export default function EventEditSelectFields(props) {
           </TableHead>
 
           <TableBody>
-              {initialValues.selectFields.map((selectField, index) => (
-                  <TableRow key={selectField.value + index}>
-                      <TableCell style={{color: "white", maxWidth: "0"}}>
-                        <div style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
-                          {selectField["value"]}
-                        </div>
-                      </TableCell>
-                      <TableCell style={{color: "white", maxWidth: "0"}}>
-                        <div style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
-                          {selectField["options"].map((option) => <p>{option}</p>)}
-                        </div>
-                      </TableCell>
-                      <TableCell style={{color: "white"}} align="right">
-                        {selectField["isRequired"] ? "Yes" : "No"}
-                      </TableCell>
-                      <TableCell>
-                        <DeleteIcon className={classes.deleteIcon} onClick={() => {
-                          const removedObj = initialValues.selectFields.filter(obj => obj !== selectField);
-                          setInitialValues({
-                            ...initialValues,
-                            selectFields: removedObj
-                          });
-                        }}/>
-                      </TableCell>
-                  </TableRow>
-              ))}
+              <SelectFieldsDisplay selectFields={initialValues.requiredSelectFields} isRequiredField={true} />
+              <SelectFieldsDisplay selectFields={initialValues.unrequiredSelectFields} isRequiredField={false} />
           </TableBody>
       </Table>
     </React.Fragment>

@@ -40,16 +40,44 @@ export default function EventEditCheckBoxFields(props) {
   };
 
   const handleAddCheckBoxField = () => {
-    initialValues.checkBoxFields.push({
-      value: currCheckBoxField,
-      isRequired
-    });
+    if (isRequired) {
+      initialValues.requiredCheckBoxFields.push(currCheckBoxField);
+    } else {
+      initialValues.unrequiredCheckBoxFields.push(currCheckBoxField);
+    }
+
     setInitialValues({
       ...props.initialValues,
     })
     setCurrCheckBoxField("");
     setIsRequired(false);
   };
+
+  function CheckBoxFieldsDisplay({checkBoxFields, isRequiredField}) {
+    return (
+      checkBoxFields.map((checkBoxField, index) => (
+          <TableRow key={checkBoxField + index}>
+              <TableCell style={{color: "white", maxWidth: "0"}}>
+                <div style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
+                  {checkBoxField}
+                </div>
+              </TableCell>
+              <TableCell style={{color: "white"}} align="right">
+                {isRequiredField ? "Yes" : "No"}
+              </TableCell>
+              <TableCell>
+                <DeleteIcon className={classes.deleteIcon} onClick={() => {
+                  const removedObj = checkBoxFields.filter(obj => obj !== checkBoxField);
+                  setInitialValues({
+                    ...initialValues,
+                    [isRequiredField ? "requiredCheckBoxFields" : "unrequiredCheckBoxFields"]: removedObj
+                  });
+                }}/>
+              </TableCell>
+          </TableRow>
+      ))
+    )
+  }
 
   return (
     <>
@@ -88,27 +116,8 @@ export default function EventEditCheckBoxFields(props) {
           </TableHead>
 
           <TableBody>
-              {initialValues.checkBoxFields.map((checkBoxField, index) => (
-                  <TableRow key={checkBoxField.value + index}>
-                      <TableCell style={{color: "white", maxWidth: "0"}}>
-                        <div style={{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
-                          {checkBoxField["value"]}
-                        </div>
-                      </TableCell>
-                      <TableCell style={{color: "white"}} align="right">
-                        {checkBoxField["isRequired"] ? "Yes" : "No"}
-                      </TableCell>
-                      <TableCell>
-                        <DeleteIcon className={classes.deleteIcon} onClick={() => {
-                          const removedObj = initialValues.checkBoxFields.filter(obj => obj !== checkBoxField);
-                          setInitialValues({
-                            ...initialValues,
-                            checkBoxFields: removedObj
-                          });
-                        }}/>
-                      </TableCell>
-                  </TableRow>
-              ))}
+              <CheckBoxFieldsDisplay checkBoxFields={initialValues.requiredCheckBoxFields} isRequiredField={true} />
+              <CheckBoxFieldsDisplay checkBoxFields={initialValues.unrequiredCheckBoxFields} isRequiredField={false} />
           </TableBody>
       </Table>
     </>
