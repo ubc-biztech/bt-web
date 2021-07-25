@@ -44,12 +44,11 @@ const MemberCreateFormContainer = (props) => {
     email: Yup.string().email().required(),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
-    year: Yup.string().required("Level of study is required"),
   });
 
   const UBCValidationSchema = Yup.object({
     email: Yup.string().email().required(),
-    student_id: Yup.number("Valid Student ID required")
+    student_number: Yup.number("Valid Student ID required")
       .min(9999999, "Valid Student ID required")
       .max(100000000, "Valid Student ID required")
       .required(),
@@ -57,7 +56,7 @@ const MemberCreateFormContainer = (props) => {
     last_name: Yup.string().required("Last name is required"),
     faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
-    isInternational: Yup.string().required(
+    international: Yup.string().required(
       "International or domestic student indication is required"
     ),
   });
@@ -83,11 +82,11 @@ const MemberCreateFormContainer = (props) => {
   const { user } = props;
   const initialValues = {
     email: (user && user.email) || "",
-    fname: (user && user.fname) || "",
-    lname: (user && user.lname) || "",
+    first_name: (user && user.first_name) || "",
+    last_name: (user && user.last_name) || "",
   };
 
-  const submitValues = async (values) => {
+  async function submitValues(values) {
     console.log(values);
     const {
       education,
@@ -100,7 +99,7 @@ const MemberCreateFormContainer = (props) => {
       year,
       major,
       prev_member,
-      is_international,
+      international,
       topics,
       heard_from,
       university,
@@ -120,49 +119,49 @@ const MemberCreateFormContainer = (props) => {
       year,
       major,
       prev_member,
-      is_international,
+      international,
       topics,
       heard_from,
       university,
       high_school,
       admin,
     };
-    const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
-    await Auth.updateUserAttributes(authUser, {
-      "custom:student_number": student_number,
-    });
+    // const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
+    // await Auth.updateUserAttributes(authUser, {
+    //   "custom:student_number": student_number,
+    // });
 
-    fetchBackend("/users", "POST", body)
+    fetchBackend("/members", "POST", body, false)
       .then(async () => {
         const admin =
           email.substring(email.indexOf("@") + 1, email.length) ===
           "ubcbiztech.com";
 
-        const authUser = await Auth.currentAuthenticatedUser({
-          bypassCache: true,
-        });
-        await Auth.updateUserAttributes(authUser, {
-          "custom:student_number": student_number,
-        });
+        // const authUser = await Auth.currentAuthenticatedUser({
+        //   bypassCache: true,
+        // });
+        // await Auth.updateUserAttributes(authUser, {
+        //   "custom:student_number": student_number,
+        // });
 
-        props.setUser({
-          education,
-          email,
-          first_name,
-          last_name,
-          pronouns,
-          student_number,
-          faculty,
-          year,
-          major,
-          prev_member,
-          is_international,
-          topics,
-          heard_from,
-          university,
-          high_school,
-          admin,
-        });
+        // props.setUser({
+        //   education,
+        //   email,
+        //   first_name,
+        //   last_name,
+        //   pronouns,
+        //   student_number,
+        //   faculty,
+        //   year,
+        //   major,
+        //   prev_member,
+        //   international,
+        //   topics,
+        //   heard_from,
+        //   university,
+        //   high_school,
+        //   admin,
+        // });
         alert("Thanks for signing up!");
         history.push("/");
       })
@@ -171,12 +170,11 @@ const MemberCreateFormContainer = (props) => {
           alert(
             "A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs."
           );
-        } else if (err.status === 404) {
-          sessionStorage.removeItem("inviteCode");
-          alert("Membership code is invalid");
+        } else {
+          console.log(err);
         }
       });
-  };
+  }
 
   return (
     <div className={classes.layout}>

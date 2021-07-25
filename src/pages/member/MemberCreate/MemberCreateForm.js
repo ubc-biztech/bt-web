@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Button, Grid, Typography } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  Typography,
+  Checkbox,
+  FormHelperText,
+} from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/styles";
@@ -39,9 +45,9 @@ export default function MemberCreateForm(props) {
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-  const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
+  // const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
 
-  const { handleSubmit, isSubmitting } = props;
+  const { handleSubmit, isSubmitting, memberType, setMemberType } = props;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -101,7 +107,7 @@ export default function MemberCreateForm(props) {
           <CustomTextField
             {...props}
             label="Last Name *"
-            groupName="lname"
+            groupName="last_name"
             autoComplete="family-name"
           />
         </Grid>
@@ -226,17 +232,38 @@ export default function MemberCreateForm(props) {
             <Grid item xs={12} className={classes.multiSelect}>
               <FormControl>
                 <FormLabel>Are you an international student?</FormLabel>
-                <RadioGroup>
+                <RadioGroup name="international">
                   <FormControlLabel
-                    value="Yes"
+                    value="true"
                     control={<Radio />}
                     label="Yes"
                   />
-                  <FormControlLabel value="No" control={<Radio />} label="No" />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio />}
+                    label="No"
+                  />
                 </RadioGroup>
               </FormControl>
             </Grid>
           )}
+          <Grid item xs={12} className={classes.multiSelect}>
+            <FormControl>
+              <FormLabel>Were you a BizTech member last year?</FormLabel>
+              <RadioGroup name="prev_member">
+                <FormControlLabel
+                  value="true"
+                  control={<Radio />}
+                  label="Yes"
+                />
+                <FormControlLabel
+                  value="false"
+                  control={<Radio />}
+                  label="No"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
           <FormControl>
             <FormLabel>
               What topics did you want to see the most discussed in future
