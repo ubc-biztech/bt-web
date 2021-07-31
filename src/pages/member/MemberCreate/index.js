@@ -137,38 +137,38 @@ const MemberCreateFormContainer = (props) => {
           email.substring(email.indexOf("@") + 1, email.length) ===
           "ubcbiztech.com";
 
-        // const authUser = await Auth.currentAuthenticatedUser({
-        //   bypassCache: true,
-        // });
-        // await Auth.updateUserAttributes(authUser, {
-        //   "custom:student_number": student_number,
-        // });
+        const authUser = await Auth.currentAuthenticatedUser({
+          bypassCache: true,
+        });
+        await Auth.updateUserAttributes(authUser, {
+          "custom:student_id": student_number,
+        });
 
-        // props.setUser({
-        //   education,
-        //   email,
-        //   first_name,
-        //   last_name,
-        //   pronouns,
-        //   student_number,
-        //   faculty,
-        //   year,
-        //   major,
-        //   prev_member,
-        //   international,
-        //   topics,
-        //   heard_from,
-        //   university,
-        //   high_school,
-        //   admin,
-        // });
+        props.setUser({
+          education,
+          email,
+          first_name,
+          last_name,
+          pronouns,
+          student_number,
+          faculty,
+          year,
+          major,
+          prev_member,
+          international,
+          topics,
+          heard_from,
+          university,
+          high_school,
+          admin,
+        });
         alert("Thanks for signing up!");
         history.push("/");
       })
       .catch((err) => {
         if (err.status === 409) {
           alert(
-            "A user with the given student ID already exists! Double check that your student ID is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs."
+            "A user with the given e-mail already exists! Double check that your e-mail is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs."
           );
         } else {
           console.log(err);
