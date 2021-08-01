@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 import {
   Button,
@@ -46,7 +47,7 @@ const styles = {
     width: "19px",
   },
   googleButton: {
-    marginTop: "32px",
+    marginTop: "15px",
     textTransform: "none",
     textAlign: "left",
     fontWeight: "bold",
@@ -74,6 +75,13 @@ const styles = {
     flex: 1,
     margin: 50,
   },
+  notAMember: {
+    marginTop: "30px",
+  },
+  signUpLink: {
+    color: COLORS.BIZTECH_GREEN,
+    marginLeft: "5px",
+  },
 };
 
 function Login() {
@@ -90,7 +98,6 @@ function Login() {
             <Typography variant="h1" color="primary">
               Sign In
             </Typography>
-            {/* <Typography>Don&apos;t have an account? Sign up</Typography> */}
             <Typography>Sign in as a BizTech Exec</Typography>
             <Button
               onClick={() => Auth.federatedSignIn({ provider: "Google" })}
@@ -114,6 +121,12 @@ function Login() {
               </div>
               Sign In with Facebook
             </Button>
+            <Typography style={styles.notAMember}>
+              Not a BizTech member yet?
+              <Link to="/member/create" style={styles.signUpLink}>
+                Sign up here!
+              </Link>
+            </Typography>
           </CardContent>
         </Card>
         <img src={LoginImage} alt="Computer" style={styles.loginImage} />
