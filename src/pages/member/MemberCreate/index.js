@@ -8,10 +8,7 @@ import { Auth } from "aws-amplify";
 import MemberCreateForm from "./MemberCreateForm";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
-
-import { COLORS } from "../../../constants/_constants/theme";
+import { Typography } from "@material-ui/core";
 import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
 
 import { setUser } from "store/user/userActions";
@@ -39,6 +36,7 @@ const MemberCreateFormContainer = (props) => {
   const history = useHistory();
 
   const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
+  const [memberEmail, setMemberEmail] = useState("");
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -133,6 +131,7 @@ const MemberCreateFormContainer = (props) => {
 
     fetchBackend("/members", "POST", body, false)
       .then(async () => {
+        setMemberEmail(email);
         const admin =
           email.substring(email.indexOf("@") + 1, email.length) ===
           "ubcbiztech.com";

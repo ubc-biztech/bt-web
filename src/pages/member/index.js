@@ -8,6 +8,7 @@ import MemberCreate from "./MemberCreate";
 import MemberProfile from "./MemberProfile";
 import MemberHome from "./Home";
 import { fetchEvents } from "store/event/eventActions";
+import MemberCreateSuccess from "./MemberCreate/MemberCreateSuccess";
 
 const MemberRoutes = (props) => {
   const { events, user, userEventsRegistered } = props;
@@ -39,6 +40,18 @@ const MemberRoutes = (props) => {
             <Redirect to="/member/home" /> /* Allow create member only if user is not yet registered in DB */
           ) : (
             <MemberCreate user={user} />
+          )
+        }
+      />
+      <Route
+        exact
+        path="/member/create/success"
+        featureFlag={"REACT_APP_SHOW_MAXVP"}
+        render={() =>
+          user.id ? (
+            <Redirect to="/member/home" /> /* Allow create member only if user is not yet registered in DB */
+          ) : (
+            <MemberCreateSuccess user={user} />
           )
         }
       />
