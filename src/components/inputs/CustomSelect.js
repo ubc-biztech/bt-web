@@ -30,13 +30,13 @@ const useStyles = makeStyles((theme) => ({
     fill: COLORS.BIZTECH_GREEN,
   },
   container: {
-    marginBottom: "20px",
+    marginBottom: "20px", // TODO-PZ: fix marginBottom
   },
   mobileContainer: {
     marginBottom: "20px",
     padding: "20px",
     backgroundColor: COLORS.CARD_PAPER_COLOR,
-    borderRadius: "4px"
+    borderRadius: "4px",
   },
 }));
 

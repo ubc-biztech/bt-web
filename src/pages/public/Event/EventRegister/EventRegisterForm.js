@@ -1,19 +1,17 @@
-import React from 'react'
+import React from "react";
 import {
   Button,
   Grid,
-  Typography
-} from '@material-ui/core'
-import EventAvailableIcon from '@material-ui/icons/EventAvailable'
-import { makeStyles } from '@material-ui/core/styles'
-import { useTheme } from '@material-ui/styles'
-import {
+  Typography,
   useMediaQuery,
   Checkbox,
   FormControlLabel,
   FormControl,
-  FormGroup
-} from '@material-ui/core'
+  FormGroup,
+} from "@material-ui/core";
+import EventAvailableIcon from "@material-ui/icons/EventAvailable";
+import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/styles";
 
 import { COLORS } from "../../../../constants/_constants/theme";
 import CustomTextField from "../../../../components/inputs/CustomTextField";
@@ -31,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "5px",
   },
   lumaContainer: {
-    width: '100%'
-  }
+    width: "100%",
+  },
 }));
 
 export default function RegisterEventForm(props) {
@@ -40,14 +38,7 @@ export default function RegisterEventForm(props) {
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const {
-    handleSubmit,
-    isSubmitting,
-    isUBCStudent,
-    setIsUBCStudent,
-    isRegisteredOnLuma,
-    setIsRegisteredOnLuma
-  } = props
+  const { handleSubmit, isSubmitting, isUBCStudent, setIsUBCStudent } = props;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -64,29 +55,10 @@ export default function RegisterEventForm(props) {
                   <Checkbox
                     checked={isUBCStudent}
                     onChange={() => setIsUBCStudent(!isUBCStudent)}
-                    color='primary'
+                    color="primary"
                   />
-                } />
-            </FormGroup>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={12}>
-          <FormControl>
-            <FormGroup>
-              <div style={{ display: 'flex' }}>
-                <FormControlLabel
-                  label="In order to receive the Zoom link for this event, you must sign up here: "
-                  control={
-                    <Checkbox
-                      checked={isRegisteredOnLuma}
-                      onChange={() => setIsRegisteredOnLuma(!isRegisteredOnLuma)}
-                      color='primary'
-                    />
-                  } />
-                <a href={'https://lu.ma/fintech'} target="_blank" rel="noopener noreferrer" style={{ margin: 'auto' }}><Typography>lu.ma/fintech</Typography></a>
-              </div>
-
+                }
+              />
             </FormGroup>
           </FormControl>
         </Grid>
@@ -118,91 +90,131 @@ export default function RegisterEventForm(props) {
           />
         </Grid>
 
-        {isUBCStudent && <Grid item xs={12}>
-          <CustomTextField
-            {...props}
-            label="Student Number *"
-            groupName="id"
-            autoComplete="id"
-          />
-        </Grid>}
+        {isUBCStudent && (
+          <Grid item xs={12}>
+            <CustomTextField
+              {...props}
+              label="Student Number *"
+              groupName="id"
+              autoComplete="id"
+            />
+          </Grid>
+        )}
 
         <Grid item xs={renderMobileOnly ? 12 : 8}>
-          <Grid item xs={12}>
-            <CustomSelect
-              {...props}
-              label="Faculty *"
-              listOfOptions={[
-                "Arts",
-                "Commerce",
-                "Science",
-                "Engineering",
-                "Kinesiology",
-                "Land and Food Systems",
-                "Forestry",
-                "Other",
-                "Not Applicable"
-              ]}
-              groupName="faculty"
-            />
-          </Grid>
+          <CustomSelect
+            {...props}
+            label="Faculty *"
+            listOfOptions={[
+              "Arts",
+              "Commerce",
+              "Science",
+              "Engineering",
+              "Kinesiology",
+              "Land and Food Systems",
+              "Forestry",
+              "Other",
+              "Not Applicable",
+            ]}
+            groupName="faculty"
+          />
+        </Grid>
 
-          <Grid item xs={12}>
-            <CustomSelect
-              {...props}
-              label="Level of study *"
-              listOfOptions={[
-                "1st Year",
-                "2nd Year",
-                "3rd Year",
-                "4th Year",
-                "5+ Year",
-                "Other",
-                "Not Applicable"
-              ]}
-              groupName="year"
-            />
-          </Grid>
+        <Grid item xs={12}>
+          <CustomTextField {...props} label="Major" groupName="major" />
+        </Grid>
 
-          <Grid item xs={12}>
-            <CustomSelect
-              {...props}
-              label="Preferred Pronouns"
-              listOfOptions={[
-                "He/Him/His",
-                "She/Her/Hers",
-                "They/Them/Their",
-                "Prefer not to say",
-              ]}
-              groupName="gender"
-            />
-          </Grid>
+        <Grid item xs={renderMobileOnly ? 12 : 8}>
+          <CustomSelect
+            {...props}
+            label="Level of study *"
+            listOfOptions={[
+              "1st Year",
+              "2nd Year",
+              "3rd Year",
+              "4th Year",
+              "5+ Year",
+              "Other",
+              "Not Applicable",
+            ]}
+            groupName="year"
+          />
+        </Grid>
 
-          <Grid item xs={12}>
-            <CustomSelect
-              {...props}
-              label="How did you hear about this event?"
-              listOfOptions={[
-                "Facebook",
-                "Instagram",
-                "LinkedIn",
-                "Boothing",
-                "Friends",
-                "BizTech Newsletter",
-                "Faculty Newsletter",
-                "Other"
-              ]}
-              groupName="heardFrom"
-            />
-          </Grid>
+        <Grid item xs={renderMobileOnly ? 12 : 8}>
+          <CustomSelect
+            {...props}
+            label="Preferred Pronouns"
+            listOfOptions={[
+              "He/Him/His",
+              "She/Her/Hers",
+              "They/Them/Their",
+              "Prefer not to say",
+            ]}
+            groupName="gender"
+          />
+        </Grid>
 
-          <Grid item xs={12}>
-            <CustomSelect
-              {...props}
-              label="In order to fully register for this event, you first need to be a member of UBC Trading Group. Membership is FREE. Please fill out the following member registration form before continuing: https://forms.gle/Zu4bXZDxiYd2331z7 *"
-              listOfOptions={['I\'m already a member', 'I have yet to fill out the member registration form and will do so here: https://forms.gle/Zu4bXZDxiYd2331z7']}
-              groupName='optTradingGroup' />
-          </Grid>
+        <Grid item xs={renderMobileOnly ? 12 : 8}>
+          <CustomSelect
+            {...props}
+            label="How did you hear about this event?"
+            listOfOptions={[
+              "Facebook",
+              "Instagram",
+              "LinkedIn",
+              "Boothing",
+              "Friends",
+              "BizTech Newsletter",
+              "Faculty Newsletter",
+              "Other",
+            ]}
+            groupName="heardFrom"
+          />
+        </Grid>
+
+        <Grid item xs={renderMobileOnly ? 12 : 8}>
+          <CustomSelect
+            {...props}
+            label="In order to attend this event, you need to create an account and register on our event platform, Hopin.to. Please register using the following link before proceeding: '…'. Additionally, you may edit your Hopin.to profile to include your LinkedIn URL to connect with others during our event. *"
+            listOfOptions={[
+              "I have registered on Hopin.to and received a confirmation email from Hopin.to.",
+              "I have not registered on Hopin.to due to technical difficulties and will contact BizTech immediately.",
+            ]}
+            groupName="hopinStatus"
+          />
+        </Grid>
+
+        <Grid item xs={renderMobileOnly ? 12 : 8}>
+          <CustomSelect
+            {...props}
+            label="In order to fully register for this event, you first need to be a member of UBC Biztech. Membership is FREE. Please fill out the following member registration form before continuing: '...' *"
+            listOfOptions={[
+              "I am a UBC Biztech member",
+              "I have yet to fill out the member registration form and will do so here: '...",
+            ]}
+            groupName="biztechMemberStatus"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <CustomTextField
+            {...props}
+            label="Do you have any potential roundtable discussion topics you would like to see at the event?"
+            groupName="topicSuggestions"
+            multiline
+            rows={3}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <CustomTextField
+            {...props}
+            label="Do you have any questions for the professionals and/or MIS Faculty?"
+            groupName="questions"
+            multiline
+            rows={3}
+          />
         </Grid>
       </Grid>
       <br />
