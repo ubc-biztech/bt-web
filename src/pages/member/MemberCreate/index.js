@@ -126,7 +126,7 @@ const MemberCreateFormContainer = (props) => {
     //   "custom:student_number": student_number,
     // });
 
-    fetchBackend("/members", "POST", body, false)
+    fetchBackend("/memberships/payment", "POST", body, false)
       .then(async () => {
         const admin =
           email.substring(email.indexOf("@") + 1, email.length) ===

@@ -47,10 +47,10 @@ export default function MemberCreateForm(props) {
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
   // const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
 
-  const { handleSubmit, isSubmitting, memberType, setMemberType } = props;
+  const { isSubmitting, memberType, setMemberType } = props;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form action="https://api-dev.ubcbiztech.com/memberships/payment" method="POST" >
       <Typography variant="caption" color={"error"}>
         * Indicates required field
       </Typography>
@@ -326,7 +326,7 @@ export default function MemberCreateForm(props) {
         <CardMembershipIcon
           style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px" }}
         />
-        sign me up!
+        Proceed to Payment!
       </Button>
     </form>
   );
