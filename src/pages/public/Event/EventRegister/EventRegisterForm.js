@@ -162,11 +162,8 @@ export default function RegisterEventForm(props) {
             listOfOptions={[
               "Facebook",
               "Instagram",
-              "LinkedIn",
-              "Boothing",
               "Friends",
               "BizTech Newsletter",
-              "Faculty Newsletter",
               "Other",
             ]}
             groupName="heardFrom"
@@ -200,7 +197,7 @@ export default function RegisterEventForm(props) {
         <Grid item xs={12}>
           <CustomTextField
             {...props}
-            label="Do you have any potential roundtable discussion topics you would like to see at the event?"
+            label="Do you have any potential roundtable discussion topics you would like to see at the event? (Optional)"
             groupName="topicSuggestions"
             multiline
             rows={3}
@@ -210,7 +207,7 @@ export default function RegisterEventForm(props) {
         <Grid item xs={12}>
           <CustomTextField
             {...props}
-            label="Do you have any questions for the professionals and/or MIS Faculty?"
+            label="Do you have any questions for the professionals and/or MIS Faculty? (Optional)"
             groupName="questions"
             multiline
             rows={3}

@@ -29,11 +29,7 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     fill: COLORS.BIZTECH_GREEN,
   },
-  container: {
-    // marginBottom: "12px", // TODO-PZ: remove marginBottom?
-  },
   mobileContainer: {
-    // marginBottom: "12px",
     padding: "20px",
     backgroundColor: COLORS.CARD_PAPER_COLOR,
     borderRadius: "4px",
@@ -66,9 +62,7 @@ export default function CustomSelect(props) {
   };
 
   return (
-    <div
-      className={renderMobileOnly ? classes.mobileContainer : classes.container}
-    >
+    <div className={renderMobileOnly && classes.mobileContainer}>
       <Typography>{label}</Typography>
       <Select
         className={
