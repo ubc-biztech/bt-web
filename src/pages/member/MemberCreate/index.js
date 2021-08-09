@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
-import { Auth } from "aws-amplify";
 import MemberCreateForm from "./MemberCreateForm";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -121,42 +120,9 @@ const MemberCreateFormContainer = (props) => {
       high_school,
       admin,
     };
-    // const authUser = await Auth.currentAuthenticatedUser({ bypassCache: true });
-    // await Auth.updateUserAttributes(authUser, {
-    //   "custom:student_number": student_number,
-    // });
 
     fetchBackend("/members", "POST", body, false)
       .then(async () => {
-        const admin =
-          email.substring(email.indexOf("@") + 1, email.length) ===
-          "ubcbiztech.com";
-
-        const authUser = await Auth.currentAuthenticatedUser({
-          bypassCache: true,
-        });
-        await Auth.updateUserAttributes(authUser, {
-          "custom:student_id": student_number,
-        });
-
-        props.setUser({
-          education,
-          email,
-          first_name,
-          last_name,
-          pronouns,
-          student_number,
-          faculty,
-          year,
-          major,
-          prev_member,
-          international,
-          topics,
-          heard_from,
-          university,
-          high_school,
-          admin,
-        });
         alert("Thanks for signing up!");
         history.push("/");
       })

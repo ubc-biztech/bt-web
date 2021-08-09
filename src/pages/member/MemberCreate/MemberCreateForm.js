@@ -54,7 +54,7 @@ export default function MemberCreateForm(props) {
       <Typography variant="caption" color={"error"}>
         * Indicates required field
       </Typography>
-      <Grid className={classes.gridContainer} container spacing={3}>
+      <Grid className={classes.gridContainer} container spacing={5}>
         <Grid item xs={12}>
           <FormControl>
             <FormLabel>
@@ -229,40 +229,22 @@ export default function MemberCreateForm(props) {
             </Grid>
           )}
           {memberType === MEMBER_TYPES.UBC && (
-            <Grid item xs={12} className={classes.multiSelect}>
-              <FormControl>
-                <FormLabel>Are you an international student?</FormLabel>
-                <RadioGroup name="international">
-                  <FormControlLabel
-                    value="true"
-                    control={<Radio />}
-                    label="Yes"
-                  />
-                  <FormControlLabel
-                    value="false"
-                    control={<Radio />}
-                    label="No"
-                  />
-                </RadioGroup>
-              </FormControl>
+            <Grid item xs={12}>
+              <CustomSelect
+                {...props}
+                label="Are you an international student? *"
+                listOfOptions={["Yes", "No"]}
+                groupName="international"
+              />
             </Grid>
           )}
-          <Grid item xs={12} className={classes.multiSelect}>
-            <FormControl>
-              <FormLabel>Were you a BizTech member last year?</FormLabel>
-              <RadioGroup name="prev_member">
-                <FormControlLabel
-                  value="true"
-                  control={<Radio />}
-                  label="Yes"
-                />
-                <FormControlLabel
-                  value="false"
-                  control={<Radio />}
-                  label="No"
-                />
-              </RadioGroup>
-            </FormControl>
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              label="Were you a BizTech member last year? *"
+              listOfOptions={["Yes", "No"]}
+              groupName="prev_member"
+            />
           </Grid>
           <FormControl>
             <FormLabel>
