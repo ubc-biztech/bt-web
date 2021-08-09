@@ -12,6 +12,8 @@ import Route from "components/routing/Route";
 
 import Login from "pages/public/Login";
 import LoginRedirect from "pages/public/LoginRedirect";
+import MembershipForm from "pages/public/MembershipForm";
+import MembershipFormSuccess from "pages/public/MembershipForm/MembershipFormSuccess";
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
 
@@ -108,43 +110,57 @@ class Router extends Component {
     const userNeedsRegister = user && !user.admin && !user.id;
 
     // check if the user state has been updated
-    if (!loaded) return <Loading />
-    else return (// eslint-disable-line curly
-      <BrowserRouter>
-        <ScrollToTop />
-        {user && <Nav admin={user.admin} />}
-        <div className='content'>
-          {user && userNeedsRegister && <RegisterAlert />}
-          {pathname === '/' || pathname === '' ? null : <Header />}
-          <Switch>
+    if (!loaded) return <Loading />;
+    else
+      return (
+        // eslint-disable-line curly
+        <BrowserRouter>
+          <ScrollToTop />
+          {user && <Nav admin={user.admin} />}
+          <div className="content">
+            {user && userNeedsRegister && <RegisterAlert />}
+            {pathname === "/" || pathname === "" ? null : <Header />}
+            <Switch>
+              {/* ADMIN ROUTES */}
+              {user && <Route path="/admin" component={AdminRoutes} />}
 
-            {/* ADMIN ROUTES */}
-            {user && <Route path='/admin' component={AdminRoutes} />}
+              {/* MEMBER ROUTES */}
+              {user && <Route path="/member" component={MemberRoutes} />}
 
-            {/* MEMBER ROUTES */}
-            {user && <Route path='/member' component={MemberRoutes} />}
+              {/* PUBLIC EVENT-SPECIFIC ROUTES */}
+              {<Route path="/event/:id/:year" component={PublicEventRoutes} />}
+              {/* COMMON ROUTES */}
+              <Route
+                exact
+                path="/events"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <EventsDashboard />}
+              />
+              <Route
+                exact
+                path="/signup"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <MembershipForm />}
+              />
+              <Route
+                exact
+                path="/signup/success"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <MembershipFormSuccess />}
+              />
 
-            {/* PUBLIC EVENT-SPECIFIC ROUTES */}
-            {<Route path='/event/:id/:year' component={PublicEventRoutes} />}
-            {/* COMMON ROUTES */}
-            <Route
-              exact
-              path='/events'
-              featureFlag={'REACT_APP_SHOW_MAXVP'}
-              render={() => <EventsDashboard />} />
+              {/* MISCELLANEOUS ROUTES */}
+              <Route exact path="/forbidden" render={() => <Forbidden />} />
+              <Route
+                exact
+                path="/404"
+                render={() => (
+                  <NotFound message="That page could not be found!" />
+                )}
+              />
 
-            {/* MISCELLANEOUS ROUTES */}
-            <Route
-              exact
-              path='/forbidden'
-              render={() => <Forbidden />} />
-            <Route
-              exact
-              path='/404'
-              render={() => <NotFound message='That page could not be found!'/>} />
-
-            {/* AUTHENTICATION ROUTES */}
-            {/* <Route (SIGNUP LOOKS UNUSED)
+              {/* AUTHENTICATION ROUTES */}
+              {/* <Route (SIGNUP LOOKS UNUSED)
               exact
               path='/signup'
               featureFlag={'REACT_APP_SHOW_MAXVP'}
@@ -164,21 +180,26 @@ class Router extends Component {
                   : <Redirect to='/member/home' />
                 : <Redirect to='/login' />
               } />
-              */
-            }
-            <Route
-              path='/'
-              render={() => user
-                ? user.admin
-                  ? <Redirect to='/admin/home' />
-                  : <Landing />
-                : <Landing />
-              } />
-          </Switch>
-          {pathname === '/' || pathname === '' ? null : <Footer />}
-        </div>
-      </BrowserRouter>
-    )
+              */}
+              <Route
+                path="/"
+                render={() =>
+                  user ? (
+                    user.admin ? (
+                      <Redirect to="/admin/home" />
+                    ) : (
+                      <Landing />
+                    )
+                  ) : (
+                    <Landing />
+                  )
+                }
+              />
+            </Switch>
+            {pathname === "/" || pathname === "" ? null : <Footer />}
+          </div>
+        </BrowserRouter>
+      );
   }
 }
 

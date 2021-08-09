@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MemberCreateSuccess = (props) => {
+const MembershipFormSuccess = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
@@ -212,4 +212,4 @@ const MemberCreateSuccess = (props) => {
   );
 };
 
-export default withRouter(MemberCreateSuccess);
+export default withRouter(MembershipFormSuccess);

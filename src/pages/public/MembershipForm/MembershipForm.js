@@ -25,6 +25,9 @@ import CustomSelect from "../../../components/inputs/CustomSelect";
 import { MEMBER_TYPES, MEMBER_LABELS } from "constants/_constants/memberTypes";
 
 const useStyles = makeStyles((theme) => ({
+  form: {
+    marginBottom: "50px",
+  },
   gridContainer: {
     marginTop: "5px",
   },
@@ -35,13 +38,14 @@ const useStyles = makeStyles((theme) => ({
     color: COLORS.FONT_COLOR,
     marginRight: "5px",
   },
-  multiSelect: {
-    marginTop: "20px",
+  topics: {
+    marginTop: "10px",
+    paddingLeft: "10px",
     marginBottom: "10px",
   },
 }));
 
-export default function MemberCreateForm(props) {
+export default function MembershipForm(props) {
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
@@ -50,11 +54,11 @@ export default function MemberCreateForm(props) {
   const { handleSubmit, isSubmitting, memberType, setMemberType } = props;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={classes.form} onSubmit={handleSubmit}>
       <Typography variant="caption" color={"error"}>
         * Indicates required field
       </Typography>
-      <Grid className={classes.gridContainer} container spacing={5}>
+      <Grid className={classes.gridContainer} container spacing={3}>
         <Grid item xs={12}>
           <FormControl>
             <FormLabel>
@@ -112,6 +116,17 @@ export default function MemberCreateForm(props) {
           />
         </Grid>
 
+        {memberType === MEMBER_TYPES.UBC && (
+          <Grid item xs={12}>
+            <CustomTextField
+              {...props}
+              label="Student Number *"
+              groupName="student_number"
+              autoComplete="student_number"
+            />
+          </Grid>
+        )}
+
         <Grid item xs={12}>
           <CustomSelect
             {...props}
@@ -125,17 +140,6 @@ export default function MemberCreateForm(props) {
             groupName="pronouns"
           />
         </Grid>
-
-        {memberType === MEMBER_TYPES.UBC && (
-          <Grid item xs={12}>
-            <CustomTextField
-              {...props}
-              label="Student Number *"
-              groupName="student_number"
-              autoComplete="student_number"
-            />
-          </Grid>
-        )}
 
         {memberType === MEMBER_TYPES.UNIVERSITY && (
           <Grid item xs={12}>
@@ -159,142 +163,145 @@ export default function MemberCreateForm(props) {
           </Grid>
         )}
 
-        <Grid item xs={renderMobileOnly ? 12 : 8}>
-          {memberType === MEMBER_TYPES.HIGH_SCHOOL && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                label="Level of study *"
-                listOfOptions={[
-                  "Grade 9",
-                  "Grade 10",
-                  "Grade 11",
-                  "Grade 12",
-                  "Pre-university",
-                  "Other",
-                ]}
-                groupName="year"
-              />
-            </Grid>
-          )}
-          {(memberType === MEMBER_TYPES.UBC ||
-            memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                label="Level of study *"
-                listOfOptions={[
-                  "1st Year",
-                  "2nd Year",
-                  "3rd Year",
-                  "4th Year",
-                  "5+ Year",
-                  "Other",
-                  "Not Applicable",
-                ]}
-                groupName="year"
-              />
-            </Grid>
-          )}
-          {(memberType === MEMBER_TYPES.UBC ||
-            memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                label="Faculty *"
-                listOfOptions={[
-                  "Arts",
-                  "Commerce",
-                  "Science",
-                  "Engineering",
-                  "Kinesiology",
-                  "Land and Food Systems",
-                  "Forestry",
-                  "Other",
-                  "Not Applicable",
-                ]}
-                groupName="faculty"
-              />
-            </Grid>
-          )}
-          {(memberType === MEMBER_TYPES.UBC ||
-            memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12}>
-              <CustomTextField
-                {...props}
-                label="Major *"
-                groupName="major"
-                autoComplete="major"
-              />
-            </Grid>
-          )}
-          {memberType === MEMBER_TYPES.UBC && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                label="Are you an international student? *"
-                listOfOptions={["Yes", "No"]}
-                groupName="international"
-              />
-            </Grid>
-          )}
+        {(memberType === MEMBER_TYPES.UBC ||
+          memberType === MEMBER_TYPES.UNIVERSITY) && (
           <Grid item xs={12}>
             <CustomSelect
               {...props}
-              label="Were you a BizTech member last year? *"
-              listOfOptions={["Yes", "No"]}
-              groupName="prev_member"
+              label="Level of study *"
+              listOfOptions={[
+                "1st Year",
+                "2nd Year",
+                "3rd Year",
+                "4th Year",
+                "5+ Year",
+                "Other",
+                "Not Applicable",
+              ]}
+              groupName="year"
             />
           </Grid>
-          <FormControl>
-            <FormLabel>
-              What topics did you want to see the most discussed in future
-              events?{" "}
-            </FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox name="Cyber Security" />}
-                label="Cyber Security"
-              />
-              <FormControlLabel control={<Checkbox name="AI" />} label="AI" />
-              <FormControlLabel
-                control={<Checkbox name="Tech Startups" />}
-                label="Tech Startups"
-              />
-              <FormControlLabel
-                control={<Checkbox name="eCommerce" />}
-                label="eCommerce"
-              />
-              <FormControlLabel
-                control={<Checkbox name="Health Tech" />}
-                label="Health Tech"
-              />
-              <FormControlLabel
-                control={<Checkbox name="Careers in the Tech Industry" />}
-                label="Careers in the Tech Industry"
-              />
-            </FormGroup>
-            <FormHelperText>Be careful</FormHelperText>
-          </FormControl>
+        )}
+
+        {memberType === MEMBER_TYPES.HIGH_SCHOOL && (
           <Grid item xs={12}>
             <CustomSelect
               {...props}
-              label="How did you hear about us?"
+              label="Level of study *"
               listOfOptions={[
-                "Facebook",
-                "Instagram",
-                "LinkedIn",
-                "Boothing",
-                "Friends",
-                "BizTech Newsletter",
-                "Faculty Newsletter",
-                "Posters",
-                "Events",
+                "Grade 9",
+                "Grade 10",
+                "Grade 11",
+                "Grade 12",
+                "Pre-university",
                 "Other",
               ]}
-              groupName="heard_from"
+              groupName="year"
             />
           </Grid>
+        )}
+
+        {(memberType === MEMBER_TYPES.UBC ||
+          memberType === MEMBER_TYPES.UNIVERSITY) && (
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              label="Faculty *"
+              listOfOptions={[
+                "Arts",
+                "Commerce",
+                "Science",
+                "Engineering",
+                "Kinesiology",
+                "Land and Food Systems",
+                "Forestry",
+                "Other",
+                "Not Applicable",
+              ]}
+              groupName="faculty"
+            />
+          </Grid>
+        )}
+
+        {(memberType === MEMBER_TYPES.UBC ||
+          memberType === MEMBER_TYPES.UNIVERSITY) && (
+          <Grid item xs={12} className={classes.major}>
+            <CustomTextField
+              {...props}
+              label="Major *"
+              groupName="major"
+              autoComplete="major"
+            />
+          </Grid>
+        )}
+
+        {memberType === MEMBER_TYPES.UBC && (
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              label="Are you an international student? *"
+              listOfOptions={["Yes", "No"]}
+              groupName="international"
+            />
+          </Grid>
+        )}
+
+        <Grid item xs={12}>
+          <CustomSelect
+            {...props}
+            label="Were you a BizTech member last year? *"
+            listOfOptions={["Yes", "No"]}
+            groupName="prev_member"
+          />
+        </Grid>
+
+        <FormControl className={classes.topics}>
+          <FormLabel>
+            What topics did you want to see the most discussed in future events?{" "}
+          </FormLabel>
+          <FormGroup>
+            <FormControlLabel
+              control={<Checkbox name="Cyber Security" />}
+              label="Cyber Security"
+            />
+            <FormControlLabel control={<Checkbox name="AI" />} label="AI" />
+            <FormControlLabel
+              control={<Checkbox name="Tech Startups" />}
+              label="Tech Startups"
+            />
+            <FormControlLabel
+              control={<Checkbox name="eCommerce" />}
+              label="eCommerce"
+            />
+            <FormControlLabel
+              control={<Checkbox name="Health Tech" />}
+              label="Health Tech"
+            />
+            <FormControlLabel
+              control={<Checkbox name="Careers in the Tech Industry" />}
+              label="Careers in the Tech Industry"
+            />
+          </FormGroup>
+        </FormControl>
+
+        <Grid item xs={12}>
+          <CustomSelect
+            {...props}
+            label="How did you hear about us?"
+            listOfOptions={[
+              "Facebook",
+              "Instagram",
+              "LinkedIn",
+              "Boothing",
+              "Friends",
+              "BizTech Newsletter",
+              "Faculty Newsletter",
+              "Posters",
+              "Events",
+              "Other",
+            ]}
+            groupName="heard_from"
+          />
         </Grid>
       </Grid>
       <br />

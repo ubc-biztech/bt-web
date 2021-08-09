@@ -3,11 +3,13 @@ import { Helmet } from "react-helmet";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
-import MemberCreateForm from "./MemberCreateForm";
+import MembershipForm from "./MembershipForm";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
+
+import { COLORS } from "../../../constants/_constants/theme";
 
 import { fetchBackend } from "utils";
 
@@ -26,9 +28,19 @@ const useStyles = makeStyles((theme) => ({
   content: {
     padding: theme.spacing(3),
   },
+  registrationHeader: {
+    borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
+    marginTop: "35px",
+    paddingLeft: "19px",
+    marginLeft: "11px",
+  },
+  registrationText: {
+    fontWeight: "bold",
+    fontSize: "24px",
+  },
 }));
 
-const MemberCreateFormContainer = (props) => {
+const MembershipFormContainer = (props) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -140,16 +152,22 @@ const MemberCreateFormContainer = (props) => {
   return (
     <div className={classes.layout}>
       <Helmet>
-        <title>BizTech Member Sign Up</title>
+        <title>UBC BizTech Membership 2021/22</title>
       </Helmet>
       <Fragment>
+        <Typography className={classes.registrationText}>
+          UBC BizTech Membership 2021/22
+        </Typography>
         <div className={classes.registrationHeader}>
-          <Typography className={classes.registrationText}>Sign Up</Typography>
           <Typography>
-            To avoid having to provide your information every time you sign up
-            for an event, please fill out the form below. The given information
-            will allow UBC BizTech to better our future events and cater content
-            towards our members needs.
+            Thank you for signing up to be a BizTech member! By signing up for
+            membership, you will also be a part of our mailing list!
+          </Typography>
+          <Typography>
+            Please keep in mind that memberships are valid for one school year
+            (Sept-May), so if you were a member last year and would like to
+            continue being part of the BizTech Network, kindly renew your
+            membership by filling out this form.
           </Typography>
         </div>
         <Formik
@@ -171,7 +189,7 @@ const MemberCreateFormContainer = (props) => {
               memberType,
               setMemberType,
             };
-            return <MemberCreateForm {...props} />;
+            return <MembershipForm {...props} />;
           }}
         </Formik>
       </Fragment>
@@ -179,4 +197,4 @@ const MemberCreateFormContainer = (props) => {
   );
 };
 
-export default MemberCreateFormContainer;
+export default MembershipFormContainer;
