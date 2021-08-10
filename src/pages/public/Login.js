@@ -123,7 +123,7 @@ function Login() {
             </Button>
             <Typography style={styles.notAMember}>
               Not a BizTech member yet?
-              <Link to="/member/create" style={styles.signUpLink}>
+              <Link to="/signup" style={styles.signUpLink}>
                 Sign up here!
               </Link>
             </Typography>

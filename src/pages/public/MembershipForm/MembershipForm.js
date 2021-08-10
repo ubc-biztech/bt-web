@@ -293,7 +293,7 @@ export default function MembershipForm(props) {
               "Instagram",
               "LinkedIn",
               "Boothing",
-              "Friends",
+              "Friends/Word of Mouth",
               "BizTech Newsletter",
               "Faculty Newsletter",
               "Posters",
@@ -315,7 +315,7 @@ export default function MembershipForm(props) {
         <CardMembershipIcon
           style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px" }}
         />
-        sign me up!
+        Proceed to payment!
       </Button>
     </form>
   );
