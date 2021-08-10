@@ -1,16 +1,8 @@
 import React from "react";
-import {
-  Button,
-  Grid,
-  Typography,
-  Checkbox,
-  FormHelperText,
-} from "@material-ui/core";
+import { Button, Grid, Typography, Checkbox } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/styles";
 import {
-  useMediaQuery,
   FormControlLabel,
   FormControl,
   FormGroup,
@@ -47,9 +39,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MembershipForm(props) {
   const classes = useStyles();
-  const theme = useTheme();
-  const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-  // const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
+  // const theme = useTheme();
+  // const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { handleSubmit, isSubmitting, memberType, setMemberType } = props;
 
