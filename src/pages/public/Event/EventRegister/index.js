@@ -8,13 +8,9 @@ import EventRegisterForm from "./EventRegisterForm";
 import EventRegisterSuccess from "./EventRegisterSuccess";
 import NotFound from "pages/NotFound";
 
-import { makeStyles } from '@material-ui/core/styles'
-import {
-  Grid,
-  Paper,
-  Typography
-} from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Paper, Typography } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 
 import { COLORS } from "../../../../constants/_constants/theme";
 
@@ -42,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "11px",
   },
   registrationText: {
-    fontWeight: 'bold',
-    fontSize: '24px'
-  }
-}))
+    fontWeight: "bold",
+    fontSize: "24px",
+  },
+}));
 
 const EventFormContainer = (props) => {
   const classes = useStyles();
@@ -56,36 +52,46 @@ const EventFormContainer = (props) => {
     registeredEmail: undefined,
   };
 
-  const [registration, setRegistration] = useState(initialRegistrationState)
-  const [isUBCStudent, setIsUBCStudent] = useState(true)
-  const [isRegisteredOnLuma, setIsRegisteredOnLuma] = useState(false)
+  const [registration, setRegistration] = useState(initialRegistrationState);
+  const [isUBCStudent, setIsUBCStudent] = useState(true);
+  const [isRegisteredOnLuma, setIsRegisteredOnLuma] = useState(false);
 
   const resetRegistration = () => setRegistration(initialRegistrationState);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
-
-    fname: Yup.string().required('First name is required'),
-    lname: Yup.string().required('Last name is required'),
-    faculty: Yup.string().required('Faculty is required'),
-    year: Yup.string().required('Level of study is required')
-  })
+    fname: Yup.string().required("First name is required"),
+    lname: Yup.string().required("Last name is required"),
+    faculty: Yup.string().required("Faculty is required"),
+    year: Yup.string().required("Level of study is required"),
+  });
 
   const UBCValidationSchema = Yup.object({
     email: Yup.string().email().required(),
-    id: Yup.number('Valid Student ID required')
-      .min(9999999, 'Valid Student ID required')
-      .max(100000000, 'Valid Student ID required')
+    id: Yup.number("Valid Student ID required")
+      .min(9999999, "Valid Student ID required")
+      .max(100000000, "Valid Student ID required")
       .required(),
-    fname: Yup.string().required('First name is required'),
-    lname: Yup.string().required('Last name is required'),
-    faculty: Yup.string().required('Faculty is required'),
-    year: Yup.string().required('Level of study is required')
-  })
+    fname: Yup.string().required("First name is required"),
+    lname: Yup.string().required("Last name is required"),
+    faculty: Yup.string().required("Faculty is required"),
+    year: Yup.string().required("Level of study is required"),
+  });
 
-  const initialValues = { email: '', fname: '', lname: '', id: '', faculty: '', year: '', diet: '', gender: '', heardFrom: '', optTradingGroup: '' }
+  const initialValues = {
+    email: "",
+    fname: "",
+    lname: "",
+    id: "",
+    faculty: "",
+    year: "",
+    diet: "",
+    gender: "",
+    heardFrom: "",
+    optTradingGroup: "",
+  };
 
-  const { isRegistered, registeredEmail } = registration
+  const { isRegistered, registeredEmail } = registration;
 
   if (loading) {
     return (
@@ -158,19 +164,30 @@ const EventFormContainer = (props) => {
         ) : (
           <Fragment>
             <div className={classes.registrationHeader}>
-                <Typography className={classes.registrationText}>Registration</Typography>
-              <Typography>We need to know a little bit about you to get started.</Typography>
+              <Typography className={classes.registrationText}>
+                Registration
+              </Typography>
+              <Typography>
+                We need to know a little bit about you to get started.
+              </Typography>
             </div>
             <Formik
               initialValues={initialValues}
-              validationSchema={isUBCStudent ? UBCValidationSchema : validationSchema}
+              validationSchema={
+                isUBCStudent ? UBCValidationSchema : validationSchema
+              }
               onSubmit={submitValues}
             >
               {(props) => {
-                  props = {...props, isUBCStudent, setIsUBCStudent, isRegisteredOnLuma, setIsRegisteredOnLuma}
-                  return <EventRegisterForm {...props} />
-                }
-              }
+                props = {
+                  ...props,
+                  isUBCStudent,
+                  setIsUBCStudent,
+                  isRegisteredOnLuma,
+                  setIsRegisteredOnLuma,
+                };
+                return <EventRegisterForm {...props} />;
+              }}
             </Formik>
           </Fragment>
         )}
@@ -180,18 +197,33 @@ const EventFormContainer = (props) => {
     <NotFound message={`The event with id ${eventId} could not be found!`} />
   );
 
-  async function submitValues (values) {
+  async function submitValues(values) {
     if (!isRegisteredOnLuma) {
-      alert("In order to receive the Zoom link for this event, you must sign up here: lu.ma/fintech")
-      return
+      alert(
+        "In order to receive the Zoom link for this event, you must sign up here: lu.ma/fintech"
+      );
+      return;
     }
-    const { email, fname, lname, id, faculty, year, diet, heardFrom, gender, optTradingGroup } = values
-    if (optTradingGroup === '') {
-      alert("In order to register for this event, you must be a member of UBC Trading Group.")
-      return
+    const {
+      email,
+      fname,
+      lname,
+      id,
+      faculty,
+      year,
+      diet,
+      heardFrom,
+      gender,
+      optTradingGroup,
+    } = values;
+    if (optTradingGroup === "") {
+      alert(
+        "In order to register for this event, you must be a member of UBC Trading Group."
+      );
+      return;
     }
-    const eventID = event.id
-    const eventYear = event.year
+    const eventID = event.id;
+    const eventYear = event.year;
     const body = {
       studentId: parseInt(id),
       fname,
@@ -201,38 +233,46 @@ const EventFormContainer = (props) => {
       faculty,
       gender,
       diet,
-      optTradingGroup
-    }
-    fetchBackend('/users', 'POST', body, false)
-      .catch(err => {
+      optTradingGroup,
+    };
+    fetchBackend("/users", "POST", body, false)
+      .catch((err) => {
         // If the error is not "User could not be created because it already exists"
         if (err.status !== 409) {
-          alert('An error occured while trying to register. Please try again or contact UBC BizTech.')
+          alert(
+            "An error occured while trying to register. Please try again or contact UBC BizTech."
+          );
         }
       })
       .finally(() => {
-        registerUser(eventID, eventYear, heardFrom, email)
-      })
+        registerUser(eventID, eventYear, heardFrom, email);
+      });
   }
 
-  async function registerUser (eventID, eventYear, heardFrom, email) {
+  async function registerUser(eventID, eventYear, heardFrom, email) {
     const body = {
       email,
       eventID,
       year: eventYear,
       heardFrom,
-      registrationStatus: 'registered'
-    }
-    fetchBackend('/registrations', 'POST', body, false)
+      registrationStatus: "registered",
+    };
+    fetchBackend("/registrations", "POST", body, false)
       .then(() => {
         // alert('Congratulations! You are now signed up.')
-        setRegistration({ ...registration, isRegistered: true, registeredEmail: email })
+        setRegistration({
+          ...registration,
+          isRegistered: true,
+          registeredEmail: email,
+        });
       })
       .catch((err) => {
         if (err.status === 409) {
-          alert('You are already registered for this event.')
+          alert("You are already registered for this event.");
         } else {
-          alert('An error occured while trying to register. Please try again or contact UBC BizTech.')
+          alert(
+            "An error occured while trying to register. Please try again or contact UBC BizTech."
+          );
         }
       });
   }
