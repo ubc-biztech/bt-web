@@ -12,7 +12,7 @@ import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
 import { COLORS } from "../../../constants/_constants/theme";
 
 import { fetchBackend } from "utils";
-import { CLIENT_URL } from "constants";
+import { CLIENT_URL } from "constants/index";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
