@@ -39,9 +39,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MembershipForm(props) {
   const classes = useStyles();
-  // const theme = useTheme();
-  // const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-
   const { handleSubmit, isSubmitting, memberType, setMemberType } = props;
 
   return (

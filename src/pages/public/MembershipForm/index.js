@@ -12,6 +12,7 @@ import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
 import { COLORS } from "../../../constants/_constants/theme";
 
 import { fetchBackend } from "utils";
+import { CLIENT_URL } from "constants";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -93,7 +94,6 @@ const MembershipFormContainer = (props) => {
   };
 
   async function submitValues(values) {
-    console.log(values);
     const {
       education,
       email,
@@ -131,12 +131,12 @@ const MembershipFormContainer = (props) => {
       university,
       high_school,
       admin,
+      host: CLIENT_URL
     };
 
-    fetchBackend("/memberships/payment", "POST", body, false)
-      .then(async () => {
-        alert("Thanks for signing up!");
-        history.push("/");
+    fetchBackend("/members/payment", "POST", body, false)
+      .then(async (response) => {
+        window.open(response, "_self");
       })
       .catch((err) => {
         if (err.status === 409) {
