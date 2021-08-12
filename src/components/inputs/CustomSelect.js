@@ -62,7 +62,7 @@ export default function CustomSelect(props) {
   };
 
   return (
-    <div className={renderMobileOnly && classes.mobileContainer}>
+    <div className={renderMobileOnly ? classes.mobileContainer : undefined}>
       <Typography>{label}</Typography>
       <Select
         className={
