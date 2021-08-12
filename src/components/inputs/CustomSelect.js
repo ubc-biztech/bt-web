@@ -65,7 +65,6 @@ export default function CustomSelect(props) {
     <div className={renderMobileOnly ? classes.mobileContainer : undefined}>
       <Typography>{label}</Typography>
       <Select
-        label={label}
         className={
           touched[groupName] && Boolean(errors[groupName])
             ? classes.errorSelect
