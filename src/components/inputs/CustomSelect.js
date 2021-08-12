@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: COLORS.CARD_PAPER_COLOR,
     borderRadius: "4px",
   },
+  menuItem: {
+    overflowX: "scroll",
+  },
 }));
 
 export default function CustomSelect(props) {
@@ -90,7 +93,7 @@ export default function CustomSelect(props) {
         }}
       >
         {listOfOptions.map((option) => (
-          <MenuItem key={option} value={option}>
+          <MenuItem key={option} value={option} className={classes.menuItem}>
             {option}
           </MenuItem>
         ))}

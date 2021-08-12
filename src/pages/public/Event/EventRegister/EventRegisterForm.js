@@ -200,8 +200,8 @@ export default function RegisterEventForm(props) {
               </>
             }
             listOfOptions={[
-              "I have registered on Hopin.to and received a confirmation email from Hopin.to.",
-              "I have not registered on Hopin.to due to technical difficulties and will contact BizTech immediately.",
+              "I have registered on Hopin.to and received a confirmation email from Hopin.to",
+              "I have not registered on Hopin.to due to technical difficulties and will contact BizTech immediately",
             ]}
             groupName="hopinStatus"
           />
