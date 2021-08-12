@@ -208,7 +208,7 @@ export default function RegisterEventForm(props) {
           <HopinDisclaimer />
         </Grid>
 
-        <Grid item xs={renderMobileOnly ? 12 : 8}>
+        {/* <Grid item xs={renderMobileOnly ? 12 : 8}>
           <CustomSelect
             {...props}
             label={
@@ -228,7 +228,7 @@ export default function RegisterEventForm(props) {
             ]}
             groupName="biztechMemberStatus"
           />
-        </Grid>
+        </Grid> */}
 
         <Grid item xs={12}>
           <CustomTextField
