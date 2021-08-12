@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     fill: COLORS.BIZTECH_GREEN,
   },
   mobileContainer: {
-    padding: "20px",
+    padding: "10px",
     backgroundColor: COLORS.CARD_PAPER_COLOR,
     borderRadius: "4px",
   },
@@ -65,6 +65,7 @@ export default function CustomSelect(props) {
     <div className={renderMobileOnly ? classes.mobileContainer : undefined}>
       <Typography>{label}</Typography>
       <Select
+        label={label}
         className={
           touched[groupName] && Boolean(errors[groupName])
             ? classes.errorSelect
