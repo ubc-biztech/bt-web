@@ -59,7 +59,6 @@ const EventFormContainer = (props) => {
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
-
     fname: Yup.string().required("First name is required"),
     lname: Yup.string().required("Last name is required"),
     faculty: Yup.string().required("Faculty is required"),
