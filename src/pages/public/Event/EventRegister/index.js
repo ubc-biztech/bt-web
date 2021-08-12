@@ -227,7 +227,6 @@ const EventFormContainer = (props) => {
       major,
       gender,
     };
-    console.log("body", body);
 
     const registrationBody = {
       email,

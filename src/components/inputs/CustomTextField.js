@@ -35,6 +35,9 @@ const useStyles = makeStyles(() => ({
     "& .MuiInputBase-root": {
       backgroundColor: COLORS.CARD_PAPER_COLOR,
     },
+    "& .MuiFilledInput-multiline": {
+      padding: "35px 0",
+    },
   },
   input: {
     "&:-webkit-autofill": {
