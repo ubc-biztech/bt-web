@@ -24,6 +24,9 @@ const useStyles = makeStyles(() => ({
         borderColor: COLORS.TEXTFIELD,
       },
     },
+    "& .MuiOutlinedInput-multiline": {
+      padding: "0",
+    },
   },
   mobileTextField: {
     padding: "10px",
@@ -31,6 +34,9 @@ const useStyles = makeStyles(() => ({
     borderRadius: "4px",
     "& .MuiInputBase-root": {
       backgroundColor: COLORS.CARD_PAPER_COLOR,
+    },
+    "& .MuiFilledInput-multiline": {
+      padding: "35px 0",
     },
   },
   input: {
@@ -66,6 +72,8 @@ export default function CustomTextField(props) {
     groupName,
     label,
     autoComplete,
+    multiline,
+    rows,
   } = props;
 
   const change = (name, e) => {
@@ -91,6 +99,8 @@ export default function CustomTextField(props) {
         InputLabelProps={{
           shrink: true,
         }}
+        multiline={multiline}
+        rows={rows}
       />
     );
   }

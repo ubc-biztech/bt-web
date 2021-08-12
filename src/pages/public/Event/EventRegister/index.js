@@ -54,7 +54,6 @@ const EventFormContainer = (props) => {
 
   const [registration, setRegistration] = useState(initialRegistrationState);
   const [isUBCStudent, setIsUBCStudent] = useState(true);
-  const [isRegisteredOnLuma, setIsRegisteredOnLuma] = useState(false);
 
   const resetRegistration = () => setRegistration(initialRegistrationState);
 
@@ -64,6 +63,8 @@ const EventFormContainer = (props) => {
     lname: Yup.string().required("Last name is required"),
     faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
+    hopinStatus: Yup.string().required("This field is required"),
+    biztechMemberStatus: Yup.string().required("This field is required"),
   });
 
   const UBCValidationSchema = Yup.object({
@@ -76,6 +77,8 @@ const EventFormContainer = (props) => {
     lname: Yup.string().required("Last name is required"),
     faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
+    hopinStatus: Yup.string().required("This field is required"),
+    biztechMemberStatus: Yup.string().required("This field is required"),
   });
 
   const initialValues = {
@@ -88,7 +91,8 @@ const EventFormContainer = (props) => {
     diet: "",
     gender: "",
     heardFrom: "",
-    optTradingGroup: "",
+    hopinStatus: "",
+    biztechMemberStatus: "",
   };
 
   const { isRegistered, registeredEmail } = registration;
@@ -183,8 +187,6 @@ const EventFormContainer = (props) => {
                   ...props,
                   isUBCStudent,
                   setIsUBCStudent,
-                  isRegisteredOnLuma,
-                  setIsRegisteredOnLuma,
                 };
                 return <EventRegisterForm {...props} />;
               }}
@@ -198,30 +200,21 @@ const EventFormContainer = (props) => {
   );
 
   async function submitValues(values) {
-    if (!isRegisteredOnLuma) {
-      alert(
-        "In order to receive the Zoom link for this event, you must sign up here: lu.ma/fintech"
-      );
-      return;
-    }
     const {
       email,
       fname,
       lname,
       id,
       faculty,
+      major,
       year,
-      diet,
       heardFrom,
       gender,
-      optTradingGroup,
+      hopinStatus,
+      biztechMemberStatus,
+      topicSuggestions,
+      questions,
     } = values;
-    if (optTradingGroup === "") {
-      alert(
-        "In order to register for this event, you must be a member of UBC Trading Group."
-      );
-      return;
-    }
     const eventID = event.id;
     const eventYear = event.year;
     const body = {
@@ -231,10 +224,23 @@ const EventFormContainer = (props) => {
       email,
       year,
       faculty,
+      major,
       gender,
-      diet,
-      optTradingGroup,
     };
+
+    const registrationBody = {
+      email,
+      eventID,
+      year: eventYear,
+      heardFrom,
+      registrationStatus: "registered",
+      // MIS-night specific fields
+      hopinStatus,
+      biztechMemberStatus,
+      topicSuggestions,
+      questions,
+    };
+
     fetchBackend("/users", "POST", body, false)
       .catch((err) => {
         // If the error is not "User could not be created because it already exists"
@@ -245,25 +251,18 @@ const EventFormContainer = (props) => {
         }
       })
       .finally(() => {
-        registerUser(eventID, eventYear, heardFrom, email);
+        registerUser(registrationBody);
       });
   }
 
-  async function registerUser(eventID, eventYear, heardFrom, email) {
-    const body = {
-      email,
-      eventID,
-      year: eventYear,
-      heardFrom,
-      registrationStatus: "registered",
-    };
-    fetchBackend("/registrations", "POST", body, false)
+  async function registerUser(registrationBody) {
+    fetchBackend("/registrations", "POST", registrationBody, false)
       .then(() => {
         // alert('Congratulations! You are now signed up.')
         setRegistration({
           ...registration,
           isRegistered: true,
-          registeredEmail: email,
+          registeredEmail: registrationBody.email,
         });
       })
       .catch((err) => {
