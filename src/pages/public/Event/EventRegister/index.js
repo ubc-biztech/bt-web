@@ -64,7 +64,7 @@ const EventFormContainer = (props) => {
     faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
     hopinStatus: Yup.string().required("This field is required"),
-    biztechMemberStatus: Yup.string().required("This field is required"),
+    // biztechMemberStatus: Yup.string().required("This field is required"),
   });
 
   const UBCValidationSchema = Yup.object({
@@ -78,7 +78,7 @@ const EventFormContainer = (props) => {
     faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
     hopinStatus: Yup.string().required("This field is required"),
-    biztechMemberStatus: Yup.string().required("This field is required"),
+    // biztechMemberStatus: Yup.string().required("This field is required"),
   });
 
   const initialValues = {
@@ -92,7 +92,7 @@ const EventFormContainer = (props) => {
     gender: "",
     heardFrom: "",
     hopinStatus: "",
-    biztechMemberStatus: "",
+    // biztechMemberStatus: "",
   };
 
   const { isRegistered, registeredEmail } = registration;
@@ -211,7 +211,7 @@ const EventFormContainer = (props) => {
       heardFrom,
       gender,
       hopinStatus,
-      biztechMemberStatus,
+      // biztechMemberStatus,
       topicSuggestions,
       questions,
     } = values;
@@ -236,7 +236,7 @@ const EventFormContainer = (props) => {
       registrationStatus: "registered",
       // MIS-night specific fields
       hopinStatus,
-      biztechMemberStatus,
+      // biztechMemberStatus,
       topicSuggestions,
       questions,
     };

@@ -35,7 +35,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "4px",
   },
   menuItem: {
-    overflowX: "scroll",
+    [theme.breakpoints.down("sm")]: {
+      overflowX: "scroll",
+    },
   },
 }));
 
