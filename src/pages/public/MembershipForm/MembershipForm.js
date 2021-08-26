@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "10px",
     marginBottom: "10px",
   },
+  paymentCheck: {
+    paddingBottom: "10px",
+  }
 }));
 
 export default function MembershipForm(props) {
@@ -296,6 +299,13 @@ export default function MembershipForm(props) {
         </Grid>
       </Grid>
       <br />
+      <FormControlLabel
+        control={<Checkbox />}
+        groupName="payment_check"
+        className={classes.paymentCheck}
+        label="I have e-transfered $5 to rita@ubcbiztech.com *"
+      />
+      <br />
       <Button
         className={classes.registerButton}
         variant="contained"
@@ -306,7 +316,7 @@ export default function MembershipForm(props) {
         <CardMembershipIcon
           style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px" }}
         />
-        Proceed to payment!
+        Submit
       </Button>
     </form>
   );
