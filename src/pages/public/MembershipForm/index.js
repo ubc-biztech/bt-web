@@ -2,7 +2,6 @@ import React, { useState, Fragment } from "react";
 import { Helmet } from "react-helmet";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
 import MembershipForm from "./MembershipForm";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +11,7 @@ import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
 import { COLORS } from "../../../constants/_constants/theme";
 
 import { fetchBackend } from "utils";
+import { CLIENT_URL } from 'constants/index';
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 
 const MembershipFormContainer = (props) => {
   const classes = useStyles();
-  const history = useHistory();
 
   const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
 
@@ -93,7 +92,6 @@ const MembershipFormContainer = (props) => {
   };
 
   async function submitValues(values) {
-    console.log(values);
     const {
       education,
       email,
@@ -131,12 +129,12 @@ const MembershipFormContainer = (props) => {
       university,
       high_school,
       admin,
+      host: CLIENT_URL, 
     };
 
-    fetchBackend("/memberships/payment", "POST", body, false)
-      .then(async () => {
-        alert("Thanks for signing up!");
-        history.push("/");
+    fetchBackend("/members/payment", "POST", body, false)
+      .then(async (response) => {
+        window.open(response, "_self")
       })
       .catch((err) => {
         if (err.status === 409) {
