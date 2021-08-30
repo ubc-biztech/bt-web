@@ -93,7 +93,6 @@ const MembershipFormContainer = (props) => {
   };
 
   async function submitValues(values) {
-    console.log(values);
     const {
       education,
       email,
@@ -133,7 +132,7 @@ const MembershipFormContainer = (props) => {
       admin,
     };
 
-    fetchBackend("/memberships/payment", "POST", body, false)
+    fetchBackend("/members", "POST", body, false)
       .then(async () => {
         alert("Thanks for signing up!");
         history.push("/");
@@ -167,7 +166,8 @@ const MembershipFormContainer = (props) => {
             Please keep in mind that membership costs $5 and are valid for one school year
             (Sept-May), so if you were a member last year and would like to
             continue being part of the BizTech Network, kindly renew your
-            membership by filling out this form.
+            membership by filling out this form and send an e-transfer for the amount of $5
+            to rita@ubcbiztech.com. 
           </Typography>
         </div>
         <Formik
