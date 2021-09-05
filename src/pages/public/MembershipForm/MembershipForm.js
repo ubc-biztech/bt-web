@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   FormControlLabel,
   FormControl,
-  FormGroup,
   RadioGroup,
   FormLabel,
   Radio,
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paymentCheck: {
     paddingBottom: "10px",
-  }
+  },
 }));
 
 export default function MembershipForm(props) {
@@ -249,34 +248,13 @@ export default function MembershipForm(props) {
           />
         </Grid>
 
-        <FormControl className={classes.topics}>
-          <FormLabel>
-            What topics did you want to see the most discussed in future events?{" "}
-          </FormLabel>
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox name="Cyber Security" />}
-              label="Cyber Security"
-            />
-            <FormControlLabel control={<Checkbox name="AI" />} label="AI" />
-            <FormControlLabel
-              control={<Checkbox name="Tech Startups" />}
-              label="Tech Startups"
-            />
-            <FormControlLabel
-              control={<Checkbox name="eCommerce" />}
-              label="eCommerce"
-            />
-            <FormControlLabel
-              control={<Checkbox name="Health Tech" />}
-              label="Health Tech"
-            />
-            <FormControlLabel
-              control={<Checkbox name="Careers in the Tech Industry" />}
-              label="Careers in the Tech Industry"
-            />
-          </FormGroup>
-        </FormControl>
+        <Grid item xs={12}>
+          <CustomTextField
+            {...props}
+            label="What topics do you want to see discussed in future events?"
+            groupName="topics"
+          />
+        </Grid>
 
         <Grid item xs={12}>
           <CustomSelect
