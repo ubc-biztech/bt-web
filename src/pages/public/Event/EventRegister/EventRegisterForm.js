@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 const HOPIN_REGISTRATION_URL = "https://hopin.com/events/mis-night-2021";
 const HOPIN_URL = "http://hopin.to";
 
-const MEMBERSHIP_FORM_URL = `${CLIENT_URL}signup`;
+// const MEMBERSHIP_FORM_URL = `${CLIENT_URL}signup`;
 
 export default function RegisterEventForm(props) {
   const classes = useStyles();
@@ -213,7 +213,7 @@ export default function RegisterEventForm(props) {
             {...props}
             label={
               <>
-                {`Sign up to be a BizTech member! Membership is NOT mandatory for this event, 
+                {`Sign up to be a BizTech member! Membership is NOT mandatory for this event,
                 but we highly encourage you to sign up now to be on our mailing list! Use this link to sign up: `}
                 <CustomLink href={MEMBERSHIP_FORM_URL}>
                   {MEMBERSHIP_FORM_URL}
