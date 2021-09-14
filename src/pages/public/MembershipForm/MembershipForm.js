@@ -275,14 +275,27 @@ export default function MembershipForm(props) {
             groupName="heard_from"
           />
         </Grid>
+
+        
       </Grid>
       <br />
-      <FormControlLabel
-        control={<Checkbox />}
-        groupName="payment_check"
-        className={classes.paymentCheck}
-        label="I have e-transfered $5 to rita@ubcbiztech.com *"
-      />
+      {memberType === MEMBER_TYPES.UBC && (
+          <FormControlLabel
+          control={<Checkbox />}
+          groupName="payment_check"
+          className={classes.paymentCheck}
+          label="I have e-transferred $5.00 to rita@ubcbiztech.com *"
+          />
+      )}
+      <br />
+      {memberType !== MEMBER_TYPES.UBC && (
+          <FormControlLabel
+          control={<Checkbox />}
+          groupName="payment_check"
+          className={classes.paymentCheck}
+          label="I have e-transferred $7.50 to rita@ubcbiztech.com *"
+          />
+      )}
       <br />
       <Button
         className={classes.registerButton}
