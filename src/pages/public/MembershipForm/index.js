@@ -162,11 +162,12 @@ const MembershipFormContainer = (props) => {
             membership, you will also be a part of our mailing list!
           </Typography>
           <Typography>
-            Please keep in mind that membership costs $5 and are valid for one
-            school year (Sept-May), so if you were a member last year and would
-            like to continue being part of the BizTech Network, kindly renew
-            your membership by filling out this form and send an e-transfer for
-            the amount of $5 to rita@ubcbiztech.com.
+            Please keep in mind that membership costs $5 ($7.50 for non-UBC
+            students) and are valid for one school year (Sept-May), so if you
+            were a member last year and would like to continue being part of the
+            BizTech Network, kindly renew your membership by filling out this
+            form and send an e-transfer for the amount of $5 to
+            rita@ubcbiztech.com.
           </Typography>
         </div>
         <Formik
