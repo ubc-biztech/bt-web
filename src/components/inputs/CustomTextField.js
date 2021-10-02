@@ -29,11 +29,9 @@ const useStyles = makeStyles(() => ({
     },
   },
   mobileTextField: {
-    padding: "10px",
-    backgroundColor: COLORS.CARD_PAPER_COLOR,
     borderRadius: "4px",
     "& .MuiInputBase-root": {
-      backgroundColor: COLORS.CARD_PAPER_COLOR,
+      backgroundColor: COLORS.TEXTFIELD,
     },
     "& .MuiFilledInput-multiline": {
       padding: "35px 0",
@@ -44,16 +42,16 @@ const useStyles = makeStyles(() => ({
       WebkitBoxShadow: `0 0 0 1000px ${COLORS.TEXTFIELD} inset`,
       WebkitTextFillColor: COLORS.WHITE,
       caretColor: COLORS.WHITE,
-      backgroundColor: COLORS.TEXTFIELD,
+      backgroundColor: COLORS.CARD_PAPER_COLOR,
       borderRadius: "0px",
     },
   },
   mobileInput: {
     "&:-webkit-autofill": {
-      WebkitBoxShadow: `0 0 0 1000px ${COLORS.CARD_PAPER_COLOR} inset`,
+      WebkitBoxShadow: `0 0 0 1000px ${COLORS.TEXTFIELD} inset`,
       WebkitTextFillColor: COLORS.WHITE,
       caretColor: COLORS.WHITE,
-      backgroundColor: `${COLORS.CARD_PAPER_COLOR} !important`,
+      backgroundColor: `${COLORS.TEXTFIELD} !important`,
       borderRadius: "0px",
     },
   },
@@ -82,24 +80,32 @@ export default function CustomTextField(props) {
     setFieldTouched(name, true, false);
   };
 
-  function createTextField(className, variant, inputProps, label) {
+  function createTextField(renderMobileOnly, label) {
+    console.log("creating new text field");
     return (
       <TextField
-        label={label}
         margin="none"
-        className={className}
+        className={
+          renderMobileOnly ? classes.mobileTextField : classes.textField
+        }
         autoComplete={autoComplete}
         helperText={touched[groupName] ? errors[groupName] : ""}
         error={touched[groupName] && Boolean(errors[groupName])}
         id={groupName}
         onChange={change.bind(null, groupName)}
         fullWidth
-        variant={variant}
-        inputProps={inputProps}
+        variant={"outlined"}
+        size="small"
+        multiline={multiline}
         InputLabelProps={{
           shrink: true,
         }}
-        multiline={multiline}
+        InputProps={{
+          classes: classes,
+          inputProps: {
+            classes: renderMobileOnly ? classes.mobileInput : classes.input,
+          },
+        }}
         rows={rows}
       />
     );
@@ -107,27 +113,8 @@ export default function CustomTextField(props) {
 
   return (
     <React.Fragment>
-      {!renderMobileOnly && <Typography>{label}</Typography>}
-      {renderMobileOnly
-        ? createTextField(
-            classes.mobileTextField,
-            "filled",
-            {
-              style: {
-                padding: "7px",
-                backgroundColor: COLORS.CARD_PAPER_COLOR,
-                marginTop: "10px",
-              },
-              className: classes.mobileInput,
-            },
-            label
-          )
-        : createTextField(classes.textField, "outlined", {
-            style: {
-              padding: "7px",
-            },
-            className: classes.input,
-          })}
+      <Typography>{label}</Typography>
+      {createTextField(renderMobileOnly, label)}
     </React.Fragment>
   );
 }
