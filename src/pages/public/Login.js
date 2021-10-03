@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 import { Helmet } from 'react-helmet'
@@ -9,7 +9,7 @@ import {
   Card,
   CardContent,
   CssBaseline,
-  Typography
+  Typography,
 } from '@material-ui/core'
 
 import LoginImage from 'assets/login.svg'
@@ -84,7 +84,53 @@ const styles = {
   }
 }
 
-function Login () {
+function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({
+    emailError: '',
+    passwordError: '',
+  });
+
+  const validateEmail = (value) => {
+    let error = ''
+    if (!email) {
+      error = 'Email is required'
+      // eslint-disable-next-line
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+      error = 'Please enter a valid email address'
+    }
+    return error
+  }
+
+  const validatePassword = (value) => {
+    let error = '';
+    if (!value) {
+      error = 'Password is required';
+    }
+    return error;
+  }
+
+  const handleSubmit = () => {
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
+
+    if (emailError || passwordError) {
+      // if any errors with inputs, set state and rerender (don't call signin/signup)
+      setErrors({
+        emailError: emailError,
+        passwordError: passwordError,
+      })
+    } else {
+      try {
+        Auth.signIn(email, password)/// place holder for inputting sign in with email and password do try for this and if exception caught then
+        /// call Auth.signUp(email, password).
+      } catch (error) {
+        Auth.signUp(email, password)
+      }
+    }
+  }
+
   return (
     <div style={styles.main}>
       <Helmet>
@@ -125,27 +171,21 @@ function Login () {
             <form>
               <label>
                 Email:
-                <input type='text' email='email' />
+                <input type='text' email='email' value={email} onChange={(e) => setEmail(e.target.value)} />
               </label>
+              <div>{errors.emailError}</div>
             </form>
             <form>
               <label>
                 Password:
-                <input type='text' email='email' />
+                <input type='password' email='password' value={password} onChange={(e) => setPassword(e.target.value)} />
               </label>
+              <div>{errors.passwordError}</div>
               <Button
-                onClick={() => {
-                  try {
-                    Auth.signIn(email, password)/// place holder for inputting sign in with email and password do try for this and if exception caught then
-                    /// call Auth.signUp(email, password).
-                  } catch (error) {
-                    Auth.signUp(email, password)
-                  }
-                }
-                }
+                onClick={() => handleSubmit()}
                 style={styles.googleButton}
               >
-              Sign in
+                Sign in
               </Button>
 
             </form>
@@ -163,9 +203,6 @@ function Login () {
     </div>
   )
 }
-
-var email = ''
-var password = ''
 
 const mapStateToProps = (state) => {
   return {

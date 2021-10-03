@@ -7,8 +7,8 @@ import "./RegisterAlert.scss";
 export default function RegisterAlert() {
   return (
     <Alert severity="warning">
-      You are not yet registered as a user!&nbsp;
-      <Link to="/member/create">Signup</Link>&nbsp; to be able to register for
+      You are not yet registered as a member!&nbsp;
+      <Link to="/signup">Signup</Link>&nbsp; to be able to register for
       events with ease!
     </Alert>
   );
