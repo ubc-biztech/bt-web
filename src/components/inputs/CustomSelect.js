@@ -30,8 +30,6 @@ const useStyles = makeStyles((theme) => ({
     fill: COLORS.BIZTECH_GREEN,
   },
   mobileContainer: {
-    padding: "10px",
-    backgroundColor: COLORS.CARD_PAPER_COLOR,
     borderRadius: "4px",
   },
   menuItem: {
