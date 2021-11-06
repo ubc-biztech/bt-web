@@ -53,7 +53,7 @@ const EventFormContainer = (props) => {
   };
 
   const [registration, setRegistration] = useState(initialRegistrationState);
-  const [isUBCStudent, setIsUBCStudent] = useState(true);
+  // const [isUBCStudent, setIsUBCStudent] = useState(true);
 
   const resetRegistration = () => setRegistration(initialRegistrationState);
 
@@ -61,38 +61,42 @@ const EventFormContainer = (props) => {
     email: Yup.string().email().required(),
     fname: Yup.string().required("First name is required"),
     lname: Yup.string().required("Last name is required"),
-    faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
-    hopinStatus: Yup.string().required("This field is required"),
-    // biztechMemberStatus: Yup.string().required("This field is required"),
+    faculty: Yup.string().required("Faculty is required"),
+    major: Yup.string().required("Major is required"),
+    biztechMemberStatus: Yup.string().required("This field is required"),
+    gender: Yup.string().required("This field is required"),
+    diet: Yup.string().required("This field is required"),
+    heardFrom: Yup.string().required("This field is required"),
   });
 
-  const UBCValidationSchema = Yup.object({
-    email: Yup.string().email().required(),
-    id: Yup.number("Valid Student ID required")
-      .min(9999999, "Valid Student ID required")
-      .max(100000000, "Valid Student ID required")
-      .required(),
-    fname: Yup.string().required("First name is required"),
-    lname: Yup.string().required("Last name is required"),
-    faculty: Yup.string().required("Faculty is required"),
-    year: Yup.string().required("Level of study is required"),
-    hopinStatus: Yup.string().required("This field is required"),
-    // biztechMemberStatus: Yup.string().required("This field is required"),
-  });
+  // const UBCValidationSchema = Yup.object({
+  //   email: Yup.string().email().required(),
+  //   id: Yup.number("Valid Student ID required")
+  //     .min(9999999, "Valid Student ID required")
+  //     .max(100000000, "Valid Student ID required")
+  //     .required(),
+  //   fname: Yup.string().required("First name is required"),
+  //   lname: Yup.string().required("Last name is required"),
+  //   faculty: Yup.string().required("Faculty is required"),
+  //   year: Yup.string().required("Level of study is required"),
+  //   hopinStatus: Yup.string().required("This field is required"),
+  //   biztechMemberStatus: Yup.string().required("This field is required"),
+  // });
 
   const initialValues = {
     email: "",
     fname: "",
     lname: "",
-    id: "",
-    faculty: "",
     year: "",
+    faculty: "",
+    major: "",
+    biztechMemberStatus: "",
     diet: "",
-    gender: "",
     heardFrom: "",
-    hopinStatus: "",
-    // biztechMemberStatus: "",
+    gender: "",
+    panelQuestions: "Hello",
+    // id: "",
   };
 
   const { isRegistered, registeredEmail } = registration;
@@ -178,15 +182,16 @@ const EventFormContainer = (props) => {
             <Formik
               initialValues={initialValues}
               validationSchema={
-                isUBCStudent ? UBCValidationSchema : validationSchema
+                /* isUBCStudent ? UBCValidationSchema : */
+                validationSchema
               }
               onSubmit={submitValues}
             >
               {(props) => {
                 props = {
                   ...props,
-                  isUBCStudent,
-                  setIsUBCStudent,
+                  // isUBCStudent,
+                  // setIsUBCStudent,
                 };
                 return <EventRegisterForm {...props} />;
               }}
@@ -204,21 +209,23 @@ const EventFormContainer = (props) => {
       email,
       fname,
       lname,
-      id,
+      year,
       faculty,
       major,
-      year,
+      biztechMemberStatus,
+      diet,
       heardFrom,
       gender,
-      hopinStatus,
-      // biztechMemberStatus,
-      topicSuggestions,
+      panelQuestions,
       questions,
+
+      // id,
     } = values;
     const eventID = event.id;
     const eventYear = event.year;
+
     const body = {
-      studentId: parseInt(id),
+      // studentId: parseInt(id),
       fname,
       lname,
       email,
@@ -226,6 +233,7 @@ const EventFormContainer = (props) => {
       faculty,
       major,
       gender,
+      diet,
     };
 
     const registrationBody = {
@@ -234,10 +242,9 @@ const EventFormContainer = (props) => {
       year: eventYear,
       heardFrom,
       registrationStatus: "registered",
-      // MIS-night specific fields
-      hopinStatus,
-      // biztechMemberStatus,
-      topicSuggestions,
+      // Careers in Tech specific fields
+      biztechMemberStatus,
+      panelQuestions,
       questions,
     };
 
@@ -253,6 +260,8 @@ const EventFormContainer = (props) => {
       .finally(() => {
         registerUser(registrationBody);
       });
+
+    // registerUser(registrationBody);
   }
 
   async function registerUser(registrationBody) {
