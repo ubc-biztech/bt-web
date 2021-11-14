@@ -111,7 +111,7 @@ function Login() {
     return error;
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
 
@@ -123,10 +123,22 @@ function Login() {
       })
     } else {
       try {
-        Auth.signIn(email, password)/// place holder for inputting sign in with email and password do try for this and if exception caught then
-        /// call Auth.signUp(email, password).
+        const signInResponse = await Auth.signIn({
+          username: email,
+          password: password,
+
+        })
+        console.log(signInResponse)
       } catch (error) {
-        Auth.signUp(email, password)
+        console.log("caught error", error)
+        // const signUpResponse = Auth.signUp({
+        //   username: email,
+        //   password: password,
+        //   attributes: {
+        //     name: 'Alvin',
+        //   }
+        // })
+        // console.log(signUpResponse)
       }
     }
   }
@@ -167,20 +179,20 @@ function Login() {
               </div>
               Sign In with Facebook
             </Button>
-            <Typography>Or sign in with your email and password:</Typography>
+            <Typography>Sign in with your member email and password:</Typography>
             <form>
               <label>
                 Email:
                 <input type='text' email='email' value={email} onChange={(e) => setEmail(e.target.value)} />
               </label>
-              <div>{errors.emailError}</div>
+              <div color='red'>{errors.emailError}</div>
             </form>
             <form>
               <label>
                 Password:
                 <input type='password' email='password' value={password} onChange={(e) => setPassword(e.target.value)} />
               </label>
-              <div>{errors.passwordError}</div>
+              <div color='red'>{errors.passwordError}</div>
               <Button
                 onClick={() => handleSubmit()}
                 style={styles.googleButton}

@@ -74,6 +74,7 @@ export default function CustomTextField(props) {
     autoComplete,
     multiline,
     rows,
+    type,
   } = props;
 
   const change = (name, e) => {
@@ -86,6 +87,7 @@ export default function CustomTextField(props) {
     return (
       <TextField
         label={label}
+        type={type ? type : ''}
         margin="none"
         className={className}
         autoComplete={autoComplete}
@@ -110,24 +112,24 @@ export default function CustomTextField(props) {
       {!renderMobileOnly && <Typography>{label}</Typography>}
       {renderMobileOnly
         ? createTextField(
-            classes.mobileTextField,
-            "filled",
-            {
-              style: {
-                padding: "7px",
-                backgroundColor: COLORS.CARD_PAPER_COLOR,
-                marginTop: "10px",
-              },
-              className: classes.mobileInput,
-            },
-            label
-          )
-        : createTextField(classes.textField, "outlined", {
+          classes.mobileTextField,
+          "filled",
+          {
             style: {
               padding: "7px",
+              backgroundColor: COLORS.CARD_PAPER_COLOR,
+              marginTop: "10px",
             },
-            className: classes.input,
-          })}
+            className: classes.mobileInput,
+          },
+          label
+        )
+        : createTextField(classes.textField, "outlined", {
+          style: {
+            padding: "7px",
+          },
+          className: classes.input,
+        })}
     </React.Fragment>
   );
 }
