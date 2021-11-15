@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MembershipForm(props) {
   const classes = useStyles();
 
-  const { handleSubmit, isSubmitting, memberType, setMemberType } = props;
+  const { handleSubmit, memberType, setMemberType } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -287,7 +287,6 @@ export default function MembershipForm(props) {
         variant="contained"
         color="primary"
         type="submit"
-        disabled={isSubmitting}
       >
         <CardMembershipIcon
           style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px" }}

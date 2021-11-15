@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import MembershipForm from "./MembershipForm";
+import Loading from "pages/Loading";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
@@ -45,6 +46,7 @@ const MembershipFormContainer = (props) => {
   const history = useHistory();
 
   const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -132,9 +134,12 @@ const MembershipFormContainer = (props) => {
       admin,
     };
 
+    setIsSubmitting(true);
+    // alert("Submitting...");
     fetchBackend("/members", "POST", body, false)
       .then(async () => {
         history.push("/signup/success");
+        setIsSubmitting(false);
       })
       .catch((err) => {
         if (err.status === 409) {
@@ -144,56 +149,63 @@ const MembershipFormContainer = (props) => {
         } else {
           console.log(err);
         }
+        setIsSubmitting(false);
       });
   }
 
-  return (
-    <div className={classes.layout}>
-      <Helmet>
-        <title>UBC BizTech Membership 2021/22</title>
-      </Helmet>
-      <Fragment>
-        <Typography className={classes.registrationText}>
-          UBC BizTech Membership 2021/22
-        </Typography>
-        <div className={classes.registrationHeader}>
-          <Typography>
-            Thank you for signing up to be a BizTech member! By signing up for
-            membership, you will also be a part of our mailing list!
+  if (isSubmitting) {
+    return <Loading />;
+  } else
+    return (
+      <div className={classes.layout}>
+        {/* {isSubmitting && (
+        <Loading />
+      )} */}
+        <Helmet>
+          <title>UBC BizTech Membership 2021/22</title>
+        </Helmet>
+        <Fragment>
+          <Typography className={classes.registrationText}>
+            UBC BizTech Membership 2021/22
           </Typography>
-          <Typography>
-            Please keep in mind that membership costs $5 and are valid for one
-            school year (Sept-May), so if you were a member last year and would
-            like to continue being part of the BizTech Network, kindly renew
-            your membership by filling out this form and send an e-transfer for
-            the amount of $5 to rita@ubcbiztech.com.
-          </Typography>
-        </div>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={
-            memberType === MEMBER_TYPES.UBC
-              ? UBCValidationSchema
-              : memberType === MEMBER_TYPES.UNIVERSITY
-              ? UniversityValidationSchema
-              : memberType === MEMBER_TYPES.HIGH_SCHOOL
-              ? HighSchoolValidationSchema
-              : validationSchema
-          }
-          onSubmit={submitValues}
-        >
-          {(props) => {
-            props = {
-              ...props,
-              memberType,
-              setMemberType,
-            };
-            return <MembershipForm {...props} />;
-          }}
-        </Formik>
-      </Fragment>
-    </div>
-  );
+          <div className={classes.registrationHeader}>
+            <Typography>
+              Thank you for signing up to be a BizTech member! By signing up for
+              membership, you will also be a part of our mailing list!
+            </Typography>
+            <Typography>
+              Please keep in mind that membership costs $5 and are valid for one
+              school year (Sept-May), so if you were a member last year and
+              would like to continue being part of the BizTech Network, kindly
+              renew your membership by filling out this form and send an
+              e-transfer for the amount of $5 to rita@ubcbiztech.com.
+            </Typography>
+          </div>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={
+              memberType === MEMBER_TYPES.UBC
+                ? UBCValidationSchema
+                : memberType === MEMBER_TYPES.UNIVERSITY
+                ? UniversityValidationSchema
+                : memberType === MEMBER_TYPES.HIGH_SCHOOL
+                ? HighSchoolValidationSchema
+                : validationSchema
+            }
+            onSubmit={submitValues}
+          >
+            {(props) => {
+              props = {
+                ...props,
+                memberType,
+                setMemberType,
+              };
+              return <MembershipForm {...props} />;
+            }}
+          </Formik>
+        </Fragment>
+      </div>
+    );
 };
 
 export default MembershipFormContainer;
