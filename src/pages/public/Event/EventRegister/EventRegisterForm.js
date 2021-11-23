@@ -4,11 +4,6 @@ import {
   Grid,
   Typography,
   useMediaQuery,
-  Checkbox,
-  FormControlLabel,
-  FormControl,
-  FormGroup,
-  Box,
 } from "@material-ui/core";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,7 +12,6 @@ import { useTheme } from "@material-ui/styles";
 import { COLORS } from "../../../../constants/_constants/theme";
 import CustomTextField from "../../../../components/inputs/CustomTextField";
 import CustomSelect from "../../../../components/inputs/CustomSelect";
-import CustomLink from "../../../../components/links/CustomLink";
 // import { CLIENT_URL } from "constants/index";
 
 const useStyles = makeStyles((theme) => ({
