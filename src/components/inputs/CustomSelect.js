@@ -29,14 +29,13 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     fill: COLORS.BIZTECH_GREEN,
   },
-  container: {
-    marginBottom: "20px",
-  },
   mobileContainer: {
-    marginBottom: "20px",
-    padding: "20px",
-    backgroundColor: COLORS.CARD_PAPER_COLOR,
-    borderRadius: "4px"
+    borderRadius: "4px",
+  },
+  menuItem: {
+    [theme.breakpoints.down("sm")]: {
+      overflowX: "scroll",
+    },
   },
 }));
 
@@ -66,9 +65,7 @@ export default function CustomSelect(props) {
   };
 
   return (
-    <div
-      className={renderMobileOnly ? classes.mobileContainer : classes.container}
-    >
+    <div className={renderMobileOnly ? classes.mobileContainer : undefined}>
       <Typography>{label}</Typography>
       <Select
         className={
@@ -96,7 +93,7 @@ export default function CustomSelect(props) {
         }}
       >
         {listOfOptions.map((option) => (
-          <MenuItem key={option} value={option}>
+          <MenuItem key={option} value={option} className={classes.menuItem}>
             {option}
           </MenuItem>
         ))}

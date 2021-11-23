@@ -18,8 +18,8 @@ module.exports = {
   plugins: ["react", "react-hooks"],
   rules: {
     "react/prop-types": 0,
-    quotes: ["error", "single"],
-    "jsx-quotes": ["error", "prefer-single"],
+    quotes: ["error", "double"],
+    "jsx-quotes": ["error", "prefer-double"],
   },
   settings: {
     "import/resolver": {
