@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
-import { useTheme } from "@material-ui/styles";
+import { useTheme } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const ICON_SIZE = "24px";

@@ -1,58 +1,57 @@
-import React from 'react'
-import { COLORS } from '../../constants/_constants/theme'
+import React from "react"
+import { COLORS } from "../../constants/_constants/theme"
 
-import { Typography, TextField } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { useTheme } from '@material-ui/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { Typography, TextField, useTheme } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
+import useMediaQuery from "@material-ui/core/useMediaQuery"
 
 const useStyles = makeStyles(() => ({
   textField: {
-    '& label.Mui-focused': {
+    "& label.Mui-focused": {
       color: COLORS.TEXTFIELD
     },
-    '& .MuiOutlinedInput-root': {
+    "& .MuiOutlinedInput-root": {
       backgroundColor: COLORS.TEXTFIELD,
-      borderRadius: '4px',
-      '& fieldset': {
+      borderRadius: "4px",
+      "& fieldset": {
         borderColor: COLORS.TEXTFIELD
       },
-      '&:hover fieldset': {
+      "&:hover fieldset": {
         borderColor: COLORS.TEXTFIELD
       },
-      '&.Mui-focused fieldset': {
+      "&.Mui-focused fieldset": {
         borderColor: COLORS.TEXTFIELD
       }
     },
-    '& .MuiOutlinedInput-multiline': {
-      padding: '5px",'
+    "& .MuiOutlinedInput-multiline": {
+      padding: "5px\","
     }
   },
   mobileTextField: {
-    borderRadius: '4px',
-    '& .MuiInputBase-root': {
+    borderRadius: "4px",
+    "& .MuiInputBase-root": {
       backgroundColor: COLORS.TEXTFIELD
     },
-    '& .MuiFilledInput-multiline': {
-      padding: '35px 0'
+    "& .MuiFilledInput-multiline": {
+      padding: "35px 0"
     }
   },
   input: {
-    '&:-webkit-autofill': {
+    "&:-webkit-autofill": {
       WebkitBoxShadow: `0 0 0 1000px ${COLORS.TEXTFIELD} inset`,
       WebkitTextFillColor: COLORS.WHITE,
       caretColor: COLORS.WHITE,
       backgroundColor: COLORS.CARD_PAPER_COLOR,
-      borderRadius: '0px'
+      borderRadius: "0px"
     }
   },
   mobileInput: {
-    '&:-webkit-autofill': {
+    "&:-webkit-autofill": {
       WebkitBoxShadow: `0 0 0 1000px ${COLORS.TEXTFIELD} inset`,
       WebkitTextFillColor: COLORS.WHITE,
       caretColor: COLORS.WHITE,
       backgroundColor: `${COLORS.TEXTFIELD} !important`,
-      borderRadius: '0px'
+      borderRadius: "0px"
     }
   }
 }))
@@ -60,7 +59,7 @@ const useStyles = makeStyles(() => ({
 export default function CustomTextField (props) {
   const classes = useStyles()
   const theme = useTheme()
-  const renderMobileOnly = useMediaQuery(theme.breakpoints.down('sm'))
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"))
 
   const {
     errors,
@@ -71,51 +70,76 @@ export default function CustomTextField (props) {
     label,
     autoComplete,
     multiline,
-    rows
+    rows,
+    handleEvent,
+    disabled,
+    value,
+    type,
+    min,
+    defaultValue
   } = props
 
   const change = (name, e) => {
     e.persist()
-    handleChange(e)
-    setFieldTouched(name, true, false)
+    if (handleChange) {
+      handleChange(e)
+    }
+    if (setFieldTouched) {
+      setFieldTouched(name, true, false)
+    }
   }
 
-  function createTextField (renderMobileOnly, label) {
-    console.log('creating new text field')
+  function createTextField (className, variant, inputProps, label) {
     return (
       <TextField
-        margin='none'
-        className={
-          renderMobileOnly ? classes.mobileTextField : classes.textField
-        }
-        autoComplete={autoComplete}
-        helperText={touched[groupName] ? errors[groupName] : ''}
-        error={touched[groupName] && Boolean(errors[groupName])}
+        label={label}
+        margin="none"
+        className={className}
+        autocomplete={autoComplete}
+        helperText={touched && errors && touched[groupName] ? errors[groupName] : ""}
+        error={touched && errors && touched[groupName] && Boolean(errors[groupName])}
         id={groupName}
-        onChange={change.bind(null, groupName)}
+        onChange={handleEvent || change.bind(null, groupName)}
+        disabled={disabled || false}
         fullWidth
-        variant={'outlined'}
-        size='small'
+        variant={variant}
+        value={value}
+        type={type}
+        min={min}
+        defaultValue={defaultValue}
         multiline={multiline}
+        inputProps={inputProps}
         InputLabelProps={{
           shrink: true
         }}
-        InputProps={{
-          classes: classes,
-          inputProps: {
-            classes: renderMobileOnly ? classes.mobileInput : classes.input
-          }
-        }}
         rows={rows}
-        padding='7px'
       />
     )
   }
 
   return (
-    <React.Fragment>
-      <Typography>{label}</Typography>
-      {createTextField(renderMobileOnly, label)}
-    </React.Fragment>
+    <div>
+      {!renderMobileOnly && <Typography>{label}</Typography>}
+      {renderMobileOnly
+        ? createTextField(
+          classes.mobileTextField,
+          "filled",
+          {
+            style: {
+              padding: "7px",
+              backgroundColor: COLORS.CARD_PAPER_COLOR,
+              marginTop: "10px"
+            },
+            className: classes.mobileInput
+          },
+          label
+        )
+        : createTextField(classes.textField, "outlined", {
+          style: {
+            padding: "7px"
+          },
+          className: classes.input
+        })}
+    </div>
   )
 }

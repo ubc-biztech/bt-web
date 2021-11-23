@@ -6,9 +6,9 @@ import {
   MenuItem,
   Select,
   FormHelperText,
+  useTheme
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +58,7 @@ export default function CustomSelect(props) {
     e.preventDefault();
     const value = e.target.value;
 
-    if (value) {
+    if (value && setFieldTouched && setFieldValue) {
       setFieldTouched(groupName, true, false);
       setFieldValue(groupName, value);
     }
@@ -69,7 +69,7 @@ export default function CustomSelect(props) {
       <Typography>{label}</Typography>
       <Select
         className={
-          touched[groupName] && Boolean(errors[groupName])
+          touched && errors && touched[groupName] && Boolean(errors[groupName])
             ? classes.errorSelect
             : classes.select
         }
