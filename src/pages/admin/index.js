@@ -1,31 +1,35 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Redirect, Switch } from "react-router-dom";
+import React, { useEffect } from "react"
+import { connect } from "react-redux"
+import { Redirect, Switch } from "react-router-dom"
 
-import Route from "components/routing/Route";
-import Loading from "pages/Loading";
+import Route from "components/routing/Route"
+import Loading from "pages/Loading"
 
-import AdminHome from "./Home";
-import EventCreate from "./Event/EventCreate";
-import EventEdit from "./Event/EventEdit";
-import EventStats from "./Event/EventStats";
-import Memberships from "./Memberships/Memberships";
+import AdminHome from "./Home"
+import EventCreate from "./Event/EventCreate"
+import EventEdit from "./Event/EventEdit"
+import EventStats from "./Event/EventStats"
+import Memberships from "./Memberships/Memberships"
 
-import { fetchEvents } from "store/event/eventActions";
+import { fetchEvents } from "store/event/eventActions"
+
+// Dynamic form for creating events
+import FormCreate from "./DynamicForm/FormCreate"
 
 const AdminRoutes = (props) => {
-  const { events, eventsLoading, user } = props;
+  const { events, eventsLoading, user } = props
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    fetchEvents()
+  }, [])
 
   // Loading state
-  if (eventsLoading) return <Loading message="Loading events..." />;
+  if (eventsLoading) return <Loading message="Loading events..." />
   // After loaded
   return user.admin ? (
     <Switch>
       <Route exact path="/admin/event/new" render={() => <EventCreate />} />
+      <Route exact path="/admin/event/new-dynamic" render={() => <FormCreate />} />
       <Route
         exact
         path="/admin/event/:id/:year/edit"
@@ -46,16 +50,16 @@ const AdminRoutes = (props) => {
       <Redirect to="/404" />
     </Switch>
   ) : (
-      <Redirect to="/forbidden" />
-    );
-};
+    <Redirect to="/forbidden" />
+  )
+}
 
 const mapStateToProps = (state) => {
   return {
     events: state.eventState.events.data,
     eventsLoading: state.eventState.events.loading,
-    user: state.userState.user.data,
-  };
-};
+    user: state.userState.user.data
+  }
+}
 
-export default connect(mapStateToProps, {})(AdminRoutes);
+export default connect(mapStateToProps, {})(AdminRoutes)
