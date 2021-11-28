@@ -122,6 +122,7 @@ const MembershipFormSuccess = (props) => {
             Welcome to the BizTech community!
           </Typography>
           <Typography>You've successfully become a BizTech member.</Typography>
+          <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
         </div>
         <div className={classes.whereToNextContainer}>
           <Typography className={classes.whereToNextHeading}>

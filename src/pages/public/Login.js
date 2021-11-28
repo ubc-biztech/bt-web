@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 import { Helmet } from 'react-helmet'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import {
   Button,
@@ -81,6 +81,9 @@ const styles = {
   signUpLink: {
     color: COLORS.BIZTECH_GREEN,
     marginLeft: '5px'
+  },
+  errors: {
+    color: 'red',
   }
 }
 
@@ -91,6 +94,7 @@ function Login() {
     emailError: '',
     passwordError: '',
   });
+  const history = useHistory();
 
   const validateEmail = (value) => {
     let error = ''
@@ -126,11 +130,24 @@ function Login() {
         const signInResponse = await Auth.signIn({
           username: email,
           password: password,
-
         })
         console.log(signInResponse)
+        history.push(`/login-redirect`);
       } catch (error) {
         console.log("caught error", error)
+        if (error.name === 'UserNotFoundException') {
+          setErrors({
+            emailError: '',
+            passwordError: 'Incorrect username or password.'
+          })
+        } else {
+          setErrors({
+            emailError: '',
+            passwordError: error.message,
+          })
+        }
+        setPassword('')
+
         // const signUpResponse = Auth.signUp({
         //   username: email,
         //   password: password,
@@ -185,14 +202,14 @@ function Login() {
                 Email:
                 <input type='text' email='email' value={email} onChange={(e) => setEmail(e.target.value)} />
               </label>
-              <div color='red'>{errors.emailError}</div>
+              <div style={styles.errors}>{errors.emailError}</div>
             </form>
             <form>
               <label>
                 Password:
                 <input type='password' email='password' value={password} onChange={(e) => setPassword(e.target.value)} />
               </label>
-              <div color='red'>{errors.passwordError}</div>
+              <div style={styles.errors}>{errors.passwordError}</div>
               <Button
                 onClick={() => handleSubmit()}
                 style={styles.googleButton}
