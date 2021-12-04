@@ -26,15 +26,15 @@ function LoginRedirect(props) {
     // save only essential info to redux
     const userObject = admin
       ? {
-          email: authUser.email,
-          admin,
-        }
+        email: authUser.email,
+        admin,
+      }
       : {
-          email: authUser.email,
-          fname,
-          lname,
-          admin,
-        };
+        email: authUser.email,
+        fname,
+        lname,
+        admin,
+      };
     props.setUser(userObject);
     history.push(redirectRoute);
   };
@@ -45,9 +45,10 @@ function LoginRedirect(props) {
       .then(async (session) => {
         const authUser = session.idToken.payload;
         const { email } = authUser;
+        console.log(authUser)
 
         // might have already set them to be an admin
-        const isAdminGroup = authUser["cognito:groups"].includes("admin");
+        const isAdminGroup = authUser["cognito:groups"]?.includes("admin");
         if (isAdminGroup) {
           populateUserAndRedirect(authUser, "/", true);
         } else if (
@@ -57,13 +58,14 @@ function LoginRedirect(props) {
           // if biztech email, set them as admin (no need for 'sign in')
           // attempt to assign cognito group 'admin' to this user
           await fetchBackend("/admin", "POST")
-            .then(() => {})
+            .then(() => { })
             .catch((err) => console.log(err));
 
           populateUserAndRedirect(authUser, "/", true);
         } else {
           // If not biztech username (normal member)
           const studentId = authUser["custom:student_id"];
+          console.log(studentId)
           // if maxvp is hidden, log out because we only want to allow biztech exec logins
           if (!checkFeatureFlag("REACT_APP_SHOW_MAXVP")) {
             alert("Sorry, login currently restricted to biztech executives!");
@@ -79,6 +81,7 @@ function LoginRedirect(props) {
             try {
               // check database
               const user = await fetchBackend(`/users/${studentId}`, "GET");
+              console.log(user)
               clearTimeout(timeoutRedirect);
               props.setUser({ ...user, admin: false }); // save to redux
               history.push("/"); // Redirect to the 'user home' page

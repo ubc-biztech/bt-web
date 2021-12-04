@@ -152,21 +152,21 @@ const MembershipFormContainer = (props) => {
       return;
     }
 
-    // commented out post to dynamoDB for now to test user pool signup
+    // users table post
 
-    // fetchBackend("/members", "POST", body, false)
-    //   .then(async () => {
-    //     history.push("/signup/success");
-    //   })
-    //   .catch((err) => {
-    //     if (err.status === 409) {
-    //       alert(
-    //         "A user with the given e-mail already exists! Double check that your e-mail is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs."
-    //       );
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   });
+    fetchBackend("/members", "POST", body, false)
+      .then(async () => {
+        history.push("/signup/success");
+      })
+      .catch((err) => {
+        if (err.status === 409) {
+          alert(
+            "A user with the given e-mail already exists! Double check that your e-mail is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs."
+          );
+        } else {
+          console.log(err);
+        }
+      });
   }
 
   return (

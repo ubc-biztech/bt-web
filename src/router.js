@@ -43,6 +43,7 @@ class Router extends Component {
   getAuthenticatedUser() {
     return Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(async (authUser) => {
+        console.log(authUser)
         const email = authUser.attributes.email;
         if (
           email.substring(email.indexOf("@") + 1, email.length) ===
@@ -83,8 +84,7 @@ class Router extends Component {
   // (otherwise, the login page will initially show on every refresh)
   componentDidMount() {
     log(
-      `Running biztech app in '${
-        process.env.REACT_APP_STAGE || "local"
+      `Running biztech app in '${process.env.REACT_APP_STAGE || "local"
       }' environment`
     );
 
@@ -108,6 +108,7 @@ class Router extends Component {
 
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.id;
+
 
     // check if the user state has been updated
     if (!loaded) return <Loading />;

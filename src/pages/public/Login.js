@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 import { Helmet } from 'react-helmet'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import {
   Button,
@@ -108,6 +108,9 @@ const styles = {
     width: '100%',
     height: '30px',
     borderRadius: 10
+  },
+  errors: {
+    color: 'red'
   }
 
 }
@@ -119,6 +122,7 @@ function Login () {
     emailError: '',
     passwordError: ''
   })
+  const history = useHistory()
 
   const validateEmail = (value) => {
     let error = ''
@@ -154,11 +158,24 @@ function Login () {
         const signInResponse = await Auth.signIn({
           username: email,
           password: password
-
         })
         console.log(signInResponse)
+        history.push('/login-redirect')
       } catch (error) {
         console.log('caught error', error)
+        if (error.name === 'UserNotFoundException') {
+          setErrors({
+            emailError: '',
+            passwordError: 'Incorrect username or password.'
+          })
+        } else {
+          setErrors({
+            emailError: '',
+            passwordError: error.message
+          })
+        }
+        setPassword('')
+
         // const signUpResponse = Auth.signUp({
         //   username: email,
         //   password: password,
