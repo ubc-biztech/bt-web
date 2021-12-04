@@ -9,7 +9,7 @@ import {
   Card,
   CardContent,
   CssBaseline,
-  Typography,
+  Typography
 } from '@material-ui/core'
 
 import LoginImage from 'assets/login.svg'
@@ -58,6 +58,18 @@ const styles = {
       backgroundColor: '#eeeeee'
     }
   },
+  submitButton: {
+    marginTop: '15px',
+    textTransform: 'none',
+    textAlign: 'left',
+    fontWeight: 'bold',
+    backgroundColor: COLORS.BIZTECH_GREEN,
+    color: COLORS.BLACK,
+    width: '100%',
+    '&:hover': {
+      backgroundColor: '#eeeeee'
+    }
+  },
   facebookButton: {
     marginTop: '12px',
     textTransform: 'none',
@@ -78,19 +90,35 @@ const styles = {
   notAMember: {
     marginTop: '30px'
   },
+  loginMember: {
+    marginTop: '20px',
+    color: COLORS.BIZTECH_GREEN
+  },
+  emailLogin: {
+    marginTop: '5px'
+  },
+  passwordLogin: {
+    marginTop: '5px'
+  },
   signUpLink: {
     color: COLORS.BIZTECH_GREEN,
     marginLeft: '5px'
+  },
+  inputText: {
+    width: '100%',
+    height: '30px',
+    borderRadius: 10
   }
+
 }
 
-function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function Login () {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({
     emailError: '',
-    passwordError: '',
-  });
+    passwordError: ''
+  })
 
   const validateEmail = (value) => {
     let error = ''
@@ -104,33 +132,33 @@ function Login() {
   }
 
   const validatePassword = (value) => {
-    let error = '';
+    let error = ''
     if (!value) {
-      error = 'Password is required';
+      error = 'Password is required'
     }
-    return error;
+    return error
   }
 
   const handleSubmit = async () => {
-    const emailError = validateEmail(email);
-    const passwordError = validatePassword(password);
+    const emailError = validateEmail(email)
+    const passwordError = validatePassword(password)
 
     if (emailError || passwordError) {
       // if any errors with inputs, set state and rerender (don't call signin/signup)
       setErrors({
         emailError: emailError,
-        passwordError: passwordError,
+        passwordError: passwordError
       })
     } else {
       try {
         const signInResponse = await Auth.signIn({
           username: email,
-          password: password,
+          password: password
 
         })
         console.log(signInResponse)
       } catch (error) {
-        console.log("caught error", error)
+        console.log('caught error', error)
         // const signUpResponse = Auth.signUp({
         //   username: email,
         //   password: password,
@@ -156,7 +184,7 @@ function Login() {
             <Typography variant='h1' color='primary'>
               Sign In
             </Typography>
-            <Typography>Sign in as a BizTech Exec</Typography>
+            {/* <Typography>Sign in as a BizTech Exec</Typography>
             <Button
               onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
               style={styles.googleButton}
@@ -179,29 +207,39 @@ function Login() {
               </div>
               Sign In with Facebook
             </Button>
-            <Typography>Sign in with your member email and password:</Typography>
+            <Typography variant='h2' style={styles.loginMember}>
+              Email Password Sign In
+            </Typography> */}
             <form>
-              <label>
-                Email:
-                <input type='text' email='email' value={email} onChange={(e) => setEmail(e.target.value)} />
-              </label>
+              <Typography
+                style={styles.emailLogin}>
+              Email:
+              </Typography>
+              <input
+                style={styles.inputText}
+                type='text'
+                email='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} />
               <div color='red'>{errors.emailError}</div>
             </form>
             <form>
-              <label>
-                Password:
-                <input type='password' email='password' value={password} onChange={(e) => setPassword(e.target.value)} />
-              </label>
+              <Typography style={styles.emailLogin}>
+              Password:
+              </Typography>
+              <input
+                style={styles.inputText}
+                type='password'
+                email='password'
+                value={password} onChange={(e) => setPassword(e.target.value)} />
               <div color='red'>{errors.passwordError}</div>
               <Button
                 onClick={() => handleSubmit()}
-                style={styles.googleButton}
+                style={styles.submitButton}
               >
                 Sign in
               </Button>
-
             </form>
-
             <Typography style={styles.notAMember}>
               Not a BizTech member yet?
               <Link to='/signup' style={styles.signUpLink}>
