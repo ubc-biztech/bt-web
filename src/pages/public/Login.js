@@ -115,7 +115,7 @@ const styles = {
 
 }
 
-function Login () {
+function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({
@@ -159,7 +159,6 @@ function Login () {
           username: email,
           password: password
         })
-        console.log(signInResponse)
         history.push('/login-redirect')
       } catch (error) {
         console.log('caught error', error)
@@ -230,7 +229,7 @@ function Login () {
             <form>
               <Typography
                 style={styles.emailLogin}>
-              Email:
+                Email:
               </Typography>
               <input
                 style={styles.inputText}
@@ -238,18 +237,18 @@ function Login () {
                 email='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} />
-              <div color='red'>{errors.emailError}</div>
+              <div style={styles.errors}>{errors.emailError}</div>
             </form>
             <form>
               <Typography style={styles.emailLogin}>
-              Password:
+                Password:
               </Typography>
               <input
                 style={styles.inputText}
                 type='password'
                 email='password'
                 value={password} onChange={(e) => setPassword(e.target.value)} />
-              <div color='red'>{errors.passwordError}</div>
+              <div styles={styles.errors}>{errors.passwordError}</div>
               <Button
                 onClick={() => handleSubmit()}
                 style={styles.submitButton}

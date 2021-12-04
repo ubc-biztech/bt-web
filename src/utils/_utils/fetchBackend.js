@@ -21,10 +21,6 @@ export async function fetchBackend(
   }
   const body = JSON.stringify(data);
   let status;
-  console.log(endpoint)
-  console.log(method)
-  console.log(data)
-  console.log(headers)
   return fetch(API_URL + endpoint, { method, headers, body })
     .then((response) => {
       status = response.status;

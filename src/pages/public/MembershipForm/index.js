@@ -65,6 +65,7 @@ const MembershipFormContainer = (props) => {
     last_name: Yup.string().required("Last name is required"),
     faculty: Yup.string().required("Faculty is required"),
     year: Yup.string().required("Level of study is required"),
+    major: Yup.string().required("Major is required"),
     international: Yup.string().required(
       "International or domestic student indication is required"
     ),
@@ -111,12 +112,21 @@ const MembershipFormContainer = (props) => {
       major,
       prev_member,
       international,
+      diet,
       topics,
       heard_from,
       university,
       high_school,
-      admin,
     } = values;
+
+    if (
+      email.substring(email.indexOf("@") + 1, email.length) ===
+      "ubcbiztech.com"
+    ) {
+      var admin = true;
+    } else {
+      var admin = false;
+    }
 
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     const body = {
@@ -153,6 +163,31 @@ const MembershipFormContainer = (props) => {
     }
 
     // users table post
+
+    const userBody = {
+      studentId: student_number,
+      fname: first_name,
+      lname: last_name,
+      major: major,
+      email: email,
+      year: year,
+      faculty: faculty,
+      gender: pronouns || "Other/Prefer not to say",
+      diet: diet || "None",
+      admin: admin,
+    };
+
+    fetchBackend("/users", "POST", userBody, false).catch((err) => {
+      if (err.status === 409) {
+        alert(
+          "A user with the given e-mail already exists! Double check that your e-mail is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs."
+        );
+        return;
+      } else {
+        console.log(err);
+        return;
+      }
+    })
 
     fetchBackend("/members", "POST", body, false)
       .then(async () => {

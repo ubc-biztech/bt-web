@@ -151,7 +151,6 @@ function MemberProfile(props) {
     user,
     // userEventsRegistered,
   } = props;
-
   const [isEditing, setIsEditing] = React.useState(false);
   const [ID] = React.useState(user.id);
   const [Faculty, setFaculty] = React.useState(user.faculty);
@@ -179,7 +178,7 @@ function MemberProfile(props) {
 
   const handleEdit = () => {
     if (isEditing) {
-      fetchBackend(`/users/${user.id}`, "PATCH", body).then((response) =>
+      fetchBackend(`/users/${user.email}`, "PATCH", body).then((response) =>
         console.log(response)
       );
     }

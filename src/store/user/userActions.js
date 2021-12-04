@@ -59,10 +59,10 @@ export async function fetchUser(params = {}) {
     await Store.dispatch({ type: FETCH_USER_REQUEST, refresh });
     const response = await fetchBackend(`/users/${userId}`, "GET");
     const payload = {
-      email: response.email,
+      email: response.id,
       fname: response.fname,
       lname: response.lname,
-      id: response.id,
+      id: response.studentId,
       faculty: response.faculty,
       year: response.year,
       diet: response.diet,

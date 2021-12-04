@@ -252,6 +252,15 @@ export default function MembershipForm(props) {
         <Grid item xs={12}>
           <CustomSelect
             {...props}
+            label="Any dietary restrictions?"
+            listOfOptions={["None", "Vegetarian", "Vegan", "Gluten Free"]}
+            groupName="diet"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <CustomSelect
+            {...props}
             label="Were you a BizTech member last year? *"
             listOfOptions={["Yes", "No"]}
             groupName="prev_member"

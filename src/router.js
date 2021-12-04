@@ -43,7 +43,6 @@ class Router extends Component {
   getAuthenticatedUser() {
     return Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(async (authUser) => {
-        console.log(authUser)
         const email = authUser.attributes.email;
         if (
           email.substring(email.indexOf("@") + 1, email.length) ===
@@ -55,12 +54,11 @@ class Router extends Component {
             admin: true,
           });
         } else {
-          const studentId = authUser.attributes["custom:student_id"];
-          if (studentId) {
+          if (email) {
             // Perform redux actions to update user and registration states at the same time
             await Promise.all([
-              fetchUser({ userId: studentId }),
-              fetchUserRegisteredEvents({ userId: studentId }),
+              fetchUser({ userId: email }),
+              fetchUserRegisteredEvents({ userId: email }),
             ]);
           } else {
             // Parse first name and last name
@@ -70,7 +68,7 @@ class Router extends Component {
 
             // save only essential info to redux
             await setUser({
-              email: authUser.attributes.email,
+              email: email,
               fname,
               lname,
             });
