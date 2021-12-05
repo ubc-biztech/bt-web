@@ -24,9 +24,15 @@ const useStyles = makeStyles((theme) => ({
   },
   registerButton: {
     textTransform: "none",
+    backgroundColor: COLORS.BIZTECH_GREEN,
+    color: COLORS.BACKGROUND_COLOR,
+    "&:disabled": {
+      backgroundColor: COLORS.FONT_GRAY,
+      color: COLORS.WHITE,
+    },
   },
   registerIcon: {
-    color: COLORS.FONT_COLOR,
+    color: "inherit",
     marginRight: "5px",
   },
   topics: {
@@ -42,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MembershipForm(props) {
   const classes = useStyles();
 
-  const { handleSubmit, memberType, setMemberType } = props;
+  const { isSubmitting, handleSubmit, memberType, setMemberType } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -287,10 +293,9 @@ export default function MembershipForm(props) {
         variant="contained"
         color="primary"
         type="submit"
+        disabled={isSubmitting}
       >
-        <CardMembershipIcon
-          style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px" }}
-        />
+        <CardMembershipIcon className={classes.registerIcon} />
         Submit
       </Button>
     </form>
