@@ -4,8 +4,6 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import MembershipForm from "./MembershipForm";
-import Loading from "pages/Loading";
-
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
