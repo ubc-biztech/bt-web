@@ -34,3 +34,12 @@
     margin-bottom: $bottom_nav_size;
   }
 }
+
+.discrete-scrollbar::-webkit-scrollbar {
+  width: 5px;
+} .discrete-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0);
+} .discrete-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.420);
+  border-radius:5px;
+}

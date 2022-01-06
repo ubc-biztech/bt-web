@@ -6,7 +6,7 @@ import Route from "components/routing/Route"
 import Loading from "pages/Loading"
 
 import AdminHome from "./Home"
-import EventCreate from "./Event/EventCreate"
+// import EventCreate from "./Event/EventCreate"
 import EventEdit from "./Event/EventEdit"
 import EventStats from "./Event/EventStats"
 import Memberships from "./Memberships/Memberships"
@@ -28,8 +28,8 @@ const AdminRoutes = (props) => {
   // After loaded
   return user.admin ? (
     <Switch>
-      <Route exact path="/admin/event/new" render={() => <EventCreate />} />
-      <Route exact path="/admin/event/new-dynamic" render={() => <FormCreate />} />
+      {/* <Route exact path="/admin/event/new" render={() => <EventCreate />} /> */}
+      <Route exact path="/admin/event/new" render={() => <FormCreate />} />
       <Route
         exact
         path="/admin/event/:id/:year/edit"

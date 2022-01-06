@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react"
 import { Helmet } from "react-helmet"
 import { makeStyles } from "@material-ui/core/styles"
 import DateFnsUtils from "@date-io/date-fns"
-import { Button, Checkbox, Container, Fab, Grid, MenuItem, Paper, Select, TextField } from "@material-ui/core"
+import { Button, Checkbox, Container, Fab, FormControlLabel, FormGroup, Grid, MenuItem, Paper, Select, TextField } from "@material-ui/core"
 import { Add, Delete, KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons"
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
 import ImagePlaceholder from "../../../assets/placeholder.jpg"
+import { Link } from "react-router-dom"
 
 // Styling Material UI Components
 const useStyles = makeStyles((theme) => ({
@@ -18,11 +19,8 @@ const useStyles = makeStyles((theme) => ({
   content: {
     padding: theme.spacing(3)
   },
-  paper: {
-    marginBottom: theme.spacing(5)
-  },
   fab: {
-    marginBottom: -28
+    marginBottom: 0
   },
   button: {
     background: "#7EA4C8",
@@ -65,30 +63,69 @@ const styles = {
     height: 300,
     objectFit: "cover"
   },
-  imageButton: {
-    position: "absolute",
-    bottom: "2rem",
-    right: "2rem"
-  },
   // Sections (divides image / basic info / custom questions)
-  section: {
-    borderStyle: "solid none none none",
-    borderWidth: 1,
-    borderColor: "#1F2A47"
-  },
   basicInfoSection: {
     padding: "1rem",
     display: "flex",
     flexDirection: "column",
     alignItems: "stretch"
   },
-  customQuestionsSection: {
-    padding: "1rem"
-  },
   // Add question (bottom of the dynamic form)
   addQuestion: {
     display: "flex",
     justifyContent: "center"
+  },
+  // Preview pane
+  preview: {
+    marginTop: -80,
+    height: "100vh",
+    overflowY: "auto",
+    boxSizing: "border-box",
+    padding: "100px 0"
+  },
+  // Editor pane
+  editor: {
+    background: "#172037",
+    marginTop: -80,
+    height: "100vh",
+    overflowY: "auto"
+  },
+  editorDivider: {
+    width: "100%",
+    height: 1,
+    background: "#1F2A47"
+  },
+  editorSection: {
+    padding: "1rem"
+  },
+  editorHeadmast: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  editorTitle: {
+    marginTop: 0,
+    fontSize: "1.2rem",
+    paddingTop: "1rem",
+    color: "#FFFFFF"
+  },
+  editorSectionTitle: {
+    color: "#FFFFFF",
+    opacity: "0.63",
+    fontSize: "1rem",
+    fontWeight: "500"
+  }
+}
+
+// Reg form styles (for use on Register page)
+const formStyles = {
+  section: {
+    padding: "1rem 2rem"
+  },
+  divider: {
+    borderStyle: "none none solid none",
+    borderWidth: "1px",
+    borderColor: "#1F2A47"
   }
 }
 
@@ -117,19 +154,19 @@ const dummyData = [
   {
     questionType: "CHECKBOX",
     question: "Which college do you attend?",
-    choices: "UBC, SFU, KPU, Douglas",
+    choices: "UBC,SFU,KPU,Douglas",
     required: true
   },
   {
     questionType: "SELECT",
     question: "How interested are you in this event?",
-    choices: "1, 2, 3, 4, 5",
+    choices: "1,2,3,4,5",
     required: true
   }
 ]
 
-// made separate component in case want to make a new file
-const Question = (props) => {
+// EDITOR QUESTION component - made separate component in case want to make a new file
+const CustomQuestion = (props) => {
   const classes = useStyles()
 
   const index = props.index
@@ -184,7 +221,8 @@ const Question = (props) => {
     requiredContainer: {
       display: "flex",
       justifyContent: "flex-end",
-      alignItems: "center"
+      alignItems: "center",
+      color: "rgba(255,255,255,0.8)"
     }
   }
 
@@ -240,7 +278,7 @@ const Question = (props) => {
                 <KeyboardArrowUp />
               </div>
             )}
-            {!(index === length) && (
+            {!(index === length - 1) && (
               <div style={questionStyles.arrowIcon} onClick={() => props.fnMove(index, "down")}>
                 <KeyboardArrowDown />
               </div>
@@ -273,7 +311,7 @@ const Question = (props) => {
 
         <div style={questionStyles.requiredContainer}>
           Required?
-          <Checkbox aria-label="Required question?" checked={required} onChange={handleEditRequired} />
+          <Checkbox color="primary" aria-label="Required question?" checked={required} onChange={handleEditRequired} />
         </div>
 
       </div>
@@ -281,11 +319,75 @@ const Question = (props) => {
   )
 }
 
-const FormCreate = () => {
+// LIVE PREVIEW QUESTION component
+const Question = (props) => {
+  const useStyles = makeStyles((theme) => ({
+    textfield: {
+      background: "#1F2A47",
+      borderRadius: 10
+    },
+    select: {
+      background: "#1F2A47",
+      borderRadius: 10
+    }
+  }))
   const classes = useStyles()
 
-  // Show preview
-  const [showPreview, setShowPreview] = useState(false)
+  const { type, question, choices, required } = props
+
+  const choicesArr = choices ? choices.split(",") : []
+
+  // types: CHECKBOX, SELECT, TEXT
+  if (type === "CHECKBOX") {
+    return question && (
+      <div style={{ paddingBottom: "1.5rem" }}>
+        <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>{question}{question && required && "*"}</p>
+        <FormGroup>
+          {choicesArr.map((item) => {
+            return (
+              <FormControlLabel key={item} control={<Checkbox color="primary" />} label={item} />
+            )
+          })}
+        </FormGroup>
+      </div>
+    )
+  } else if (type === "SELECT") {
+    return question && (
+      <div style={{ paddingBottom: "1.5rem" }}>
+        <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>{question}{question && required && "*"}</p>
+        <Select
+          className={classes.select}
+          labelId="q-type"
+          variant="outlined"
+          margin="dense">
+          {choicesArr.map((item) => {
+            return (
+              <MenuItem key={item} value={item}>{item}</MenuItem>
+            )
+          })}
+
+        </Select>
+      </div>
+    )
+  } else if (type === "TEXT") {
+    return question && (
+      <div style={{ paddingBottom: "1.5rem" }}>
+        <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>{question}{question && required && "*"}</p>
+        <TextField
+          className={classes.textfield}
+          fullWidth
+          margin="dense"
+          variant="outlined" />
+      </div>
+    )
+  } else {
+    // Could just default to text but just in case
+    return (<div>Invalid question type</div>)
+  }
+}
+
+const FormCreate = () => {
+  const classes = useStyles()
 
   // Basic questions hooks
   const [selectedImage, setSelectedImage] = useState() // image to upload
@@ -301,17 +403,18 @@ const FormCreate = () => {
   // Custom questions data
   const [questionsData, setQuestionsData] = useState(dummyData)
   const [displayCustomQuestions, setDisplayCustomQuestions] = useState([])
-  const [refresh, setRefresh] = useState(false) // since content of object =/= change for useEffect
+  const [refresh, setRefresh] = useState(false) // since content of object =/= a change for useEffect dependency array
 
-  // Renders custom questions
+  // Renders custom questions for the editor
   useEffect(() => {
-    const displayArray = []
+    const editorDisplayArray = []
 
     for (let index = 0; index < questionsData.length; index++) {
-      displayArray.push(
-        <Question
+      editorDisplayArray.push(
+        <CustomQuestion
           key={index}
           index={index}
+          length={questionsData.length}
           data={questionsData[index]}
           fnMove={handleMoveQuestion}
           fnEdit={handleEditQuestion}
@@ -319,7 +422,7 @@ const FormCreate = () => {
       )
     }
 
-    setDisplayCustomQuestions(displayArray)
+    setDisplayCustomQuestions(editorDisplayArray)
   }, [refresh, questionsData])
 
   const handleAddQuestion = () => {
@@ -397,39 +500,96 @@ const FormCreate = () => {
     console.log(payload)
   }
 
+  // displaying custom questions on the live preview
+  const [displayQuestions, setDisplayQuestions] = useState([])
+
+  useEffect(() => {
+    const returnArray = []
+
+    for (let i = 0; i < questionsData.length; i++) {
+      returnArray.push(
+        <Question
+          type={questionsData[i].questionType}
+          question={questionsData[i].question}
+          choices={questionsData[i].choices}
+          required={questionsData[i].required} />
+      )
+    }
+
+    setDisplayQuestions(returnArray)
+  }, [questionsData, refresh])
+
   return (
     <>
       <Helmet>
         <title>Create Event - Biztech Admin</title>
       </Helmet>
 
-      <Container maxWidth="sm">
-        <div className="editor">
+      <Grid container>
+        <Grid item xs={8} style={{
+          maxHeight: "calc(100vh - 130px)"
+        }}>
+          {/* Live Preview */}
+          <div style={styles.preview} className="discrete-scrollbar">
+            <Container maxWidth="sm">
 
-          <div style={styles.head}>
-            <h1 style={styles.header1}>{eventName || "New Event"}</h1>
-            <div>
-              <Button
-                className={classes.button}
-                variant="contained"
-                style={{ marginRight: "1rem" }}
-                onClick={() => setShowPreview(!showPreview)}>
-                {showPreview ? "Hide Preview" : "Show Preview"}
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSave}>
-                Save
-              </Button>
-            </div>
+              <Paper>
+                {/* Image */}
+                <div style={styles.imageContainer}>
+                  <img style={styles.image} src={imageURL || ImagePlaceholder} alt="Image" />
+                </div>
+                {(eventName || description) && (
+                  <div style={{ ...formStyles.section, ...formStyles.divider }}>
+                    <h2 style={{ marginTop: 0 }}>{eventName}</h2>
+                    <p>{description}</p>
+                  </div>
+                )}
+                <div style={formStyles.section}>
+                  {displayQuestions}
+                </div>
+              </Paper>
+
+            </Container>
           </div>
+        </Grid>
+        <Grid item xs={4} style={{
+          maxHeight: "calc(100vh - 130px)"
+        }}>
 
-          <Paper className={classes.paper}>
+          {/* Editor Pane */}
+          <div style={styles.editor} className="discrete-scrollbar">
 
-            {/* Image */}
-            <div style={styles.imageContainer}>
-              <img style={styles.image} src={imageURL || ImagePlaceholder} alt="Image" />
+            {/* Editor Head */}
+            <div style={{ ...styles.editorSection, ...styles.editorHeadmast }}>
+              <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
+              <div style={{ display: "flex", gap: "1rem" }}>
+                <Link
+                  variant="contained"
+                  component={Button}
+                  color="primary"
+                  to={`/register/${slug}`}>
+                  Event Link
+                </Link>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => console.log("Published")}>
+                  Publish
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSave}>
+                  Save
+                </Button>
+              </div>
+            </div>
+            <div style={styles.editorDivider}></div>
+
+            <div style={styles.editorSection}>
+              <h3 style={styles.editorSectionTitle}>Event Cover Photo</h3>
               {imageURL ? (
                 <Button
                   style={styles.imageButton}
@@ -455,9 +615,10 @@ const FormCreate = () => {
               )}
             </div>
 
-            {/* Basic Information */}
-            <div style={{ ...styles.section, ...styles.basicInfoSection }}>
-
+            <div style={styles.editorDivider}></div>
+            <div style={styles.editorSection}>
+              <h3 style={styles.editorSectionTitle}>Event Information</h3>
+              {/* Basic Information */}
               <TextField
                 label="Event Name"
                 fullWidth required
@@ -473,7 +634,7 @@ const FormCreate = () => {
                 onChange={e => setSlug(e.target.value)}
                 value={slug} />
               {slug && (
-                <div style={{ opacity: "0.7" }}>
+                <div style={{ color: "#FFFFFF", opacity: "0.7" }}>
                   {"http://ubcbiztech.com/register/" + slug}
                 </div>
               )}
@@ -528,31 +689,27 @@ const FormCreate = () => {
 
             </div>
 
-            {/* Dynamic Information */}
-            <div style={{ ...styles.section, ...styles.customQuestionsSection }}>
-
+            <div style={styles.editorDivider}></div>
+            <div style={styles.editorSection}>
+              {/* Dynamic Information */}
               {displayCustomQuestions}
 
+              {/* Add question */}
+              <div style={styles.addQuestion}>
+                <Fab
+                  onClick={() => handleAddQuestion()}
+                  className={classes.fab}
+                  color="primary"
+                  aria-label="add">
+                  <Add />
+                </Fab>
+              </div>
             </div>
 
-            {/* Add question */}
-            <div style={styles.addQuestion}>
-              <Fab
-                onClick={() => handleAddQuestion()}
-                className={classes.fab}
-                color="primary"
-                aria-label="add">
-                <Add />
-              </Fab>
-            </div>
-          </Paper>
-        </div>
+          </div>
+        </Grid>
+      </Grid>
 
-        <div className="previewer">
-
-        </div>
-
-      </Container>
     </>
   )
 }
