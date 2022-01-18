@@ -1,6 +1,5 @@
 import React from "react";
 import BiztechIcon from "../icons/BiztechIcon";
-import { COLORS } from "../../constants/_constants/theme";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -28,7 +27,7 @@ function Header() {
 
   return (
     <div className={classes.container}>
-      <BiztechIcon fill={COLORS.WHITE} size={ICON_SIZE} />
+      <BiztechIcon size={ICON_SIZE}/>
       <Typography className={classes.biztechText}>ubc biztech</Typography>
     </div>
   );

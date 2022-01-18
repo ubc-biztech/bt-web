@@ -145,7 +145,6 @@ function Nav(props) {
           label="Home"
           icon={
             <BiztechIcon
-              fill={selectedItem !== "/member/home" && "#fff"}
               size={ICON_SIZE}
             />
           }
