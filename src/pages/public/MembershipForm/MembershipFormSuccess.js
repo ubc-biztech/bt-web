@@ -132,7 +132,6 @@ const MembershipFormSuccess = (props) => {
             <li className={classes.socialMediaListItem}>
               <BiztechIcon
                 className={classes.icon}
-                fill={COLORS.WHITE}
                 size={renderMobileOnly ? MOBILE_SIZE : ICON_SIZE}
               />
               <a
