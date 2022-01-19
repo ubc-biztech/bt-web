@@ -4,7 +4,6 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import MembershipForm from "./MembershipForm";
-
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
@@ -45,6 +44,7 @@ const MembershipFormContainer = (props) => {
   const history = useHistory();
 
   const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -132,9 +132,11 @@ const MembershipFormContainer = (props) => {
       admin,
     };
 
+    setIsSubmitting(true);
     fetchBackend("/members", "POST", body, false)
       .then(async () => {
         history.push("/signup/success");
+        setIsSubmitting(false);
       })
       .catch((err) => {
         if (err.status === 409) {
@@ -144,6 +146,7 @@ const MembershipFormContainer = (props) => {
         } else {
           console.log(err);
         }
+        setIsSubmitting(false);
       });
   }
 
@@ -186,6 +189,7 @@ const MembershipFormContainer = (props) => {
           {(props) => {
             props = {
               ...props,
+              isSubmitting,
               memberType,
               setMemberType,
             };
