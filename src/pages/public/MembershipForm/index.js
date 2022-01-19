@@ -133,7 +133,6 @@ const MembershipFormContainer = (props) => {
     };
 
     setIsSubmitting(true);
-    // alert("Submitting...");
     fetchBackend("/members", "POST", body, false)
       .then(async () => {
         history.push("/signup/success");
@@ -151,9 +150,6 @@ const MembershipFormContainer = (props) => {
       });
   }
 
-  // if (isSubmitting) {
-  //   return <Loading />;
-  // } else
   return (
     <div className={classes.layout}>
       <Helmet>
