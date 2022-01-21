@@ -130,7 +130,7 @@ class Router extends Component {
 
               {/* PUBLIC EVENT-SPECIFIC ROUTES */}
               {<Route path="/event/:id/:year" component={PublicEventRoutes} />}
-              {<Route path="/register/:slug" component={<FormRegister />} />} {/* Event Register route */}
+              <Route exact path="/register/:slug" render={() => <FormRegister />} />
 
               {/* COMMON ROUTES */}
               <Route

@@ -423,7 +423,7 @@ const FormCreate = () => {
     }
 
     setDisplayCustomQuestions(editorDisplayArray)
-  }, [refresh, questionsData])
+  }, [refresh, questionsData]) // @codingStandardsIgnoreLine
 
   const handleAddQuestion = () => {
     const newQuestionsData = questionsData
@@ -536,7 +536,7 @@ const FormCreate = () => {
               <Paper>
                 {/* Image */}
                 <div style={styles.imageContainer}>
-                  <img style={styles.image} src={imageURL || ImagePlaceholder} alt="Image" />
+                  <img style={styles.image} src={imageURL || ImagePlaceholder} alt="Registration Form" />
                 </div>
                 {(eventName || description) && (
                   <div style={{ ...formStyles.section, ...formStyles.divider }}>
@@ -567,7 +567,7 @@ const FormCreate = () => {
                   variant="contained"
                   component={Button}
                   color="primary"
-                  to={`/register/${slug}`}>
+                  to={{ pathname: `/register/${slug}` }}>
                   Event Link
                 </Link>
 
