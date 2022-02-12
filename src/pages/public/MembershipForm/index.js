@@ -134,7 +134,7 @@ const MembershipFormContainer = (props) => {
       host: CLIENT_URL
     };
 
-    fetchBackend("/members/payment", "POST", body, false)
+    fetchBackend("/memberships/payment", "POST", body, false)
       .then(async (response) => {
         window.open(response, "_self");
       })
