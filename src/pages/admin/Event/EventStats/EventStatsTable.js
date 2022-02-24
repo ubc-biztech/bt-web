@@ -30,10 +30,6 @@ import {
   combineEventAndRegistrationData,
   appendRegistrationQuestions,
 } from "./utils";
-import {
-  REGISTRATION_RESPONSE,
-  REGISTRATION_QUESTIONS,
-} from "toBeDeleted/registrationResponses";
 
 const styles = {
   stats: {
@@ -52,7 +48,7 @@ const styles = {
     },
     width: "100%",
     height: "calc(100vh - 32px)",
-    overflow: "auto"
+    overflow: "auto",
   },
   table: {
     display: "grid",
@@ -68,7 +64,7 @@ export class EventStatsTable extends Component {
     super(props);
     this.state = {
       columns: {},
-      registrationStatuses: {},
+      registrationNumbers: {},
       faculties: {},
       years: {},
       dietary: {},
@@ -106,13 +102,7 @@ export class EventStatsTable extends Component {
     });
     await fetchBackend(`/registrations?${params}`, "GET")
       .then((response) => {
-        // Replace with actual response when available
-        const registrationResponses = parseRegistrationResponses(
-          REGISTRATION_RESPONSE
-        );
-        // should pass in actual registration questions when available
-        // this.setColumns(response.registrationQuestions)
-        this.setColumns(REGISTRATION_QUESTIONS);
+        const registrationResponses = parseRegistrationResponses(response);
 
         const heardFrom = {};
         response.data.forEach((user) => {
@@ -138,7 +128,7 @@ export class EventStatsTable extends Component {
       `/events/${eventID}/${eventYear.toString()}?${params}`,
       "GET"
     )
-      .then(async (users) => {
+      .then((users) => {
         this.registrationNumbers(users);
         this.notRegistrationNumbers(users);
         this.setRows(users);
@@ -146,6 +136,13 @@ export class EventStatsTable extends Component {
       .catch((error) => {
         console.log(error);
       });
+
+    await fetchBackend(
+      `/events/${eventID}/${eventYear.toString()}`,
+      "GET"
+    ).then(async (event) => {
+      this.setColumns(event.registrationQuestions);
+    });
   }
 
   /**
@@ -156,19 +153,20 @@ export class EventStatsTable extends Component {
    */
 
   registrationNumbers(users) {
-    const registrations = {};
+    const registrationNumbers = {};
     users.forEach((user) => {
       if (user.registrationStatus) {
-        registrations[user.registrationStatus] = registrations[
+        registrationNumbers[user.registrationStatus] = registrationNumbers[
           user.registrationStatus
         ]
-          ? registrations[user.registrationStatus] + 1
+          ? registrationNumbers[user.registrationStatus] + 1
           : 1;
       }
     });
+    console.log(registrationNumbers);
 
     this.setState({
-      registrations,
+      registrationNumbers,
     });
   }
 
@@ -226,11 +224,10 @@ export class EventStatsTable extends Component {
   }
 
   setColumns(registrationQuestions) {
-    let columns = [];
+    const columns = [];
 
     appendRegistrationQuestions(columns, registrationQuestions);
 
-    console.log(columns);
     this.setState({
       columns,
     });
@@ -343,8 +340,7 @@ export class EventStatsTable extends Component {
               onClick={(event) => changeRegistration(event, rowData)}
               style={{
                 backgroundColor:
-                  rowData.registrationStatus ===
-                  REGISTRATION_STATUS.CHECKED_IN
+                  rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
                     ? COLORS.LIGHT_GREEN
                     : rowData.registrationStatus ===
                       REGISTRATION_STATUS.WAITLISTED
@@ -384,7 +380,7 @@ export class EventStatsTable extends Component {
       <div style={styles.container}>
         <Statistic
           statName="Registration status: "
-          statObj={this.state.registrationStatuses}
+          statObj={this.state.registrationNumbers}
         />
         <Statistic statName="Faculty: " statObj={this.state.faculties} />
         <Statistic statName="Year level: " statObj={this.state.years} />

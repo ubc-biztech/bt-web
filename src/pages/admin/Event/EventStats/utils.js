@@ -1,5 +1,5 @@
 /**
- * Helper function to get registration responses in an array of userResponses 
+ * Helper function to get registration responses in an array of userResponses
  * @param {*} registrations the response from the registration endpoint
  */
 const parseRegistrationResponses = (registrations) => {
@@ -10,7 +10,7 @@ const parseRegistrationResponses = (registrations) => {
     const { registrationResponses } = user;
     const userResponse = {};
 
-    userResponse["id"] = user.id;
+    userResponse.id = user.id;
 
     if (registrationResponses) {
       registrationResponses.forEach((response) => {
@@ -25,35 +25,43 @@ const parseRegistrationResponses = (registrations) => {
 };
 
 const combineEventAndRegistrationData = (users, registrationResponses) => {
-  let idToUserMap = new Map();
+  const idToUserMap = new Map();
 
   users.forEach((user) => {
     idToUserMap.set(user.id, user);
   });
 
   registrationResponses.forEach((registration) => {
-    const {id, ...responses} = registration;
+    const { id, ...responses } = registration;
     const user = idToUserMap.get(id);
 
     idToUserMap.set(id, {
       ...user,
-      ...responses
+      ...responses,
     });
   });
 
-  return [...idToUserMap.values()]
+  return [...idToUserMap.values()];
 };
 
 const appendRegistrationQuestions = (columns, registrationQuestions) => {
-  registrationQuestions.forEach((question) => {
-    let column = {};
+  if (!registrationQuestions) {
+    return;
+  }
 
-    column["title"] = question.label;
-    column["field"] = question.questionId;
-    column["sorting"] = false;
+  registrationQuestions.forEach((question) => {
+    const column = {};
+
+    column.title = question.label;
+    column.field = question.questionId;
+    column.sorting = false;
 
     columns.push(column);
   });
-}
+};
 
-export { parseRegistrationResponses, combineEventAndRegistrationData, appendRegistrationQuestions };
+export {
+  parseRegistrationResponses,
+  combineEventAndRegistrationData,
+  appendRegistrationQuestions,
+};
