@@ -41,12 +41,12 @@ const useStyles = makeStyles((theme) => ({
   banner: {
     maxWidth: "100%",
     borderRadius: "5px",
-    // height: "234px",
     height: "400px",
     width: "100%",
     [theme.breakpoints.down("sm")]: {
       height: "234px",
     },
+    objectFit: "cover",
   },
   date: {
     position: "absolute",
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
       border: `1px solid ${COLORS.CARD_PAPER_COLOR}`,
       padding: "10px",
     },
-  }
+  },
 }));
 
 function formatAMPM(date) {

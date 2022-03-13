@@ -54,6 +54,7 @@ const EventFormContainer = (props) => {
 
   const [registration, setRegistration] = useState(initialRegistrationState);
   // const [isUBCStudent, setIsUBCStudent] = useState(true);
+  const [isMember, setIsMember] = useState("");
 
   const resetRegistration = () => setRegistration(initialRegistrationState);
 
@@ -98,6 +99,11 @@ const EventFormContainer = (props) => {
   };
 
   const { isRegistered, registeredEmail } = registration;
+
+  function handleIsMemberStatus(value) {
+    console.log(value);
+    setIsMember(value);
+  }
 
   if (loading) {
     return (
@@ -188,6 +194,9 @@ const EventFormContainer = (props) => {
               {(props) => {
                 props = {
                   ...props,
+                  isMember,
+                  setIsMember,
+                  handleIsMemberStatus,
                   // isUBCStudent,
                   // setIsUBCStudent,
                 };

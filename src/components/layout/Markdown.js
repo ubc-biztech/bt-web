@@ -4,6 +4,7 @@ import { Link, Typography } from "@material-ui/core";
 
 const options = {
   overrides: {
+    wrapper: null,
     h1: {
       component: Typography,
       props: {
@@ -19,7 +20,7 @@ const options = {
       component: Typography,
       props: { gutterBottom: true, variant: "caption", paragraph: true },
     },
-    p: { component: Typography },
+    p: { component: Typography, props: { gutterBottom: true } },
     span: { component: Typography },
     a: { component: Link },
     li: {

@@ -52,6 +52,7 @@ export default function CustomSelect(props) {
     groupName,
     label,
     listOfOptions,
+    handleIsMemberStatus,
   } = props;
 
   const handleSelectChange = (e, groupName) => {
@@ -90,6 +91,7 @@ export default function CustomSelect(props) {
         defaultValue=""
         onClick={(e) => {
           handleSelectChange(e, groupName);
+          handleIsMemberStatus(e.target.value);
         }}
       >
         {listOfOptions.map((option) => (

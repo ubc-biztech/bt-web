@@ -38,6 +38,8 @@ export default function RegisterEventForm(props) {
   const {
     handleSubmit,
     isSubmitting /* isUBCStudent  setIsUBCStuden t */,
+    isMember,
+    handleIsMemberStatus,
   } = props;
 
   return (
@@ -151,8 +153,18 @@ export default function RegisterEventForm(props) {
             label="Are you currently a Biztech member? *"
             listOfOptions={["Yes", "No"]}
             groupName="biztechMemberStatus"
+            handleIsMemberStatus={handleIsMemberStatus}
           />
         </Grid>
+
+        {isMember === "No" && (
+          <Grid item xs={renderMobileOnly ? 12 : 8}>
+            <Typography>
+              Please e-transfer $10 to anannay@ubcbiztech.com to become a
+              member, and save a screenshot of your receipt.
+            </Typography>
+          </Grid>
+        )}
 
         {/* <Grid item xs={renderMobileOnly ? 12 : 8}>
           <CustomSelect
