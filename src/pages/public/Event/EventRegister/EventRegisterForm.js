@@ -7,9 +7,7 @@ import { useTheme } from "@material-ui/styles";
 import { COLORS } from "../../../../constants/_constants/theme";
 import CustomTextField from "../../../../components/inputs/CustomTextField";
 import CustomSelect from "../../../../components/inputs/CustomSelect";
-import CustomLink from "components/links/CustomLink";
 // import { CLIENT_URL } from "constants/index";
-const HOPIN_URL = `https://hopin.com/events/ubc-biztech-blueprint-conference-2021-22/registration`;
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
@@ -186,24 +184,6 @@ export default function RegisterEventForm(props) {
             groupName="diet"
           />
         </Grid> */}
-
-        <Grid item xs={renderMobileOnly ? 12 : 8}>
-          <CustomSelect
-            {...props}
-            label={
-              <>
-                {`To attend Blueprint & pick your workshop preferences, you MUST be registered on Hopin. Have you registered on Hopin? `}
-                <CustomLink href={HOPIN_URL}>{HOPIN_URL}</CustomLink>
-                {". *"}
-              </>
-            }
-            listOfOptions={[
-              "Yes, I've already registered on Hopin!",
-              "No, but I'll do that right now!",
-            ]}
-            groupName="hopinStatus"
-          />
-        </Grid>
 
         <Grid item xs={renderMobileOnly ? 12 : 8}>
           <CustomSelect

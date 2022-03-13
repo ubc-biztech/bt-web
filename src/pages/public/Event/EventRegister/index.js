@@ -65,7 +65,6 @@ const EventFormContainer = (props) => {
     faculty: Yup.string().required("Faculty is required"),
     major: Yup.string().required("Major is required"),
     biztechMemberStatus: Yup.string().required("This field is required"),
-    hopinStatus: Yup.string().required("This field is required"),
     // gender: Yup.string().required("This field is required"),
     // diet: Yup.string().required("This field is required"),
     heardFrom: Yup.string().required("This field is required"),
@@ -81,7 +80,6 @@ const EventFormContainer = (props) => {
   //   lname: Yup.string().required("Last name is required"),
   //   faculty: Yup.string().required("Faculty is required"),
   //   year: Yup.string().required("Level of study is required"),
-  //   hopinStatus: Yup.string().required("This field is required"),
   //   biztechMemberStatus: Yup.string().required("This field is required"),
   // });
 
@@ -93,7 +91,6 @@ const EventFormContainer = (props) => {
     faculty: "",
     major: "",
     biztechMemberStatus: "",
-    hopinStatus: "",
     // diet: "",
     heardFrom: "",
     // gender: "",
@@ -214,7 +211,6 @@ const EventFormContainer = (props) => {
       faculty,
       major,
       biztechMemberStatus,
-      hopinStatus,
       // diet,
       heardFrom,
       // gender,
@@ -244,7 +240,6 @@ const EventFormContainer = (props) => {
       registrationStatus: "registered",
       // Careers in Tech specific fields
       biztechMemberStatus,
-      hopinStatus,
     };
 
     fetchBackend("/users", "POST", body, false)
