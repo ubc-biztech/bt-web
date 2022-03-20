@@ -115,7 +115,7 @@ const styles = {
 
 }
 
-function Login() {
+function Login () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({
@@ -155,7 +155,7 @@ function Login() {
       })
     } else {
       try {
-        const signInResponse = await Auth.signIn({
+        await Auth.signIn({
           username: email,
           password: password
         })
@@ -248,7 +248,7 @@ function Login() {
                 type='password'
                 email='password'
                 value={password} onChange={(e) => setPassword(e.target.value)} />
-              <div styles={styles.errors}>{errors.passwordError}</div>
+              <div style={styles.errors}>{errors.passwordError}</div>
               <Button
                 onClick={() => handleSubmit()}
                 style={styles.submitButton}
