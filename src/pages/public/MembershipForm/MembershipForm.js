@@ -279,26 +279,24 @@ export default function MembershipForm(props) {
             groupName="heard_from"
           />
         </Grid>
-
-        
       </Grid>
       <br />
       {memberType === MEMBER_TYPES.UBC && (
-          <FormControlLabel
+        <FormControlLabel
           control={<Checkbox />}
           groupName="payment_check"
           className={classes.paymentCheck}
-          label="I have e-transferred $5.00 to rita@ubcbiztech.com *"
-          />
+          label="I have e-transferred $5.00 to anannay@ubcbiztech.com *"
+        />
       )}
       <br />
       {memberType !== MEMBER_TYPES.UBC && (
-          <FormControlLabel
+        <FormControlLabel
           control={<Checkbox />}
           groupName="payment_check"
           className={classes.paymentCheck}
-          label="I have e-transferred $7.50 to rita@ubcbiztech.com *"
-          />
+          label="I have e-transferred $7.50 to anannay@ubcbiztech.com *"
+        />
       )}
       <br />
       <Button

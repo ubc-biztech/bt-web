@@ -160,8 +160,8 @@ export default function RegisterEventForm(props) {
         {isMember === "No" && (
           <Grid item xs={renderMobileOnly ? 12 : 8}>
             <Typography>
-              Please e-transfer $10 to anannay@ubcbiztech.com to become a
-              member, and save a screenshot of your receipt.
+              Please e-transfer $10 to anannay@ubcbiztech.com to register for
+              the event and save a screenshot of your receipt.
             </Typography>
           </Grid>
         )}

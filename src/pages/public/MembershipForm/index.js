@@ -170,7 +170,7 @@ const MembershipFormContainer = (props) => {
             were a member last year and would like to continue being part of the
             BizTech Network, kindly renew your membership by filling out this
             form and send an e-transfer for the amount of $5 to
-            rita@ubcbiztech.com.
+            anannay@ubcbiztech.com.
           </Typography>
         </div>
         <Formik
