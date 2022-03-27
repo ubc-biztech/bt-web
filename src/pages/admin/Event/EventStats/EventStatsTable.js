@@ -211,6 +211,11 @@ export class EventStatsTable extends Component {
     });
   }
 
+  /**
+   * Prepares the row data for the eventStatsTable by combining events backend user data with the
+   * registration responses
+   * @param {*} users the response from the events backend
+   */
   setRows(users) {
     // combine events and registrations data
     const data = combineEventAndRegistrationData(
@@ -223,6 +228,10 @@ export class EventStatsTable extends Component {
     });
   }
 
+  /**
+   * Populates the column headers for the eventStatsTable with registration questions
+   * @param {*} registrationQuestions an array of registration questions
+   */
   setColumns(registrationQuestions) {
     const columns = [];
 

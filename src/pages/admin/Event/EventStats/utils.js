@@ -24,6 +24,11 @@ const parseRegistrationResponses = (registrations) => {
   return parsedData;
 };
 
+/**
+ * Combines the users from the events backend with the registration question responses.
+ * @param {*} users the response from the events backend
+ * @param {*} registrationResponses the array of user response objects
+ */
 const combineEventAndRegistrationData = (users, registrationResponses) => {
   const idToUserMap = new Map();
 
@@ -44,6 +49,11 @@ const combineEventAndRegistrationData = (users, registrationResponses) => {
   return [...idToUserMap.values()];
 };
 
+/**
+ * Appends the registrationQuestions to columns in a format suitable for the MaterialTable
+ * @param {*} columns the array of columns to be populated
+ * @param {*} registrationQuestions an array of registration questions
+ */
 const appendRegistrationQuestions = (columns, registrationQuestions) => {
   if (!registrationQuestions) {
     return;
