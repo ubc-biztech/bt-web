@@ -1,5 +1,6 @@
 /**
- * Helper function to get registration responses in an array of userResponses
+ * Helper function to turn registration responses in an array of userResponses,
+ * where each object has a id as pk, and multiple key value pairs of questionId: response
  * @param {*} registrations the response from the registration endpoint
  */
 const parseRegistrationResponses = (registrations) => {

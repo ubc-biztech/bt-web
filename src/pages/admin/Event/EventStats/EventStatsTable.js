@@ -163,7 +163,6 @@ export class EventStatsTable extends Component {
           : 1;
       }
     });
-    console.log(registrationNumbers);
 
     this.setState({
       registrationNumbers,
@@ -217,7 +216,6 @@ export class EventStatsTable extends Component {
    * @param {*} users the response from the events backend
    */
   setRows(users) {
-    // combine events and registrations data
     const data = combineEventAndRegistrationData(
       users,
       this.state.registrationResponses
