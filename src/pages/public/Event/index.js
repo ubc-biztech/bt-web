@@ -88,7 +88,7 @@ const MemberRoutes = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.eventState.user,
+    user: state.userState.user.data,
     events: state.eventState.events.data,
     eventsFetched: state.eventState.events.fetched,
     eventsLoading: state.eventState.events.loading
