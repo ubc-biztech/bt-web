@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Grid,
-  Typography,
-  useMediaQuery,
-} from "@material-ui/core";
+import { Button, Grid, Typography, useMediaQuery } from "@material-ui/core";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/styles";
@@ -12,25 +7,28 @@ import { useTheme } from "@material-ui/styles";
 import { COLORS } from "../../../../constants/_constants/theme";
 import CustomTextField from "../../../../components/inputs/CustomTextField";
 import CustomSelect from "../../../../components/inputs/CustomSelect";
+import CustomLink from "components/links/CustomLink";
 // import { CLIENT_URL } from "constants/index";
+const HOPIN_URL =
+  "https://hopin.com/events/ubc-biztech-blueprint-conference-2021-22/registration";
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
-    marginTop: "5px",
+    marginTop: "5px"
   },
   registerButton: {
-    textTransform: "none",
+    textTransform: "none"
   },
   registerIcon: {
     color: COLORS.FONT_COLOR,
-    marginRight: "5px",
+    marginRight: "5px"
   },
   lumaContainer: {
-    width: "100%",
+    width: "100%"
   },
   hopinDisclaimer: {
-    color: COLORS.WHITE,
-  },
+    color: COLORS.WHITE
+  }
 }));
 
 // const MEMBERSHIP_FORM_URL = `${CLIENT_URL}signup`;
@@ -42,7 +40,7 @@ export default function RegisterEventForm(props) {
 
   const {
     handleSubmit,
-    isSubmitting /* isUBCStudent  setIsUBCStuden t */,
+    isSubmitting /* isUBCStudent  setIsUBCStuden t */
   } = props;
 
   return (
@@ -109,7 +107,7 @@ export default function RegisterEventForm(props) {
         <Grid item xs={renderMobileOnly ? 12 : 8}>
           <CustomSelect
             {...props}
-            label="Level of study *"
+            label="Year Level *"
             listOfOptions={[
               "1st Year",
               "2nd Year",
@@ -117,7 +115,7 @@ export default function RegisterEventForm(props) {
               "4th Year",
               "5+ Year",
               "Other",
-              "Not Applicable",
+              "Not Applicable"
             ]}
             groupName="year"
           />
@@ -136,7 +134,7 @@ export default function RegisterEventForm(props) {
               "Land and Food Systems",
               "Forestry",
               "Other",
-              "Not Applicable",
+              "Not Applicable"
             ]}
             groupName="faculty"
           />
@@ -153,13 +151,13 @@ export default function RegisterEventForm(props) {
         <Grid item xs={renderMobileOnly ? 12 : 8}>
           <CustomSelect
             {...props}
-            label="Are you currently a Biztech Member? *"
+            label="Are you currently a Biztech member? *"
             listOfOptions={["Yes", "No"]}
             groupName="biztechMemberStatus"
           />
         </Grid>
 
-        <Grid item xs={renderMobileOnly ? 12 : 8}>
+        {/* <Grid item xs={renderMobileOnly ? 12 : 8}>
           <CustomSelect
             {...props}
             label="Preferred Pronouns *"
@@ -171,9 +169,9 @@ export default function RegisterEventForm(props) {
             ]}
             groupName="gender"
           />
-        </Grid>
+        </Grid> */}
 
-        <Grid item xs={renderMobileOnly ? 12 : 8}>
+        {/* <Grid item xs={renderMobileOnly ? 12 : 8}>
           <CustomSelect
             {...props}
             label="Dietary Restrictions *"
@@ -188,6 +186,26 @@ export default function RegisterEventForm(props) {
             ]}
             groupName="diet"
           />
+        </Grid> */}
+
+        <Grid item xs={renderMobileOnly ? 12 : 8}>
+          <CustomSelect
+            {...props}
+            label={
+              <>
+                {
+                  "To attend Blueprint & pick your workshop preferences, you MUST be registered on Hopin. Have you registered on Hopin? "
+                }
+                <CustomLink href={HOPIN_URL}>{HOPIN_URL}</CustomLink>
+                {". *"}
+              </>
+            }
+            listOfOptions={[
+              "Yes, I've already registered on Hopin!",
+              "No, but I'll do that right now!"
+            ]}
+            groupName="hopinStatus"
+          />
         </Grid>
 
         <Grid item xs={renderMobileOnly ? 12 : 8}>
@@ -201,7 +219,7 @@ export default function RegisterEventForm(props) {
               "LinkedIn",
               "Friends/Word of Mouth",
               "BizTech Newsletter",
-              "Other",
+              "Other"
             ]}
             groupName="heardFrom"
           />
@@ -228,26 +246,6 @@ export default function RegisterEventForm(props) {
             groupName="biztechMemberStatus"
           />
         </Grid> */}
-
-        <Grid item xs={12}>
-          <CustomTextField
-            {...props}
-            label="What do you want to know from our Panel: Jumpstarting Your Career In Tech? Leave your questions here!"
-            groupName="panelQuestions"
-            multiline
-            rows={3}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <CustomTextField
-            {...props}
-            label="Anything else you would like to see in this event? "
-            groupName="questions"
-            multiline
-            rows={3}
-          />
-        </Grid>
       </Grid>
       <br />
       <Button
