@@ -9,25 +9,26 @@ import CustomTextField from "../../../../components/inputs/CustomTextField";
 import CustomSelect from "../../../../components/inputs/CustomSelect";
 import CustomLink from "components/links/CustomLink";
 // import { CLIENT_URL } from "constants/index";
-const HOPIN_URL = `https://hopin.com/events/ubc-biztech-blueprint-conference-2021-22/registration`;
+const HOPIN_URL =
+  "https://hopin.com/events/ubc-biztech-blueprint-conference-2021-22/registration";
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
-    marginTop: "5px",
+    marginTop: "5px"
   },
   registerButton: {
-    textTransform: "none",
+    textTransform: "none"
   },
   registerIcon: {
     color: COLORS.FONT_COLOR,
-    marginRight: "5px",
+    marginRight: "5px"
   },
   lumaContainer: {
-    width: "100%",
+    width: "100%"
   },
   hopinDisclaimer: {
-    color: COLORS.WHITE,
-  },
+    color: COLORS.WHITE
+  }
 }));
 
 // const MEMBERSHIP_FORM_URL = `${CLIENT_URL}signup`;
@@ -39,7 +40,7 @@ export default function RegisterEventForm(props) {
 
   const {
     handleSubmit,
-    isSubmitting /* isUBCStudent  setIsUBCStuden t */,
+    isSubmitting /* isUBCStudent  setIsUBCStuden t */
   } = props;
 
   return (
@@ -114,7 +115,7 @@ export default function RegisterEventForm(props) {
               "4th Year",
               "5+ Year",
               "Other",
-              "Not Applicable",
+              "Not Applicable"
             ]}
             groupName="year"
           />
@@ -133,7 +134,7 @@ export default function RegisterEventForm(props) {
               "Land and Food Systems",
               "Forestry",
               "Other",
-              "Not Applicable",
+              "Not Applicable"
             ]}
             groupName="faculty"
           />
@@ -192,14 +193,16 @@ export default function RegisterEventForm(props) {
             {...props}
             label={
               <>
-                {`To attend Blueprint & pick your workshop preferences, you MUST be registered on Hopin. Have you registered on Hopin? `}
+                {
+                  "To attend Blueprint & pick your workshop preferences, you MUST be registered on Hopin. Have you registered on Hopin? "
+                }
                 <CustomLink href={HOPIN_URL}>{HOPIN_URL}</CustomLink>
                 {". *"}
               </>
             }
             listOfOptions={[
               "Yes, I've already registered on Hopin!",
-              "No, but I'll do that right now!",
+              "No, but I'll do that right now!"
             ]}
             groupName="hopinStatus"
           />
@@ -216,7 +219,7 @@ export default function RegisterEventForm(props) {
               "LinkedIn",
               "Friends/Word of Mouth",
               "BizTech Newsletter",
-              "Other",
+              "Other"
             ]}
             groupName="heardFrom"
           />
