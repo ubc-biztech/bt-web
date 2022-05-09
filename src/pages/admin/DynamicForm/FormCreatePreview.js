@@ -96,7 +96,7 @@ const formStyles = {
 };
 
 const FormCreatePreview = (props) => {
-  const { imageURL, eventName, description, questionsData } = props;
+  const { imageUrl, eventName, description, questionsData } = props;
 
   const displayQuestions = questionsData.map((question, index) => {
     return (
@@ -118,7 +118,7 @@ const FormCreatePreview = (props) => {
           <div style={styles.imageContainer}>
             <img
               style={styles.image}
-              src={imageURL || ImagePlaceholder}
+              src={imageUrl || ImagePlaceholder}
               alt="Registration Form"
             />
           </div>

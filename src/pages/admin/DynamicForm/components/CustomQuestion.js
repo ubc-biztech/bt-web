@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Checkbox, MenuItem, Select, TextField } from "@material-ui/core";
 import { Delete, KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
+import { useFormikContext } from "formik";
 
 // Styling Material UI Components
 const useStyles = makeStyles((theme) => ({
@@ -35,18 +36,26 @@ const useStyles = makeStyles((theme) => ({
 // EDITOR QUESTION component - made separate component in case want to make a new file
 const CustomQuestion = (props) => {
   const classes = useStyles();
+  const {
+    handleChange,
+    handleBlur,
+    errors,
+    touched,
+    submitCount,
+  } = useFormikContext();
 
-  const index = props.index;
-  const length = props.length; // the length of entire questions array
+  const { id, name, index, length } = props;
 
-  const [type, setType] = useState(props.data.type ? props.data.type : "");
-  const [label, setLabel] = useState(props.data.label ? props.data.label : "");
-  const [choices, setChoices] = useState(
-    props.data.choices ? props.data.choices : ""
-  );
-  const [required, setRequired] = useState(
-    props.data.required ? props.data.required : false
-  );
+  const { type, label, choices, required } = props.data;
+
+  //   const [type, setType] = useState(props.data.type ? props.data.type : "");
+  //   const [label, setLabel] = useState(props.data.label ? props.data.label : "");
+  //   const [choices, setChoices] = useState(
+  //     props.data.choices ? props.data.choices : ""
+  //   );
+  //   const [required, setRequired] = useState(
+  //     props.data.required ? props.data.required : false
+  //   );
 
   const questionStyles = {
     // -------- QUESTION COMPONENT STYLES ----------
@@ -97,47 +106,31 @@ const CustomQuestion = (props) => {
     },
   };
 
-  useEffect(() => {
-    setType(props.data.type);
-    setLabel(props.data.label);
-    setChoices(props.data.choices);
-    setRequired(props.data.required);
-  }, [props.data]);
-
-  const handleEditQuestionType = (e) => {
-    props.fnEdit(index, "type", e.target.value);
-    if (e.target.value === "TEXT") {
-      props.fnEdit(index, "choices", ""); // Clear options
-      setChoices("");
-    }
-    setType(e.target.value);
-  };
-
-  const handleEditQuestionLabel = (e) => {
-    props.fnEdit(index, "label", e.target.value);
-    setLabel(e.target.value);
-  };
-
-  const handleEditChoices = (e) => {
-    props.fnEdit(index, "choices", e.target.value);
-    setChoices(e.target.value);
-  };
-
-  const handleEditRequired = (e) => {
-    props.fnEdit(index, "required", e.target.checked);
-    setRequired(e.target.checked);
+  const showError = (field) => {
+    return Boolean(
+      errors.registrationQuestions &&
+        errors.registrationQuestions[index] &&
+        errors.registrationQuestions[index][field] &&
+        ((touched.registrationQuestions &&
+          touched.registrationQuestions[index] &&
+          touched.registrationQuestions[index][field]) ||
+          submitCount > 0)
+    );
   };
 
   return (
     <div style={questionStyles.card}>
       <div style={questionStyles.cardActions}>
         <Select
+          id={`${id}.type`}
+          name={`${id}.type`}
           className={classes.select}
           labelId="q-type"
           variant="outlined"
           margin="dense"
           value={type}
-          onChange={handleEditQuestionType}
+          onChange={handleChange}
+          onBlur={handleBlur}
         >
           <MenuItem value="TEXT">Text</MenuItem>
           <MenuItem value="CHECKBOX">Checkbox</MenuItem>
@@ -148,7 +141,7 @@ const CustomQuestion = (props) => {
             {!(index === 0) && (
               <div
                 style={questionStyles.arrowIcon}
-                onClick={() => props.fnMove(index, "up")}
+                onClick={() => props.fnMove(index - 1, index)}
               >
                 <KeyboardArrowUp />
               </div>
@@ -156,7 +149,7 @@ const CustomQuestion = (props) => {
             {!(index === length - 1) && (
               <div
                 style={questionStyles.arrowIcon}
-                onClick={() => props.fnMove(index, "down")}
+                onClick={() => props.fnMove(index, index + 1)}
               >
                 <KeyboardArrowDown />
               </div>
@@ -172,23 +165,38 @@ const CustomQuestion = (props) => {
       </div>
       <div>
         <TextField
+          id={`${id}.label`}
+          name={`${name}.label`}
           label="Question"
           fullWidth
           required
           margin="normal"
           variant="filled"
-          onChange={handleEditQuestionLabel}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={showError("label")}
+          helperText={
+            showError("label") && errors.registrationQuestions[index].label
+          }
           value={label}
         />
 
         {(type === "SELECT" || type === "CHECKBOX") && (
           <TextField
+            id={`${id}.choices`}
+            name={`${name}.choices`}
             label="Options"
             fullWidth
             required
             margin="normal"
             variant="filled"
-            onChange={handleEditChoices}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={showError("choices")}
+            helperText={
+              showError("choices") &&
+              errors.registrationQuestions[index].choices
+            }
             value={choices}
           />
         )}
@@ -196,10 +204,13 @@ const CustomQuestion = (props) => {
         <div style={questionStyles.requiredContainer}>
           Required?
           <Checkbox
+            id={`${id}.required`}
+            name={`${name}.required`}
             color="primary"
             aria-label="Required question?"
             checked={required}
-            onChange={handleEditRequired}
+            onChange={handleChange}
+            onBlur={handleBlur}
           />
         </div>
       </div>
