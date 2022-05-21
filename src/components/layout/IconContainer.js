@@ -38,7 +38,7 @@ function IconContainer(props) {
   return (
     <div className={classes.iconContainer}>
       <a
-        href="https://www.ubcbiztech.com"
+        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -49,7 +49,7 @@ function IconContainer(props) {
         />
       </a>
       <a
-        href="https://www.linkedin.com/company/ubcbiztech/"
+        href="https://www.linkedin.com/in/kaoshannon"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -69,13 +69,13 @@ function IconContainer(props) {
       >
         <FacebookIcon className={classes.icon} />
       </a>
-      <a
-        href="https://www.instagram.com/ubcbiztech/"
+      {/* <a
+        href="https://www.instagram.com/shannon.kao/"
         target="_blank"
         rel="noopener noreferrer"
       >
         <InstagramIcon className={classes.icon} />
-      </a>
+      </a> */}
     </div>
   );
 }

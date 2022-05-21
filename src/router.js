@@ -179,8 +179,8 @@ class Router extends Component {
               render={() => user
                 ? user.admin
                   ? <Redirect to='/admin/home' />
-                  : <Landing />
-                : <Landing />
+                  : <Trial />
+                : <Trial />
               } />
           </Switch>
           {pathname === '/' || pathname === '' ? null : <Footer />}
