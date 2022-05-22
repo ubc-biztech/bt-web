@@ -12,7 +12,7 @@ import {
   Select,
   TextField
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Helmet } from "react-helmet";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 
@@ -115,40 +115,46 @@ const FormRegister = (props) => {
     Array.from(Array(formData.questions.length))
   ); // index of errors correspond to responses array (right above)
 
-  const updateField = (index, value) => {
-    const responses = responseData;
-    responses[index] = value;
-    setResponseData(responses);
-    setRefresh(!refresh);
-  };
+  const updateField = useCallback(
+    (index, value) => {
+      const responses = responseData;
+      responses[index] = value;
+      setResponseData(responses);
+      setRefresh(!refresh);
+    },
+    [refresh, responseData]
+  );
 
-  const updateCheckbox = (index, checked, value) => {
-    // checked is true/false, if change is to checked
-    // value is the selection corresponding to checkmark
+  const updateCheckbox = useCallback(
+    (index, checked, value) => {
+      // checked is true/false, if change is to checked
+      // value is the selection corresponding to checkmark
 
-    const responses = responseData;
-    if (responses[index] && Array.isArray(responses[index])) {
-      // todo; check if response already exists (shouldn't happen, but to be safe)
+      const responses = responseData;
+      if (responses[index] && Array.isArray(responses[index])) {
+        // todo; check if response already exists (shouldn't happen, but to be safe)
 
-      if (checked) {
-        // add
-        responses[index].push(value);
+        if (checked) {
+          // add
+          responses[index].push(value);
+        } else {
+          // remove
+          const newArr = responses[index].filter((choice) => choice !== value);
+          responses[index] = newArr;
+        }
       } else {
-        // remove
-        const newArr = responses[index].filter((choice) => choice !== value);
-        responses[index] = newArr;
+        // no items in yet
+        const initialArr = [];
+        initialArr.push(value);
+        responses[index] = initialArr;
       }
-    } else {
-      // no items in yet
-      const initialArr = [];
-      initialArr.push(value);
-      responses[index] = initialArr;
-    }
-    setResponseData(responses);
-    setRefresh(!refresh);
-  };
+      setResponseData(responses);
+      setRefresh(!refresh);
+    },
+    [refresh, responseData]
+  );
 
-  const loadQuestions = () => {
+  const loadQuestions = useCallback(() => {
     const returnArr = [];
 
     for (let i = 0; i < formData.questions.length; i++) {
@@ -250,7 +256,14 @@ const FormRegister = (props) => {
     }
 
     setDisplayQuestions(returnArr);
-  };
+  }, [
+    classes.select,
+    classes.textfield,
+    responseData,
+    responseError,
+    updateCheckbox,
+    updateField
+  ]);
 
   const validifyForm = () => {
     // currently only checks "required" field of question object in questions array
@@ -329,6 +342,7 @@ const FormRegister = (props) => {
             <img
               style={styles.image}
               src={formData.image_url || ImagePlaceholder}
+              alt="Event"
             />
           </div>
           <div style={{ ...styles.section, ...styles.divider }}>
