@@ -146,10 +146,7 @@ const FormCreateForm = (props) => {
     handleBlur,
     setFieldValue,
     setFieldTouched,
-    dirty,
-    isSubmitting,
     submitCount,
-    updatePreview,
     handlePublish,
     showPublishButton,
     isPublished
@@ -479,8 +476,6 @@ const FormCreate = (props) => {
   const history = useHistory();
 
   const [event, setEvent] = useState(null);
-  const [loaded, setLoaded] = useState(false);
-  const [previewEvent, setPreviewEvent] = useState({});
 
   useEffect(() => {
     // Get the initial values
