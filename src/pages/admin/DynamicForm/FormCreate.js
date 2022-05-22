@@ -485,12 +485,6 @@ const FormCreate = (props) => {
           setEvent(response);
         }
       );
-      // const event = events.find(
-      //   (event) => event.id === eventId && event.year.toString() === eventYear
-      // );
-      // setEvent(event);
-      // setPreviewEvent(event);
-      // setLoaded(true); // TODO: move this outside if block?
     }
   }, [eventId, eventYear, events]);
 
