@@ -127,12 +127,11 @@ const MembershipFormContainer = (props) => {
       high_school
     } = values
 
+    let admin = false
     if (
       email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com'
     ) {
-      var admin = true
-    } else {
-      var admin = false
+      admin = true
     }
 
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
