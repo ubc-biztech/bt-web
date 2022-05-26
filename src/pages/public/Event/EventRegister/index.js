@@ -52,24 +52,24 @@ const EventFormContainer = (props) => {
     registeredEmail: undefined
   }
 
-  const [registration, setRegistration] = useState(initialRegistrationState)
+  const [registration, setRegistration] = useState(initialRegistrationState);
   // const [isUBCStudent, setIsUBCStudent] = useState(true);
 
   const resetRegistration = () => setRegistration(initialRegistrationState)
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
-    fname: Yup.string().required('First name is required'),
-    lname: Yup.string().required('Last name is required'),
-    year: Yup.string().required('Level of study is required'),
-    faculty: Yup.string().required('Faculty is required'),
-    major: Yup.string().required('Major is required'),
-    biztechMemberStatus: Yup.string().required('This field is required'),
-    hopinStatus: Yup.string().required('This field is required'),
+    fname: Yup.string().required("First name is required"),
+    lname: Yup.string().required("Last name is required"),
+    year: Yup.string().required("Level of study is required"),
+    faculty: Yup.string().required("Faculty is required"),
+    major: Yup.string().required("Major is required"),
+    biztechMemberStatus: Yup.string().required("This field is required"),
+    hopinStatus: Yup.string().required("This field is required"),
     // gender: Yup.string().required("This field is required"),
     // diet: Yup.string().required("This field is required"),
-    heardFrom: Yup.string().required('This field is required')
-  })
+    heardFrom: Yup.string().required("This field is required"),
+  });
 
   // const UBCValidationSchema = Yup.object({
   //   email: Yup.string().email().required(),
@@ -190,11 +190,11 @@ const EventFormContainer = (props) => {
             >
               {(props) => {
                 props = {
-                  ...props
+                  ...props,
                   // isUBCStudent,
                   // setIsUBCStudent,
-                }
-                return <EventRegisterForm {...props} />
+                };
+                return <EventRegisterForm {...props} />;
               }}
             </Formik>
           </Fragment>
@@ -216,13 +216,13 @@ const EventFormContainer = (props) => {
       biztechMemberStatus,
       hopinStatus,
       // diet,
-      heardFrom
+      heardFrom,
       // gender,
 
       // id,
-    } = values
-    const eventID = event.id
-    const eventYear = event.year
+    } = values;
+    const eventID = event.id;
+    const eventYear = event.year;
 
     const body = {
       // studentId: parseInt(id),
@@ -231,21 +231,21 @@ const EventFormContainer = (props) => {
       email,
       year,
       faculty,
-      major
+      major,
       // gender,
       // diet,
-    }
+    };
 
     const registrationBody = {
       email,
       eventID,
       year: eventYear,
       heardFrom,
-      registrationStatus: 'registered',
+      registrationStatus: "registered",
       // Careers in Tech specific fields
       biztechMemberStatus,
-      hopinStatus
-    }
+      hopinStatus,
+    };
 
     fetchBackend('/users', 'POST', body, false)
       .catch((err) => {
@@ -257,8 +257,8 @@ const EventFormContainer = (props) => {
         }
       })
       .finally(() => {
-        registerUser(registrationBody)
-      })
+        registerUser(registrationBody);
+      });
 
     // registerUser(registrationBody);
   }

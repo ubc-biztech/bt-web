@@ -1,14 +1,13 @@
-import React, { useState, Fragment } from 'react'
-import { Helmet } from 'react-helmet'
-import { Formik } from 'formik'
-import { Auth } from 'aws-amplify'
-import * as Yup from 'yup'
-import { useHistory } from 'react-router-dom'
-import MembershipForm from './MembershipForm'
-
-import { makeStyles } from '@material-ui/core/styles'
-import { Typography } from '@material-ui/core'
-import { MEMBER_TYPES } from '../../../constants/_constants/memberTypes'
+import React, { useState, Fragment } from "react";
+import { Helmet } from "react-helmet";
+import { Formik } from "formik";
+import { Auth } from 'aws-amplify';
+import * as Yup from "yup";
+import { useHistory } from "react-router-dom";
+import MembershipForm from "./MembershipForm";
+import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
+import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
 
 import { COLORS } from '../../../constants/_constants/theme'
 
@@ -45,7 +44,8 @@ const MembershipFormContainer = (props) => {
   const classes = useStyles()
   const history = useHistory()
 
-  const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC)
+  const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -154,6 +154,7 @@ const MembershipFormContainer = (props) => {
       high_school,
       admin
     }
+    setIsSubmitting(true);
     try {
       await Auth.signUp({
         username: email,
@@ -207,6 +208,7 @@ const MembershipFormContainer = (props) => {
         console.log(err)
       }
     })
+    setIsSubmitting(false);
   }
 
   return (
@@ -253,6 +255,7 @@ const MembershipFormContainer = (props) => {
           {(props) => {
             props = {
               ...props,
+              isSubmitting,
               memberType,
               setMemberType
             }

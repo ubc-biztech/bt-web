@@ -6,12 +6,15 @@ import Route from "components/routing/Route";
 import Loading from "pages/Loading";
 
 import AdminHome from "./Home";
-import EventCreate from "./Event/EventCreate";
-import EventEdit from "./Event/EventEdit";
+// import EventCreate from "./Event/EventCreate"
+// import EventEdit from "./Event/EventEdit";
 import EventStats from "./Event/EventStats";
 import Memberships from "./Memberships/Memberships";
 
 import { fetchEvents } from "store/event/eventActions";
+
+// Dynamic form for creating events
+import FormCreate from "./DynamicForm/FormCreate";
 
 const AdminRoutes = (props) => {
   const { events, eventsLoading, user } = props;
@@ -25,11 +28,13 @@ const AdminRoutes = (props) => {
   // After loaded
   return user.admin ? (
     <Switch>
-      <Route exact path="/admin/event/new" render={() => <EventCreate />} />
+      {/* <Route exact path="/admin/event/new" render={() => <EventCreate />} /> */}
+      <Route exact path="/admin/event/new" render={() => <FormCreate />} />
       <Route
         exact
         path="/admin/event/:id/:year/edit"
-        render={() => <EventEdit events={events} />}
+        render={() => <FormCreate events={events} />}
+        // render={() => <EventEdit events={events} />}
       />
       <Route
         exact
@@ -46,8 +51,8 @@ const AdminRoutes = (props) => {
       <Redirect to="/404" />
     </Switch>
   ) : (
-      <Redirect to="/forbidden" />
-    );
+    <Redirect to="/forbidden" />
+  );
 };
 
 const mapStateToProps = (state) => {
