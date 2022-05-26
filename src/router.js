@@ -55,13 +55,12 @@ class Router extends Component {
             admin: true
           })
         } else {
-          const studentId = authUser.attributes["custom:student_id"]
-          if (studentId) {
+          if (email) {
             // Perform redux actions to update user and registration states at the same time
             await Promise.all([
-              fetchUser({ userId: studentId }),
-              fetchUserRegisteredEvents({ userId: studentId })
-            ])
+              fetchUser({ userId: email }),
+              fetchUserRegisteredEvents({ userId: email }),
+            ]);
           } else {
             // Parse first name and last name
             const initialName = authUser.attributes.name.split(" ")
@@ -70,7 +69,7 @@ class Router extends Component {
 
             // save only essential info to redux
             await setUser({
-              email: authUser.attributes.email,
+              email: email,
               fname,
               lname
             })
@@ -84,8 +83,7 @@ class Router extends Component {
   // (otherwise, the login page will initially show on every refresh)
   componentDidMount () {
     log(
-      `Running biztech app in '${
-        process.env.REACT_APP_STAGE || "local"
+      `Running biztech app in '${process.env.REACT_APP_STAGE || "local"
       }' environment`
     )
 
@@ -109,6 +107,7 @@ class Router extends Component {
 
     // Alert the user about the need to register if they haven't
     const userNeedsRegister = user && !user.admin && !user.id
+
 
     // check if the user state has been updated
     if (!loaded) return <Loading />

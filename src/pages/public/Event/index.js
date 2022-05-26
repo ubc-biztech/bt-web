@@ -1,16 +1,16 @@
-import React, { useMemo, useEffect } from "react"
-import { connect } from "react-redux"
-import { Redirect, Switch, useParams } from "react-router-dom"
+import React, { useMemo, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { Redirect, Switch, useParams } from 'react-router-dom'
 
-import Route from "components/routing/Route"
-import NotFound from "pages/NotFound"
+import Route from 'components/routing/Route'
+import NotFound from 'pages/NotFound'
 
 // import EventDetails from './EventDetails'
-import EventRegister from "./EventRegister"
-import { fetchEvents } from "store/event/eventActions"
+import EventRegister from './EventRegister'
+import { fetchEvents } from 'store/event/eventActions'
 
 const MemberRoutes = (props) => {
-  const { events, eventsFetched, eventsLoading } = props
+  const { user, events, eventsFetched, eventsLoading } = props
 
   const { id: eventId, year: eventYear } = useParams()
 
@@ -64,9 +64,10 @@ const MemberRoutes = (props) => {
     <Switch>
       <Route
         exact
-        path="/event/:id/:year/register"
+        path='/event/:id/:year/register'
         render={() => (
           <EventRegister
+            user={user}
             eventId={eventId}
             event={currentEvent}
             upcomingEvents={upcomingEvents}
@@ -80,13 +81,14 @@ const MemberRoutes = (props) => {
         exact
         path='/event/:id/:year'
         render={() => <EventDetails eventId={eventId} event={currentEvent} loading={eventsLoading} />} /> */}
-      <Redirect to="/404" />
+      <Redirect to='/404' />
     </Switch>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
+    user: state.userState.user.data,
     events: state.eventState.events.data,
     eventsFetched: state.eventState.events.fetched,
     eventsLoading: state.eventState.events.loading

@@ -1,61 +1,61 @@
-import React, { useState, Fragment } from "react";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import React, { useState, Fragment } from 'react'
+import { Helmet } from 'react-helmet'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
 
-import EventView from "components/Event/EventView";
-import EventRegisterForm from "./EventRegisterForm";
-import EventRegisterSuccess from "./EventRegisterSuccess";
-import NotFound from "pages/NotFound";
+import EventView from 'components/Event/EventView'
+import EventRegisterForm from './EventRegisterForm'
+import EventRegisterSuccess from './EventRegisterSuccess'
+import NotFound from 'pages/NotFound'
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
+import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Paper, Typography } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
 
-import { COLORS } from "../../../../constants/_constants/theme";
+import { COLORS } from '../../../../constants/_constants/theme'
 
-import { fetchBackend } from "utils";
+import { fetchBackend } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up('sm')]: {
       width: 850,
-      margin: "auto",
-    },
+      margin: 'auto'
+    }
   },
   paper: {
-    [theme.breakpoints.up("sm")]: {
-      margin: theme.spacing(3),
-    },
+    [theme.breakpoints.up('sm')]: {
+      margin: theme.spacing(3)
+    }
   },
   content: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(3)
   },
   registrationHeader: {
     borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
-    marginTop: "35px",
-    paddingLeft: "19px",
-    marginLeft: "11px",
+    marginTop: '35px',
+    paddingLeft: '19px',
+    marginLeft: '11px'
   },
   registrationText: {
-    fontWeight: "bold",
-    fontSize: "24px",
-  },
-}));
+    fontWeight: 'bold',
+    fontSize: '24px'
+  }
+}))
 
 const EventFormContainer = (props) => {
-  const classes = useStyles();
-  const { eventId, event, upcomingEvents, loading } = props;
+  const classes = useStyles()
+  const { user, eventId, event, upcomingEvents, loading } = props
 
   const initialRegistrationState = {
     isRegistered: false,
-    registeredEmail: undefined,
-  };
+    registeredEmail: undefined
+  }
 
   const [registration, setRegistration] = useState(initialRegistrationState);
   // const [isUBCStudent, setIsUBCStudent] = useState(true);
 
-  const resetRegistration = () => setRegistration(initialRegistrationState);
+  const resetRegistration = () => setRegistration(initialRegistrationState)
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
@@ -86,38 +86,38 @@ const EventFormContainer = (props) => {
   // });
 
   const initialValues = {
-    email: "",
-    fname: "",
-    lname: "",
-    year: "",
-    faculty: "",
-    major: "",
-    biztechMemberStatus: "",
-    hopinStatus: "",
+    email: user.email || '',
+    fname: user.fname || '',
+    lname: user.lname || '',
+    year: user.year || '',
+    faculty: user.faculty || '',
+    major: user.major || '',
+    biztechMemberStatus: '',
+    hopinStatus: '',
     // diet: "",
-    heardFrom: "",
+    heardFrom: ''
     // gender: "",
     // id: "",
-  };
+  }
 
-  const { isRegistered, registeredEmail } = registration;
+  const { isRegistered, registeredEmail } = registration
 
   if (loading) {
     return (
       <div className={classes.layout}>
         <Paper className={classes.paper}>
           <Skeleton
-            animation="wave"
-            variant="rect"
-            width={"100%"}
+            animation='wave'
+            variant='rect'
+            width={'100%'}
             height={320}
           />
           <div className={classes.content}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Skeleton
-                  animation="wave"
-                  variant="rect"
+                  animation='wave'
+                  variant='rect'
                   width={300}
                   height={30}
                 />
@@ -127,17 +127,17 @@ const EventFormContainer = (props) => {
                 <Grid item container spacing={1} key={e}>
                   <Grid item xs={12}>
                     <Skeleton
-                      animation="wave"
-                      variant="rect"
+                      animation='wave'
+                      variant='rect'
                       width={130}
                       height={20}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <Skeleton
-                      animation="wave"
-                      variant="rect"
-                      width={"100%"}
+                      animation='wave'
+                      variant='rect'
+                      width={'100%'}
                       height={20}
                     />
                   </Grid>
@@ -146,8 +146,8 @@ const EventFormContainer = (props) => {
 
               <Grid item xs={12}>
                 <Skeleton
-                  animation="wave"
-                  variant="rect"
+                  animation='wave'
+                  variant='rect'
                   width={90}
                   height={36}
                 />
@@ -156,7 +156,7 @@ const EventFormContainer = (props) => {
           </div>
         </Paper>
       </div>
-    );
+    )
   }
   return event ? (
     <div className={classes.layout}>
@@ -203,9 +203,9 @@ const EventFormContainer = (props) => {
     </div>
   ) : (
     <NotFound message={`The event with id ${eventId} could not be found!`} />
-  );
+  )
 
-  async function submitValues(values) {
+  async function submitValues (values) {
     const {
       email,
       fname,
@@ -247,13 +247,13 @@ const EventFormContainer = (props) => {
       hopinStatus,
     };
 
-    fetchBackend("/users", "POST", body, false)
+    fetchBackend('/users', 'POST', body, false)
       .catch((err) => {
         // If the error is not "User could not be created because it already exists"
         if (err.status !== 409) {
           alert(
-            "An error occured while trying to register. Please try again or contact UBC BizTech."
-          );
+            'An error occured while trying to register. Please try again or contact UBC BizTech.'
+          )
         }
       })
       .finally(() => {
@@ -263,26 +263,26 @@ const EventFormContainer = (props) => {
     // registerUser(registrationBody);
   }
 
-  async function registerUser(registrationBody) {
-    fetchBackend("/registrations", "POST", registrationBody, false)
+  async function registerUser (registrationBody) {
+    fetchBackend('/registrations', 'POST', registrationBody, false)
       .then(() => {
         // alert('Congratulations! You are now signed up.')
         setRegistration({
           ...registration,
           isRegistered: true,
-          registeredEmail: registrationBody.email,
-        });
+          registeredEmail: registrationBody.email
+        })
       })
       .catch((err) => {
         if (err.status === 409) {
-          alert("You are already registered for this event.");
+          alert('You are already registered for this event.')
         } else {
           alert(
-            "An error occured while trying to register. Please try again or contact UBC BizTech."
-          );
+            'An error occured while trying to register. Please try again or contact UBC BizTech.'
+          )
         }
-      });
+      })
   }
-};
+}
 
-export default EventFormContainer;
+export default EventFormContainer

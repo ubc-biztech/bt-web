@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
 
 // const MEMBERSHIP_FORM_URL = `${CLIENT_URL}signup`;
 
-export default function RegisterEventForm(props) {
-  const classes = useStyles();
-  const theme = useTheme();
-  const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
+export default function RegisterEventForm (props) {
+  const classes = useStyles()
+  const theme = useTheme()
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down('sm'))
 
   const {
     handleSubmit,
@@ -45,7 +45,7 @@ export default function RegisterEventForm(props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Typography variant="caption" color={"error"}>
+      <Typography variant='caption' color={'error'}>
         * Indicates required field
       </Typography>
       <Grid className={classes.gridContainer} container spacing={3}>
@@ -53,12 +53,12 @@ export default function RegisterEventForm(props) {
           <FormControl>
             <FormGroup>
               <FormControlLabel
-                label="UBC Student"
+                label='UBC Student'
                 control={
                   <Checkbox
                     checked={isUBCStudent}
                     onChange={() => setIsUBCStudent(!isUBCStudent)}
-                    color="primary"
+                    color='primary'
                   />
                 }
               />
@@ -78,18 +78,18 @@ export default function RegisterEventForm(props) {
         <Grid item xs={12}>
           <CustomTextField
             {...props}
-            label="First Name *"
-            groupName="fname"
-            autoComplete="given-name"
+            label='First Name *'
+            groupName='fname'
+            autoComplete='given-name'
           />
         </Grid>
 
         <Grid item xs={12}>
           <CustomTextField
             {...props}
-            label="Last Name *"
-            groupName="lname"
-            autoComplete="family-name"
+            label='Last Name *'
+            groupName='lname'
+            autoComplete='family-name'
           />
         </Grid>
 
@@ -97,9 +97,9 @@ export default function RegisterEventForm(props) {
           <Grid item xs={12}>
             <CustomTextField
               {...props}
-              label="Student Number *"
-              groupName="id"
-              autoComplete="id"
+              label='Student Number *'
+              groupName='id'
+              autoComplete='id'
             />
           </Grid>
         )} */}
@@ -124,7 +124,7 @@ export default function RegisterEventForm(props) {
         <Grid item xs={renderMobileOnly ? 12 : 8}>
           <CustomSelect
             {...props}
-            label="Faculty *"
+            label='Faculty *'
             listOfOptions={[
               "Arts",
               "Commerce",
@@ -136,7 +136,7 @@ export default function RegisterEventForm(props) {
               "Other",
               "Not Applicable"
             ]}
-            groupName="faculty"
+            groupName='faculty'
           />
         </Grid>
 
@@ -151,9 +151,17 @@ export default function RegisterEventForm(props) {
         <Grid item xs={renderMobileOnly ? 12 : 8}>
           <CustomSelect
             {...props}
-            label="Are you currently a Biztech member? *"
-            listOfOptions={["Yes", "No"]}
-            groupName="biztechMemberStatus"
+            label='Level of study *'
+            listOfOptions={[
+              '1st Year',
+              '2nd Year',
+              '3rd Year',
+              '4th Year',
+              '5+ Year',
+              'Other',
+              'Not Applicable'
+            ]}
+            groupName='year'
           />
         </Grid>
 
@@ -162,12 +170,12 @@ export default function RegisterEventForm(props) {
             {...props}
             label="Preferred Pronouns *"
             listOfOptions={[
-              "He/Him/His",
-              "She/Her/Hers",
-              "They/Them/Their",
-              "Prefer not to say",
+              'He/Him/His',
+              'She/Her/Hers',
+              'They/Them/Their',
+              'Prefer not to say'
             ]}
-            groupName="gender"
+            groupName='gender'
           />
         </Grid> */}
 
@@ -204,7 +212,7 @@ export default function RegisterEventForm(props) {
               "Yes, I've already registered on Hopin!",
               "No, but I'll do that right now!"
             ]}
-            groupName="hopinStatus"
+            groupName='hopinStatus'
           />
         </Grid>
 
@@ -250,16 +258,16 @@ export default function RegisterEventForm(props) {
       <br />
       <Button
         className={classes.registerButton}
-        variant="contained"
-        color="primary"
-        type="submit"
+        variant='contained'
+        color='primary'
+        type='submit'
         disabled={isSubmitting}
       >
         <EventAvailableIcon
-          style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px" }}
+          style={{ color: COLORS.BACKGROUND_COLOR, marginRight: '5px' }}
         />
         register
       </Button>
     </form>
-  );
+  )
 }

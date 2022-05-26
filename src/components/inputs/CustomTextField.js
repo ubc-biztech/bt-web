@@ -71,7 +71,9 @@ export default function CustomTextField (props) {
     label,
     autoComplete,
     multiline,
-    rows
+    rows,
+    type,
+    initialValues
   } = props
 
   const change = (name, e) => {
@@ -80,8 +82,7 @@ export default function CustomTextField (props) {
     setFieldTouched(name, true, false)
   }
 
-  function createTextField (renderMobileOnly, label) {
-    console.log('creating new text field')
+  function createTextField (renderMobileOnly) {
     return (
       <TextField
         margin='none'
@@ -107,6 +108,8 @@ export default function CustomTextField (props) {
           }
         }}
         rows={rows}
+        defaultValue={initialValues[groupName]}
+        type={type || ''}
         padding='7px'
       />
     )
