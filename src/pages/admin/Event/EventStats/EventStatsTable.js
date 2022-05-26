@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react'
+import React, { useState, Component } from "react";
 
 import MaterialTable from "material-table";
 import {
@@ -11,10 +11,25 @@ import {
   VerticalBarSeries,
 } from "react-vis";
 
-import { MenuItem, Paper, Select, Typography, makeStyles } from '@material-ui/core'
+import {
+  MenuItem,
+  Paper,
+  Select,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
 
-import { REGISTRATION_STATUS, REGISTRATION_LABELS, COLORS } from "constants/index";
+import {
+  REGISTRATION_STATUS,
+  REGISTRATION_LABELS,
+  COLORS,
+} from "constants/index";
 import { fetchBackend } from "utils";
+import {
+  parseRegistrationResponses,
+  combineEventAndRegistrationData,
+  appendRegistrationQuestions,
+} from "./utils";
 
 const styles = {
   stats: {
@@ -24,12 +39,21 @@ const styles = {
     cursor: "pointer",
   },
   stat: {
-    margin: '10px'
+    margin: "10px",
   },
   container: {
-    marginRight: '30px'
-  }
-}
+    marginRight: "30px",
+    "& .MuiTable-root": {
+      position: "sticky",
+    },
+    width: "100%",
+    height: "calc(100vh - 32px)",
+    overflow: "auto",
+  },
+  table: {
+    display: "grid",
+  },
+};
 
 /**
  * Class component that displays event user table populated from the backend
@@ -39,12 +63,14 @@ export class EventStatsTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      registrations: {},
+      columns: {},
+      registrationNumbers: {},
       faculties: {},
       years: {},
       dietary: {},
       genders: {},
       heardFrom: {},
+      registrationResponses: {},
       registrationVisible: { visible: false, style: { display: "none" } },
       facultyVisible: { visible: false, style: { display: "none" } },
       yearVisible: { visible: false, style: { display: "none" } },
@@ -62,7 +88,6 @@ export class EventStatsTable extends Component {
     };
     await fetchBackend(`/registrations/${id}`, "PUT", body);
 
-
     this.getEventTableData(this.props.event.id, this.props.event.year);
   }
 
@@ -77,6 +102,8 @@ export class EventStatsTable extends Component {
     });
     await fetchBackend(`/registrations?${params}`, "GET")
       .then((response) => {
+        const registrationResponses = parseRegistrationResponses(response);
+
         const heardFrom = {};
         response.data.forEach((user) => {
           if (user.heardFrom) {
@@ -85,7 +112,10 @@ export class EventStatsTable extends Component {
               : 1;
           }
         });
-        this.setState({ heardFrom });
+        this.setState({
+          heardFrom,
+          registrationResponses,
+        });
       })
       .catch((err) => {
         console.log("No registrations for this event");
@@ -98,13 +128,21 @@ export class EventStatsTable extends Component {
       `/events/${eventID}/${eventYear.toString()}?${params}`,
       "GET"
     )
-      .then(async (users) => {
+      .then((users) => {
         this.registrationNumbers(users);
         this.notRegistrationNumbers(users);
+        this.setRows(users);
       })
       .catch((error) => {
         console.log(error);
       });
+
+    await fetchBackend(
+      `/events/${eventID}/${eventYear.toString()}`,
+      "GET"
+    ).then(async (event) => {
+      this.setColumns(event.registrationQuestions);
+    });
   }
 
   /**
@@ -114,21 +152,20 @@ export class EventStatsTable extends Component {
    * each data set is an array of data (arrays) sets b/c different charts accept different data
    */
 
-  async registrationNumbers(users) {
-    const registrations = {}
-    users.forEach(user => {
+  registrationNumbers(users) {
+    const registrationNumbers = {};
+    users.forEach((user) => {
       if (user.registrationStatus) {
-        registrations[user.registrationStatus] = registrations[
+        registrationNumbers[user.registrationStatus] = registrationNumbers[
           user.registrationStatus
         ]
-          ? registrations[user.registrationStatus] + 1
+          ? registrationNumbers[user.registrationStatus] + 1
           : 1;
       }
     });
 
     this.setState({
-      rows: users,
-      registrations,
+      registrationNumbers,
     });
   }
 
@@ -138,7 +175,7 @@ export class EventStatsTable extends Component {
    * calculates any stats that aren't registration stats
    * each data set is an array of data (arrays) sets b/c different charts accept different data
    */
-  async notRegistrationNumbers(users) {
+  notRegistrationNumbers(users) {
     const faculties = {};
     const years = {};
     const dietary = {};
@@ -169,7 +206,37 @@ export class EventStatsTable extends Component {
       faculties,
       years,
       genders,
-      dietary
+      dietary,
+    });
+  }
+
+  /**
+   * Prepares the row data for the eventStatsTable by combining events backend user data with the
+   * registration responses
+   * @param {*} users the response from the events backend
+   */
+  setRows(users) {
+    const data = combineEventAndRegistrationData(
+      users,
+      this.state.registrationResponses
+    );
+
+    this.setState({
+      rows: data,
+    });
+  }
+
+  /**
+   * Populates the column headers for the eventStatsTable with registration questions
+   * @param {*} registrationQuestions an array of registration questions
+   */
+  setColumns(registrationQuestions) {
+    const columns = [];
+
+    appendRegistrationQuestions(columns, registrationQuestions);
+
+    this.setState({
+      columns,
     });
   }
 
@@ -259,80 +326,90 @@ export class EventStatsTable extends Component {
       }
     };
 
+    const defaultColumns = [
+      { title: "First Name", field: "fname" },
+      { title: "Last Name", field: "lname" },
+      {
+        title: "Student Number",
+        field: "studentId",
+        type: "numeric",
+        sorting: false,
+      },
+      { title: "Email", field: "id", sorting: false },
+      {
+        title: "Registration Status",
+        field: "registrationStatus",
+        sorting: false,
+        render: (rowData) => (
+          <div>
+            <Select
+              value={rowData.registrationStatus}
+              onClick={(event) => changeRegistration(event, rowData)}
+              style={{
+                backgroundColor:
+                  rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
+                    ? COLORS.LIGHT_GREEN
+                    : rowData.registrationStatus ===
+                      REGISTRATION_STATUS.WAITLISTED
+                    ? COLORS.LIGHT_YELLOW
+                    : rowData.registrationStatus ===
+                      REGISTRATION_STATUS.CANCELLED
+                    ? COLORS.LIGHT_RED
+                    : COLORS.LIGHT_BACKGROUND_COLOR,
+                paddingLeft: "10px",
+              }}
+            >
+              <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>
+                Waitlisted
+              </MenuItem>
+              <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>
+                Checked in
+              </MenuItem>
+              <MenuItem value={REGISTRATION_STATUS.REGISTERED}>
+                Registered
+              </MenuItem>
+              <MenuItem value={REGISTRATION_STATUS.CANCELLED}>
+                Cancelled
+              </MenuItem>
+            </Select>
+          </div>
+        ),
+      },
+    ];
+
+    const registrationColumns = defaultColumns.concat(this.state.columns);
+
     /**
      * Creates stats + graphs/charts
      * Creates event table using MaterialTable library
      */
     return (
       <div style={styles.container}>
-        <Statistic statName='Registration status: ' statObj={this.state.registrations} />
-        <Statistic statName='Faculty: ' statObj={this.state.faculties} />
-        <Statistic statName='Year level: ' statObj={this.state.years} />
+        <Statistic
+          statName="Registration status: "
+          statObj={this.state.registrationNumbers}
+        />
+        <Statistic statName="Faculty: " statObj={this.state.faculties} />
+        <Statistic statName="Year level: " statObj={this.state.years} />
         {/* <Statistic statName='Dietary: ' statObj={this.state.dietary} /> */}
-        <Statistic statName='Gender: ' statObj={this.state.genders} />
-        <Statistic statName='Heard about event from: ' statObj={this.state.heardFrom} />
+        <Statistic statName="Gender: " statObj={this.state.genders} />
+        <Statistic
+          statName="Heard about event from: "
+          statObj={this.state.heardFrom}
+        />
 
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
-          columns={[
-            { title: "First Name", field: "fname" },
-            { title: "Last Name", field: "lname" },
-            {
-              title: 'Student Number',
-              field: 'studentId',
-              type: 'numeric',
-              sorting: false
-            },
-            { title: 'Email', field: 'id', sorting: false },
-            {
-              title: "Registration Status",
-              field: "registrationStatus",
-              sorting: false,
-              render: (rowData) => (
-                <div>
-                  <Select
-                    value={rowData.registrationStatus}
-                    onClick={(event) => changeRegistration(event, rowData)}
-                    style={{
-                      backgroundColor:
-                        rowData.registrationStatus ===
-                          REGISTRATION_STATUS.CHECKED_IN
-                          ? COLORS.LIGHT_GREEN
-                          : rowData.registrationStatus ===
-                            REGISTRATION_STATUS.WAITLISTED
-                            ? COLORS.LIGHT_YELLOW
-                            : rowData.registrationStatus ===
-                              REGISTRATION_STATUS.CANCELLED
-                              ? COLORS.LIGHT_RED
-                              : COLORS.LIGHT_BACKGROUND_COLOR,
-                      paddingLeft: "10px",
-                    }}
-                  >
-                    <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>
-                      Waitlisted
-                    </MenuItem>
-                    <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>
-                      Checked in
-                    </MenuItem>
-                    <MenuItem value={REGISTRATION_STATUS.REGISTERED}>
-                      Registered
-                    </MenuItem>
-                    <MenuItem value={REGISTRATION_STATUS.CANCELLED}>
-                      Cancelled
-                    </MenuItem>
-                  </Select>
-                </div>
-              ),
-            },
-          ]}
+          columns={registrationColumns}
           data={this.state.rows}
           // Configure options for the table
+          style={styles.table}
           options={{
             search: true,
             draggable: false,
             padding: "dense",
-            pageSize: 15,
-            pageSizeOptions: [15, 50, 100],
+            pageSize: 25,
+            pageSizeOptions: [25, 50, 100, 200],
             actionsColumnIndex: 5,
             exportButton: true,
             headerStyle: {
@@ -344,56 +421,81 @@ export class EventStatsTable extends Component {
           }}
           localization={{
             body: {
-              emptyDataSourceMessage: <h2 style={{
-                color: COLORS.WHITE
-              }}
-              >No attendees to display.
-              </h2>
-            }
+              emptyDataSourceMessage: (
+                <h2
+                  style={{
+                    color: COLORS.WHITE,
+                  }}
+                >
+                  No attendees to display.
+                </h2>
+              ),
+            },
           }}
         />
       </div>
-    )
+    );
   }
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paperRoot: {
-    borderRadius: '4px',
-    marginBottom: '5px'
-  }
-}))
+    borderRadius: "4px",
+    marginBottom: "5px",
+  },
+}));
 
 /**
  * represents a statistic and shows a row of the stats with a dropdown for charts
  */
 const Statistic = (props) => {
-  const classes = useStyles()
-  const [visible, setVisible] = useState(false)
+  const classes = useStyles();
+  const [visible, setVisible] = useState(false);
 
   const chartData = [
-    Object.keys(props.statObj).map(key => {
+    Object.keys(props.statObj).map((key) => {
       return {
         label: key,
-        angle: props.statObj[key]
-      }
+        angle: props.statObj[key],
+      };
     }),
-    Object.keys(props.statObj).map(key => {
+    Object.keys(props.statObj).map((key) => {
       return {
         x: key,
-        y: props.statObj[key]
-      }
-    })
-  ]
+        y: props.statObj[key],
+      };
+    }),
+  ];
 
   return (
     <Paper className={classes.paperRoot}>
       <div style={styles.stats} onClick={() => setVisible(!visible)}>
         <Typography style={styles.stat}>{props.statName} </Typography>
-        {Object.keys(props.statObj).map(key => (<Typography key={key} style={styles.stat}>{(key in REGISTRATION_LABELS ? REGISTRATION_LABELS[key] : key)}: {props.statObj[key]}</Typography>))}
-        {props.statName === 'Registration status: ' ? <Typography style={styles.stat}>Total: {Object.values(props.statObj).reduce((total, amount) => total + amount, 0)}</Typography> : <Typography />}
+        {Object.keys(props.statObj).map((key) => (
+          <Typography key={key} style={styles.stat}>
+            {key in REGISTRATION_LABELS ? REGISTRATION_LABELS[key] : key}:{" "}
+            {props.statObj[key]}
+          </Typography>
+        ))}
+        {props.statName === "Registration status: " ? (
+          <Typography style={styles.stat}>
+            Total:{" "}
+            {Object.values(props.statObj).reduce(
+              (total, amount) => total + amount,
+              0
+            )}
+          </Typography>
+        ) : (
+          <Typography />
+        )}
       </div>
-      <div style={visible ? { display: 'flex', paddingBottom: '20px', paddingLeft: '50px' } : { display: 'none' }}>
+      <div
+        style={
+          visible
+            ? { display: "flex", paddingBottom: "20px", paddingLeft: "50px" }
+            : { display: "none" }
+        }
+      >
         <RadialChart
           width={300}
           height={300}
@@ -416,6 +518,6 @@ const Statistic = (props) => {
         </XYPlot>
       </div>
     </Paper>
-  )
-}
+  );
+};
 export default EventStatsTable;
