@@ -451,7 +451,7 @@ function MemberProfile (props) {
                     className={classes.membershipCardEventNumber}
                     style={{ color: '#96FF50' }}
                   >
-                    {eventsAttended}
+                    {eventsAttended || 0}
                   </Typography>
                   <div style={{ paddingLeft: 4 }}>
                     <Typography style={{ color: '#AEC4F4', fontSize: 20 }}>

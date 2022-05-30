@@ -189,7 +189,7 @@ function EventsDashboard (props) {
 
   useEffect(() => {
     fetchEvents()
-    if (user && user.id) fetchUserRegisteredEvents({ userId: user.id })
+    if (user && user.email) fetchUserRegisteredEvents({ userId: user.email })
   }, [])
 
   const handleFavouriteEvent = async (eventId, toggle) => {
@@ -226,8 +226,8 @@ function EventsDashboard (props) {
   }
 
   const userRegisteredEventIds = useMemo(() => {
-    if (userRegisteredEvents && typeof userRegisteredEvents[0] === 'object') {
-      return userRegisteredEvents.map((event) => event.eventID)
+    if (userRegisteredEvents && typeof userRegisteredEvents.data[0] === 'object') {
+      return userRegisteredEvents.data.map((event) => event['eventID;year'].split(';')[0])
     }
 
     return []
@@ -297,8 +297,6 @@ function EventsDashboard (props) {
     timeIndex,
     isMobile
   ])
-
-  console.log(events, user, userRegisteredEvents, loading)
 
   if (loading) return <Loading message='Loading user &amp; event data...' />
   return (

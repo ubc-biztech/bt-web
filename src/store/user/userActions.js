@@ -88,7 +88,7 @@ export async function fetchUserRegisteredEvents (params = {}) {
       type: FETCH_USER_REGISTERED_EVENTS_REQUEST,
       refresh
     })
-    const response = await fetchBackend(`/registrations?id=${userId}`, 'GET')
+    const response = await fetchBackend(`/registrations?email=${userId}`, 'GET')
     await Store.dispatch({
       type: FETCH_USER_REGISTERED_EVENTS_SUCCESS,
       payload: response

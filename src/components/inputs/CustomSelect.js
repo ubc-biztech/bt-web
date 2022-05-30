@@ -83,11 +83,10 @@ export default function CustomSelect (props) {
           }
         }}
         fullWidth
-        defaultValue=''
         onClick={(e) => {
           handleSelectChange(e, groupName)
         }}
-        value={initialValues[groupName]}
+        defaultValue={initialValues[groupName]}
       >
         {listOfOptions.map((option) => (
           <MenuItem key={option} value={option} className={classes.menuItem}>
