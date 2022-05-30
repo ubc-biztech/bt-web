@@ -64,7 +64,7 @@ const EventFormContainer = (props) => {
     year: Yup.string().required("Level of study is required"),
     faculty: Yup.string().required("Faculty is required"),
     major: Yup.string().required("Major is required"),
-    biztechMemberStatus: Yup.string().required("This field is required"),
+    // biztechMemberStatus: Yup.string().required("This field is required"),
     hopinStatus: Yup.string().required("This field is required"),
     // gender: Yup.string().required("This field is required"),
     // diet: Yup.string().required("This field is required"),
