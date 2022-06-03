@@ -23,7 +23,7 @@ import MemberRoutes from "pages/member";
 import PublicEventRoutes from "pages/public/Event";
 import Landing from "pages/public/Landing";
 
-import Trial from "trial/Trial";
+import Trial from "pages/Trial";
 
 import {
   setUser,
