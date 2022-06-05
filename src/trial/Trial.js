@@ -12,10 +12,10 @@ import { COLORS } from "constants/index";
 const useStyles = makeStyles({
 
     image: {
-        marginLeft: 20,
-        marginRight: 20,
-        maxWidth: 300,
-        maxHeight: 300,
+        marginLeft: 5,
+        marginRight: 5,
+        width: "auto",
+        maxHeight: 200,
 
     }, 
     role: {
@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 
     list: {
         listStyleType: "none",
-        marginLeft: 100,
+        marginLeft: 0,
         paddingLeft: 0,
         float: "left",
         fontSize: "2em"
