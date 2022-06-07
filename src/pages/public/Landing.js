@@ -124,6 +124,5 @@ function Landing(props){
   );
 }
 
-export {LoginCheck};
 export default Landing;
 
