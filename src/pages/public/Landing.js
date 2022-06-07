@@ -11,7 +11,6 @@ import SpeechBubble from "assets/landingpagespeech.svg";
 import IconContainer from "components/layout/IconContainer";
 import Markdown from "components/layout/Markdown";
 import { Button } from "@material-ui/core";
-import { Auth } from 'aws-amplify'
 
 const useStyles = makeStyles((theme) => ({
   main: {
