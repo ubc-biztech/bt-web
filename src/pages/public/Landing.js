@@ -79,18 +79,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-async function LoginCheck(){
-  try {     
-    if (await Auth.currentUserInfo() === null) { 
-      return false;
-    } else {
-      return true;
-    }
-  } catch(e) {    
-    return false;  
-  }
-}
-
 function Landing(props){
   const classes = useStyles();
   const history = useHistory();
@@ -115,7 +103,7 @@ function Landing(props){
         <Button
         variant="contained"
         color="primary"
-        onClick={async () => (await LoginCheck()) ? history.push('/events') : history.push('/Login')}
+        onClick={() =>  history.push('/')}
         >
         Home
         </Button>
@@ -124,6 +112,4 @@ function Landing(props){
   );
 }
 
-export {LoginCheck};
 export default Landing;
-
