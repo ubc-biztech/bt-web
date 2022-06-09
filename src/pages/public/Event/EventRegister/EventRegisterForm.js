@@ -40,8 +40,12 @@ export default function RegisterEventForm (props) {
 
   const {
     handleSubmit,
-    isSubmitting /* isUBCStudent  setIsUBCStuden t */
+    isSubmitting, /* isUBCStudent  setIsUBCStuden t */
+    isReadOnly, 
+    setIsReadOnly
   } = props;
+
+  setIsReadOnly(true);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -72,6 +76,7 @@ export default function RegisterEventForm (props) {
             label="Email Address *"
             groupName="email"
             autoComplete="email"
+            readOnly={isReadOnly}
           />
         </Grid>
 

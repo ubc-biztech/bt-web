@@ -54,6 +54,7 @@ const EventFormContainer = (props) => {
 
   const [registration, setRegistration] = useState(initialRegistrationState);
   // const [isUBCStudent, setIsUBCStudent] = useState(true);
+  const [isReadOnly, setIsReadOnly] = useState(false);
 
   const resetRegistration = () => setRegistration(initialRegistrationState)
 
@@ -193,6 +194,8 @@ const EventFormContainer = (props) => {
                   ...props,
                   // isUBCStudent,
                   // setIsUBCStudent,
+                  isReadOnly,
+                  setIsReadOnly,
                 };
                 return <EventRegisterForm {...props} />;
               }}
