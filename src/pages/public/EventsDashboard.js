@@ -4,11 +4,11 @@ import React, {
   useMemo,
   useEffect,
   useRef,
-  useCallback,
-} from "react";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
+  useCallback
+} from 'react'
+import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 import {
   Tabs,
@@ -19,288 +19,286 @@ import {
   Typography,
   IconButton,
   InputBase,
-  Chip,
-} from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { StarBorder, PlaylistAddCheck, Search } from "@material-ui/icons";
-import EventCard from "components/Event/EventCard";
-import Loading from "pages/Loading";
+  Chip
+} from '@material-ui/core'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { StarBorder, PlaylistAddCheck, Search } from '@material-ui/icons'
+import EventCard from 'components/Event/EventCard'
+import Loading from 'pages/Loading'
 
-import { COLORS } from "constants/index";
-import { setUser, fetchUserRegisteredEvents } from "store/user/userActions";
-import { fetchEvents } from "store/event/eventActions";
-import { fetchBackend } from "utils";
+import { COLORS } from 'constants/index'
+import { setUser, fetchUserRegisteredEvents } from 'store/user/userActions'
+import { fetchEvents } from 'store/event/eventActions'
+import { fetchBackend } from 'utils'
 
 // States for the filters
 const PERSONALIZATION_STATES = {
   FAVOURITES: {
     index: 0,
-    displayName: "Favourites",
-    icon: <StarBorder fontSize="small" />,
+    displayName: 'Favourites',
+    icon: <StarBorder fontSize='small' />
   },
   REGISTERED: {
     index: 1,
-    displayName: "Registered",
-    icon: <PlaylistAddCheck fontSize="small" />,
+    displayName: 'Registered',
+    icon: <PlaylistAddCheck fontSize='small' />
   },
   ALL: {
     index: 2,
-    displayName: "All",
-    icon: <Search fontSize="small" />,
-  },
-};
+    displayName: 'All',
+    icon: <Search fontSize='small' />
+  }
+}
 
 const TIME_STATES = {
   UPCOMING: {
     index: 0,
-    displayName: "Upcoming",
+    displayName: 'Upcoming',
     filterFunction: (event) =>
-      event.startDate && new Date(event.startDate) >= new Date(),
+      event.startDate && new Date(event.startDate) >= new Date()
   },
   PAST: {
     index: 1,
-    displayName: "Past",
+    displayName: 'Past',
     filterFunction: (event) =>
-      event.startDate && new Date(event.startDate) < new Date(),
+      event.startDate && new Date(event.startDate) < new Date()
   },
   ALL: {
     index: 2,
-    displayName: "All",
-    filterFunction: () => true,
-  },
-};
+    displayName: 'All',
+    filterFunction: () => true
+  }
+}
 
 const useStyles = makeStyles((theme) => ({
   headerMobile: {
-    position: "absolute",
+    position: 'absolute'
   },
   container: {
-    display: "flex",
-    flexDirection: "row",
-    paddingTop: "14px",
-    paddingBottom: "14px",
+    display: 'flex',
+    flexDirection: 'row',
+    paddingTop: '14px',
+    paddingBottom: '14px'
   },
   sidePanelLayout: {
-    display: "flex",
-    float: "right",
-    flexDirection: "column",
-    textAlign: "right",
-    marginRight: "3em",
-    width: "135px",
+    display: 'flex',
+    float: 'right',
+    flexDirection: 'column',
+    textAlign: 'right',
+    marginRight: '3em',
+    width: '135px'
   },
   sidePanelButton: {
-    textAlign: "right",
-    whiteSpace: "nowrap",
+    textAlign: 'right',
+    whiteSpace: 'nowrap'
   },
   sidePanelActiveButton: {
-    textAlign: "right",
-    whiteSpace: "nowrap",
-    borderRight: `2px solid ${COLORS.BIZTECH_GREEN}`,
+    textAlign: 'right',
+    whiteSpace: 'nowrap',
+    borderRight: `2px solid ${COLORS.BIZTECH_GREEN}`
   },
   tabsLayout: {
-    width: "80%",
-    margin: "auto",
-    [theme.breakpoints.up("sm")]: {
-      margin: "unset",
-    },
+    width: '80%',
+    margin: 'auto',
+    [theme.breakpoints.up('sm')]: {
+      margin: 'unset'
+    }
   },
   tabsContainer: {
-    marginBottom: "2em",
-    display: "flex",
-    flexDirection: "row",
-    [theme.breakpoints.up("sm")]: {
-      marginRight: "30px",
-    },
+    marginBottom: '2em',
+    display: 'flex',
+    flexDirection: 'row',
+    [theme.breakpoints.up('sm')]: {
+      marginRight: '30px'
+    }
   },
   tab: {
-    fontSize: "0.9rem",
-    marginLeft: "1em",
-    marginRight: "1em",
-    textTransform: "none",
-    maxWidth: "5em",
-    width: "100%",
-    color: `${COLORS.WHITE} !important`,
+    fontSize: '0.9rem',
+    marginLeft: '1em',
+    marginRight: '1em',
+    textTransform: 'none',
+    maxWidth: '5em',
+    width: '100%',
+    color: `${COLORS.WHITE} !important`
   },
   search: {
-    display: "flex",
-    height: "100%",
-    maxWidth: "100%",
-    background: "white",
-    borderRadius: "3em",
-    marginLeft: "auto",
-    zIndex: "100",
+    display: 'flex',
+    height: '100%',
+    maxWidth: '100%',
+    background: 'white',
+    borderRadius: '3em',
+    marginLeft: 'auto',
+    zIndex: '100'
   },
   searchIcon: {
-    display: "flex",
-    background: "white",
-    borderRadius: "50%",
-    padding: "0.5em",
-    "&:hover": {
-      backgroundColor: "#0069d9",
-      borderColor: "#0062cc",
-      boxShadow: "none",
-    },
+    display: 'flex',
+    background: 'white',
+    borderRadius: '50%',
+    padding: '0.5em',
+    '&:hover': {
+      backgroundColor: '#0069d9',
+      borderColor: '#0062cc',
+      boxShadow: 'none'
+    }
   },
   searchInput: {
-    width: "0",
+    width: '0',
     color: COLORS.CARD_PAPER_COLOR,
-    transition: theme.transitions.create("width"),
+    transition: theme.transitions.create('width')
   },
   searchInputActive: {
-    width: "70vw",
+    width: '70vw',
     color: COLORS.CARD_PAPER_COLOR,
-    transition: theme.transitions.create("width"),
+    transition: theme.transitions.create('width')
   },
   mobileFilters: {
-    overflow: "scroll",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    scrollbarWidth: "none",
-    "-ms-overflow-style": "none",
+    overflow: 'scroll',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    scrollbarWidth: 'none',
+    '-ms-overflow-style': 'none'
   },
   chipFilter: {
-    width: "100%",
-    marginRight: "0.5em",
+    width: '100%',
+    marginRight: '0.5em'
   },
   rows: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-}));
+    display: 'flex',
+    flexWrap: 'wrap'
+  }
+}))
 
-function EventsDashboard(props) {
-  const [isSearch, setIsSearch] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [timeIndex, setTimeIndex] = useState(TIME_STATES.ALL.index);
+function EventsDashboard (props) {
+  const [isSearch, setIsSearch] = useState(false)
+  const [searchText, setSearchText] = useState('')
+  const [timeIndex, setTimeIndex] = useState(TIME_STATES.ALL.index)
   const [personalizationIndex, setPersonalizationIndex] = useState(
     PERSONALIZATION_STATES.ALL.index
-  );
+  )
 
-  const history = useHistory();
-  const classes = useStyles();
-  const searchInput = useRef();
+  const history = useHistory()
+  const classes = useStyles()
+  const searchInput = useRef()
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const { events, user, userRegisteredEvents, loading } = props;
+  const { events, user, userRegisteredEvents, loading } = props
 
   useEffect(() => {
-    fetchEvents();
-    if (user && user.id) fetchUserRegisteredEvents({ userId: user.id });
-  }, []);
+    fetchEvents()
+    if (user && user.email) fetchUserRegisteredEvents({ userId: user.email })
+  }, [])
 
   const handleFavouriteEvent = async (eventId, toggle) => {
-    const body = { eventID: eventId, isFavourite: toggle };
-    await fetchBackend(`/users/favEvent/${user.id}`, "PATCH", body);
+    const body = { eventID: eventId, isFavourite: toggle }
+    await fetchBackend(`/users/favEvent/${user.id}`, 'PATCH', body)
     const newEventIds = toggle
       ? [...user.favedEventsID, eventId]
-      : user.favedEventsID.filter((id) => id !== eventId);
+      : user.favedEventsID.filter((id) => id !== eventId)
     await props.setUser({
       ...user,
-      favedEventsID: newEventIds,
-    });
-  };
+      favedEventsID: newEventIds
+    })
+  }
 
   const handleTimeChange = (event, newIndex) => {
-    setTimeIndex(newIndex);
-  };
+    setTimeIndex(newIndex)
+  }
 
   const handlePersonalizationChange = (newIndex) => {
-    setPersonalizationIndex(newIndex);
-  };
+    setPersonalizationIndex(newIndex)
+  }
 
   const handleStartSearch = () => {
-    setIsSearch(true);
-    searchInput.current.focus();
-  };
+    setIsSearch(true)
+    searchInput.current.focus()
+  }
 
   const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
-  };
+    setSearchText(event.target.value)
+  }
 
-  const redirectToEvent = (e, eventId) => {
-    history.push(`/event/${eventId}/register`);
-  };
+  const redirectToEvent = (e, eventId, eventYear) => {
+    history.push(`/event/${eventId}/${eventYear}/register`)
+  }
 
   const userRegisteredEventIds = useMemo(() => {
-    if (userRegisteredEvents && typeof userRegisteredEvents[0] === "object") {
-      return userRegisteredEvents.map((event) => event.eventID);
+    if (userRegisteredEvents && typeof userRegisteredEvents.data[0] === 'object') {
+      return userRegisteredEvents.data.map((event) => event['eventID;year'].split(';')[0])
     }
 
-    return [];
-  }, [userRegisteredEvents]);
+    return []
+  }, [userRegisteredEvents])
 
   const userFavouritedEventIds = useMemo(() => {
     if (user && user.favedEventsID && user.favedEventsID.length) {
-      return user.favedEventsID;
+      return user.favedEventsID
     }
 
-    return [];
-  }, [user]);
+    return []
+  }, [user])
 
   const eventsFilteredBySearch = useMemo(() => {
-    if (!isSearch || !searchText) return events;
+    if (!isSearch || !searchText) return events
 
     return events.filter((event) =>
-      (event.ename || "").toLowerCase().includes(searchText.toLowerCase())
-    );
-  }, [events, isSearch, searchText]);
+      (event.ename || '').toLowerCase().includes(searchText.toLowerCase())
+    )
+  }, [events, isSearch, searchText])
 
   const generateEventCards = useCallback(() => {
     // filter events by personalization
-    let eventsFilteredByPersonalization = eventsFilteredBySearch;
+    let eventsFilteredByPersonalization = eventsFilteredBySearch
 
     if (personalizationIndex === PERSONALIZATION_STATES.REGISTERED.index) {
       eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) =>
         userRegisteredEventIds.includes(event.id)
-      );
+      )
     } else if (
       personalizationIndex === PERSONALIZATION_STATES.FAVOURITES.index
     ) {
       eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) =>
         userFavouritedEventIds.includes(event.id)
-      );
+      )
     }
 
     // determine which option is clicked by the personalization index
     const timeOption = Object.values(TIME_STATES).find(
       (option) => option.index === timeIndex
-    );
+    )
 
     // filter events by time
     const eventsFilteredByTime = eventsFilteredByPersonalization.filter(
       timeOption.filterFunction
-    );
+    )
 
     return eventsFilteredByTime.map((event) => (
       <EventCard
         event={event}
         key={event.id + event.year}
-        variant={!user || user.admin ? "none" : "user"}
+        variant={!user || user.admin ? 'none' : 'user'}
         favourited={userFavouritedEventIds.includes(event.id)}
         handleCardClick={redirectToEvent}
         handleFavourite={handleFavouriteEvent}
         cardStyle={
           isMobile
-            ? { width: "100%", marginRight: 0 }
-            : { width: "calc(50% - 30px)" }
+            ? { width: '100%', marginRight: 0 }
+            : { width: 'calc(50% - 30px)' }
         }
       />
-    ));
+    ))
   }, [
     eventsFilteredBySearch,
     userFavouritedEventIds,
     personalizationIndex,
     timeIndex,
-    isMobile,
-  ]);
+    isMobile
+  ])
 
-  console.log(events, user, userRegisteredEvents, loading);
-
-  if (loading) return <Loading message="Loading user &amp; event data..." />;
+  if (loading) return <Loading message='Loading user &amp; event data...' />
   return (
     <div>
       <Helmet>
@@ -310,7 +308,7 @@ function EventsDashboard(props) {
         {/* Left panel for additional event filters (only on desktop view) */}
         {!isMobile && (
           <div className={classes.sidePanelLayout}>
-            <Typography variant="h1">Events</Typography>
+            <Typography variant='h1'>Events</Typography>
             <List>
               {Object.values(PERSONALIZATION_STATES).map((pState) => (
                 <ListItem
@@ -336,14 +334,14 @@ function EventsDashboard(props) {
           {/* Upper tabs for filtering (only on desktop view) and searching for events */}
           <div className={classes.tabsContainer}>
             {isMobile ? (
-              <Typography variant="h1" className={classes.headerMobile}>
+              <Typography variant='h1' className={classes.headerMobile}>
                 Events
               </Typography>
             ) : (
               <Tabs
                 value={timeIndex}
-                indicatorColor="primary"
-                textColor="primary"
+                indicatorColor='primary'
+                textColor='primary'
                 onChange={handleTimeChange}
               >
                 {Object.values(TIME_STATES).map((tState) => (
@@ -366,11 +364,11 @@ function EventsDashboard(props) {
               </IconButton>
               <InputBase
                 inputRef={searchInput}
-                placeholder="Search…"
+                placeholder='Search…'
                 classes={{
                   input: isSearch
                     ? classes.searchInputActive
-                    : classes.searchInput,
+                    : classes.searchInput
                 }}
                 onChange={handleSearchChange}
                 onBlur={() => setIsSearch(false)}
@@ -383,13 +381,13 @@ function EventsDashboard(props) {
             <div className={classes.mobileFilters}>
               {Object.values(TIME_STATES).map(
                 (tState) =>
-                  tState.displayName !== "All" && // don't render "All"
+                  tState.displayName !== 'All' && // don't render "All"
                   (timeIndex === tState.index ? (
                     <Chip
                       key={tState.displayName}
                       className={classes.chipFilter}
-                      size="small"
-                      color="primary"
+                      size='small'
+                      color='primary'
                       label={tState.displayName}
                       onDelete={() =>
                         handleTimeChange({}, TIME_STATES.ALL.index)
@@ -399,8 +397,8 @@ function EventsDashboard(props) {
                     <Chip
                       key={tState.displayName}
                       className={classes.chipFilter}
-                      size="small"
-                      color="secondary"
+                      size='small'
+                      color='secondary'
                       label={tState.displayName}
                       onClick={() => handleTimeChange({}, tState.index)}
                     />
@@ -408,13 +406,13 @@ function EventsDashboard(props) {
               )}
               {Object.values(PERSONALIZATION_STATES).map(
                 (pState) =>
-                  pState.displayName !== "All" && // don't render "All"
+                  pState.displayName !== 'All' && // don't render "All"
                   (personalizationIndex === pState.index ? (
                     <Chip
                       key={pState.displayName}
                       className={classes.chipFilter}
-                      size="small"
-                      color="primary"
+                      size='small'
+                      color='primary'
                       label={pState.displayName}
                       onDelete={() =>
                         handlePersonalizationChange(
@@ -426,8 +424,8 @@ function EventsDashboard(props) {
                     <Chip
                       key={pState.displayName}
                       className={classes.chipFilter}
-                      size="small"
-                      color="secondary"
+                      size='small'
+                      color='secondary'
                       label={pState.displayName}
                       onClick={() => handlePersonalizationChange(pState.index)}
                     />
@@ -441,7 +439,7 @@ function EventsDashboard(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 const mapStateToProps = (state) => {
@@ -451,8 +449,8 @@ const mapStateToProps = (state) => {
     userRegisteredEvents: state.userState.userRegisteredEvents.data,
     loading:
       state.eventState.events.loading ||
-      state.userState.userRegisteredEvents.loading,
-  };
-};
+      state.userState.userRegisteredEvents.loading
+  }
+}
 
-export default connect(mapStateToProps, { setUser })(EventsDashboard);
+export default connect(mapStateToProps, { setUser })(EventsDashboard)

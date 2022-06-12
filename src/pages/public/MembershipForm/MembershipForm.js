@@ -24,9 +24,15 @@ const useStyles = makeStyles((theme) => ({
   },
   registerButton: {
     textTransform: "none",
+    backgroundColor: COLORS.BIZTECH_GREEN,
+    color: COLORS.BACKGROUND_COLOR,
+    "&:disabled": {
+      backgroundColor: COLORS.FONT_GRAY,
+      color: COLORS.WHITE,
+    },
   },
   registerIcon: {
-    color: COLORS.FONT_COLOR,
+    color: "inherit",
     marginRight: "5px",
   },
   topics: {
@@ -42,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MembershipForm(props) {
   const classes = useStyles();
 
-  const { handleSubmit, isSubmitting, memberType, setMemberType } = props;
+  const { isSubmitting, handleSubmit, memberType, setMemberType } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -86,6 +92,16 @@ export default function MembershipForm(props) {
             label="Email Address *"
             groupName="email"
             autoComplete="email"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <CustomTextField
+            {...props}
+            label="Password *"
+            groupName="password"
+            autoComplete="password"
+            type="password"
           />
         </Grid>
 
@@ -156,23 +172,23 @@ export default function MembershipForm(props) {
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-          <Grid item xs={12}>
-            <CustomSelect
-              {...props}
-              label="Level of study *"
-              listOfOptions={[
-                "1st Year",
-                "2nd Year",
-                "3rd Year",
-                "4th Year",
-                "5+ Year",
-                "Other",
-                "Not Applicable",
-              ]}
-              groupName="year"
-            />
-          </Grid>
-        )}
+            <Grid item xs={12}>
+              <CustomSelect
+                {...props}
+                label="Level of study *"
+                listOfOptions={[
+                  "1st Year",
+                  "2nd Year",
+                  "3rd Year",
+                  "4th Year",
+                  "5+ Year",
+                  "Other",
+                  "Not Applicable",
+                ]}
+                groupName="year"
+              />
+            </Grid>
+          )}
 
         {memberType === MEMBER_TYPES.HIGH_SCHOOL && (
           <Grid item xs={12}>
@@ -194,37 +210,37 @@ export default function MembershipForm(props) {
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-          <Grid item xs={12}>
-            <CustomSelect
-              {...props}
-              label="Faculty *"
-              listOfOptions={[
-                "Arts",
-                "Commerce",
-                "Science",
-                "Engineering",
-                "Kinesiology",
-                "Land and Food Systems",
-                "Forestry",
-                "Other",
-                "Not Applicable",
-              ]}
-              groupName="faculty"
-            />
-          </Grid>
-        )}
+            <Grid item xs={12}>
+              <CustomSelect
+                {...props}
+                label="Faculty *"
+                listOfOptions={[
+                  "Arts",
+                  "Commerce",
+                  "Science",
+                  "Engineering",
+                  "Kinesiology",
+                  "Land and Food Systems",
+                  "Forestry",
+                  "Other",
+                  "Not Applicable",
+                ]}
+                groupName="faculty"
+              />
+            </Grid>
+          )}
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-          <Grid item xs={12} className={classes.major}>
-            <CustomTextField
-              {...props}
-              label="Major *"
-              groupName="major"
-              autoComplete="major"
-            />
-          </Grid>
-        )}
+            <Grid item xs={12} className={classes.major}>
+              <CustomTextField
+                {...props}
+                label="Major *"
+                groupName="major"
+                autoComplete="major"
+              />
+            </Grid>
+          )}
 
         {memberType === MEMBER_TYPES.UBC && (
           <Grid item xs={12}>
@@ -236,6 +252,15 @@ export default function MembershipForm(props) {
             />
           </Grid>
         )}
+
+        <Grid item xs={12}>
+          <CustomSelect
+            {...props}
+            label="Any dietary restrictions?"
+            listOfOptions={["None", "Vegetarian", "Vegan", "Gluten Free"]}
+            groupName="diet"
+          />
+        </Grid>
 
         <Grid item xs={12}>
           <CustomSelect
@@ -274,25 +299,25 @@ export default function MembershipForm(props) {
           />
         </Grid>
 
-        
+
       </Grid>
       <br />
       {memberType === MEMBER_TYPES.UBC && (
-          <FormControlLabel
+        <FormControlLabel
           control={<Checkbox />}
           groupName="payment_check"
           className={classes.paymentCheck}
           label="I have e-transferred $5.00 to rita@ubcbiztech.com *"
-          />
+        />
       )}
       <br />
       {memberType !== MEMBER_TYPES.UBC && (
-          <FormControlLabel
+        <FormControlLabel
           control={<Checkbox />}
           groupName="payment_check"
           className={classes.paymentCheck}
           label="I have e-transferred $7.50 to rita@ubcbiztech.com *"
-          />
+        />
       )}
       <br />
       <Button
@@ -302,9 +327,7 @@ export default function MembershipForm(props) {
         type="submit"
         disabled={isSubmitting}
       >
-        <CardMembershipIcon
-          style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px" }}
-        />
+        <CardMembershipIcon className={classes.registerIcon} />
         Submit
       </Button>
     </form>

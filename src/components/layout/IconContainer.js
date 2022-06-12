@@ -1,7 +1,6 @@
 import React from "react";
 import BiztechIcon from "../icons/BiztechIcon";
 import Discord from "../icons/discord.svg";
-import { COLORS } from "../../constants/_constants/theme";
 
 import { makeStyles } from "@material-ui/core/styles";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -43,7 +42,6 @@ function IconContainer(props) {
         rel="noopener noreferrer"
       >
         <BiztechIcon
-          fill={COLORS.WHITE}
           size={renderMobileOnly ? MOBILE_SIZE : ICON_SIZE}
           margin="5px"
         />

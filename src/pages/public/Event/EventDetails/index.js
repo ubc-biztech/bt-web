@@ -51,7 +51,7 @@ const EventDetails = (props) => {
     // first, check if the user is logged in
     if (!user.id) return;
     if (!userRegisteredEvents) {
-      fetchUserRegisteredEvents({ userId: user.id });
+      fetchUserRegisteredEvents({ userId: user.email });
     } else {
       const userRegistrationObject = userRegisteredEvents.find(
         (registration) => registration.eventID === eventId

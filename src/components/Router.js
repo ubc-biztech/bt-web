@@ -54,12 +54,12 @@ class Router extends Component {
             admin: true,
           });
         } else {
-          const studentId = authUser.attributes["custom:student_id"];
-          if (studentId) {
+          const email = authUser.attributes["email"];
+          if (email) {
             // Perform redux actions to update user and registration states at the same time
             await Promise.all([
-              updateUser(studentId),
-              updateRegisteredEvents(studentId),
+              updateUser(email),
+              updateRegisteredEvents(email),
             ]);
           } else {
             // Parse first name and last name
@@ -69,7 +69,7 @@ class Router extends Component {
 
             // save only essential info to redux
             this.props.setUser({
-              email: authUser.attributes.email,
+              email: email,
               fname,
               lname,
             });
@@ -83,8 +83,7 @@ class Router extends Component {
   // (otherwise, the login page will initially show on every refresh)
   componentDidMount() {
     log(
-      `Running biztech app in '${
-        process.env.REACT_APP_STAGE || "local"
+      `Running biztech app in '${process.env.REACT_APP_STAGE || "local"
       }' environment`
     );
 

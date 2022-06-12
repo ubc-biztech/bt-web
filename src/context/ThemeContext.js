@@ -1,144 +1,144 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState } from "react"
 import {
   createMuiTheme,
-  ThemeProvider as MuiThemeProvider,
-} from "@material-ui/core/styles";
-import { COLORS } from "constants/index";
+  ThemeProvider as MuiThemeProvider
+} from "@material-ui/core/styles"
+import { COLORS } from "constants/index"
 
 export const fontFamily = [
   "Gilroy",
   "Roboto",
-  '"Helvetica Neue"',
+  "\"Helvetica Neue\"",
   "Arial",
-  "sans-serif",
-].join(",");
+  "sans-serif"
+].join(",")
 
 const darkTheme = createMuiTheme({
   overrides: {
     MuiPickersCalendarHeader: {
       iconButton: {
         backgroundColor: "transparent",
-        color: COLORS.WHITE,
+        color: COLORS.WHITE
       },
       dayLabel: {
-        color: COLORS.WHITE,
+        color: COLORS.WHITE
       }
-  },
-  MuiPickersDay: {
-    day: {
-      color: COLORS.WHITE,
-    }
-  },
-  MuiPickersClockNumber: {
-    clockNumber: {
-      color: COLORS.WHITE
-    }
-  },
+    },
+    MuiPickersDay: {
+      day: {
+        color: COLORS.WHITE
+      }
+    },
+    MuiPickersClockNumber: {
+      clockNumber: {
+        color: COLORS.WHITE
+      }
+    },
     MuiTooltip: {
       tooltip: {
         fontFamily,
-        fontSize: ".7rem",
-      },
+        fontSize: ".7rem"
+      }
     },
     MuiCard: {
       root: {
         background: COLORS.LIGHT_BACKGROUND_COLOR,
-        color: COLORS.WHITE,
-      },
+        color: COLORS.WHITE
+      }
     },
     MuiCardContent: {
       root: {
         "&:last-child": {
-          paddingBottom: "reset",
-        },
-      },
+          paddingBottom: "reset"
+        }
+      }
     },
     MuiInput: {
       root: {
-        color: COLORS.WHITE,
+        color: COLORS.WHITE
       },
       input: {
-        borderColor: COLORS.FONT_COLOR,
-      },
+        borderColor: COLORS.FONT_COLOR
+      }
     },
     MuiFormLabel: {
       root: {
-        color: COLORS.FONT_COLOR,
-      },
+        color: COLORS.FONT_COLOR
+      }
     },
-    MuiInputLabel: {
-      filled: {
-        backgroundColor: COLORS.CARD_PAPER_COLOR,
-      },
-    },
+    // MuiInputLabel: {
+    //   filled: {
+    //     backgroundColor: COLORS.CARD_PAPER_COLOR,
+    //   },
+    // },
     MuiSvgIcon: {
       root: {
-        color: COLORS.WHITE,
-      },
+        color: COLORS.WHITE
+      }
     },
     MuiFilledInput: {
       underline: {
-        borderBottom: `1px solid ${COLORS.FONT_COLOR}`,
-      },
+        borderBottom: `1px solid ${COLORS.FONT_COLOR}`
+      }
     },
     MuiIcon: {
       root: {
-        color: COLORS.WHITE,
-      },
+        color: COLORS.WHITE
+      }
     },
     MuiSelect: {
       root: {
-        color: COLORS.WHITE,
-      },
+        color: COLORS.WHITE
+      }
     },
     MuiInputBase: {
       root: {
-        color: COLORS.WHITE,
-      },
+        color: COLORS.WHITE
+      }
     },
     MuiTypography: {
       root: {
-        color: COLORS.WHITE,
-      },
+        color: COLORS.WHITE
+      }
     },
     MuiTabs: {
       indicator: {
-        backgroundColor: COLORS.BIZTECH_GREEN,
-      },
+        backgroundColor: COLORS.BIZTECH_GREEN
+      }
     },
     MuiPaper: {
       root: {
         backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR,
-        color: COLORS.WHITE,
-      },
+        color: COLORS.WHITE
+      }
     },
     MuiCardHeader: {
       subheader: {
-        color: COLORS.FONT_COLOR,
-      },
+        color: COLORS.FONT_COLOR
+      }
     },
     MuiLinearProgress: {
       root: {
         height: "8px",
-        borderRadius: "4px",
+        borderRadius: "4px"
       },
       colorPrimary: {
-        backgroundColor: "#627295",
+        backgroundColor: "#627295"
       },
       barColorPrimary: {
-        backgroundColor: COLORS.BIZTECH_GREEN,
-      },
+        backgroundColor: COLORS.BIZTECH_GREEN
+      }
     },
     MuiChip: {
       colorPrimary: {
         color: COLORS.WHITE,
-        backgroundColor: COLORS.BIZTECH_GREEN,
+        backgroundColor: COLORS.BIZTECH_GREEN
       },
       colorSecondary: {
         color: COLORS.BLACK,
-        backgroundColor: COLORS.WHITE,
-      },
-    },
+        backgroundColor: COLORS.WHITE
+      }
+    }
   },
   typography: {
     useNextVariants: true,
@@ -147,28 +147,28 @@ const darkTheme = createMuiTheme({
     h1: {
       fontWeight: 700,
       fontSize: "36px",
-      fontFamily,
+      fontFamily
     },
     h2: {
       fontWeight: 700,
       fontSize: "28px",
-      fontFamily,
+      fontFamily
     },
     h5: {
       fontSize: "1.2rem",
-      fontFamily,
-    },
+      fontFamily
+    }
   },
   shape: {
-    borderRadius: 10,
+    borderRadius: 10
   },
   palette: {
     primary: {
-      main: COLORS.BIZTECH_GREEN,
+      main: COLORS.BIZTECH_GREEN
     },
     background: {
-      default: COLORS.BACKGROUND_COLOR,
-    },
+      default: COLORS.BACKGROUND_COLOR
+    }
   },
   shadows: [
     "none",
@@ -195,9 +195,9 @@ const darkTheme = createMuiTheme({
     "0px 8px 12px rgba(34, 34, 34, 0.12)",
     "0px 8px 12px rgba(34, 34, 34, 0.12)",
     "0px 8px 12px rgba(34, 34, 34, 0.12)",
-    "0px 8px 12px rgba(34, 34, 34, 0.12)",
-  ],
-});
+    "0px 8px 12px rgba(34, 34, 34, 0.12)"
+  ]
+})
 
 // context allows us to change "darkMode" state from anywhere in the app
 // to do this, import and use "ThemeConsumer" like so:
@@ -209,17 +209,17 @@ const darkTheme = createMuiTheme({
 
 const ThemeContext = createContext({
   darkMode: true,
-  setDarkMode: () => {},
-});
+  setDarkMode: () => {}
+})
 
 // Provider is used to initialize at the root of the app
-function ThemeProvider(props) {
-  const [darkMode, setDarkMode] = useState(true);
+function ThemeProvider (props) {
+  const [darkMode, setDarkMode] = useState(true)
 
   const value = {
     darkMode,
-    setDarkMode,
-  };
+    setDarkMode
+  }
   return (
     <MuiThemeProvider theme={darkTheme}>
       <ThemeContext.Provider value={value}>
@@ -227,9 +227,9 @@ function ThemeProvider(props) {
         <div className={darkMode ? "DarkMode" : ""}>{props.children}</div>
       </ThemeContext.Provider>
     </MuiThemeProvider>
-  );
+  )
 }
 
-const ThemeConsumer = ThemeContext.Consumer;
+const ThemeConsumer = ThemeContext.Consumer
 
-export { ThemeProvider, ThemeConsumer };
+export { ThemeProvider, ThemeConsumer }
