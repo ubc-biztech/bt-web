@@ -467,42 +467,37 @@ const useStyles = makeStyles((theme) => ({
 */
 const PopoverCell = (props) => {
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorPosition, setAnchorPosition] = useState(null);
+  const [popoverText, setPopoverText] = useState("");
 
   const handlePopoverOpen = (event) => {
-    console.log("event:\n", event)
-    console.log("open", open);
-    setAnchorEl(event.currentTarget);
+    setPopoverText(event.target.getAttribute('value'));
+
+    const {top, left} = event.currentTarget.getBoundingClientRect();
+    setAnchorPosition({top, left});
   };
 
   const handlePopoverClose = () => {
-    // open = false;
-    setAnchorEl(null);
+    setAnchorPosition(null);
   };
   
-  const open = Boolean(anchorEl);
+  const open = Boolean(anchorPosition);
 
   return (<>
   <MTableCell {...props} 
       aria-owns={open ? 'mouse-over-popover' : undefined}
       aria-haspopup="true"
-      onMouseEnter={handlePopoverOpen}
-      onMouseLeave={handlePopoverClose}
+      onMouseDown={handlePopoverOpen}
       style={styles.ellipsis} 
-      // onMouseEnter={(e) => {
-      //   handlePopoverOpen(e)
-      //   console.log("hello");
-      //   console.log(props);
-      //   console.log(e.target.getAttribute('value'));
-      // }} 
     />
-  <Popover
+  {props.columnDef.field === "registrationStatus" ? <></> : <Popover
     id="mouse-over-popover"
     sx={{
-      pointerEvents: 'none',
+      pointerEvents: 'auto',
     }}
     open={open}
-    anchorEl={anchorEl}
+    anchorReference="anchorPosition"
+    anchorPosition={anchorPosition}
     anchorOrigin={{
       vertical: 'bottom',
       horizontal: 'left',
@@ -514,8 +509,8 @@ const PopoverCell = (props) => {
     onClose={handlePopoverClose}
     disableRestoreFocus
   >
-    <Typography sx={{ p: 1 }}>I use Popover.</Typography>
-  </Popover>
+    <Typography sx={{ p: 1 }}>{popoverText}</Typography>
+  </Popover>}
   </>)
 }
 
