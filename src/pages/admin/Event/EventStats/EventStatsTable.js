@@ -1,6 +1,6 @@
 import React, { useState, Component } from "react";
 
-import MaterialTable from "material-table";
+import MaterialTable, { MTableCell } from "material-table";
 import {
   RadialChart,
   XYPlot,
@@ -17,6 +17,7 @@ import {
   Select,
   Typography,
   makeStyles,
+  Popover
 } from "@material-ui/core";
 
 import {
@@ -52,6 +53,12 @@ const styles = {
   },
   table: {
     display: "grid",
+  },
+  ellipsis: {
+    maxWidth: 200, 
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
 };
 
@@ -112,6 +119,7 @@ export class EventStatsTable extends Component {
               : 1;
           }
         });
+
         this.setState({
           heardFrom,
           registrationResponses,
@@ -221,6 +229,8 @@ export class EventStatsTable extends Component {
       this.state.registrationResponses
     );
 
+    console.log("rows:\n", data);
+
     this.setState({
       rows: data,
     });
@@ -235,6 +245,7 @@ export class EventStatsTable extends Component {
 
     appendRegistrationQuestions(columns, registrationQuestions);
 
+    console.log("columns:\n", columns);
     this.setState({
       columns,
     });
@@ -270,6 +281,7 @@ export class EventStatsTable extends Component {
      * Helper function to determine whether to display action for check-in or undo check-in
      * @param {*} rowData data about the current row
      */
+
     const changeRegistration = (event, rowData) => {
       // TODO: refactor code smell
       switch (event.target.value) {
@@ -432,6 +444,10 @@ export class EventStatsTable extends Component {
               ),
             },
           }}
+          components={{
+            Cell: props => (<PopoverCell {...props}/>
+            )
+          }}
         />
       </div>
     );
@@ -444,6 +460,64 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "5px",
   },
 }));
+
+/* TODO: 
+ * the events are triggering, but the popover does not appear
+ * in our handlepopoveropen, we need to set the text of the popover to event.target.getAttribute('value')
+*/
+const PopoverCell = (props) => {
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => {
+    console.log("event:\n", event)
+    console.log("open", open);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    // open = false;
+    setAnchorEl(null);
+  };
+  
+  const open = Boolean(anchorEl);
+
+  return (<>
+  <MTableCell {...props} 
+      aria-owns={open ? 'mouse-over-popover' : undefined}
+      aria-haspopup="true"
+      onMouseEnter={handlePopoverOpen}
+      onMouseLeave={handlePopoverClose}
+      style={styles.ellipsis} 
+      // onMouseEnter={(e) => {
+      //   handlePopoverOpen(e)
+      //   console.log("hello");
+      //   console.log(props);
+      //   console.log(e.target.getAttribute('value'));
+      // }} 
+    />
+  <Popover
+    id="mouse-over-popover"
+    sx={{
+      pointerEvents: 'none',
+    }}
+    open={open}
+    anchorEl={anchorEl}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'left',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'left',
+    }}
+    onClose={handlePopoverClose}
+    disableRestoreFocus
+  >
+    <Typography sx={{ p: 1 }}>I use Popover.</Typography>
+  </Popover>
+  </>)
+}
 
 /**
  * represents a statistic and shows a row of the stats with a dropdown for charts
@@ -521,3 +595,4 @@ const Statistic = (props) => {
   );
 };
 export default EventStatsTable;
+
