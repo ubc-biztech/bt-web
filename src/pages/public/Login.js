@@ -257,8 +257,14 @@ function Login () {
               </Button>
             </form>
             <Typography style={styles.notAMember}>
-              Not a BizTech member yet?
-              <Link to='/signup' style={styles.signUpLink}>
+              Not a BizTech user yet?
+              <Link to='/user-signup' style={styles.signUpLink}>
+                Sign up here!
+              </Link>
+            </Typography>
+            <Typography style={styles.notAMember}>
+              Want to be a BizTech user AND member?
+              <Link to='/user-member-signup' style={styles.signUpLink}>
                 Sign up here!
               </Link>
             </Typography>

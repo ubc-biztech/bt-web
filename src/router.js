@@ -12,6 +12,10 @@ import Route from "components/routing/Route"
 
 import Login from "pages/public/Login"
 import LoginRedirect from "pages/public/LoginRedirect"
+import UserForm from "pages/public/UserForm/UserForm"
+import UserFormSuccess from "pages/public/UserForm/UserFormSuccess"
+import UserMembershipForm from "pages/public/UserMembershipForm/UserMembershipForm"
+import UserMembershipFormSuccess from "pages/public/UserMembershipForm/UserMembershipFormSuccess"
 import MembershipForm from "pages/public/MembershipForm"
 import MembershipFormSuccess from "pages/public/MembershipForm/MembershipFormSuccess"
 // import Signup from '../pages/public/Signup'
@@ -139,17 +143,40 @@ class Router extends Component {
               />
               <Route
                 exact
-                path="/signup"
+                path="/user-signup"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <UserForm />}
+              />
+              <Route
+                exact
+                path="/user-signup/success"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <UserFormSuccess />}
+              />
+              <Route
+                exact
+                path="/member-signup"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
                 render={() => <MembershipForm />}
               />
               <Route
                 exact
-                path="/signup/success"
+                path="/member-signup/success"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
                 render={() => <MembershipFormSuccess />}
               />
-
+              <Route
+                exact
+                path="/user-member-signup"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <UserMembershipForm />}
+              />
+              <Route
+                exact
+                path="/user-member-signup/success"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <UserMembershipFormSuccess />}
+              />
               {/* MISCELLANEOUS ROUTES */}
               <Route exact path="/forbidden" render={() => <Forbidden />} />
 

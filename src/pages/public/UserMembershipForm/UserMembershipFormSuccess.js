@@ -121,7 +121,8 @@ const MembershipFormSuccess = (props) => {
           <Typography className={classes.successMessageHeading}>
             Welcome to the BizTech community!
           </Typography>
-          <Typography>You've successfully become a BizTech member for the 2022/23 academic year.</Typography>
+          <Typography>You've successfully become a BizTech Application user and member for the 2022/23 academic year.</Typography>
+          <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
         </div>
         <div className={classes.whereToNextContainer}>
           <Typography className={classes.whereToNextHeading}>

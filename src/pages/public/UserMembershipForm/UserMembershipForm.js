@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MembershipForm(props) {
+export default function UserMembershipForm(props) {
   const classes = useStyles();
 
   const { isSubmitting, handleSubmit, memberType, setMemberType } = props;
@@ -92,6 +92,16 @@ export default function MembershipForm(props) {
             label="Email Address *"
             groupName="email"
             autoComplete="email"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <CustomTextField
+            {...props}
+            label="Password *"
+            groupName="password"
+            autoComplete="password"
+            type="password"
           />
         </Grid>
 
