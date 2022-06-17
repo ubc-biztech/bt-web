@@ -61,6 +61,7 @@ function Nav(props) {
     Auth.signOut()
       .then(() => {
         props.logout();
+        history.push('/login');
       })
       .catch((err) => console.log(err));
   };
