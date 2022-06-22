@@ -2,6 +2,7 @@ import React, { useState, Fragment } from 'react'
 import { Helmet } from 'react-helmet'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { withRouter, useHistory} from "react-router-dom";
 
 import EventView from 'components/Event/EventView'
 import EventRegisterForm from './EventRegisterForm'
@@ -11,10 +12,12 @@ import NotFound from 'pages/NotFound'
 import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Paper, Typography } from '@material-ui/core'
 import { Skeleton } from '@material-ui/lab'
+import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 
 import { COLORS } from '../../../../constants/_constants/theme'
 
 import { fetchBackend } from 'utils'
+
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -40,15 +43,21 @@ const useStyles = makeStyles((theme) => ({
   registrationText: {
     fontWeight: 'bold',
     fontSize: '24px'
+  }, 
+  ArrowBackIcon: {
+    color: COLORS.WHITE, 
+    fontSize: "40px"
   }
 }))
 
 const EventFormContainer = (props) => {
-  const classes = useStyles()
+  const classes = useStyles(); 
+  const history = useHistory();
   const { user, eventId, event, upcomingEvents, loading } = props
 
   const initialRegistrationState = {
-    isRegistered: false,
+    // set to true to see success page 
+    isRegistered: true,
     registeredEmail: undefined
   }
 
@@ -160,10 +169,18 @@ const EventFormContainer = (props) => {
   }
   return event ? (
     <div className={classes.layout}>
+
+      <ArrowBackIcon
+        cursor='pointer'
+        className={classes.ArrowBackIcon}
+        onClick={() => history.push("/events/")}
+      /> 
+
       <Helmet>
         <title>{event.ename} - Register</title>
       </Helmet>
       <EventView event={event}>
+        // set isRegistered to true to see success screen 
         {isRegistered ? (
           <EventRegisterSuccess
             email={registeredEmail}
