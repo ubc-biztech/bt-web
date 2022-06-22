@@ -86,7 +86,7 @@ export default function CustomSelect (props) {
         onClick={(e) => {
           handleSelectChange(e, groupName)
         }}
-        defaultValue={initialValues[groupName]}
+        defaultValue={initialValues ? initialValues[groupName] : ''}
       >
         {listOfOptions.map((option) => (
           <MenuItem key={option} value={option} className={classes.menuItem}>

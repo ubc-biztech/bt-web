@@ -203,6 +203,7 @@ const UserFormContainer = (props) => {
           </Typography>
         </div>
         <Formik
+          initialValues={{}}
           validationSchema={
             memberType === MEMBER_TYPES.UBC
               ? UBCValidationSchema
