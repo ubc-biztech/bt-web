@@ -155,7 +155,10 @@ const UserFormContainer = (props) => {
 
     fetchBackend('/users', 'POST', body, false)
     .then(async () => {
-      history.push('/user-signup/success')
+      history.push({
+        pathname: '/user-signup/success',
+        state: { email: email }
+      })
     })
     .catch((err) => {
       if (err.status === 409) {

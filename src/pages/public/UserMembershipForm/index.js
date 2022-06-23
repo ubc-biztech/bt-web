@@ -182,7 +182,10 @@ const UserMembershipFormContainer = (props) => {
 
     fetchBackend('/members', 'POST', body, false)
       .then(async () => {
-        history.push('/user-member-signup/success')
+        history.push({
+          pathname: '/user-member-signup/success', 
+          state: { email: email }
+        })
       })
       .catch((err) => {
         if (err.status === 409) {

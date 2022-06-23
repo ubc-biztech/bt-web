@@ -1,5 +1,6 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
+import { Auth } from 'aws-amplify';
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
@@ -107,12 +108,29 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "underline",
     },
   },
+  resendVerification: {
+    display: 'inline',
+    color: COLORS.BIZTECH_GREEN,
+    "&:hover": {
+      color: COLORS.WHITE,
+      textDecoration: "underline",
+      cursor: 'pointer',
+    },
+  }
 }));
 
 const MembershipFormSuccess = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
+  const location = useLocation();
+  const email = location.state.email;
+
+  const resendVerificationEmail = async () => {
+    await Auth.resendSignUp(email).then(() => {
+      alert('Verification Email Resent!')
+    })
+  }
 
   return (
     <Grid container spacing={4} className={classes.main}>
@@ -123,6 +141,7 @@ const MembershipFormSuccess = (props) => {
           </Typography>
           <Typography>You've successfully become a BizTech Application user and member for the 2022/23 academic year.</Typography>
           <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
+          <Typography>Didn't receive the email? <div className={classes.resendVerification} onClick={() => resendVerificationEmail()}>Click here</div> to resend it.</Typography>
         </div>
         <div className={classes.whereToNextContainer}>
           <Typography className={classes.whereToNextHeading}>
