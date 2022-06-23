@@ -121,7 +121,7 @@ class Router extends Component {
           <ScrollToTop />
           {user && <Nav admin={user.admin} />}
           <div className="content">
-            {user && userNeedsRegister && <RegisterAlert />}
+          {user && userNeedsRegister && <RegisterAlert />}
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
               {/* ADMIN ROUTES */}
@@ -157,7 +157,7 @@ class Router extends Component {
                 exact
                 path="/member-signup"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <MembershipForm />}
+                render={() => <MembershipForm user={user}/>}
               />
               <Route
                 exact

@@ -85,12 +85,18 @@ const MembershipFormContainer = (props) => {
     year: Yup.string().required('Level of study is required'),
     high_school: Yup.string().required('High School is required')
   })
-
+  
   const { user } = props
   const initialValues = {
     email: (user && user.email) || '',
-    first_name: (user && user.first_name) || '',
-    last_name: (user && user.last_name) || ''
+    first_name: (user && user.fname) || '',
+    last_name: (user && user.lname) || '',
+    student_number: (user && user.id) || '',
+    pronouns: (user && user.gender) || '',
+    year: (user && user.year) || '',
+    major: (user && user.major) || '',
+    diet: (user && user.diet) || '',
+    faculty: (user && user.faculty) || '',
   }
 
   async function submitValues (values) {
@@ -140,6 +146,20 @@ const MembershipFormContainer = (props) => {
       high_school,
       admin
     }
+
+    const userBody = {
+      studentId: student_number,
+      fname: first_name,
+      lname: last_name,
+      major: major,
+      email: email,
+      year: year,
+      faculty: faculty,
+      gender: pronouns || 'Other/Prefer not to say',
+      diet: diet || 'None',
+      admin: admin
+    }
+
     setIsSubmitting(true);
 
     // users table post
@@ -158,14 +178,8 @@ const MembershipFormContainer = (props) => {
         }
       })
 
-    fetchBackend('/users', 'PATCH', body, false).catch((err) => {
-      if (err.status === 409) {
-        alert(
-          'A user with the given e-mail already exists! Double check that your e-mail is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.'
-        )
-      } else {
-        console.log(err)
-      }
+    fetchBackend(`/users/${email}`, 'PATCH', userBody).then((response) => {
+      console.log(response)
     })
     setIsSubmitting(false);
   }

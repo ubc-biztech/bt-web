@@ -101,7 +101,6 @@ const UserFormContainer = (props) => {
 
   async function submitValues (values) {
     const {
-      education,
       email,
       password,
       first_name,
@@ -111,13 +110,7 @@ const UserFormContainer = (props) => {
       faculty,
       year,
       major,
-      prev_member,
-      international,
       diet,
-      topics,
-      heard_from,
-      university,
-      high_school
     } = values
 
     let admin = false
@@ -141,26 +134,20 @@ const UserFormContainer = (props) => {
     } catch (err) {
       // TODO: add error handler, do not let the form submit
       console.log(err)
+      setIsSubmitting(false);
       return
     }
 
     const body = {
-      education,
       email,
-      first_name,
-      last_name,
-      pronouns,
-      student_number,
+      fname: first_name,
+      lname: last_name,
+      gender: pronouns || 'Other/Prefer not to say',
+      studentId: student_number,
       faculty,
       year,
       major,
-      prev_member,
-      international,
-      diet,
-      topics,
-      heard_from,
-      university,
-      high_school,
+      diet: diet || 'None',
       admin
     }
 
@@ -168,7 +155,7 @@ const UserFormContainer = (props) => {
 
     fetchBackend('/users', 'POST', body, false)
     .then(async () => {
-      history.push('user-signup/success')
+      history.push('/user-signup/success')
     })
     .catch((err) => {
       if (err.status === 409) {

@@ -147,6 +147,20 @@ const UserMembershipFormContainer = (props) => {
       high_school,
       admin
     }
+
+    const userBody = {
+      studentId: student_number,
+      fname: first_name,
+      lname: last_name,
+      major: major,
+      email: email,
+      year: year,
+      faculty: faculty,
+      gender: pronouns || 'Other/Prefer not to say',
+      diet: diet || 'None',
+      admin: admin
+    }
+
     setIsSubmitting(true);
     try {
       await Auth.signUp({
@@ -160,6 +174,7 @@ const UserMembershipFormContainer = (props) => {
     } catch (err) {
       // TODO: add error handler, do not let the form submit
       console.log(err)
+      setIsSubmitting(false)
       return
     }
 
@@ -179,7 +194,7 @@ const UserMembershipFormContainer = (props) => {
         }
       })
 
-    fetchBackend('/users', 'POST', body, false).catch((err) => {
+    fetchBackend('/users', 'POST', userBody, false).catch((err) => {
       if (err.status === 409) {
         alert(
           'A user with the given e-mail already exists! Double check that your e-mail is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.'
