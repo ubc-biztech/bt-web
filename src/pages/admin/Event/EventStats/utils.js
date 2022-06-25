@@ -1,5 +1,5 @@
 // Constants
-const REGISTRATIONSTATUS = "registrationStatus"
+const REGISTRATIONSTATUSLABEL = "registrationStatus"
 
 
 /**
@@ -76,7 +76,7 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
 };
 
 export {
-  REGISTRATIONSTATUS as REGISTRATIONSTATUSLABEL,
+  REGISTRATIONSTATUSLABEL,
   parseRegistrationResponses,
   combineEventAndRegistrationData,
   appendRegistrationQuestions,
