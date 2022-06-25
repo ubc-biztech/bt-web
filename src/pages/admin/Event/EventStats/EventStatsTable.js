@@ -461,10 +461,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-/* TODO: 
- * the events are triggering, but the popover does not appear
- * in our handlepopoveropen, we need to set the text of the popover to event.target.getAttribute('value')
-*/
+
 const PopoverCell = (props) => {
 
   const [anchorPosition, setAnchorPosition] = useState(null);
@@ -490,7 +487,10 @@ const PopoverCell = (props) => {
       onMouseDown={handlePopoverOpen}
       style={styles.ellipsis} 
     />
-  {props.columnDef.field === "registrationStatus" ? <></> : <Popover
+  {/* NOTE: if any more dropdown columns are added in the future to the the default columns of the MaterialTable, 
+            you will need to exclude the column from the Popover effect as shown below */}
+  {props.columnDef.field === "registrationStatus" ? <></> :
+   <Popover
     id="mouse-over-popover"
     sx={{
       pointerEvents: 'auto',
