@@ -23,7 +23,6 @@ import NotFound from "pages/NotFound"
 import AdminRoutes from "pages/admin"
 import MemberRoutes from "pages/member"
 import PublicEventRoutes from "pages/public/Event"
-import Landing from "pages/public/Landing"
 
 import {
   setUser,
@@ -153,6 +152,7 @@ class Router extends Component {
 
               {/* MISCELLANEOUS ROUTES */}
               <Route exact path="/forbidden" render={() => <Forbidden />} />
+
               <Route
                 exact
                 path="/404"
@@ -190,10 +190,10 @@ class Router extends Component {
                     user.admin ? (
                       <Redirect to="/admin/home" />
                     ) : (
-                      <Landing />
+                      <Redirect to="/member/home" />
                     )
                   ) : (
-                    <Landing />
+                    <Login />
                   )
                 }
               />
