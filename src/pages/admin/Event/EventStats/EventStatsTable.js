@@ -27,6 +27,7 @@ import {
 } from "constants/index";
 import { fetchBackend } from "utils";
 import {
+  REGISTRATIONSTATUSLABEL,
   parseRegistrationResponses,
   combineEventAndRegistrationData,
   appendRegistrationQuestions,
@@ -350,7 +351,7 @@ export class EventStatsTable extends Component {
       { title: "Email", field: "id", sorting: false },
       {
         title: "Registration Status",
-        field: "registrationStatus",
+        field: REGISTRATIONSTATUSLABEL,
         sorting: false,
         render: (rowData) => (
           <div>
@@ -480,6 +481,8 @@ const PopoverCell = (props) => {
   
   const open = Boolean(anchorPosition);
 
+  const dropdownColumnFieldNames = [REGISTRATIONSTATUSLABEL]
+
   return (<>
   <MTableCell {...props} 
       aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -489,7 +492,7 @@ const PopoverCell = (props) => {
     />
   {/* NOTE: if any more dropdown columns are added in the future to the the default columns of the MaterialTable, 
             you will need to exclude the column from the Popover effect as shown below */}
-  {props.columnDef.field === "registrationStatus" ? <></> :
+  {dropdownColumnFieldNames.includes(props.columnDef.field) ? <></> :
    <Popover
     id="mouse-over-popover"
     sx={{
