@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, useHistory} from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 
 import LinkIcon from "@material-ui/icons/Link";
 import HouseChef from "assets/housechef.svg";
+import BackArrow from "assets/leftarrow.svg"; 
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
 import { COLORS } from "../../../../constants/_constants/theme";
@@ -156,6 +157,7 @@ const EventRegisterSuccess = ({
               onClick={() => copyLinkToClipboard()}
             />
           </Typography>
+          
         </div>
         <div className={classes.linkCopiedMessageContainer}>
           {displayLinkMessage ? (
