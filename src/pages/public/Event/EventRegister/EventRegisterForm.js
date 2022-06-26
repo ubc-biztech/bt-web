@@ -3,6 +3,7 @@ import { Button, Grid, Typography, useMediaQuery } from "@material-ui/core";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/styles";
+import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 
 import { COLORS } from "../../../../constants/_constants/theme";
 import CustomTextField from "../../../../components/inputs/CustomTextField";

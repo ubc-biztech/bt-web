@@ -200,7 +200,7 @@ function Login () {
             <Typography variant='h1' color='primary'>
               Sign In
             </Typography>
-            {/* <Typography>Sign in as a BizTech Exec</Typography>
+            <Typography>Sign in as a BizTech Exec</Typography>
             <Button
               onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
               style={styles.googleButton}
@@ -225,7 +225,7 @@ function Login () {
             </Button>
             <Typography variant='h2' style={styles.loginMember}>
               Email Password Sign In
-            </Typography> */}
+            </Typography>
             <form>
               <Typography
                 style={styles.emailLogin}>
