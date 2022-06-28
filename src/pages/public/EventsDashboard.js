@@ -271,9 +271,13 @@ function EventsDashboard (props) {
     )
 
     // filter events by time
-    const eventsFilteredByTime = eventsFilteredByPersonalization.filter(
+    let eventsFilteredByTime = eventsFilteredByPersonalization.filter(
       timeOption.filterFunction
     )
+
+    eventsFilteredByTime = eventsFilteredByTime.sort((a, b) => { 
+      return new Date(b.startDate) - new Date(a.startDate)
+    })
 
     return eventsFilteredByTime.map((event) => (
       <EventCard
