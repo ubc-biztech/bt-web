@@ -10,10 +10,10 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
-import { COLORS } from "../../../constants/_constants/theme";
+import { COLORS } from "constants/_constants/theme";
 
-import BiztechIcon from "../../../components/icons/BiztechIcon";
-import Discord from "../../../components/icons/discord.svg";
+import BiztechIcon from "components/icons/BiztechIcon";
+import Discord from "components/icons/discord.svg";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
@@ -106,7 +106,6 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: COLORS.WHITE,
       textDecoration: "underline",
-      cursor: 'pointer',
     },
   },
   resendVerification: {
@@ -120,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const UserFormSuccess = (props) => {
+const MembershipFormSuccess = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
@@ -132,7 +131,7 @@ const UserFormSuccess = (props) => {
       alert('Verification Email Resent!')
     })
   }
-  
+
   return (
     <Grid container spacing={4} className={classes.main}>
       <Grid item xs={12} lg={6} className={classes.leftColumn}>
@@ -140,7 +139,7 @@ const UserFormSuccess = (props) => {
           <Typography className={classes.successMessageHeading}>
             Welcome to the BizTech community!
           </Typography>
-          <Typography>You've successfully become a BizTech Application user.</Typography>
+          <Typography>You've successfully become a BizTech Application user and member for the 2022/23 academic year.</Typography>
           <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
           <Typography>Didn't receive the email? <div className={classes.resendVerification} onClick={() => resendVerificationEmail()}>Click here</div> to resend it.</Typography>
         </div>
@@ -229,4 +228,4 @@ const UserFormSuccess = (props) => {
   );
 };
 
-export default withRouter(UserFormSuccess);
+export default withRouter(MembershipFormSuccess);

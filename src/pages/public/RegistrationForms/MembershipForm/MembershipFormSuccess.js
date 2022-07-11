@@ -9,10 +9,10 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
-import { COLORS } from "../../../constants/_constants/theme";
+import { COLORS } from "constants/_constants/theme";
 
-import BiztechIcon from "../../../components/icons/BiztechIcon";
-import Discord from "../../../components/icons/discord.svg";
+import BiztechIcon from "components/icons/BiztechIcon";
+import Discord from "components/icons/discord.svg";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";

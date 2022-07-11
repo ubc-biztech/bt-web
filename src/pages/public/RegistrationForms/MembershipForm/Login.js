@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 import { Helmet } from 'react-helmet'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import {
   Button,
@@ -19,21 +19,27 @@ import { setUser } from 'store/user/userActions'
 const styles = {
   main: {
     display: 'flex',
+    flexDirection: 'column',
     height: '100vh',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   columns: {
     maxWidth: '1100px',
     margin: 'auto',
+    marginTop: 32,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap-reverse',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+  },
+  access: {
+    marginTop: 'auto',
+    fontWeight: 'bold',
+    fontSize: '24px'
   },
   card: {
     borderRadius: 10,
-    minWidth: 300,
+    minWidth: 400,
     padding: 42,
     margin: 30,
     flex: 1
@@ -159,7 +165,7 @@ function Login () {
           username: email,
           password: password
         })
-        history.push('/login-redirect')
+        history.push('/login-redirect', { redirect: '/signup' })
       } catch (error) {
         console.log('caught error', error)
         if (error.name === 'UserNotFoundException') {
@@ -174,15 +180,6 @@ function Login () {
           })
         }
         setPassword('')
-
-        // const signUpResponse = Auth.signUp({
-        //   username: email,
-        //   password: password,
-        //   attributes: {
-        //     name: 'Alvin',
-        //   }
-        // })
-        // console.log(signUpResponse)
       }
     }
   }
@@ -193,6 +190,9 @@ function Login () {
         <title>UBC BizTech - Log In or Sign Up</title>
       </Helmet>
       <CssBaseline />
+      <Typography style={styles.access}>
+          To access the membership form, please sign in.
+      </Typography>
       {/* TODO: Maintenance message here for MinVP */}
       <div style={styles.columns}>
         <Card style={styles.card}>
@@ -200,32 +200,6 @@ function Login () {
             <Typography variant='h1' color='primary'>
               Sign In
             </Typography>
-            {/* <Typography>Sign in as a BizTech Exec</Typography>
-            <Button
-              onClick={() => Auth.federatedSignIn({ provider: 'Google' })}
-              style={styles.googleButton}
-            >
-              <div style={styles.left}>
-                <img
-                  style={styles.socialIcon}
-                  alt='Google'
-                  src='./google.png'
-                />
-              </div>
-              Sign In with Google
-            </Button>
-            <Button
-              onClick={() => Auth.federatedSignIn({ provider: 'Facebook' })}
-              style={styles.facebookButton}
-            >
-              <div style={styles.left}>
-                <img style={styles.socialIcon} alt='Facebook' src='./fb.png' />
-              </div>
-              Sign In with Facebook
-            </Button>
-            <Typography variant='h2' style={styles.loginMember}>
-              Email Password Sign In
-            </Typography> */}
             <form>
               <Typography
                 style={styles.emailLogin}>
@@ -256,12 +230,6 @@ function Login () {
                 Sign in
               </Button>
             </form>
-            <Typography style={styles.notAMember}>
-              Not a BizTech user yet?
-              <Link to='/signup' style={styles.signUpLink}>
-                Sign up here!
-              </Link>
-            </Typography>
           </CardContent>
         </Card>
         <img src={LoginImage} alt='Computer' style={styles.loginImage} />
