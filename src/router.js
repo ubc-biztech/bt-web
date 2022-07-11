@@ -12,8 +12,8 @@ import Route from "components/routing/Route"
 
 import Login from "pages/public/Login"
 import LoginRedirect from "pages/public/LoginRedirect"
-import MembershipForm from "pages/public/MembershipForm"
-import MembershipFormSuccess from "pages/public/MembershipForm/MembershipFormSuccess"
+import FormSuccess from "pages/public/RegistrationForms/FormSuccess"
+import RegistrationForm from "pages/public/RegistrationForms"
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard"
 
@@ -117,7 +117,7 @@ class Router extends Component {
           <ScrollToTop />
           {user && <Nav admin={user.admin} />}
           <div className="content">
-            {user && userNeedsRegister && <RegisterAlert />}
+          {user && userNeedsRegister && <RegisterAlert />}
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
               {/* ADMIN ROUTES */}
@@ -133,23 +133,22 @@ class Router extends Component {
               {/* COMMON ROUTES */}
               <Route
                 exact
-                path="/events"
-                featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <EventsDashboard />}
-              />
-              <Route
-                exact
                 path="/signup"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <MembershipForm />}
+                render={() => <RegistrationForm user={user}/>}
               />
               <Route
                 exact
                 path="/signup/success"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <MembershipFormSuccess />}
+                render={() => <FormSuccess />}
               />
-
+              <Route
+                exact
+                path="/events"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <EventsDashboard />}
+              />
               {/* MISCELLANEOUS ROUTES */}
               <Route exact path="/forbidden" render={() => <Forbidden />} />
 

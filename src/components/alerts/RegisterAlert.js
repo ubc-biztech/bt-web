@@ -8,7 +8,7 @@ export default function RegisterAlert() {
   return (
     <Alert severity="warning">
       You are not yet registered as a member!&nbsp;
-      <Link to="/signup">Signup</Link>&nbsp; to be able to register for
+      <Link to="/member-signup">Signup</Link>&nbsp; to be able to register for
       events with ease!
     </Alert>
   );

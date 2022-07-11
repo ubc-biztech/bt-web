@@ -110,7 +110,7 @@ export default function CustomTextField (props) {
           readOnly: readOnly
         }}
         rows={rows}
-        defaultValue={initialValues[groupName]}
+        defaultValue={initialValues ? initialValues[groupName] : ''}
         type={type || ''}
         padding='7px'
       />
