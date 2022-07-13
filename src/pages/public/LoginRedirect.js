@@ -61,7 +61,7 @@ function LoginRedirect(props) {
             .then(() => {})
             .catch((err) => console.log(err))
 
-          populateUserAndRedirect(authUser, location.state.redirect || '/', true)
+          populateUserAndRedirect(authUser, '/', true)
         } else {
           // If not biztech username (normal member)
           const email = authUser['email']
