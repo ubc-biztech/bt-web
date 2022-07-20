@@ -7,7 +7,8 @@ import Nav from "components/layout/Navigation"
 import ScrollToTop from "components/layout/ScrollToTop"
 import Header from "components/layout/Header"
 import Footer from "components/layout/Footer"
-import RegisterAlert from "components/alerts/RegisterAlert"
+import UserAlert from "components/alerts/UserAlert"
+import MemberAlert from "components/alerts/MemberAlert"
 import Route from "components/routing/Route"
 
 import Login from "pages/public/Login"
@@ -103,11 +104,8 @@ class Router extends Component {
     const { user } = this.props
     const { loaded } = this.state
     const pathname = window.location.pathname
-
     // Alert the user about the need to register if they haven't
-    const userNeedsRegister = user && !user.admin && !user.id
-
-
+    const userNotMember = user && !user.isMember && !user.admin
     // check if the user state has been updated
     if (!loaded) return <Loading />
     else {
@@ -117,7 +115,8 @@ class Router extends Component {
           <ScrollToTop />
           {user && <Nav admin={user.admin} />}
           <div className="content">
-          {user && userNeedsRegister && <RegisterAlert />}
+          {!user && <UserAlert />}
+          {userNotMember && <MemberAlert />}
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
               {/* ADMIN ROUTES */}
@@ -192,7 +191,7 @@ class Router extends Component {
                       <Redirect to="/member/home" />
                     )
                   ) : (
-                    <Login />
+                    <Redirect to="/login" />
                   )
                 }
               />
