@@ -210,6 +210,7 @@ const UserMembershipFormContainer = (props) => {
       faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
       gender: pronouns || 'Other/Prefer not to say',
       diet: diet || 'None',
+      isMember: true,
       admin: admin
     }
 

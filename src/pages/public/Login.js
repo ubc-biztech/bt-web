@@ -90,6 +90,9 @@ const styles = {
   notAMember: {
     marginTop: '30px'
   },
+  continueAsGuest: {
+    marginTop: '15px'
+  },
   loginMember: {
     marginTop: '20px',
     color: COLORS.BIZTECH_GREEN
@@ -260,6 +263,12 @@ function Login () {
               Not a BizTech user yet?
               <Link to='/signup' style={styles.signUpLink}>
                 Sign up here!
+              </Link>
+            </Typography>
+            <Typography style={styles.continueAsGuest}>
+             Or
+              <Link to='/events' style={styles.signUpLink}>
+                Continue as Guest
               </Link>
             </Typography>
           </CardContent>

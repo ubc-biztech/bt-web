@@ -27,7 +27,8 @@ export function setUser (userData) {
     heardFrom,
     gender,
     admin,
-    favedEventsID
+    favedEventsID,
+    isMember,
   } = userData
 
   return {
@@ -45,7 +46,8 @@ export function setUser (userData) {
       heardFrom,
       gender,
       admin,
-      favedEventsID
+      favedEventsID,
+      isMember
     }
   }
 }
@@ -75,7 +77,8 @@ export async function fetchUser (params = {}) {
       heardFrom: response.heardFrom,
       gender: response.gender,
       admin: response.admin,
-      favedEventsID: response.favedEventsID
+      favedEventsID: response.favedEventsID,
+      isMember: response.isMember
     }
     await Store.dispatch({ type: FETCH_USER_SUCCESS, payload })
   } catch (err) {
