@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
-import { Helmet } from "react-helmet";
-import { Link, useHistory } from "react-router-dom";
-
 import {
   Button,
   Card,
@@ -11,7 +8,7 @@ import {
   CssBaseline,
   Typography
 } from "@material-ui/core";
-
+import { Link, useHistory } from "react-router-dom";
 import LoginImage from "assets/login.svg";
 import { COLORS } from "constants/index";
 import { setUser } from "store/user/userActions";
@@ -46,19 +43,7 @@ const styles = {
     marginRight: "8px",
     width: "19px"
   },
-  googleButton: {
-    marginTop: "15px",
-    textTransform: "none",
-    textAlign: "left",
-    fontWeight: "bold",
-    backgroundColor: "white",
-    color: "black",
-    width: "100%",
-    "&:hover": {
-      backgroundColor: "#eeeeee"
-    }
-  },
-  submitButton: {
+  recoverButton: {
     marginTop: "15px",
     textTransform: "none",
     textAlign: "left",
@@ -70,37 +55,15 @@ const styles = {
       backgroundColor: "#eeeeee"
     }
   },
-  facebookButton: {
-    marginTop: "12px",
-    textTransform: "none",
-    textAlign: "left",
-    fontWeight: "bold",
-    backgroundColor: "#1778F2",
-    color: COLORS.WHITE,
-    width: "100%",
-    "&:hover": {
-      backgroundColor: "#1470E4"
-    }
-  },
   loginImage: {
     maxWidth: 500,
     flex: 1,
     margin: 50
   },
-  notAMember: {
-    marginTop: "30px"
-  },
-  loginMember: {
-    marginTop: "20px",
-    color: COLORS.BIZTECH_GREEN
-  },
-  emailLogin: {
+  recoveryEmail: {
     marginTop: "5px"
   },
-  passwordLogin: {
-    marginTop: "5px"
-  },
-  signUpLink: {
+  recoverPasswordLink: {
     color: COLORS.BIZTECH_GREEN,
     marginLeft: "5px"
   },
@@ -114,7 +77,7 @@ const styles = {
   }
 };
 
-function Login() {
+function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
@@ -205,56 +168,8 @@ function Login() {
     }
   };
 
-  const handleSubmit = async () => {
-    const emailError = validateEmail(email);
-    const passwordError = validatePassword(password);
-
-    if (emailError || passwordError) {
-      // if any errors with inputs, set state and rerender (don't call signin/signup)
-      setErrors({
-        ...errors,
-        emailError: emailError,
-        passwordError: passwordError
-      });
-    } else {
-      try {
-        await Auth.signIn({
-          username: email,
-          password: password
-        });
-        history.push("/login-redirect");
-      } catch (error) {
-        console.log("caught error", error);
-        if (error.name === "UserNotFoundException") {
-          setErrors({
-            emailError: "",
-            passwordError: "Incorrect username or password."
-          });
-        } else {
-          setErrors({
-            emailError: "",
-            passwordError: error.message
-          });
-        }
-        setPassword("");
-
-        // const signUpResponse = Auth.signUp({
-        //   username: email,
-        //   password: password,
-        //   attributes: {
-        //     name: 'Alvin',
-        //   }
-        // })
-        // console.log(signUpResponse)
-      }
-    }
-  };
-
   return (
     <div style={styles.main}>
-      <Helmet>
-        <title>UBC BizTech - Log In or Sign Up</title>
-      </Helmet>
       <CssBaseline />
       {/* TODO: Maintenance message here for MinVP */}
       <div style={styles.columns}>
@@ -262,34 +177,8 @@ function Login() {
           {!reset ? (
             <CardContent>
               <Typography variant="h1" color="primary">
-                Sign In
+                Reset Your Password
               </Typography>
-              {/* <Typography>Sign in as a BizTech Exec</Typography>
-            <Button
-              onClick={() => Auth.federatedSignIn({ provider: "Google" })}
-              style={styles.googleButton}
-            >
-              <div style={styles.left}>
-                <img
-                  style={styles.socialIcon}
-                  alt="Google"
-                  src="./google.png"
-                />
-              </div>
-              Sign In with Google
-            </Button>
-            <Button
-              onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
-              style={styles.facebookButton}
-            >
-              <div style={styles.left}>
-                <img style={styles.socialIcon} alt="Facebook" src="./fb.png" />
-              </div>
-              Sign In with Facebook
-            </Button>
-            <Typography variant="h2" style={styles.loginMember}>
-              Email Password Sign In
-            </Typography> */}
               <form>
                 <Typography style={styles.emailLogin}>Email:</Typography>
                 <input
@@ -301,35 +190,12 @@ function Login() {
                 />
                 <div style={styles.errors}>{errors.emailError}</div>
               </form>
-              <form>
-                <Typography style={styles.emailLogin}>Password:</Typography>
-                <input
-                  style={styles.inputText}
-                  type="password"
-                  email="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <div style={styles.errors}>{errors.passwordError}</div>
-                <Button
-                  onClick={() => handleSubmit()}
-                  style={styles.submitButton}
-                >
-                  Sign in
-                </Button>
-              </form>
-              <Typography style={styles.notAMember}>
-                Forgot your password?
-                <Link to="/forgotpassword" style={styles.signUpLink}>
-                  Reset password
-                </Link>
-              </Typography>
-              <Typography style={styles.notAMember}>
-                Not a BizTech member yet?
-                <Link to="/signup" style={styles.signUpLink}>
-                  Sign up here!
-                </Link>
-              </Typography>
+              <Button
+                onClick={() => resetPassword()}
+                style={styles.recoverButton}
+              >
+                Send verification code
+              </Button>
             </CardContent>
           ) : (
             <CardContent>
@@ -374,7 +240,7 @@ function Login() {
                 <div style={styles.errors}>{errors.passwordError}</div>
                 <Button
                   onClick={() => resetPasswordSubmit()}
-                  style={styles.submitButton}
+                  style={styles.recoverButton}
                 >
                   Reset Password
                 </Button>
@@ -394,4 +260,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setUser })(Login);
+export default connect(mapStateToProps, { setUser })(ForgotPassword);
