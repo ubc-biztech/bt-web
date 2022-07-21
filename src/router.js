@@ -180,7 +180,7 @@ class Router extends Component {
               <Route exact path="/login" render={() => <Login />} />
               <Route
                 exact
-                path="/forgotpassword"
+                path="/forgot-password"
                 render={() => <ForgotPassword />}
               />
               {/*

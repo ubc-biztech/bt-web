@@ -6,9 +6,10 @@ import {
   Card,
   CardContent,
   CssBaseline,
-  Typography
+  Typography,
 } from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
+import { Alert } from "@material-ui/lab"
+import { Link } from "react-router-dom";
 import LoginImage from "assets/login.svg";
 import { COLORS } from "constants/index";
 import { setUser } from "store/user/userActions";
@@ -60,12 +61,16 @@ const styles = {
     flex: 1,
     margin: 50
   },
+  emailLogin: {
+    marginTop: "15px",
+  },
   recoveryEmail: {
     marginTop: "5px"
   },
   recoverPasswordLink: {
     color: COLORS.BIZTECH_GREEN,
-    marginLeft: "5px"
+    marginLeft: "5px",
+    marginTop: "5px",
   },
   inputText: {
     width: "100%",
@@ -80,14 +85,16 @@ const styles = {
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [errors, setErrors] = useState({
     emailError: "",
     passwordError: "",
     verificationCodeError: ""
   });
-  const [reset, setReset] = useState(false);
-  const history = useHistory();
+  const [isEmailSent, setEmailSent] = useState(false);
+  const [isPasswordReset, setPasswordReset] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const validateEmail = (value) => {
     let error = "";
@@ -110,20 +117,20 @@ function ForgotPassword() {
 
   const validateVerificationCode = (value) => {
     let error = "";
-    if (!value && value.length != 6) {
+    if (!value && value.length !== 6) {
       error = "Valid verification code is required";
     }
     return error;
   };
 
-  const resetPassword = () => {
+  const sendResetEmail = () => {
+    setModalOpen(false); // close the resend email modal in case it is open
     Auth.forgotPassword(email)
       .then(() => {
-        // setErrors({
-        //   ...errors,
-        //   emailError: 'Password reset email sent'
-        // })
-        setReset(true);
+        // if the user is requesting the verification code to be resent, then open the modal
+        if (isEmailSent) setModalOpen(true);
+        
+        setEmailSent(true);
         setErrors({
           ...errors,
           emailError: "",
@@ -150,14 +157,21 @@ function ForgotPassword() {
         passwordError: passwordError,
         verificationError: verificationCodeError
       });
+    } else if (confirmPassword !== password) {
+      setErrors({
+        ...errors,
+        passwordError: "Passwords do not match"
+      });
     } else {
       Auth.forgotPasswordSubmit(email, verificationCode, password)
         .then(() => {
-          setReset(false);
-          setErrors({
-            ...errors,
-            emailError: "Password reset successful! Please login."
-          });
+          setEmailSent(false);
+          setPasswordReset(true);
+          // redirect to login page after 10 seconds
+          setTimeout(() => {
+            window.location.href = "/login";
+          }
+          , 10000);
         })
         .catch((err) => {
           setErrors({
@@ -174,28 +188,42 @@ function ForgotPassword() {
       {/* TODO: Maintenance message here for MinVP */}
       <div style={styles.columns}>
         <Card style={styles.card}>
-          {!reset ? (
+          {!isEmailSent ? (
             <CardContent>
-              <Typography variant="h1" color="primary">
-                Reset Your Password
-              </Typography>
-              <form>
-                <Typography style={styles.emailLogin}>Email:</Typography>
-                <input
-                  style={styles.inputText}
-                  type="text"
-                  email="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <div style={styles.errors}>{errors.emailError}</div>
-              </form>
-              <Button
-                onClick={() => resetPassword()}
-                style={styles.recoverButton}
-              >
-                Send verification code
-              </Button>
+              {isPasswordReset ? (
+                <Typography variant="h2" color="primary">
+                  Password reset successfully! You will be automatically redirected to the login page in 10 seconds.
+                </Typography>
+                ) : (
+                  <div>
+                    <Typography variant="h1" color="primary">
+                      Reset Your Password
+                    </Typography>
+                    <form>
+                      <Typography style={styles.emailLogin}>Email:</Typography>
+                      <input
+                        style={styles.inputText}
+                        type="text"
+                        email="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <div style={styles.errors}>{errors.emailError}</div>
+                    </form>
+                    <Button
+                      onClick={() => sendResetEmail()}
+                      style={styles.recoverButton}
+                    >
+                      Send verification code
+                    </Button>
+                  </div>
+              )}
+              {/* return to login page */}
+              <Link to="/login">
+                <Typography style={styles.recoverPasswordLink}>
+                  Return to login
+                </Typography>
+              </Link>
             </CardContent>
           ) : (
             <CardContent>
@@ -206,15 +234,21 @@ function ForgotPassword() {
               <Typography>
                 Please check your email for the verification code.
               </Typography>
+              {/* resend email */}
+              <Typography>
+                If you did not receive the email, click 
+                <Link onClick={() => sendResetEmail()} style={styles.recoverPasswordLink}>here</Link> to resend.
+              </Typography>
+
+              {/* show success alert modal if email has been resent, with onClose */}
+              {isModalOpen ? (
+                <Alert severity="success" onClose={() => {setModalOpen(false)}} variant="filled">
+                  Verification code resent to {email}
+                </Alert>
+              ) : 
+                null}
+
               <form>
-                <Typography style={styles.emailLogin}>Email:</Typography>
-                <input
-                  style={styles.inputText}
-                  type="email"
-                  email="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
                 <div style={styles.errors}>{errors.emailError}</div>
                 <Typography style={styles.emailLogin}>
                   Verification Code:
@@ -228,6 +262,7 @@ function ForgotPassword() {
                 />
                 <div style={styles.errors}>{errors.verificationCodeError}</div>
               </form>
+              {/* confirm new password */}
               <form>
                 <Typography style={styles.emailLogin}>New Password:</Typography>
                 <input
@@ -238,6 +273,16 @@ function ForgotPassword() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <div style={styles.errors}>{errors.passwordError}</div>
+              </form>
+              <form>
+                <Typography style={styles.emailLogin}>Confirm New Password:</Typography>
+                <input
+                  style={styles.inputText}
+                  type="password"
+                  email="confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
                 <Button
                   onClick={() => resetPasswordSubmit()}
                   style={styles.recoverButton}
