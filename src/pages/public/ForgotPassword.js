@@ -8,8 +8,8 @@ import {
   CssBaseline,
   Typography
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { Link } from "react-router-dom";
+import { Alert } from "@material-ui/lab"
+import { Link, useHistory } from "react-router-dom";
 import LoginImage from "assets/login.svg";
 import { COLORS } from "constants/index";
 import { setUser } from "store/user/userActions";
@@ -99,6 +99,7 @@ function ForgotPassword() {
   const [isEmailSent, setEmailSent] = useState(false);
   const [isPasswordReset, setPasswordReset] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const history = useHistory();
 
   const validateEmail = (value) => {
     let error = "";
@@ -173,8 +174,12 @@ function ForgotPassword() {
           setPasswordReset(true);
           // redirect to login page after 10 seconds
           setTimeout(() => {
-            window.location.href = "/login";
-          }, 10000);
+            // check if page is still active with useHistory, then redirect to login page
+            if (history.location.pathname === "/forgot-password") {
+              history.push("/login");
+            }
+          }
+          , 10000);
         })
         .catch((err) => {
           setErrors({

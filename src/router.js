@@ -177,11 +177,23 @@ class Router extends Component {
                 path="/login-redirect"
                 render={() => <LoginRedirect />}
               />
-              <Route exact path="/login" render={() => <Login />} />
+              <Route exact path="/login" render={() => {
+                if (user) {
+                  return <Redirect to="/" />;
+                } else {
+                  return <Login />;
+                }
+              }} />
               <Route
                 exact
                 path="/forgot-password"
-                render={() => <ForgotPassword />}
+                render={() => {
+                  if (user) {
+                    return <Redirect to="/" />;
+                  } else {
+                    return <ForgotPassword />;
+                  }
+                }}
               />
               {/*
             <Route
