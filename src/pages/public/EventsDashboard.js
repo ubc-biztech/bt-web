@@ -197,7 +197,7 @@ function EventsDashboard (props) {
   // The issue is it seems we are not fetching the favourite events
   const handleFavouriteEvent = async (eventId, year, toggle) => {
     const body = { eventID: eventId, year, isFavourite: toggle }
-    console.log(await fetchBackend(`/users/favEvent/${user.email}`, 'PATCH', body)) // TODO: remove
+    console.log(await fetchBackend(`/users/favEvent/${user.email}`, 'PATCH', body)) // TODO: remove the log statement, the fetchBackend call needs to stay.
     console.log(user)
     const oldEventIds = user.favedEventsID ? user.favedEventsID : []
     const newEventIds = toggle
