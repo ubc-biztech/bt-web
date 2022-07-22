@@ -6,9 +6,9 @@ import {
   Card,
   CardContent,
   CssBaseline,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab"
+import { Alert } from "@material-ui/lab";
 import { Link } from "react-router-dom";
 import LoginImage from "assets/login.svg";
 import { COLORS } from "constants/index";
@@ -62,7 +62,7 @@ const styles = {
     margin: 50
   },
   emailLogin: {
-    marginTop: "15px",
+    marginTop: "15px"
   },
   recoveryEmail: {
     marginTop: "5px"
@@ -70,12 +70,16 @@ const styles = {
   recoverPasswordLink: {
     color: COLORS.BIZTECH_GREEN,
     marginLeft: "5px",
-    marginTop: "5px",
+    marginTop: "10px"
   },
   inputText: {
     width: "100%",
     height: "30px",
     borderRadius: 10
+  },
+  alert: {
+    display: "flex",
+    flexWrap: "wrap"
   },
   errors: {
     color: "red"
@@ -129,7 +133,7 @@ function ForgotPassword() {
       .then(() => {
         // if the user is requesting the verification code to be resent, then open the modal
         if (isEmailSent) setModalOpen(true);
-        
+
         setEmailSent(true);
         setErrors({
           ...errors,
@@ -170,8 +174,7 @@ function ForgotPassword() {
           // redirect to login page after 10 seconds
           setTimeout(() => {
             window.location.href = "/login";
-          }
-          , 10000);
+          }, 10000);
         })
         .catch((err) => {
           setErrors({
@@ -192,38 +195,42 @@ function ForgotPassword() {
             <CardContent>
               {isPasswordReset ? (
                 <Typography variant="h2" color="primary">
-                  Password reset successfully! You will be automatically redirected to the login page in 10 seconds.
+                  Password reset successfully! You will be automatically
+                  redirected to the login page in 10 seconds.
                 </Typography>
-                ) : (
-                  <div>
-                    <Typography variant="h1" color="primary">
-                      Reset Your Password
-                    </Typography>
-                    <form>
-                      <Typography style={styles.emailLogin}>Email:</Typography>
-                      <input
-                        style={styles.inputText}
-                        type="text"
-                        email="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                      <div style={styles.errors}>{errors.emailError}</div>
-                    </form>
-                    <Button
-                      onClick={() => sendResetEmail()}
-                      style={styles.recoverButton}
-                    >
-                      Send verification code
-                    </Button>
-                  </div>
+              ) : (
+                <div>
+                  <Typography variant="h1" color="primary">
+                    Reset Your Password
+                  </Typography>
+                  <form>
+                    <Typography style={styles.emailLogin}>Email:</Typography>
+                    <input
+                      style={styles.inputText}
+                      type="text"
+                      email="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <div style={styles.errors}>{errors.emailError}</div>
+                  </form>
+                  <Button
+                    type="submit"
+                    onClick={() => sendResetEmail()}
+                    style={styles.recoverButton}
+                  >
+                    Send verification code
+                  </Button>
+                </div>
               )}
               {/* return to login page */}
-              <Link to="/login">
-                <Typography style={styles.recoverPasswordLink}>
-                  Return to login
+              <div style={{ marginTop: "10px" }}>
+                <Typography>
+                  <Link to="/login" style={styles.recoverPasswordLink}>
+                    Return to login
+                  </Link>
                 </Typography>
-              </Link>
+              </div>
             </CardContent>
           ) : (
             <CardContent>
@@ -236,17 +243,28 @@ function ForgotPassword() {
               </Typography>
               {/* resend email */}
               <Typography>
-                If you did not receive the email, click 
-                <Link onClick={() => sendResetEmail()} style={styles.recoverPasswordLink}>here</Link> to resend.
+                If you did not receive the email, click
+                <Link
+                  onClick={() => sendResetEmail()}
+                  style={styles.recoverPasswordLink}
+                >
+                  here
+                </Link>{" "}
+                to resend.
               </Typography>
 
               {/* show success alert modal if email has been resent, with onClose */}
               {isModalOpen ? (
-                <Alert severity="success" onClose={() => {setModalOpen(false)}} variant="filled">
+                <Alert
+                  severity="success"
+                  onClose={() => {
+                    setModalOpen(false);
+                  }}
+                  variant="filled"
+                >
                   Verification code resent to {email}
                 </Alert>
-              ) : 
-                null}
+              ) : null}
 
               <form>
                 <div style={styles.errors}>{errors.emailError}</div>
@@ -275,7 +293,9 @@ function ForgotPassword() {
                 <div style={styles.errors}>{errors.passwordError}</div>
               </form>
               <form>
-                <Typography style={styles.emailLogin}>Confirm New Password:</Typography>
+                <Typography style={styles.emailLogin}>
+                  Confirm New Password:
+                </Typography>
                 <input
                   style={styles.inputText}
                   type="password"
@@ -284,6 +304,7 @@ function ForgotPassword() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <Button
+                  type="submit"
                   onClick={() => resetPasswordSubmit()}
                   style={styles.recoverButton}
                 >
