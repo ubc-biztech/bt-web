@@ -190,14 +190,19 @@ function EventsDashboard (props) {
   useEffect(() => {
     fetchEvents()
     if (user && user.email) fetchUserRegisteredEvents({ userId: user.email })
+    console.log(user)
   }, [])
 
-  const handleFavouriteEvent = async (eventId, toggle) => {
-    const body = { eventID: eventId, isFavourite: toggle }
-    await fetchBackend(`/users/favEvent/${user.id}`, 'PATCH', body)
+  // TODO: Everything here is GOOD. properly makes a call to the backend and updates the DB with the new backend. 
+  // The issue is it seems we are not fetching the favourite events
+  const handleFavouriteEvent = async (eventId, year, toggle) => {
+    const body = { eventID: eventId, year, isFavourite: toggle }
+    console.log(await fetchBackend(`/users/favEvent/${user.email}`, 'PATCH', body)) // TODO: remove
+    console.log(user)
+    const oldEventIds = user.favedEventsID ? user.favedEventsID : []
     const newEventIds = toggle
-      ? [...user.favedEventsID, eventId]
-      : user.favedEventsID.filter((id) => id !== eventId)
+      ? [...oldEventIds, eventId]
+      : oldEventIds.filter((id) => id !== eventId)
     await props.setUser({
       ...user,
       favedEventsID: newEventIds

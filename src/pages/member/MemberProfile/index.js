@@ -240,6 +240,7 @@ function MemberProfile (props) {
 
   const getFavouriteEvents = () => {
     fetchBackend(`/users/${user.id}`, 'GET').then(async (response) => {
+      console.log(response) // TODO: remove
       const favouriteEventIDs = response.favedEventsID
       events &&
         events.forEach((event) => {
