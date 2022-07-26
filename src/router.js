@@ -1,30 +1,31 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
-import { BrowserRouter, Switch, Redirect } from "react-router-dom";
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { Auth } from "aws-amplify"
+import { BrowserRouter, Switch, Redirect } from "react-router-dom"
 
-import Nav from "components/layout/Navigation";
-import ScrollToTop from "components/layout/ScrollToTop";
-import Header from "components/layout/Header";
-import Footer from "components/layout/Footer";
-import RegisterAlert from "components/alerts/RegisterAlert";
-import Route from "components/routing/Route";
+import Nav from "components/layout/Navigation"
+import ScrollToTop from "components/layout/ScrollToTop"
+import Header from "components/layout/Header"
+import Footer from "components/layout/Footer"
+import UserAlert from "components/alerts/UserAlert"
+import MemberAlert from "components/alerts/MemberAlert"
+import Route from "components/routing/Route"
 
-import Login from "pages/public/Login";
-import LoginRedirect from "pages/public/LoginRedirect";
+import Login from "pages/public/Login"
+import LoginRedirect from "pages/public/LoginRedirect"
 import ForgotPassword from "pages/public/ForgotPassword";
-import MembershipForm from "pages/public/MembershipForm";
-import MembershipFormSuccess from "pages/public/MembershipForm/MembershipFormSuccess";
+import FormSuccess from "pages/public/RegistrationForms/FormSuccess"
+import RegistrationForm from "pages/public/RegistrationForms"
+
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
 
-import Forbidden from "pages/Forbidden";
-import Loading from "pages/Loading";
-import NotFound from "pages/NotFound";
-import AdminRoutes from "pages/admin";
-import MemberRoutes from "pages/member";
-import PublicEventRoutes from "pages/public/Event";
-import Landing from "pages/public/Landing";
+import Forbidden from "pages/Forbidden"
+import Loading from "pages/Loading"
+import NotFound from "pages/NotFound"
+import AdminRoutes from "pages/admin"
+import MemberRoutes from "pages/member"
+import PublicEventRoutes from "pages/public/Event"
 
 import {
   setUser,
@@ -102,14 +103,12 @@ class Router extends Component {
     }
   }
 
-  render() {
-    const { user } = this.props;
-    const { loaded } = this.state;
-    const pathname = window.location.pathname;
-
+  render () {
+    const { user } = this.props
+    const { loaded } = this.state
+    const pathname = window.location.pathname
     // Alert the user about the need to register if they haven't
-    const userNeedsRegister = user && !user.admin && !user.id;
-
+    const userNotMember = user && !user.isMember && !user.admin
     // check if the user state has been updated
     if (!loaded) return <Loading />;
     else {
@@ -119,7 +118,8 @@ class Router extends Component {
           <ScrollToTop />
           {user && <Nav admin={user.admin} />}
           <div className="content">
-            {user && userNeedsRegister && <RegisterAlert />}
+          {!user && <UserAlert />}
+          {userNotMember && <MemberAlert />}
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
               {/* ADMIN ROUTES */}
@@ -139,25 +139,25 @@ class Router extends Component {
               {/* COMMON ROUTES */}
               <Route
                 exact
-                path="/events"
-                featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <EventsDashboard />}
-              />
-              <Route
-                exact
                 path="/signup"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <MembershipForm />}
+                render={() => <RegistrationForm user={user}/>}
               />
               <Route
                 exact
                 path="/signup/success"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <MembershipFormSuccess />}
+                render={() => <FormSuccess />}
               />
-
+              <Route
+                exact
+                path="/events"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <EventsDashboard />}
+              />
               {/* MISCELLANEOUS ROUTES */}
               <Route exact path="/forbidden" render={() => <Forbidden />} />
+
               <Route
                 exact
                 path="/404"
@@ -212,10 +212,10 @@ class Router extends Component {
                     user.admin ? (
                       <Redirect to="/admin/home" />
                     ) : (
-                      <Landing />
+                      <Redirect to="/member/home" />
                     )
                   ) : (
-                    <Landing />
+                    <Redirect to="/login" />
                   )
                 }
               />

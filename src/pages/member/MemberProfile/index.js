@@ -354,7 +354,7 @@ function MemberProfile (props) {
                         >
                           Submit
                         </Button>
-                        <Tooltip title='Contact a BizTech executive your student number is incorrect'>
+                        <Tooltip title='Contact a BizTech executive if your student number or e-mail is incorrect'>
                           <InfoOutlinedIcon
                             className={classes.infoIcon}
                           ></InfoOutlinedIcon>
@@ -395,12 +395,10 @@ function MemberProfile (props) {
                     <div className={classes.infoBox}>
                       <div>
                         <TextField
-                          id='standard-helperText'
+                          id='standard-read-only-input'
                           label='Email'
                           value={Email}
-                          onChange={(event) => {
-                            handleChange('Email', event.target.value)
-                          }}
+                          inputProps={{ readOnly: true }}
                         />
                       </div>
                     </div>

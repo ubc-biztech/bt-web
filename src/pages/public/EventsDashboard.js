@@ -271,9 +271,13 @@ function EventsDashboard (props) {
     )
 
     // filter events by time
-    const eventsFilteredByTime = eventsFilteredByPersonalization.filter(
+    let eventsFilteredByTime = eventsFilteredByPersonalization.filter(
       timeOption.filterFunction
     )
+
+    eventsFilteredByTime = eventsFilteredByTime.sort((a, b) => { 
+      return new Date(b.startDate) - new Date(a.startDate)
+    })
 
     return eventsFilteredByTime.map((event) => (
       <EventCard
@@ -310,22 +314,23 @@ function EventsDashboard (props) {
           <div className={classes.sidePanelLayout}>
             <Typography variant='h1'>Events</Typography>
             <List>
-              {Object.values(PERSONALIZATION_STATES).map((pState) => (
-                <ListItem
-                  key={pState.index}
-                  className={
-                    personalizationIndex === pState.index
-                      ? classes.sidePanelActiveButton
-                      : classes.sidePanelButton
-                  }
-                  onClick={() => handlePersonalizationChange(pState.index)}
-                  button
-                >
-                  <ListItemText>
-                    {pState.icon}&nbsp;{pState.displayName}
-                  </ListItemText>
-                </ListItem>
-              ))}
+              {Object.values(PERSONALIZATION_STATES).map((pState) => {
+                return (!(pState.displayName !== 'All' && !user) &&
+                  <ListItem
+                    key={pState.index}
+                    className={
+                      personalizationIndex === pState.index
+                        ? classes.sidePanelActiveButton
+                        : classes.sidePanelButton
+                    }
+                    onClick={() => handlePersonalizationChange(pState.index)}
+                    button
+                  >
+                    <ListItemText>
+                      {pState.icon}&nbsp;{pState.displayName}
+                    </ListItemText>
+                  </ListItem>
+              )})}
             </List>
           </div>
         )}
@@ -406,7 +411,7 @@ function EventsDashboard (props) {
               )}
               {Object.values(PERSONALIZATION_STATES).map(
                 (pState) =>
-                  pState.displayName !== 'All' && // don't render "All"
+                  (pState.displayName !== 'All' && user) &&
                   (personalizationIndex === pState.index ? (
                     <Chip
                       key={pState.displayName}
