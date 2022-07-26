@@ -178,8 +178,7 @@ function ForgotPassword() {
             if (history.location.pathname === "/forgot-password") {
               history.push("/login");
             }
-          }
-          , 10000);
+          }, 10000);
         })
         .catch((err) => {
           setErrors({
@@ -189,6 +188,17 @@ function ForgotPassword() {
         });
     }
   };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (isEmailSent) {
+        resetPasswordSubmit();
+      } else {
+        sendResetEmail();
+      }
+    }
+  }
 
   return (
     <div style={styles.main}>
@@ -216,6 +226,7 @@ function ForgotPassword() {
                       email="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      onKeyPress={handleKeyPress}
                     />
                     <div style={styles.errors}>{errors.emailError}</div>
                   </form>
@@ -282,6 +293,7 @@ function ForgotPassword() {
                   email="verification code"
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
+                  onKeyPress={handleKeyPress}
                 />
                 <div style={styles.errors}>{errors.verificationCodeError}</div>
               </form>
@@ -294,6 +306,7 @@ function ForgotPassword() {
                   email="new password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyPress={handleKeyPress}
                 />
                 <div style={styles.errors}>{errors.passwordError}</div>
               </form>
@@ -307,6 +320,7 @@ function ForgotPassword() {
                   email="confirm new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  onKeyPress={handleKeyPress}
                 />
                 <Button
                   type="submit"

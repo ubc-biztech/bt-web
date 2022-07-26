@@ -11,6 +11,7 @@ import {
   CssBaseline,
   Typography
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab"
 
 import LoginImage from "assets/login.svg";
 import { COLORS } from "constants/index";
@@ -122,6 +123,7 @@ function Login() {
     passwordError: "",
     verificationCodeError: ""
   });
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   const validateEmail = (value) => {
@@ -146,6 +148,7 @@ function Login() {
   const handleSubmit = async () => {
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
+    setIsLoading(true);
 
     if (emailError || passwordError) {
       // if any errors with inputs, set state and rerender (don't call signin/signup)
@@ -186,7 +189,16 @@ function Login() {
         // console.log(signUpResponse)
       }
     }
+    setIsLoading(false);
   };
+
+  // event handler to submit the form on key press of enter key
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSubmit();
+    }
+  }
 
   return (
     <div style={styles.main}>
@@ -235,6 +247,7 @@ function Login() {
                 email="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyPress={handleKeyPress}
               />
               <div style={styles.errors}>{errors.emailError}</div>
             </form>
@@ -246,6 +259,7 @@ function Login() {
                 email="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyPress={handleKeyPress}
               />
               <div style={styles.errors}>{errors.passwordError}</div>
               <Button
@@ -255,6 +269,12 @@ function Login() {
                 Sign in
               </Button>
             </form>
+            {/* alert to let users know that login is being attempted while Auth processes info */}
+            {isLoading && (
+            <Alert severity="info"
+              style={styles.submitButton}>
+              Signing in...
+            </Alert>)}
             <Typography style={styles.notAMember}>
               Forgot your password?
               <Link to="/forgot-password" style={styles.signUpLink}>
