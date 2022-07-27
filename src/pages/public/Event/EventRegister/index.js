@@ -103,7 +103,8 @@ const EventFormContainer = (props) => {
   const { isRegistered, registeredEmail } = registration
 
   const isDeadlinePassed = (event) => {
-    return event.deadline < new Date()
+    const deadline = new Date(event.deadline).getTime()
+    return deadline < new Date().getTime()
   }
 
   if (loading) {
