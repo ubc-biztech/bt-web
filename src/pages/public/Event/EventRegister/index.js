@@ -102,6 +102,10 @@ const EventFormContainer = (props) => {
 
   const { isRegistered, registeredEmail } = registration
 
+  const isDeadlinePassed = (event) => {
+    return event.deadline < new Date()
+  }
+
   if (loading) {
     return (
       <div className={classes.layout}>
@@ -171,6 +175,18 @@ const EventFormContainer = (props) => {
             resetRegistration={resetRegistration}
           />
         ) : (
+          isDeadlinePassed(event) ? (
+            <Fragment>
+              <div className={classes.registrationHeader}>
+                <Typography className={classes.registrationText}>
+                  Deadline Passed
+                </Typography>
+                <Typography>
+                  The registration deadline for this event has already passed.
+                </Typography>
+              </div>
+            </Fragment>
+          ) : (
           <Fragment>
             <div className={classes.registrationHeader}>
               <Typography className={classes.registrationText}>
@@ -198,6 +214,7 @@ const EventFormContainer = (props) => {
               }}
             </Formik>
           </Fragment>
+          )
         )}
       </EventView>
     </div>
