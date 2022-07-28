@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useEffect } from "react";
 
 import MaterialTable from "material-table";
 import {
@@ -17,7 +17,11 @@ import {
   Select,
   Typography,
   makeStyles,
+  Link
 } from "@material-ui/core";
+
+import { Alert } from "@material-ui/lab";
+import QrReader from "react-web-qr-reader";
 
 import {
   REGISTRATION_STATUS,
@@ -53,6 +57,14 @@ const styles = {
   table: {
     display: "grid",
   },
+  qrCodeVideo: {
+    width: "300px",
+    height: "300px",
+  },
+  toggleQrScanner: {
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+  }
 };
 
 /**
@@ -385,6 +397,10 @@ export class EventStatsTable extends Component {
      */
     return (
       <div style={styles.container}>
+        {/* QR code scanner */}
+        <QrCheckIn
+          event={this.props.event}
+        />
         <Statistic
           statName="Registration status: "
           statObj={this.state.registrationNumbers}
@@ -442,6 +458,15 @@ const useStyles = makeStyles((theme) => ({
   paperRoot: {
     borderRadius: "4px",
     marginBottom: "5px",
+  },
+  qrRoot: {
+    borderRadius: "4px",
+    padding: "10px",
+  },
+  qrOutput: {
+    marginTop: "10px",
+    marginBottom: "10px",
+    textAlign: "center",
   },
 }));
 
@@ -520,4 +545,143 @@ const Statistic = (props) => {
     </Paper>
   );
 };
+
+// an enumeration for the stages of QR code scanning
+const QR_SCAN_STAGE = {
+  SCANNING: "SCANNING",
+  FAILED: "FAILED",
+  SUCCESS: "SUCCESS"
+}
+
+// facing mode for the camera
+const CAMERA_FACING_MODE = {
+  FRONT: "user",
+  BACK: "environment"
+}
+
+const QrCheckIn = (props) => {
+  const classes = useStyles();
+  const [visible, setVisible] = useState(false);
+  const defaultQrCode = {data: ""};
+  const [qrCode, setQrCode] = useState(defaultQrCode);
+  const [qrScanStage, setQrScanStage] = useState(QR_SCAN_STAGE.SCANNING);
+  const [cameraFacingMode, setCameraFacingMode] = useState(CAMERA_FACING_MODE.BACK);
+  const [checkInName, setCheckInName] = useState("");
+
+  const flipCamera = () => {
+    if (cameraFacingMode === CAMERA_FACING_MODE.FRONT) {
+      setCameraFacingMode(CAMERA_FACING_MODE.BACK);
+    } else {
+      setCameraFacingMode(CAMERA_FACING_MODE.FRONT);
+    }
+  }
+
+  const handleScanQR = (data) => {
+    // conditional check is necessary to prevent re-scans of the same QR code
+    if (data !== qrCode) setQrCode(data);
+  }
+
+  // checks if the QR code is valid whenever the QR code is changed
+  useEffect(() => {
+    if (!qrCode || qrCode.data === "") return;
+    const id = qrCode.data;
+    const userID = id.split(';')[0];
+    const eventIDAndYear = id.split(';')[1] + ';' + id.split(';')[2];
+
+    // validate event ID and year
+    if (eventIDAndYear !== props.event.id + ';' + props.event.year) {
+      // TODO: better error handling needed
+      setQrScanStage(QR_SCAN_STAGE.FAILED);
+      return;
+    }
+
+    const checkInUser = (id) => {
+      const body = {
+        eventID: props.event.id,
+        year: props.event.year,
+        registrationStatus: REGISTRATION_STATUS.CHECKED_IN
+      };
+  
+      // update the registration status of the user to checked in
+      fetchBackend(`/registrations/${id}`, "PUT", body);
+  
+      // get the person's name
+      let params = new URLSearchParams({
+        users: true,
+      });
+  
+      fetchBackend(
+        `/events/${props.event.id}/${props.event.year.toString()}?${params}`,
+        "GET"
+      )
+        .then((users) => {
+          // filter the users to get the one with the same id
+          const user = users.filter((user) => user.id === id)[0];
+          setCheckInName(`${user.fname} ${user.lname} (${id})`);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  
+      setQrScanStage(QR_SCAN_STAGE.SUCCESS);
+      setQrCode(defaultQrCode);
+      // wait 10 seconds, then reset the scan stage
+      // NOTE: the alert will reset in 10 seconds no matter what, so don't scan too fast
+      setTimeout(() => {
+        if (qrScanStage === QR_SCAN_STAGE.SUCCESS || qrScanStage === QR_SCAN_STAGE.SCANNING) {
+          setQrScanStage(QR_SCAN_STAGE.SCANNING);
+        }
+      }, 10000);
+    }
+
+    checkInUser(userID);
+  }, [qrCode, defaultQrCode, props.event.id, props.event.year, qrScanStage]);
+
+  return (
+    <Paper className={[classes.qrRoot]}>
+        {/* Toggle QR Scanner */}
+        <Link onClick={() => setVisible(!visible)} style={styles.toggleQrScanner}>
+          Toggle QR Scanner for Check-In
+        </Link>
+        {visible && (
+          <div className={classes.qrOutput}>
+            {/* Manually reset scanner */}
+            <Link onClick={() => {
+              setQrCode(defaultQrCode); 
+              setQrScanStage(QR_SCAN_STAGE.SCANNING)
+            }}>
+              Manually Reset Scanner
+            </Link>
+
+            <Link> | </Link>
+
+            {/* Flip camera */}
+            <Link onClick={() => flipCamera()}>
+              Switch Camera
+            </Link>
+
+            <Alert variant="filled"
+              severity={
+                qrScanStage === QR_SCAN_STAGE.SUCCESS ? "success" : 
+                qrScanStage === QR_SCAN_STAGE.SCANNING ? "info" :
+                "error"
+              }>
+              {qrScanStage === QR_SCAN_STAGE.SUCCESS ? (
+                `Checked-in successfully for ${checkInName}! To see the updated attendance, refresh the page.`) : 
+                qrScanStage === QR_SCAN_STAGE.SCANNING ? (
+                "Ready to scan a QR code to check-in. 😎") :
+                "Invalid QR code. Please try again."
+              }
+            </Alert>
+
+            <QrReader
+              style={styles.qrCodeVideo}
+              onScan={handleScanQR}
+              facingMode={cameraFacingMode} />
+          </div>
+        )}
+    </Paper>
+  );
+}
+
 export default EventStatsTable;
