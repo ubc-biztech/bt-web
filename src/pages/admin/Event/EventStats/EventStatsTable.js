@@ -565,16 +565,8 @@ const QrCheckIn = (props) => {
   const defaultQrCode = {text: ""};
   const [qrCode, setQrCode] = useState(defaultQrCode);
   const [qrScanStage, setQrScanStage] = useState(QR_SCAN_STAGE.SCANNING);
-  const [cameraFacingMode, setCameraFacingMode] = useState(CAMERA_FACING_MODE.BACK);
+  const cameraFacingMode = CAMERA_FACING_MODE.BACK;
   const [checkInName, setCheckInName] = useState("");
-
-  const flipCamera = () => {
-    if (cameraFacingMode === CAMERA_FACING_MODE.FRONT) {
-      setCameraFacingMode(CAMERA_FACING_MODE.BACK);
-    } else {
-      setCameraFacingMode(CAMERA_FACING_MODE.FRONT);
-    }
-  }
 
   const handleScanQR = (data) => {
     // conditional check is necessary to prevent re-scans of the same QR code
@@ -652,13 +644,6 @@ const QrCheckIn = (props) => {
             }}>
               Manually Reset Scanner
             </Link>
-
-            {/* <Link> | </Link> */}
-
-            {/* Flip camera - DOES NOT work with react-qr-reader, works with react-web-qr-reader */}
-            {/* <Link onClick={() => flipCamera()}>
-              Switch Camera
-            </Link> */}
 
             <Alert variant="filled"
               severity={
