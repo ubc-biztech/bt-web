@@ -21,7 +21,7 @@ import {
 } from "@material-ui/core";
 
 import { Alert } from "@material-ui/lab";
-import QrReader from "react-web-qr-reader";
+import { QrReader } from "react-qr-reader";
 
 import {
   REGISTRATION_STATUS,
@@ -59,7 +59,7 @@ const styles = {
   },
   qrCodeVideo: {
     width: "300px",
-    height: "300px",
+    height: "auto",
   },
   toggleQrScanner: {
     fontSize: "1.5rem",
@@ -562,7 +562,7 @@ const CAMERA_FACING_MODE = {
 const QrCheckIn = (props) => {
   const classes = useStyles();
   const [visible, setVisible] = useState(false);
-  const defaultQrCode = {data: ""};
+  const defaultQrCode = {text: ""};
   const [qrCode, setQrCode] = useState(defaultQrCode);
   const [qrScanStage, setQrScanStage] = useState(QR_SCAN_STAGE.SCANNING);
   const [cameraFacingMode, setCameraFacingMode] = useState(CAMERA_FACING_MODE.BACK);
@@ -583,8 +583,8 @@ const QrCheckIn = (props) => {
 
   // checks if the QR code is valid whenever the QR code is changed
   useEffect(() => {
-    if (!qrCode || qrCode.data === "") return;
-    const id = qrCode.data;
+    if (!qrCode || qrCode.text === "") return;
+    const id = qrCode.text;
     const userID = id.split(';')[0];
     const eventIDAndYear = id.split(';')[1] + ';' + id.split(';')[2];
 
@@ -653,12 +653,12 @@ const QrCheckIn = (props) => {
               Manually Reset Scanner
             </Link>
 
-            <Link> | </Link>
+            {/* <Link> | </Link> */}
 
-            {/* Flip camera */}
-            <Link onClick={() => flipCamera()}>
+            {/* Flip camera - DOES NOT work with react-qr-reader, works with react-web-qr-reader */}
+            {/* <Link onClick={() => flipCamera()}>
               Switch Camera
-            </Link>
+            </Link> */}
 
             <Alert variant="filled"
               severity={
@@ -675,9 +675,10 @@ const QrCheckIn = (props) => {
             </Alert>
 
             <QrReader
-              style={styles.qrCodeVideo}
-              onScan={handleScanQR}
-              facingMode={cameraFacingMode} />
+              delay={300}
+              containerStyle={styles.qrCodeVideo}
+              onResult={handleScanQR}
+              constraints={{facingMode: cameraFacingMode}} />
           </div>
         )}
     </Paper>
