@@ -1,7 +1,8 @@
 import React, { useState, Fragment } from "react";
+import { CLIENT_URL } from "constants/index";
+import { Auth } from "aws-amplify";
 import { Helmet } from "react-helmet";
 import { Formik } from "formik";
-import { Auth } from 'aws-amplify';
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import UserMembershipForm from "./UserMembershipForm";
@@ -46,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 const UserMembershipFormContainer = (props) => {
   const classes = useStyles()
   const history = useHistory()
-
   const [memberType, setMemberType] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -151,7 +151,77 @@ const UserMembershipFormContainer = (props) => {
     high_school: '',
   }
 
-  async function submitValues (values) {
+  async function adminSkipPayment (values) {
+    const {
+      email,
+      password,
+      first_name,
+      last_name,
+      pronouns,
+      student_number,
+      faculty,
+      year,
+      major,
+      diet,
+    } = values
+    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
+
+    const userBody = {
+      education: memberType,
+      studentId: memberType === 'UBC' ? student_number : '',
+      fname: first_name,
+      lname: last_name,
+      major: (memberType === 'UBC' || memberType === 'UNI') ? major : '',
+      email: email,
+      year: memberType !== 'NA' ? year : '',
+      faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
+      gender: pronouns || 'Other/Prefer not to say',
+      diet: diet || 'None',
+      isMember: true,
+      admin: true
+    }
+
+    try {
+      await Auth.signUp({
+        username: email,
+        password: password,
+        attributes: {
+          name: first_name + ' ' + last_name,
+          'custom:student_id': student_number
+        }
+      })
+    } catch (err) {
+      // TODO: add error handler, do not let the form submit
+      alert(
+        `AWS Amplify error: ${err}`
+      )
+      setIsSubmitting(false)
+      return
+    }
+
+    fetchBackend('/users', 'POST', userBody, false)
+      .then(async () => {
+        history.push({
+          pathname: `/signup/success/UserMember/${email}`
+        })
+      })
+      .catch((err) => {
+        if (err.status === 409) {
+          alert(
+            'A user with the given e-mail already exists! Double check that your e-mail is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.'
+          )
+          setIsSubmitting(false)
+        } else {
+          alert(
+            `Error occurred when updating user DB: ${err}`
+          )
+          setIsSubmitting(false)
+        }
+      })
+    setIsSubmitting(false);
+  }
+
+  async function proceedToPayment (values) {
     const {
       email,
       password,
@@ -171,95 +241,68 @@ const UserMembershipFormContainer = (props) => {
       high_school
     } = values
 
-    let admin = false
-    if (
-      email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com'
-    ) {
-      admin = true
-    }
+    if (email.substring(email.indexOf('@') + 1, email.length) === 'ubcbiztech.com') {
+      adminSkipPayment(values);
+      return
+    } 
 
-    // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
-    const body = {
+    const paymentBody = {
+      paymentName: 'BizTech Membership',
+      paymentImages: ['https://imgur.com/TRiZYtG.png'],
+      paymentPrice: 1000,
+      paymentType: 'UserMember',
+      success_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000' : CLIENT_URL}/signup/success/UserMember/${email}`,
+      cancel_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000' : CLIENT_URL}/signup`,
       education: memberType,
-      email,
-      first_name,
-      last_name,
-      pronouns,
       student_number: memberType === 'UBC' ? student_number : '',
-      faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
-      year: memberType !== 'NA' ? year : '',
-      major: (memberType === 'UBC' || memberType === 'UNI') ? major : '',
-      prev_member,
-      international: memberType === 'UBC' ? international : '',
-      topics,
-      diet,
-      heard_from,
-      university: memberType === 'UNI' ? university : '',
-      high_school: memberType === 'HS' ? high_school : '',
-      admin
-    }
-
-    const userBody = {
-      education: memberType,
-      studentId: memberType === 'UBC' ? student_number : '',
       fname: first_name,
       lname: last_name,
       major: (memberType === 'UBC' || memberType === 'UNI') ? major : '',
       email: email,
+      password: password,
       year: memberType !== 'NA' ? year : '',
       faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
-      gender: pronouns || 'Other/Prefer not to say',
+      pronouns: pronouns || 'Other/Prefer not to say',
       diet: diet || 'None',
       isMember: true,
-      admin: admin
+      prev_member,
+      international: memberType === 'UBC' ? international : '',
+      topics,
+      heard_from,
+      university: memberType === 'UNI' ? university : '',
+      high_school: memberType === 'HS' ? high_school : '',
     }
-
-    setIsSubmitting(true);
-    try {
-      await Auth.signUp({
-        username: email,
-        password: password,
-        attributes: {
-          name: first_name + ' ' + last_name,
-          'custom:student_id': student_number
-        }
-      })
-    } catch (err) {
-      // TODO: add error handler, do not let the form submit
-      console.log(err)
-      setIsSubmitting(false)
-      return
-    }
-
-    // users table post
-
-    fetchBackend('/members', 'POST', body, false)
-      .then(async () => {
-        history.push({
-          pathname: '/signup/success', 
-          state: { email: email, formType: 'UserMember' }
-        })
+    fetchBackend('/payments', "POST", paymentBody, false)
+      .then(async (response) => {
+        setIsSubmitting(false)
+        window.open(response, "_self");
       })
       .catch((err) => {
-        if (err.status === 409) {
-          alert(
-            'A user with the given e-mail already exists! Double check that your e-mail is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.'
-          )
-        } else {
-          console.log(err)
-        }
-      })
-
-    fetchBackend('/users', 'POST', userBody, false).catch((err) => {
-      if (err.status === 409) {
         alert(
-          'A user with the given e-mail already exists! Double check that your e-mail is correct, or ensure that you are using the same account you signed up with the first time. If you are still having trouble registering, contact one of our devs.'
+          `An error has occured: ${err} Please contact an exec for support.`
         )
+        setIsSubmitting(false)
+      })
+  }
+
+  async function submitValues (values) {
+    setIsSubmitting(true);
+    fetchBackend(`/users/check/${values.email}`, 'GET', undefined, false).then((response) => {
+      if (response) {
+        alert(
+          'A user with the given email already exists! Please log in and choose the "Membership Renewal" signup option instead. If you are still experiencing issues, contact an exec for support.'
+        )
+        setIsSubmitting(false)
       } else {
-        console.log(err)
+        proceedToPayment(values)
       }
+    }).catch(() => {
+      alert(
+        'Sorry, a server error occured. Please try again later or contact an exec for support.'
+      )
+      setIsSubmitting(false)
     })
-    setIsSubmitting(false);
+
   }
 
   return (
