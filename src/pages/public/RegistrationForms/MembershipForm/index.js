@@ -182,8 +182,8 @@ const MembershipFormContainer = (props) => {
 
   }
 
-  const renderMemberForm = (isMember) => {
-    return isMember === 'true' ? (
+  const renderMemberForm = (isMember, isAdmin) => {
+    return isMember === 'true' || isAdmin ? (
       <div className={classes.alreadyMember}>
         <Typography className={classes.alreadyMemberText}>
           Oops, you are already a BizTech member for this year!
@@ -249,7 +249,7 @@ const MembershipFormContainer = (props) => {
             <Helmet>
               <title>UBC BizTech Membership 2022/23</title>
             </Helmet>
-        {renderMemberForm(user.isMember)}
+        {renderMemberForm(user.isMember, user.admin)}
         </div>
       )}
       </Fragment>
