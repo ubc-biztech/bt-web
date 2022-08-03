@@ -186,26 +186,23 @@ function EventsDashboard (props) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const { events, user, userRegisteredEvents, loading } = props
-
   useEffect(() => {
     fetchEvents()
     if (user && user.email) fetchUserRegisteredEvents({ userId: user.email })
-    console.log(user)
   }, [])
 
   // TODO: Everything here is GOOD. properly makes a call to the backend and updates the DB with the new backend. 
   // The issue is it seems we are not fetching the favourite events
   const handleFavouriteEvent = async (eventId, year, toggle) => {
     const body = { eventID: eventId, year, isFavourite: toggle }
-    console.log(await fetchBackend(`/users/favEvent/${user.email}`, 'PATCH', body)) // TODO: remove the log statement, the fetchBackend call needs to stay.
-    console.log(user)
-    const oldEventIds = user.favedEventsID ? user.favedEventsID : []
+    await fetchBackend(`/users/favEvent/${user.email}`, 'PATCH', body)
+    const oldEventIds = user['favedEventsID;year'] ? user['favedEventsID;year'] : []
     const newEventIds = toggle
-      ? [...oldEventIds, eventId]
-      : oldEventIds.filter((id) => id !== eventId)
+      ? [...oldEventIds, `${eventId};${year}`]
+      : oldEventIds.filter((id) => id !== `${eventId};${year}`)
     await props.setUser({
       ...user,
-      favedEventsID: newEventIds
+      'favedEventsID;year': newEventIds
     })
   }
 
@@ -239,8 +236,8 @@ function EventsDashboard (props) {
   }, [userRegisteredEvents])
 
   const userFavouritedEventIds = useMemo(() => {
-    if (user && user.favedEventsID && user.favedEventsID.length) {
-      return user.favedEventsID
+    if (user && user['favedEventsID;year'] && user['favedEventsID;year'].length) {
+      return user['favedEventsID;year']
     }
 
     return []
@@ -266,7 +263,7 @@ function EventsDashboard (props) {
       personalizationIndex === PERSONALIZATION_STATES.FAVOURITES.index
     ) {
       eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) =>
-        userFavouritedEventIds.includes(event.id)
+        userFavouritedEventIds.includes(`${event.id};${event.year}`)
       )
     }
 
@@ -285,7 +282,7 @@ function EventsDashboard (props) {
         event={event}
         key={event.id + event.year}
         variant={!user || user.admin ? 'none' : 'user'}
-        favourited={userFavouritedEventIds.includes(event.id)}
+        favourited={userFavouritedEventIds.includes(`${event.id};${event.year}`)}
         handleCardClick={redirectToEvent}
         handleFavourite={handleFavouriteEvent}
         cardStyle={

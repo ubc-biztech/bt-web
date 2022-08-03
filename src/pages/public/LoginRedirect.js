@@ -92,7 +92,7 @@ function LoginRedirect(props) {
                 heardFrom: user.heardFrom,
                 gender: user.gender,
                 admin: user.admin,
-                favedEventsID: user.favedEventsID
+                'favedEventsID;year': user['favedEventsID;year']
               }
               props.setUser(payload) // save to redux
               history.push('/') // Redirect to the 'user home' page

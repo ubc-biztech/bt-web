@@ -241,7 +241,7 @@ function MemberProfile (props) {
   const getFavouriteEvents = () => {
     fetchBackend(`/users/${user.id}`, 'GET').then(async (response) => {
       console.log(response) // TODO: remove
-      const favouriteEventIDs = response.favedEventsID
+      const favouriteEventIDs = response['favedEventsID;year']
       events &&
         events.forEach((event) => {
           if (favouriteEventIDs.length >= 2) {
