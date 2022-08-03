@@ -105,7 +105,7 @@ class Router extends Component {
     const { loaded } = this.state
     const pathname = window.location.pathname
     // Alert the user about the need to register if they haven't
-    const userNotMember = user && user.isMember !== 'true' && !user.admin
+    const userNotMember = user && !user.isMember && !user.admin
     // check if the user state has been updated
     if (!loaded) return <Loading />
     else {

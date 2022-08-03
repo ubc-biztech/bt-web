@@ -159,7 +159,6 @@ const MembershipFormContainer = (props) => {
       faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
       pronouns: pronouns || 'Other/Prefer not to say',
       diet: diet || 'None',
-      isMember: true,
       prev_member,
       international: memberType === 'UBC' ? international : '',
       topics,
@@ -183,7 +182,7 @@ const MembershipFormContainer = (props) => {
   }
 
   const renderMemberForm = (isMember, isAdmin) => {
-    return isMember === 'true' || isAdmin ? (
+    return isMember || isAdmin ? (
       <div className={classes.alreadyMember}>
         <Typography className={classes.alreadyMemberText}>
           Oops, you are already a BizTech member for this year!

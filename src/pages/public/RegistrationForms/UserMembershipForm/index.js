@@ -264,7 +264,6 @@ const UserMembershipFormContainer = (props) => {
       faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
       pronouns: pronouns || 'Other/Prefer not to say',
       diet: diet || 'None',
-      isMember: true,
       prev_member,
       international: memberType === 'UBC' ? international : '',
       topics,
