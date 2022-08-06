@@ -63,6 +63,7 @@ const MemberRoutes = (props) => {
   return (
     <Switch>
       <Route
+      // DEPRECATED: this route reamins unused onw. we now use the FormRegister in /admin/DynamicForm/FormRegister.js
         exact
         path='/event/:id/:year/register'
         render={() => (

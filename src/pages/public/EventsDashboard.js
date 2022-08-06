@@ -222,7 +222,8 @@ function EventsDashboard (props) {
   }
 
   const redirectToEvent = (e, eventId, eventYear) => {
-    history.push(`/event/${eventId}/${eventYear}/register`)
+    history.push(`/register/${eventId}`)
+    // history.push(`/event/${eventId}/${eventYear}/register`)
   }
 
   const userRegisteredEventIds = useMemo(() => {
