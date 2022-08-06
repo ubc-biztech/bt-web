@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
 
 import Loading from 'pages/Loading'
@@ -10,6 +10,7 @@ import { log, fetchBackend, checkFeatureFlag } from 'utils'
 
 function LoginRedirect(props) {
   const history = useHistory()
+  const location = useLocation()
 
   // we don't want to keep polling forever
   const timeoutRedirect = setTimeout(() => {
@@ -49,7 +50,7 @@ function LoginRedirect(props) {
         // might have already set them to be an admin
         const isAdminGroup = authUser['cognito:groups']?.includes('admin')
         if (isAdminGroup) {
-          populateUserAndRedirect(authUser, '/', true)
+          populateUserAndRedirect(authUser, location.state.redirect || '/', true)
         } else if (
           email.substring(email.indexOf('@') + 1, email.length) ===
           'ubcbiztech.com'
@@ -84,6 +85,7 @@ function LoginRedirect(props) {
                 email: user.id,
                 fname: user.fname,
                 lname: user.lname,
+                education: user.education,
                 id: user.studentId,
                 faculty: user.faculty,
                 major: user.major,
@@ -92,11 +94,13 @@ function LoginRedirect(props) {
                 heardFrom: user.heardFrom,
                 gender: user.gender,
                 admin: user.admin,
-                favedEventsID: user.favedEventsID
+                favedEventsID: user.favedEventsID,
+                isMember: user.isMember
               }
               props.setUser(payload) // save to redux
-              history.push('/') // Redirect to the 'user home' page
+              history.push(location.state?.redirect || '/') // Redirect to the 'user home' page
             } catch (err) {
+              console.log(err)
               // if the user exists in the user pool, but not the database, remove the user pool's student_id
               if (err.status === 404) {
                 clearTimeout(timeoutRedirect)
@@ -107,8 +111,7 @@ function LoginRedirect(props) {
                   'custom:student_id': ''
                 })
                 authUser['custom:student_id'] = null
-
-                populateUserAndRedirect(authUser, '/member/create')
+                populateUserAndRedirect(authUser, '/signup')
               } else {
                 console.log(
                   'Encountered an error querying database!',
@@ -119,7 +122,7 @@ function LoginRedirect(props) {
           } else {
             clearTimeout(timeoutRedirect)
             // If the user doesn't exist in the user pool, redirect to the 'user register' form
-            populateUserAndRedirect(authUser, '/member/create')
+            populateUserAndRedirect(authUser, '/signup')
           }
         }
       })

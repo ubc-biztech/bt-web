@@ -1,7 +1,7 @@
 import React, { useState, Component, useEffect } from "react";
 import QRIcon from "../../../../components/icons/qr-icon.png";
 
-import MaterialTable from "material-table";
+import MaterialTable, { MTableCell } from "material-table";
 import {
   RadialChart,
   XYPlot,
@@ -19,7 +19,8 @@ import {
   Typography,
   makeStyles,
   Link,
-  Button
+  Button,
+  Popover
 } from "@material-ui/core";
 
 import { Alert } from "@material-ui/lab";
@@ -32,6 +33,7 @@ import {
 } from "constants/index";
 import { fetchBackend } from "utils";
 import {
+  REGISTRATIONSTATUSLABEL,
   parseRegistrationResponses,
   combineEventAndRegistrationData,
   appendRegistrationQuestions
@@ -79,6 +81,12 @@ const styles = {
     paddingTop: "4px",
     paddingLeft: "2px",
     paddingRight: "2px"
+  },
+  ellipsis: {
+    maxWidth: 200, 
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   }
 };
 
@@ -139,6 +147,7 @@ export class EventStatsTable extends Component {
               : 1;
           }
         });
+
         this.setState({
           heardFrom,
           registrationResponses
@@ -248,6 +257,8 @@ export class EventStatsTable extends Component {
       this.state.registrationResponses
     );
 
+    console.log("rows:\n", data);
+
     this.setState({
       rows: data
     });
@@ -262,6 +273,7 @@ export class EventStatsTable extends Component {
 
     appendRegistrationQuestions(columns, registrationQuestions);
 
+    console.log("columns:\n", columns);
     this.setState({
       columns
     });
@@ -297,6 +309,7 @@ export class EventStatsTable extends Component {
      * Helper function to determine whether to display action for check-in or undo check-in
      * @param {*} rowData data about the current row
      */
+
     const changeRegistration = (event, rowData) => {
       // TODO: refactor code smell
       switch (event.target.value) {
@@ -365,7 +378,7 @@ export class EventStatsTable extends Component {
       { title: "Email", field: "id", sorting: false },
       {
         title: "Registration Status",
-        field: "registrationStatus",
+        field: REGISTRATIONSTATUSLABEL,
         sorting: false,
         render: (rowData) => (
           <div>
@@ -470,6 +483,10 @@ export class EventStatsTable extends Component {
               )
             }
           }}
+          components={{
+            Cell: props => (<PopoverCell {...props}/>
+            )
+          }}
         />
       </div>
     );
@@ -491,6 +508,61 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center"
   }
 }));
+
+
+const PopoverCell = (props) => {
+
+  const [anchorPosition, setAnchorPosition] = useState(null);
+  const [popoverText, setPopoverText] = useState("");
+
+  const handlePopoverOpen = (event) => {
+    setPopoverText(event.target.getAttribute('value'));
+
+    const {top, left} = event.currentTarget.getBoundingClientRect();
+    setAnchorPosition({top, left});
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorPosition(null);
+  };
+  
+  const open = Boolean(anchorPosition);
+
+  const dropdownColumnFieldNames = [REGISTRATIONSTATUSLABEL]
+
+  return (<>
+  <MTableCell {...props} 
+      aria-owns={open ? 'mouse-over-popover' : undefined}
+      aria-haspopup="true"
+      onMouseDown={handlePopoverOpen}
+      style={styles.ellipsis} 
+    />
+  {/* NOTE: if any more dropdown columns are added in the future to the the default columns of the MaterialTable, 
+            you will need to exclude the column from the Popover effect as shown below */}
+  {dropdownColumnFieldNames.includes(props.columnDef.field) ? <></> :
+   <Popover
+    id="mouse-over-popover"
+    sx={{
+      pointerEvents: 'auto',
+    }}
+    open={open}
+    anchorReference="anchorPosition"
+    anchorPosition={anchorPosition}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'left',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'left',
+    }}
+    onClose={handlePopoverClose}
+    disableRestoreFocus
+  >
+    <Typography sx={{ p: 1 }}>{popoverText}</Typography>
+  </Popover>}
+  </>)
+}
 
 /**
  * represents a statistic and shows a row of the stats with a dropdown for charts
@@ -746,3 +818,4 @@ const QrCheckIn = (props) => {
 };
 
 export default EventStatsTable;
+
