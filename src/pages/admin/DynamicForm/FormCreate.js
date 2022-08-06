@@ -248,6 +248,7 @@ const FormCreateForm = (props) => {
                   component={Button}
                   color="primary"
                   to={{ pathname: `/register/${slug}` }}
+                  target="_blank"
                 >
                   Event Link
                 </Link>
