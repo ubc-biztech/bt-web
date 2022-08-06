@@ -18,7 +18,8 @@ import {
   Select,
   Typography,
   makeStyles,
-  Link
+  Link,
+  Button
 } from "@material-ui/core";
 
 import { Alert } from "@material-ui/lab";
@@ -426,6 +427,15 @@ export class EventStatsTable extends Component {
           statObj={this.state.heardFrom}
         />
 
+        {/* refresh button */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => this.getEventTableData(this.props.event.id, this.props.event.year)}
+        >
+          Refresh Table
+        </Button>
+
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
           columns={registrationColumns}
@@ -686,7 +696,7 @@ const QrCheckIn = (props) => {
             }
           >
             {qrScanStage === QR_SCAN_STAGE.SUCCESS
-              ? `Checked-in successfully for ${checkInName}! To see the updated attendance, refresh the page.`
+              ? `Checked-in successfully for ${checkInName}! To see the updated attendance, refresh the table using the button below.`
               : qrScanStage === QR_SCAN_STAGE.SCANNING
               ? "Ready to scan a QR code to check-in. 😎"
               : "Invalid QR code. Please try again."}
@@ -706,20 +716,29 @@ const QrCheckIn = (props) => {
             />
           </div>
 
-          {/* Manually reset scanner */}
-          <Link
-            onClick={() => {
-              setQrCode(defaultQrCode);
-              setQrScanStage(QR_SCAN_STAGE.SCANNING);
-            }}
-          >
-            Manually Reset Scanner
-          </Link>
+          <div>
+            {/* Manually reset scanner */}
+            <Link
+              onClick={() => {
+                setQrCode(defaultQrCode);
+                setQrScanStage(QR_SCAN_STAGE.SCANNING);
+              }}
+            >
+              Manually Reset Scanner
+            </Link>
 
-          <Link> | </Link>
+            <Link> | </Link>
 
-          {/* Flip camera */}
-          <Link onClick={() => flipCamera()}>Switch Camera</Link>
+            {/* Flip camera */}
+            <Link onClick={() => flipCamera()}>Switch Camera</Link>
+          </div>
+
+          <div>
+            {/* Last person who was scanned */}
+            <Typography variant="body2">
+              Last scanned: {checkInName ? checkInName : "None"}
+            </Typography>
+          </div>
         </div>
       )}
     </Paper>
