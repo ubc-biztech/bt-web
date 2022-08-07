@@ -6,8 +6,8 @@ import Route from 'components/routing/Route'
 import NotFound from 'pages/NotFound'
 
 // import EventDetails from './EventDetails'
-import EventRegister from './EventRegister'
 import { fetchEvents } from 'store/event/eventActions'
+import FormRegister from 'pages/admin/DynamicForm/FormRegister'
 
 const MemberRoutes = (props) => {
   const { user, events, eventsFetched, eventsLoading } = props
@@ -66,7 +66,7 @@ const MemberRoutes = (props) => {
         exact
         path='/event/:id/:year/register'
         render={() => (
-          <EventRegister
+          <FormRegister
             user={user}
             eventId={eventId}
             event={currentEvent}
