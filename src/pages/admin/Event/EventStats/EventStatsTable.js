@@ -663,6 +663,7 @@ const QrCheckIn = (props) => {
     CAMERA_FACING_MODE.BACK
   );
   const [checkInName, setCheckInName] = useState("");
+  const [error, setError] = useState("");
 
   const flipCamera = () => {
     if (cameraFacingMode === CAMERA_FACING_MODE.FRONT) {
@@ -688,8 +689,37 @@ const QrCheckIn = (props) => {
     if (eventIDAndYear !== props.event.id + ";" + props.event.year) {
       // TODO: better error handling needed
       setQrScanStage(QR_SCAN_STAGE.FAILED);
+      setError("Person is not registered for this event.");
       return;
     }
+
+    let params = new URLSearchParams({
+      users: true
+    });
+
+    fetchBackend(
+      `/events/${props.event.id}/${props.event.year.toString()}?${params}`,
+      "GET"
+    )
+      .then((users) => {
+        // filter the users to get the one with the same id
+        const user = users.filter((user) => user.id === userID)[0];
+
+        // get the person's name
+        setCheckInName(`${user.fname} ${user.lname} (${userID})`);
+
+        // If the user is already checked in, show an error
+        if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
+          setQrScanStage(QR_SCAN_STAGE.FAILED);
+          setError(`Person is already checked in under ${checkInName}.`);
+          return;
+        }
+
+        checkInUser(userID);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     const checkInUser = (id) => {
       const body = {
@@ -700,24 +730,6 @@ const QrCheckIn = (props) => {
 
       // update the registration status of the user to checked in
       fetchBackend(`/registrations/${id}`, "PUT", body);
-
-      // get the person's name
-      let params = new URLSearchParams({
-        users: true
-      });
-
-      fetchBackend(
-        `/events/${props.event.id}/${props.event.year.toString()}?${params}`,
-        "GET"
-      )
-        .then((users) => {
-          // filter the users to get the one with the same id
-          const user = users.filter((user) => user.id === id)[0];
-          setCheckInName(`${user.fname} ${user.lname} (${id})`);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
 
       setQrScanStage(QR_SCAN_STAGE.SUCCESS);
       setQrCode(defaultQrCode);
@@ -732,9 +744,7 @@ const QrCheckIn = (props) => {
         }
       }, 10000);
     };
-
-    checkInUser(userID);
-  }, [qrCode, defaultQrCode, props.event.id, props.event.year, qrScanStage]);
+  }, [qrCode, defaultQrCode, props.event.id, props.event.year, qrScanStage, checkInName]);
 
   return (
     <Paper className={[classes.qrRoot]}>
@@ -771,7 +781,7 @@ const QrCheckIn = (props) => {
               ? `Checked-in successfully for ${checkInName}! To see the updated attendance, refresh the table using the button below.`
               : qrScanStage === QR_SCAN_STAGE.SCANNING
               ? "Ready to scan a QR code to check-in. 😎"
-              : "Invalid QR code. Please try again."}
+              : `🚨 ERROR: ${error}`}
           </Alert>
 
           <div
