@@ -66,7 +66,13 @@ const MemberRoutes = (props) => {
         exact
         path='/event/:id/:year/register'
         render={() => (
-         <FormRegister/>
+          <FormRegister
+            user={user}
+            eventId={eventId}
+            event={currentEvent}
+            upcomingEvents={upcomingEvents}
+            loading={eventsLoading}
+          />
         )}
       />
       {/*

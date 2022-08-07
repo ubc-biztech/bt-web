@@ -243,15 +243,17 @@ const FormCreateForm = (props) => {
             <div style={{ ...styles.editorSection, ...styles.editorHeadmast }}>
               <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
               <div style={{ display: "flex", gap: "1rem" }}>
+                {showPublishButton ? 
                 <Link
                   variant="contained"
                   component={Button}
                   color="primary"
-                  to={{ pathname: `/register/${slug}` }}
+                  // to={{ pathname: `/register/${slug}` }}
+                  to={{ pathname: `/event/${slug}/${start.getFullYear()}/register`}}
                   target="_blank"
                 >
                   Event Link
-                </Link>
+                </Link> : <></>}
 
                 {showPublishButton &&
                   (isPublished ? (
@@ -335,7 +337,8 @@ const FormCreateForm = (props) => {
               />
               {slug && (
                 <div style={{ color: "#FFFFFF", opacity: "0.7" }}>
-                  {"http://ubcbiztech.com/register/" + slug}
+                  {/* {"http://ubcbiztech.com/register/" + slug} */}
+                  {"https://ubcbiztech.com/" + slug + "/" + start.getFullYear() + "/register"}
                 </div>
               )}
               <TextField
