@@ -14,6 +14,9 @@ import {
 } from "@material-ui/core";
 import React, { useEffect, useState, useCallback } from "react";
 import { Helmet } from "react-helmet";
+import { useHistory } from "react-router-dom";
+import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
+import { COLORS } from "../../../constants/_constants/theme";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 
 // should be pulled from database -- DEMO:
@@ -89,9 +92,14 @@ const FormRegister = (props) => {
     select: {
       background: "#1F2A47",
       borderRadius: 10
+    },
+    ArrowBackIcon: {
+      color: COLORS.WHITE,
+      fontSize: "40px"
     }
   }));
   const classes = useStyles();
+  const history = useHistory();
 
   // const [formData, setFormData] = useState([]); // Using a test constant rn
   const [refresh, setRefresh] = useState(false);
@@ -331,6 +339,11 @@ const FormRegister = (props) => {
 
   return (
     <>
+      <ArrowBackIcon
+        cursor="pointer"
+        className={classes.ArrowBackIcon}
+        onClick={() => history.push("/events/")}
+      />
       <Helmet>
         <title>Register for {formData.name}</title>
       </Helmet>
