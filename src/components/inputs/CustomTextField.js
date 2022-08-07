@@ -73,7 +73,8 @@ export default function CustomTextField (props) {
     multiline,
     rows,
     type,
-    initialValues
+    initialValues,
+    readOnly
   } = props
 
   const change = (name, e) => {
@@ -105,16 +106,17 @@ export default function CustomTextField (props) {
           classes: classes,
           inputProps: {
             classes: renderMobileOnly ? classes.mobileInput : classes.input
-          }
+          },
+          readOnly: readOnly
         }}
         rows={rows}
-        defaultValue={initialValues[groupName]}
+        defaultValue={initialValues ? initialValues[groupName] : ''}
         type={type || ''}
         padding='7px'
       />
     )
   }
-
+  
   return (
     <React.Fragment>
       <Typography>{label}</Typography>

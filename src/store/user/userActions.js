@@ -18,6 +18,7 @@ export function setUser (userData) {
     email,
     fname,
     lname,
+    education,
     id,
     faculty,
     year,
@@ -26,6 +27,7 @@ export function setUser (userData) {
     heardFrom,
     gender,
     admin,
+    isMember,
   } = userData
   const favedEvents = userData['favedEventsID;year']
 
@@ -35,6 +37,7 @@ export function setUser (userData) {
       email,
       fname,
       lname,
+      education,
       id,
       faculty,
       major,
@@ -44,6 +47,7 @@ export function setUser (userData) {
       gender,
       admin,
       'favedEventsID;year': favedEvents,
+      isMember
     }
   }
 }
@@ -64,6 +68,7 @@ export async function fetchUser (params = {}) {
       email: response.id,
       fname: response.fname,
       lname: response.lname,
+      education: response.education,
       id: response.studentId,
       faculty: response.faculty,
       major: response.major,
@@ -72,7 +77,8 @@ export async function fetchUser (params = {}) {
       heardFrom: response.heardFrom,
       gender: response.gender,
       admin: response.admin,
-      'favedEventsID;year': response['favedEventsID;year']
+      'favedEventsID;year': response['favedEventsID;year'],
+      isMember: response.isMember
     }
     await Store.dispatch({ type: FETCH_USER_SUCCESS, payload })
   } catch (err) {

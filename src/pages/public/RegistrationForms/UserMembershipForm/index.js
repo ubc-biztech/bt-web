@@ -4,12 +4,12 @@ import { Formik } from "formik";
 import { Auth } from 'aws-amplify';
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
-import MembershipForm from "./MembershipForm";
+import UserMembershipForm from "./UserMembershipForm";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
-import { MEMBER_TYPES } from "../../../constants/_constants/memberTypes";
+import { MEMBER_TYPES } from "constants/_constants/memberTypes";
 
-import { COLORS } from '../../../constants/_constants/theme'
+import { COLORS } from 'constants/_constants/theme'
 
 import { fetchBackend } from 'utils'
 
@@ -37,14 +37,17 @@ const useStyles = makeStyles((theme) => ({
   registrationText: {
     fontWeight: 'bold',
     fontSize: '24px'
+  },
+  description: {
+    marginBottom: 16,
   }
 }))
 
-const MembershipFormContainer = (props) => {
+const UserMembershipFormContainer = (props) => {
   const classes = useStyles()
   const history = useHistory()
 
-  const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
+  const [memberType, setMemberType] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
@@ -52,8 +55,17 @@ const MembershipFormContainer = (props) => {
     password: Yup.string()
       .required('Password is required')
       .min(8, 'Please make your password a minimum of 8 characters'),
+    confirmPassword: Yup.string().required('Password is required').when("password", {
+      is: val => (val && val.length > 0),
+      then: Yup.string().oneOf(
+        [Yup.ref("password")],
+        "Password does not match"
+      )
+    }),
     first_name: Yup.string().required('First name is required'),
-    last_name: Yup.string().required('Last name is required')
+    last_name: Yup.string().required('Last name is required'),
+    education: Yup.string().required('Education is required'),
+    prev_member: Yup.string().required('Please select Yes/No'),
   })
 
   const UBCValidationSchema = Yup.object({
@@ -61,6 +73,13 @@ const MembershipFormContainer = (props) => {
     password: Yup.string()
       .required('Password is required')
       .min(8, 'Please make your password a minimum of 8 characters'),
+    confirmPassword: Yup.string().required('Password is required').when("password", {
+      is: val => (val && val.length > 0),
+      then: Yup.string().oneOf(
+        [Yup.ref("password")],
+        "Password does not match"
+      )
+    }),
     student_number: Yup.number('Valid Student ID required')
       .min(9999999, 'Valid Student ID required')
       .max(100000000, 'Valid Student ID required')
@@ -72,7 +91,8 @@ const MembershipFormContainer = (props) => {
     major: Yup.string().required('Major is required'),
     international: Yup.string().required(
       'International or domestic student indication is required'
-    )
+    ),
+    prev_member: Yup.string().required('Please select Yes/No'),
   })
 
   const UniversityValidationSchema = Yup.object({
@@ -80,12 +100,20 @@ const MembershipFormContainer = (props) => {
     password: Yup.string()
       .required('Password is required')
       .min(8, 'Please make your password a minimum of 8 characters'),
+    confirmPassword: Yup.string().required('Password is required').when("password", {
+      is: val => (val && val.length > 0),
+      then: Yup.string().oneOf(
+        [Yup.ref("password")],
+        "Password does not match"
+      )
+    }),
     first_name: Yup.string().required('First name is required'),
     last_name: Yup.string().required('Last name is required'),
     university: Yup.string().required('University name is required'),
     faculty: Yup.string().required('Faculty is required'),
     year: Yup.string().required('Level of study is required'),
-    major: Yup.string().required('Major is required')
+    major: Yup.string().required('Major is required'),
+    prev_member: Yup.string().required('Please select Yes/No'),
   })
 
   const HighSchoolValidationSchema = Yup.object({
@@ -93,22 +121,38 @@ const MembershipFormContainer = (props) => {
     password: Yup.string()
       .required('Password is required')
       .min(8, 'Please make your password a minimum of 8 characters'),
+    confirmPassword: Yup.string().required('Password is required').when("password", {
+      is: val => (val && val.length > 0),
+      then: Yup.string().oneOf(
+        [Yup.ref("password")],
+        "Password does not match"
+      )
+    }),
     first_name: Yup.string().required('First name is required'),
     last_name: Yup.string().required('Last name is required'),
     year: Yup.string().required('Level of study is required'),
-    high_school: Yup.string().required('High School is required')
+    high_school: Yup.string().required('High School is required'),
+    prev_member: Yup.string().required('Please select Yes/No'),
   })
 
-  const { user } = props
   const initialValues = {
-    email: (user && user.email) || '',
-    first_name: (user && user.first_name) || '',
-    last_name: (user && user.last_name) || ''
+    email: '',
+    password: '',
+    confirmPassword: '',
+    first_name: '',
+    last_name: '',
+    student_number: '',
+    year: '',
+    faculty: '',
+    major: '',
+    international: '',
+    prev_member: '',
+    university: '',
+    high_school: '',
   }
 
   async function submitValues (values) {
     const {
-      education,
       email,
       password,
       first_name,
@@ -136,23 +180,40 @@ const MembershipFormContainer = (props) => {
 
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     const body = {
-      education,
+      education: memberType,
       email,
       first_name,
       last_name,
       pronouns,
-      student_number,
-      faculty,
-      year,
-      major,
+      student_number: memberType === 'UBC' ? student_number : '',
+      faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
+      year: memberType !== 'NA' ? year : '',
+      major: (memberType === 'UBC' || memberType === 'UNI') ? major : '',
       prev_member,
-      international,
+      international: memberType === 'UBC' ? international : '',
       topics,
+      diet,
       heard_from,
-      university,
-      high_school,
+      university: memberType === 'UNI' ? university : '',
+      high_school: memberType === 'HS' ? high_school : '',
       admin
     }
+
+    const userBody = {
+      education: memberType,
+      studentId: memberType === 'UBC' ? student_number : '',
+      fname: first_name,
+      lname: last_name,
+      major: (memberType === 'UBC' || memberType === 'UNI') ? major : '',
+      email: email,
+      year: memberType !== 'NA' ? year : '',
+      faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
+      gender: pronouns || 'Other/Prefer not to say',
+      diet: diet || 'None',
+      isMember: true,
+      admin: admin
+    }
+
     setIsSubmitting(true);
     try {
       await Auth.signUp({
@@ -166,27 +227,18 @@ const MembershipFormContainer = (props) => {
     } catch (err) {
       // TODO: add error handler, do not let the form submit
       console.log(err)
+      setIsSubmitting(false)
       return
     }
 
     // users table post
 
-    const userBody = {
-      studentId: student_number,
-      fname: first_name,
-      lname: last_name,
-      major: major,
-      email: email,
-      year: year,
-      faculty: faculty,
-      gender: pronouns || 'Other/Prefer not to say',
-      diet: diet || 'None',
-      admin: admin
-    }
-
     fetchBackend('/members', 'POST', body, false)
       .then(async () => {
-        history.push('/signup/success')
+        history.push({
+          pathname: '/signup/success', 
+          state: { email: email, formType: 'UserMember' }
+        })
       })
       .catch((err) => {
         if (err.status === 409) {
@@ -213,29 +265,29 @@ const MembershipFormContainer = (props) => {
   return (
     <div className={classes.layout}>
       <Helmet>
-        <title>UBC BizTech Membership 2021/22</title>
+        <title>UBC BizTech User Registration &amp; 2022/23 Membership</title>
       </Helmet>
       <Fragment>
         <Typography className={classes.registrationText}>
-          UBC BizTech Membership 2021/22
+        UBC BizTech User Registration &amp; 2022/23 Membership
         </Typography>
         <div className={classes.registrationHeader}>
-          <Typography>
-            Thank you for signing up to be a BizTech member! By signing up for
+          <Typography className={classes.description}>
+            Thank you for signing up to be a BizTech Application user and 2022/23 member! By signing up for
             membership, you will also be a part of our mailing list!
           </Typography>
-          <Typography>
-            Please keep in mind that membership costs $5 ($7.50 for non-UBC
+          <Typography className={classes.description}>
+            Please keep in mind that membership costs $10 ($15.00 for non-UBC
             students) and are valid for one school year (Sept-May), so if you
             were a member last year and would like to continue being part of the
             BizTech Network, kindly renew your membership by filling out this
-            form and send an e-transfer for the amount of $5 to
-            rita@ubcbiztech.com.
+            form and completing the payment.
           </Typography>
           <Typography>
             You will be also prompted to enter a password; submitting this form
-            will automatically sign you up for our application, where you can
-            login using your email and password.
+            will automatically create your new account for our application, where you can
+            login using your email and password. If you already have an account, please log in and access the 
+            membership registration form.
           </Typography>
         </div>
         <Formik
@@ -258,7 +310,7 @@ const MembershipFormContainer = (props) => {
               memberType,
               setMemberType
             }
-            return <MembershipForm {...props} />
+            return <UserMembershipForm {...props} />
           }}
         </Formik>
       </Fragment>
@@ -266,4 +318,4 @@ const MembershipFormContainer = (props) => {
   )
 }
 
-export default MembershipFormContainer
+export default UserMembershipFormContainer

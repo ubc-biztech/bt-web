@@ -1,18 +1,18 @@
 import React from "react";
-import { Button, Grid, Typography, Checkbox } from "@material-ui/core";
-import CardMembershipIcon from "@material-ui/icons/CardMembership";
-import { makeStyles } from "@material-ui/core/styles";
-import {
+import { Button, Grid, Typography, Checkbox ,
   FormControlLabel,
   FormControl,
   RadioGroup,
   FormLabel,
   Radio,
 } from "@material-ui/core";
+import CardMembershipIcon from "@material-ui/icons/CardMembership";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { COLORS } from "../../../constants/_constants/theme";
-import CustomTextField from "../../../components/inputs/CustomTextField";
-import CustomSelect from "../../../components/inputs/CustomSelect";
+
+import { COLORS } from "constants/_constants/theme";
+import CustomTextField from "components/inputs/CustomTextField";
+import CustomSelect from "components/inputs/CustomSelect";
 import { MEMBER_TYPES, MEMBER_LABELS } from "constants/_constants/memberTypes";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,10 +45,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MembershipForm(props) {
+export default function UserMembershipForm(props) {
   const classes = useStyles();
 
-  const { isSubmitting, handleSubmit, memberType, setMemberType } = props;
+  const { isSubmitting, handleSubmit, memberType, setMemberType, errors } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -59,9 +59,11 @@ export default function MembershipForm(props) {
         <Grid item xs={12}>
           <FormControl>
             <FormLabel>
-              Please select the option that's most relevant to you
+              <Typography color={errors.education ? "error" : "primary"}>
+                Please select the option that's most relevant to you *
+              </Typography>
             </FormLabel>
-            <RadioGroup onChange={(e) => setMemberType(e.target.value)}>
+            <RadioGroup value={memberType} onChange={(e) => setMemberType(e.target.value)}>
               <FormControlLabel
                 value={MEMBER_TYPES.UBC}
                 control={<Radio />}
@@ -83,6 +85,11 @@ export default function MembershipForm(props) {
                 label={MEMBER_LABELS.OTHER}
               />
             </RadioGroup>
+            {errors.education && (
+              <Typography variant="caption" color={"error"}>
+                {errors.education}
+              </Typography>
+            )}
           </FormControl>
         </Grid>
 
@@ -101,6 +108,16 @@ export default function MembershipForm(props) {
             label="Password *"
             groupName="password"
             autoComplete="password"
+            type="password"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <CustomTextField
+            {...props}
+            label="Confirm Password *"
+            groupName="confirmPassword"
+            autoComplete="confirmPassword"
             type="password"
           />
         </Grid>

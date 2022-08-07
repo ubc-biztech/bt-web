@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
-import { Button, Fab, Grid, TextField } from "@material-ui/core";
+import { Button, Fab, Grid, TextField, Tooltip } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import {
   KeyboardDateTimePicker,
@@ -15,6 +15,7 @@ import { FieldArray, Formik } from "formik";
 import * as Yup from "yup";
 import { fetchBackend, log } from "utils";
 import { fetchEvents } from "store/event/eventActions";
+
 
 // Styling Material UI Components
 const useStyles = makeStyles((theme) => ({
@@ -284,20 +285,22 @@ const FormCreateForm = (props) => {
 
             <div style={styles.editorSection}>
               <h3 style={styles.editorSectionTitle}>Event Cover Photo</h3>
-              <TextField
-                id="imageUrl"
-                name="imageUrl"
-                label="Image URL"
-                fullWidth
-                required
-                margin="normal"
-                variant="filled"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={imageUrl}
-                error={showError("imageUrl")}
-                helperText={showError("imageUrl") && errors.imageUrl}
-              />
+              <Tooltip title="Please upload an image of size 1920px x 1080px" arrow>
+                <TextField
+                  id="imageUrl"
+                  name="imageUrl"
+                  label="Image URL"
+                  fullWidth
+                  required
+                  margin="normal"
+                  variant="filled"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={imageUrl}
+                  error={showError("imageUrl")}
+                  helperText={showError("imageUrl") && errors.imageUrl}
+                />
+              </Tooltip>
             </div>
 
             <div style={styles.editorDivider}></div>

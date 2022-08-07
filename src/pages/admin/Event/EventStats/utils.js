@@ -1,3 +1,7 @@
+// Constants
+const REGISTRATIONSTATUSLABEL = "registrationStatus"
+
+
 /**
  * Helper function to turn registration responses in an array of userResponses,
  * where each object has a id as pk, and multiple key value pairs of questionId: response
@@ -72,6 +76,7 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
 };
 
 export {
+  REGISTRATIONSTATUSLABEL,
   parseRegistrationResponses,
   combineEventAndRegistrationData,
   appendRegistrationQuestions,
