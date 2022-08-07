@@ -148,7 +148,7 @@ const FormCreateForm = (props) => {
     setFieldTouched,
     submitCount,
     handlePublish,
-    showPublishButton,
+    isSaved,
     isPublished
   } = props;
 
@@ -243,7 +243,7 @@ const FormCreateForm = (props) => {
             <div style={{ ...styles.editorSection, ...styles.editorHeadmast }}>
               <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
               <div style={{ display: "flex", gap: "1rem" }}>
-                {showPublishButton ? 
+                {isSaved ? 
                 <Link
                   variant="contained"
                   component={Button}
@@ -254,7 +254,7 @@ const FormCreateForm = (props) => {
                   Event Link
                 </Link> : <></>}
 
-                {showPublishButton &&
+                {isSaved &&
                   (isPublished ? (
                     <Button
                       variant="contained"
@@ -609,7 +609,7 @@ const FormCreate = (props) => {
   }
 
   const isPublished = (event && event.isPublished) || false;
-  const showPublishButton = eventId && eventYear ? true : false;
+  const isSaved = eventId && eventYear ? true : false;
 
   async function handlePublish(publish = false) {
     const body = { isPublished: publish };
@@ -630,7 +630,7 @@ const FormCreate = (props) => {
 
   const formProps = {
     handlePublish,
-    showPublishButton,
+    isSaved,
     isPublished
   };
 
