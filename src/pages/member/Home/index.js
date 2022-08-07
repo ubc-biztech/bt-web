@@ -130,7 +130,7 @@ function MemberHome(props) {
         <div className={classes.column}>
           <CardComponent>
             <Typography variant="h2">Hi {userName}!</Typography>
-            <Typography>You are X events away from a reward!</Typography>
+            {/* <Typography>You are X events away from a reward!</Typography> */}
             <img src={House} className={classes.house} alt="BizTech House" />
           </CardComponent>
           <CardComponent>
@@ -143,12 +143,12 @@ function MemberHome(props) {
           </CardComponent>
         </div>
         <div className={classes.column}>
-          <CardComponent>
+          {/* <CardComponent>
             <Typography variant="h2">Sticker Collection</Typography>
-          </CardComponent>
-          <CardComponent>
+          </CardComponent> */}
+          {/* <CardComponent>
             <Typography variant="h2">Prizes</Typography>
-          </CardComponent>
+          </CardComponent> */}
           <div className={classes.flexbox}>
             <div className={classes.column}>
               <CardComponent>
