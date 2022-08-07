@@ -31,7 +31,6 @@ import {
   fetchUserRegisteredEvents
 } from "store/user/userActions"
 import { log } from "utils"
-import FormRegister from "pages/admin/DynamicForm/FormRegister"
 
 class Router extends Component {
   constructor () {
@@ -129,7 +128,6 @@ class Router extends Component {
 
               {/* PUBLIC EVENT-SPECIFIC ROUTES */}
               {<Route path="/event/:id/:year" component={PublicEventRoutes} />}
-              <Route exact path="/register/:slug" render={() => <FormRegister />} />
 
               {/* COMMON ROUTES */}
               <Route

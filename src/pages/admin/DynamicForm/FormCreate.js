@@ -248,7 +248,6 @@ const FormCreateForm = (props) => {
                   variant="contained"
                   component={Button}
                   color="primary"
-                  // to={{ pathname: `/register/${slug}` }}
                   to={{ pathname: `/event/${slug}/${start.getFullYear()}/register`}}
                   target="_blank"
                 >
@@ -337,7 +336,6 @@ const FormCreateForm = (props) => {
               />
               {slug && (
                 <div style={{ color: "#FFFFFF", opacity: "0.7" }}>
-                  {/* {"http://ubcbiztech.com/register/" + slug} */}
                   {"https://ubcbiztech.com/" + slug + "/" + start.getFullYear() + "/register"}
                 </div>
               )}
