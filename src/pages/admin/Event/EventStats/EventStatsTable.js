@@ -1,6 +1,7 @@
-import React, { useState, Component } from "react";
+import React, { useState, Component, useEffect } from "react";
+import QRIcon from "../../../../components/icons/qr-icon.png";
 
-import MaterialTable from "material-table";
+import MaterialTable, { MTableCell } from "material-table";
 import {
   RadialChart,
   XYPlot,
@@ -8,7 +9,7 @@ import {
   YAxis,
   VerticalGridLines,
   HorizontalGridLines,
-  VerticalBarSeries,
+  VerticalBarSeries
 } from "react-vis";
 
 import {
@@ -17,18 +18,25 @@ import {
   Select,
   Typography,
   makeStyles,
+  Link,
+  Button,
+  Popover
 } from "@material-ui/core";
+
+import { Alert } from "@material-ui/lab";
+import QrReader from "react-web-qr-reader";
 
 import {
   REGISTRATION_STATUS,
   REGISTRATION_LABELS,
-  COLORS,
+  COLORS
 } from "constants/index";
 import { fetchBackend } from "utils";
 import {
+  REGISTRATIONSTATUSLABEL,
   parseRegistrationResponses,
   combineEventAndRegistrationData,
-  appendRegistrationQuestions,
+  appendRegistrationQuestions
 } from "./utils";
 
 const styles = {
@@ -36,23 +44,50 @@ const styles = {
     width: "100%",
     display: "flex",
     margin: "6px",
-    cursor: "pointer",
+    cursor: "pointer"
   },
   stat: {
-    margin: "10px",
+    margin: "10px"
   },
   container: {
     marginRight: "30px",
     "& .MuiTable-root": {
-      position: "sticky",
+      position: "sticky"
     },
     width: "100%",
     height: "calc(100vh - 32px)",
-    overflow: "auto",
+    overflow: "auto"
   },
   table: {
-    display: "grid",
+    display: "grid"
   },
+  qrCodeVideo: {
+    width: "300px",
+    height: "300px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  toggleQrScanner: {
+    fontSize: "1.5rem",
+    fontWeight: "bold"
+  },
+  qrIcon: {
+    width: "20px",
+    height: "20px",
+    display: "flex-inline",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: "4px",
+    paddingLeft: "2px",
+    paddingRight: "2px"
+  },
+  ellipsis: {
+    maxWidth: 200, 
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  }
 };
 
 /**
@@ -76,7 +111,7 @@ export class EventStatsTable extends Component {
       yearVisible: { visible: false, style: { display: "none" } },
       dietaryVisible: { visible: false, style: { display: "none" } },
       gendersVisible: { visible: false, style: { display: "none" } },
-      heardFromVisible: { visible: false, style: { display: "none" } },
+      heardFromVisible: { visible: false, style: { display: "none" } }
     };
   }
 
@@ -84,7 +119,7 @@ export class EventStatsTable extends Component {
     const body = {
       eventID: this.props.event.id,
       year: this.props.event.year,
-      registrationStatus,
+      registrationStatus
     };
     await fetchBackend(`/registrations/${id}`, "PUT", body);
 
@@ -98,7 +133,7 @@ export class EventStatsTable extends Component {
   async getEventTableData(eventID, eventYear) {
     let params = new URLSearchParams({
       eventID: eventID,
-      year: eventYear,
+      year: eventYear
     });
     await fetchBackend(`/registrations?${params}`, "GET")
       .then((response) => {
@@ -112,9 +147,10 @@ export class EventStatsTable extends Component {
               : 1;
           }
         });
+
         this.setState({
           heardFrom,
-          registrationResponses,
+          registrationResponses
         });
       })
       .catch((err) => {
@@ -122,7 +158,7 @@ export class EventStatsTable extends Component {
       });
 
     params = new URLSearchParams({
-      users: true,
+      users: true
     });
     await fetchBackend(
       `/events/${eventID}/${eventYear.toString()}?${params}`,
@@ -165,7 +201,7 @@ export class EventStatsTable extends Component {
     });
 
     this.setState({
-      registrationNumbers,
+      registrationNumbers
     });
   }
 
@@ -206,7 +242,7 @@ export class EventStatsTable extends Component {
       faculties,
       years,
       genders,
-      dietary,
+      dietary
     });
   }
 
@@ -221,8 +257,10 @@ export class EventStatsTable extends Component {
       this.state.registrationResponses
     );
 
+    console.log("rows:\n", data);
+
     this.setState({
-      rows: data,
+      rows: data
     });
   }
 
@@ -235,14 +273,15 @@ export class EventStatsTable extends Component {
 
     appendRegistrationQuestions(columns, registrationQuestions);
 
+    console.log("columns:\n", columns);
     this.setState({
-      columns,
+      columns
     });
   }
 
   async updateEventTableData(eventID) {
     const params = new URLSearchParams({
-      users: true,
+      users: true
     });
 
     await fetchBackend(`/events/${eventID}?${params}`, "GET").then(
@@ -270,6 +309,7 @@ export class EventStatsTable extends Component {
      * Helper function to determine whether to display action for check-in or undo check-in
      * @param {*} rowData data about the current row
      */
+
     const changeRegistration = (event, rowData) => {
       // TODO: refactor code smell
       switch (event.target.value) {
@@ -333,12 +373,12 @@ export class EventStatsTable extends Component {
         title: "Student Number",
         field: "studentId",
         type: "numeric",
-        sorting: false,
+        sorting: false
       },
       { title: "Email", field: "id", sorting: false },
       {
         title: "Registration Status",
-        field: "registrationStatus",
+        field: REGISTRATIONSTATUSLABEL,
         sorting: false,
         render: (rowData) => (
           <div>
@@ -356,7 +396,7 @@ export class EventStatsTable extends Component {
                       REGISTRATION_STATUS.CANCELLED
                     ? COLORS.LIGHT_RED
                     : COLORS.LIGHT_BACKGROUND_COLOR,
-                paddingLeft: "10px",
+                paddingLeft: "10px"
               }}
             >
               <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>
@@ -373,8 +413,8 @@ export class EventStatsTable extends Component {
               </MenuItem>
             </Select>
           </div>
-        ),
-      },
+        )
+      }
     ];
 
     const registrationColumns = defaultColumns.concat(this.state.columns);
@@ -385,6 +425,8 @@ export class EventStatsTable extends Component {
      */
     return (
       <div style={styles.container}>
+        {/* QR code scanner */}
+        <QrCheckIn event={this.props.event} />
         <Statistic
           statName="Registration status: "
           statObj={this.state.registrationNumbers}
@@ -397,6 +439,15 @@ export class EventStatsTable extends Component {
           statName="Heard about event from: "
           statObj={this.state.heardFrom}
         />
+
+        {/* refresh button */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => this.getEventTableData(this.props.event.id, this.props.event.year)}
+        >
+          Refresh Table
+        </Button>
 
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
@@ -415,22 +466,26 @@ export class EventStatsTable extends Component {
             headerStyle: {
               fontWeight: "bold",
               backgroundColor: COLORS.CARD_PAPER_COLOR,
-              color: COLORS.FONT_COLOR,
+              color: COLORS.FONT_COLOR
             },
-            rowStyle: (rowData) => ({}),
+            rowStyle: (rowData) => ({})
           }}
           localization={{
             body: {
               emptyDataSourceMessage: (
                 <h2
                   style={{
-                    color: COLORS.WHITE,
+                    color: COLORS.WHITE
                   }}
                 >
                   No attendees to display.
                 </h2>
-              ),
-            },
+              )
+            }
+          }}
+          components={{
+            Cell: props => (<PopoverCell {...props}/>
+            )
           }}
         />
       </div>
@@ -441,9 +496,73 @@ export class EventStatsTable extends Component {
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
     borderRadius: "4px",
-    marginBottom: "5px",
+    marginBottom: "5px"
   },
+  qrRoot: {
+    borderRadius: "4px",
+    padding: "10px"
+  },
+  qrOutput: {
+    marginTop: "10px",
+    marginBottom: "10px",
+    textAlign: "center"
+  }
 }));
+
+
+const PopoverCell = (props) => {
+
+  const [anchorPosition, setAnchorPosition] = useState(null);
+  const [popoverText, setPopoverText] = useState("");
+
+  const handlePopoverOpen = (event) => {
+    setPopoverText(event.target.getAttribute('value'));
+
+    const {top, left} = event.currentTarget.getBoundingClientRect();
+    setAnchorPosition({top, left});
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorPosition(null);
+  };
+  
+  const open = Boolean(anchorPosition);
+
+  const dropdownColumnFieldNames = [REGISTRATIONSTATUSLABEL]
+
+  return (<>
+  <MTableCell {...props} 
+      aria-owns={open ? 'mouse-over-popover' : undefined}
+      aria-haspopup="true"
+      onMouseDown={handlePopoverOpen}
+      style={styles.ellipsis} 
+    />
+  {/* NOTE: if any more dropdown columns are added in the future to the the default columns of the MaterialTable, 
+            you will need to exclude the column from the Popover effect as shown below */}
+  {dropdownColumnFieldNames.includes(props.columnDef.field) ? <></> :
+   <Popover
+    id="mouse-over-popover"
+    sx={{
+      pointerEvents: 'auto',
+    }}
+    open={open}
+    anchorReference="anchorPosition"
+    anchorPosition={anchorPosition}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'left',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'left',
+    }}
+    onClose={handlePopoverClose}
+    disableRestoreFocus
+  >
+    <Typography sx={{ p: 1 }}>{popoverText}</Typography>
+  </Popover>}
+  </>)
+}
 
 /**
  * represents a statistic and shows a row of the stats with a dropdown for charts
@@ -456,15 +575,15 @@ const Statistic = (props) => {
     Object.keys(props.statObj).map((key) => {
       return {
         label: key,
-        angle: props.statObj[key],
+        angle: props.statObj[key]
       };
     }),
     Object.keys(props.statObj).map((key) => {
       return {
         x: key,
-        y: props.statObj[key],
+        y: props.statObj[key]
       };
-    }),
+    })
   ];
 
   return (
@@ -520,4 +639,193 @@ const Statistic = (props) => {
     </Paper>
   );
 };
+
+// an enumeration for the stages of QR code scanning
+const QR_SCAN_STAGE = {
+  SCANNING: "SCANNING",
+  FAILED: "FAILED",
+  SUCCESS: "SUCCESS"
+};
+
+// facing mode for the camera
+const CAMERA_FACING_MODE = {
+  FRONT: "user",
+  BACK: "environment"
+};
+
+const QrCheckIn = (props) => {
+  const classes = useStyles();
+  const [visible, setVisible] = useState(false);
+  const defaultQrCode = { data: "" };
+  const [qrCode, setQrCode] = useState(defaultQrCode);
+  const [qrScanStage, setQrScanStage] = useState(QR_SCAN_STAGE.SCANNING);
+  const [cameraFacingMode, setCameraFacingMode] = useState(
+    CAMERA_FACING_MODE.BACK
+  );
+  const [checkInName, setCheckInName] = useState("");
+  const [error, setError] = useState("");
+
+  const flipCamera = () => {
+    if (cameraFacingMode === CAMERA_FACING_MODE.FRONT) {
+      setCameraFacingMode(CAMERA_FACING_MODE.BACK);
+    } else {
+      setCameraFacingMode(CAMERA_FACING_MODE.FRONT);
+    }
+  };
+
+  const handleScanQR = (data) => {
+    // conditional check is necessary to prevent re-scans of the same QR code
+    if (data !== qrCode) setQrCode(data);
+  };
+
+  // checks if the QR code is valid whenever the QR code is changed
+  useEffect(() => {
+    if (!qrCode || qrCode.data === "") return;
+    const id = qrCode.data;
+    const userID = id.split(";")[0];
+    const eventIDAndYear = id.split(";")[1] + ";" + id.split(";")[2];
+
+    // validate event ID and year
+    if (eventIDAndYear !== props.event.id + ";" + props.event.year) {
+      // TODO: better error handling needed
+      setQrScanStage(QR_SCAN_STAGE.FAILED);
+      setError("Person is not registered for this event.");
+      return;
+    }
+
+    let params = new URLSearchParams({
+      users: true
+    });
+
+    fetchBackend(
+      `/events/${props.event.id}/${props.event.year.toString()}?${params}`,
+      "GET"
+    )
+      .then((users) => {
+        // filter the users to get the one with the same id
+        const user = users.filter((user) => user.id === userID)[0];
+
+        // get the person's name
+        setCheckInName(`${user.fname} ${user.lname} (${userID})`);
+
+        // If the user is already checked in, show an error
+        if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
+          setQrScanStage(QR_SCAN_STAGE.FAILED);
+          setError(`Person is already checked in under ${checkInName}.`);
+          return;
+        }
+
+        checkInUser(userID);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    const checkInUser = (id) => {
+      const body = {
+        eventID: props.event.id,
+        year: props.event.year,
+        registrationStatus: REGISTRATION_STATUS.CHECKED_IN
+      };
+
+      // update the registration status of the user to checked in
+      fetchBackend(`/registrations/${id}`, "PUT", body);
+
+      setQrScanStage(QR_SCAN_STAGE.SUCCESS);
+      setQrCode(defaultQrCode);
+      // wait 10 seconds, then reset the scan stage
+      // NOTE: the alert will reset in 10 seconds no matter what, so don't scan too fast
+      setTimeout(() => {
+        if (
+          qrScanStage === QR_SCAN_STAGE.SUCCESS ||
+          qrScanStage === QR_SCAN_STAGE.SCANNING
+        ) {
+          setQrScanStage(QR_SCAN_STAGE.SCANNING);
+        }
+      }, 10000);
+    };
+  }, [qrCode, defaultQrCode, props.event.id, props.event.year, qrScanStage, checkInName]);
+
+  return (
+    <Paper className={[classes.qrRoot]}>
+      {/* Toggle QR Scanner */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "left",
+          alignItems: "bottom"
+        }}
+      >
+        <Link
+          onClick={() => setVisible(!visible)}
+          style={styles.toggleQrScanner}
+        >
+          <img src={QRIcon} alt="QR Icon" style={styles.qrIcon} />
+          Toggle QR Scanner for Check-In
+        </Link>
+      </div>
+
+      {visible && (
+        <div className={classes.qrOutput}>
+          <Alert
+            variant="filled"
+            severity={
+              qrScanStage === QR_SCAN_STAGE.SUCCESS
+                ? "success"
+                : qrScanStage === QR_SCAN_STAGE.SCANNING
+                ? "info"
+                : "error"
+            }
+          >
+            {qrScanStage === QR_SCAN_STAGE.SUCCESS
+              ? `Checked-in successfully for ${checkInName}! To see the updated attendance, refresh the table using the button below.`
+              : qrScanStage === QR_SCAN_STAGE.SCANNING
+              ? "Ready to scan a QR code to check-in. 😎"
+              : `🚨 ERROR: ${error}`}
+          </Alert>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <QrReader
+              style={styles.qrCodeVideo}
+              onScan={handleScanQR}
+              facingMode={cameraFacingMode}
+            />
+          </div>
+
+          <div>
+            {/* Manually reset scanner */}
+            <Link
+              onClick={() => {
+                setQrCode(defaultQrCode);
+                setQrScanStage(QR_SCAN_STAGE.SCANNING);
+              }}
+            >
+              Manually Reset Scanner
+            </Link>
+
+            <Link> | </Link>
+
+            {/* Flip camera */}
+            <Link onClick={() => flipCamera()}>Switch Camera</Link>
+          </div>
+
+          <div>
+            {/* Last person who was scanned */}
+            <Typography variant="body2">
+              Last scanned: {checkInName ? checkInName : "None"}
+            </Typography>
+          </div>
+        </div>
+      )}
+    </Paper>
+  );
+};
+
 export default EventStatsTable;
+

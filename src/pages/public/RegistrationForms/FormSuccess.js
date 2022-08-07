@@ -1,5 +1,6 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import React, { Fragment } from "react";
+import { withRouter, useLocation } from "react-router-dom";
+import { Auth } from 'aws-amplify';
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
@@ -9,10 +10,10 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
-import { COLORS } from "../../../constants/_constants/theme";
+import { COLORS } from "constants/_constants/theme";
 
-import BiztechIcon from "../../../components/icons/BiztechIcon";
-import Discord from "../../../components/icons/discord.svg";
+import BiztechIcon from "components/icons/BiztechIcon";
+import Discord from "components/icons/discord.svg";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
@@ -107,12 +108,29 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "underline",
     },
   },
+  resendVerification: {
+    display: 'inline',
+    color: COLORS.BIZTECH_GREEN,
+    "&:hover": {
+      color: COLORS.WHITE,
+      textDecoration: "underline",
+      cursor: 'pointer',
+    },
+  }
 }));
 
-const MembershipFormSuccess = (props) => {
+const FormSuccess = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
+  const location = useLocation();
+  const email = location.state.email;
+
+  const resendVerificationEmail = async () => {
+    await Auth.resendSignUp(email).then(() => {
+      alert('Verification Email Resent!')
+    })
+  }
 
   return (
     <Grid container spacing={4} className={classes.main}>
@@ -121,8 +139,13 @@ const MembershipFormSuccess = (props) => {
           <Typography className={classes.successMessageHeading}>
             Welcome to the BizTech community!
           </Typography>
-          <Typography>You've successfully become a BizTech member.</Typography>
-          <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
+          <Typography>You've successfully become a {location.state.formType === 'UserMember' && 'BizTech Application user and '}member for the 2022/23 academic year.</Typography>
+          {location.state.formType === 'UserMember' && (
+            <Fragment>
+              <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
+              <Typography>Didn't receive the email? <div className={classes.resendVerification} onClick={() => resendVerificationEmail()}>Click here</div> to resend it.</Typography>
+            </Fragment>
+          )}
         </div>
         <div className={classes.whereToNextContainer}>
           <Typography className={classes.whereToNextHeading}>
@@ -209,4 +232,4 @@ const MembershipFormSuccess = (props) => {
   );
 };
 
-export default withRouter(MembershipFormSuccess);
+export default withRouter(FormSuccess);

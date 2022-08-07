@@ -240,7 +240,8 @@ function MemberProfile (props) {
 
   const getFavouriteEvents = () => {
     fetchBackend(`/users/${user.id}`, 'GET').then(async (response) => {
-      const favouriteEventIDs = response.favedEventsID
+      console.log(response) // TODO: remove
+      const favouriteEventIDs = response['favedEventsID;year']
       events &&
         events.forEach((event) => {
           if (favouriteEventIDs.length >= 2) {
@@ -354,7 +355,7 @@ function MemberProfile (props) {
                         >
                           Submit
                         </Button>
-                        <Tooltip title='Contact a BizTech executive your student number is incorrect'>
+                        <Tooltip title='Contact a BizTech executive if your student number or e-mail is incorrect'>
                           <InfoOutlinedIcon
                             className={classes.infoIcon}
                           ></InfoOutlinedIcon>
@@ -395,12 +396,10 @@ function MemberProfile (props) {
                     <div className={classes.infoBox}>
                       <div>
                         <TextField
-                          id='standard-helperText'
+                          id='standard-read-only-input'
                           label='Email'
                           value={Email}
-                          onChange={(event) => {
-                            handleChange('Email', event.target.value)
-                          }}
+                          inputProps={{ readOnly: true }}
                         />
                       </div>
                     </div>

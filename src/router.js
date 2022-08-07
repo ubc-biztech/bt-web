@@ -7,15 +7,18 @@ import Nav from "components/layout/Navigation"
 import ScrollToTop from "components/layout/ScrollToTop"
 import Header from "components/layout/Header"
 import Footer from "components/layout/Footer"
-import RegisterAlert from "components/alerts/RegisterAlert"
+import UserAlert from "components/alerts/UserAlert"
+import MemberAlert from "components/alerts/MemberAlert"
 import Route from "components/routing/Route"
 
 import Login from "pages/public/Login"
 import LoginRedirect from "pages/public/LoginRedirect"
-import MembershipForm from "pages/public/MembershipForm"
-import MembershipFormSuccess from "pages/public/MembershipForm/MembershipFormSuccess"
+import ForgotPassword from "pages/public/ForgotPassword";
+import FormSuccess from "pages/public/RegistrationForms/FormSuccess"
+import RegistrationForm from "pages/public/RegistrationForms"
+
 // import Signup from '../pages/public/Signup'
-import EventsDashboard from "pages/public/EventsDashboard"
+import EventsDashboard from "pages/public/EventsDashboard";
 
 import Forbidden from "pages/Forbidden"
 import Loading from "pages/Loading"
@@ -23,7 +26,6 @@ import NotFound from "pages/NotFound"
 import AdminRoutes from "pages/admin"
 import MemberRoutes from "pages/member"
 import PublicEventRoutes from "pages/public/Event"
-import Landing from "pages/public/Landing"
 
 import {
   setUser,
@@ -33,17 +35,17 @@ import {
 import { log } from "utils"
 
 class Router extends Component {
-  constructor () {
-    super()
+  constructor() {
+    super();
     this.state = {
       loaded: false
-    }
+    };
   }
 
-  getAuthenticatedUser () {
+  getAuthenticatedUser() {
     return Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(async (authUser) => {
-        const email = authUser.attributes.email
+        const email = authUser.attributes.email;
         if (
           email.substring(email.indexOf("@") + 1, email.length) ===
           "ubcbiztech.com"
@@ -52,50 +54,51 @@ class Router extends Component {
             // name: authUser.attributes.name, // we don't need admin name for now
             email: authUser.attributes.email,
             admin: true
-          })
+          });
         } else {
           if (email) {
             // Perform redux actions to update user and registration states at the same time
             await Promise.all([
               fetchUser({ userId: email }),
-              fetchUserRegisteredEvents({ userId: email }),
+              fetchUserRegisteredEvents({ userId: email })
             ]);
           } else {
             // Parse first name and last name
-            const initialName = authUser.attributes.name.split(" ")
-            const fname = initialName[0]
-            const lname = initialName[1]
+            const initialName = authUser.attributes.name.split(" ");
+            const fname = initialName[0];
+            const lname = initialName[1];
 
             // save only essential info to redux
             await setUser({
               email: email,
               fname,
               lname
-            })
+            });
           }
         }
       })
-      .catch(() => log("Not signed in"))
+      .catch(() => log("Not signed in"));
   }
 
   // User needs to be checked before the page physically renders
   // (otherwise, the login page will initially show on every refresh)
-  componentDidMount () {
+  componentDidMount() {
     log(
-      `Running biztech app in '${process.env.REACT_APP_STAGE || "local"
+      `Running biztech app in '${
+        process.env.REACT_APP_STAGE || "local"
       }' environment`
-    )
+    );
 
     if (!this.props.user) {
       // If the user doesn't already exist in react, get the authenticated user
       // also get events at the same time
       Promise.all([this.getAuthenticatedUser()]).then(() => {
         // Ultimately, after all is loaded, set the "loaded" state and render the component
-        this.setState({ loaded: true })
-      })
+        this.setState({ loaded: true });
+      });
     } else {
       // If the user already exists, update the events and render the page
-      this.setState({ loaded: true })
+      this.setState({ loaded: true });
     }
   }
 
@@ -103,21 +106,19 @@ class Router extends Component {
     const { user } = this.props
     const { loaded } = this.state
     const pathname = window.location.pathname
-
     // Alert the user about the need to register if they haven't
-    const userNeedsRegister = user && !user.admin && !user.id
-
-
+    const userNotMember = user && !user.isMember && !user.admin
     // check if the user state has been updated
-    if (!loaded) return <Loading />
+    if (!loaded) return <Loading />;
     else {
       return (
-      // eslint-disable-line curly
+        // eslint-disable-line curly
         <BrowserRouter>
           <ScrollToTop />
           {user && <Nav admin={user.admin} />}
           <div className="content">
-            {user && userNeedsRegister && <RegisterAlert />}
+          {!user && <UserAlert />}
+          {userNotMember && <MemberAlert />}
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
               {/* ADMIN ROUTES */}
@@ -132,25 +133,25 @@ class Router extends Component {
               {/* COMMON ROUTES */}
               <Route
                 exact
-                path="/events"
-                featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <EventsDashboard />}
-              />
-              <Route
-                exact
                 path="/signup"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <MembershipForm />}
+                render={() => <RegistrationForm user={user}/>}
               />
               <Route
                 exact
                 path="/signup/success"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <MembershipFormSuccess />}
+                render={() => <FormSuccess />}
               />
-
+              <Route
+                exact
+                path="/events"
+                featureFlag={"REACT_APP_SHOW_MAXVP"}
+                render={() => <EventsDashboard />}
+              />
               {/* MISCELLANEOUS ROUTES */}
               <Route exact path="/forbidden" render={() => <Forbidden />} />
+
               <Route
                 exact
                 path="/404"
@@ -170,7 +171,24 @@ class Router extends Component {
                 path="/login-redirect"
                 render={() => <LoginRedirect />}
               />
-              <Route exact path="/login" render={() => <Login />} />
+              <Route exact path="/login" render={() => {
+                if (user) {
+                  return <Redirect to="/" />;
+                } else {
+                  return <Login />;
+                }
+              }} />
+              <Route
+                exact
+                path="/forgot-password"
+                render={() => {
+                  if (user) {
+                    return <Redirect to="/" />;
+                  } else {
+                    return <ForgotPassword />;
+                  }
+                }}
+              />
               {/*
             <Route
               path='/'
@@ -188,10 +206,10 @@ class Router extends Component {
                     user.admin ? (
                       <Redirect to="/admin/home" />
                     ) : (
-                      <Landing />
+                      <Redirect to="/member/home" />
                     )
                   ) : (
-                    <Landing />
+                    <Redirect to="/login" />
                   )
                 }
               />
@@ -199,7 +217,7 @@ class Router extends Component {
             {pathname === "/" || pathname === "" ? null : <Footer />}
           </div>
         </BrowserRouter>
-      )
+      );
     }
   }
 }
@@ -207,7 +225,7 @@ class Router extends Component {
 const mapStateToProps = (state) => {
   return {
     user: state.userState.user.data
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, { setUser })(Router)
+export default connect(mapStateToProps, { setUser })(Router);
