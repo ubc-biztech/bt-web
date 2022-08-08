@@ -55,7 +55,23 @@ const useStyles = makeStyles({
   registeredEvents: {
     width: "250px", 
     height: "190px"
-  }
+  }, 
+  featuredEvents: {
+    display: "flex", 
+    flexDirecton: "row",
+    justifyItems: "center",
+    width: "750px", // good idea to make this a const
+    height: "100px" // good idea to make this a const
+  }, 
+  featuredImg: {
+    width: "500px", // good idea to make this a const
+    height: "100px" // good idea to make this a const
+  },
+  registeredImg: {
+    width: "250px", // good idea to make this a const
+    height: "120px" // good idea to make this a const
+  }, 
+
 });
 
 function MemberHome(props) {
@@ -124,7 +140,7 @@ function MemberHome(props) {
     return (
       <Card className={classes.registeredEvents} key={eventId}> 
         <CardMedia
-        className={classes.media}
+        className={classes.registeredImg}
         component="img"
         title="event image"
         image={image}>
@@ -156,6 +172,37 @@ function MemberHome(props) {
     );
   }
 
+  function FeaturedEventsCard(props) {
+    const { eventName, eventDate, imageUrl, cardStyle, eventId = {} } = props;
+    const image = imageUrl || require("assets/default.png");
+
+    return (
+      <Card className={classes.featuredEvents} key={eventId}> 
+        <CardMedia
+        className={classes.featuredImg}
+        component="img"
+        title="event image"
+        image={image}>
+        </CardMedia>
+
+        <CardHeader
+          title={eventName}
+          subheader={
+            {eventDate}
+            ? new Date({eventDate}).toLocaleDateString("en-US", {
+              day: "numeric",
+              weekday: "long",
+              month: "long",
+              year: "numeric",
+            })
+          : ""
+        }>
+          </CardHeader>
+       
+      </Card>
+    );
+  }
+
   function eventDate(date) {
     return new Date(date).toLocaleDateString("en-US", {
       day: "numeric",
@@ -180,7 +227,7 @@ function MemberHome(props) {
             {/* <Typography>You are X events away from a reward!</Typography> */}
             <img src={House} className={classes.house} alt="BizTech House" />
           </CardComponent>
-          <CardComponent>
+          {/* <CardComponent>
             <Typography variant="h2">Progress</Typography>
             {registered ? (
               <UserProgress registeredEvents={registered} events={events} />
@@ -188,10 +235,11 @@ function MemberHome(props) {
                 <Typography>No Registration Data found</Typography>
                 
             )}
-          </CardComponent>
+          </CardComponent> */}
         </div>
         <div className={classes.column}>
           <RegisteredEventsCard eventName="MIS Night 2022" eventDate={date1}></RegisteredEventsCard>
+          <FeaturedEventsCard eventName="MIS Night 2022" eventDate={date1} ></FeaturedEventsCard>
 
 
           {/* <CardComponent>
