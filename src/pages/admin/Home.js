@@ -45,6 +45,9 @@ function AdminHome(props) {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [eventMenuClicked, setEventMenuClicked] = React.useState(null);
+  const filteredEvents = events.sort((a, b) => { 
+    return new Date(b.startDate) - new Date(a.startDate)
+  })
 
   const handleClick = (e, event) => {
     setAnchorEl(e.currentTarget);
@@ -147,7 +150,7 @@ function AdminHome(props) {
       </div>
 
       <Box flexWrap="wrap" display="flex">
-        {events.map((event) => createEventCard(event))}
+        {filteredEvents.map((event) => createEventCard(event))}
       </Box>
 
       <Menu

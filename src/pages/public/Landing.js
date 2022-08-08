@@ -1,6 +1,7 @@
 import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
 import Background from "assets/landingpagebg.svg";
 import House from "assets/house.svg";
@@ -9,6 +10,7 @@ import SpeechBubble from "assets/landingpagespeech.svg";
 
 import IconContainer from "components/layout/IconContainer";
 import Markdown from "components/layout/Markdown";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -76,8 +78,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Landing(props) {
+function Landing(props){
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <div className={classes.main}>
@@ -96,6 +99,13 @@ function Landing(props) {
         </Markdown>
         <hr className={classes.divider} />
         <IconContainer />
+        <Button
+        variant="contained"
+        color="primary"
+        onClick={() =>  history.push('/')}
+        >
+        Home
+        </Button>
       </div>
     </div>
   );
