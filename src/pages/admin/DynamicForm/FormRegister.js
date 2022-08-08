@@ -129,7 +129,6 @@ const FormRegister = (props) => {
     (index, checked, value) => {
       // checked is true/false, if change is to checked
       // value is the selection corresponding to checkmark
-
       const responses = responseData;
       if (responses[index] && Array.isArray(responses[index])) {
         // todo; check if response already exists (shouldn't happen, but to be safe)
@@ -326,8 +325,8 @@ const FormRegister = (props) => {
   };
 
   useEffect(() => {
-    loadQuestions();
-  }, [refresh, loadQuestions]);
+    loadQuestions()
+  }, [refresh]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
