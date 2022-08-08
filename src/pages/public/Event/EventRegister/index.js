@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+// DEPRECATED: We now use the FormRegister in /admin/DynamicForm/FormRegister.js
 const EventFormContainer = (props) => {
   const classes = useStyles();
   const history = useHistory();
