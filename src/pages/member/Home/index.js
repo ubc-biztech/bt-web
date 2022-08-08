@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardContent, Typography, CardHeader, CardMedia } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  Typography,
+  CardHeader,
+  CardMedia
+} from "@material-ui/core";
 
 import UserProgress from "./UserProgress";
 
@@ -16,53 +22,63 @@ const useStyles = makeStyles({
     maxWidth: "85%",
     display: "flex",
     flexWrap: "wrap",
-    margin: "75px auto",
-    padding: "14px",
+    margin: "30px auto",
+    padding: "14px"
   },
   header: {
     color: COLORS.BIZTECH_GREEN,
-    width: "100%",
+    width: "100%"
   },
   column: {
-    flex: "1",
+    flex: "1"
   },
   card: {
     position: "relative",
     margin: "10px 10px 0 0",
-    overflow: "visible",
+    overflow: "visible"
   },
   flexbox: {
     display: "flex",
-    width: "100%",
+    width: "100%"
+    //direction: "column"
   },
   house: {
     position: "absolute",
     width: "33%",
     bottom: "0px",
-    right: "10px",
+    right: "10px"
+  },
+  upcoming: {
+    color: COLORS.BIZTECH_GREEN, 
+    margin: "20px 0 0 0"
+  },
+  greeting: {
+    margin: "20px 0 0 0"
   },
   green: {
-    color: COLORS.BIZTECH_GREEN,
+    color: COLORS.BIZTECH_GREEN
   },
   eventName: {
     fontSize: "24px",
-    fontWeight: "normal",
+    fontWeight: "normal"
   },
   eventDate: {
     fontWeight: "normal",
-    color: COLORS.FONT_COLOR,
+    color: COLORS.FONT_COLOR
   },
   registeredEvents: {
-    width: "250px", 
+    margin: "20px 20px 20px 0",
+    width: "250px",
     height: "190px"
-  }, 
+  },
   featuredEvents: {
-    display: "flex", 
+    display: "flex",
     flexDirecton: "row",
     justifyItems: "center",
+    margin: "20px 20px 0 0",
     width: "750px", // good idea to make this a const
     height: "100px" // good idea to make this a const
-  }, 
+  },
   featuredImg: {
     width: "500px", // good idea to make this a const
     height: "100px" // good idea to make this a const
@@ -70,8 +86,22 @@ const useStyles = makeStyles({
   registeredImg: {
     width: "250px", // good idea to make this a const
     height: "120px" // good idea to make this a const
-  }, 
-
+  },
+  alignVertical: {
+    // margin: "auto",
+    // width: "50%",
+    // maxWidth: "50%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
+  },
+  alignHorizontal: {
+    // width: "50%",
+    // margin: "auto",
+    display: "flex",
+    flexDirection: "row", 
+    justifyContent: "spaceBetween"
+  }
 });
 
 function MemberHome(props) {
@@ -84,7 +114,7 @@ function MemberHome(props) {
   const [featuredEvent, setFeaturedEvent] = useState({});
   const [nextEvent, setNextEvent] = useState({});
 
-  const date1 = new Date('December 17, 1995 03:24:00');
+  const date1 = new Date("December 17, 1995 03:24:00");
 
   const getFeaturedEvent = () => {
     if (events.length) {
@@ -138,28 +168,27 @@ function MemberHome(props) {
     const image = imageUrl || require("assets/default.png");
 
     return (
-      <Card className={classes.registeredEvents} key={eventId}> 
+      <Card className={classes.registeredEvents} key={eventId}>
         <CardMedia
-        className={classes.registeredImg}
-        component="img"
-        title="event image"
-        image={image}>
-        </CardMedia>
+          className={classes.registeredImg}
+          component="img"
+          title="event image"
+          image={image}
+        ></CardMedia>
         <CardHeader
           title={eventName}
           subheader={
-            {eventDate}
-            ? new Date({eventDate}).toLocaleDateString("en-US", {
-              day: "numeric",
-              weekday: "long",
-              month: "long",
-              year: "numeric",
-            })
-          : ""
-        }>
-        </CardHeader>
+            { eventDate }
+              ? new Date({ eventDate }).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  weekday: "long",
+                  month: "long",
+                  year: "numeric"
+                })
+              : ""
+          }
+        ></CardHeader>
       </Card>
-      
 
       /*
       <Card className={classes.registeredEvents}>
@@ -177,28 +206,15 @@ function MemberHome(props) {
     const image = imageUrl || require("assets/default.png");
 
     return (
-      <Card className={classes.featuredEvents} key={eventId}> 
+      <Card className={classes.featuredEvents} key={eventId}>
         <CardMedia
-        className={classes.featuredImg}
-        component="img"
-        title="event image"
-        image={image}>
-        </CardMedia>
+          className={classes.featuredImg}
+          component="img"
+          title="event image"
+          image={image}
+        ></CardMedia>
 
-        <CardHeader
-          title={eventName}
-          subheader={
-            {eventDate}
-            ? new Date({eventDate}).toLocaleDateString("en-US", {
-              day: "numeric",
-              weekday: "long",
-              month: "long",
-              year: "numeric",
-            })
-          : ""
-        }>
-          </CardHeader>
-       
+        <CardHeader title={eventName} subheader={eventDate}></CardHeader>
       </Card>
     );
   }
@@ -208,7 +224,7 @@ function MemberHome(props) {
       day: "numeric",
       weekday: "long",
       month: "long",
-      year: "numeric",
+      year: "numeric"
     });
   }
 
@@ -222,12 +238,14 @@ function MemberHome(props) {
           Home
         </Typography>
         <div className={classes.column}>
-          <CardComponent>
+          <div className={classes.alignVertical}>
+            <Typography variant="h5" className={classes.greeting}>Hi {userName}!</Typography>
+            {/* <CardComponent>
             <Typography variant="h2">Hi {userName}!</Typography>
-            {/* <Typography>You are X events away from a reward!</Typography> */}
+            <Typography>You are X events away from a reward!</Typography>
             <img src={House} className={classes.house} alt="BizTech House" />
-          </CardComponent>
-          {/* <CardComponent>
+          </CardComponent> */}
+            {/* <CardComponent>
             <Typography variant="h2">Progress</Typography>
             {registered ? (
               <UserProgress registeredEvents={registered} events={events} />
@@ -236,20 +254,52 @@ function MemberHome(props) {
                 
             )}
           </CardComponent> */}
-        </div>
-        <div className={classes.column}>
-          <RegisteredEventsCard eventName="MIS Night 2022" eventDate={date1}></RegisteredEventsCard>
-          <FeaturedEventsCard eventName="MIS Night 2022" eventDate={date1} ></FeaturedEventsCard>
+            <Typography variant="h2" className={classes.upcoming}>
+              Your upcoming events
+            </Typography>
 
+            <div className={classes.column}>
+              <div className={classes.alignHorizontal}>
+                <RegisteredEventsCard
+                  eventName="MIS Night 2022"
+                  eventDate={date1}
+                ></RegisteredEventsCard>
+{/* 
+                <RegisteredEventsCard
+                  eventName="MIS Night 2022"
+                  eventDate={date1}
+                ></RegisteredEventsCard> */}
+                
+              </div>
 
-          {/* <CardComponent>
+              <Typography variant="h2" className={classes.green}>
+                Featured
+              </Typography>
+
+              <div className={classes.alignVertical}>
+                {events.map((ev) => (
+                  <FeaturedEventsCard
+                    eventName={ev.ename}
+                    eventDate={
+                      ev.startDate && eventDate(featuredEvent.startDate)
+                    }
+                  ></FeaturedEventsCard>
+                ))}
+                {/* <FeaturedEventsCard
+                  eventName="MIS Night 2022"
+                  eventDate={date1}
+                ></FeaturedEventsCard> */}
+              </div>
+
+              {/* <CardComponent>
             <Typography variant="h2">Sticker Collection</Typography>
           </CardComponent> */}
-          {/* <CardComponent>
+              {/* <CardComponent>
             <Typography variant="h2">Prizes</Typography>
           </CardComponent> */}
-          <div className={classes.flexbox}>
-            <div className={classes.column}>
+            </div>
+            {/* <div className={classes.flexbox}>
+            <div className={classes.column}>                               // OLD NEXT EVENTS 
               <CardComponent>
                 <Typography variant="h2" className={classes.green}>
                   Next Event
@@ -262,7 +312,7 @@ function MemberHome(props) {
                 </Typography>
               </CardComponent>
             </div>
-            <div className={classes.column}>
+            <div className={classes.column}>                              // OLD FEATURED EVENTS
               <CardComponent>
                 <Typography variant="h2" className={classes.green}>
                   Featured
@@ -276,6 +326,7 @@ function MemberHome(props) {
                 </Typography>
               </CardComponent>
             </div>
+          </div> */}
           </div>
         </div>
       </div>
