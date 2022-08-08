@@ -9,6 +9,8 @@ import UserProgress from "./UserProgress";
 import House from "assets/house.svg";
 import { COLORS } from "constants/index";
 
+import EventCard from "components/Event/EventCard";
+
 const useStyles = makeStyles({
   container: {
     maxWidth: "85%",
@@ -50,6 +52,10 @@ const useStyles = makeStyles({
     fontWeight: "normal",
     color: COLORS.FONT_COLOR,
   },
+  registeredEvents: {
+    width: "250px", 
+    height: "180px"
+  }
 });
 
 function MemberHome(props) {
@@ -109,6 +115,18 @@ function MemberHome(props) {
     );
   }
 
+  function RegisteredEventsCard(props) {
+    const { name, date} = props;
+    return (
+      <Card className={classes.registeredEvents}>
+        <div>
+          <Typography className={classes.eventName}>{name}</Typography>
+          <Typography className={classes.eventDate}>{date}</Typography>
+        </div>
+      </Card>
+    );
+  }
+
   function eventDate(date) {
     return new Date(date).toLocaleDateString("en-US", {
       day: "numeric",
@@ -138,11 +156,15 @@ function MemberHome(props) {
             {registered ? (
               <UserProgress registeredEvents={registered} events={events} />
             ) : (
-              <Typography>No Registration Data found</Typography>
+                <Typography>No Registration Data found</Typography>
+                
             )}
           </CardComponent>
         </div>
         <div className={classes.column}>
+          <RegisteredEventsCard name="MIS Night 2022" date="Wednesday, November 24, 2022"></RegisteredEventsCard>
+          <EventCard ></EventCard>
+
           {/* <CardComponent>
             <Typography variant="h2">Sticker Collection</Typography>
           </CardComponent> */}
@@ -175,6 +197,7 @@ function MemberHome(props) {
                   {featuredEvent.startDate &&
                     eventDate(featuredEvent.startDate)}
                 </Typography>
+                {/* <EventCard></EventCard> */}
               </CardComponent>
             </div>
           </div>
