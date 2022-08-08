@@ -674,22 +674,35 @@ const QrCheckIn = (props) => {
   };
 
   const handleScanQR = (data) => {
-    // conditional check is necessary to prevent re-scans of the same QR code
-    if (data !== qrCode) setQrCode(data);
+    // conditional check may be necessary to prevent re-scans of the same QR code, but this implementation is unintuitive
+    // when wanting to re-scan (requires a manual reset)
+    // if (data.data !== qrCode.data) setQrCode(data);
+
+    setQrCode(data);
   };
+
+  // puts the QR code scanner in a scanning state after a grace period, like tapping your Compass Card
+  // stage is type QR_SCAN_STAGE
+  const cycleQrScanStage = (stage, ms) => {
+    setQrScanStage(stage);
+    setTimeout(() => {
+      setQrScanStage(QR_SCAN_STAGE.SCANNING);
+    }, ms);
+  }
 
   // checks if the QR code is valid whenever the QR code is changed
   useEffect(() => {
-    if (!qrCode || qrCode.data === "") return;
+    if (!qrCode || qrCode.data === "" || qrScanStage !== QR_SCAN_STAGE.SCANNING) return;
+
+    // data is arranged: email;event_id;year
     const id = qrCode.data;
     const userID = id.split(";")[0];
     const eventIDAndYear = id.split(";")[1] + ";" + id.split(";")[2];
 
     // validate event ID and year
     if (eventIDAndYear !== props.event.id + ";" + props.event.year) {
-      // TODO: better error handling needed
-      setQrScanStage(QR_SCAN_STAGE.FAILED);
-      setError("Person is not registered for this event.");
+      cycleQrScanStage(QR_SCAN_STAGE.FAILED, 8000);
+      setError("Invalid BizTech QR code. Please check that your QR code is for this event.");
       return;
     }
 
@@ -705,13 +718,19 @@ const QrCheckIn = (props) => {
         // filter the users to get the one with the same id
         const user = users.filter((user) => user.id === userID)[0];
 
+        if (!user) {
+          cycleQrScanStage(QR_SCAN_STAGE.FAILED, 6000);
+          setError("Person is not registered for this event.");
+          return;
+        }
+
         // get the person's name
         setCheckInName(`${user.fname} ${user.lname} (${userID})`);
 
         // If the user is already checked in, show an error
         if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
-          setQrScanStage(QR_SCAN_STAGE.FAILED);
-          setError(`Person is already checked in under ${checkInName}.`);
+          cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
+          setError(`Person is already checked in.`);
           return;
         }
 
@@ -731,20 +750,12 @@ const QrCheckIn = (props) => {
       // update the registration status of the user to checked in
       fetchBackend(`/registrations/${id}`, "PUT", body);
 
-      setQrScanStage(QR_SCAN_STAGE.SUCCESS);
       setQrCode(defaultQrCode);
       // wait 10 seconds, then reset the scan stage
-      // NOTE: the alert will reset in 10 seconds no matter what, so don't scan too fast
-      setTimeout(() => {
-        if (
-          qrScanStage === QR_SCAN_STAGE.SUCCESS ||
-          qrScanStage === QR_SCAN_STAGE.SCANNING
-        ) {
-          setQrScanStage(QR_SCAN_STAGE.SCANNING);
-        }
-      }, 10000);
+      cycleQrScanStage(QR_SCAN_STAGE.SUCCESS, 8000);
     };
-  }, [qrCode, defaultQrCode, props.event.id, props.event.year, qrScanStage, checkInName]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qrCode]);
 
   return (
     <Paper className={[classes.qrRoot]}>
@@ -795,6 +806,7 @@ const QrCheckIn = (props) => {
               style={styles.qrCodeVideo}
               onScan={handleScanQR}
               facingMode={cameraFacingMode}
+              delay={250}
             />
           </div>
 
