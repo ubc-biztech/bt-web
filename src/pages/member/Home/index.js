@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography, CardHeader, CardMedia } from "@material-ui/core";
 
 import UserProgress from "./UserProgress";
 
@@ -54,7 +54,7 @@ const useStyles = makeStyles({
   },
   registeredEvents: {
     width: "250px", 
-    height: "180px"
+    height: "190px"
   }
 });
 
@@ -67,6 +67,8 @@ function MemberHome(props) {
 
   const [featuredEvent, setFeaturedEvent] = useState({});
   const [nextEvent, setNextEvent] = useState({});
+
+  const date1 = new Date('December 17, 1995 03:24:00');
 
   const getFeaturedEvent = () => {
     if (events.length) {
@@ -116,14 +118,41 @@ function MemberHome(props) {
   }
 
   function RegisteredEventsCard(props) {
-    const { name, date} = props;
+    const { eventName, eventDate, imageUrl, cardStyle, eventId = {} } = props;
+    const image = imageUrl || require("assets/default.png");
+
     return (
+      <Card className={classes.registeredEvents} key={eventId}> 
+        <CardMedia
+        className={classes.media}
+        component="img"
+        title="event image"
+        image={image}>
+        </CardMedia>
+        <CardHeader
+          title={eventName}
+          subheader={
+            {eventDate}
+            ? new Date({eventDate}).toLocaleDateString("en-US", {
+              day: "numeric",
+              weekday: "long",
+              month: "long",
+              year: "numeric",
+            })
+          : ""
+        }>
+        </CardHeader>
+      </Card>
+      
+
+      /*
       <Card className={classes.registeredEvents}>
         <div>
           <Typography className={classes.eventName}>{name}</Typography>
           <Typography className={classes.eventDate}>{date}</Typography>
         </div>
       </Card>
+      */
     );
   }
 
@@ -162,8 +191,8 @@ function MemberHome(props) {
           </CardComponent>
         </div>
         <div className={classes.column}>
-          <RegisteredEventsCard name="MIS Night 2022" date="Wednesday, November 24, 2022"></RegisteredEventsCard>
-          <EventCard ></EventCard>
+          <RegisteredEventsCard eventName="MIS Night 2022" eventDate={date1}></RegisteredEventsCard>
+
 
           {/* <CardComponent>
             <Typography variant="h2">Sticker Collection</Typography>
@@ -197,7 +226,6 @@ function MemberHome(props) {
                   {featuredEvent.startDate &&
                     eventDate(featuredEvent.startDate)}
                 </Typography>
-                {/* <EventCard></EventCard> */}
               </CardComponent>
             </div>
           </div>
