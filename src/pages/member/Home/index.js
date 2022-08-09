@@ -40,7 +40,7 @@ const useStyles = makeStyles({
   flexbox: {
     display: "flex",
     width: "100%"
-    //direction: "column"
+    // direction: "column"
   },
   house: {
     position: "absolute",
@@ -136,7 +136,7 @@ function MemberHome(props) {
     }
     events.forEach((event) => {
       const index = registered.findIndex(
-        (registration) => registration.eventID === event.id
+        (registration) => registration['eventID;year'] === (event.id + event.year)
       );
       if (index !== -1) {
         // if the event has not passed yet
