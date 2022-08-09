@@ -16,39 +16,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Helmet } from "react-helmet";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 
-// should be pulled from database -- DEMO:
-const formData = {
-  capacity: "102",
-  description: "example registration form",
-  end: "",
-  start: "",
-  image_blob: "",
-  image_url: "",
-  location: "Vancouver",
-  name: "Example registration",
-  questions: [
-    {
-      questionType: "TEXT",
-      question: "How old are you",
-      choices: "",
-      required: true
-    },
-    {
-      questionType: "CHECKBOX",
-      question: "Which college do you attend?",
-      choices: "UBC,SFU,KPU,Douglas",
-      required: true
-    },
-    {
-      questionType: "SELECT",
-      question: "How interested are you in this event?",
-      choices: "1,2,3,4,5",
-      required: true
-    }
-  ],
-  slug: "example"
-};
-
 const styles = {
   // Container for custom form image
   imageContainer: {
@@ -79,6 +46,67 @@ const styles = {
 };
 
 const FormRegister = (props) => {
+  const {event} = props;
+
+  // should be pulled from database -- DEMO:
+  const dummyData = {
+    capacity: event.capac,
+    description: "example registration form",
+    end: "",
+    start: "",
+    image_blob: "", // todo is this needed
+    image_url: "",
+    location: "Vancouver",
+    name: "Example registration",
+    questions: [
+      {
+        questionType: "TEXT",
+        question: "How old are you",
+        choices: "",
+        required: true
+      },
+      {
+        questionType: "CHECKBOX",
+        question: "Which college do you attend?",
+        choices: "UBC,SFU,KPU,Douglas",
+        required: true
+      },
+      {
+        questionType: "SELECT",
+        question: "How interested are you in this event?",
+        choices: "1,2,3,4,5",
+        required: true
+      }
+    ],
+    slug: "example"
+  };
+
+
+  const parsedRegistrationQuestions = event.registrationQuestions.map(({type,label,choices,required}) => ({
+        questionType: type,
+        question: label,
+        choices: choices,
+        required: required
+    }))
+
+  const formData = event
+    ? {
+        image_url: event.imageUrl || "",
+        name: event.ename || "",
+        slug: event.id || "",
+        description: event.description || "",
+        capacity: event.capac || "",
+        start: event.startDate ? new Date(event.startDate) : new Date(),
+        end: event.endDate ? new Date(event.endDate) : new Date(),
+        location: event.elocation || "",
+        deadline: event.deadline ? new Date(event.deadline) : new Date(),
+        questions: parsedRegistrationQuestions
+      }
+    : {
+        dummyData
+      };
+  
+
   // const state = props.state
   // {JSON.stringify(state)}
   const useStyles = makeStyles((theme) => ({
@@ -107,6 +135,7 @@ const FormRegister = (props) => {
   //   }
   //   return arrayToCreate
   // }
+
 
   const [responseData, setResponseData] = useState(
     Array.from(Array(formData.questions.length))
@@ -160,6 +189,10 @@ const FormRegister = (props) => {
       const { question, questionType, required, choices } = formData.questions[
         i
       ];
+      console.log(formData.questions[i].type);
+      console.log(formData.questions[i]);
+      console.log(question);
+      console.log(questionType);
       const choicesArr = choices ? choices.split(",") : [];
 
       if (questionType === "CHECKBOX") {
