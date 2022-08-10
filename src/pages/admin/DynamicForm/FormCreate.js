@@ -138,6 +138,7 @@ const FormCreateForm = (props) => {
       start,
       end,
       location,
+      deadline,
       registrationQuestions
     },
     errors,
@@ -149,7 +150,7 @@ const FormCreateForm = (props) => {
     setFieldTouched,
     submitCount,
     handlePublish,
-    showPublishButton,
+    isSaved,
     isPublished
   } = props;
 
@@ -168,6 +169,11 @@ const FormCreateForm = (props) => {
   const handleEndDateChange = (date) => {
     setFieldValue("end", date);
     setFieldTouched("end", true, false);
+  };
+
+  const handleDeadlineChange = (date) => {
+    setFieldValue("deadline", date);
+    setFieldTouched("deadline", true, false);
   };
 
   const showError = (id) => {
@@ -244,16 +250,18 @@ const FormCreateForm = (props) => {
             <div style={{ ...styles.editorSection, ...styles.editorHeadmast }}>
               <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
               <div style={{ display: "flex", gap: "1rem" }}>
+                {isSaved ? 
                 <Link
                   variant="contained"
                   component={Button}
                   color="primary"
-                  to={{ pathname: `/register/${slug}` }}
+                  to={{ pathname: `/event/${slug}/${start.getFullYear()}/register`}}
+                  target="_blank"
                 >
                   Event Link
-                </Link>
+                </Link> : <></>}
 
-                {showPublishButton &&
+                {isSaved &&
                   (isPublished ? (
                     <Button
                       variant="contained"
@@ -337,7 +345,7 @@ const FormCreateForm = (props) => {
               />
               {slug && (
                 <div style={{ color: "#FFFFFF", opacity: "0.7" }}>
-                  {"http://ubcbiztech.com/register/" + slug}
+                  {"https://ubcbiztech.com/" + slug + "/" + start.getFullYear() + "/register"}
                 </div>
               )}
               <TextField
@@ -423,6 +431,26 @@ const FormCreateForm = (props) => {
                 error={showError("location")}
                 helperText={showError("location") && errors.location}
               />
+
+<MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <KeyboardDateTimePicker
+                      id="deadline"
+                      name="deadline"
+                      label="Registration Deadline"
+                      required
+                      margin="normal"
+                      inputVariant="filled"
+                      onChange={handleDeadlineChange}
+                      onBlur={handleBlur}
+                      value={deadline}
+                      error={showError("deadline")}
+                      helperText={showError("deadline") && errors.deadline}
+                    />
+                  </Grid>
+                </Grid>
+              </MuiPickersUtilsProvider>
             </div>
 
             <div style={styles.editorDivider}></div>
@@ -501,6 +529,7 @@ const FormCreate = (props) => {
         start: event.startDate ? new Date(event.startDate) : new Date(),
         end: event.endDate ? new Date(event.endDate) : new Date(),
         location: event.elocation || "",
+        deadline: event.deadline ? new Date(event.deadline) : new Date(),
         registrationQuestions: event.registrationQuestions || dummyData
       }
     : {
@@ -512,6 +541,7 @@ const FormCreate = (props) => {
         start: new Date(),
         end: new Date(),
         location: "",
+        deadline: new Date(),
         registrationQuestions: dummyData
       };
 
@@ -537,6 +567,9 @@ const FormCreate = (props) => {
       .min(Yup.ref("start"), "End must be later than Start")
       .required(),
     location: Yup.string().required(),
+    deadline: Yup.date()
+    .min(Yup.ref("start"), "Deadline must be later than Start")
+    .required(),
     registrationQuestions: Yup.array().of(regQuestionSchema)
   });
 
@@ -561,6 +594,7 @@ const FormCreate = (props) => {
       imageUrl: values.imageUrl,
       startDate: values.start,
       endDate: values.end,
+      deadline: values.deadline,
       registrationQuestions: values.registrationQuestions
     };
 
@@ -592,6 +626,7 @@ const FormCreate = (props) => {
       imageUrl: values.imageUrl,
       startDate: values.start,
       endDate: values.end,
+      deadline: values.deadline,
       registrationQuestions: values.registrationQuestions
     };
 
@@ -610,7 +645,7 @@ const FormCreate = (props) => {
   }
 
   const isPublished = (event && event.isPublished) || false;
-  const showPublishButton = eventId && eventYear ? true : false;
+  const isSaved = eventId && eventYear ? true : false;
 
   async function handlePublish(publish = false) {
     const body = { isPublished: publish };
@@ -631,7 +666,7 @@ const FormCreate = (props) => {
 
   const formProps = {
     handlePublish,
-    showPublishButton,
+    isSaved,
     isPublished
   };
 

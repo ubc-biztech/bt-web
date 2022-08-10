@@ -92,7 +92,7 @@ function LoginRedirect(props) {
               heardFrom: user.heardFrom,
               gender: user.gender,
               admin: user.admin,
-              favedEventsID: user.favedEventsID,
+              'favedEventsID;year': user['favedEventsID;year'],
               isMember: user.isMember
             }
             props.setUser(payload) // save to redux
@@ -102,7 +102,7 @@ function LoginRedirect(props) {
             // if the user exists in the user pool, but not the database, remove the user pool's student_id
             if (err.status === 404) {
               clearTimeout(timeoutRedirect)
-
+              
               // updateUserAttributes requires a user object and Auth.currentSession() does not provide the exact object needed
               const user = await Auth.currentAuthenticatedUser()
               await Auth.updateUserAttributes(user, {
