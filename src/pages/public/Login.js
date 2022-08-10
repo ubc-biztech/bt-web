@@ -11,7 +11,7 @@ import {
   CssBaseline,
   Typography
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab"
+import { Alert } from "@material-ui/lab";
 
 import LoginImage from "assets/login.svg";
 import { COLORS } from "constants/index";
@@ -92,7 +92,7 @@ const styles = {
     marginTop: "30px"
   },
   continueAsGuest: {
-    marginTop: '15px'
+    marginTop: "15px"
   },
   loginMember: {
     marginTop: "20px",
@@ -201,7 +201,7 @@ function Login() {
       event.preventDefault();
       handleSubmit();
     }
-  }
+  };
 
   return (
     <div style={styles.main}>
@@ -274,10 +274,10 @@ function Login() {
             </form>
             {/* alert to let users know that login is being attempted while Auth processes info */}
             {isLoading && (
-            <Alert severity="info"
-              style={styles.submitButton}>
-              Signing in...
-            </Alert>)}
+              <Alert severity="info" style={styles.submitButton}>
+                Signing in...
+              </Alert>
+            )}
             <Typography style={styles.notAMember}>
               Forgot your password?
               <Link to="/forgot-password" style={styles.signUpLink}>
@@ -286,13 +286,13 @@ function Login() {
             </Typography>
             <Typography style={styles.notAMember}>
               Not a BizTech user yet?
-              <Link to='/signup' style={styles.signUpLink}>
+              <Link to="/signup" style={styles.signUpLink}>
                 Sign up here!
               </Link>
             </Typography>
             <Typography style={styles.continueAsGuest}>
-             Or
-              <Link to='/events' style={styles.signUpLink}>
+              Or
+              <Link to="/events" style={styles.signUpLink}>
                 Continue as Guest
               </Link>
             </Typography>

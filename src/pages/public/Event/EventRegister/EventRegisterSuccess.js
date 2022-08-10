@@ -15,36 +15,36 @@ const FLASH_TIME = "50";
 
 const useStyles = makeStyles((theme) => ({
   main: {
-    margin: "10px 0",
+    margin: "10px 0"
   },
   rightColumn: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   successMessageContainer: {
     marginTop: "75px",
     paddingLeft: "19px",
-    marginLeft: "13px",
+    marginLeft: "13px"
   },
   successMessageHeading: {
     fontWeight: "bold",
-    fontSize: "24px",
+    fontSize: "24px"
   },
   whereToNextContainer: {
     borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
     marginTop: "35px",
     paddingLeft: "19px",
-    marginLeft: "11px",
+    marginLeft: "11px"
   },
   whereToNextHeading: {
     fontWeight: "bold",
-    fontSize: "24px",
+    fontSize: "24px"
   },
   icon: {
     height: ICON_SIZE,
     width: ICON_SIZE,
     marginLeft: "5px",
-    verticalAlign: "bottom",
+    verticalAlign: "bottom"
   },
   linkIcon: {
     height: ICON_SIZE,
@@ -53,55 +53,55 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "bottom",
     "&:hover": {
       transform: "rotate(-30deg)",
-      cursor: "pointer",
-    },
+      cursor: "pointer"
+    }
   },
   linkCopiedMessageContainer: {
     paddingLeft: "19px",
-    marginLeft: "13px",
+    marginLeft: "13px"
   },
   linkCopiedMessage: {
-    color: `${COLORS.LIGHT_YELLOW}`,
+    color: `${COLORS.LIGHT_YELLOW}`
   },
   linkCopiedMessageHidden: {
     color: `${COLORS.LIGHT_YELLOW}`,
-    visibility: "hidden",
+    visibility: "hidden"
   },
   upcomingEventsContainer: {
     border: "1px solid #485A78",
     borderRadius: "5px",
-    padding: "19px",
+    padding: "19px"
   },
   upcomingEventsHeading: {
     fontWeight: "bold",
-    fontSize: "20px",
+    fontSize: "20px"
   },
   upcomingEventsItem: {
-    marginTop: "13px",
+    marginTop: "13px"
   },
   upcomingEventsEname: {
     cursor: "pointer",
-    color: `${COLORS.FONT_COLOR}`,
+    color: `${COLORS.FONT_COLOR}`
   },
   upcomingEventsDate: {},
   imageContainer: {
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "flex-end"
   },
   houseChefImage: {
     width: "30%",
     marginLeft: "5%",
     [theme.breakpoints.between("sm", "md")]: {
-      width: "15%", // On small and medium screens, images need to be shrunk a bit
-    },
+      width: "15%" // On small and medium screens, images need to be shrunk a bit
+    }
   },
   speechBubble: {
     alignSelf: "start",
     width: "55%",
     [theme.breakpoints.between("sm", "md")]: {
-      width: "27.5%", // On small and medium screens, images need to be shrunk a bit
-    },
-  },
+      width: "27.5%" // On small and medium screens, images need to be shrunk a bit
+    }
+  }
 }));
 
 const EventRegisterSuccess = ({
@@ -109,7 +109,7 @@ const EventRegisterSuccess = ({
   upcomingEvents,
   resetRegistration,
   history,
-  location,
+  location
 }) => {
   const classes = useStyles();
 
@@ -196,14 +196,14 @@ const EventRegisterSuccess = ({
               new Date(event.startDate).toLocaleDateString("en-US", {
                 day: "numeric",
                 month: "long",
-                year: "numeric",
+                year: "numeric"
               });
             const eventEnd =
               event.endDate &&
               new Date(event.endDate).toLocaleDateString("en-US", {
                 day: "numeric",
                 month: "long",
-                year: "numeric",
+                year: "numeric"
               });
 
             return (
