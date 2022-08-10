@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 
 import EventView from 'components/Event/EventView'
 import EventRegisterForm from './EventRegisterForm'
-import EventRegisterSuccess from './EventRegisterSuccess'
+import EventRegisterSuccess from '../../../admin/DynamicForm/EventRegisterSuccess'
 import NotFound from 'pages/NotFound'
 
 import { makeStyles } from '@material-ui/core/styles'

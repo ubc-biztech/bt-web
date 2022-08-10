@@ -10,10 +10,14 @@ import {
   MenuItem,
   Paper,
   Select,
-  TextField
+  TextField,
+  Typography,
 } from "@material-ui/core";
+import CloudUpload from '@material-ui/icons/CloudUpload';
 import React, { useEffect, useState, useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { fetchBackend } from "utils";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 
 const styles = {
@@ -42,44 +46,73 @@ const styles = {
   },
   submitSection: {
     padding: "2rem"
-  }
+  },
 };
 
+const useStyles = makeStyles((theme) => ({
+  textfield: {
+    background: "#1F2A47",
+    borderRadius: 10
+  },
+  select: {
+    background: "#1F2A47",
+    borderRadius: 10
+  },
+  uploadedFile: {
+    marginBottom: 12,
+  }
+}));
+
 const FormRegister = (props) => {
-  const {event} = props;
+
+  const { user, event } = props;
+  const history = useHistory();
 
   // should be pulled from database -- DEMO:
-  const dummyData = {
-    capacity: event.capac,
-    description: "example registration form",
-    end: "",
-    start: "",
-    image_blob: "", // todo is this needed
-    image_url: "",
-    location: "Vancouver",
-    name: "Example registration",
-    questions: [
-      {
-        questionType: "TEXT",
-        question: "How old are you",
-        choices: "",
-        required: true
-      },
-      {
-        questionType: "CHECKBOX",
-        question: "Which college do you attend?",
-        choices: "UBC,SFU,KPU,Douglas",
-        required: true
-      },
-      {
-        questionType: "SELECT",
-        question: "How interested are you in this event?",
-        choices: "1,2,3,4,5",
-        required: true
-      }
-    ],
-    slug: "example"
-  };
+  const basicQuestions = [
+    {
+      questionType: "TEXT",
+      question: "Email Address",
+      choices: "",
+      required: true
+    },
+    {
+      questionType: "TEXT",
+      question: "First Name",
+      choices: "",
+      required: true
+    },
+    {
+      questionType: "TEXT",
+      question: "Last Name",
+      choices: "",
+      required: true
+    },
+    {
+      questionType: "SELECT",
+      question: "Year Level",
+      choices: "1st Year,2nd Year,3rd Year,4th Year,5+ Year,Other,Not Applicable",
+      required: true,
+    },
+    {
+      questionType: "SELECT",
+      question: "Faculty",
+      choices: "Arts,Commerce,Science,Engineering,Kinesiology,Land and Food Systems,Forestry,Other,Not Applicable",
+      required: true,
+    },
+    {
+      questionType: "TEXT",
+      question: "Major/Specialization",
+      choices: "",
+      required: true,
+    },
+    {
+      questionType: "SELECT",
+      question: "How did you hear about this event?",
+      choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
+      required: true,
+    },
+  ]
 
 
   const parsedRegistrationQuestions = event.registrationQuestions.map(({type,label,choices,required}) => ({
@@ -89,36 +122,21 @@ const FormRegister = (props) => {
         required: required
     }))
 
-  const formData = event
-    ? {
-        image_url: event.imageUrl || "",
-        name: event.ename || "",
-        slug: event.id || "",
-        description: event.description || "",
-        capacity: event.capac || "",
-        start: event.startDate ? new Date(event.startDate) : new Date(),
-        end: event.endDate ? new Date(event.endDate) : new Date(),
-        location: event.elocation || "",
-        deadline: event.deadline ? new Date(event.deadline) : new Date(),
-        questions: parsedRegistrationQuestions
-      }
-    : {
-        dummyData
-      };
-  
+  const formData = {
+    image_url: event.imageUrl || "",
+    name: event.ename || "",
+    slug: event.id || "",
+    description: event.description || "",
+    capacity: event.capac || "",
+    start: event.startDate ? new Date(event.startDate) : new Date(),
+    end: event.endDate ? new Date(event.endDate) : new Date(),
+    location: event.elocation || "",
+    deadline: event.deadline ? new Date(event.deadline) : new Date(),
+    questions: basicQuestions.concat(parsedRegistrationQuestions)
+  }
 
   // const state = props.state
   // {JSON.stringify(state)}
-  const useStyles = makeStyles((theme) => ({
-    textfield: {
-      background: "#1F2A47",
-      borderRadius: 10
-    },
-    select: {
-      background: "#1F2A47",
-      borderRadius: 10
-    }
-  }));
   const classes = useStyles();
 
   // const [formData, setFormData] = useState([]); // Using a test constant rn
@@ -143,6 +161,19 @@ const FormRegister = (props) => {
   const [responseError, setResponseError] = useState(
     Array.from(Array(formData.questions.length))
   ); // index of errors correspond to responses array (right above)
+  useEffect(() => {
+    if (user) {
+      const newData = responseData.slice()
+      newData[0] = user.email
+      newData[1] = user.fname
+      newData[2] = user.lname
+      newData[3] = user.year
+      newData[4] = user.faculty
+      newData[5] = user.major
+      // newData[6] = user.gender
+      setResponseData(newData)
+    }
+  }, [user])
 
   const updateField = useCallback(
     (index, value) => {
@@ -182,9 +213,26 @@ const FormRegister = (props) => {
     [refresh, responseData]
   );
 
+  const uploadFile = useCallback (
+    (i, e) => {
+      const file = e.target.files[0] // the file
+      const reader = new FileReader() // this for convert to Base64 
+      reader.readAsDataURL(e.target.files[0]) // start conversion...
+      reader.onload = function (e) { // .. once finished..
+        const rawLog = reader.result.split(',')[1]; // extract only the file data part
+        const dataSend = { dataReq: { data: rawLog, name: file.name, type: file.type }, fname: "uploadFilesToGoogleDrive" }; // preapre info to send to API
+        fetch('https://script.google.com/macros/s/AKfycbyX8joJ5WeyqZxrUh-iS-Cay17N3ygO-YMuoNVaBN5o4jl6Cy0k9X0JcxRrwiWy1OEoiQ/exec', // your AppsScript URL
+          { method: "POST", body: JSON.stringify(dataSend) }) // send to Api
+          .then(res => res.json()).then((e) => {
+            updateField(i, e.url)
+          }).catch(e => alert('An error occurred while trying to upload the file. Please try again.'))
+      }
+    },
+    [updateField]
+  )
+
   const loadQuestions = useCallback(() => {
     const returnArr = [];
-
     for (let i = 0; i < formData.questions.length; i++) {
       const { question, questionType, required, choices } = formData.questions[
         i
@@ -244,7 +292,7 @@ const FormRegister = (props) => {
                 labelId="q-type"
                 variant="outlined"
                 margin="dense"
-                value={responseData[i]}
+                defaultValue={responseData[i] || ''}
                 onChange={(e) => updateField(i, e.target.value)}
               >
                 {choicesArr.map((item) => {
@@ -280,6 +328,34 @@ const FormRegister = (props) => {
             />
           </div>
         );
+      } else if (questionType === "UPLOAD") {
+          returnArr.push(
+            <div style={{ paddingBottom: "1.5rem" }}>
+              <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+                {question}
+                {question && required && "*"}
+              </p>
+              <Typography className={classes.uploadedFile}>
+                {responseData[i] ? (
+                  <a
+                    href={responseData[i]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ width: '100%' }}
+                  >
+                    {responseData[i]}
+                  </a>
+                ) : (
+                  "No file uploaded yet!"
+                )}
+              </Typography>
+              <Button variant="contained" color="primary" component="label">
+                {responseData[i] ? "Reupload" : "Upload"}
+                <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
+                <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
+              </Button>
+            </div>
+          )
       }
     }
 
@@ -287,11 +363,13 @@ const FormRegister = (props) => {
   }, [
     classes.select,
     classes.textfield,
+    classes.uploadedFile,
     formData.questions,
     responseData,
     responseError,
     updateCheckbox,
-    updateField
+    updateField,
+    uploadFile,
   ]);
 
   const validifyForm = () => {
@@ -346,9 +424,19 @@ const FormRegister = (props) => {
     return res;
   };
 
-  const handleSave = () => {
+  const handleSubmit = () => {
     if (isValidSubmission()) {
-      console.log(responseData);
+      const registrationBody = {
+        email: responseData[0],
+        eventID: event.id,
+        year: event.year,
+        registrationStatus: "registered",
+        heardFrom: responseData[6],
+      }
+      fetchBackend('/registrations', 'POST', registrationBody, false)
+        .then(() => {
+          history.push(`/event/${event.id}/${event.year}/register/success`)
+        })
     } else {
       console.error("Form errors");
     }
@@ -356,7 +444,7 @@ const FormRegister = (props) => {
 
   useEffect(() => {
     loadQuestions()
-  }, [refresh]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [refresh, responseData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -381,8 +469,8 @@ const FormRegister = (props) => {
           <div style={styles.section}>{displayQuestions}</div>
           <div style={styles.divider}></div>
           <div style={styles.submitSection}>
-            <Button variant="contained" color="primary" onClick={handleSave}>
-              Save
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
+              Submit
             </Button>
           </div>
         </Paper>

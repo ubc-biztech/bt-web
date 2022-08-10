@@ -8,7 +8,7 @@ import LinkIcon from "@material-ui/icons/Link";
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
-import { COLORS } from "../../../../constants/_constants/theme";
+import { COLORS } from "../../../constants/_constants/theme";
 
 const ICON_SIZE = "24px";
 const FLASH_TIME = "50";
@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EventRegisterSuccess = ({
-  email,
+  user,
   upcomingEvents,
   resetRegistration,
   history,
@@ -141,7 +141,7 @@ const EventRegisterSuccess = ({
             See you soon!
           </Typography>
           <Typography>
-            You've successfully registered with <b>{email}</b>.
+            You've successfully registered with <b>{user.email}</b>.
           </Typography>
           <Typography>We've sent you an email!</Typography>
         </div>

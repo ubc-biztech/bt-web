@@ -7,7 +7,10 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
+  Button,
 } from "@material-ui/core";
+import CloudUpload from '@material-ui/icons/CloudUpload';
 
 // LIVE PREVIEW QUESTION component
 const QuestionPreview = (props) => {
@@ -19,6 +22,9 @@ const QuestionPreview = (props) => {
     select: {
       background: "#1F2A47",
       borderRadius: 10,
+    },
+    uploadedFile: {
+      marginBottom: 12,
     },
   }));
   const classes = useStyles();
@@ -89,6 +95,24 @@ const QuestionPreview = (props) => {
             margin="dense"
             variant="outlined"
           />
+        </div>
+      )
+    );
+  } else if (type === "UPLOAD") {
+    return (
+      label && (
+        <div style={{ paddingBottom: "1.5rem" }}>
+          <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+            {label}
+            {label && required && "*"}
+          </p>
+          <Typography className={classes.uploadedFile}>
+            No file uploaded yet!
+          </Typography>
+          <Button variant="contained" color="primary" component="label">
+            Upload
+            <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
+          </Button>
         </div>
       )
     );
