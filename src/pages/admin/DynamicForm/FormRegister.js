@@ -189,10 +189,6 @@ const FormRegister = (props) => {
       const { question, questionType, required, choices } = formData.questions[
         i
       ];
-      console.log(formData.questions[i].type);
-      console.log(formData.questions[i]);
-      console.log(question);
-      console.log(questionType);
       const choicesArr = choices ? choices.split(",") : [];
 
       if (questionType === "CHECKBOX") {
@@ -291,6 +287,7 @@ const FormRegister = (props) => {
   }, [
     classes.select,
     classes.textfield,
+    formData.questions,
     responseData,
     responseError,
     updateCheckbox,
