@@ -8,7 +8,7 @@ import {
   KeyboardDateTimePicker,
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import CustomQuestion from "./components/CustomQuestion";
 import FormCreatePreview from "./FormCreatePreview";
 import { FieldArray, Formik } from "formik";
@@ -128,6 +128,8 @@ const styles = {
 
 const FormCreateForm = (props) => {
   const classes = useStyles();
+  const { id: eventId, year: eventYear } = useParams();
+  const history = useHistory();
   const {
     values: {
       imageUrl,
@@ -251,15 +253,14 @@ const FormCreateForm = (props) => {
               <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
               <div style={{ display: "flex", gap: "1rem" }}>
                 {isSaved ? 
-                <Link
+                <Button
                   variant="contained"
                   component={Button}
                   color="primary"
-                  to={{ pathname: `/event/${slug}/${start.getFullYear()}/register`}}
-                  target="_blank"
+                  onClick={() => { history.push(`/event/${eventId}/${eventYear}/register`) }}
                 >
                   Event Link
-                </Link> : <></>}
+                </Button> : <></>}
 
                 {isSaved &&
                   (isPublished ? (
@@ -645,7 +646,7 @@ const FormCreate = (props) => {
   }
 
   const isPublished = (event && event.isPublished) || false;
-  const isSaved = eventId && eventYear ? true : false;
+  const isSaved = !!(eventId && eventYear);
 
   async function handlePublish(publish = false) {
     const body = { isPublished: publish };
