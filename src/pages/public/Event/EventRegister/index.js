@@ -16,7 +16,8 @@ import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 
 import { COLORS } from "../../../../constants/_constants/theme";
 
-import { fetchBackend } from "utils";
+import { fetchBackend } from 'utils'
+import LoginAccess from 'components/LoginAccess/LoginAccess'
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -95,14 +96,14 @@ const EventFormContainer = (props) => {
   // });
 
   const initialValues = {
-    email: user.email || "",
-    fname: user.fname || "",
-    lname: user.lname || "",
-    year: user.year || "",
-    faculty: user.faculty || "",
-    major: user.major || "",
-    biztechMemberStatus: "",
-    hopinStatus: "",
+    email: user?.email || '',
+    fname: user?.fname || '',
+    lname: user?.lname || '',
+    year: user?.year || '',
+    faculty: user?.faculty || '',
+    major: user?.major || '',
+    biztechMemberStatus: '',
+    hopinStatus: '',
     // diet: "",
     heardFrom: ""
     // gender: "",
@@ -116,6 +117,14 @@ const EventFormContainer = (props) => {
     return deadline < new Date().getTime()
   }
 
+  if (!user) {
+    return (
+      <LoginAccess 
+        header='To register for our events, please sign in.'
+        redirect={`/event/${eventId}/${event.year}/register`}
+      />
+    )
+  }
   if (loading) {
     return (
       <div className={classes.layout}>

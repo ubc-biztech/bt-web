@@ -121,7 +121,7 @@ const styles = {
 
 }
 
-function Login () {
+function Login (props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({
@@ -165,7 +165,7 @@ function Login () {
           username: email,
           password: password
         })
-        history.push('/login-redirect', { redirect: '/signup' })
+        history.push('/login-redirect', { redirect: props.redirect })
       } catch (error) {
         console.log('caught error', error)
         if (error.name === 'UserNotFoundException') {
@@ -191,7 +191,7 @@ function Login () {
       </Helmet>
       <CssBaseline />
       <Typography style={styles.access}>
-          To access the membership form, please sign in.
+          {props.header}
       </Typography>
       {/* TODO: Maintenance message here for MinVP */}
       <div style={styles.columns}>
