@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
   return {
     events: state.eventState.events.data,
     user: state.userState.user.data,
-    userEventsRegistered: state.userState.userRegisteredEvents.data,
+    userEventsRegistered: state.userState.userRegisteredEvents.data.data,
   }
 }
 
