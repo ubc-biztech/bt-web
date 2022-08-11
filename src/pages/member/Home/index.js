@@ -13,6 +13,7 @@ import {
 import UserProgress from "./UserProgress";
 
 import House from "assets/house.svg";
+import Calendar from "assets/calendar.png";
 import { COLORS } from "constants/index";
 
 import EventCard from "components/Event/EventCard";
@@ -40,7 +41,7 @@ const useStyles = makeStyles({
   flexbox: {
     display: "flex",
     width: "100%"
-    //direction: "column"
+    // direction: "column"
   },
   house: {
     position: "absolute",
@@ -49,7 +50,7 @@ const useStyles = makeStyles({
     right: "10px"
   },
   upcoming: {
-    color: COLORS.BIZTECH_GREEN, 
+    color: COLORS.BIZTECH_GREEN,
     margin: "20px 0 0 0"
   },
   greeting: {
@@ -76,8 +77,8 @@ const useStyles = makeStyles({
     flexDirecton: "row",
     justifyItems: "center",
     margin: "20px 20px 0 0",
-    width: "750px", // good idea to make this a const
-    height: "100px" // good idea to make this a const
+    width: "100%", //"790px", // good idea to make this a const
+    height: "100%" //"100px"  // good idea to make this a const
   },
   featuredImg: {
     width: "500px", // good idea to make this a const
@@ -93,14 +94,58 @@ const useStyles = makeStyles({
     // maxWidth: "50%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
+    //justifyContent: "center",
+    // margin: "auto",
+    width: "100%",
+    //border: "3px solid yellow"
+    // padding: "10px"
+  },
+  cal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    //border: "3px solid yellow"
+    // width: "100px",
+    // height: "100px",
   },
   alignHorizontal: {
     // width: "50%",
     // margin: "auto",
     display: "flex",
-    flexDirection: "row", 
-    justifyContent: "spaceBetween"
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  calendar: {
+    //margin: "auto",
+    width: "60px",
+    height: "60px"
+  },
+  caption: {
+    color: "white"
+  },
+  featured: {
+    display: "flex",
+    flexDirection: "column",
+    //justifyContent: "center",
+    margin: "auto",
+    width: "75%",
+    //border: "3px solid green",
+    padding: "10px"
+  },
+  calendarText: {
+    display: "flex",
+    flexDirection: "column",
+    // margin: "auto",
+    justifyContent: "center",
+    alignItems: "center",
+    // margin: "auto",
+    //border: "3px solid green"
+    // padding: "10px"
+  },
+  goFigure: {
+    flex: "display",
+    //margin: "auto",
+    justifyContent: "center"
   }
 });
 
@@ -113,8 +158,6 @@ function MemberHome(props) {
 
   const [featuredEvent, setFeaturedEvent] = useState({});
   const [nextEvent, setNextEvent] = useState({});
-
-  const date1 = new Date("December 17, 1995 03:24:00");
 
   const getFeaturedEvent = () => {
     if (events.length) {
@@ -135,9 +178,12 @@ function MemberHome(props) {
       return;
     }
     events.forEach((event) => {
+      console.log("event", event);
       const index = registered.findIndex(
-        (registration) => registration.eventID === event.id
+        (registration) =>
+          registration["eventID;year"] === event.id + ";" + event.year
       );
+      // console.log("index", index);
       if (index !== -1) {
         // if the event has not passed yet
         if (new Date(event.startDate).getTime() > new Date().getTime())
@@ -154,6 +200,7 @@ function MemberHome(props) {
       getNextEvent();
     }
   }, [events]); // eslint-disable-line react-hooks/exhaustive-deps
+  console.log("events", events);
 
   function CardComponent({ children }) {
     return (
@@ -167,6 +214,23 @@ function MemberHome(props) {
     const { eventName, eventDate, imageUrl, cardStyle, eventId = {} } = props;
     const image = imageUrl || require("assets/default.png");
 
+    if (nextEvent.ename == "None Registered!")
+      return (
+        <div className={classes.calendarText}>
+          <div className={classes.cal}>
+            <img
+              src={Calendar}
+              alt="calendar"
+              className={classes.calendar}
+            ></img>
+          </div>
+
+          <h5 className={classes.caption}>
+            You are not registered for any events
+          </h5>
+        </div>
+      );
+
     return (
       <Card className={classes.registeredEvents} key={eventId}>
         <CardMedia
@@ -175,19 +239,7 @@ function MemberHome(props) {
           title="event image"
           image={image}
         ></CardMedia>
-        <CardHeader
-          title={eventName}
-          subheader={
-            { eventDate }
-              ? new Date({ eventDate }).toLocaleDateString("en-US", {
-                  day: "numeric",
-                  weekday: "long",
-                  month: "long",
-                  year: "numeric"
-                })
-              : ""
-          }
-        ></CardHeader>
+        <CardHeader title={eventName} subheader={eventDate}></CardHeader>
       </Card>
 
       /*
@@ -218,6 +270,13 @@ function MemberHome(props) {
       </Card>
     );
   }
+  function NoRegisteredEvents() {
+    return (
+      <div>
+        <img src={Calendar} alt="calendar"></img>
+      </div>
+    );
+  }
 
   function eventDate(date) {
     return new Date(date).toLocaleDateString("en-US", {
@@ -239,7 +298,9 @@ function MemberHome(props) {
         </Typography>
         <div className={classes.column}>
           <div className={classes.alignVertical}>
-            <Typography variant="h5" className={classes.greeting}>Hi {userName}!</Typography>
+            <Typography variant="h5" className={classes.greeting}>
+              Hi {userName}!
+            </Typography>
             {/* <CardComponent>
             <Typography variant="h2">Hi {userName}!</Typography>
             <Typography>You are X events away from a reward!</Typography>
@@ -255,34 +316,54 @@ function MemberHome(props) {
             )}
           </CardComponent> */}
             <Typography variant="h2" className={classes.upcoming}>
-              Your upcoming events
+              Your next event
             </Typography>
 
             <div className={classes.column}>
               <div className={classes.alignHorizontal}>
                 <RegisteredEventsCard
-                  eventName="MIS Night 2022"
+                  eventName={nextEvent.ename}
+                  eventDate={
+                    nextEvent.startDate && eventDate(nextEvent.startDate)
+                  }
+                  imageUrl={nextEvent.imageUrl}
+                ></RegisteredEventsCard>
+                {/* 
+                <RegisteredEventsCard
+                  eventName="Hello Hacks!"
                   eventDate={date1}
                 ></RegisteredEventsCard>
-{/* 
+
                 <RegisteredEventsCard
-                  eventName="MIS Night 2022"
+                  eventName="Tri-Mentorship Kickoff"
                   eventDate={date1}
                 ></RegisteredEventsCard> */}
-                
+
+                {/* <CardComponent>
+                  <Typography variant="h2" className={classes.green}>
+                    Next Event
+                  </Typography>
+                  <Typography className={classes.eventName}>
+                    {nextEvent.ename}
+                  </Typography>
+                  <Typography className={classes.eventDate}>
+                    {nextEvent.startDate && eventDate(nextEvent.startDate)}
+                  </Typography>
+                </CardComponent> */}
               </div>
 
               <Typography variant="h2" className={classes.green}>
                 Featured
               </Typography>
 
-              <div className={classes.alignVertical}>
+              <div className={classes.featured}>
                 {events.map((ev) => (
                   <FeaturedEventsCard
                     eventName={ev.ename}
                     eventDate={
                       ev.startDate && eventDate(featuredEvent.startDate)
                     }
+                    imageUrl={ev.imageUrl}
                   ></FeaturedEventsCard>
                 ))}
                 {/* <FeaturedEventsCard
