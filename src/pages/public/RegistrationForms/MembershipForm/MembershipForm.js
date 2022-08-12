@@ -283,9 +283,9 @@ export default function MembershipForm(props) {
             </FormLabel>
             <FormGroup onChange={(e) => {
               if (topics.includes(e.target.value)) {
-                setTopics(topics.filter((val) => val !== e.target.value))
+                setTopics(topics.replace(`${e.target.value},`, ""))
               } else {
-                setTopics([...topics, e.target.value])
+                setTopics(topics + `${e.target.value},`)
               }
             }}>
               <FormControlLabel
