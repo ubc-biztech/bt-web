@@ -65,7 +65,7 @@ function EventCard(props) {
             <StarIcon
               fontSize="large"
               onClick={() => {
-                handleFavourite(event.id, false);
+                handleFavourite(event.id, event.year, false);
               }}
               className={classes.favouriteButton}
             />
@@ -73,7 +73,7 @@ function EventCard(props) {
             <StarBorderIcon
               fontSize="large"
               onClick={() => {
-                handleFavourite(event.id, true);
+                handleFavourite(event.id, event.year, true);
               }}
               className={classes.favouriteButton}
             />

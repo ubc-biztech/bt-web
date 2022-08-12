@@ -70,8 +70,6 @@ const Questions = (props) => {
   const classes = useStyles();
 
   const [questionIndex, setQuestionIndex] = useState(0);
-  console.log(questionIndex)
-
 
   const handleQuestionChange = (event) => {
     setQuestionIndex(parseInt(event.target.value));
@@ -79,12 +77,12 @@ const Questions = (props) => {
 
   const handleNavigateBefore = () => {
     questionIndex === 0
-      ? setQuestionIndex(7)
+      ? setQuestionIndex(10)
       : setQuestionIndex(questionIndex * 1 - 1);
   };
 
   const handleNavigateAfter = () => {
-    questionIndex === 7
+    questionIndex === 10
       ? setQuestionIndex(0)
       : setQuestionIndex(questionIndex * 1 + 1);
   };
@@ -134,20 +132,23 @@ const Questions = (props) => {
                       <StyledOption value={0}>
                         Please choose the option that's most relevant to you
                       </StyledOption>
-                      <StyledOption value={1}>Academic Year Level</StyledOption>
-                      <StyledOption value={2}>Faculty</StyledOption>
-                      <StyledOption value={3}>Major</StyledOption>
-                      <StyledOption value={4}>
-                        Were you a BizTech member last year?
-                      </StyledOption>
+                      <StyledOption value={1}>Preferred Pronouns</StyledOption>
+                      <StyledOption value={2}>Level of study</StyledOption>
+                      <StyledOption value={3}>Faculty</StyledOption>
+                      <StyledOption value={4}>Major</StyledOption>
                       <StyledOption value={5}>
                         Are you an international student?
                       </StyledOption>
                       <StyledOption value={6}>
-                        What topics did you want to see the most discussed in
-                        the future?
+                        Any dietary restrictions?
                       </StyledOption>
-                      <StyledOption value={7}>How did you hear about us?</StyledOption>
+                      <StyledOption value={7}>
+                        Were you a BizTech member last year?
+                      </StyledOption>
+                      <StyledOption value={8}>
+                        What topics do you want to see discussed in future events?
+                      </StyledOption>
+                      <StyledOption value={9}>How did you hear about us?</StyledOption>
                     </NativeSelect>
                   </FormControl>
                 </Box>
@@ -161,7 +162,7 @@ const Questions = (props) => {
             <RightArrowIcon />
           </IconButton>
         </div>
-
+        {/* Education */}
         {questionIndex === 0 && (
           <Box px={4}>
             <QuestionsBox
@@ -190,47 +191,87 @@ const Questions = (props) => {
             />
           </Box>
         )}
-
+        {/* Preferred Pronouns */}
         {questionIndex === 1 && (
           <Box px={4}>
             <QuestionsBox
-              title="Year 1"
-              filter={props.membershipData.filter((x) => x.year === "1").length}
-            />
-            <QuestionsBox
-              title="Year 2"
-              filter={props.membershipData.filter((x) => x.year === "2").length}
-            />
-            <QuestionsBox
-              title="Year 3"
-              filter={props.membershipData.filter((x) => x.year === "3").length}
-            />
-            <QuestionsBox
-              title="Year 4"
-              filter={props.membershipData.filter((x) => x.year === "4").length}
-            />
-            <QuestionsBox
-              title="Year 5+"
+              title="He/Him/His"
               filter={
-                props.membershipData.filter((x) => x.year === "5+").length
+                props.membershipData.filter((x) => x.education === "He/Him/His").length
               }
             />
             <QuestionsBox
-              title="Pre-University"
+              title="She/Her/Hers"
+              filter={
+                props.membershipData.filter((x) => x.education === "She/Her/Hers").length
+              }
+            />
+            <QuestionsBox
+              title="They/Them/Their"
+              filter={
+                props.membershipData.filter((x) => x.education === "They/Them/Their").length
+              }
+            />
+            <QuestionsBox
+              title="Other/Prefer not to say"
+              filter={
+                props.membershipData.filter((x) => x.education === "Other/Prefer not to say").length
+              }
+            />
+          </Box>
+        )}
+        {/* Year */}
+        {questionIndex === 2 && (
+          <Box px={4}>
+            <QuestionsBox
+              title="1st Year"
+              filter={props.membershipData.filter((x) => x.year === "1st Year").length}
+            />
+            <QuestionsBox
+              title="2nd Year"
+              filter={props.membershipData.filter((x) => x.year === "2nd Year").length}
+            />
+            <QuestionsBox
+              title="3rd Year"
+              filter={props.membershipData.filter((x) => x.year === "3rd Year").length}
+            />
+            <QuestionsBox
+              title="4th Year"
+              filter={props.membershipData.filter((x) => x.year === "4th Year").length}
+            />
+            <QuestionsBox
+              title="5+ Year"
+              filter={
+                props.membershipData.filter((x) => x.year === "5+ Year").length
+              }
+            />
+            <QuestionsBox
+              title="Pre-university"
               filter={
                 props.membershipData.filter(
                   (x) =>
+                    x.year === "Grade 9" ||
                     x.year === "Grade 10" ||
                     x.year === "Grade 11" ||
                     x.year === "Grade 12" ||
-                    x.year === "Pre-University"
+                    x.year === "Pre-university"
+                ).length
+              }
+            />
+            <QuestionsBox
+              title="Other/Not Applicable"
+              filter={
+                props.membershipData.filter(
+                  (x) =>
+                    x.year === "Other" ||
+                    x.year === ""
                 ).length
               }
             />
           </Box>
         )}
-
-        {questionIndex === 2 && (
+        {/* Faculty */}
+        {questionIndex === 3 && (
           <Box px={4}>
             <QuestionsBox
               title="Commerce"
@@ -240,9 +281,9 @@ const Questions = (props) => {
               }
             />
             <QuestionsBox
-              title="Sciences"
+              title="Science"
               filter={
-                props.membershipData.filter((x) => x.faculty === "Sciences")
+                props.membershipData.filter((x) => x.faculty === "Science")
                   .length
               }
             />
@@ -262,7 +303,7 @@ const Questions = (props) => {
             <QuestionsBox
               title="LFS"
               filter={
-                props.membershipData.filter((x) => x.faculty === "LFS").length
+                props.membershipData.filter((x) => x.faculty === "Land and Food Systems").length
               }
             />
             <QuestionsBox
@@ -272,10 +313,24 @@ const Questions = (props) => {
                   .length
               }
             />
+            <QuestionsBox
+              title="Forestry"
+              filter={
+                props.membershipData.filter((x) => x.faculty === "Forestry")
+                  .length
+              }
+            />
+            <QuestionsBox
+              title="Other/Not Applicable"
+              filter={
+                props.membershipData.filter((x) => x.faculty === "Other" || x.faculty === "Not Applicable")
+                  .length
+              }
+            />
           </Box>
         )}
-
-        {questionIndex === 3 && (
+        {/* Major */}
+        {questionIndex === 4 && (
           <Box px={4}>
             <QuestionsBox
               title="Computer Science"
@@ -381,35 +436,71 @@ const Questions = (props) => {
             />
           </Box>
         )}
-        {questionIndex === 4 && (
-          <Box px={4}>
-            <QuestionsBox
-              title="Yes"
-              filter={props.membershipData.filter((x) => x.prev_member).length}
-            />
-            <QuestionsBox
-              title="No"
-              filter={props.membershipData.filter((x) => !x.prev_member).length}
-            />
-          </Box>
-        )}
+        {/* International */}
         {questionIndex === 5 && (
           <Box px={4}>
             <QuestionsBox
               title="Yes"
+              filter={props.membershipData.filter((x) => x.international === "Yes").length}
+            />
+            <QuestionsBox
+              title="No"
+              filter={props.membershipData.filter((x) => x.international === "No").length}
+            />
+          </Box>
+        )}
+        {/* Diet */}
+        {questionIndex === 6 && (
+          <Box px={4}>
+            <QuestionsBox
+              title="None"
+              filter={props.membershipData.filter((x) => x.diet === "None").length}
+            />
+            <QuestionsBox
+              title="Vegetarian"
+              filter={props.membershipData.filter((x) => x.diet === "Vegetarian").length}
+            />
+            <QuestionsBox
+              title="Vegan"
+              filter={props.membershipData.filter((x) => x.diet === "Vegan").length}
+            />
+            <QuestionsBox
+              title="Gluten Free"
+              filter={props.membershipData.filter((x) => x.diet === "Gluten Free").length}
+            />
+            <QuestionsBox
+              title="Pescetarian"
+              filter={props.membershipData.filter((x) => x.diet === "Pescetarian").length}
+            />
+            <QuestionsBox
+              title="Kosher"
+              filter={props.membershipData.filter((x) => x.diet === "Kosher").length}
+            />
+            <QuestionsBox
+              title="Halal"
+              filter={props.membershipData.filter((x) => x.diet === "Halal").length}
+            />
+          </Box>
+        )}
+        {/* Member Last Year */}
+        {questionIndex === 7 && (
+          <Box px={4}>
+            <QuestionsBox
+              title="Yes"
               filter={
-                props.membershipData.filter((x) => x.international).length
+                props.membershipData.filter((x) => x.prevMember === "Yes").length
               }
             />
             <QuestionsBox
               title="No"
               filter={
-                props.membershipData.filter((x) => !x.international).length
+                props.membershipData.filter((x) => x.prevMember === "No").length
               }
             />
           </Box>
         )}
-        {questionIndex === 6 && (
+        {/* Topics */}
+        {questionIndex === 8 && (
           <Box px={4}>
             <QuestionsBox
               title="Careers in Tech"
@@ -460,33 +551,76 @@ const Questions = (props) => {
             />
           </Box>
         )}
-        {questionIndex === 7 && (
+        {/* heardFrom */}
+        {questionIndex === 9 && (
           <Box px={4}>
             <QuestionsBox
               title="Facebook"
               filter={
-                props.membershipData.filter((x) => x.heard_from === "Facebook")
+                props.membershipData.filter((x) => x.heardFrom === "Facebook")
                   .length
               }
             />
             <QuestionsBox
-              title="Friends"
+              title="Friends/Word of Mouth"
               filter={
-                props.membershipData.filter((x) => x.heard_from === "Friends")
+                props.membershipData.filter((x) => x.heardFrom === "Friends/Word of Mouth")
                   .length
               }
             />
             <QuestionsBox
               title="Events"
               filter={
-                props.membershipData.filter((x) => x.heard_from === "Events")
+                props.membershipData.filter((x) => x.heardFrom === "Events")
                   .length
               }
             />
             <QuestionsBox
               title="Instagram"
               filter={
-                props.membershipData.filter((x) => x.heard_from === "Instagram")
+                props.membershipData.filter((x) => x.heardFrom === "Instagram")
+                  .length
+              }
+            />
+            <QuestionsBox
+              title="LinkedIn"
+              filter={
+                props.membershipData.filter((x) => x.heardFrom === "LinkedIn")
+                  .length
+              }
+            />
+            <QuestionsBox
+              title="Boothing"
+              filter={
+                props.membershipData.filter((x) => x.heardFrom === "Boothing")
+                  .length
+              }
+            />
+            <QuestionsBox
+              title="BizTech Newsletter"
+              filter={
+                props.membershipData.filter((x) => x.heardFrom === "BizTech Newsletter")
+                  .length
+              }
+            />
+            <QuestionsBox
+              title="Faculty Newsletter"
+              filter={
+                props.membershipData.filter((x) => x.heardFrom === "Faculty Newsletter")
+                  .length
+              }
+            />
+            <QuestionsBox
+              title="Posters"
+              filter={
+                props.membershipData.filter((x) => x.heardFrom === "Posters")
+                  .length
+              }
+            />
+            <QuestionsBox
+              title="Other"
+              filter={
+                props.membershipData.filter((x) => x.heardFrom === "Other")
                   .length
               }
             />
