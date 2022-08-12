@@ -16,6 +16,7 @@ import IndividualHeaderBox from "./IndividualHeaderBox";
 import CheckBoxGrid from "./CheckBoxGrid";
 import { IconButton } from "@material-ui/core";
 
+// todo: currently bugged
 const useStyles = makeStyles((theme) => ({
   card: {
     margin: "15px 10px 15px 0px",
@@ -59,12 +60,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Individual = (props) => {
   const classes = useStyles();
-
-  const [memberID, setMemberID] = useState(0);
-
-  const selectMemberID = (num) => {
-    setMemberID(num);
-  };
+  
+  const [memberID, setMemberID] = useState('');
 
   return (
     <Paper className={classes.paper}>
@@ -86,16 +83,15 @@ const Individual = (props) => {
               <Select
                 className={classes.individualDropDown}
                 options={props.membershipData}
-                values={[]}
                 border={COLORS.BACKGROUND_COLOR}
                 color={COLORS.BIZTECH_GREEN}
                 marginTop={50}
                 placeholder="Enter email to search"
                 clearable={true}
-                searchBy="email"
+                searchBy="id"
                 valueField="id"
-                labelField="email"
-                onChange={(value) => selectMemberID(value.map((x) => x.id)[0])}
+                labelField="id"
+                onChange={(value) => setMemberID(value.id)}
               ></Select>
             </Box>
           </Grid>
@@ -111,29 +107,29 @@ const Individual = (props) => {
 
             <IndividualGrid
               filter={props.membershipData
-                .filter((x) => x.id === memberID)
-                .map((x) => x.education)}
+                .filter((x) => x.id === memberID)[0]
+                .education}
               condition="UBC"
               label="I am a current/prospective UBC student"
             />
             <IndividualGrid
               filter={props.membershipData
-                .filter((x) => x.id === memberID)
-                .map((x) => x.education)}
+                .filter((x) => x.id === memberID)[0]
+                .education}
               condition="UNI"
               label="I am a current/prospective university student"
             />
             <IndividualGrid
               filter={props.membershipData
-                .filter((x) => x.id === memberID)
-                .map((x) => x.education)}
+                .filter((x) => x.id === memberID)[0]
+                .education}
               condition="HS"
               label="I am a high school student"
             />
             <IndividualGrid
               filter={props.membershipData
-                .filter((x) => x.id === memberID)
-                .map((x) => x.education)}
+                .filter((x) => x.id === memberID)[0]
+                .education}
               condition="NA"
               label="Other"
             />
@@ -157,7 +153,7 @@ const Individual = (props) => {
               >
                 {props.membershipData
                   .filter((x) => x.id === memberID)
-                  .map((x) => x.first_name)}
+                  .map((x) => x.firstName)}
                 <Divider color="DADADA"></Divider>
               </Box>
             </Grid>
@@ -181,7 +177,7 @@ const Individual = (props) => {
               >
                 {props.membershipData
                   .filter((x) => x.id === memberID)
-                  .map((x) => x.last_name)}
+                  .map((x) => x.lastName)}
                 <Divider color="DADADA"></Divider>
               </Box>
             </Grid>
@@ -304,10 +300,10 @@ const Individual = (props) => {
                   >
                     {props.membershipData
                       .filter((x) => x.id === memberID)
-                      .map((x) => x.student_number) !== 0 ? (
+                      .map((x) => x.studentNumber) !== 0 ? (
                         props.membershipData
                           .filter((x) => x.id === memberID)
-                          .map((x) => x.student_number)
+                          .map((x) => x.studentNumber)
                       ) : (
                         <p></p>
                       )}
@@ -329,58 +325,59 @@ const Individual = (props) => {
               filter={props.membershipData
                 .filter((x) => x.id === memberID)
                 .map((x) => x.year)}
-              condition="1"
-              label="Year 1"
+              condition="1st Year"
+              label="1st Year"
             />
             <IndividualGrid
               filter={props.membershipData
                 .filter((x) => x.id === memberID)
                 .map((x) => x.year)}
-              condition="2"
-              label="Year 2"
+              condition="2nd Year"
+              label="2nd Year"
             />
             <IndividualGrid
               filter={props.membershipData
                 .filter((x) => x.id === memberID)
                 .map((x) => x.year)}
-              condition="3"
-              label="Year 3"
+              condition="3rd Year"
+              label="3rd Year"
             />
             <IndividualGrid
               filter={props.membershipData
                 .filter((x) => x.id === memberID)
                 .map((x) => x.year)}
-              condition="4"
-              label="Year 4"
+              condition="4th Year"
+              label="4th Year"
             />
             <IndividualGrid
               filter={props.membershipData
                 .filter((x) => x.id === memberID)
                 .map((x) => x.year)}
-              condition="5+"
-              label="Year 5+"
+              condition="5+ Year"
+              label="5+ Year"
             />
             <IndividualGrid
               filter={
                 props.membershipData
                   .filter((x) => x.id === memberID)
                   .map((x) => x.year) ===
-                ("Grade 10" ||
+                ("Grade 9" || 
+                  "Grade 10" ||
                   "Grade 11" ||
                   "Grade 12" ||
-                  "Pre-University") ||
+                  "Pre-university") ||
                 props.membershipData
                   .filter((x) => x.id === memberID)
                   .map((x) => x.education) === "HS"
               }
               condition={true}
-              label="Pre-University"
+              label="Pre-university"
             />
 
             <IndividualGrid
               filter={props.membershipData
                 .filter((x) => x.id === memberID)
-                .map((x) => x.year)}
+                .map((x) => x.year) === ("Other" || "Not Applicable")}
               condition="Other"
               label="Other"
             />
@@ -571,10 +568,10 @@ const Individual = (props) => {
               filter={
                 props.membershipData
                   .filter(x => x.id === memberID)
-                  .map(x => x.prev_member)[0] &&
+                  .map(x => x.prevMember === "Yes")[0] &&
                 props.membershipData
                   .filter(x => x.id === memberID)
-                  .map(x => x.first_name).length > 0
+                  .map(x => x.firstName).length > 0
               }
               condition={true}
               label="Yes"
@@ -583,10 +580,10 @@ const Individual = (props) => {
               filter={
                 !props.membershipData
                   .filter(x => x.id === memberID)
-                  .map(x => x.prev_member)[0] &&
+                  .map(x => x.prevMember === "No")[0] &&
                 (props.membershipData
                   .filter(x => x.id === memberID)
-                  .map(x => x.first_name).length > 0)
+                  .map(x => x.firstName).length > 0)
               }
               condition={true}
               label="No"
@@ -605,10 +602,10 @@ const Individual = (props) => {
               filter={
                 props.membershipData
                   .filter(x => x.id === memberID)
-                  .map(x => x.international)[0] &&
+                  .map(x => x.international === "Yes")[0] &&
                 props.membershipData
                   .filter(x => x.id === memberID)
-                  .map(x => x.first_name).length > 0
+                  .map(x => x.firstName).length > 0
               }
               condition={true}
               label="Yes"
@@ -617,7 +614,7 @@ const Individual = (props) => {
               filter={
                 !props.membershipData
                   .filter(x => x.id === memberID)
-                  .map(x => x.international)[0] &&
+                  .map(x => x.international === "No")[0] &&
                 props.membershipData
                   .filter(x => x.id === memberID)
                   .map(x => x.first_name).length > 0
@@ -799,21 +796,21 @@ const Individual = (props) => {
             <IndividualGrid
               filter={props.membershipData
                 .filter((x) => x.id === memberID)
-                .map((x) => x.heard_from)}
+                .map((x) => x.heardFrom)}
               condition="Facebook"
               label="Facebook"
             />
             <IndividualGrid
               filter={props.membershipData
                 .filter((x) => x.id === memberID)
-                .map((x) => x.heard_from)}
+                .map((x) => x.heardFrom)}
               condition="Friends"
               label="Friends"
             />
             <IndividualGrid
               filter={props.membershipData
                 .filter((x) => x.id === memberID)
-                .map((x) => x.heard_from)}
+                .map((x) => x.heardFrom)}
               condition="Instagram"
               label="Instagram"
             />
@@ -823,16 +820,16 @@ const Individual = (props) => {
                 <IconButton disabled={true}>
                   {props.membershipData
                     .filter((x) => x.id === memberID)
-                    .map((x) => x.heard_from) === "Facebook" ||
+                    .map((x) => x.heardFrom) === "Facebook" ||
                     props.membershipData
                       .filter((x) => x.id === memberID)
-                      .map((x) => x.heard_from) === "Friends" ||
+                      .map((x) => x.heardFrom) === "Friends" ||
                     props.membershipData
                       .filter((x) => x.id === memberID)
-                      .map((x) => x.heard_from) === "Instagram" ||
+                      .map((x) => x.heardFrom) === "Instagram" ||
                     props.membershipData
                       .filter((x) => x.id === memberID)
-                      .map((x) => x.first_name).length < 1 ? (
+                      .map((x) => x.firstName).length < 1 ? (
                       <RadioButtonUncheckedIcon
                         style={{ color: "C4C4C4", width: 25, height: 25 }}
                       />
@@ -860,18 +857,18 @@ const Individual = (props) => {
                   Other
                   {props.membershipData
                     .filter((x) => x.id === memberID)
-                    .map((x) => x.heard_from) === "Facebook" ||
+                    .map((x) => x.heardFrom) === "Facebook" ||
                     props.membershipData
                       .filter((x) => x.id === memberID)
-                      .map((x) => x.heard_from) === "Friends" ||
+                      .map((x) => x.heardFrom) === "Friends" ||
                     props.membershipData
                       .filter((x) => x.id === memberID)
-                      .map((x) => x.heard_from) === "Instagram"
+                      .map((x) => x.heardFrom) === "Instagram"
                     ? ""
                     : ": " +
                     props.membershipData
                       .filter((x) => x.id === memberID)
-                      .map((x) => x.heard_from)}
+                      .map((x) => x.heardFrom)}
                 </Box>
               </Grid>
             </Grid>

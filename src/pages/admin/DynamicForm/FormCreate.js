@@ -128,6 +128,7 @@ const styles = {
 
 const FormCreateForm = (props) => {
   const classes = useStyles();
+  const { id: eventId, year: eventYear } = useParams();
   const {
     values: {
       imageUrl,
@@ -255,7 +256,7 @@ const FormCreateForm = (props) => {
                   variant="contained"
                   component={Button}
                   color="primary"
-                  to={{ pathname: `/event/${slug}/${start.getFullYear()}/register`}}
+                  to={{ pathname: `/event/${eventId}/${eventYear}/register`}}
                   target="_blank"
                 >
                   Event Link
@@ -546,7 +547,7 @@ const FormCreate = (props) => {
       };
 
   const regQuestionSchema = Yup.object({
-    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX"]).required(),
+    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD"]).required(),
     label: Yup.string().required("Question is a required field"),
     choices: Yup.string(),
     required: Yup.boolean().required()
@@ -568,7 +569,7 @@ const FormCreate = (props) => {
       .required(),
     location: Yup.string().required(),
     deadline: Yup.date()
-    .min(Yup.ref("start"), "Deadline must be later than Start")
+    .max(Yup.ref("end"), "Deadline cannot be later than End")
     .required(),
     registrationQuestions: Yup.array().of(regQuestionSchema)
   });
@@ -645,7 +646,7 @@ const FormCreate = (props) => {
   }
 
   const isPublished = (event && event.isPublished) || false;
-  const isSaved = eventId && eventYear ? true : false;
+  const isSaved = !!(eventId && eventYear);
 
   async function handlePublish(publish = false) {
     const body = { isPublished: publish };

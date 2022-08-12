@@ -58,6 +58,7 @@ const MembershipFormContainer = (props) => {
   const classes = useStyles()
   const { user } = props
   const [memberType, setMemberType] = useState(user?.education);
+  const [topics, setTopics] = useState([])
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
@@ -135,7 +136,6 @@ const MembershipFormContainer = (props) => {
       prev_member,
       international,
       diet,
-      topics,
       heard_from,
       university,
       high_school
@@ -161,7 +161,7 @@ const MembershipFormContainer = (props) => {
       diet: diet || 'None',
       prev_member,
       international: memberType === 'UBC' ? international : '',
-      topics,
+      topics: topics,
       heard_from,
       university: memberType === 'UNI' ? university : '',
       high_school: memberType === 'HS' ? high_school : '',
@@ -231,6 +231,8 @@ const MembershipFormContainer = (props) => {
               isSubmitting,
               memberType,
               setMemberType,
+              topics,
+              setTopics,
             }
             return <MembershipForm {...props} />
           }}
@@ -248,10 +250,10 @@ const MembershipFormContainer = (props) => {
         />
       ) : (
         <div className={classes.layout}>
-            <Helmet>
-              <title>UBC BizTech Membership 2022/23</title>
-            </Helmet>
-        {renderMemberForm(user.isMember, user.admin)}
+          <Helmet>
+            <title>UBC BizTech Membership 2022/23</title>
+          </Helmet>
+          {renderMemberForm(user.isMember, user.admin)}
         </div>
       )}
       </Fragment>

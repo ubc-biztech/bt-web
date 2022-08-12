@@ -48,6 +48,7 @@ const UserMembershipFormContainer = (props) => {
   const classes = useStyles()
   const history = useHistory()
   const [memberType, setMemberType] = useState();
+  const [topics, setTopics] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
@@ -235,7 +236,6 @@ const UserMembershipFormContainer = (props) => {
       prev_member,
       international,
       diet,
-      topics,
       heard_from,
       university,
       high_school
@@ -266,7 +266,7 @@ const UserMembershipFormContainer = (props) => {
       diet: diet || 'None',
       prev_member,
       international: memberType === 'UBC' ? international : '',
-      topics,
+      topics: topics,
       heard_from,
       university: memberType === 'UNI' ? university : '',
       high_school: memberType === 'HS' ? high_school : '',
@@ -350,7 +350,9 @@ const UserMembershipFormContainer = (props) => {
               ...props,
               isSubmitting,
               memberType,
-              setMemberType
+              setMemberType,
+              topics,
+              setTopics
             }
             return <UserMembershipForm {...props} />
           }}

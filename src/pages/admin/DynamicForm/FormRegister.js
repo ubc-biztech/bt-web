@@ -10,47 +10,20 @@ import {
   MenuItem,
   Paper,
   Select,
-  TextField
+  TextField,
+  Tooltip,
+  Typography,
 } from "@material-ui/core";
-import React, { useEffect, useState, useCallback } from "react";
+import CloudUpload from '@material-ui/icons/CloudUpload';
+import React, { useEffect, useState, useCallback, Fragment } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { useHistory } from "react-router-dom";
+import { fetchBackend } from "utils";
 import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 import { COLORS } from "../../../constants/_constants/theme";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
-
-// should be pulled from database -- DEMO:
-const formData = {
-  capacity: "102",
-  description: "example registration form",
-  end: "",
-  start: "",
-  image_blob: "",
-  image_url: "",
-  location: "Vancouver",
-  name: "Example registration",
-  questions: [
-    {
-      questionType: "TEXT",
-      question: "How old are you",
-      choices: "",
-      required: true
-    },
-    {
-      questionType: "CHECKBOX",
-      question: "Which college do you attend?",
-      choices: "UBC,SFU,KPU,Douglas",
-      required: true
-    },
-    {
-      questionType: "SELECT",
-      question: "How interested are you in this event?",
-      choices: "1,2,3,4,5",
-      required: true
-    }
-  ],
-  slug: "example"
-};
+import LoginAccess from "components/LoginAccess/LoginAccess";
+import Loading from "pages/Loading";
 
 const styles = {
   // Container for custom form image
@@ -78,43 +51,122 @@ const styles = {
   },
   submitSection: {
     padding: "2rem"
-  }
+  },
 };
 
+const useStyles = makeStyles((theme) => ({
+  textfield: {
+    background: "#1F2A47",
+    borderRadius: 10
+  },
+  select: {
+    background: "#1F2A47",
+    borderRadius: 10
+  },
+  uploadedFile: {
+    marginBottom: 12,
+  },
+  ArrowBackIcon: {
+    color: COLORS.WHITE,
+    fontSize: "40px"
+  },
+  deadlineText: {
+    fontWeight: "bold",
+    fontSize: "16px",
+    marginBottom: 8,
+  }
+}));
+
 const FormRegister = (props) => {
-  // const state = props.state
-  // {JSON.stringify(state)}
-  const useStyles = makeStyles((theme) => ({
-    textfield: {
-      background: "#1F2A47",
-      borderRadius: 10
-    },
-    select: {
-      background: "#1F2A47",
-      borderRadius: 10
-    },
-    ArrowBackIcon: {
-      color: COLORS.WHITE,
-      fontSize: "40px"
-    }
-  }));
-  const classes = useStyles();
+
+  const { user, event } = props;
   const history = useHistory();
+  const [currEvent, setCurrEvent] = useState(event);
 
-  // const [formData, setFormData] = useState([]); // Using a test constant rn
+  const basicQuestions = [
+    {
+      questionType: "TEXT",
+      question: "Email Address",
+      choices: "",
+      required: true
+    },
+    {
+      questionType: "TEXT",
+      question: "First Name",
+      choices: "",
+      required: true
+    },
+    {
+      questionType: "TEXT",
+      question: "Last Name",
+      choices: "",
+      required: true
+    },
+    {
+      questionType: "SELECT",
+      question: "Year Level",
+      choices: "1st Year,2nd Year,3rd Year,4th Year,5+ Year,Other,Not Applicable",
+      required: true,
+    },
+    {
+      questionType: "SELECT",
+      question: "Faculty",
+      choices: "Arts,Commerce,Science,Engineering,Kinesiology,Land and Food Systems,Forestry,Other,Not Applicable",
+      required: true,
+    },
+    {
+      questionType: "TEXT",
+      question: "Major/Specialization",
+      choices: "",
+      required: true,
+    },
+    {
+      questionType: "SELECT",
+      question: "Preferred Pronouns",
+      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+      required: true,
+    },
+    {
+      questionType: "SELECT",
+      question: "Any dietary restrictions?",
+      choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
+      required: true,
+    },
+    {
+      questionType: "SELECT",
+      question: "How did you hear about this event?",
+      choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
+      required: true,
+    },
+  ]
+
+
+  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required,questionId}) => ({
+        questionType: type,
+        question: label,
+        choices: choices,
+        required: required,
+        questionId: questionId,
+    }))
+
+  const formData = {
+    image_url: currEvent.imageUrl || "",
+    name: currEvent.ename || "",
+    slug: currEvent.id || "",
+    description: currEvent.description || "",
+    capacity: currEvent.capac || "",
+    start: currEvent.startDate ? new Date(currEvent.startDate) : new Date(),
+    end: currEvent.endDate ? new Date(currEvent.endDate) : new Date(),
+    location: currEvent.elocation || "",
+    deadline: currEvent.deadline ? new Date(currEvent.deadline) : new Date(),
+    questions: basicQuestions.concat(parsedRegistrationQuestions)
+  }
+
+  const classes = useStyles();
+
   const [refresh, setRefresh] = useState(false);
-  const [displayQuestions, setDisplayQuestions] = useState([]);
 
-  // const createBlankResponses = () => {
-  //   // Array.from(Array(formData.questions.length))
-
-  //   const arrayToCreate = []
-  //   // creates empty array mapped to responses
-  //   for (let i = 0; i < formData.questions.length; i++) {
-  //     arrayToCreate.push("")
-  //   }
-  //   return arrayToCreate
-  // }
+  const { id: eventId, year: eventYear } = useParams();
 
   const [responseData, setResponseData] = useState(
     Array.from(Array(formData.questions.length))
@@ -122,6 +174,31 @@ const FormRegister = (props) => {
   const [responseError, setResponseError] = useState(
     Array.from(Array(formData.questions.length))
   ); // index of errors correspond to responses array (right above)
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      if (!currEvent) {
+        const eventData = await fetchBackend(`/events/${eventId}/${eventYear}`, "GET", undefined)
+        setCurrEvent(eventData)
+      }
+    }
+    fetchEvent()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (user) {
+      const newData = responseData.slice()
+      newData[0] = user.email
+      newData[1] = user.fname
+      newData[2] = user.lname
+      newData[3] = user.year
+      newData[4] = user.faculty
+      newData[5] = user.major
+      newData[6] = user.gender
+      newData[7] = user.diet
+      setResponseData(newData)
+    }
+  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateField = useCallback(
     (index, value) => {
@@ -137,7 +214,6 @@ const FormRegister = (props) => {
     (index, checked, value) => {
       // checked is true/false, if change is to checked
       // value is the selection corresponding to checkmark
-
       const responses = responseData;
       if (responses[index] && Array.isArray(responses[index])) {
         // todo; check if response already exists (shouldn't happen, but to be safe)
@@ -162,15 +238,32 @@ const FormRegister = (props) => {
     [refresh, responseData]
   );
 
-  const loadQuestions = useCallback(() => {
-    const returnArr = [];
+  const uploadFile = useCallback (
+    (i, e) => {
+      if (e.target.files.length === 0) return
+      const file = e.target.files[0] // the file
+      const reader = new FileReader() // this for convert to Base64 
+      reader.readAsDataURL(e.target.files[0]) // start conversion...
+      reader.onload = function (e) { // .. once finished..
+        const rawLog = reader.result.split(',')[1]; // extract only the file data part
+        const dataSend = { dataReq: { data: rawLog, name: file.name, type: file.type }, fname: "uploadFilesToGoogleDrive" }; // preapre info to send to API
+        fetch('https://script.google.com/macros/s/AKfycbyX8joJ5WeyqZxrUh-iS-Cay17N3ygO-YMuoNVaBN5o4jl6Cy0k9X0JcxRrwiWy1OEoiQ/exec', // your AppsScript URL
+          { method: "POST", body: JSON.stringify(dataSend) }) // send to Api
+          .then(res => res.json()).then((e) => {
+            updateField(i, e.url)
+          }).catch(e => alert('An error occurred while trying to upload the file. Please try again.'))
+      }
+    },
+    [updateField]
+  )
 
+  const loadQuestions = () => {
+    const returnArr = [];
     for (let i = 0; i < formData.questions.length; i++) {
       const { question, questionType, required, choices } = formData.questions[
         i
       ];
       const choicesArr = choices ? choices.split(",") : [];
-
       if (questionType === "CHECKBOX") {
         returnArr.push(
           <div style={{ paddingBottom: "1.5rem" }}>
@@ -224,7 +317,8 @@ const FormRegister = (props) => {
                 labelId="q-type"
                 variant="outlined"
                 margin="dense"
-                value={responseData[i]}
+                defaultValue={responseData[i] || ''}
+                value={responseData[i] || ''}
                 onChange={(e) => updateField(i, e.target.value)}
               >
                 {choicesArr.map((item) => {
@@ -248,30 +342,76 @@ const FormRegister = (props) => {
               {question}
               {question && required && "*"}
             </p>
-            <TextField
-              error={!!responseError[i]}
-              helperText={!!responseError[i] && responseError[i]}
-              className={classes.textfield}
-              fullWidth
-              margin="dense"
-              variant="outlined"
-              value={responseData[i]}
-              onChange={(e) => updateField(i, e.target.value)}
-            />
+            {question === 'Email Address' ? (
+              <Tooltip title="If you would like to change your account's email address, please contact an executive for support." arrow>
+                <TextField
+                  error={!!responseError[i]}
+                  helperText={!!responseError[i] && responseError[i]}
+                  className={classes.textfield}
+                  fullWidth
+                  margin="dense"
+                  variant="outlined"
+                  InputProps={{
+                    readOnly: true
+                  }}
+                  value={responseData[i]}
+                  onChange={(e) => updateField(i, e.target.value)}
+                />
+              </Tooltip>
+            ) : (
+              <TextField
+                error={!!responseError[i]}
+                helperText={!!responseError[i] && responseError[i]}
+                className={classes.textfield}
+                fullWidth
+                margin="dense"
+                variant="outlined"
+                value={responseData[i]}
+                onChange={(e) => updateField(i, e.target.value)}
+              />
+            )}
           </div>
         );
+      } else if (questionType === "UPLOAD") {
+          returnArr.push(
+            <div style={{ paddingBottom: "1.5rem" }}>
+              <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+                {question}
+                {question && required && "*"}
+              </p>
+              <FormControl
+                error={!!responseError[i]}
+                helperText={!!responseError[i] && responseError[i]}
+              >
+                <Typography className={classes.uploadedFile}>
+                  {responseData[i] ? (
+                    <a
+                      href={responseData[i]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ width: '100%' }}
+                    >
+                      {responseData[i]}
+                    </a>
+                  ) : (
+                    "No file uploaded yet!"
+                  )}
+                </Typography>
+                <Button variant="contained" color="primary" component="label" style={{ width: '100%' }}>
+                  {responseData[i] ? "Reupload" : "Upload"}
+                  <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
+                  <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
+                </Button>
+                {!!responseError[i] && (
+                  <FormHelperText>{responseError[i]}</FormHelperText>
+                )}
+              </FormControl>
+            </div>
+          )
       }
     }
-
-    setDisplayQuestions(returnArr);
-  }, [
-    classes.select,
-    classes.textfield,
-    responseData,
-    responseError,
-    updateCheckbox,
-    updateField
-  ]);
+    return returnArr
+  }
 
   const validifyForm = () => {
     // currently only checks "required" field of question object in questions array
@@ -325,24 +465,71 @@ const FormRegister = (props) => {
     return res;
   };
 
-  const handleSave = () => {
+  const handleSubmit = () => {
     if (isValidSubmission()) {
-      console.log(responseData);
+      const dynamicResponses = {}
+      for (let i = basicQuestions.length; i < formData.questions.length; i++) {
+        if (formData.questions[i].questionType === "CHECKBOX") {
+          dynamicResponses[formData.questions[i].questionId] = responseData[i].join(', ')
+        } else {
+          dynamicResponses[formData.questions[i].questionId] = responseData[i]
+        }
+      }
+      const registrationBody = {
+        email: responseData[0],
+        studentId: user.id,
+        eventID: currEvent.id,
+        year: currEvent.year,
+        registrationStatus: "registered",
+        basicInformation: {
+          fname: responseData[1],
+          lname: responseData[2],
+          year: responseData[3],
+          faculty: responseData[4],
+          major: responseData[5],
+          gender: responseData[6],
+          diet: responseData[7],
+          heardFrom: responseData[8],
+        },
+        dynamicResponses,
+      }
+      fetchBackend('/registrations', 'POST', registrationBody, false)
+        .then(() => {
+          history.push(`/event/${currEvent.id}/${currEvent.year}/register/success`)
+        })
     } else {
       console.error("Form errors");
     }
   };
 
-  useEffect(() => {
-    loadQuestions();
-  }, [refresh, loadQuestions]);
+  const isDeadlinePassed = (event) => {
+    const deadline = new Date(event.deadline).getTime()
+    return deadline < new Date().getTime()
+  }
+
+  if (!user) {
+    return (
+      <LoginAccess
+        header='To register for our events, please sign in.'
+        redirect={`/event/${currEvent.id}/${currEvent.year}/register`}
+      />
+    )
+  }
+
+  if (!currEvent) {
+    return (
+      <Loading
+        message='Loading event...'
+      />
+    )
+  }
 
   return (
     <>
       <ArrowBackIcon
         cursor="pointer"
         className={classes.ArrowBackIcon}
-        onClick={() => history.push("/events/")}
+        onClick={() => history.push("/events")}
       />
       <Helmet>
         <title>Register for {formData.name}</title>
@@ -362,13 +549,28 @@ const FormRegister = (props) => {
             <h2 style={{ marginTop: 0 }}>{formData.name}</h2>
             <p>{formData.description}</p>
           </div>
-          <div style={styles.section}>{displayQuestions}</div>
-          <div style={styles.divider}></div>
-          <div style={styles.submitSection}>
-            <Button variant="contained" color="primary" onClick={handleSave}>
-              Save
-            </Button>
-          </div>
+          {isDeadlinePassed(event) ? (
+            <Fragment>
+              <div style={styles.section}>
+                <Typography className={classes.deadlineText}>
+                  Deadline Passed
+                </Typography>
+                <Typography>
+                  The registration deadline for this event has already passed.
+                </Typography>
+              </div>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <div style={styles.section}>{loadQuestions()}</div>
+              <div style={styles.divider}></div>
+              <div style={styles.submitSection}>
+                <Button variant="contained" color="primary" onClick={handleSubmit}>
+                  Submit
+                </Button>
+              </div>
+            </Fragment>
+          )}
         </Paper>
       </Container>
     </>

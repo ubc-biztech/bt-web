@@ -202,7 +202,7 @@ export default function QuickRegisterForm(props) {
             onInputChange={(e, value) => {
               setFieldValue("diet", value, false);
             }}
-            options={["None", "Vegetarian", "Vegan", "Gluten Free"]}
+            options={["None", "Vegetarian", "Vegan", "Gluten Free", "Pescetarian", "Kosher", "Halal"]}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -234,7 +234,7 @@ export default function QuickRegisterForm(props) {
               "He/Him/His",
               "She/Her/Hers",
               "They/Them/Their",
-              "Prefer not to say",
+              "Other/Prefer not to say",
             ]}
             renderInput={(params) => (
               <TextField
