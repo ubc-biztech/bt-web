@@ -6,7 +6,7 @@ import "./RegisterAlert.scss";
 
 
 export default function UserAlert() {
-  const ignoreAlertPaths = ['/login', '/login-redirect', '/signup']
+  const ignoreAlertPaths = ['/login', '/login-redirect', '/signup', '/signup/success']
 
   const location = useLocation()
   const [path, setPath] = useState(location.pathname)
@@ -17,7 +17,7 @@ export default function UserAlert() {
 
   return (
     <>
-      {!ignoreAlertPaths.includes(path) && 
+      {!ignoreAlertPaths.find((p) => (path.includes(p))) && 
       <Alert severity="warning">
         You are not logged in and are currently viewing as guest.&nbsp;
         <Link to="/login">Login</Link>&nbsp;or&nbsp;<Link to="/signup">Signup</Link>&nbsp;to be able to register for
