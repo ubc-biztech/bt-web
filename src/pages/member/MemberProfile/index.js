@@ -208,7 +208,7 @@ function MemberProfile (props) {
             var eventsAttendedCounter = 0
             events.forEach((event) => {
               const index = response.data.findIndex(
-                (registration) => registration.eventID === event.id
+                (registration) => registration["eventID;year"] === event.id + ";" + event.year
               )
               if (index !== -1) {
                 // checks if they have checked in at the event
@@ -482,7 +482,7 @@ function MemberProfile (props) {
                     Most Recent
                   </Typography>
                   <Typography className={classes.eventValue}>
-                    {recentEvent}
+                    {recentEvent}                                 
                   </Typography>
                 </div>
                 <div>
