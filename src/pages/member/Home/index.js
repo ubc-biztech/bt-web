@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import { setUser, fetchUserRegisteredEvents } from "store/user/userActions";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -96,14 +97,14 @@ const useStyles = makeStyles({
     flexDirection: "column",
     //justifyContent: "center",
     // margin: "auto",
-    width: "100%",
+    width: "100%"
     //border: "3px solid yellow"
     // padding: "10px"
   },
   cal: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
     //border: "3px solid yellow"
     // width: "100px",
     // height: "100px",
@@ -137,7 +138,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     // margin: "auto",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
     // margin: "auto",
     //border: "3px solid green"
     // padding: "10px"
@@ -158,6 +159,10 @@ function MemberHome(props) {
 
   const [featuredEvent, setFeaturedEvent] = useState({});
   const [nextEvent, setNextEvent] = useState({});
+
+  useEffect(() => {
+    if (user && user.email) fetchUserRegisteredEvents({ userId: user.email });
+  }, []);
 
   const getFeaturedEvent = () => {
     if (events.length) {
