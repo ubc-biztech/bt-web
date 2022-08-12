@@ -139,7 +139,7 @@ class Router extends Component {
               />
               <Route
                 exact
-                path="/signup/success"
+                path="/signup/success/:formType/:email"
                 featureFlag={"REACT_APP_SHOW_MAXVP"}
                 render={() => <FormSuccess />}
               />

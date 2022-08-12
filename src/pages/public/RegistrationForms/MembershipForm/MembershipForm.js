@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid, Typography, Checkbox ,
+import { Button, Grid, Typography,
   FormControlLabel,
   FormControl,
   RadioGroup,
@@ -340,7 +340,7 @@ export default function MembershipForm(props) {
 
       </Grid>
       <br />
-      {memberType === MEMBER_TYPES.UBC && (
+      {/* {memberType === MEMBER_TYPES.UBC && (
         <FormControlLabel
           control={<Checkbox />}
           groupName="payment_check"
@@ -356,7 +356,7 @@ export default function MembershipForm(props) {
           className={classes.paymentCheck}
           label="I have e-transferred $7.50 to rita@ubcbiztech.com *"
         />
-      )}
+      )} */}
       <br />
       <Button
         className={classes.registerButton}
@@ -366,7 +366,7 @@ export default function MembershipForm(props) {
         disabled={isSubmitting}
       >
         <CardMembershipIcon className={classes.registerIcon} />
-        Submit
+        Proceed to Payment
       </Button>
     </form>
   );
