@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import MembershipForm from "./MembershipForm";
-import Login from "./Login";
+import LoginAccess from "components/LoginAccess/LoginAccess";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { MEMBER_TYPES } from "constants/_constants/memberTypes";
@@ -201,7 +201,10 @@ const MembershipFormContainer = (props) => {
   return (
     <Fragment>
       {!user ? (
-        <Login />
+        <LoginAccess 
+          header='To access the membership form, please sign in.'
+          redirect='/signup'
+        />
       ) : (
         <div className={classes.layout}>
           <Helmet>

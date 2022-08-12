@@ -98,7 +98,60 @@ const formStyles = {
 const FormCreatePreview = (props) => {
   const { imageUrl, eventName, description, questionsData } = props;
 
-  const displayQuestions = questionsData.map((question, index) => {
+  const basicQuestions = [
+    {
+      type: "TEXT",
+      label: "Email Address",
+      choices: "",
+      required: true
+    },
+    {
+      type: "TEXT",
+      label: "First Name",
+      choices: "",
+      required: true
+    },
+    {
+      type: "TEXT",
+      label: "Last Name",
+      choices: "",
+      required: true
+    },
+    {
+      type: "SELECT",
+      label: "Year Level",
+      choices: "1st Year,2nd Year,3rd Year,4th Year,5+ Year,Other,Not Applicable",
+      required: true,
+    },
+    {
+      type: "SELECT",
+      label: "Faculty",
+      choices: "Arts,Commerce,Science,Engineering,Kinesiology,Land and Food Systems,Forestry,Other,Not Applicable",
+      required: true,
+    },
+    {
+      type: "TEXT",
+      label: "Major/Specialization",
+      choices: "",
+      required: true,
+    },
+    {
+      type: "SELECT",
+      label: "Pronouns",
+      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Prefer not to say",
+      required: true,
+    },
+    {
+      type: "SELECT",
+      label: "How did you hear about this event?",
+      choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
+      required: true,
+    },
+  ]
+
+  const allQuestions = basicQuestions.concat(questionsData)
+
+  const displayQuestions = allQuestions.map((question, index) => {
     return (
       <QuestionPreview
         key={index}

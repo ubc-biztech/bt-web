@@ -11,14 +11,19 @@ import {
   Paper,
   Select,
   TextField,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import CloudUpload from '@material-ui/icons/CloudUpload';
-import React, { useEffect, useState, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState, useCallback, Fragment } from "react";
+import { useParams, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { fetchBackend } from "utils";
+import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
+import { COLORS } from "../../../constants/_constants/theme";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
+import LoginAccess from "components/LoginAccess/LoginAccess";
+import Loading from "pages/Loading";
 
 const styles = {
   // Container for custom form image
@@ -60,6 +65,15 @@ const useStyles = makeStyles((theme) => ({
   },
   uploadedFile: {
     marginBottom: 12,
+  },
+  ArrowBackIcon: {
+    color: COLORS.WHITE,
+    fontSize: "40px"
+  },
+  deadlineText: {
+    fontWeight: "bold",
+    fontSize: "16px",
+    marginBottom: 8,
   }
 }));
 
@@ -67,8 +81,8 @@ const FormRegister = (props) => {
 
   const { user, event } = props;
   const history = useHistory();
+  const [currEvent, setCurrEvent] = useState(event);
 
-  // should be pulled from database -- DEMO:
   const basicQuestions = [
     {
       questionType: "TEXT",
@@ -108,6 +122,12 @@ const FormRegister = (props) => {
     },
     {
       questionType: "SELECT",
+      question: "Pronouns",
+      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Prefer not to say",
+      required: true,
+    },
+    {
+      questionType: "SELECT",
       question: "How did you hear about this event?",
       choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
       required: true,
@@ -115,7 +135,7 @@ const FormRegister = (props) => {
   ]
 
 
-  const parsedRegistrationQuestions = event.registrationQuestions.map(({type,label,choices,required}) => ({
+  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required}) => ({
         questionType: type,
         question: label,
         choices: choices,
@@ -123,37 +143,23 @@ const FormRegister = (props) => {
     }))
 
   const formData = {
-    image_url: event.imageUrl || "",
-    name: event.ename || "",
-    slug: event.id || "",
-    description: event.description || "",
-    capacity: event.capac || "",
-    start: event.startDate ? new Date(event.startDate) : new Date(),
-    end: event.endDate ? new Date(event.endDate) : new Date(),
-    location: event.elocation || "",
-    deadline: event.deadline ? new Date(event.deadline) : new Date(),
+    image_url: currEvent.imageUrl || "",
+    name: currEvent.ename || "",
+    slug: currEvent.id || "",
+    description: currEvent.description || "",
+    capacity: currEvent.capac || "",
+    start: currEvent.startDate ? new Date(currEvent.startDate) : new Date(),
+    end: currEvent.endDate ? new Date(currEvent.endDate) : new Date(),
+    location: currEvent.elocation || "",
+    deadline: currEvent.deadline ? new Date(currEvent.deadline) : new Date(),
     questions: basicQuestions.concat(parsedRegistrationQuestions)
   }
 
-  // const state = props.state
-  // {JSON.stringify(state)}
   const classes = useStyles();
 
-  // const [formData, setFormData] = useState([]); // Using a test constant rn
   const [refresh, setRefresh] = useState(false);
-  const [displayQuestions, setDisplayQuestions] = useState([]);
 
-  // const createBlankResponses = () => {
-  //   // Array.from(Array(formData.questions.length))
-
-  //   const arrayToCreate = []
-  //   // creates empty array mapped to responses
-  //   for (let i = 0; i < formData.questions.length; i++) {
-  //     arrayToCreate.push("")
-  //   }
-  //   return arrayToCreate
-  // }
-
+  const { id: eventId, year: eventYear } = useParams();
 
   const [responseData, setResponseData] = useState(
     Array.from(Array(formData.questions.length))
@@ -161,6 +167,17 @@ const FormRegister = (props) => {
   const [responseError, setResponseError] = useState(
     Array.from(Array(formData.questions.length))
   ); // index of errors correspond to responses array (right above)
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      if (!currEvent) {
+        const eventData = await fetchBackend(`/events/${eventId}/${eventYear}`, "GET", undefined)
+        setCurrEvent(eventData)
+      }
+    }
+    fetchEvent()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (user) {
       const newData = responseData.slice()
@@ -170,7 +187,7 @@ const FormRegister = (props) => {
       newData[3] = user.year
       newData[4] = user.faculty
       newData[5] = user.major
-      // newData[6] = user.gender
+      newData[6] = user.gender
       setResponseData(newData)
     }
   }, [user])
@@ -231,14 +248,13 @@ const FormRegister = (props) => {
     [updateField]
   )
 
-  const loadQuestions = useCallback(() => {
+  const loadQuestions = () => {
     const returnArr = [];
     for (let i = 0; i < formData.questions.length; i++) {
       const { question, questionType, required, choices } = formData.questions[
         i
       ];
       const choicesArr = choices ? choices.split(",") : [];
-
       if (questionType === "CHECKBOX") {
         returnArr.push(
           <div style={{ paddingBottom: "1.5rem" }}>
@@ -293,6 +309,7 @@ const FormRegister = (props) => {
                 variant="outlined"
                 margin="dense"
                 defaultValue={responseData[i] || ''}
+                value={responseData[i] || ''}
                 onChange={(e) => updateField(i, e.target.value)}
               >
                 {choicesArr.map((item) => {
@@ -316,16 +333,34 @@ const FormRegister = (props) => {
               {question}
               {question && required && "*"}
             </p>
-            <TextField
-              error={!!responseError[i]}
-              helperText={!!responseError[i] && responseError[i]}
-              className={classes.textfield}
-              fullWidth
-              margin="dense"
-              variant="outlined"
-              value={responseData[i]}
-              onChange={(e) => updateField(i, e.target.value)}
-            />
+            {question === 'Email Address' ? (
+              <Tooltip title="If you would like to change your account's email address, please contact an executive for support." arrow>
+                <TextField
+                  error={!!responseError[i]}
+                  helperText={!!responseError[i] && responseError[i]}
+                  className={classes.textfield}
+                  fullWidth
+                  margin="dense"
+                  variant="outlined"
+                  InputProps={{
+                    readOnly: true
+                  }}
+                  value={responseData[i]}
+                  onChange={(e) => updateField(i, e.target.value)}
+                />
+              </Tooltip>
+            ) : (
+              <TextField
+                error={!!responseError[i]}
+                helperText={!!responseError[i] && responseError[i]}
+                className={classes.textfield}
+                fullWidth
+                margin="dense"
+                variant="outlined"
+                value={responseData[i]}
+                onChange={(e) => updateField(i, e.target.value)}
+              />
+            )}
           </div>
         );
       } else if (questionType === "UPLOAD") {
@@ -335,42 +370,39 @@ const FormRegister = (props) => {
                 {question}
                 {question && required && "*"}
               </p>
-              <Typography className={classes.uploadedFile}>
-                {responseData[i] ? (
-                  <a
-                    href={responseData[i]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ width: '100%' }}
-                  >
-                    {responseData[i]}
-                  </a>
-                ) : (
-                  "No file uploaded yet!"
+              <FormControl
+                error={!!responseError[i]}
+                helperText={!!responseError[i] && responseError[i]}
+              >
+                <Typography className={classes.uploadedFile}>
+                  {responseData[i] ? (
+                    <a
+                      href={responseData[i]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ width: '100%' }}
+                    >
+                      {responseData[i]}
+                    </a>
+                  ) : (
+                    "No file uploaded yet!"
+                  )}
+                </Typography>
+                <Button variant="contained" color="primary" component="label" style={{ width: '100%' }}>
+                  {responseData[i] ? "Reupload" : "Upload"}
+                  <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
+                  <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
+                </Button>
+                {!!responseError[i] && (
+                  <FormHelperText>{responseError[i]}</FormHelperText>
                 )}
-              </Typography>
-              <Button variant="contained" color="primary" component="label">
-                {responseData[i] ? "Reupload" : "Upload"}
-                <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
-                <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
-              </Button>
+              </FormControl>
             </div>
           )
       }
     }
-
-    setDisplayQuestions(returnArr);
-  }, [
-    classes.select,
-    classes.textfield,
-    classes.uploadedFile,
-    formData.questions,
-    responseData,
-    responseError,
-    updateCheckbox,
-    updateField,
-    uploadFile,
-  ]);
+    return returnArr
+  }
 
   const validifyForm = () => {
     // currently only checks "required" field of question object in questions array
@@ -428,26 +460,53 @@ const FormRegister = (props) => {
     if (isValidSubmission()) {
       const registrationBody = {
         email: responseData[0],
-        eventID: event.id,
-        year: event.year,
+        eventID: currEvent.id,
+        year: currEvent.year,
         registrationStatus: "registered",
         heardFrom: responseData[6],
       }
       fetchBackend('/registrations', 'POST', registrationBody, false)
         .then(() => {
-          history.push(`/event/${event.id}/${event.year}/register/success`)
+          history.push(`/event/${currEvent.id}/${currEvent.year}/register/success`)
         })
     } else {
       console.error("Form errors");
     }
   };
 
-  useEffect(() => {
-    loadQuestions()
-  }, [refresh, responseData]); // eslint-disable-line react-hooks/exhaustive-deps
+  // useEffect(() => {
+  //     loadQuestions()
+  // }, [refresh, responseData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const isDeadlinePassed = (event) => {
+    const deadline = new Date(event.deadline).getTime()
+    return deadline < new Date().getTime()
+  }
+
+  if (!user) {
+    return (
+      <LoginAccess
+        header='To register for our events, please sign in.'
+        redirect={`/event/${currEvent.id}/${currEvent.year}/register`}
+      />
+    )
+  }
+
+  if (!currEvent) {
+    return (
+      <Loading
+        message='Loading event...'
+      />
+    )
+  }
 
   return (
     <>
+      <ArrowBackIcon
+        cursor="pointer"
+        className={classes.ArrowBackIcon}
+        onClick={() => history.push("/events")}
+      />
       <Helmet>
         <title>Register for {formData.name}</title>
       </Helmet>
@@ -466,13 +525,28 @@ const FormRegister = (props) => {
             <h2 style={{ marginTop: 0 }}>{formData.name}</h2>
             <p>{formData.description}</p>
           </div>
-          <div style={styles.section}>{displayQuestions}</div>
-          <div style={styles.divider}></div>
-          <div style={styles.submitSection}>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Submit
-            </Button>
-          </div>
+          {isDeadlinePassed(event) ? (
+            <Fragment>
+              <div style={styles.section}>
+                <Typography className={classes.deadlineText}>
+                  Deadline Passed
+                </Typography>
+                <Typography>
+                  The registration deadline for this event has already passed.
+                </Typography>
+              </div>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <div style={styles.section}>{loadQuestions()}</div>
+              <div style={styles.divider}></div>
+              <div style={styles.submitSection}>
+                <Button variant="contained" color="primary" onClick={handleSubmit}>
+                  Submit
+                </Button>
+              </div>
+            </Fragment>
+          )}
         </Paper>
       </Container>
     </>

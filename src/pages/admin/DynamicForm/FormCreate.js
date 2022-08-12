@@ -8,7 +8,7 @@ import {
   KeyboardDateTimePicker,
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import CustomQuestion from "./components/CustomQuestion";
 import FormCreatePreview from "./FormCreatePreview";
 import { FieldArray, Formik } from "formik";
@@ -253,14 +253,15 @@ const FormCreateForm = (props) => {
               <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
               <div style={{ display: "flex", gap: "1rem" }}>
                 {isSaved ? 
-                <Button
+                <Link
                   variant="contained"
                   component={Button}
                   color="primary"
-                  onClick={() => { history.push(`/event/${eventId}/${eventYear}/register`) }}
+                  to={{ pathname: `/event/${eventId}/${eventYear}/register`}}
+                  target="_blank"
                 >
                   Event Link
-                </Button> : <></>}
+                </Link> : <></>}
 
                 {isSaved &&
                   (isPublished ? (
