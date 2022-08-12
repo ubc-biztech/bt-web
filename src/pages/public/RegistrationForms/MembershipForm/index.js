@@ -58,7 +58,7 @@ const MembershipFormContainer = (props) => {
   const classes = useStyles()
   const { user } = props
   const [memberType, setMemberType] = useState(user?.education);
-  const [topics, setTopics] = useState([])
+  const [topics, setTopics] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
@@ -147,8 +147,8 @@ const MembershipFormContainer = (props) => {
       paymentImages: ['https://imgur.com/TRiZYtG.png'],
       paymentPrice: 1000,
       paymentType: 'Member',
-      success_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000' : CLIENT_URL}/signup/success/Member/${email}`,
-      cancel_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000' : CLIENT_URL}/signup`,
+      success_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000' : CLIENT_URL}signup/success/Member/${email}`,
+      cancel_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000' : CLIENT_URL}signup`,
       education: memberType,
       student_number: memberType === 'UBC' ? student_number : '',
       fname: first_name,
@@ -161,7 +161,7 @@ const MembershipFormContainer = (props) => {
       diet: diet || 'None',
       prev_member,
       international: memberType === 'UBC' ? international : '',
-      topics: topics,
+      topics: topics.slice(0, -1),
       heard_from,
       university: memberType === 'UNI' ? university : '',
       high_school: memberType === 'HS' ? high_school : '',
