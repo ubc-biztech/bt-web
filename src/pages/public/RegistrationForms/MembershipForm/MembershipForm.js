@@ -3,6 +3,7 @@ import { Button, Grid, Typography, Checkbox ,
   FormControlLabel,
   FormControl,
   RadioGroup,
+  FormGroup,
   FormLabel,
   Radio,
 } from "@material-ui/core";
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MembershipForm(props) {
   const classes = useStyles();
 
-  const { isSubmitting, handleSubmit, memberType, setMemberType, errors } = props;
+  const { isSubmitting, handleSubmit, memberType, setMemberType, topics, setTopics, errors } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -258,7 +259,7 @@ export default function MembershipForm(props) {
           <CustomSelect
             {...props}
             label="Any dietary restrictions?"
-            listOfOptions={["None", "Vegetarian", "Vegan", "Gluten Free"]}
+            listOfOptions={["None", "Vegetarian", "Vegan", "Gluten Free", "Pescetarian", "Kosher", "Halal"]}
             groupName="diet"
           />
         </Grid>
@@ -273,11 +274,47 @@ export default function MembershipForm(props) {
         </Grid>
 
         <Grid item xs={12}>
-          <CustomTextField
-            {...props}
-            label="What topics do you want to see discussed in future events?"
-            groupName="topics"
-          />
+        <FormControl>
+            <FormLabel>
+              <Typography>
+                What topics do you want to see discussed in future events?
+              </Typography>
+            </FormLabel>
+            <FormGroup onChange={(e) => {
+              if (topics.includes(e.target.value)) {
+                setTopics(topics.filter((val) => val !== e.target.value))
+              } else {
+                setTopics([...topics, e.target.value])
+              }
+            }}>
+              <FormControlLabel
+                control={<Checkbox name="Cyber Security" />}
+                label="Cyber Security"
+                value="Cyber Security"
+              />
+              <FormControlLabel control={<Checkbox name="AI" />} label="AI" value="AI" />
+              <FormControlLabel
+                control={<Checkbox name="Tech Startups" />}
+                label="Tech Startups"
+                value="Tech Startups"
+              />
+              <FormControlLabel
+                control={<Checkbox name="eCommerce" />}
+                label="eCommerce"
+                value="eCommerce"
+              />
+              <FormControlLabel
+                control={<Checkbox name="Health Tech" />}
+                label="Health Tech"
+                value="Health Tech"
+              />
+              <FormControlLabel
+                control={<Checkbox name="Careers in the Tech Industry" />}
+                label="Careers in the Tech Industry"
+                value="Careers in the Tech Industry"
+              />
+            </FormGroup>
+          </FormControl>
         </Grid>
 
         <Grid item xs={12}>

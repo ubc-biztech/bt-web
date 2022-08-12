@@ -34,7 +34,6 @@ import {
 import { fetchBackend } from "utils";
 import {
   REGISTRATIONSTATUSLABEL,
-  parseRegistrationResponses,
   combineEventAndRegistrationData,
   appendRegistrationQuestions
 } from "./utils";
@@ -105,7 +104,6 @@ export class EventStatsTable extends Component {
       dietary: {},
       genders: {},
       heardFrom: {},
-      registrationResponses: {},
       registrationVisible: { visible: false, style: { display: "none" } },
       facultyVisible: { visible: false, style: { display: "none" } },
       yearVisible: { visible: false, style: { display: "none" } },
@@ -131,46 +129,19 @@ export class EventStatsTable extends Component {
      # of registered/checkedin etc. is computed every single time this function is called
   */
   async getEventTableData(eventID, eventYear) {
-    let params = new URLSearchParams({
+    const params = new URLSearchParams({
       eventID: eventID,
       year: eventYear
     });
     await fetchBackend(`/registrations?${params}`, "GET")
       .then((response) => {
-        const registrationResponses = parseRegistrationResponses(response);
-
-        const heardFrom = {};
-        response.data.forEach((user) => {
-          if (user.heardFrom) {
-            heardFrom[user.heardFrom] = heardFrom[user.heardFrom]
-              ? heardFrom[user.heardFrom] + 1
-              : 1;
-          }
-        });
-
-        this.setState({
-          heardFrom,
-          registrationResponses
-        });
+        this.heardFromNumbers(response.data);
+        this.registrationNumbers(response.data);
+        this.notRegistrationNumbers(response.data);
+        this.setRows(response.data);
       })
       .catch((err) => {
         console.log("No registrations for this event");
-      });
-
-    params = new URLSearchParams({
-      users: true
-    });
-    await fetchBackend(
-      `/events/${eventID}/${eventYear.toString()}?${params}`,
-      "GET"
-    )
-      .then((users) => {
-        this.registrationNumbers(users);
-        this.notRegistrationNumbers(users);
-        this.setRows(users);
-      })
-      .catch((error) => {
-        console.log(error);
       });
 
     await fetchBackend(
@@ -187,6 +158,21 @@ export class EventStatsTable extends Component {
    * calculates the stats for registration and updates the data for charts
    * each data set is an array of data (arrays) sets b/c different charts accept different data
    */
+
+  heardFromNumbers(users) {
+    const heardFrom = {};
+    users.forEach((user) => {
+      if (user.basicInformation.heardFrom) {
+        heardFrom[user.basicInformation.heardFrom] = heardFrom[user.basicInformation.heardFrom]
+          ? heardFrom[user.basicInformation.heardFrom] + 1
+          : 1;
+      }
+    });
+
+    this.setState({
+      heardFrom,
+    });
+  }
 
   registrationNumbers(users) {
     const registrationNumbers = {};
@@ -217,23 +203,23 @@ export class EventStatsTable extends Component {
     const dietary = {};
     const genders = {};
     users.forEach((user) => {
-      if (user.faculty) {
-        faculties[user.faculty] = faculties[user.faculty]
-          ? faculties[user.faculty] + 1
+      if (user.basicInformation.faculty) {
+        faculties[user.basicInformation.faculty] = faculties[user.basicInformation.faculty]
+          ? faculties[user.basicInformation.faculty] + 1
           : 1;
       }
-      if (user.year) {
-        const yearInt = parseInt(user.year);
+      if (user.basicInformation.year) {
+        const yearInt = parseInt(user.basicInformation.year);
         if (yearInt) {
           years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1;
         }
       }
-      if (user.diet) {
-        dietary[user.diet] = dietary[user.diet] ? dietary[user.diet] + 1 : 1;
+      if (user.basicInformation.diet) {
+        dietary[user.basicInformation.diet] = dietary[user.basicInformation.diet] ? dietary[user.basicInformation.diet] + 1 : 1;
       }
-      if (user.gender) {
-        genders[user.gender] = genders[user.gender]
-          ? genders[user.gender] + 1
+      if (user.basicInformation.gender) {
+        genders[user.basicInformation.gender] = genders[user.basicInformation.gender]
+          ? genders[user.basicInformation.gender] + 1
           : 1;
       }
     });
@@ -254,10 +240,7 @@ export class EventStatsTable extends Component {
   setRows(users) {
     const data = combineEventAndRegistrationData(
       users,
-      this.state.registrationResponses
     );
-
-    console.log("rows:\n", data);
 
     this.setState({
       rows: data
@@ -273,7 +256,6 @@ export class EventStatsTable extends Component {
 
     appendRegistrationQuestions(columns, registrationQuestions);
 
-    console.log("columns:\n", columns);
     this.setState({
       columns
     });
@@ -376,6 +358,7 @@ export class EventStatsTable extends Component {
         sorting: false
       },
       { title: "Email", field: "id", sorting: false },
+      { title: "Diet", field: "diet", sorting: false },
       {
         title: "Registration Status",
         field: REGISTRATIONSTATUSLABEL,
@@ -435,6 +418,7 @@ export class EventStatsTable extends Component {
         <Statistic statName="Year level: " statObj={this.state.years} />
         {/* <Statistic statName='Dietary: ' statObj={this.state.dietary} /> */}
         <Statistic statName="Gender: " statObj={this.state.genders} />
+        <Statistic statName="Diet: " statObj={this.state.dietary} />
         <Statistic
           statName="Heard about event from: "
           statObj={this.state.heardFrom}
@@ -706,7 +690,7 @@ const QrCheckIn = (props) => {
       return;
     }
 
-    let params = new URLSearchParams({
+    const params = new URLSearchParams({
       users: true
     });
 
@@ -830,7 +814,7 @@ const QrCheckIn = (props) => {
           <div>
             {/* Last person who was scanned */}
             <Typography variant="body2">
-              Last scanned: {checkInName ? checkInName : "None"}
+              Last scanned: {checkInName || "None"}
             </Typography>
           </div>
         </div>

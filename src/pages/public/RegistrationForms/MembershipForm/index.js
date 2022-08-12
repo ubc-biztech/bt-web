@@ -49,6 +49,7 @@ const MembershipFormContainer = (props) => {
   const history = useHistory()
   const { user } = props
   const [memberType, setMemberType] = useState(user?.education);
+  const [topics, setTopics] = useState([])
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
@@ -125,7 +126,6 @@ const MembershipFormContainer = (props) => {
       prev_member,
       international,
       diet,
-      topics,
       heard_from,
       university,
       high_school
@@ -144,15 +144,15 @@ const MembershipFormContainer = (props) => {
       email,
       first_name,
       last_name,
-      pronouns,
+      pronouns: pronouns || 'Other/Prefer not to say',
       student_number: memberType === 'UBC' ? student_number : '',
       faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
       year: memberType !== 'NA' ? year : '',
       major: (memberType === 'UBC' || memberType === 'UNI') ? major : '',
       prev_member,
       international: memberType === 'UBC' ? international : '',
-      topics,
-      diet,
+      topics: topics,
+      diet: diet || 'None',
       heard_from,
       university: memberType === 'UNI' ? university : '',
       high_school: memberType === 'HS' ? high_school : '',
@@ -252,6 +252,8 @@ const MembershipFormContainer = (props) => {
                   isSubmitting,
                   memberType,
                   setMemberType,
+                  topics,
+                  setTopics,
                 }
                 return <MembershipForm {...props} />
               }}

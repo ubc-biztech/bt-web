@@ -129,7 +129,6 @@ const styles = {
 const FormCreateForm = (props) => {
   const classes = useStyles();
   const { id: eventId, year: eventYear } = useParams();
-  const history = useHistory();
   const {
     values: {
       imageUrl,

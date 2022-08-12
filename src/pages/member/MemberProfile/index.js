@@ -240,7 +240,6 @@ function MemberProfile (props) {
 
   const getFavouriteEvents = () => {
     fetchBackend(`/users/${user.id}`, 'GET').then(async (response) => {
-      console.log(response) // TODO: remove
       const favouriteEventIDs = response['favedEventsID;year']
       events &&
         events.forEach((event) => {
@@ -423,6 +422,9 @@ function MemberProfile (props) {
                             <MenuItem value={'Gluten Free'}>
                               Gluten Free
                             </MenuItem>
+                            <MenuItem value={'Pescetarian'}>Pescetarian</MenuItem>
+                            <MenuItem value={'Kosher'}>Kosher</MenuItem>
+                            <MenuItem value={'Halal'}>Halal</MenuItem>
                           </Select>
                         </FormControl>
                       </div>

@@ -122,8 +122,14 @@ const FormRegister = (props) => {
     },
     {
       questionType: "SELECT",
-      question: "Pronouns",
-      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Prefer not to say",
+      question: "Preferred Pronouns",
+      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+      required: true,
+    },
+    {
+      questionType: "SELECT",
+      question: "Any dietary restrictions?",
+      choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
       required: true,
     },
     {
@@ -135,11 +141,12 @@ const FormRegister = (props) => {
   ]
 
 
-  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required}) => ({
+  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required,questionId}) => ({
         questionType: type,
         question: label,
         choices: choices,
-        required: required
+        required: required,
+        questionId: questionId,
     }))
 
   const formData = {
@@ -188,9 +195,10 @@ const FormRegister = (props) => {
       newData[4] = user.faculty
       newData[5] = user.major
       newData[6] = user.gender
+      newData[7] = user.diet
       setResponseData(newData)
     }
-  }, [user])
+  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateField = useCallback(
     (index, value) => {
@@ -232,6 +240,7 @@ const FormRegister = (props) => {
 
   const uploadFile = useCallback (
     (i, e) => {
+      if (e.target.files.length === 0) return
       const file = e.target.files[0] // the file
       const reader = new FileReader() // this for convert to Base64 
       reader.readAsDataURL(e.target.files[0]) // start conversion...
@@ -458,12 +467,31 @@ const FormRegister = (props) => {
 
   const handleSubmit = () => {
     if (isValidSubmission()) {
+      const dynamicResponses = {}
+      for (let i = basicQuestions.length; i < formData.questions.length; i++) {
+        if (formData.questions[i].questionType === "CHECKBOX") {
+          dynamicResponses[formData.questions[i].questionId] = responseData[i].join(', ')
+        } else {
+          dynamicResponses[formData.questions[i].questionId] = responseData[i]
+        }
+      }
       const registrationBody = {
         email: responseData[0],
+        studentId: user.id,
         eventID: currEvent.id,
         year: currEvent.year,
         registrationStatus: "registered",
-        heardFrom: responseData[6],
+        basicInformation: {
+          fname: responseData[1],
+          lname: responseData[2],
+          year: responseData[3],
+          faculty: responseData[4],
+          major: responseData[5],
+          gender: responseData[6],
+          diet: responseData[7],
+          heardFrom: responseData[8],
+        },
+        dynamicResponses,
       }
       fetchBackend('/registrations', 'POST', registrationBody, false)
         .then(() => {
@@ -473,10 +501,6 @@ const FormRegister = (props) => {
       console.error("Form errors");
     }
   };
-
-  // useEffect(() => {
-  //     loadQuestions()
-  // }, [refresh, responseData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const isDeadlinePassed = (event) => {
     const deadline = new Date(event.deadline).getTime()
