@@ -5,6 +5,7 @@ import { Button, Grid, Typography,
   RadioGroup,
   FormGroup,
   FormLabel,
+  Checkbox,
   Radio,
 } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
