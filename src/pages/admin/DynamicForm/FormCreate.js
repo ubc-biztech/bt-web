@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
-import { Button, Fab, Grid, TextField } from "@material-ui/core";
+import { Button, Fab, Grid, TextField, Tooltip } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import {
   KeyboardDateTimePicker,
@@ -15,6 +15,7 @@ import { FieldArray, Formik } from "formik";
 import * as Yup from "yup";
 import { fetchBackend, log } from "utils";
 import { fetchEvents } from "store/event/eventActions";
+
 
 // Styling Material UI Components
 const useStyles = makeStyles((theme) => ({
@@ -127,6 +128,7 @@ const styles = {
 
 const FormCreateForm = (props) => {
   const classes = useStyles();
+  const { id: eventId, year: eventYear } = useParams();
   const {
     values: {
       imageUrl,
@@ -137,6 +139,7 @@ const FormCreateForm = (props) => {
       start,
       end,
       location,
+      deadline,
       registrationQuestions
     },
     errors,
@@ -148,7 +151,7 @@ const FormCreateForm = (props) => {
     setFieldTouched,
     submitCount,
     handlePublish,
-    showPublishButton,
+    isSaved,
     isPublished
   } = props;
 
@@ -167,6 +170,11 @@ const FormCreateForm = (props) => {
   const handleEndDateChange = (date) => {
     setFieldValue("end", date);
     setFieldTouched("end", true, false);
+  };
+
+  const handleDeadlineChange = (date) => {
+    setFieldValue("deadline", date);
+    setFieldTouched("deadline", true, false);
   };
 
   const showError = (id) => {
@@ -243,16 +251,18 @@ const FormCreateForm = (props) => {
             <div style={{ ...styles.editorSection, ...styles.editorHeadmast }}>
               <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
               <div style={{ display: "flex", gap: "1rem" }}>
+                {isSaved ? 
                 <Link
                   variant="contained"
                   component={Button}
                   color="primary"
-                  to={{ pathname: `/register/${slug}` }}
+                  to={{ pathname: `/event/${eventId}/${eventYear}/register`}}
+                  target="_blank"
                 >
                   Event Link
-                </Link>
+                </Link> : <></>}
 
-                {showPublishButton &&
+                {isSaved &&
                   (isPublished ? (
                     <Button
                       variant="contained"
@@ -284,20 +294,22 @@ const FormCreateForm = (props) => {
 
             <div style={styles.editorSection}>
               <h3 style={styles.editorSectionTitle}>Event Cover Photo</h3>
-              <TextField
-                id="imageUrl"
-                name="imageUrl"
-                label="Image URL"
-                fullWidth
-                required
-                margin="normal"
-                variant="filled"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={imageUrl}
-                error={showError("imageUrl")}
-                helperText={showError("imageUrl") && errors.imageUrl}
-              />
+              <Tooltip title="Please upload an image of size 1920px x 1080px" arrow>
+                <TextField
+                  id="imageUrl"
+                  name="imageUrl"
+                  label="Image URL"
+                  fullWidth
+                  required
+                  margin="normal"
+                  variant="filled"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={imageUrl}
+                  error={showError("imageUrl")}
+                  helperText={showError("imageUrl") && errors.imageUrl}
+                />
+              </Tooltip>
             </div>
 
             <div style={styles.editorDivider}></div>
@@ -334,7 +346,7 @@ const FormCreateForm = (props) => {
               />
               {slug && (
                 <div style={{ color: "#FFFFFF", opacity: "0.7" }}>
-                  {"http://ubcbiztech.com/register/" + slug}
+                  {"https://ubcbiztech.com/" + slug + "/" + start.getFullYear() + "/register"}
                 </div>
               )}
               <TextField
@@ -420,6 +432,26 @@ const FormCreateForm = (props) => {
                 error={showError("location")}
                 helperText={showError("location") && errors.location}
               />
+
+<MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <KeyboardDateTimePicker
+                      id="deadline"
+                      name="deadline"
+                      label="Registration Deadline"
+                      required
+                      margin="normal"
+                      inputVariant="filled"
+                      onChange={handleDeadlineChange}
+                      onBlur={handleBlur}
+                      value={deadline}
+                      error={showError("deadline")}
+                      helperText={showError("deadline") && errors.deadline}
+                    />
+                  </Grid>
+                </Grid>
+              </MuiPickersUtilsProvider>
             </div>
 
             <div style={styles.editorDivider}></div>
@@ -498,6 +530,7 @@ const FormCreate = (props) => {
         start: event.startDate ? new Date(event.startDate) : new Date(),
         end: event.endDate ? new Date(event.endDate) : new Date(),
         location: event.elocation || "",
+        deadline: event.deadline ? new Date(event.deadline) : new Date(),
         registrationQuestions: event.registrationQuestions || dummyData
       }
     : {
@@ -509,11 +542,12 @@ const FormCreate = (props) => {
         start: new Date(),
         end: new Date(),
         location: "",
+        deadline: new Date(),
         registrationQuestions: dummyData
       };
 
   const regQuestionSchema = Yup.object({
-    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX"]).required(),
+    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD"]).required(),
     label: Yup.string().required("Question is a required field"),
     choices: Yup.string(),
     required: Yup.boolean().required()
@@ -534,6 +568,9 @@ const FormCreate = (props) => {
       .min(Yup.ref("start"), "End must be later than Start")
       .required(),
     location: Yup.string().required(),
+    deadline: Yup.date()
+    .max(Yup.ref("end"), "Deadline cannot be later than End")
+    .required(),
     registrationQuestions: Yup.array().of(regQuestionSchema)
   });
 
@@ -558,6 +595,7 @@ const FormCreate = (props) => {
       imageUrl: values.imageUrl,
       startDate: values.start,
       endDate: values.end,
+      deadline: values.deadline,
       registrationQuestions: values.registrationQuestions
     };
 
@@ -589,6 +627,7 @@ const FormCreate = (props) => {
       imageUrl: values.imageUrl,
       startDate: values.start,
       endDate: values.end,
+      deadline: values.deadline,
       registrationQuestions: values.registrationQuestions
     };
 
@@ -607,7 +646,7 @@ const FormCreate = (props) => {
   }
 
   const isPublished = (event && event.isPublished) || false;
-  const showPublishButton = eventId && eventYear ? true : false;
+  const isSaved = !!(eventId && eventYear);
 
   async function handlePublish(publish = false) {
     const body = { isPublished: publish };
@@ -628,7 +667,7 @@ const FormCreate = (props) => {
 
   const formProps = {
     handlePublish,
-    showPublishButton,
+    isSaved,
     isPublished
   };
 

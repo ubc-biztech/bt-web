@@ -126,6 +126,7 @@ const CustomQuestion = (props) => {
           <MenuItem value="TEXT">Text</MenuItem>
           <MenuItem value="CHECKBOX">Checkbox</MenuItem>
           <MenuItem value="SELECT">Selection</MenuItem>
+          <MenuItem value="UPLOAD">Upload</MenuItem>
         </Select>
         <div style={questionStyles.iconsContainer}>
           <div style={questionStyles.move}>

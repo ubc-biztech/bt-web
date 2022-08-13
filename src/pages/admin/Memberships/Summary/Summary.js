@@ -71,19 +71,22 @@ const Summary = (props) => {
             "Year 4",
             "Year 5+",
             "Pre-university",
+            "Other/Not Applicable",
           ]}
           dataSetLabel="students"
           data={[
-            props.membershipData.filter((x) => x.year === "1").length,
-            props.membershipData.filter((x) => x.year === "2").length,
-            props.membershipData.filter((x) => x.year === "3").length,
-            props.membershipData.filter((x) => x.year === "4").length,
-            props.membershipData.filter((x) => x.year === "5+").length,
+            props.membershipData.filter((x) => x.year === "1st Year").length,
+            props.membershipData.filter((x) => x.year === "2nd Year").length,
+            props.membershipData.filter((x) => x.year === "3rd Year").length,
+            props.membershipData.filter((x) => x.year === "4th Year").length,
+            props.membershipData.filter((x) => x.year === "5+ Year").length,
+            props.membershipData.filter((x) => x.year === "Grade 9").length +
             props.membershipData.filter((x) => x.year === "Grade 10").length +
             props.membershipData.filter((x) => x.year === "Grade 11").length +
             props.membershipData.filter((x) => x.year === "Grade 12").length +
-            props.membershipData.filter((x) => x.year === "Pre-university")
-              .length,
+            props.membershipData.filter((x) => x.year === "Pre-university").length,
+            props.membershipData.filter((x) => x.year === "Other").length +
+            props.membershipData.filter((x) => x.year === "").length,
           ]}
         />
 
@@ -92,22 +95,26 @@ const Summary = (props) => {
           title="Faculty"
           dataLabels={[
             "Commerce",
-            "Sciences",
+            "Science",
             "Arts",
             "Engineering",
             "LFS",
             "Kinesiology",
+            "Forestry",
+            "Other/Not Applicable",
           ]}
           dataSetLabel="students"
           data={[
             props.membershipData.filter((x) => x.faculty === "Commerce").length,
-            props.membershipData.filter((x) => x.faculty === "Sciences").length,
+            props.membershipData.filter((x) => x.faculty === "Science").length,
             props.membershipData.filter((x) => x.faculty === "Arts").length,
-            props.membershipData.filter((x) => x.faculty === "Engineering")
-              .length,
-            props.membershipData.filter((x) => x.faculty === "LFS").length,
-            props.membershipData.filter((x) => x.faculty === "Kinesiology")
-              .length,
+            props.membershipData.filter((x) => x.faculty === "Engineering").length,
+            props.membershipData.filter((x) => x.faculty === "Land and Food Systems").length,
+            props.membershipData.filter((x) => x.faculty === "Kinesiology").length,
+            props.membershipData.filter((x) => x.faculty === "Forestry").length,
+            props.membershipData.filter((x) => x.faculty === "Other").length +
+            props.membershipData.filter((x) => x.faculty === "Not Applicable").length +
+            props.membershipData.filter((x) => x.faculty === "").length,
           ]}
         />
 
@@ -179,19 +186,58 @@ const Summary = (props) => {
           ]}
         />
 
-        {/* 5. Are you an international student? */}
+        {/* 5. Preferred Pronouns */}
+        <SummaryPieChart
+          title="Preferred Pronouns"
+          dataLabels={["He/Him/His", "She/Her/Hers", "They/Them/Their", "Other/Prefer not to say"]}
+          dataSetLabel={null}
+          data={[
+            props.membershipData.filter((x) => x.pronouns === "He/Him/His").length,
+            props.membershipData.filter((x) => x.pronouns === "She/Her/Hers").length,
+            props.membershipData.filter((x) => x.pronouns === "They/Them/Their").length,
+            props.membershipData.filter((x) => x.pronouns === "Other/Prefer not to say").length,
+          ]}
+        />
+
+        {/* 6. Diet */}
+        <SummaryPieChart
+          title="Any dietary restrictions?"
+          dataLabels={["None", "Vegetarian", "Vegan", "Gluten Free", "Pescetarian", "Kosher", "Halal"]}
+          dataSetLabel={null}
+          data={[
+            props.membershipData.filter((x) => x.diet === "None").length,
+            props.membershipData.filter((x) => x.diet === "Vegetarian").length,
+            props.membershipData.filter((x) => x.diet === "Vegan").length,
+            props.membershipData.filter((x) => x.diet === "Gluten Free").length,
+            props.membershipData.filter((x) => x.diet === "Pescetarian").length,
+            props.membershipData.filter((x) => x.diet === "Kosher").length,
+            props.membershipData.filter((x) => x.diet === "Halal").length,
+          ]}
+        />
+
+        {/* 7. Are you an international student? */}
         <SummaryPieChart
           title="Are you an international student"
           dataLabels={["Yes", "No"]}
           dataSetLabel={null}
           data={[
-            props.membershipData.filter((x) => x.international === true).length,
-            props.membershipData.filter((x) => x.international === false)
-              .length,
+            props.membershipData.filter((x) => x.international === "Yes").length,
+            props.membershipData.filter((x) => x.international === "No").length,
           ]}
         />
 
-        {/* 6. What topics did you want to see the most discussed in the future? */}
+        {/* 8. Previous Member? */}
+        <SummaryPieChart
+          title="Were you a BizTech member last year"
+          dataLabels={["Yes", "No"]}
+          dataSetLabel={null}
+          data={[
+            props.membershipData.filter((x) => x.prevMember === "Yes").length,
+            props.membershipData.filter((x) => x.prevMember === "No").length,
+          ]}
+        />
+
+        {/* 9. What topics did you want to see the most discussed in the future? */}
         <SummaryHBarChart
           title="What topics did you want to see the most discussed in the future?"
           max={446}
@@ -221,19 +267,31 @@ const Summary = (props) => {
           ]}
         />
 
-        {/* 7. How did you hear about us? */}
+        {/* 10. How did you hear about us? */}
         <SummaryHBarChart
           title="How did you hear about us?"
           max={236}
-          labels={["Facebook", "Friends", "Events", "Instagram"]}
+          labels={["Facebook", "Friends/Word of Mouth", "Events", "Instagram", "LinkedIn", "Boothing", "BizTech Newsletter", "Faculty Newsletter", "Posters", "Other"]}
           data={[
-            props.membershipData.filter((x) => x.heard_from === "Facebook")
+            props.membershipData.filter((x) => x.heardFrom === "Facebook")
               .length,
-            props.membershipData.filter((x) => x.heard_from === "Friends")
+            props.membershipData.filter((x) => x.heardFrom === "Friends/Word of Mouth")
               .length,
-            props.membershipData.filter((x) => x.heard_from === "Events")
+            props.membershipData.filter((x) => x.heardFrom === "Events")
               .length,
-            props.membershipData.filter((x) => x.heard_from === "Instagram")
+            props.membershipData.filter((x) => x.heardFrom === "Instagram")
+              .length,
+            props.membershipData.filter((x) => x.heardFrom === "LinkedIn")
+              .length,
+            props.membershipData.filter((x) => x.heardFrom === "Boothing")
+              .length,
+            props.membershipData.filter((x) => x.heardFrom === "BizTech Newsletter")
+              .length,
+            props.membershipData.filter((x) => x.heardFrom === "Faculty Newsletter")
+              .length,
+            props.membershipData.filter((x) => x.heardFrom === "Posters")
+              .length,
+            props.membershipData.filter((x) => x.heardFrom === "Other")
               .length,
           ]}
         />

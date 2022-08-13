@@ -108,7 +108,7 @@ function Memberships() {
   useEffect(() => {
     let isSubscribed = true;
     const getMemberships = async () => {
-      const res = await fetchBackend(`/memberships`, "GET");
+      const res = await fetchBackend(`/members`, "GET");
       if (isSubscribed) {
         setMembershipData(res);
       }

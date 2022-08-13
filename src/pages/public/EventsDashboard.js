@@ -186,21 +186,23 @@ function EventsDashboard (props) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const { events, user, userRegisteredEvents, loading } = props
-
   useEffect(() => {
     fetchEvents()
     if (user && user.email) fetchUserRegisteredEvents({ userId: user.email })
   }, [])
 
-  const handleFavouriteEvent = async (eventId, toggle) => {
-    const body = { eventID: eventId, isFavourite: toggle }
-    await fetchBackend(`/users/favEvent/${user.id}`, 'PATCH', body)
+  // TODO: Everything here is GOOD. properly makes a call to the backend and updates the DB with the new backend. 
+  // The issue is it seems we are not fetching the favourite events
+  const handleFavouriteEvent = async (eventId, year, toggle) => {
+    const body = { eventID: eventId, year, isFavourite: toggle }
+    await fetchBackend(`/users/favEvent/${user.email}`, 'PATCH', body)
+    const oldEventIds = user['favedEventsID;year'] ? user['favedEventsID;year'] : []
     const newEventIds = toggle
-      ? [...user.favedEventsID, eventId]
-      : user.favedEventsID.filter((id) => id !== eventId)
+      ? [...oldEventIds, `${eventId};${year}`]
+      : oldEventIds.filter((id) => id !== `${eventId};${year}`)
     await props.setUser({
       ...user,
-      favedEventsID: newEventIds
+      'favedEventsID;year': newEventIds
     })
   }
 
@@ -234,8 +236,8 @@ function EventsDashboard (props) {
   }, [userRegisteredEvents])
 
   const userFavouritedEventIds = useMemo(() => {
-    if (user && user.favedEventsID && user.favedEventsID.length) {
-      return user.favedEventsID
+    if (user && user['favedEventsID;year'] && user['favedEventsID;year'].length) {
+      return user['favedEventsID;year']
     }
 
     return []
@@ -261,7 +263,7 @@ function EventsDashboard (props) {
       personalizationIndex === PERSONALIZATION_STATES.FAVOURITES.index
     ) {
       eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) =>
-        userFavouritedEventIds.includes(event.id)
+        userFavouritedEventIds.includes(`${event.id};${event.year}`)
       )
     }
 
@@ -271,16 +273,20 @@ function EventsDashboard (props) {
     )
 
     // filter events by time
-    const eventsFilteredByTime = eventsFilteredByPersonalization.filter(
+    let eventsFilteredByTime = eventsFilteredByPersonalization.filter(
       timeOption.filterFunction
     )
+
+    eventsFilteredByTime = eventsFilteredByTime.sort((a, b) => { 
+      return new Date(b.startDate) - new Date(a.startDate)
+    })
 
     return eventsFilteredByTime.map((event) => (
       <EventCard
         event={event}
         key={event.id + event.year}
         variant={!user || user.admin ? 'none' : 'user'}
-        favourited={userFavouritedEventIds.includes(event.id)}
+        favourited={userFavouritedEventIds.includes(`${event.id};${event.year}`)}
         handleCardClick={redirectToEvent}
         handleFavourite={handleFavouriteEvent}
         cardStyle={
@@ -310,22 +316,23 @@ function EventsDashboard (props) {
           <div className={classes.sidePanelLayout}>
             <Typography variant='h1'>Events</Typography>
             <List>
-              {Object.values(PERSONALIZATION_STATES).map((pState) => (
-                <ListItem
-                  key={pState.index}
-                  className={
-                    personalizationIndex === pState.index
-                      ? classes.sidePanelActiveButton
-                      : classes.sidePanelButton
-                  }
-                  onClick={() => handlePersonalizationChange(pState.index)}
-                  button
-                >
-                  <ListItemText>
-                    {pState.icon}&nbsp;{pState.displayName}
-                  </ListItemText>
-                </ListItem>
-              ))}
+              {Object.values(PERSONALIZATION_STATES).map((pState) => {
+                return (!(pState.displayName !== 'All' && !user) &&
+                  <ListItem
+                    key={pState.index}
+                    className={
+                      personalizationIndex === pState.index
+                        ? classes.sidePanelActiveButton
+                        : classes.sidePanelButton
+                    }
+                    onClick={() => handlePersonalizationChange(pState.index)}
+                    button
+                  >
+                    <ListItemText>
+                      {pState.icon}&nbsp;{pState.displayName}
+                    </ListItemText>
+                  </ListItem>
+              )})}
             </List>
           </div>
         )}
@@ -406,7 +413,7 @@ function EventsDashboard (props) {
               )}
               {Object.values(PERSONALIZATION_STATES).map(
                 (pState) =>
-                  pState.displayName !== 'All' && // don't render "All"
+                  (pState.displayName !== 'All' && user) &&
                   (personalizationIndex === pState.index ? (
                     <Chip
                       key={pState.displayName}

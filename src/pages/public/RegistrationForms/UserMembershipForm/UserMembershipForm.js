@@ -1,18 +1,20 @@
 import React from "react";
-import { Button, Grid, Typography, Checkbox } from "@material-ui/core";
-import CardMembershipIcon from "@material-ui/icons/CardMembership";
-import { makeStyles } from "@material-ui/core/styles";
-import {
+import { Button, Grid, Typography,
   FormControlLabel,
   FormControl,
   RadioGroup,
   FormLabel,
   Radio,
+  Checkbox,
+  FormGroup,
 } from "@material-ui/core";
+import CardMembershipIcon from "@material-ui/icons/CardMembership";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { COLORS } from "../../../constants/_constants/theme";
-import CustomTextField from "../../../components/inputs/CustomTextField";
-import CustomSelect from "../../../components/inputs/CustomSelect";
+
+import { COLORS } from "constants/_constants/theme";
+import CustomTextField from "components/inputs/CustomTextField";
+import CustomSelect from "components/inputs/CustomSelect";
 import { MEMBER_TYPES, MEMBER_LABELS } from "constants/_constants/memberTypes";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,10 +47,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MembershipForm(props) {
+export default function UserMembershipForm(props) {
   const classes = useStyles();
 
-  const { isSubmitting, handleSubmit, memberType, setMemberType } = props;
+  const { isSubmitting, handleSubmit, memberType, setMemberType, topics, setTopics, errors } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -59,9 +61,11 @@ export default function MembershipForm(props) {
         <Grid item xs={12}>
           <FormControl>
             <FormLabel>
-              Please select the option that's most relevant to you
+              <Typography color={errors.education ? "error" : "primary"}>
+                Please select the option that's most relevant to you *
+              </Typography>
             </FormLabel>
-            <RadioGroup onChange={(e) => setMemberType(e.target.value)}>
+            <RadioGroup value={memberType} onChange={(e) => setMemberType(e.target.value)}>
               <FormControlLabel
                 value={MEMBER_TYPES.UBC}
                 control={<Radio />}
@@ -83,6 +87,11 @@ export default function MembershipForm(props) {
                 label={MEMBER_LABELS.OTHER}
               />
             </RadioGroup>
+            {errors.education && (
+              <Typography variant="caption" color={"error"}>
+                {errors.education}
+              </Typography>
+            )}
           </FormControl>
         </Grid>
 
@@ -101,6 +110,16 @@ export default function MembershipForm(props) {
             label="Password *"
             groupName="password"
             autoComplete="password"
+            type="password"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <CustomTextField
+            {...props}
+            label="Confirm Password *"
+            groupName="confirmPassword"
+            autoComplete="confirmPassword"
             type="password"
           />
         </Grid>
@@ -257,7 +276,7 @@ export default function MembershipForm(props) {
           <CustomSelect
             {...props}
             label="Any dietary restrictions?"
-            listOfOptions={["None", "Vegetarian", "Vegan", "Gluten Free"]}
+            listOfOptions={["None", "Vegetarian", "Vegan", "Gluten Free", "Pescetarian", "Kosher", "Halal"]}
             groupName="diet"
           />
         </Grid>
@@ -272,11 +291,47 @@ export default function MembershipForm(props) {
         </Grid>
 
         <Grid item xs={12}>
-          <CustomTextField
-            {...props}
-            label="What topics do you want to see discussed in future events?"
-            groupName="topics"
-          />
+          <FormControl>
+            <FormLabel>
+              <Typography>
+                What topics do you want to see discussed in future events?
+              </Typography>
+            </FormLabel>
+            <FormGroup onChange={(e) => {
+              if (topics.includes(e.target.value)) {
+                setTopics(topics.replace(`${e.target.value},`, ""))
+              } else {
+                setTopics(topics + `${e.target.value},`)
+              }
+            }}>
+              <FormControlLabel
+                control={<Checkbox name="Cyber Security" />}
+                label="Cyber Security"
+                value="Cyber Security"
+              />
+              <FormControlLabel control={<Checkbox name="AI" />} label="AI" value="AI" />
+              <FormControlLabel
+                control={<Checkbox name="Tech Startups" />}
+                label="Tech Startups"
+                value="Tech Startups"
+              />
+              <FormControlLabel
+                control={<Checkbox name="eCommerce" />}
+                label="eCommerce"
+                value="eCommerce"
+              />
+              <FormControlLabel
+                control={<Checkbox name="Health Tech" />}
+                label="Health Tech"
+                value="Health Tech"
+              />
+              <FormControlLabel
+                control={<Checkbox name="Careers in the Tech Industry" />}
+                label="Careers in the Tech Industry"
+                value="Careers in the Tech Industry"
+              />
+            </FormGroup>
+          </FormControl>
         </Grid>
 
         <Grid item xs={12}>
@@ -302,7 +357,7 @@ export default function MembershipForm(props) {
 
       </Grid>
       <br />
-      {memberType === MEMBER_TYPES.UBC && (
+      {/* {memberType === MEMBER_TYPES.UBC && (
         <FormControlLabel
           control={<Checkbox />}
           groupName="payment_check"
@@ -318,7 +373,7 @@ export default function MembershipForm(props) {
           className={classes.paymentCheck}
           label="I have e-transferred $7.50 to rita@ubcbiztech.com *"
         />
-      )}
+      )} */}
       <br />
       <Button
         className={classes.registerButton}
@@ -328,7 +383,7 @@ export default function MembershipForm(props) {
         disabled={isSubmitting}
       >
         <CardMembershipIcon className={classes.registerIcon} />
-        Submit
+        Proceed To Payment
       </Button>
     </form>
   );

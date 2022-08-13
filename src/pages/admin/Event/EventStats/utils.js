@@ -1,23 +1,22 @@
+// Constants
+const REGISTRATIONSTATUSLABEL = "registrationStatus"
+
+
 /**
  * Helper function to turn registration responses in an array of userResponses,
  * where each object has a id as pk, and multiple key value pairs of questionId: response
  * @param {*} registrations the response from the registration endpoint
  */
-const parseRegistrationResponses = (registrations) => {
+const parseDynamicResponses = (registrations) => {
   const { data } = registrations;
   const parsedData = [];
 
   data.forEach((user) => {
-    const { registrationResponses } = user;
+    const { dynamicResponses } = user;
     const userResponse = {};
 
     userResponse.id = user.id;
-
-    if (registrationResponses) {
-      registrationResponses.forEach((response) => {
-        userResponse[response.questionId] = response.value;
-      });
-    }
+    userResponse.dynamicResponses = dynamicResponses;
 
     parsedData.push(userResponse);
   });
@@ -30,20 +29,16 @@ const parseRegistrationResponses = (registrations) => {
  * @param {*} users the response from the events backend
  * @param {*} registrationResponses the array of user response objects
  */
-const combineEventAndRegistrationData = (users, registrationResponses) => {
+const combineEventAndRegistrationData = (users) => {
   const idToUserMap = new Map();
 
   users.forEach((user) => {
-    idToUserMap.set(user.id, user);
-  });
-
-  registrationResponses.forEach((registration) => {
-    const { id, ...responses } = registration;
-    const user = idToUserMap.get(id);
-
-    idToUserMap.set(id, {
-      ...user,
-      ...responses,
+    idToUserMap.set(user.id, {
+      ...user.basicInformation,
+      ...user.dynamicResponses,
+      studentId: user.studentId,
+      id: user.id,
+      registrationStatus: user.registrationStatus 
     });
   });
 
@@ -72,7 +67,8 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
 };
 
 export {
-  parseRegistrationResponses,
+  REGISTRATIONSTATUSLABEL,
+  parseDynamicResponses,
   combineEventAndRegistrationData,
   appendRegistrationQuestions,
 };
