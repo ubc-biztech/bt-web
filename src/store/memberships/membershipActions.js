@@ -13,7 +13,7 @@ export async function fetchMemberships(params = {}) {
     // "request" sets the loading/refreshing states
     await Store.dispatch({ type: FETCH_MEMBERSHIPS_REQUEST, refresh });
     const response = await fetchBackend(
-      "/memberships",
+      "/members",
       "GET",
       undefined,
       false
