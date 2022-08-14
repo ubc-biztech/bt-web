@@ -131,7 +131,8 @@ const useStyles = makeStyles({
     margin: "auto",
     width: "75%",
     //border: "3px solid green",
-    padding: "10px"
+    padding: "10px",
+    alignItems: "center"
   },
   calendarText: {
     display: "flex",
@@ -147,6 +148,13 @@ const useStyles = makeStyles({
     flex: "display",
     //margin: "auto",
     justifyContent: "center"
+  },
+  whiteText: {
+    color: "white",
+    backgroundColor: "#172037",
+    width: "330px",
+    borderRadius: "15px",
+    textAlign: "center"
   }
 });
 
@@ -166,6 +174,15 @@ function MemberHome(props) {
 
   const getFeaturedEvent = () => {
     if (events.length) {
+      //     const featured = events[0];                // THIS DIDN'T WORK
+      //     setFeaturedEvent(featured);
+      //   } else {
+      //     const featured = null;
+      //     setFeaturedEvent(featured);
+      //   }
+      // };
+
+      // Previously written to find a random featured event
       const randomEvent =
         events[Math.floor(Math.random() * (events.length - 1))];
       setFeaturedEvent(randomEvent);
@@ -183,12 +200,10 @@ function MemberHome(props) {
       return;
     }
     events.forEach((event) => {
-      console.log("event", event);
       const index = registered.findIndex(
         (registration) =>
           registration["eventID;year"] === event.id + ";" + event.year
       );
-      // console.log("index", index);
       if (index !== -1) {
         // if the event has not passed yet
         if (new Date(event.startDate).getTime() > new Date().getTime())
@@ -201,11 +216,10 @@ function MemberHome(props) {
   // set featured event and nextEvent based on events
   useEffect(() => {
     if (events) {
-      getFeaturedEvent();
       getNextEvent();
+      getFeaturedEvent();
     }
   }, [events]); // eslint-disable-line react-hooks/exhaustive-deps
-  console.log("events", events);
 
   function CardComponent({ children }) {
     return (
@@ -259,21 +273,28 @@ function MemberHome(props) {
   }
 
   function FeaturedEventsCard(props) {
-    const { eventName, eventDate, imageUrl, cardStyle, eventId = {} } = props;
+    const { eventName, eventDate, imageUrl, cardStyle, eventId, deadline = {} } = props;
     const image = imageUrl || require("assets/default.png");
-
-    return (
-      <Card className={classes.featuredEvents} key={eventId}>
-        <CardMedia
-          className={classes.featuredImg}
-          component="img"
-          title="event image"
-          image={image}
-        ></CardMedia>
-
-        <CardHeader title={eventName} subheader={eventDate}></CardHeader>
-      </Card>
-    );
+    if (eventName !== nextEvent.ename) {
+      return (
+        <Card className={classes.featuredEvents} key={eventId}>
+          <CardMedia
+            className={classes.featuredImg}
+            component="img"
+            title="event image"
+            image={image}
+          ></CardMedia>
+            <CardHeader title={eventName} subheader={eventDate}></CardHeader>
+        </Card>
+      );
+    } else {
+      // NOTE: must fix this when there is more than one event on the web app
+      return (
+        <h2 className={classes.whiteText}>
+          More events coming soon!
+        </h2>
+      );
+    }
   }
   function NoRegisteredEvents() {
     return (
@@ -362,15 +383,20 @@ function MemberHome(props) {
               </Typography>
 
               <div className={classes.featured}>
-                {events.map((ev) => (
-                  <FeaturedEventsCard
-                    eventName={ev.ename}
-                    eventDate={
-                      ev.startDate && eventDate(featuredEvent.startDate)
-                    }
-                    imageUrl={ev.imageUrl}
-                  ></FeaturedEventsCard>
-                ))}
+                {events ? (
+                  events.map((ev) => (
+                    <FeaturedEventsCard
+                      eventName={ev.ename}
+                      eventDate={ev.startDate && eventDate(ev.startDate)}
+                      imageUrl={ev.imageUrl}
+                      deadline={ev.deadline}
+                    ></FeaturedEventsCard>
+                  ))
+                ) : (
+                  <h2 className={classes.whiteText}>
+                    More events coming soon!
+                  </h2>
+                )}
                 {/* <FeaturedEventsCard
                   eventName="MIS Night 2022"
                   eventDate={date1}
