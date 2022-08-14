@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { setUser, fetchUserRegisteredEvents } from "store/user/userActions";
+import { fetchUserRegisteredEvents } from "store/user/userActions";
 
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
-  CardContent,
   Typography,
   CardHeader,
   CardMedia
 } from "@material-ui/core";
 
-import UserProgress from "./UserProgress";
-
-import House from "assets/house.svg";
+// import House from "assets/house.svg";
 import Calendar from "assets/calendar.png";
 import { COLORS } from "constants/index";
-
-import EventCard from "components/Event/EventCard";
 
 const useStyles = makeStyles({
   container: {
@@ -39,17 +34,16 @@ const useStyles = makeStyles({
     margin: "10px 10px 0 0",
     overflow: "visible"
   },
-  flexbox: {
-    display: "flex",
-    width: "100%"
-    // direction: "column"
-  },
-  house: {
-    position: "absolute",
-    width: "33%",
-    bottom: "0px",
-    right: "10px"
-  },
+  // flexbox: {
+  //   display: "flex",
+  //   width: "100%"
+  // },
+  // house: {
+  //   position: "absolute",
+  //   width: "33%",
+  //   bottom: "0px",
+  //   right: "10px"
+  // },
   upcoming: {
     color: COLORS.BIZTECH_GREEN,
     margin: "20px 0 0 0"
@@ -90,34 +84,21 @@ const useStyles = makeStyles({
     height: "120px" // good idea to make this a const
   },
   alignVertical: {
-    // margin: "auto",
-    // width: "50%",
-    // maxWidth: "50%",
     display: "flex",
     flexDirection: "column",
-    //justifyContent: "center",
-    // margin: "auto",
     width: "100%"
-    //border: "3px solid yellow"
-    // padding: "10px"
   },
   cal: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
-    //border: "3px solid yellow"
-    // width: "100px",
-    // height: "100px",
   },
   alignHorizontal: {
-    // width: "50%",
-    // margin: "auto",
     display: "flex",
     flexDirection: "row",
     justifyContent: "center"
   },
   calendar: {
-    //margin: "auto",
     width: "60px",
     height: "60px"
   },
@@ -127,27 +108,16 @@ const useStyles = makeStyles({
   featured: {
     display: "flex",
     flexDirection: "column",
-    //justifyContent: "center",
     margin: "auto",
     width: "75%",
-    //border: "3px solid green",
     padding: "10px",
     alignItems: "center"
   },
   calendarText: {
     display: "flex",
     flexDirection: "column",
-    // margin: "auto",
     justifyContent: "center",
     alignItems: "center"
-    // margin: "auto",
-    //border: "3px solid green"
-    // padding: "10px"
-  },
-  goFigure: {
-    flex: "display",
-    //margin: "auto",
-    justifyContent: "center"
   },
   whiteText: {
     color: "white",
@@ -165,29 +135,21 @@ function MemberHome(props) {
 
   const classes = useStyles();
 
-  const [featuredEvent, setFeaturedEvent] = useState({});
+  // const [featuredEvent, setFeaturedEvent] = useState({});
   const [nextEvent, setNextEvent] = useState({});
 
   useEffect(() => {
     if (user && user.email) fetchUserRegisteredEvents({ userId: user.email });
   }, []);
 
-  const getFeaturedEvent = () => {
-    if (events.length) {
-      //     const featured = events[0];                // THIS DIDN'T WORK
-      //     setFeaturedEvent(featured);
-      //   } else {
-      //     const featured = null;
-      //     setFeaturedEvent(featured);
-      //   }
-      // };
-
-      // Previously written to find a random featured event
-      const randomEvent =
-        events[Math.floor(Math.random() * (events.length - 1))];
-      setFeaturedEvent(randomEvent);
-    }
-  };
+  // 
+  // const getFeaturedEvent = () => {
+  //   if (events.length) {
+  //     const randomEvent =
+  //       events[Math.floor(Math.random() * (events.length - 1))];
+  //     setFeaturedEvent(randomEvent);
+  //   }
+  // };
 
   /**
    * gets the next event that the user is registered for
@@ -217,23 +179,23 @@ function MemberHome(props) {
   useEffect(() => {
     if (events) {
       getNextEvent();
-      getFeaturedEvent();
+      //getFeaturedEvent();
     }
   }, [events]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function CardComponent({ children }) {
-    return (
-      <Card className={classes.card}>
-        <CardContent>{children}</CardContent>
-      </Card>
-    );
-  }
+  // function CardComponent({ children }) {
+  //   return (
+  //     <Card className={classes.card}>
+  //       <CardContent>{children}</CardContent>
+  //     </Card>
+  //   );
+  // }
 
   function RegisteredEventsCard(props) {
     const { eventName, eventDate, imageUrl, cardStyle, eventId = {} } = props;
     const image = imageUrl || require("assets/default.png");
 
-    if (nextEvent.ename == "None Registered!")
+    if (nextEvent.ename === "None Registered!")
       return (
         <div className={classes.calendarText}>
           <div className={classes.cal}>
@@ -295,13 +257,6 @@ function MemberHome(props) {
         </h2>
       );
     }
-  }
-  function NoRegisteredEvents() {
-    return (
-      <div>
-        <img src={Calendar} alt="calendar"></img>
-      </div>
-    );
   }
 
   function eventDate(date) {
@@ -379,7 +334,7 @@ function MemberHome(props) {
               </div>
 
               <Typography variant="h2" className={classes.green}>
-                Featured
+                Featured Events
               </Typography>
 
               <div className={classes.featured}>
