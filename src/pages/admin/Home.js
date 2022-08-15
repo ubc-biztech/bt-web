@@ -22,7 +22,7 @@ import { deleteEvent } from "store/event/eventActions";
 
 const useStyles = makeStyles({
   card: {
-    width: "30%",
+    width: "45%",
     margin: "15px 30px 15px 0",
   },
   media: {
