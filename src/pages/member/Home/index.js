@@ -87,6 +87,18 @@ function MemberHome(props) {
     }
   };
 
+  const daysTillDeadline = (eventDate) => {
+    // console.log("event date", eventDate)
+    const today = new Date();
+    const parsedDate = new Date(eventDate);
+    // console.log("today's ddate", today);
+    const diff = (parsedDate.getTime() - today.getTime()) / (1000 * 60 * 60);
+    console.log("diff", diff)
+    const result = diff >= 24 ? Math.round(diff / 24) + " days" : Math.round(diff) + " hours";
+    return result;
+    // return Math.round(diff);
+  };
+
   /**
    * gets the next event that the user is registered for
    * verifies that the event is after the current time
@@ -191,7 +203,7 @@ function MemberHome(props) {
           <Typography className={classes.eventName}>{eventName}</Typography>
           <Typography className={classes.eventDate}>{eventDate}</Typography>
           <Typography className={classes.eventDate}>
-            Reg deadline: {deadline}
+            {daysTillDeadline(deadline)} left to register!
           </Typography>
         </CardComponent>
       );
@@ -274,7 +286,7 @@ function MemberHome(props) {
                       eventName={ev.ename}
                       eventDate={ev.startDate && eventDate(ev.startDate)}
                       imageUrl={ev.imageUrl}
-                      deadline={ev.deadline && eventDate(ev.deadline)}
+                      deadline={ev.deadline}
                     ></FeaturedEventsCard>
                   ))
                 ) : (
