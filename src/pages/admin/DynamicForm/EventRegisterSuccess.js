@@ -141,9 +141,9 @@ const EventRegisterSuccess = ({
             See you soon!
           </Typography>
           <Typography>
-            You've successfully registered with <b>{user.email}</b>.
+            You've successfully registered with <b>{user?.email}</b>.
           </Typography>
-          <Typography>We've sent you an email!</Typography>
+          <Typography>We've sent you an email! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
         </div>
         <div className={classes.whereToNextContainer}>
           <Typography className={classes.whereToNextHeading}>
@@ -185,49 +185,51 @@ const EventRegisterSuccess = ({
             className={classes.houseChefImage}
           />
         </div>
-        <div className={classes.upcomingEventsContainer}>
-          <Typography className={classes.upcomingEventsHeading}>
-            Upcoming Events:
-          </Typography>
+        {upcomingEvents.length > 0 && (
+          <div className={classes.upcomingEventsContainer}>
+            <Typography className={classes.upcomingEventsHeading}>
+              Upcoming Events:
+            </Typography>
 
-          {upcomingEvents.map((event) => {
-            const eventStart =
-              event.startDate &&
-              new Date(event.startDate).toLocaleDateString("en-US", {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-              });
-            const eventEnd =
-              event.endDate &&
-              new Date(event.endDate).toLocaleDateString("en-US", {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-              });
+            {upcomingEvents.map((event) => {
+              const eventStart =
+                event.startDate &&
+                new Date(event.startDate).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+                });
+              const eventEnd =
+                event.endDate &&
+                new Date(event.endDate).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+                });
 
-            return (
-              <div
-                key={`${event.id};${event.year}`}
-                className={classes.upcomingEventsItem}
-              >
-                <Typography
-                  className={classes.upcomingEventsEname}
-                  onClick={() => redirectEvent(event.id, event.year)}
+              return (
+                <div
+                  key={`${event.id};${event.year}`}
+                  className={classes.upcomingEventsItem}
                 >
-                  {event.ename}
-                </Typography>
-                <Typography
-                  className={classes.upcomingEventsDate}
-                  variant="caption"
-                >
-                  {eventStart}
-                  {eventEnd && eventEnd !== eventStart ? ` - ${eventEnd}` : ""}
-                </Typography>
-              </div>
+                  <Typography
+                    className={classes.upcomingEventsEname}
+                    onClick={() => redirectEvent(event.id, event.year)}
+                  >
+                    {event.ename}
+                  </Typography>
+                  <Typography
+                    className={classes.upcomingEventsDate}
+                    variant="caption"
+                  >
+                    {eventStart}
+                    {eventEnd && eventEnd !== eventStart ? ` - ${eventEnd}` : ""}
+                  </Typography>
+                </div>
             );
           })}
         </div>
+        )}
       </Grid>
     </Grid>
   );

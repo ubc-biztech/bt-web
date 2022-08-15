@@ -4,12 +4,12 @@ import { fetchBackend } from "../../../utils";
 import { COLORS } from "../../../constants/_constants/theme";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import ListIcon from "@material-ui/icons/List";
+// import ListIcon from "@material-ui/icons/List";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import Questions from "./Questions/Questions";
 import Summary from "./Summary/Summary";
-import Individual from "./Individual/Individual";
+// import Individual from "./Individual/Individual";
 
 import {
   List,
@@ -30,11 +30,12 @@ const PERSONALIZATION_STATES = {
     icon: <HelpOutlineIcon fontSize="small" />,
     component: <Questions />,
   },
-  INDIVIDUAL: {
-    displayName: "Individual",
-    icon: <ListIcon fontSize="small" />,
-    component: <Individual />,
-  },
+  // TODO: fix individual tab
+  // INDIVIDUAL: {
+  //   displayName: "Individual",
+  //   icon: <ListIcon fontSize="small" />,
+  //   component: <Individual />,
+  // },
 };
 
 const useStyles = makeStyles((theme) => ({
