@@ -58,7 +58,8 @@ const styles = {
     overflow: "auto"
   },
   table: {
-    display: "grid"
+    display: "grid",
+    overflowX: 'auto'
   },
   qrCodeVideo: {
     width: "300px",
@@ -349,20 +350,22 @@ export class EventStatsTable extends Component {
     };
 
     const defaultColumns = [
-      { title: "First Name", field: "fname" },
-      { title: "Last Name", field: "lname" },
+      { title: "First Name", field: "fname", cellStyle: { whiteSpace: 'nowrap' } },
+      { title: "Last Name", field: "lname", cellStyle: { whiteSpace: 'nowrap' } },
       {
         title: "Student Number",
         field: "studentId",
         type: "numeric",
-        sorting: false
+        sorting: false,
+        cellStyle: { whiteSpace: 'nowrap' }
       },
-      { title: "Email", field: "id", sorting: false },
-      { title: "Diet", field: "diet", sorting: false },
+      { title: "Email", field: "id", sorting: false, cellStyle: { whiteSpace: 'nowrap' } },
+      { title: "Diet", field: "diet", sorting: false, cellStyle: { whiteSpace: 'nowrap' } },
       {
         title: "Registration Status",
         field: REGISTRATIONSTATUSLABEL,
         sorting: false,
+        cellStyle: { whiteSpace: 'nowrap' },
         render: (rowData) => (
           <div>
             <Select
@@ -424,6 +427,9 @@ export class EventStatsTable extends Component {
           statObj={this.state.heardFrom}
         />
 
+        {/* padding for visual separation */}
+        <div style={{ padding: "10px" }} />
+
         {/* refresh button */}
         <Button
           variant="contained"
@@ -450,20 +456,21 @@ export class EventStatsTable extends Component {
             headerStyle: {
               fontWeight: "bold",
               backgroundColor: COLORS.CARD_PAPER_COLOR,
-              color: COLORS.FONT_COLOR
+              color: COLORS.FONT_COLOR,
+              whiteSpace: "nowrap"
             },
             rowStyle: (rowData) => ({})
           }}
           localization={{
             body: {
               emptyDataSourceMessage: (
-                <h2
+                <h1
                   style={{
                     color: COLORS.WHITE
                   }}
                 >
                   No attendees to display.
-                </h2>
+                </h1>
               )
             }
           }}
@@ -480,7 +487,8 @@ export class EventStatsTable extends Component {
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
     borderRadius: "4px",
-    marginBottom: "5px"
+    marginBottom: "5px",
+    overflowX: "auto",
   },
   qrRoot: {
     borderRadius: "4px",
