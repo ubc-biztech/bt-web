@@ -3,7 +3,13 @@ import { Helmet } from "react-helmet";
 import { fetchUserRegisteredEvents } from "store/user/userActions";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Card, Typography, CardHeader, CardMedia, CardContent } from "@material-ui/core";
+import {
+  Card,
+  Typography,
+  CardHeader,
+  CardMedia,
+  CardContent
+} from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import House from "assets/house.svg";
@@ -18,41 +24,41 @@ const useStyles = makeStyles({
     display: "flex",
     flexWrap: "wrap",
     margin: "75px auto",
-    padding: "14px",
+    padding: "14px"
   },
   header: {
     color: COLORS.BIZTECH_GREEN,
-    width: "100%",
+    width: "100%"
   },
   column: {
-    flex: "1",
+    flex: "1"
   },
   card: {
     position: "relative",
     margin: "10px 10px 0 0",
-    overflow: "visible",
+    overflow: "visible"
   },
   flexbox: {
     display: "flex",
-    width: "100%",
+    width: "100%"
   },
   house: {
     position: "absolute",
     width: "33%",
     bottom: "0px",
-    right: "10px",
+    right: "10px"
   },
   green: {
-    color: COLORS.BIZTECH_GREEN,
+    color: COLORS.BIZTECH_GREEN
   },
   eventName: {
     fontSize: "24px",
-    fontWeight: "normal",
+    fontWeight: "normal"
   },
   eventDate: {
     fontWeight: "normal",
-    color: COLORS.FONT_COLOR,
-  },
+    color: COLORS.FONT_COLOR
+  }
 });
 
 function MemberHome(props) {
@@ -71,8 +77,9 @@ function MemberHome(props) {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-  
+
   const getFeaturedEvent = () => {
+    console.log("events length", events.length);
     if (events.length) {
       const randomEvent =
         events[Math.floor(Math.random() * (events.length - 1))];
@@ -86,7 +93,7 @@ function MemberHome(props) {
    * sets next event to 'None Registered!' if no registered events found
    */
   const getNextEvent = async () => {
-    console.log("user name", user.fname)
+    console.log("user name", user.fname);
     if (!user || !registered) {
       setNextEvent({ ename: "None Registered!" });
       return;
@@ -172,24 +179,34 @@ function MemberHome(props) {
       imageUrl,
       cardStyle,
       eventId,
-      deadline = {}
+      deadline
     } = props;
     const image = imageUrl || require("assets/default.png");
     if (eventName !== nextEvent.ename) {
       return (
-        <Card className={classes.featuredEvents} key={eventId}>
-          <CardMedia
-            className={classes.featuredImg}
-            component="img"
-            title="event image"
-            image={image}
-          ></CardMedia>
-          <CardHeader title={eventName} subheader={eventDate}></CardHeader>
-        </Card>
+        <CardComponent>
+          <Typography variant="h2" className={classes.green}>
+            Featured
+          </Typography>
+          <Typography className={classes.eventName}>{eventName}</Typography>
+          <Typography className={classes.eventDate}>{eventDate}</Typography>
+          <Typography className={classes.eventDate}>
+            Reg deadline: {deadline}
+          </Typography>
+        </CardComponent>
       );
     } else {
       // NOTE: must fix this when there is more than one event on the web app
-      return <h2 className={classes.whiteText}>More events coming soon!</h2>;
+      return (
+        <CardComponent>
+          <Typography variant="h2" className={classes.green}>
+            Featured
+          </Typography>
+          <Typography className={classes.eventName}>
+            More events coming!
+          </Typography>
+        </CardComponent>
+      );
     }
   }
 
@@ -214,7 +231,7 @@ function MemberHome(props) {
         <div className={classes.column}>
           <CardComponent>
             <Typography variant="h2">Hi {userName}!</Typography>
-            <Typography>You are X events away from a reward!</Typography>
+            {/* <Typography>You are X events away from a reward!</Typography> */}
             <img src={House} className={classes.house} alt="BizTech House" />
           </CardComponent>
           <CardComponent>
@@ -229,9 +246,11 @@ function MemberHome(props) {
         <div className={classes.column}>
           <CardComponent>
             <Typography variant="h2">Sticker Collection</Typography>
+            <Typography>Coming soon!</Typography>
           </CardComponent>
           <CardComponent>
             <Typography variant="h2">Prizes</Typography>
+            <Typography>Coming soon!</Typography>
           </CardComponent>
           <div className={classes.flexbox}>
             <div className={classes.column}>
@@ -248,7 +267,27 @@ function MemberHome(props) {
               </CardComponent>
             </div>
             <div className={classes.column}>
-              <CardComponent>
+              <div className={classes.featured}>
+                {events ? (
+                  events.map((ev) => (
+                    <FeaturedEventsCard
+                      eventName={ev.ename}
+                      eventDate={ev.startDate && eventDate(ev.startDate)}
+                      imageUrl={ev.imageUrl}
+                      deadline={ev.deadline && eventDate(ev.deadline)}
+                    ></FeaturedEventsCard>
+                  ))
+                ) : (
+                  <CardComponent>
+                    <Typography variant="h2" className={classes.green}>
+                      Featured
+                    </Typography>
+                    <Typography className={classes.eventName}>
+                      More events coming!
+                    </Typography>
+                  </CardComponent>
+                )}
+                {/* <CardComponent>
                 <Typography variant="h2" className={classes.green}>
                   Featured
                 </Typography>
@@ -259,7 +298,8 @@ function MemberHome(props) {
                   {featuredEvent.startDate &&
                     eventDate(featuredEvent.startDate)}
                 </Typography>
-              </CardComponent>
+              </CardComponent> */}
+              </div>
             </div>
           </div>
         </div>
