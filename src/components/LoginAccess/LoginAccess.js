@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 import { Helmet } from 'react-helmet'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import {
   Button,
@@ -11,6 +11,7 @@ import {
   CssBaseline,
   Typography
 } from '@material-ui/core'
+import { Alert } from "@material-ui/lab";
 
 import LoginImage from 'assets/login.svg'
 import { COLORS } from 'constants/index'
@@ -128,6 +129,7 @@ function Login (props) {
     emailError: '',
     passwordError: ''
   })
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory()
 
   const validateEmail = (value) => {
@@ -152,6 +154,7 @@ function Login (props) {
   const handleSubmit = async () => {
     const emailError = validateEmail(email)
     const passwordError = validatePassword(password)
+    setIsLoading(true);
 
     if (emailError || passwordError) {
       // if any errors with inputs, set state and rerender (don't call signin/signup)
@@ -182,7 +185,15 @@ function Login (props) {
         setPassword('')
       }
     }
+    setIsLoading(false);
   }
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSubmit();
+    }
+  };
 
   return (
     <div style={styles.main}>
@@ -210,7 +221,9 @@ function Login (props) {
                 type='text'
                 email='email'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)} />
+                onChange={(e) => setEmail(e.target.value)} 
+                onKeyPress={handleKeyPress}
+              />
               <div style={styles.errors}>{errors.emailError}</div>
             </form>
             <form>
@@ -221,7 +234,9 @@ function Login (props) {
                 style={styles.inputText}
                 type='password'
                 email='password'
-                value={password} onChange={(e) => setPassword(e.target.value)} />
+                value={password} onChange={(e) => setPassword(e.target.value)}
+                onKeyPress={handleKeyPress} 
+              />
               <div style={styles.errors}>{errors.passwordError}</div>
               <Button
                 onClick={() => handleSubmit()}
@@ -230,6 +245,23 @@ function Login (props) {
                 Sign in
               </Button>
             </form>
+            {isLoading && (
+              <Alert severity="info" style={styles.submitButton}>
+                Signing in...
+              </Alert>
+            )}
+            <Typography style={styles.notAMember}>
+              Forgot your password?
+              <Link to="/forgot-password" style={styles.signUpLink}>
+                Reset password
+              </Link>
+            </Typography>
+            <Typography style={styles.notAMember}>
+              Not a BizTech user yet?
+              <Link to="/signup" style={styles.signUpLink}>
+                Sign up here!
+              </Link>
+            </Typography>
           </CardContent>
         </Card>
         <img src={LoginImage} alt='Computer' style={styles.loginImage} />
