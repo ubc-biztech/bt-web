@@ -3,9 +3,9 @@ import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
 
-import { useTheme, makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 import { List, ListItem, Divider } from "@material-ui/core";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+// import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import {
   AddBox as AddBoxIcon,
@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Nav(props) {
-  const theme = useTheme();
-  const renderDesktopOnly = useMediaQuery(theme.breakpoints.up("md"));
+  // const theme = useTheme();
+  // const renderDesktopOnly = useMediaQuery(theme.breakpoints.up("md"));
   const history = useHistory();
   const classes = useStyles();
 
@@ -175,9 +175,7 @@ function Nav(props) {
           bar={selectedItem === "/member/profile" ? barSelected : barUnselected}
           featureFlag="REACT_APP_SHOW_MAXVP"
         />
-        {renderDesktopOnly && (
-          <MenuItem label="Logout" icon={<LogoutIcon />} onClick={logout} />
-        )}
+        <MenuItem label="Logout" icon={<LogoutIcon />} onClick={logout} />
       </React.Fragment>
     </List>
   );
