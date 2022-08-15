@@ -239,20 +239,22 @@ function MemberProfile (props) {
   }
 
   const getFavouriteEvents = () => {
-    fetchBackend(`/users/${user.id}`, 'GET').then(async (response) => {
+    fetchBackend(`/users/${user.email}`, 'GET').then(async (response) => {
       const favouriteEventIDs = response['favedEventsID;year']
       events &&
         events.forEach((event) => {
-          if (favouriteEventIDs.length >= 2) {
-            if (event.id === favouriteEventIDs[0]) {
-              setFavouriteEventName1(event.ename)
-            } else if (event.id === favouriteEventIDs[1]) {
-              setFavouriteEventName2(event.ename)
-            }
-          } else if (favouriteEventIDs.length === 1) {
-            if (event.id === favouriteEventIDs[0]) {
-              setFavouriteEventName1(event.ename)
-            }
+          if (favouriteEventIDs) {
+            if (favouriteEventIDs.length >= 2) {
+              if (event.id + ";" + event.year === favouriteEventIDs[0]) {
+                setFavouriteEventName1(event.ename)
+              } else if (event.id + ";" + event.year === favouriteEventIDs[1]) {
+                setFavouriteEventName2(event.ename)
+              }
+            } else if (favouriteEventIDs.length === 1) {
+              if (event.id + ";" + event.year === favouriteEventIDs[0]) {
+                setFavouriteEventName1(event.ename)
+              }
+            } 
           }
         })
     })
