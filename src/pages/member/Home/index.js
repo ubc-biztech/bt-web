@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchUserRegisteredEvents } from "store/user/userActions";
 
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Card,
-  Typography,
-  CardHeader,
-  CardMedia
-} from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Card, Typography, CardHeader, CardMedia } from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 // import House from "assets/house.svg";
 import Calendar from "assets/calendar.png";
 import { COLORS } from "constants/index";
+import { green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   container: {
@@ -142,7 +139,9 @@ function MemberHome(props) {
     if (user && user.email) fetchUserRegisteredEvents({ userId: user.email });
   }, []);
 
-  // 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  //
   // const getFeaturedEvent = () => {
   //   if (events.length) {
   //     const randomEvent =
@@ -177,6 +176,7 @@ function MemberHome(props) {
 
   // set featured event and nextEvent based on events
   useEffect(() => {
+    console.log("events", events);
     if (events) {
       getNextEvent();
       //getFeaturedEvent();
@@ -235,7 +235,14 @@ function MemberHome(props) {
   }
 
   function FeaturedEventsCard(props) {
-    const { eventName, eventDate, imageUrl, cardStyle, eventId, deadline = {} } = props;
+    const {
+      eventName,
+      eventDate,
+      imageUrl,
+      cardStyle,
+      eventId,
+      deadline = {}
+    } = props;
     const image = imageUrl || require("assets/default.png");
     if (eventName !== nextEvent.ename) {
       return (
@@ -246,16 +253,12 @@ function MemberHome(props) {
             title="event image"
             image={image}
           ></CardMedia>
-            <CardHeader title={eventName} subheader={eventDate}></CardHeader>
+          <CardHeader title={eventName} subheader={eventDate}></CardHeader>
         </Card>
       );
     } else {
       // NOTE: must fix this when there is more than one event on the web app
-      return (
-        <h2 className={classes.whiteText}>
-          More events coming soon!
-        </h2>
-      );
+      return <h2 className={classes.whiteText}>More events coming soon!</h2>;
     }
   }
 
@@ -301,7 +304,17 @@ function MemberHome(props) {
             </Typography>
 
             <div className={classes.column}>
-              <div className={classes.alignHorizontal}>
+              <div
+                style={
+                  isMobile
+                    ? { marginLeft: 0, paddingTop: 20 }
+                    : {
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center"
+                      }
+                }
+              >
                 <RegisteredEventsCard
                   eventName={nextEvent.ename}
                   eventDate={
