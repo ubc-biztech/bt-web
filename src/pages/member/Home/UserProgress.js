@@ -11,7 +11,7 @@ import {
 import { LinearProgress, Typography } from "@material-ui/core";
 import { COLORS } from "constants/index";
 
-const EVENT_PROGRESS_GOAL = 10;
+const EVENT_PROGRESS_GOAL = 5;
 
 const FlexibleXYPlot = makeWidthFlexible(XYPlot);
 
@@ -92,12 +92,12 @@ const UserProgress = ({ registeredEvents, events }) => {
   return (
     <React.Fragment>
       <div style={classes.container}>
-        <Typography style={{ marginRight: "14px" }}>Events Attended</Typography>
+        <Typography style={{ marginRight: "14px" }}>Events Attended:</Typography>
         <Typography style={{ marginRight: "14px" }}>
           <span style={{ color: COLORS.BIZTECH_GREEN }}>
             {checkedInEventIDs.length}
           </span>
-          /{EVENT_PROGRESS_GOAL}
+          {/* /{EVENT_PROGRESS_GOAL} */}
         </Typography>
         <LinearProgress
           style={{ flex: 2 }}

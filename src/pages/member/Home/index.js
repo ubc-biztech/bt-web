@@ -3,11 +3,12 @@ import { Helmet } from "react-helmet";
 import { fetchUserRegisteredEvents } from "store/user/userActions";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Card, Typography, CardHeader, CardMedia } from "@material-ui/core";
+import { Card, Typography, CardHeader, CardMedia, CardContent } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-// import House from "assets/house.svg";
+import House from "assets/house.svg";
 import Calendar from "assets/calendar.png";
+import UserProgress from "./UserProgress";
 import { COLORS } from "constants/index";
 import { green } from "@material-ui/core/colors";
 
@@ -156,6 +157,7 @@ function MemberHome(props) {
    * sets next event to 'None Registered!' if no registered events found
    */
   const getNextEvent = async () => {
+    console.log("user name", user.fname)
     if (!user || !registered) {
       setNextEvent({ ename: "None Registered!" });
       return;
@@ -183,13 +185,13 @@ function MemberHome(props) {
     }
   }, [events]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // function CardComponent({ children }) {
-  //   return (
-  //     <Card className={classes.card}>
-  //       <CardContent>{children}</CardContent>
-  //     </Card>
-  //   );
-  // }
+  function CardComponent({ children }) {
+    return (
+      <Card className={classes.card}>
+        <CardContent>{children}</CardContent>
+      </Card>
+    );
+  }
 
   function RegisteredEventsCard(props) {
     const { eventName, eventDate, imageUrl, cardStyle, eventId = {} } = props;
@@ -283,14 +285,14 @@ function MemberHome(props) {
         <div className={classes.column}>
           <div className={classes.alignVertical}>
             <Typography variant="h5" className={classes.greeting}>
-              Hi {userName}!
+              {userName === undefined ? "Hi there!" : "Hi "  + userName + "!"}
             </Typography>
             {/* <CardComponent>
             <Typography variant="h2">Hi {userName}!</Typography>
             <Typography>You are X events away from a reward!</Typography>
             <img src={House} className={classes.house} alt="BizTech House" />
           </CardComponent> */}
-            {/* <CardComponent>
+            <CardComponent>
             <Typography variant="h2">Progress</Typography>
             {registered ? (
               <UserProgress registeredEvents={registered} events={events} />
@@ -298,7 +300,7 @@ function MemberHome(props) {
                 <Typography>No Registration Data found</Typography>
                 
             )}
-          </CardComponent> */}
+          </CardComponent>
             <Typography variant="h2" className={classes.upcoming}>
               Your next event
             </Typography>
