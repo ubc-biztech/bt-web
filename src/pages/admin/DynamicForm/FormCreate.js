@@ -628,6 +628,7 @@ const FormCreate = (props) => {
       startDate: values.start,
       endDate: values.end,
       deadline: values.deadline,
+      isPublished: false,
       registrationQuestions: values.registrationQuestions
     };
 
