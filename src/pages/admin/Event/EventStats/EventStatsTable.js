@@ -133,6 +133,12 @@ export class EventStatsTable extends Component {
       eventID: eventID,
       year: eventYear
     });
+    await fetchBackend(
+      `/events/${eventID}/${eventYear.toString()}`,
+      "GET"
+    ).then(async (event) => {
+      this.setColumns(event.registrationQuestions);
+    });
     await fetchBackend(`/registrations?${params}`, "GET")
       .then((response) => {
         this.heardFromNumbers(response.data);
@@ -143,13 +149,6 @@ export class EventStatsTable extends Component {
       .catch((err) => {
         console.log("No registrations for this event");
       });
-
-    await fetchBackend(
-      `/events/${eventID}/${eventYear.toString()}`,
-      "GET"
-    ).then(async (event) => {
-      this.setColumns(event.registrationQuestions);
-    });
   }
 
   /**
@@ -510,6 +509,16 @@ const PopoverCell = (props) => {
     setAnchorPosition(null);
   };
   
+  const isValidUrl = (text) => {
+    let url;
+    try {
+      url = new URL(text);
+    } catch (_) {
+      return false;
+    }
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  }
+
   const open = Boolean(anchorPosition);
 
   const dropdownColumnFieldNames = [REGISTRATIONSTATUSLABEL]
@@ -543,7 +552,11 @@ const PopoverCell = (props) => {
     onClose={handlePopoverClose}
     disableRestoreFocus
   >
-    <Typography sx={{ p: 1 }}>{popoverText}</Typography>
+    {isValidUrl(popoverText) ? (
+      <Link href={popoverText} target="_blank" rel="noopener noreferrer">{popoverText}</Link>
+    ) : (
+      <Typography sx={{ p: 1 }}>{popoverText}</Typography>
+    )}
   </Popover>}
   </>)
 }

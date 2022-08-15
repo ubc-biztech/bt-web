@@ -282,19 +282,23 @@ function EventsDashboard (props) {
     })
 
     return eventsFilteredByTime.map((event) => (
-      <EventCard
-        event={event}
-        key={event.id + event.year}
-        variant={!user || user.admin ? 'none' : 'user'}
-        favourited={userFavouritedEventIds.includes(`${event.id};${event.year}`)}
-        handleCardClick={redirectToEvent}
-        handleFavourite={handleFavouriteEvent}
-        cardStyle={
-          isMobile
-            ? { width: '100%', marginRight: 0 }
-            : { width: 'calc(50% - 30px)' }
+      <>
+        {event.isPublished && 
+          <EventCard
+            event={event}
+            key={event.id + event.year}
+            variant={!user || user.admin ? 'none' : 'user'}
+            favourited={userFavouritedEventIds.includes(`${event.id};${event.year}`)}
+            handleCardClick={redirectToEvent}
+            handleFavourite={handleFavouriteEvent}
+            cardStyle={
+              isMobile
+                ? { width: '100%', marginRight: 0 }
+                : { width: 'calc(50% - 30px)' }
+            }
+          />
         }
-      />
+      </>
     ))
   }, [
     eventsFilteredBySearch,
