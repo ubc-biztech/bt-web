@@ -1,11 +1,12 @@
 import React, { Fragment } from "react";
-import { withRouter, useParams } from "react-router-dom";
+import { withRouter, useParams, useHistory } from "react-router-dom";
 import { Auth } from 'aws-amplify';
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 import { useTheme } from "@material-ui/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
@@ -116,7 +117,11 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "underline",
       cursor: 'pointer',
     },
-  }
+  },
+  arrowBackIcon: {
+    color: COLORS.WHITE,
+    fontSize: "40px",
+  },
 }));
 
 const FormSuccess = (props) => {
@@ -124,6 +129,7 @@ const FormSuccess = (props) => {
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
   const { formType, email } = useParams();
+  const history = useHistory();
 
   const resendVerificationEmail = async () => {
     await Auth.resendSignUp(email).then(() => {
@@ -132,102 +138,109 @@ const FormSuccess = (props) => {
   }
 
   return (
-    <Grid container spacing={4} className={classes.main}>
-      <Grid item xs={12} lg={6} className={classes.leftColumn}>
-        <div className={classes.successMessageContainer}>
-          <Typography className={classes.successMessageHeading}>
-            Welcome to the BizTech community!
-          </Typography>
-          <Typography>You've successfully become a {formType === 'UserMember' && 'BizTech Application user and '}member for the 2022/23 academic year.</Typography>
-          {formType === 'UserMember' && (
-            <Fragment>
-              <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
-              <Typography>Didn't receive the email? <div className={classes.resendVerification} onClick={() => resendVerificationEmail()}>Click here</div> to resend it.</Typography>
-            </Fragment>
-          )}
-        </div>
-        <div className={classes.whereToNextContainer}>
-          <Typography className={classes.whereToNextHeading}>
-            What's next?
-          </Typography>
-          <Typography>Find us on social media!</Typography>
-          <ul className={classes.socialMediaList}>
-            <li className={classes.socialMediaListItem}>
-              <BiztechIcon
-                className={classes.icon}
-                size={renderMobileOnly ? MOBILE_SIZE : ICON_SIZE}
-              />
-              <a
-                href="https://www.ubcbiztech.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={classes.socialMediaLinks}
-              >
-                Our website
-              </a>
-            </li>
-            <li className={classes.socialMediaListItem}>
-              <LinkedInIcon className={classes.icon} />
-              <a
-                href="https://www.linkedin.com/company/ubcbiztech/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={classes.socialMediaLinks}
-              >
-                LinkedIn
-              </a>
-            </li>
-            <li className={classes.socialMediaListItem}>
-              <img src={Discord} className={classes.icon} alt="Discord" />
-              <a
-                href="https://discord.gg/tP6kbkmK5D"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={classes.socialMediaLinks}
-              >
-                Discord
-              </a>
-            </li>
-            <li className={classes.socialMediaListItem}>
-              <FacebookIcon className={classes.icon} />
-              <a
-                href="https://www.facebook.com/BizTechUBC/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={classes.socialMediaLinks}
-              >
-                Facebook
-              </a>
-            </li>
-            <li className={classes.socialMediaListItem}>
-              <InstagramIcon className={classes.icon} />
-              <a
-                href="https://www.instagram.com/ubcbiztech/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={classes.socialMediaLinks}
-              >
-                Instagram
-              </a>
-            </li>
-          </ul>
-        </div>
+    <>
+      <ArrowBackIcon
+        cursor="pointer"
+        className={classes.arrowBackIcon}
+        onClick={() => history.push("/login")}
+      />
+      <Grid container spacing={4} className={classes.main}>
+        <Grid item xs={12} lg={6} className={classes.leftColumn}>
+          <div className={classes.successMessageContainer}>
+            <Typography className={classes.successMessageHeading}>
+              Welcome to the BizTech community!
+            </Typography>
+            <Typography>You've successfully become a {formType === 'UserMember' && 'BizTech Application user and '}member for the 2022/23 academic year.</Typography>
+            {formType === 'UserMember' && (
+              <Fragment>
+                <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
+                <Typography>Didn't receive the email? <div className={classes.resendVerification} onClick={() => resendVerificationEmail()}>Click here</div> to resend it.</Typography>
+              </Fragment>
+            )}
+          </div>
+          <div className={classes.whereToNextContainer}>
+            <Typography className={classes.whereToNextHeading}>
+              What's next?
+            </Typography>
+            <Typography>Find us on social media!</Typography>
+            <ul className={classes.socialMediaList}>
+              <li className={classes.socialMediaListItem}>
+                <BiztechIcon
+                  className={classes.icon}
+                  size={renderMobileOnly ? MOBILE_SIZE : ICON_SIZE}
+                />
+                <a
+                  href="https://www.ubcbiztech.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={classes.socialMediaLinks}
+                >
+                  Our website
+                </a>
+              </li>
+              <li className={classes.socialMediaListItem}>
+                <LinkedInIcon className={classes.icon} />
+                <a
+                  href="https://www.linkedin.com/company/ubcbiztech/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={classes.socialMediaLinks}
+                >
+                  LinkedIn
+                </a>
+              </li>
+              <li className={classes.socialMediaListItem}>
+                <img src={Discord} className={classes.icon} alt="Discord" />
+                <a
+                  href="https://discord.gg/tP6kbkmK5D"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={classes.socialMediaLinks}
+                >
+                  Discord
+                </a>
+              </li>
+              <li className={classes.socialMediaListItem}>
+                <FacebookIcon className={classes.icon} />
+                <a
+                  href="https://www.facebook.com/BizTechUBC/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={classes.socialMediaLinks}
+                >
+                  Facebook
+                </a>
+              </li>
+              <li className={classes.socialMediaListItem}>
+                <InstagramIcon className={classes.icon} />
+                <a
+                  href="https://www.instagram.com/ubcbiztech/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={classes.socialMediaLinks}
+                >
+                  Instagram
+                </a>
+              </li>
+            </ul>
+          </div>
+        </Grid>
+        <Grid item xs={12} lg={5} className={classes.rightColumn}>
+          <div className={classes.imageContainer}>
+            <img
+              src={SpeechBubble}
+              alt="Speech Bubble"
+              className={classes.speechBubble}
+            />
+            <img
+              src={HouseChef}
+              alt="House with Chef Hat"
+              className={classes.houseChefImage}
+            />
+          </div>
+        </Grid>
       </Grid>
-      <Grid item xs={12} lg={5} className={classes.rightColumn}>
-        <div className={classes.imageContainer}>
-          <img
-            src={SpeechBubble}
-            alt="Speech Bubble"
-            className={classes.speechBubble}
-          />
-          <img
-            src={HouseChef}
-            alt="House with Chef Hat"
-            className={classes.houseChefImage}
-          />
-        </div>
-      </Grid>
-    </Grid>
+    </>
   );
 };
 

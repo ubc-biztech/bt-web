@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import React, { useEffect, useState, useCallback, Fragment } from "react";
+import { connect } from 'react-redux';
 import { useParams, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { fetchBackend } from "utils";
@@ -78,10 +79,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FormRegister = (props) => {
-
-  const { user, event } = props;
+  const { user, event, userRegisteredEvents } = props;
   const history = useHistory();
   const [currEvent, setCurrEvent] = useState(event);
+  const [registeredEvents, setRegisteredEvents] = useState(userRegisteredEvents)
 
   const basicQuestions = [
     {
@@ -159,7 +160,7 @@ const FormRegister = (props) => {
     end: currEvent.endDate ? new Date(currEvent.endDate) : new Date(),
     location: currEvent.elocation || "",
     deadline: currEvent.deadline ? new Date(currEvent.deadline) : new Date(),
-    questions: basicQuestions.concat(parsedRegistrationQuestions)
+    questions: basicQuestions.concat(parsedRegistrationQuestions || [])
   }
 
   const classes = useStyles();
@@ -177,6 +178,10 @@ const FormRegister = (props) => {
 
   useEffect(() => {
     const fetchEvent = async () => {
+      if (!registeredEvents) {
+        const registered = await fetchBackend(`/registrations?email=${user?.email}`, 'GET')
+        setRegisteredEvents(registered)
+      }
       if (!currEvent) {
         const eventData = await fetchBackend(`/events/${eventId}/${eventYear}`, "GET", undefined)
         setCurrEvent(eventData)
@@ -502,21 +507,27 @@ const FormRegister = (props) => {
     }
   };
 
-  const isDeadlinePassed = (event) => {
+  const isDeadlinePassed = () => {
     const deadline = new Date(event.deadline).getTime()
     return deadline < new Date().getTime()
   }
+
+  const userAlreadyRegistered = () => (
+    registeredEvents?.data.find((e) => (
+      e['eventID;year'] === event.id + ';' + event.year
+    ))
+  )
 
   if (!user) {
     return (
       <LoginAccess
         header='To register for our events, please sign in.'
-        redirect={`/event/${currEvent.id}/${currEvent.year}/register`}
+        redirect={`/event/${eventId}/${eventYear}/register`}
       />
     )
   }
 
-  if (!currEvent) {
+  if (!currEvent && !userRegisteredEvents) {
     return (
       <Loading
         message='Loading event...'
@@ -524,6 +535,44 @@ const FormRegister = (props) => {
     )
   }
 
+  const renderFormQuestions = () => {
+    if (isDeadlinePassed()) {
+      return (
+        <Fragment>
+          <div style={styles.section}>
+            <Typography className={classes.deadlineText}>
+              Deadline Passed
+            </Typography>
+            <Typography>
+              The registration deadline for this event has already passed.
+            </Typography>
+          </div>
+        </Fragment>
+      )
+    }
+    if (userAlreadyRegistered()) {
+      return (
+        <Fragment>
+          <div style={styles.section}>
+            <Typography className={classes.deadlineText}>
+              Already registered for this event!
+            </Typography>
+          </div>
+        </Fragment>
+      )
+    }
+    return (
+      <Fragment>
+        <div style={styles.section}>{loadQuestions()}</div>
+        <div style={styles.divider}></div>
+        <div style={styles.submitSection}>
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </div>
+      </Fragment>
+    )
+  }
   return (
     <>
       <ArrowBackIcon
@@ -549,32 +598,17 @@ const FormRegister = (props) => {
             <h2 style={{ marginTop: 0 }}>{formData.name}</h2>
             <p>{formData.description}</p>
           </div>
-          {isDeadlinePassed(event) ? (
-            <Fragment>
-              <div style={styles.section}>
-                <Typography className={classes.deadlineText}>
-                  Deadline Passed
-                </Typography>
-                <Typography>
-                  The registration deadline for this event has already passed.
-                </Typography>
-              </div>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <div style={styles.section}>{loadQuestions()}</div>
-              <div style={styles.divider}></div>
-              <div style={styles.submitSection}>
-                <Button variant="contained" color="primary" onClick={handleSubmit}>
-                  Submit
-                </Button>
-              </div>
-            </Fragment>
-          )}
+          {renderFormQuestions()}
         </Paper>
       </Container>
     </>
   );
 };
 
-export default FormRegister;
+const mapStateToProps = (state) => {
+  return {
+    userRegisteredEvents: state.userState.userRegisteredEvents.data,
+  }
+}
+
+export default connect(mapStateToProps)(FormRegister);
