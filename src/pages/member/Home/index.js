@@ -229,7 +229,9 @@ function MemberHome(props) {
         </Typography>
         <div className={classes.column}>
           <CardComponent>
-            <Typography variant="h2">Hi {userName}!</Typography>
+          <Typography variant="h2">
+              {userName === undefined ? "Hi there!" : "Hi "  + userName + "!"}
+            </Typography>
             {/* <Typography>You are X events away from a reward!</Typography> */}
             <img src={House} className={classes.house} alt="BizTech House" />
           </CardComponent>
