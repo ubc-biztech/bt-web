@@ -14,9 +14,11 @@ const useStyles = makeStyles((theme) => ({
     },
     paddingBottom: "12px",
     marginTop: "60px",
+    width: '100%',
   },
   content: {
     padding: theme.spacing(3),
+    width: '100%',
   },
   numResponses: {
     color: "#AEC4F4",
