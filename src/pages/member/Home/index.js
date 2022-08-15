@@ -2,21 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { fetchUserRegisteredEvents } from "store/user/userActions";
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles} from "@material-ui/core/styles";
 import {
   Card,
   Typography,
-  CardHeader,
-  CardMedia,
   CardContent
 } from "@material-ui/core";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import House from "assets/house.svg";
-import Calendar from "assets/calendar.png";
+// import Calendar from "assets/calendar.png";
 import UserProgress from "./UserProgress";
 import { COLORS } from "constants/index";
-import { green } from "@material-ui/core/colors";
+// import { green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
   container: {
@@ -58,7 +55,7 @@ const useStyles = makeStyles({
   eventDate: {
     fontWeight: "normal",
     color: COLORS.FONT_COLOR
-  }
+  },
 });
 
 function MemberHome(props) {
@@ -68,35 +65,27 @@ function MemberHome(props) {
 
   const classes = useStyles();
 
-  const [featuredEvent, setFeaturedEvent] = useState({});
+  // const [featuredEvent, setFeaturedEvent] = useState({});
   const [nextEvent, setNextEvent] = useState({});
 
   useEffect(() => {
     if (user && user.email) fetchUserRegisteredEvents({ userId: user.email });
   }, []);
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-
-  const getFeaturedEvent = () => {
-    console.log("events length", events.length);
-    if (events.length) {
-      const randomEvent =
-        events[Math.floor(Math.random() * (events.length - 1))];
-      setFeaturedEvent(randomEvent);
-    }
-  };
+  // const getFeaturedEvent = () => {
+  //   if (events.length) {
+  //     const randomEvent =
+  //       events[Math.floor(Math.random() * (events.length - 1))];
+  //     setFeaturedEvent(randomEvent);
+  //   }
+  // };
 
   const daysTillDeadline = (eventDate) => {
-    // console.log("event date", eventDate)
     const today = new Date();
     const parsedDate = new Date(eventDate);
-    // console.log("today's ddate", today);
     const diff = (parsedDate.getTime() - today.getTime()) / (1000 * 60 * 60);
-    console.log("diff", diff)
     const result = diff >= 24 ? Math.round(diff / 24) + " days" : Math.round(diff) + " hours";
     return result;
-    // return Math.round(diff);
   };
 
   /**
@@ -105,7 +94,6 @@ function MemberHome(props) {
    * sets next event to 'None Registered!' if no registered events found
    */
   const getNextEvent = async () => {
-    console.log("user name", user.fname);
     if (!user || !registered) {
       setNextEvent({ ename: "None Registered!" });
       return;
@@ -126,7 +114,6 @@ function MemberHome(props) {
 
   // set featured event and nextEvent based on events
   useEffect(() => {
-    console.log("events", events);
     if (events) {
       getNextEvent();
       //getFeaturedEvent();
@@ -141,59 +128,59 @@ function MemberHome(props) {
     );
   }
 
-  function RegisteredEventsCard(props) {
-    const { eventName, eventDate, imageUrl, cardStyle, eventId = {} } = props;
-    const image = imageUrl || require("assets/default.png");
+  // function RegisteredEventsCard(props) {
+  //   const { eventName, eventDate, imageUrl, cardStyle, eventId = {} } = props;
+  //   const image = imageUrl || require("assets/default.png");
 
-    if (nextEvent.ename === "None Registered!")
-      return (
-        <div className={classes.calendarText}>
-          <div className={classes.cal}>
-            <img
-              src={Calendar}
-              alt="calendar"
-              className={classes.calendar}
-            ></img>
-          </div>
+  //   if (nextEvent.ename === "None Registered!")
+  //     return (
+  //       <div className={classes.calendarText}>
+  //         <div className={classes.cal}>
+  //           <img
+  //             src={Calendar}
+  //             alt="calendar"
+  //             className={classes.calendar}
+  //           ></img>
+  //         </div>
 
-          <h5 className={classes.caption}>
-            You are not registered for any events
-          </h5>
-        </div>
-      );
+  //         <h5 className={classes.caption}>
+  //           You are not registered for any events
+  //         </h5>
+  //       </div>
+  //     );
 
-    return (
-      <Card className={classes.registeredEvents} key={eventId}>
-        <CardMedia
-          className={classes.registeredImg}
-          component="img"
-          title="event image"
-          image={image}
-        ></CardMedia>
-        <CardHeader title={eventName} subheader={eventDate}></CardHeader>
-      </Card>
+  //   return (
+  //     <Card className={classes.registeredEvents} key={eventId}>
+  //       <CardMedia
+  //         className={classes.registeredImg}
+  //         component="img"
+  //         title="event image"
+  //         image={image}
+  //       ></CardMedia>
+  //       <CardHeader title={eventName} subheader={eventDate}></CardHeader>
+  //     </Card>
 
-      /*
-      <Card className={classes.registeredEvents}>
-        <div>
-          <Typography className={classes.eventName}>{name}</Typography>
-          <Typography className={classes.eventDate}>{date}</Typography>
-        </div>
-      </Card>
-      */
-    );
-  }
+  //     /*
+  //     <Card className={classes.registeredEvents}>
+  //       <div>
+  //         <Typography className={classes.eventName}>{name}</Typography>
+  //         <Typography className={classes.eventDate}>{date}</Typography>
+  //       </div>
+  //     </Card>
+  //     */
+  //   );
+  // }
 
   function FeaturedEventsCard(props) {
     const {
       eventName,
       eventDate,
-      imageUrl,
-      cardStyle,
-      eventId,
+      // imageUrl,
+      // cardStyle,
+      // eventId,
       deadline
     } = props;
-    const image = imageUrl || require("assets/default.png");
+    // const image = imageUrl || require("assets/default.png");
     if (eventName !== nextEvent.ename) {
       return (
         <CardComponent>
@@ -215,7 +202,7 @@ function MemberHome(props) {
             Featured
           </Typography>
           <Typography className={classes.eventName}>
-            More events coming!
+            Events coming soon!
           </Typography>
         </CardComponent>
       );
@@ -247,11 +234,11 @@ function MemberHome(props) {
             <img src={House} className={classes.house} alt="BizTech House" />
           </CardComponent>
           <CardComponent>
-            <Typography variant="h2">Progress</Typography>
+            <Typography variant="h2">Summary</Typography>
             {registered ? (
               <UserProgress registeredEvents={registered} events={events} />
             ) : (
-              <Typography>No Registration Data found</Typography>
+              <Typography>No Past Registration Data found</Typography>
             )}
           </CardComponent>
         </div>
@@ -268,7 +255,7 @@ function MemberHome(props) {
             <div className={classes.column}>
               <CardComponent>
                 <Typography variant="h2" className={classes.green}>
-                  Next Event
+                  Your Next Event
                 </Typography>
                 <Typography className={classes.eventName}>
                   {nextEvent.ename}
@@ -279,7 +266,7 @@ function MemberHome(props) {
               </CardComponent>
             </div>
             <div className={classes.column}>
-              <div className={classes.featured}>
+              <div>
                 {events ? (
                   events.map((ev) => (
                     <FeaturedEventsCard
