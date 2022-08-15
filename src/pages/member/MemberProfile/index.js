@@ -151,7 +151,6 @@ function MemberProfile (props) {
     user
     // userEventsRegistered,
   } = props
-  console.log(user)
   const [isEditing, setIsEditing] = React.useState(false)
   const [ID] = React.useState(user.id)
   const [Faculty, setFaculty] = React.useState(user.faculty)
@@ -160,7 +159,7 @@ function MemberProfile (props) {
   const [eventsAttended, setEventsAttended] = React.useState()
   const [recentEvent, setRecentEvent] = React.useState()
   const [favouriteEventName1, setFavouriteEventName1] = React.useState()
-  const [favouriteEventName2, setFavouriteEventName2] = React.useState()
+  // const [favouriteEventName2, setFavouriteEventName2] = React.useState()
   // Won't work unless I pass in Year param exactly like this
   const Year = React.useState(user.level)
   const theme = useTheme()
@@ -225,16 +224,16 @@ function MemberProfile (props) {
               }
             })
             if (recentEventChecker === '') {
-              setRecentEvent('None Registered!')
+              setRecentEvent('No events attended!')
             }
             setEventsAttended(eventsAttendedCounter)
           }
         } else {
-          setRecentEvent('None Registered!')
+          setRecentEvent('No events attended!')
         }
       })
       .catch(() => {
-        setRecentEvent('None Registered!')
+        setRecentEvent('No events attended!')
       })
   }
 
@@ -244,13 +243,15 @@ function MemberProfile (props) {
       events &&
         events.forEach((event) => {
           if (favouriteEventIDs) {
-            if (favouriteEventIDs.length >= 2) {
-              if (event.id + ";" + event.year === favouriteEventIDs[0]) {
-                setFavouriteEventName1(event.ename)
-              } else if (event.id + ";" + event.year === favouriteEventIDs[1]) {
-                setFavouriteEventName2(event.ename)
-              }
-            } else if (favouriteEventIDs.length === 1) {
+            // if (favouriteEventIDs.length >= 2) {
+            //   if (event.id + ";" + event.year === favouriteEventIDs[0]) {
+            //     setFavouriteEventName1(event.ename)
+            //   } else if (event.id + ";" + event.year === favouriteEventIDs[1]) {
+            //     setFavouriteEventName2(event.ename)
+            //   }
+            // NOTE: this only accounts for one event being favourited (solely for MIS night).
+            //       Should be fixed to display a dynamic number of favourited events. 
+            if (favouriteEventIDs.length >= 1) {
               if (event.id + ";" + event.year === favouriteEventIDs[0]) {
                 setFavouriteEventName1(event.ename)
               }
@@ -490,20 +491,20 @@ function MemberProfile (props) {
                 </div>
                 <div>
                   <Typography className={classes.eventLabel}>
-                    Favourite
+                    Favourites
                   </Typography>
                   <Typography className={classes.eventValue}>
                     {favouriteEventName1 || 'None Favourited!'}
                   </Typography>
                 </div>
-                <div>
+                {/* <div>
                   <Typography className={classes.eventLabel}>
                     Favourite
                   </Typography>
                   <Typography className={classes.eventValue}>
                     {favouriteEventName2 || 'None Favourited!'}
                   </Typography>
-                </div>
+                </div> */}
               </div>
             </div>
           </Card>
