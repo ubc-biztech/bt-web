@@ -72,7 +72,11 @@ const TIME_STATES = {
 }
 
 const useStyles = makeStyles((theme) => ({
+  header: {
+    color: COLORS.BIZTECH_GREEN
+  },
   headerMobile: {
+    color: COLORS.BIZTECH_GREEN,
     position: 'absolute'
   },
   container: {
@@ -160,6 +164,13 @@ const useStyles = makeStyles((theme) => ({
     scrollbarWidth: 'none',
     '-ms-overflow-style': 'none'
   },
+  noMatchingEvents: {
+    padding: '1em',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column'
+  },
   chipFilter: {
     width: '100%',
     marginRight: '0.5em'
@@ -191,8 +202,6 @@ function EventsDashboard (props) {
     if (user && user.email) fetchUserRegisteredEvents({ userId: user.email })
   }, [])
 
-  // TODO: Everything here is GOOD. properly makes a call to the backend and updates the DB with the new backend. 
-  // The issue is it seems we are not fetching the favourite events
   const handleFavouriteEvent = async (eventId, year, toggle) => {
     const body = { eventID: eventId, year, isFavourite: toggle }
     await fetchBackend(`/users/favEvent/${user.email}`, 'PATCH', body)
@@ -227,6 +236,26 @@ function EventsDashboard (props) {
     history.push(`/event/${eventId}/${eventYear}/register`)
   }
 
+  const filterEventsByPersonalization = (
+    events, 
+    personalizationIndex, 
+    userRegisteredEventIds, 
+    userFavouritedEventIds
+  ) => {
+    switch (personalizationIndex) {
+      case PERSONALIZATION_STATES.REGISTERED.index:
+        return events.filter((event) =>
+          userRegisteredEventIds.includes(event.id)
+        )
+      case PERSONALIZATION_STATES.FAVOURITES.index:
+        return events.filter((event) =>
+          userFavouritedEventIds.includes(`${event.id};${event.year}`)
+        )
+      default:
+        return events
+    }
+  }
+
   const userRegisteredEventIds = useMemo(() => {
     if (userRegisteredEvents && typeof userRegisteredEvents.data[0] === 'object') {
       return userRegisteredEvents.data.map((event) => event['eventID;year'].split(';')[0])
@@ -252,20 +281,16 @@ function EventsDashboard (props) {
   }, [events, isSearch, searchText])
 
   const generateEventCards = useCallback(() => {
-    // filter events by personalization
-    let eventsFilteredByPersonalization = eventsFilteredBySearch
+    // only show published events to members
+    const publishedEvents = eventsFilteredBySearch.filter((event) => event.isPublished)
 
-    if (personalizationIndex === PERSONALIZATION_STATES.REGISTERED.index) {
-      eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) =>
-        userRegisteredEventIds.includes(event.id)
-      )
-    } else if (
-      personalizationIndex === PERSONALIZATION_STATES.FAVOURITES.index
-    ) {
-      eventsFilteredByPersonalization = eventsFilteredBySearch.filter((event) =>
-        userFavouritedEventIds.includes(`${event.id};${event.year}`)
-      )
-    }
+    // filter events by personalization
+    const eventsFilteredByPersonalization = filterEventsByPersonalization(
+      publishedEvents, 
+      personalizationIndex, 
+      userRegisteredEventIds, 
+      userFavouritedEventIds
+    )
 
     // determine which option is clicked by the personalization index
     const timeOption = Object.values(TIME_STATES).find(
@@ -281,25 +306,27 @@ function EventsDashboard (props) {
       return new Date(b.startDate) - new Date(a.startDate)
     })
 
-    return eventsFilteredByTime.map((event) => (
-      <>
-        {event.isPublished && 
-          <EventCard
-            event={event}
-            key={event.id + event.year}
-            variant={!user || user.admin ? 'none' : 'user'}
-            favourited={userFavouritedEventIds.includes(`${event.id};${event.year}`)}
-            handleCardClick={redirectToEvent}
-            handleFavourite={handleFavouriteEvent}
-            cardStyle={
-              isMobile
-                ? { width: '100%', marginRight: 0 }
-                : { width: 'calc(50% - 30px)' }
-            }
-          />
-        }
-      </>
-    ))
+    return eventsFilteredByTime.length > 0 ? 
+      eventsFilteredByTime.map((event) => (
+        <EventCard
+          event={event}
+          key={event.id + event.year}
+          variant={!user || user.admin ? 'none' : 'user'}
+          favourited={userFavouritedEventIds.includes(`${event.id};${event.year}`)}
+          handleCardClick={redirectToEvent}
+          handleFavourite={handleFavouriteEvent}
+          cardStyle={
+            isMobile
+              ? { width: '100%', marginRight: 0 }
+              : { width: 'calc(50% - 30px)' }
+          }
+        />
+      )) : 
+      <div className={classes.noMatchingEvents}>
+        <Typography variant='h2'>
+          No matching events found
+        </Typography>
+      </div>
   }, [
     eventsFilteredBySearch,
     userFavouritedEventIds,
@@ -318,7 +345,7 @@ function EventsDashboard (props) {
         {/* Left panel for additional event filters (only on desktop view) */}
         {!isMobile && (
           <div className={classes.sidePanelLayout}>
-            <Typography variant='h1'>Events</Typography>
+            <Typography variant='h1' className={classes.header}>Events</Typography>
             <List>
               {Object.values(PERSONALIZATION_STATES).map((pState) => {
                 return (!(pState.displayName !== 'All' && !user) &&

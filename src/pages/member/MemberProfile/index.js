@@ -14,12 +14,13 @@ import {
   Typography
 } from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-
 import {
   InfoOutlined as InfoOutlinedIcon,
   CreateOutlined as OutlinedPencilIcon
 } from '@material-ui/icons'
+
 import House from 'assets/house.svg'
+import { COLORS } from 'constants/index'
 import { fetchBackend } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center'
   },
   header: {
+    color: COLORS.BIZTECH_GREEN,
     width: '100%',
     fontSize: 36,
     fill: 'solid',
