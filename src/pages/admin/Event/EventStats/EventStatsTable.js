@@ -438,19 +438,6 @@ export class EventStatsTable extends Component {
       <div style={styles.container}>
         {/* QR code scanner */}
         <QrCheckIn event={this.props.event} />
-        <Statistic
-          statName="Registration status: "
-          statObj={this.state.registrationNumbers}
-        />
-        <Statistic statName="Faculty: " statObj={this.state.faculties} />
-        <Statistic statName="Year level: " statObj={this.state.years} />
-        {/* <Statistic statName='Dietary: ' statObj={this.state.dietary} /> */}
-        <Statistic statName="Gender: " statObj={this.state.genders} />
-        <Statistic statName="Diet: " statObj={this.state.dietary} />
-        <Statistic
-          statName="Heard about event from: "
-          statObj={this.state.heardFrom}
-        />
 
         {/* padding for visual separation */}
         <div style={{ padding: "10px" }} />
@@ -504,6 +491,23 @@ export class EventStatsTable extends Component {
           components={{
             Cell: (props) => <PopoverCell {...props} />
           }}
+        />
+
+        {/* padding for visual separation */}
+        <div style={{ padding: "10px" }} />
+        
+        <Statistic
+          statName="Registration status: "
+          statObj={this.state.registrationNumbers}
+        />
+        <Statistic statName="Faculty: " statObj={this.state.faculties} />
+        <Statistic statName="Year level: " statObj={this.state.years} />
+        {/* <Statistic statName='Dietary: ' statObj={this.state.dietary} /> */}
+        <Statistic statName="Gender: " statObj={this.state.genders} />
+        <Statistic statName="Diet: " statObj={this.state.dietary} />
+        <Statistic
+          statName="Heard about event from: "
+          statObj={this.state.heardFrom}
         />
       </div>
     );
