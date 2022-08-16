@@ -94,10 +94,10 @@ function MemberHome(props) {
    * sets next event to 'None Registered!' if no registered events found
    */
   const getNextEvent = async () => {
-    if (!user || !registered) {
+    if (!user || !registered || registered.length == 0) {
       setNextEvent({ ename: "None Registered!" });
       return;
-    }
+    } 
     events.forEach((event) => {
       const index = registered.findIndex(
         (registration) =>
@@ -260,6 +260,7 @@ function MemberHome(props) {
                   Your Next Event
                 </Typography>
                 <Typography className={classes.eventName}>
+                  {console.log("registered", registered)}
                   {nextEvent.ename}
                 </Typography>
                 <Typography className={classes.eventDate}>
