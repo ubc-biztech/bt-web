@@ -117,7 +117,7 @@ function MemberHome(props) {
       getNextEvent();
       //getFeaturedEvent();
     }
-  }, [events]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [registered]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function CardComponent({ children }) {
     return (
