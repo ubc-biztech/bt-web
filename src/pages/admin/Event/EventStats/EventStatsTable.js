@@ -741,7 +741,7 @@ const QrCheckIn = (props) => {
         }
 
         // get the person's name
-        setCheckInName(`${user.firstName} ${user.lastName} (${userID})`);
+        setCheckInName(`${user.firstName ? user.firstName : user.fname} ${user.lastName ? user.lastName : user.lname} (${userID})`);
 
         // If the user is already checked in, show an error
         if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
