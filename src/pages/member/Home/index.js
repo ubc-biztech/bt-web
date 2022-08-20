@@ -183,7 +183,6 @@ function MemberHome(props) {
     if (eventName !== nextEvent.ename) {
       return (
         <CardComponent>
-          {console.log("registered in featured card", registered)}
           <Typography variant="h2" className={classes.green}>
             Featured
           </Typography>
@@ -261,7 +260,6 @@ function MemberHome(props) {
                   Your Next Event
                 </Typography>
                 <Typography className={classes.eventName}>
-                  {console.log("registered before next event", registered)}
                   {nextEvent.ename}
                 </Typography>
                 <Typography className={classes.eventDate}>
@@ -270,7 +268,7 @@ function MemberHome(props) {
               </CardComponent>
             </div>
             <div className={classes.column}>
-              {events ? (
+              {events && events.length > 0 ? (
                 events.map((ev) =>
                  
                   (new Date(ev.startDate).getTime() > new Date().getTime()
