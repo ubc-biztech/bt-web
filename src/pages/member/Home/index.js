@@ -11,7 +11,7 @@ import UserProgress from "./UserProgress";
 import { COLORS } from "constants/index";
 // import { green } from "@material-ui/core/colors";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: "85%",
     display: "flex",
@@ -29,11 +29,18 @@ const useStyles = makeStyles({
   card: {
     position: "relative",
     margin: "10px 10px 0 0",
-    overflow: "visible"
+    overflow: "visible", 
+    [theme.breakpoints.down("sm")]: {
+      width: "100%", 
+      marginRight: "0"
+    },
   },
   flexbox: {
     display: "flex",
-    width: "100%"
+    width: "100%", 
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column"
+    }
   },
   house: {
     position: "absolute",
@@ -52,7 +59,7 @@ const useStyles = makeStyles({
     fontWeight: "normal",
     color: COLORS.FONT_COLOR
   }
-});
+}));
 
 function MemberHome(props) {
   const { user, registered, events } = props;
@@ -180,7 +187,9 @@ function MemberHome(props) {
       deadline
     } = props;
     // const image = imageUrl || require("assets/default.png");
-    if (eventName !== nextEvent.ename) {
+    if (eventName !== nextEvent.ename &&
+      new Date(eventDate).getTime() > new Date().getTime()
+    && new Date(deadline).getTime() > new Date().getTime()) {
       return (
         <CardComponent>
           <Typography variant="h2" className={classes.green}>
@@ -270,20 +279,16 @@ function MemberHome(props) {
             <div className={classes.column}>
               {events && events.length > 0 ? (
                 events.map((ev) =>
-                 
-                  (new Date(ev.startDate).getTime() > new Date().getTime()
-                  && new Date(ev.deadline).getTime() > new Date().getTime()) ?
                     (
                   <FeaturedEventsCard key={`${ev.id};${ev.year}`}
                     eventName={ev.ename}
                     eventDate={ev.startDate && eventDate(ev.startDate)}
-                    imageUrl={ev.imageUrl}
                     deadline={ev.deadline}
                   ></FeaturedEventsCard>
-                    ) : undefined
+                    ) 
                 )
               ) : (
-                <CardComponent>
+                  <CardComponent>
                   <Typography variant="h2" className={classes.green}>
                     Featured
                   </Typography>
