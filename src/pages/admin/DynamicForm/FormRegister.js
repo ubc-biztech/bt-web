@@ -596,7 +596,7 @@ const FormRegister = (props) => {
           </div>
           <div style={{ ...styles.section, ...styles.divider }}>
             <h2 style={{ marginTop: 0 }}>{formData.name}</h2>
-            <p>{formData.description}</p>
+            <p style={{ whiteSpace: "pre-line" }}>{formData.description.split("<br/>").join("\n")}</p>
           </div>
           {renderFormQuestions()}
         </Paper>
