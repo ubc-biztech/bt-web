@@ -168,7 +168,7 @@ const FormRegister = (props) => {
   const [refresh, setRefresh] = useState(false);
 
   const { id: eventId, year: eventYear } = useParams();
-
+  
   const [responseData, setResponseData] = useState(
     Array.from(Array(formData.questions.length))
   ); // index of answers correspond to questions array index
@@ -394,7 +394,7 @@ const FormRegister = (props) => {
                       href={responseData[i]}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ width: '100%' }}
+                      style={{ width: '100%', wordWrap: 'break-word' }}
                     >
                       {responseData[i]}
                     </a>
@@ -402,7 +402,7 @@ const FormRegister = (props) => {
                     "No file uploaded yet!"
                   )}
                 </Typography>
-                <Button variant="contained" color="primary" component="label" style={{ width: '100%' }}>
+                <Button variant="contained" color="primary" component="label" style={{ width: '150px' }}>
                   {responseData[i] ? "Reupload" : "Upload"}
                   <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
                   <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
@@ -428,32 +428,25 @@ const FormRegister = (props) => {
     let valid = true;
 
     // looping for error messages
-    for (let i = 0; i < responseData.length; i++) {
+    for (let i = 0; i < formData.questions.length; i++) {
       // indices should correspond between formData.questions, responseData, and responseError arrays
       const question = formData.questions[i];
-
       if (question.questionType === "CHECKBOX") {
         // check if empty
-        if (
-          question.required && responseData[i]
-            ? responseData[i].length <= 0
-            : true
-        ) {
-          newErrors[i] = "A selection is required";
-
-          valid = false;
+        if (question.required) {
+          if (!responseData[i] || responseData[i].length <= 0) {
+            newErrors[i] = "A selection is required";
+            valid = false;
+          }
         }
         // other checks can go here...
       } else {
         // check if empty
-        if (
-          question.required && responseData[i]
-            ? responseData[i].length === 0
-            : true
-        ) {
-          newErrors[i] = "This field is required";
-
-          valid = false;
+        if (question.required) {
+          if (!responseData[i] || responseData[i].length === 0) {
+            newErrors[i] = "This field is required";
+            valid = false;
+          }
         }
         // other checks can go here...
       }
@@ -475,7 +468,7 @@ const FormRegister = (props) => {
       const dynamicResponses = {}
       for (let i = basicQuestions.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
-          dynamicResponses[formData.questions[i].questionId] = responseData[i].join(', ')
+          dynamicResponses[formData.questions[i].questionId] = responseData[i]?.join(', ')
         } else {
           dynamicResponses[formData.questions[i].questionId] = responseData[i]
         }

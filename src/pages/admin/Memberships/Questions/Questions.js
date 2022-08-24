@@ -168,25 +168,25 @@ const Questions = (props) => {
             <QuestionsBox
               title="I am a current/prospective UBC student"
               filter={
-                props.membershipData.filter((x) => x.education === "UBC").length
+                props.membershipData?.filter((x) => x?.education === "UBC").length
               }
             />
             <QuestionsBox
               title="I am a current/prospective university student"
               filter={
-                props.membershipData.filter((x) => x.education === "UNI").length
+                props.membershipData?.filter((x) => x?.education === "UNI").length
               }
             />
             <QuestionsBox
               title="I am a high school student"
               filter={
-                props.membershipData.filter((x) => x.education === "HS").length
+                props.membershipData?.filter((x) => x?.education === "HS").length
               }
             />
             <QuestionsBox
               title="None of the above"
               filter={
-                props.membershipData.filter((x) => x.education === "NA").length
+                props.membershipData?.filter((x) => x?.education === "NA").length
               }
             />
           </Box>
@@ -197,25 +197,25 @@ const Questions = (props) => {
             <QuestionsBox
               title="He/Him/His"
               filter={
-                props.membershipData.filter((x) => x.education === "He/Him/His").length
+                props.membershipData?.filter((x) => x?.education === "He/Him/His").length
               }
             />
             <QuestionsBox
               title="She/Her/Hers"
               filter={
-                props.membershipData.filter((x) => x.education === "She/Her/Hers").length
+                props.membershipData?.filter((x) => x?.education === "She/Her/Hers").length
               }
             />
             <QuestionsBox
               title="They/Them/Their"
               filter={
-                props.membershipData.filter((x) => x.education === "They/Them/Their").length
+                props.membershipData?.filter((x) => x?.education === "They/Them/Their").length
               }
             />
             <QuestionsBox
               title="Other/Prefer not to say"
               filter={
-                props.membershipData.filter((x) => x.education === "Other/Prefer not to say").length
+                props.membershipData?.filter((x) => x?.education === "Other/Prefer not to say").length
               }
             />
           </Box>
@@ -225,46 +225,46 @@ const Questions = (props) => {
           <Box px={4}>
             <QuestionsBox
               title="1st Year"
-              filter={props.membershipData.filter((x) => x.year === "1st Year").length}
+              filter={props.membershipData?.filter((x) => x?.year === "1st Year").length}
             />
             <QuestionsBox
               title="2nd Year"
-              filter={props.membershipData.filter((x) => x.year === "2nd Year").length}
+              filter={props.membershipData?.filter((x) => x?.year === "2nd Year").length}
             />
             <QuestionsBox
               title="3rd Year"
-              filter={props.membershipData.filter((x) => x.year === "3rd Year").length}
+              filter={props.membershipData?.filter((x) => x?.year === "3rd Year").length}
             />
             <QuestionsBox
               title="4th Year"
-              filter={props.membershipData.filter((x) => x.year === "4th Year").length}
+              filter={props.membershipData?.filter((x) => x?.year === "4th Year").length}
             />
             <QuestionsBox
               title="5+ Year"
               filter={
-                props.membershipData.filter((x) => x.year === "5+ Year").length
+                props.membershipData?.filter((x) => x?.year === "5+ Year").length
               }
             />
             <QuestionsBox
               title="Pre-university"
               filter={
-                props.membershipData.filter(
+                props.membershipData?.filter(
                   (x) =>
-                    x.year === "Grade 9" ||
-                    x.year === "Grade 10" ||
-                    x.year === "Grade 11" ||
-                    x.year === "Grade 12" ||
-                    x.year === "Pre-university"
+                    x?.year === "Grade 9" ||
+                    x?.year === "Grade 10" ||
+                    x?.year === "Grade 11" ||
+                    x?.year === "Grade 12" ||
+                    x?.year === "Pre-university"
                 ).length
               }
             />
             <QuestionsBox
               title="Other/Not Applicable"
               filter={
-                props.membershipData.filter(
+                props.membershipData?.filter(
                   (x) =>
-                    x.year === "Other" ||
-                    x.year === ""
+                    x?.year === "Other" ||
+                    x?.year === ""
                 ).length
               }
             />
@@ -276,54 +276,54 @@ const Questions = (props) => {
             <QuestionsBox
               title="Commerce"
               filter={
-                props.membershipData.filter((x) => x.faculty === "Commerce")
+                props.membershipData?.filter((x) => x?.faculty === "Commerce")
                   .length
               }
             />
             <QuestionsBox
               title="Science"
               filter={
-                props.membershipData.filter((x) => x.faculty === "Science")
+                props.membershipData?.filter((x) => x?.faculty === "Science")
                   .length
               }
             />
             <QuestionsBox
               title="Arts"
               filter={
-                props.membershipData.filter((x) => x.faculty === "Arts").length
+                props.membershipData?.filter((x) => x?.faculty === "Arts").length
               }
             />
             <QuestionsBox
               title="Engineering"
               filter={
-                props.membershipData.filter((x) => x.faculty === "Engineering")
+                props.membershipData?.filter((x) => x?.faculty === "Engineering")
                   .length
               }
             />
             <QuestionsBox
               title="LFS"
               filter={
-                props.membershipData.filter((x) => x.faculty === "Land and Food Systems").length
+                props.membershipData?.filter((x) => x?.faculty === "Land and Food Systems").length
               }
             />
             <QuestionsBox
               title="Kinesiology"
               filter={
-                props.membershipData.filter((x) => x.faculty === "Kinesiology")
+                props.membershipData?.filter((x) => x?.faculty === "Kinesiology")
                   .length
               }
             />
             <QuestionsBox
               title="Forestry"
               filter={
-                props.membershipData.filter((x) => x.faculty === "Forestry")
+                props.membershipData?.filter((x) => x?.faculty === "Forestry")
                   .length
               }
             />
             <QuestionsBox
               title="Other/Not Applicable"
               filter={
-                props.membershipData.filter((x) => x.faculty === "Other" || x.faculty === "Not Applicable")
+                props.membershipData?.filter((x) => x?.faculty === "Other" || x?.faculty === "Not Applicable")
                   .length
               }
             />
@@ -335,36 +335,35 @@ const Questions = (props) => {
             <QuestionsBox
               title="Computer Science"
               filter={
-                props.membershipData.filter(
+                props.membershipData?.filter(
                   (x) =>
-                    x.major.toLowerCase().includes("computer science") ||
-                    x.major.toLowerCase().includes("compsci") ||
-                    x.major.toLowerCase() === "cs" ||
-                    x.major.toLowerCase() === "cpsc"
+                    x.major?.toLowerCase().includes("computer science") ||
+                    x.major?.toLowerCase().includes("compsci") ||
+                    x.major?.toLowerCase() === "cs" ||
+                    x.major?.toLowerCase() === "cpsc"
                 ).length
               }
             />
             <QuestionsBox
               title="Undeclared"
               filter={
-                props.membershipData.filter(
+                props.membershipData?.filter(
                   (x) =>
-                    x.major.toLowerCase().includes("undeclared") ||
-                    x.major.toLowerCase().includes("undecided") ||
-                    x.major.toLowerCase().includes("n/a") ||
-                    x.major.toLowerCase().includes("yet") ||
-                    x.major.toLowerCase().includes("not")
+                    x.major?.toLowerCase().includes("undeclared") ||
+                    x.major?.toLowerCase().includes("undecided") ||
+                    x.major?.toLowerCase().includes("n/a") ||
+                    x.major?.toLowerCase().includes("yet") ||
+                    x.major?.toLowerCase().includes("not")
                 ).length
               }
             />
             <QuestionsBox
               title="BTM"
               filter={
-                props.membershipData.filter(
+                props.membershipData?.filter(
                   (x) =>
-                    x.major.toLowerCase().includes("btm") ||
-                    x.major
-                      .toLowerCase()
+                    x.major?.toLowerCase().includes("btm") ||
+                    x.major?.toLowerCase()
                       .includes("business technology management")
                 ).length
               }
@@ -372,11 +371,10 @@ const Questions = (props) => {
             <QuestionsBox
               title="BUCS"
               filter={
-                props.membershipData.filter(
+                props.membershipData?.filter(
                   (x) =>
-                    x.major.toLowerCase().includes("bucs") ||
-                    x.major
-                      .toLowerCase()
+                    x.major?.toLowerCase().includes("bucs") ||
+                    x.major?.toLowerCase()
                       .includes("business and computer science")
                 ).length
               }
@@ -384,53 +382,53 @@ const Questions = (props) => {
             <QuestionsBox
               title="Finance"
               filter={
-                props.membershipData.filter((x) =>
-                  x.major.toLowerCase().includes("finance")
+                props.membershipData?.filter((x) =>
+                  x.major?.toLowerCase().includes("finance")
                 ).length
               }
             />
             <QuestionsBox
               title="Marketing"
               filter={
-                props.membershipData.filter((x) =>
-                  x.major.toLowerCase().includes("marketing")
+                props.membershipData?.filter((x) =>
+                  x.major?.toLowerCase().includes("marketing")
                 ).length
               }
             />
             <QuestionsBox
               title="COGS"
               filter={
-                props.membershipData.filter(
+                props.membershipData?.filter(
                   (x) =>
-                    x.major.toLowerCase().includes("cogs") ||
-                    x.major.toLowerCase().includes("cognitive systems")
+                    x.major?.toLowerCase().includes("cogs") ||
+                    x.major?.toLowerCase().includes("cognitive systems")
                 ).length
               }
             />
             <QuestionsBox
               title="Accounting"
               filter={
-                props.membershipData.filter((x) =>
-                  x.major.toLowerCase().includes("accounting")
+                props.membershipData?.filter((x) =>
+                  x.major?.toLowerCase().includes("accounting")
                 ).length
               }
             />
             <QuestionsBox
               title="Electrical Engineering"
               filter={
-                props.membershipData.filter((x) =>
-                  x.major.toLowerCase().includes("electrical")
+                props.membershipData?.filter((x) =>
+                  x.major?.toLowerCase().includes("electrical")
                 ).length
               }
             />
             <QuestionsBox
               title="OPLOG"
               filter={
-                props.membershipData.filter(
+                props.membershipData?.filter(
                   (x) =>
-                    x.major.toLowerCase().includes("oplog") ||
-                    x.major.toLowerCase().includes("operations") ||
-                    x.major.toLowerCase().includes("logistics")
+                    x.major?.toLowerCase().includes("oplog") ||
+                    x.major?.toLowerCase().includes("operations") ||
+                    x.major?.toLowerCase().includes("logistics")
                 ).length
               }
             />
@@ -441,11 +439,11 @@ const Questions = (props) => {
           <Box px={4}>
             <QuestionsBox
               title="Yes"
-              filter={props.membershipData.filter((x) => x.international === "Yes").length}
+              filter={props.membershipData?.filter((x) => x?.international === "Yes").length}
             />
             <QuestionsBox
               title="No"
-              filter={props.membershipData.filter((x) => x.international === "No").length}
+              filter={props.membershipData?.filter((x) => x?.international === "No").length}
             />
           </Box>
         )}
@@ -454,31 +452,31 @@ const Questions = (props) => {
           <Box px={4}>
             <QuestionsBox
               title="None"
-              filter={props.membershipData.filter((x) => x.diet === "None").length}
+              filter={props.membershipData?.filter((x) => x?.diet === "None").length}
             />
             <QuestionsBox
               title="Vegetarian"
-              filter={props.membershipData.filter((x) => x.diet === "Vegetarian").length}
+              filter={props.membershipData?.filter((x) => x?.diet === "Vegetarian").length}
             />
             <QuestionsBox
               title="Vegan"
-              filter={props.membershipData.filter((x) => x.diet === "Vegan").length}
+              filter={props.membershipData?.filter((x) => x?.diet === "Vegan").length}
             />
             <QuestionsBox
               title="Gluten Free"
-              filter={props.membershipData.filter((x) => x.diet === "Gluten Free").length}
+              filter={props.membershipData?.filter((x) => x?.diet === "Gluten Free").length}
             />
             <QuestionsBox
               title="Pescetarian"
-              filter={props.membershipData.filter((x) => x.diet === "Pescetarian").length}
+              filter={props.membershipData?.filter((x) => x?.diet === "Pescetarian").length}
             />
             <QuestionsBox
               title="Kosher"
-              filter={props.membershipData.filter((x) => x.diet === "Kosher").length}
+              filter={props.membershipData?.filter((x) => x?.diet === "Kosher").length}
             />
             <QuestionsBox
               title="Halal"
-              filter={props.membershipData.filter((x) => x.diet === "Halal").length}
+              filter={props.membershipData?.filter((x) => x?.diet === "Halal").length}
             />
           </Box>
         )}
@@ -488,13 +486,13 @@ const Questions = (props) => {
             <QuestionsBox
               title="Yes"
               filter={
-                props.membershipData.filter((x) => x.prevMember === "Yes").length
+                props.membershipData?.filter((x) => x?.prevMember === "Yes").length
               }
             />
             <QuestionsBox
               title="No"
               filter={
-                props.membershipData.filter((x) => x.prevMember === "No").length
+                props.membershipData?.filter((x) => x?.prevMember === "No").length
               }
             />
           </Box>
@@ -505,47 +503,47 @@ const Questions = (props) => {
             <QuestionsBox
               title="Careers in Tech"
               filter={
-                props.membershipData.filter((x) =>
-                  x.topics.includes("Careers in the Tech Industry")
+                props.membershipData?.filter((x) =>
+                  x.topics?.includes("Careers in the Tech Industry")
                 ).length
               }
             />
             <QuestionsBox
               title="Tech Startups"
               filter={
-                props.membershipData.filter((x) =>
-                  x.topics.includes("Tech Startups")
+                props.membershipData?.filter((x) =>
+                  x.topics?.includes("Tech Startups")
                 ).length
               }
             />
             <QuestionsBox
               title="AI"
               filter={
-                props.membershipData.filter((x) => x.topics.includes("AI"))
+                props.membershipData?.filter((x) => x.topics?.includes("AI"))
                   .length
               }
             />
             <QuestionsBox
               title="eCommerce"
               filter={
-                props.membershipData.filter((x) =>
-                  x.topics.includes("eCommerce")
+                props.membershipData?.filter((x) =>
+                  x.topics?.includes("eCommerce")
                 ).length
               }
             />
             <QuestionsBox
               title="Cyber Security"
               filter={
-                props.membershipData.filter((x) =>
-                  x.topics.includes("Cyber Security")
+                props.membershipData?.filter((x) =>
+                  x.topics?.includes("Cyber Security")
                 ).length
               }
             />
             <QuestionsBox
               title="Health Tech"
               filter={
-                props.membershipData.filter((x) =>
-                  x.topics.includes("Health Tech")
+                props.membershipData?.filter((x) =>
+                  x.topics?.includes("Health Tech")
                 ).length
               }
             />
@@ -557,70 +555,70 @@ const Questions = (props) => {
             <QuestionsBox
               title="Facebook"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "Facebook")
+                props.membershipData?.filter((x) => x?.heardFrom === "Facebook")
                   .length
               }
             />
             <QuestionsBox
               title="Friends/Word of Mouth"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "Friends/Word of Mouth")
+                props.membershipData?.filter((x) => x?.heardFrom === "Friends/Word of Mouth")
                   .length
               }
             />
             <QuestionsBox
               title="Events"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "Events")
+                props.membershipData?.filter((x) => x?.heardFrom === "Events")
                   .length
               }
             />
             <QuestionsBox
               title="Instagram"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "Instagram")
+                props.membershipData?.filter((x) => x?.heardFrom === "Instagram")
                   .length
               }
             />
             <QuestionsBox
               title="LinkedIn"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "LinkedIn")
+                props.membershipData?.filter((x) => x?.heardFrom === "LinkedIn")
                   .length
               }
             />
             <QuestionsBox
               title="Boothing"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "Boothing")
+                props.membershipData?.filter((x) => x?.heardFrom === "Boothing")
                   .length
               }
             />
             <QuestionsBox
               title="BizTech Newsletter"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "BizTech Newsletter")
+                props.membershipData?.filter((x) => x?.heardFrom === "BizTech Newsletter")
                   .length
               }
             />
             <QuestionsBox
               title="Faculty Newsletter"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "Faculty Newsletter")
+                props.membershipData?.filter((x) => x?.heardFrom === "Faculty Newsletter")
                   .length
               }
             />
             <QuestionsBox
               title="Posters"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "Posters")
+                props.membershipData?.filter((x) => x?.heardFrom === "Posters")
                   .length
               }
             />
             <QuestionsBox
               title="Other"
               filter={
-                props.membershipData.filter((x) => x.heardFrom === "Other")
+                props.membershipData?.filter((x) => x?.heardFrom === "Other")
                   .length
               }
             />

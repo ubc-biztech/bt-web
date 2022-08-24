@@ -143,9 +143,9 @@ const MembershipFormContainer = (props) => {
 
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     const paymentBody = {
-      paymentName: 'BizTech Membership',
+      paymentName: `BizTech Membership ${memberType !== 'UBC' ? '(Non-UBC Student)' : ''}`,
       paymentImages: ['https://imgur.com/TRiZYtG.png'],
-      paymentPrice: 1000,
+      paymentPrice: memberType === 'UBC' ? 1000 : 1500,
       paymentType: 'Member',
       success_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}signup/success/Member/${email}`,
       cancel_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}signup`,
@@ -199,7 +199,7 @@ const MembershipFormContainer = (props) => {
             membership, you will also be a part of our mailing list!
           </Typography>
           <Typography className={classes.description}>
-            Please keep in mind that membership costs $10.00 and are valid for one school year (Sept-May), so if you
+            Please keep in mind that membership costs <b>$10.00 ($15.00 for non-UBC students)</b> and are valid for one school year (Sept-May), so if you
             were a member last year and would like to continue being part of the
             BizTech Network, kindly renew your membership by filling out this
             form and completing the payment.
