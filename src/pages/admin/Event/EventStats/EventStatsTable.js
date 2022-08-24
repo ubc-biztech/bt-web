@@ -732,22 +732,31 @@ const QrCheckIn = (props) => {
     }, ms);
   };
 
+  const emailCheck = (email) => {
+    return /(.+)@(.+){2,}\.(.+){2,}/.test(email);
+  }
+
   // checks if the QR code is valid whenever the QR code is changed
   useEffect(() => {
     if (!qrCode || qrCode.data === "" || qrScanStage !== QR_SCAN_STAGE.SCANNING)
       return;
 
     // data is arranged: email;event_id;year
-    const id = qrCode.data;
-    const userID = id.split(";")[0];
-    const eventIDAndYear = id.split(";")[1] + ";" + id.split(";")[2];
+    // id is the array of the data split by ";"
+    const id = qrCode.data.split(";");
+    const userID = id[0];
+    const eventIDAndYear = id[1] + ";" + id[2];
 
-    // validate event ID and year
+    // validate event ID and year as the current event
     if (eventIDAndYear !== props.event.id + ";" + props.event.year) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 8000);
-      setError(
-        "Invalid BizTech QR code. Please check that your QR code is for this event."
-      );
+
+      // if there are not 3 items and first item is not an email, then the QR code is invalid
+      if (id.length !== 3 && !emailCheck(userID)) {
+        setError("Invalid BizTech QR code.");
+      } else {
+        setError("Please check that your QR code is for this event.");
+      }
       return;
     }
 
@@ -770,12 +779,20 @@ const QrCheckIn = (props) => {
         }
 
         // get the person's name
-        setCheckInName(`${user.fname} ${user.lname} (${userID})`);
+        setCheckInName(`${user.firstName ? user.firstName : user.fname} ${user.lastName ? user.lastName : user.lname} (${userID})`);
 
         // If the user is already checked in, show an error
         if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
           cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
           setError(`Person is already checked in.`);
+          return;
+        } else if (user.registrationStatus === REGISTRATION_STATUS.CANCELLED) {
+          cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
+          setError(`Person had their registration cancelled. Cannot check-in.`);
+          return;
+        } else if (user.registrationStatus === REGISTRATION_STATUS.WAITLISTED) { 
+          cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
+          setError(`Person is on the waitlist. Cannot check-in.`);
           return;
         }
 
