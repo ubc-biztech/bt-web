@@ -46,13 +46,17 @@ const MemberRoutes = (props) => {
     </Switch>
   )
 }
-
 const mapStateToProps = (state) => {
+  console.log('reg', state);
   return {
     events: state.eventState.events.data,
     user: state.userState.user.data,
-    userEventsRegistered: state.userState.eventsRegistered
+    userEventsRegistered: state.userState.userRegisteredEvents.data != null ?
+      state.userState.userRegisteredEvents.data.data : null,
+      
   }
 }
+
+
 
 export default connect(mapStateToProps, {})(MemberRoutes)
