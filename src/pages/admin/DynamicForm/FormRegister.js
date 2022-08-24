@@ -544,7 +544,13 @@ const FormRegister = (props) => {
               Deadline Passed
             </Typography>
             <Typography>
-              The registration deadline for this event has already passed.
+              The registration deadline for this event has already passed on {formData.deadline.toLocaleString(navigator.language, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute:'2-digit'
+            })}.
             </Typography>
           </div>
         </Fragment>
@@ -563,6 +569,17 @@ const FormRegister = (props) => {
     }
     return (
       <Fragment>
+          <div style={styles.section}>
+            <Typography style={{ fontWeight: 'bold' }}>
+              Registration open now until {formData.deadline.toLocaleString(navigator.language, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute:'2-digit'
+            })}
+            </Typography>
+          </div>
         <div style={styles.section}>{loadQuestions()}</div>
         <div style={styles.divider}></div>
         <div style={styles.submitSection}>
