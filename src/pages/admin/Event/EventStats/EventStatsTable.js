@@ -59,7 +59,7 @@ const styles = {
   },
   table: {
     display: "grid",
-    overflowX: 'auto'
+    overflowX: "auto"
   },
   qrCodeVideo: {
     width: "300px",
@@ -83,10 +83,10 @@ const styles = {
     paddingRight: "2px"
   },
   ellipsis: {
-    maxWidth: 200, 
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    maxWidth: 200,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   }
 };
 
@@ -163,14 +163,16 @@ export class EventStatsTable extends Component {
     const heardFrom = {};
     users.forEach((user) => {
       if (user.basicInformation.heardFrom) {
-        heardFrom[user.basicInformation.heardFrom] = heardFrom[user.basicInformation.heardFrom]
+        heardFrom[user.basicInformation.heardFrom] = heardFrom[
+          user.basicInformation.heardFrom
+        ]
           ? heardFrom[user.basicInformation.heardFrom] + 1
           : 1;
       }
     });
 
     this.setState({
-      heardFrom,
+      heardFrom
     });
   }
 
@@ -204,7 +206,9 @@ export class EventStatsTable extends Component {
     const genders = {};
     users.forEach((user) => {
       if (user.basicInformation.faculty) {
-        faculties[user.basicInformation.faculty] = faculties[user.basicInformation.faculty]
+        faculties[user.basicInformation.faculty] = faculties[
+          user.basicInformation.faculty
+        ]
           ? faculties[user.basicInformation.faculty] + 1
           : 1;
       }
@@ -215,10 +219,16 @@ export class EventStatsTable extends Component {
         }
       }
       if (user.basicInformation.diet) {
-        dietary[user.basicInformation.diet] = dietary[user.basicInformation.diet] ? dietary[user.basicInformation.diet] + 1 : 1;
+        dietary[user.basicInformation.diet] = dietary[
+          user.basicInformation.diet
+        ]
+          ? dietary[user.basicInformation.diet] + 1
+          : 1;
       }
       if (user.basicInformation.gender) {
-        genders[user.basicInformation.gender] = genders[user.basicInformation.gender]
+        genders[user.basicInformation.gender] = genders[
+          user.basicInformation.gender
+        ]
           ? genders[user.basicInformation.gender] + 1
           : 1;
       }
@@ -238,9 +248,7 @@ export class EventStatsTable extends Component {
    * @param {*} users the response from the events backend
    */
   setRows(users) {
-    const data = combineEventAndRegistrationData(
-      users,
-    );
+    const data = combineEventAndRegistrationData(users);
 
     this.setState({
       rows: data
@@ -349,22 +357,11 @@ export class EventStatsTable extends Component {
     };
 
     const defaultColumns = [
-      { title: "First Name", field: "fname", cellStyle: { whiteSpace: 'nowrap' } },
-      { title: "Last Name", field: "lname", cellStyle: { whiteSpace: 'nowrap' } },
-      {
-        title: "Student Number",
-        field: "studentId",
-        type: "numeric",
-        sorting: false,
-        cellStyle: { whiteSpace: 'nowrap' }
-      },
-      { title: "Email", field: "id", sorting: false, cellStyle: { whiteSpace: 'nowrap' } },
-      { title: "Diet", field: "diet", sorting: false, cellStyle: { whiteSpace: 'nowrap' } },
       {
         title: "Registration Status",
         field: REGISTRATIONSTATUSLABEL,
         sorting: false,
-        cellStyle: { whiteSpace: 'nowrap' },
+        cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
           <div>
             <Select
@@ -399,6 +396,35 @@ export class EventStatsTable extends Component {
             </Select>
           </div>
         )
+      },
+      {
+        title: "First Name",
+        field: "fname",
+        cellStyle: { whiteSpace: "nowrap" }
+      },
+      {
+        title: "Last Name",
+        field: "lname",
+        cellStyle: { whiteSpace: "nowrap" }
+      },
+      {
+        title: "Student Number",
+        field: "studentId",
+        type: "numeric",
+        sorting: false,
+        cellStyle: { whiteSpace: "nowrap" }
+      },
+      {
+        title: "Email",
+        field: "id",
+        sorting: false,
+        cellStyle: { whiteSpace: "nowrap" }
+      },
+      {
+        title: "Diet",
+        field: "diet",
+        sorting: false,
+        cellStyle: { whiteSpace: "nowrap" }
       }
     ];
 
@@ -412,19 +438,6 @@ export class EventStatsTable extends Component {
       <div style={styles.container}>
         {/* QR code scanner */}
         <QrCheckIn event={this.props.event} />
-        <Statistic
-          statName="Registration status: "
-          statObj={this.state.registrationNumbers}
-        />
-        <Statistic statName="Faculty: " statObj={this.state.faculties} />
-        <Statistic statName="Year level: " statObj={this.state.years} />
-        {/* <Statistic statName='Dietary: ' statObj={this.state.dietary} /> */}
-        <Statistic statName="Gender: " statObj={this.state.genders} />
-        <Statistic statName="Diet: " statObj={this.state.dietary} />
-        <Statistic
-          statName="Heard about event from: "
-          statObj={this.state.heardFrom}
-        />
 
         {/* padding for visual separation */}
         <div style={{ padding: "10px" }} />
@@ -433,7 +446,9 @@ export class EventStatsTable extends Component {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => this.getEventTableData(this.props.event.id, this.props.event.year)}
+          onClick={() =>
+            this.getEventTableData(this.props.event.id, this.props.event.year)
+          }
         >
           Refresh Table
         </Button>
@@ -474,9 +489,25 @@ export class EventStatsTable extends Component {
             }
           }}
           components={{
-            Cell: props => (<PopoverCell {...props}/>
-            )
+            Cell: (props) => <PopoverCell {...props} />
           }}
+        />
+
+        {/* padding for visual separation */}
+        <div style={{ padding: "10px" }} />
+        
+        <Statistic
+          statName="Registration status: "
+          statObj={this.state.registrationNumbers}
+        />
+        <Statistic statName="Faculty: " statObj={this.state.faculties} />
+        <Statistic statName="Year level: " statObj={this.state.years} />
+        {/* <Statistic statName='Dietary: ' statObj={this.state.dietary} /> */}
+        <Statistic statName="Gender: " statObj={this.state.genders} />
+        <Statistic statName="Diet: " statObj={this.state.dietary} />
+        <Statistic
+          statName="Heard about event from: "
+          statObj={this.state.heardFrom}
         />
       </div>
     );
@@ -487,7 +518,7 @@ const useStyles = makeStyles((theme) => ({
   paperRoot: {
     borderRadius: "4px",
     marginBottom: "5px",
-    overflowX: "auto",
+    overflowX: "auto"
   },
   qrRoot: {
     borderRadius: "4px",
@@ -500,23 +531,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-
 const PopoverCell = (props) => {
-
   const [anchorPosition, setAnchorPosition] = useState(null);
   const [popoverText, setPopoverText] = useState("");
 
   const handlePopoverOpen = (event) => {
-    setPopoverText(event.target.getAttribute('value'));
+    setPopoverText(event.target.getAttribute("value"));
 
-    const {top, left} = event.currentTarget.getBoundingClientRect();
-    setAnchorPosition({top, left});
+    const { top, left } = event.currentTarget.getBoundingClientRect();
+    setAnchorPosition({ top, left });
   };
 
   const handlePopoverClose = () => {
     setAnchorPosition(null);
   };
-  
+
   const isValidUrl = (text) => {
     let url;
     try {
@@ -524,50 +553,58 @@ const PopoverCell = (props) => {
     } catch (_) {
       return false;
     }
-    return url.protocol === 'http:' || url.protocol === 'https:';
-  }
+    return url.protocol === "http:" || url.protocol === "https:";
+  };
 
   const open = Boolean(anchorPosition);
 
-  const dropdownColumnFieldNames = [REGISTRATIONSTATUSLABEL]
+  const dropdownColumnFieldNames = [REGISTRATIONSTATUSLABEL];
 
-  return (<>
-  <MTableCell {...props} 
-      aria-owns={open ? 'mouse-over-popover' : undefined}
-      aria-haspopup="true"
-      onMouseDown={handlePopoverOpen}
-      style={styles.ellipsis} 
-    />
-  {/* NOTE: if any more dropdown columns are added in the future to the the default columns of the MaterialTable, 
+  return (
+    <>
+      <MTableCell
+        {...props}
+        aria-owns={open ? "mouse-over-popover" : undefined}
+        aria-haspopup="true"
+        onMouseDown={handlePopoverOpen}
+        style={styles.ellipsis}
+      />
+      {/* NOTE: if any more dropdown columns are added in the future to the the default columns of the MaterialTable, 
             you will need to exclude the column from the Popover effect as shown below */}
-  {dropdownColumnFieldNames.includes(props.columnDef.field) ? <></> :
-   <Popover
-    id="mouse-over-popover"
-    sx={{
-      pointerEvents: 'auto',
-    }}
-    open={open}
-    anchorReference="anchorPosition"
-    anchorPosition={anchorPosition}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'left',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'left',
-    }}
-    onClose={handlePopoverClose}
-    disableRestoreFocus
-  >
-    {isValidUrl(popoverText) ? (
-      <Link href={popoverText} target="_blank" rel="noopener noreferrer">{popoverText}</Link>
-    ) : (
-      <Typography sx={{ p: 1 }}>{popoverText}</Typography>
-    )}
-  </Popover>}
-  </>)
-}
+      {dropdownColumnFieldNames.includes(props.columnDef.field) ? (
+        <></>
+      ) : (
+        <Popover
+          id="mouse-over-popover"
+          sx={{
+            pointerEvents: "auto"
+          }}
+          open={open}
+          anchorReference="anchorPosition"
+          anchorPosition={anchorPosition}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left"
+          }}
+          onClose={handlePopoverClose}
+          disableRestoreFocus
+        >
+          {isValidUrl(popoverText) ? (
+            <Link href={popoverText} target="_blank" rel="noopener noreferrer">
+              {popoverText}
+            </Link>
+          ) : (
+            <Typography sx={{ p: 1 }}>{popoverText}</Typography>
+          )}
+        </Popover>
+      )}
+    </>
+  );
+};
 
 /**
  * represents a statistic and shows a row of the stats with a dropdown for charts
@@ -693,7 +730,7 @@ const QrCheckIn = (props) => {
     setTimeout(() => {
       setQrScanStage(QR_SCAN_STAGE.SCANNING);
     }, ms);
-  }
+  };
 
   const emailCheck = (email) => {
     return /(.+)@(.+){2,}\.(.+){2,}/.test(email);
@@ -701,7 +738,8 @@ const QrCheckIn = (props) => {
 
   // checks if the QR code is valid whenever the QR code is changed
   useEffect(() => {
-    if (!qrCode || qrCode.data === "" || qrScanStage !== QR_SCAN_STAGE.SCANNING) return;
+    if (!qrCode || qrCode.data === "" || qrScanStage !== QR_SCAN_STAGE.SCANNING)
+      return;
 
     // data is arranged: email;event_id;year
     // id is the array of the data split by ";"
@@ -864,4 +902,3 @@ const QrCheckIn = (props) => {
 };
 
 export default EventStatsTable;
-
