@@ -73,7 +73,7 @@ function MemberHome(props) {
 
   useEffect(() => {
     if (user && user.email) fetchUserRegisteredEvents({ userId: user.email });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // const getFeaturedEvent = () => {
   //   if (events.length) {
@@ -122,7 +122,7 @@ function MemberHome(props) {
   useEffect(() => {
     if (events) {
       getNextEvent();
-      //getFeaturedEvent();
+      // getFeaturedEvent();
     }
   }, [registered]); // eslint-disable-line react-hooks/exhaustive-deps
 
