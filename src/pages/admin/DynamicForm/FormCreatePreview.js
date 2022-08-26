@@ -178,7 +178,7 @@ const FormCreatePreview = (props) => {
           {(eventName || description) && (
             <div style={{ ...formStyles.section, ...formStyles.divider }}>
               <h2 style={{ marginTop: 0 }}>{eventName}</h2>
-              <p>{description}</p>
+              <p style={{ whiteSpace: "pre-line" }}>{description.split("<br/>").join("\n")}</p>
             </div>
           )}
           <div style={formStyles.section}>{displayQuestions}</div>
