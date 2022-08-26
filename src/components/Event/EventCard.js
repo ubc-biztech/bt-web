@@ -10,7 +10,7 @@ import {
 const useStyles = makeStyles({
   card: {
     width: "30%",
-    margin: "15px 30px 15px 0",
+    margin: "15px 30px 15px 0"
   },
   media: {
     height: 250,
@@ -18,7 +18,13 @@ const useStyles = makeStyles({
   favouriteButton: {
     cursor: "pointer",
   },
+  passedCard: {
+    width: "30%",
+    margin: "15px 30px 15px 0",
+    opacity: "50%"
+  }
 });
+
 
 function EventCard(props) {
   const {
@@ -33,8 +39,13 @@ function EventCard(props) {
 
   const image = event.imageUrl || require("assets/default.png");
 
+  const isEventPassed = (event) => {
+    const startDate = new Date(event.startDate).getTime()
+    return startDate < new Date().getTime()
+  }
+
   return (
-    <Card className={classes.card} style={cardStyle} key={event.id}>
+    <Card className={isEventPassed(event) ? classes.passedCard : classes.card} style={cardStyle} key={event.id}>
       <CardActionArea
         onClick={(e) => {
           handleCardClick(e, event.id, event.year);
@@ -52,11 +63,11 @@ function EventCard(props) {
         subheader={
           event.startDate
             ? new Date(event.startDate).toLocaleDateString("en-US", {
-                day: "numeric",
-                weekday: "long",
-                month: "long",
-                year: "numeric",
-              })
+              day: "numeric",
+              weekday: "long",
+              month: "long",
+              year: "numeric",
+            })
             : ""
         }
         action={
