@@ -56,10 +56,10 @@ const Summary = (props) => {
           ]}
           dataSetLabel="students"
           data={[
-            props.membershipData.filter((x) => x.education === "UBC").length,
-            props.membershipData.filter((x) => x.education === "UNI").length,
-            props.membershipData.filter((x) => x.education === "HS").length,
-            props.membershipData.filter((x) => x.education === "NA").length,
+            props.membershipData?.filter((x) => x.education === "UBC").length,
+            props.membershipData?.filter((x) => x.education === "UNI").length,
+            props.membershipData?.filter((x) => x.education === "HS").length,
+            props.membershipData?.filter((x) => x.education === "NA").length,
           ]}
         />
 
@@ -77,18 +77,18 @@ const Summary = (props) => {
           ]}
           dataSetLabel="students"
           data={[
-            props.membershipData.filter((x) => x.year === "1st Year").length,
-            props.membershipData.filter((x) => x.year === "2nd Year").length,
-            props.membershipData.filter((x) => x.year === "3rd Year").length,
-            props.membershipData.filter((x) => x.year === "4th Year").length,
-            props.membershipData.filter((x) => x.year === "5+ Year").length,
-            props.membershipData.filter((x) => x.year === "Grade 9").length +
-            props.membershipData.filter((x) => x.year === "Grade 10").length +
-            props.membershipData.filter((x) => x.year === "Grade 11").length +
-            props.membershipData.filter((x) => x.year === "Grade 12").length +
-            props.membershipData.filter((x) => x.year === "Pre-university").length,
-            props.membershipData.filter((x) => x.year === "Other").length +
-            props.membershipData.filter((x) => x.year === "").length,
+            props.membershipData?.filter((x) => x.year === "1st Year").length,
+            props.membershipData?.filter((x) => x.year === "2nd Year").length,
+            props.membershipData?.filter((x) => x.year === "3rd Year").length,
+            props.membershipData?.filter((x) => x.year === "4th Year").length,
+            props.membershipData?.filter((x) => x.year === "5+ Year").length,
+            props.membershipData?.filter((x) => x.year === "Grade 9").length +
+            props.membershipData?.filter((x) => x.year === "Grade 10").length +
+            props.membershipData?.filter((x) => x.year === "Grade 11").length +
+            props.membershipData?.filter((x) => x.year === "Grade 12").length +
+            props.membershipData?.filter((x) => x.year === "Pre-university").length,
+            props.membershipData?.filter((x) => x.year === "Other").length +
+            props.membershipData?.filter((x) => x.year === "").length,
           ]}
         />
 
@@ -107,16 +107,16 @@ const Summary = (props) => {
           ]}
           dataSetLabel="students"
           data={[
-            props.membershipData.filter((x) => x.faculty === "Commerce").length,
-            props.membershipData.filter((x) => x.faculty === "Science").length,
-            props.membershipData.filter((x) => x.faculty === "Arts").length,
-            props.membershipData.filter((x) => x.faculty === "Engineering").length,
-            props.membershipData.filter((x) => x.faculty === "Land and Food Systems").length,
-            props.membershipData.filter((x) => x.faculty === "Kinesiology").length,
-            props.membershipData.filter((x) => x.faculty === "Forestry").length,
-            props.membershipData.filter((x) => x.faculty === "Other").length +
-            props.membershipData.filter((x) => x.faculty === "Not Applicable").length +
-            props.membershipData.filter((x) => x.faculty === "").length,
+            props.membershipData?.filter((x) => x.faculty === "Commerce").length,
+            props.membershipData?.filter((x) => x.faculty === "Science").length,
+            props.membershipData?.filter((x) => x.faculty === "Arts").length,
+            props.membershipData?.filter((x) => x.faculty === "Engineering").length,
+            props.membershipData?.filter((x) => x.faculty === "Land and Food Systems").length,
+            props.membershipData?.filter((x) => x.faculty === "Kinesiology").length,
+            props.membershipData?.filter((x) => x.faculty === "Forestry").length,
+            props.membershipData?.filter((x) => x.faculty === "Other").length +
+            props.membershipData?.filter((x) => x.faculty === "Not Applicable").length +
+            props.membershipData?.filter((x) => x.faculty === "").length,
           ]}
         />
 
@@ -137,53 +137,53 @@ const Summary = (props) => {
             "OpLog",
           ]}
           data={[
-            props.membershipData.filter(
+            props.membershipData?.filter(
               (x) =>
-                x.major.toLowerCase().includes("computer science") ||
-                x.major.toLowerCase().includes("compsci") ||
+                x.major.toLowerCase()?.includes("computer science") ||
+                x.major.toLowerCase()?.includes("compsci") ||
                 x.major.toLowerCase() === "cs" ||
                 x.major.toLowerCase() === "cpsc"
             ).length,
-            props.membershipData.filter(
+            props.membershipData?.filter(
               (x) =>
-                x.major.toLowerCase().includes("bucs") ||
-                x.major.toLowerCase().includes("business and computer science")
+                x.major.toLowerCase()?.includes("bucs") ||
+                x.major.toLowerCase()?.includes("business and computer science")
             ).length,
-            props.membershipData.filter(
+            props.membershipData?.filter(
               (x) =>
-                x.major.toLowerCase().includes("undeclared") ||
-                x.major.toLowerCase().includes("undecided") ||
-                x.major.toLowerCase().includes("n/a") ||
-                x.major.toLowerCase().includes("yet") ||
-                x.major.toLowerCase().includes("not")
+                x.major.toLowerCase()?.includes("undeclared") ||
+                x.major.toLowerCase()?.includes("undecided") ||
+                x.major.toLowerCase()?.includes("n/a") ||
+                x.major.toLowerCase()?.includes("yet") ||
+                x.major.toLowerCase()?.includes("not")
             ).length,
-            props.membershipData.filter(
+            props.membershipData?.filter(
               (x) =>
-                x.major.toLowerCase().includes("btm") ||
-                x.major.toLowerCase().includes("business technology management")
+                x.major.toLowerCase()?.includes("btm") ||
+                x.major.toLowerCase()?.includes("business technology management")
             ).length,
-            props.membershipData.filter((x) =>
-              x.major.toLowerCase().includes("finance")
+            props.membershipData?.filter((x) =>
+              x.major.toLowerCase()?.includes("finance")
             ).length,
-            props.membershipData.filter((x) =>
-              x.major.toLowerCase().includes("marketing")
+            props.membershipData?.filter((x) =>
+              x.major.toLowerCase()?.includes("marketing")
             ).length,
-            props.membershipData.filter(
+            props.membershipData?.filter(
               (x) =>
-                x.major.toLowerCase().includes("cogs") ||
-                x.major.toLowerCase().includes("cognitive systems")
+                x.major.toLowerCase()?.includes("cogs") ||
+                x.major.toLowerCase()?.includes("cognitive systems")
             ).length,
-            props.membershipData.filter((x) =>
-              x.major.toLowerCase().includes("accounting")
+            props.membershipData?.filter((x) =>
+              x.major.toLowerCase()?.includes("accounting")
             ).length,
-            props.membershipData.filter((x) =>
-              x.major.toLowerCase().includes("electrical")
+            props.membershipData?.filter((x) =>
+              x.major.toLowerCase()?.includes("electrical")
             ).length,
-            props.membershipData.filter(
+            props.membershipData?.filter(
               (x) =>
-                x.major.toLowerCase().includes("oplog") ||
-                x.major.toLowerCase().includes("operations") ||
-                x.major.toLowerCase().includes("logistics")
+                x.major.toLowerCase()?.includes("oplog") ||
+                x.major.toLowerCase()?.includes("operations") ||
+                x.major.toLowerCase()?.includes("logistics")
             ).length,
           ]}
         />
@@ -194,10 +194,10 @@ const Summary = (props) => {
           dataLabels={["He/Him/His", "She/Her/Hers", "They/Them/Their", "Other/Prefer not to say"]}
           dataSetLabel={null}
           data={[
-            props.membershipData.filter((x) => x.pronouns === "He/Him/His").length,
-            props.membershipData.filter((x) => x.pronouns === "She/Her/Hers").length,
-            props.membershipData.filter((x) => x.pronouns === "They/Them/Their").length,
-            props.membershipData.filter((x) => x.pronouns === "Other/Prefer not to say").length,
+            props.membershipData?.filter((x) => x.pronouns === "He/Him/His").length,
+            props.membershipData?.filter((x) => x.pronouns === "She/Her/Hers").length,
+            props.membershipData?.filter((x) => x.pronouns === "They/Them/Their").length,
+            props.membershipData?.filter((x) => x.pronouns === "Other/Prefer not to say").length,
           ]}
         />
 
@@ -207,13 +207,13 @@ const Summary = (props) => {
           dataLabels={["None", "Vegetarian", "Vegan", "Gluten Free", "Pescetarian", "Kosher", "Halal"]}
           dataSetLabel={null}
           data={[
-            props.membershipData.filter((x) => x.diet === "None").length,
-            props.membershipData.filter((x) => x.diet === "Vegetarian").length,
-            props.membershipData.filter((x) => x.diet === "Vegan").length,
-            props.membershipData.filter((x) => x.diet === "Gluten Free").length,
-            props.membershipData.filter((x) => x.diet === "Pescetarian").length,
-            props.membershipData.filter((x) => x.diet === "Kosher").length,
-            props.membershipData.filter((x) => x.diet === "Halal").length,
+            props.membershipData?.filter((x) => x.diet === "None").length,
+            props.membershipData?.filter((x) => x.diet === "Vegetarian").length,
+            props.membershipData?.filter((x) => x.diet === "Vegan").length,
+            props.membershipData?.filter((x) => x.diet === "Gluten Free").length,
+            props.membershipData?.filter((x) => x.diet === "Pescetarian").length,
+            props.membershipData?.filter((x) => x.diet === "Kosher").length,
+            props.membershipData?.filter((x) => x.diet === "Halal").length,
           ]}
         />
 
@@ -223,8 +223,8 @@ const Summary = (props) => {
           dataLabels={["Yes", "No"]}
           dataSetLabel={null}
           data={[
-            props.membershipData.filter((x) => x.international === "Yes").length,
-            props.membershipData.filter((x) => x.international === "No").length,
+            props.membershipData?.filter((x) => x.international === "Yes").length,
+            props.membershipData?.filter((x) => x.international === "No").length,
           ]}
         />
 
@@ -234,8 +234,8 @@ const Summary = (props) => {
           dataLabels={["Yes", "No"]}
           dataSetLabel={null}
           data={[
-            props.membershipData.filter((x) => x.prevMember === "Yes").length,
-            props.membershipData.filter((x) => x.prevMember === "No").length,
+            props.membershipData?.filter((x) => x.prevMember === "Yes").length,
+            props.membershipData?.filter((x) => x.prevMember === "No").length,
           ]}
         />
 
@@ -252,19 +252,19 @@ const Summary = (props) => {
             "Health Tech",
           ]}
           data={[
-            props.membershipData.filter((x) =>
-              x.topics.includes("Careers in the Tech Industry")
+            props.membershipData?.filter((x) =>
+              x.topics?.includes("Careers in the Tech Industry")
             ).length,
-            props.membershipData.filter((x) =>
-              x.topics.includes("Tech Startups")
+            props.membershipData?.filter((x) =>
+              x.topics?.includes("Tech Startups")
             ).length,
-            props.membershipData.filter((x) => x.topics.includes("AI")).length,
-            props.membershipData.filter((x) => x.topics.includes("eCommerce"))
+            props.membershipData?.filter((x) => x.topics?.includes("AI")).length,
+            props.membershipData?.filter((x) => x.topics?.includes("eCommerce"))
               .length,
-            props.membershipData.filter((x) =>
-              x.topics.includes("Cyber Security")
+            props.membershipData?.filter((x) =>
+              x.topics?.includes("Cyber Security")
             ).length,
-            props.membershipData.filter((x) => x.topics.includes("Health Tech"))
+            props.membershipData?.filter((x) => x.topics?.includes("Health Tech"))
               .length,
           ]}
         />
@@ -275,25 +275,25 @@ const Summary = (props) => {
           max={236}
           labels={["Facebook", "Friends/Word of Mouth", "Events", "Instagram", "LinkedIn", "Boothing", "BizTech Newsletter", "Faculty Newsletter", "Posters", "Other"]}
           data={[
-            props.membershipData.filter((x) => x.heardFrom === "Facebook")
+            props.membershipData?.filter((x) => x.heardFrom === "Facebook")
               .length,
-            props.membershipData.filter((x) => x.heardFrom === "Friends/Word of Mouth")
+            props.membershipData?.filter((x) => x.heardFrom === "Friends/Word of Mouth")
               .length,
-            props.membershipData.filter((x) => x.heardFrom === "Events")
+            props.membershipData?.filter((x) => x.heardFrom === "Events")
               .length,
-            props.membershipData.filter((x) => x.heardFrom === "Instagram")
+            props.membershipData?.filter((x) => x.heardFrom === "Instagram")
               .length,
-            props.membershipData.filter((x) => x.heardFrom === "LinkedIn")
+            props.membershipData?.filter((x) => x.heardFrom === "LinkedIn")
               .length,
-            props.membershipData.filter((x) => x.heardFrom === "Boothing")
+            props.membershipData?.filter((x) => x.heardFrom === "Boothing")
               .length,
-            props.membershipData.filter((x) => x.heardFrom === "BizTech Newsletter")
+            props.membershipData?.filter((x) => x.heardFrom === "BizTech Newsletter")
               .length,
-            props.membershipData.filter((x) => x.heardFrom === "Faculty Newsletter")
+            props.membershipData?.filter((x) => x.heardFrom === "Faculty Newsletter")
               .length,
-            props.membershipData.filter((x) => x.heardFrom === "Posters")
+            props.membershipData?.filter((x) => x.heardFrom === "Posters")
               .length,
-            props.membershipData.filter((x) => x.heardFrom === "Other")
+            props.membershipData?.filter((x) => x.heardFrom === "Other")
               .length,
           ]}
         />

@@ -14,6 +14,7 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import React, { useEffect, useState, useCallback, Fragment } from "react";
 import { connect } from 'react-redux';
@@ -75,6 +76,14 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     fontSize: "16px",
     marginBottom: 8,
+  },
+  regAlert: {
+    fontWeight: "bold",
+    backgroundColor: "#E38424",
+    color: "white",
+    maxWidth: 552,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   }
 }));
 
@@ -83,6 +92,7 @@ const FormRegister = (props) => {
   const history = useHistory();
   const [currEvent, setCurrEvent] = useState(event);
   const [registeredEvents, setRegisteredEvents] = useState(userRegisteredEvents)
+  const [regAlert, setRegAlert] = useState(null)
 
   const basicQuestions = [
     {
@@ -168,7 +178,7 @@ const FormRegister = (props) => {
   const [refresh, setRefresh] = useState(false);
 
   const { id: eventId, year: eventYear } = useParams();
-
+  
   const [responseData, setResponseData] = useState(
     Array.from(Array(formData.questions.length))
   ); // index of answers correspond to questions array index
@@ -204,6 +214,19 @@ const FormRegister = (props) => {
       setResponseData(newData)
     }
   }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (event) {
+      const remaining = event.capac - (event.counts.registeredCount + event.counts.checkedInCount)
+      if (remaining > 0 && remaining <= 20) {
+        setRegAlert(<Alert severity="error" className={classes.regAlert}>Warning: {event.ename || 'this event'} only has {remaining} spots left!</Alert>)
+      } else if (remaining <= 0 && !user) {
+        setRegAlert(<Alert severity="error" className={classes.regAlert}>Warning: {event.ename || 'this event'} is full!</Alert>)
+      } else {
+        setRegAlert(null)
+      }
+    }
+  }, [event]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateField = useCallback(
     (index, value) => {
@@ -394,7 +417,7 @@ const FormRegister = (props) => {
                       href={responseData[i]}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ width: '100%' }}
+                      style={{ width: '100%', wordWrap: 'break-word' }}
                     >
                       {responseData[i]}
                     </a>
@@ -402,7 +425,7 @@ const FormRegister = (props) => {
                     "No file uploaded yet!"
                   )}
                 </Typography>
-                <Button variant="contained" color="primary" component="label" style={{ width: '100%' }}>
+                <Button variant="contained" color="primary" component="label" style={{ width: '150px' }}>
                   {responseData[i] ? "Reupload" : "Upload"}
                   <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
                   <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
@@ -428,32 +451,25 @@ const FormRegister = (props) => {
     let valid = true;
 
     // looping for error messages
-    for (let i = 0; i < responseData.length; i++) {
+    for (let i = 0; i < formData.questions.length; i++) {
       // indices should correspond between formData.questions, responseData, and responseError arrays
       const question = formData.questions[i];
-
       if (question.questionType === "CHECKBOX") {
         // check if empty
-        if (
-          question.required && responseData[i]
-            ? responseData[i].length <= 0
-            : true
-        ) {
-          newErrors[i] = "A selection is required";
-
-          valid = false;
+        if (question.required) {
+          if (!responseData[i] || responseData[i].length <= 0) {
+            newErrors[i] = "A selection is required";
+            valid = false;
+          }
         }
         // other checks can go here...
       } else {
         // check if empty
-        if (
-          question.required && responseData[i]
-            ? responseData[i].length === 0
-            : true
-        ) {
-          newErrors[i] = "This field is required";
-
-          valid = false;
+        if (question.required) {
+          if (!responseData[i] || responseData[i].length === 0) {
+            newErrors[i] = "This field is required";
+            valid = false;
+          }
         }
         // other checks can go here...
       }
@@ -475,7 +491,7 @@ const FormRegister = (props) => {
       const dynamicResponses = {}
       for (let i = basicQuestions.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
-          dynamicResponses[formData.questions[i].questionId] = responseData[i].join(', ')
+          dynamicResponses[formData.questions[i].questionId] = responseData[i]?.join(', ')
         } else {
           dynamicResponses[formData.questions[i].questionId] = responseData[i]
         }
@@ -507,6 +523,10 @@ const FormRegister = (props) => {
     }
   };
 
+  const isEventFull = () => {
+    return event.capac - (event.counts?.registeredCount + event.counts?.checkedInCount) <= 0
+  }
+
   const isDeadlinePassed = () => {
     const deadline = new Date(event.deadline).getTime()
     return deadline < new Date().getTime()
@@ -520,10 +540,13 @@ const FormRegister = (props) => {
 
   if (!user) {
     return (
-      <LoginAccess
-        header='To register for our events, please sign in.'
-        redirect={`/event/${eventId}/${eventYear}/register`}
-      />
+      <Fragment>
+        {regAlert}
+        <LoginAccess
+          header='To register for our events, please sign in.'
+          redirect={`/event/${eventId}/${eventYear}/register`}
+        />
+      </Fragment>
     )
   }
 
@@ -536,6 +559,20 @@ const FormRegister = (props) => {
   }
 
   const renderFormQuestions = () => {
+    if (isEventFull()) {
+      return (
+        <Fragment>
+          <div style={styles.section}>
+            <Typography className={classes.deadlineText}>
+              Event is Full
+            </Typography>
+            <Typography>
+              We sincerely apologize, {event.ename || 'this event'} is no longer taking registrations. Please be on the lookout for our other events throughout the year!
+            </Typography>
+          </div>
+        </Fragment>
+      )
+    }
     if (isDeadlinePassed()) {
       return (
         <Fragment>
@@ -544,7 +581,13 @@ const FormRegister = (props) => {
               Deadline Passed
             </Typography>
             <Typography>
-              The registration deadline for this event has already passed.
+              The registration deadline for {event.ename || 'this event'} has already passed on {formData.deadline.toLocaleString(navigator.language, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute:'2-digit'
+            })}.
             </Typography>
           </div>
         </Fragment>
@@ -555,7 +598,7 @@ const FormRegister = (props) => {
         <Fragment>
           <div style={styles.section}>
             <Typography className={classes.deadlineText}>
-              Already registered for this event!
+              Already registered for {event.ename || 'this event'}!
             </Typography>
           </div>
         </Fragment>
@@ -563,6 +606,17 @@ const FormRegister = (props) => {
     }
     return (
       <Fragment>
+          <div style={styles.section}>
+            <Typography style={{ fontWeight: 'bold' }}>
+              Registration open now until {formData.deadline.toLocaleString(navigator.language, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute:'2-digit'
+            })}
+            </Typography>
+          </div>
         <div style={styles.section}>{loadQuestions()}</div>
         <div style={styles.divider}></div>
         <div style={styles.submitSection}>
@@ -573,6 +627,7 @@ const FormRegister = (props) => {
       </Fragment>
     )
   }
+
   return (
     <>
       <ArrowBackIcon
@@ -583,8 +638,8 @@ const FormRegister = (props) => {
       <Helmet>
         <title>Register for {formData.name}</title>
       </Helmet>
-
       <Container maxWidth="sm">
+      {regAlert}
         <Paper>
           {/* Image */}
           <div style={styles.imageContainer}>
@@ -596,7 +651,7 @@ const FormRegister = (props) => {
           </div>
           <div style={{ ...styles.section, ...styles.divider }}>
             <h2 style={{ marginTop: 0 }}>{formData.name}</h2>
-            <p>{formData.description}</p>
+            <p style={{ whiteSpace: "pre-line" }}>{formData.description.split("<br/>").join("\n")}</p>
           </div>
           {renderFormQuestions()}
         </Paper>

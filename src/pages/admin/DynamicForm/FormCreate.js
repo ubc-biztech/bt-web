@@ -346,7 +346,7 @@ const FormCreateForm = (props) => {
               />
               {slug && (
                 <div style={{ color: "#FFFFFF", opacity: "0.7" }}>
-                  {"https://ubcbiztech.com/" + slug + "/" + start.getFullYear() + "/register"}
+                  {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register"}
                 </div>
               )}
               <TextField
