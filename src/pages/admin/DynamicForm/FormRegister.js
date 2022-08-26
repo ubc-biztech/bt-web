@@ -227,7 +227,7 @@ const FormRegister = (props) => {
         setRegAlert(null)
       }
     }
-  }, [event])
+  }, [event]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateField = useCallback(
     (index, value) => {
