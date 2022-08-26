@@ -43,6 +43,7 @@ const styles = {
     minWidth: 400,
     padding: 42,
     margin: 30,
+    marginBottom: '30%',
     flex: 1
   },
   left: {
@@ -92,7 +93,8 @@ const styles = {
   loginImage: {
     maxWidth: 500,
     flex: 1,
-    margin: 50
+    margin: 50,
+    marginBottom: '30%',
   },
   notAMember: {
     marginTop: '30px'
