@@ -88,7 +88,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FormRegister = (props) => {
-  console.log(props)
   const { user, event, userRegisteredEvents } = props;
   const history = useHistory();
   const [currEvent, setCurrEvent] = useState(event);
