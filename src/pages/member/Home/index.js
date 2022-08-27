@@ -9,6 +9,7 @@ import House from "assets/house.svg";
 // import Calendar from "assets/calendar.png";
 import UserProgress from "./UserProgress";
 import { COLORS } from "constants/index";
+import { SignalCellularNull } from "@material-ui/icons";
 // import { green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
@@ -68,20 +69,36 @@ function MemberHome(props) {
 
   const classes = useStyles();
 
-  // const [featuredEvent, setFeaturedEvent] = useState({});
+  const [featuredEvent, setFeaturedEvent] = useState({});
   const [nextEvent, setNextEvent] = useState({});
 
   useEffect(() => {
     if (user && user.email) fetchUserRegisteredEvents({ userId: user.email });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // const getFeaturedEvent = () => {
-  //   if (events.length) {
-  //     const randomEvent =
-  //       events[Math.floor(Math.random() * (events.length - 1))];
-  //     setFeaturedEvent(randomEvent);
-  //   }
-  // };
+  const getFeaturedEvent = () => {
+      const index = events.findIndex(
+        (ev) =>
+        ev.ename !== nextEvent.ename &&
+        new Date(ev.eventDate).getTime() > new Date().getTime()
+        && new Date(ev.deadline).getTime() > new Date().getTime()
+      );
+    console.log("index", index);
+    if (index !== -1) {
+      // if a featured event exists
+      setFeaturedEvent(events[index]);
+    } else {
+      setFeaturedEvent({ ename: "Events coming soon!", eventDate: null,  deadline: null});
+    }
+    
+      
+      
+    // if (events.length) {
+    //   const randomEvent =
+    //     events[Math.floor(Math.random() * (events.length - 1))];
+    //   setFeaturedEvent(randomEvent);
+    // }
+  };
 
   const daysTillDeadline = (eventDate) => {
     const today = new Date();
@@ -122,9 +139,9 @@ function MemberHome(props) {
   useEffect(() => {
     if (events) {
       getNextEvent();
-      // getFeaturedEvent();
+      getFeaturedEvent();
     }
-  }, [registered]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [registered, events]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function CardComponent({ children }) {
     return (
@@ -178,18 +195,10 @@ function MemberHome(props) {
   // }
 
   function FeaturedEventsCard(props) {
-    const {
-      eventName,
-      eventDate,
-      // imageUrl,
-      // cardStyle,
-      // eventId,
-      deadline
-    } = props;
-    // const image = imageUrl || require("assets/default.png");
-    if (eventName !== nextEvent.ename &&
-      new Date(eventDate).getTime() > new Date().getTime()
-    && new Date(deadline).getTime() > new Date().getTime()) {
+    const { eventName, eventDate, eventDeadline } = props;
+    console.log("event name", eventName)
+
+    if (eventDeadline) {
       return (
         <CardComponent>
           <Typography variant="h2" className={classes.green}>
@@ -198,23 +207,60 @@ function MemberHome(props) {
           <Typography className={classes.eventName}>{eventName}</Typography>
           <Typography className={classes.eventDate}>{eventDate}</Typography>
           <Typography className={classes.eventDate}>
-            {daysTillDeadline(deadline)} left to register!
+            {daysTillDeadline(eventDeadline)} left to register!
           </Typography>
         </CardComponent>
       );
+
     } else {
-      // NOTE: must fix this when there is more than one event on the web app
       return (
         <CardComponent>
-          <Typography variant="h2" className={classes.green}>
-            Featured
-          </Typography>
-          <Typography className={classes.eventName}>
-            Events coming soon!
-          </Typography>
-        </CardComponent>
+        <Typography variant="h2" className={classes.green}>
+          Featured
+        </Typography>
+        <Typography className={classes.eventName}>
+          {eventName}
+        </Typography>
+      </CardComponent>
       );
     }
+    // const {
+    //   eventName,
+    //   eventDate,
+    //   // imageUrl,
+    //   // cardStyle,
+    //   // eventId,
+    //   deadline
+    // } = props;
+    // // const image = imageUrl || require("assets/default.png");
+    // if (eventName !== nextEvent.ename &&
+    //   new Date(eventDate).getTime() > new Date().getTime()
+    // && new Date(deadline).getTime() > new Date().getTime()) {
+    //   return (
+    //     <CardComponent>
+    //       <Typography variant="h2" className={classes.green}>
+    //         Featured
+    //       </Typography>
+    //       <Typography className={classes.eventName}>{eventName}</Typography>
+    //       <Typography className={classes.eventDate}>{eventDate}</Typography>
+    //       <Typography className={classes.eventDate}>
+    //         {daysTillDeadline(deadline)} left to register!
+    //       </Typography>
+    //     </CardComponent>
+    //   );
+    // } else {
+    //   // NOTE: must fix this when there is more than one event on the web app
+    //   return (
+    //     <CardComponent>
+    //       <Typography variant="h2" className={classes.green}>
+    //         Featured
+    //       </Typography>
+    //       <Typography className={classes.eventName}>
+    //         Events coming soon!
+    //       </Typography>
+    //     </CardComponent>
+    //   );
+    // }
   }
 
   function eventDate(date) {
@@ -276,7 +322,17 @@ function MemberHome(props) {
                 </Typography>
               </CardComponent>
             </div>
+            {console.log("event being passed in", featuredEvent)}
             <div className={classes.column}>
+              <FeaturedEventsCard
+                eventName={featuredEvent.ename}
+                eventDate={featuredEvent.eventDate}
+                eventDeadline={featuredEvent.deadline}
+              ></FeaturedEventsCard>
+            </div>
+
+            
+            {/* <div className={classes.column}> COMMENTED OUT HERE
               {events && events.length > 0 ? (
                 events.map((ev) =>
                     (
@@ -296,7 +352,8 @@ function MemberHome(props) {
                     More events coming!
                   </Typography>
                 </CardComponent>
-              )}
+                )}
+              </div> */}
               {/* <CardComponent>
                 <Typography variant="h2" className={classes.green}>
                   Featured
@@ -309,12 +366,11 @@ function MemberHome(props) {
                     eventDate(featuredEvent.startDate)}
                 </Typography>
               </CardComponent> */}
-            </div>
           </div>
         </div>
       </div>
     </React.Fragment>
   );
-}
+            }           
 
 export default MemberHome;
