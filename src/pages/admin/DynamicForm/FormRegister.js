@@ -26,6 +26,9 @@ import { COLORS } from "../../../constants/_constants/theme";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 import LoginAccess from "components/LoginAccess/LoginAccess";
 import Loading from "pages/Loading";
+import {
+  REGISTRATION_STATUS,
+} from "constants/index";
 
 const styles = {
   // Container for custom form image
@@ -93,7 +96,6 @@ const FormRegister = (props) => {
   const [currEvent, setCurrEvent] = useState(event);
   const [registeredEvents, setRegisteredEvents] = useState(userRegisteredEvents)
   const [regAlert, setRegAlert] = useState(null)
-
   const basicQuestions = [
     {
       questionType: "TEXT",
@@ -219,7 +221,7 @@ const FormRegister = (props) => {
     if (event) {
       const remaining = event.capac - (event.counts.registeredCount + event.counts.checkedInCount)
       if (remaining > 0 && remaining <= 20) {
-        setRegAlert(<Alert severity="error" className={classes.regAlert}>Warning: {event.ename || 'this event'} only has {remaining} spots left!</Alert>)
+        setRegAlert(<Alert severity="error" className={classes.regAlert}>Warning: {event.ename || 'this event'} only has {remaining} spot{remaining > 1 ? 's' : ''} left!</Alert>)
       } else if (remaining <= 0 && !user) {
         setRegAlert(<Alert severity="error" className={classes.regAlert}>Warning: {event.ename || 'this event'} is full!</Alert>)
       } else {
@@ -523,6 +525,52 @@ const FormRegister = (props) => {
     }
   };
 
+  const updateUserRegistrationStatus = async (id, registrationStatus) => {
+    const body = {
+      eventID: eventId,
+      year: Number(eventYear),
+      registrationStatus
+    };
+    try {
+      await fetchBackend(`/registrations/${id}`, "PUT", body);
+      alert('Successfully updated registration status! Please check your inbox (including Spam/Promotions) for an email.')
+      window.location.reload()
+    } catch (e) {
+      alert('An error has occurred. Please contact a BizTech exec for support.')
+    }
+  }
+
+  const changeRegStatus = (newStatus) => {
+    switch (newStatus) {
+      case REGISTRATION_STATUS.REGISTERED:
+        if (
+          window.confirm(
+            `Do you want to re-register for ${event.ename || 'this event'}?\nYou will be sent an email confirming your registration.`
+          )
+        ) {
+          updateUserRegistrationStatus(
+            user?.email,
+            REGISTRATION_STATUS.REGISTERED
+          );
+        }
+        break;
+      case REGISTRATION_STATUS.CANCELLED:
+        if (
+          window.confirm(
+            `Are you sure you would cancel your spot at ${event.ename || 'this event'}?\nYou will be sent an email regarding your cancellation.`
+          )
+        ) {
+          updateUserRegistrationStatus(
+            user?.email,
+            REGISTRATION_STATUS.CANCELLED
+          );
+        }
+        break;
+      default:
+        return {};
+    }
+  }
+
   const isEventFull = () => {
     return event.capac - (event.counts?.registeredCount + event.counts?.checkedInCount) <= 0
   }
@@ -558,17 +606,36 @@ const FormRegister = (props) => {
     )
   }
 
+  const renderRegMessage = (status) => {
+    switch (status) {
+      case REGISTRATION_STATUS.CANCELLED:
+        return `You have cancelled your registration for ${event.ename || 'this event'}.`
+      case REGISTRATION_STATUS.WAITLISTED:
+        return `You are currently waitlisted for ${event.ename || 'this event'}.`
+      default: 
+        return `Already registered for ${event.ename || 'this event'}!`
+    }
+  }
+
   const renderFormQuestions = () => {
-    if (isEventFull()) {
+    const reg = userAlreadyRegistered()
+    if (reg) {
       return (
         <Fragment>
           <div style={styles.section}>
             <Typography className={classes.deadlineText}>
-              Event is Full
+              {renderRegMessage(reg.registrationStatus)}
             </Typography>
-            <Typography>
-              We sincerely apologize, {event.ename || 'this event'} is no longer taking registrations. Please be on the lookout for our other events throughout the year!
-            </Typography>
+            {reg.registrationStatus === REGISTRATION_STATUS.REGISTERED &&
+              <Button variant="contained" color="primary" onClick={() => changeRegStatus(REGISTRATION_STATUS.CANCELLED)}>
+                Cancel Registration
+              </Button>
+            }
+            {reg.registrationStatus === REGISTRATION_STATUS.CANCELLED &&
+              <Button variant="contained" color="primary" onClick={() => changeRegStatus(REGISTRATION_STATUS.REGISTERED)}>
+                Re-register
+              </Button>
+            }
           </div>
         </Fragment>
       )
@@ -593,12 +660,15 @@ const FormRegister = (props) => {
         </Fragment>
       )
     }
-    if (userAlreadyRegistered()) {
+    if (isEventFull()) {
       return (
         <Fragment>
           <div style={styles.section}>
             <Typography className={classes.deadlineText}>
-              Already registered for {event.ename || 'this event'}!
+              Event is Full
+            </Typography>
+            <Typography>
+              We sincerely apologize, {event.ename || 'this event'} is no longer taking registrations. Please be on the lookout for our other events throughout the year!
             </Typography>
           </div>
         </Fragment>
