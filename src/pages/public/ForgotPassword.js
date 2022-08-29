@@ -150,7 +150,8 @@ function ForgotPassword() {
       });
   };
 
-  const resetPasswordSubmit = () => {
+  const resetPasswordSubmit = (e) => {
+    e.preventDefault();
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
     const verificationCodeError = validateVerificationCode(verificationCode);
@@ -193,7 +194,7 @@ function ForgotPassword() {
     if (event.key === "Enter") {
       event.preventDefault();
       if (isEmailSent) {
-        resetPasswordSubmit();
+        resetPasswordSubmit(event);
       } else {
         sendResetEmail();
       }
@@ -324,7 +325,7 @@ function ForgotPassword() {
                 />
                 <Button
                   type="submit"
-                  onClick={() => resetPasswordSubmit()}
+                  onClick={(e) => resetPasswordSubmit(e)}
                   style={styles.recoverButton}
                 >
                   Reset Password
