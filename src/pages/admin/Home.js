@@ -36,6 +36,11 @@ const useStyles = makeStyles({
     flex: "50%",
     textAlign: "left",
   },
+  passedCard: {
+    width: "45%",
+    margin: "15px 30px 15px 0",
+    opacity: "50%"
+  }
 });
 
 function AdminHome(props) {
@@ -93,10 +98,15 @@ function AdminHome(props) {
     handleClose();
   };
 
+  const isEventPassed = (event) => {
+    const startDate = new Date(event.startDate).getTime()
+    return startDate < new Date().getTime()
+  }
+
   function createEventCard(event) {
     const image = event.imageUrl || require("assets/placeholder.jpg");
     return (
-      <Card className={classes.card} key={event.id + event.year}>
+      <Card className={isEventPassed(event) ? classes.passedCard : classes.card} key={event.id + event.year}>
         <CardActionArea
           onClick={() => handleClickViewEvent(event.id, event.year)}
         >
