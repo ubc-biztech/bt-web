@@ -627,9 +627,12 @@ const FormRegister = (props) => {
               {renderRegMessage(reg.registrationStatus)}
             </Typography>
             {reg.registrationStatus === REGISTRATION_STATUS.REGISTERED &&
-              <Button variant="contained" color="primary" onClick={() => changeRegStatus(REGISTRATION_STATUS.CANCELLED)}>
-                Cancel Registration
-              </Button>
+              <div>
+                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.email};${currEvent.id};${currEvent.year}`}/>
+                <Button variant="contained" color="primary" onClick={() => changeRegStatus(REGISTRATION_STATUS.CANCELLED)}>
+                  Cancel Registration
+                </Button>
+              </div>
             }
             {reg.registrationStatus === REGISTRATION_STATUS.CANCELLED &&
               <Button variant="contained" color="primary" onClick={() => changeRegStatus(REGISTRATION_STATUS.REGISTERED)}>
