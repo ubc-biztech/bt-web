@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { fetchBackend } from "utils";
-import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
+import { ArrowBack as arrowBackIcon } from "@material-ui/icons";
 import { COLORS } from "../../../constants/_constants/theme";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 import LoginAccess from "components/LoginAccess/LoginAccess";
@@ -54,6 +54,13 @@ const styles = {
   },
   submitSection: {
     padding: "2rem"
+  },
+  center: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: "auto",
+    width: " 100%"
   }
 };
 
@@ -69,9 +76,12 @@ const useStyles = makeStyles((theme) => ({
   uploadedFile: {
     marginBottom: 12
   },
-  ArrowBackIcon: {
+  arrowBackIcon: {
     color: COLORS.WHITE,
     fontSize: "40px"
+  },
+  cancelButton: {
+    background: COLORS.LIGHT_RED
   },
   deadlineText: {
     fontWeight: "bold",
@@ -692,19 +702,26 @@ const FormRegister = (props) => {
             </Typography>
             {reg.registrationStatus === REGISTRATION_STATUS.REGISTERED && (
               <div>
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.email};${currEvent.id};${currEvent.year}`}
-                  width="200px"
-                  alt="registration QR code"
-                />
-                <Typography></Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => changeRegStatus(REGISTRATION_STATUS.CANCELLED)}
-                >
-                  Cancel Registration
-                </Button>
+                <div style={styles.center}>
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.email};${currEvent.id};${currEvent.year}`}
+                    width="200px"
+                    alt="registration QR code"
+                  />
+                </div>
+                <Typography className={classes.deadlineText}></Typography>
+                <div style={styles.center}>
+                  <Button
+                    variant="contained"
+                    // color="primary"
+                    className={classes.cancelButton}
+                    onClick={() =>
+                      changeRegStatus(REGISTRATION_STATUS.CANCELLED)
+                    }
+                  >
+                    Cancel Registration
+                  </Button>
+                </div>
               </div>
             )}
             {reg.registrationStatus === REGISTRATION_STATUS.CANCELLED && (
@@ -786,9 +803,9 @@ const FormRegister = (props) => {
 
   return (
     <>
-      <ArrowBackIcon
+      <arrowBackIcon
         cursor="pointer"
-        className={classes.ArrowBackIcon}
+        className={classes.arrowBackIcon}
         onClick={() => history.push("/events")}
       />
       <Helmet>
