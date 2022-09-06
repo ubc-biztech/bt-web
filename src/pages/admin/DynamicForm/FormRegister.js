@@ -12,12 +12,12 @@ import {
   Select,
   TextField,
   Tooltip,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import CloudUpload from '@material-ui/icons/CloudUpload';
+import CloudUpload from "@material-ui/icons/CloudUpload";
 import React, { useEffect, useState, useCallback, Fragment } from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { fetchBackend } from "utils";
@@ -26,9 +26,7 @@ import { COLORS } from "../../../constants/_constants/theme";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 import LoginAccess from "components/LoginAccess/LoginAccess";
 import Loading from "pages/Loading";
-import {
-  REGISTRATION_STATUS,
-} from "constants/index";
+import { REGISTRATION_STATUS } from "constants/index";
 
 const styles = {
   // Container for custom form image
@@ -57,6 +55,12 @@ const styles = {
   submitSection: {
     padding: "2rem"
   },
+  center: {
+    textAlign: "center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  }
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10
   },
   uploadedFile: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   ArrowBackIcon: {
     color: COLORS.WHITE,
@@ -78,15 +82,15 @@ const useStyles = makeStyles((theme) => ({
   deadlineText: {
     fontWeight: "bold",
     fontSize: "16px",
-    marginBottom: 8,
+    marginBottom: 8
   },
   regAlert: {
     fontWeight: "bold",
     backgroundColor: "#E38424",
     color: "white",
     maxWidth: 552,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    marginLeft: "auto",
+    marginRight: "auto"
   }
 }));
 
@@ -94,8 +98,10 @@ const FormRegister = (props) => {
   const { user, event, userRegisteredEvents } = props;
   const history = useHistory();
   const [currEvent, setCurrEvent] = useState(event);
-  const [registeredEvents, setRegisteredEvents] = useState(userRegisteredEvents)
-  const [regAlert, setRegAlert] = useState(null)
+  const [registeredEvents, setRegisteredEvents] = useState(
+    userRegisteredEvents
+  );
+  const [regAlert, setRegAlert] = useState(null);
   const basicQuestions = [
     {
       questionType: "TEXT",
@@ -118,49 +124,54 @@ const FormRegister = (props) => {
     {
       questionType: "SELECT",
       question: "Year Level",
-      choices: "1st Year,2nd Year,3rd Year,4th Year,5+ Year,Other,Not Applicable",
-      required: true,
+      choices:
+        "1st Year,2nd Year,3rd Year,4th Year,5+ Year,Other,Not Applicable",
+      required: true
     },
     {
       questionType: "SELECT",
       question: "Faculty",
-      choices: "Arts,Commerce,Science,Engineering,Kinesiology,Land and Food Systems,Forestry,Other,Not Applicable",
-      required: true,
+      choices:
+        "Arts,Commerce,Science,Engineering,Kinesiology,Land and Food Systems,Forestry,Other,Not Applicable",
+      required: true
     },
     {
       questionType: "TEXT",
       question: "Major/Specialization",
       choices: "",
-      required: true,
+      required: true
     },
     {
       questionType: "SELECT",
       question: "Preferred Pronouns",
-      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
-      required: true,
+      choices:
+        "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+      required: true
     },
     {
       questionType: "SELECT",
       question: "Any dietary restrictions?",
       choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
-      required: true,
+      required: true
     },
     {
       questionType: "SELECT",
       question: "How did you hear about this event?",
-      choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
-      required: true,
-    },
-  ]
+      choices:
+        "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
+      required: true
+    }
+  ];
 
-
-  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required,questionId}) => ({
-        questionType: type,
-        question: label,
-        choices: choices,
-        required: required,
-        questionId: questionId,
-    }))
+  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(
+    ({ type, label, choices, required, questionId }) => ({
+      questionType: type,
+      question: label,
+      choices: choices,
+      required: required,
+      questionId: questionId
+    })
+  );
 
   const formData = {
     image_url: currEvent.imageUrl || "",
@@ -173,14 +184,14 @@ const FormRegister = (props) => {
     location: currEvent.elocation || "",
     deadline: currEvent.deadline ? new Date(currEvent.deadline) : new Date(),
     questions: basicQuestions.concat(parsedRegistrationQuestions || [])
-  }
+  };
 
   const classes = useStyles();
 
   const [refresh, setRefresh] = useState(false);
 
   const { id: eventId, year: eventYear } = useParams();
-  
+
   const [responseData, setResponseData] = useState(
     Array.from(Array(formData.questions.length))
   ); // index of answers correspond to questions array index
@@ -191,44 +202,62 @@ const FormRegister = (props) => {
   useEffect(() => {
     const fetchEvent = async () => {
       if (!registeredEvents) {
-        const registered = await fetchBackend(`/registrations?email=${user?.email}`, 'GET')
-        setRegisteredEvents(registered)
+        const registered = await fetchBackend(
+          `/registrations?email=${user?.email}`,
+          "GET"
+        );
+        setRegisteredEvents(registered);
       }
       if (!currEvent) {
-        const eventData = await fetchBackend(`/events/${eventId}/${eventYear}`, "GET", undefined)
-        setCurrEvent(eventData)
+        const eventData = await fetchBackend(
+          `/events/${eventId}/${eventYear}`,
+          "GET",
+          undefined
+        );
+        setCurrEvent(eventData);
       }
-    }
-    fetchEvent()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    };
+    fetchEvent();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (user) {
-      const newData = responseData.slice()
-      newData[0] = user.email
-      newData[1] = user.fname
-      newData[2] = user.lname
-      newData[3] = user.year
-      newData[4] = user.faculty
-      newData[5] = user.major
-      newData[6] = user.gender
-      newData[7] = user.diet
-      setResponseData(newData)
+      const newData = responseData.slice();
+      newData[0] = user.email;
+      newData[1] = user.fname;
+      newData[2] = user.lname;
+      newData[3] = user.year;
+      newData[4] = user.faculty;
+      newData[5] = user.major;
+      newData[6] = user.gender;
+      newData[7] = user.diet;
+      setResponseData(newData);
     }
-  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (event) {
-      const remaining = event.capac - (event.counts.registeredCount + event.counts.checkedInCount)
+      const remaining =
+        event.capac -
+        (event.counts.registeredCount + event.counts.checkedInCount);
       if (remaining > 0 && remaining <= 20) {
-        setRegAlert(<Alert severity="error" className={classes.regAlert}>Warning: {event.ename || 'this event'} only has {remaining} spot{remaining > 1 ? 's' : ''} left!</Alert>)
+        setRegAlert(
+          <Alert severity="error" className={classes.regAlert}>
+            Warning: {event.ename || "this event"} only has {remaining} spot
+            {remaining > 1 ? "s" : ""} left!
+          </Alert>
+        );
       } else if (remaining <= 0 && !user) {
-        setRegAlert(<Alert severity="error" className={classes.regAlert}>Warning: {event.ename || 'this event'} is full!</Alert>)
+        setRegAlert(
+          <Alert severity="error" className={classes.regAlert}>
+            Warning: {event.ename || "this event"} is full!
+          </Alert>
+        );
       } else {
-        setRegAlert(null)
+        setRegAlert(null);
       }
     }
-  }, [event]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [event]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateField = useCallback(
     (index, value) => {
@@ -268,24 +297,36 @@ const FormRegister = (props) => {
     [refresh, responseData]
   );
 
-  const uploadFile = useCallback (
+  const uploadFile = useCallback(
     (i, e) => {
-      if (e.target.files.length === 0) return
-      const file = e.target.files[0] // the file
-      const reader = new FileReader() // this for convert to Base64 
-      reader.readAsDataURL(e.target.files[0]) // start conversion...
-      reader.onload = function (e) { // .. once finished..
-        const rawLog = reader.result.split(',')[1]; // extract only the file data part
-        const dataSend = { dataReq: { data: rawLog, name: file.name, type: file.type }, fname: "uploadFilesToGoogleDrive" }; // preapre info to send to API
-        fetch('https://script.google.com/macros/s/AKfycbyX8joJ5WeyqZxrUh-iS-Cay17N3ygO-YMuoNVaBN5o4jl6Cy0k9X0JcxRrwiWy1OEoiQ/exec', // your AppsScript URL
-          { method: "POST", body: JSON.stringify(dataSend) }) // send to Api
-          .then(res => res.json()).then((e) => {
-            updateField(i, e.url)
-          }).catch(e => alert('An error occurred while trying to upload the file. Please try again.'))
-      }
+      if (e.target.files.length === 0) return;
+      const file = e.target.files[0]; // the file
+      const reader = new FileReader(); // this for convert to Base64
+      reader.readAsDataURL(e.target.files[0]); // start conversion...
+      reader.onload = function (e) {
+        // .. once finished..
+        const rawLog = reader.result.split(",")[1]; // extract only the file data part
+        const dataSend = {
+          dataReq: { data: rawLog, name: file.name, type: file.type },
+          fname: "uploadFilesToGoogleDrive"
+        }; // preapre info to send to API
+        fetch(
+          "https://script.google.com/macros/s/AKfycbyX8joJ5WeyqZxrUh-iS-Cay17N3ygO-YMuoNVaBN5o4jl6Cy0k9X0JcxRrwiWy1OEoiQ/exec", // your AppsScript URL
+          { method: "POST", body: JSON.stringify(dataSend) }
+        ) // send to Api
+          .then((res) => res.json())
+          .then((e) => {
+            updateField(i, e.url);
+          })
+          .catch((e) =>
+            alert(
+              "An error occurred while trying to upload the file. Please try again."
+            )
+          );
+      };
     },
     [updateField]
-  )
+  );
 
   const loadQuestions = () => {
     const returnArr = [];
@@ -347,8 +388,8 @@ const FormRegister = (props) => {
                 labelId="q-type"
                 variant="outlined"
                 margin="dense"
-                defaultValue={responseData[i] || ''}
-                value={responseData[i] || ''}
+                defaultValue={responseData[i] || ""}
+                value={responseData[i] || ""}
                 onChange={(e) => updateField(i, e.target.value)}
               >
                 {choicesArr.map((item) => {
@@ -372,8 +413,11 @@ const FormRegister = (props) => {
               {question}
               {question && required && "*"}
             </p>
-            {question === 'Email Address' ? (
-              <Tooltip title="If you would like to change your account's email address, please contact an executive for support." arrow>
+            {question === "Email Address" ? (
+              <Tooltip
+                title="If you would like to change your account's email address, please contact an executive for support."
+                arrow
+              >
                 <TextField
                   error={!!responseError[i]}
                   helperText={!!responseError[i] && responseError[i]}
@@ -403,45 +447,55 @@ const FormRegister = (props) => {
           </div>
         );
       } else if (questionType === "UPLOAD") {
-          returnArr.push(
-            <div style={{ paddingBottom: "1.5rem" }}>
-              <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
-                {question}
-                {question && required && "*"}
-              </p>
-              <FormControl
-                error={!!responseError[i]}
-                helperText={!!responseError[i] && responseError[i]}
-              >
-                <Typography className={classes.uploadedFile}>
-                  {responseData[i] ? (
-                    <a
-                      href={responseData[i]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ width: '100%', wordWrap: 'break-word' }}
-                    >
-                      {responseData[i]}
-                    </a>
-                  ) : (
-                    "No file uploaded yet!"
-                  )}
-                </Typography>
-                <Button variant="contained" color="primary" component="label" style={{ width: '150px' }}>
-                  {responseData[i] ? "Reupload" : "Upload"}
-                  <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
-                  <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
-                </Button>
-                {!!responseError[i] && (
-                  <FormHelperText>{responseError[i]}</FormHelperText>
+        returnArr.push(
+          <div style={{ paddingBottom: "1.5rem" }}>
+            <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+              {question}
+              {question && required && "*"}
+            </p>
+            <FormControl
+              error={!!responseError[i]}
+              helperText={!!responseError[i] && responseError[i]}
+            >
+              <Typography className={classes.uploadedFile}>
+                {responseData[i] ? (
+                  <a
+                    href={responseData[i]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ width: "100%", wordWrap: "break-word" }}
+                  >
+                    {responseData[i]}
+                  </a>
+                ) : (
+                  "No file uploaded yet!"
                 )}
-              </FormControl>
-            </div>
-          )
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                component="label"
+                style={{ width: "150px" }}
+              >
+                {responseData[i] ? "Reupload" : "Upload"}
+                <CloudUpload style={{ color: "black", marginLeft: 6 }} />
+                <input
+                  hidden
+                  type="file"
+                  accept="application/pdf"
+                  onChange={(e) => uploadFile(i, e)}
+                />
+              </Button>
+              {!!responseError[i] && (
+                <FormHelperText>{responseError[i]}</FormHelperText>
+              )}
+            </FormControl>
+          </div>
+        );
       }
     }
-    return returnArr
-  }
+    return returnArr;
+  };
 
   const validifyForm = () => {
     // currently only checks "required" field of question object in questions array
@@ -490,12 +544,14 @@ const FormRegister = (props) => {
 
   const handleSubmit = () => {
     if (isValidSubmission()) {
-      const dynamicResponses = {}
+      const dynamicResponses = {};
       for (let i = basicQuestions.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
-          dynamicResponses[formData.questions[i].questionId] = responseData[i]?.join(', ')
+          dynamicResponses[formData.questions[i].questionId] = responseData[
+            i
+          ]?.join(", ");
         } else {
-          dynamicResponses[formData.questions[i].questionId] = responseData[i]
+          dynamicResponses[formData.questions[i].questionId] = responseData[i];
         }
       }
       const registrationBody = {
@@ -512,14 +568,17 @@ const FormRegister = (props) => {
           major: responseData[5],
           gender: responseData[6],
           diet: responseData[7],
-          heardFrom: responseData[8],
+          heardFrom: responseData[8]
         },
-        dynamicResponses,
-      }
-      fetchBackend('/registrations', 'POST', registrationBody, false)
-        .then(() => {
-          history.push(`/event/${currEvent.id}/${currEvent.year}/register/success`)
-        })
+        dynamicResponses
+      };
+      fetchBackend("/registrations", "POST", registrationBody, false).then(
+        () => {
+          history.push(
+            `/event/${currEvent.id}/${currEvent.year}/register/success`
+          );
+        }
+      );
     } else {
       console.error("Form errors");
     }
@@ -533,19 +592,25 @@ const FormRegister = (props) => {
     };
     try {
       await fetchBackend(`/registrations/${id}`, "PUT", body);
-      alert('Successfully updated registration status! Please check your inbox (including Spam/Promotions) for an email.')
-      window.location.reload()
+      alert(
+        "Successfully updated registration status! Please check your inbox (including Spam/Promotions) for an email."
+      );
+      window.location.reload();
     } catch (e) {
-      alert('An error has occurred. Please contact a BizTech exec for support.')
+      alert(
+        "An error has occurred. Please contact a BizTech exec for support."
+      );
     }
-  }
+  };
 
   const changeRegStatus = (newStatus) => {
     switch (newStatus) {
       case REGISTRATION_STATUS.REGISTERED:
         if (
           window.confirm(
-            `Do you want to re-register for ${event.ename || 'this event'}?\nYou will be sent an email confirming your registration.`
+            `Do you want to re-register for ${
+              event.ename || "this event"
+            }?\nYou will be sent an email confirming your registration.`
           )
         ) {
           updateUserRegistrationStatus(
@@ -557,7 +622,9 @@ const FormRegister = (props) => {
       case REGISTRATION_STATUS.CANCELLED:
         if (
           window.confirm(
-            `Are you sure you would cancel your spot at ${event.ename || 'this event'}?\nYou will be sent an email regarding your cancellation.`
+            `Are you sure you would cancel your spot at ${
+              event.ename || "this event"
+            }?\nYou will be sent an email regarding your cancellation.`
           )
         ) {
           updateUserRegistrationStatus(
@@ -569,56 +636,59 @@ const FormRegister = (props) => {
       default:
         return {};
     }
-  }
+  };
 
   const isEventFull = () => {
-    return event.capac - (event.counts?.registeredCount + event.counts?.checkedInCount) <= 0
-  }
+    return (
+      event.capac -
+        (event.counts?.registeredCount + event.counts?.checkedInCount) <=
+      0
+    );
+  };
 
   const isDeadlinePassed = () => {
-    const deadline = new Date(event.deadline).getTime()
-    return deadline < new Date().getTime()
-  }
+    const deadline = new Date(event.deadline).getTime();
+    return deadline < new Date().getTime();
+  };
 
-  const userAlreadyRegistered = () => (
-    registeredEvents?.data.find((e) => (
-      e['eventID;year'] === event.id + ';' + event.year
-    ))
-  )
+  const userAlreadyRegistered = () =>
+    registeredEvents?.data.find(
+      (e) => e["eventID;year"] === event.id + ";" + event.year
+    );
 
   if (!user) {
     return (
       <Fragment>
         {regAlert}
         <LoginAccess
-          header='To register for our events, please sign in.'
+          header="To register for our events, please sign in."
           redirect={`/event/${eventId}/${eventYear}/register`}
         />
       </Fragment>
-    )
+    );
   }
 
   if (!currEvent && !userRegisteredEvents) {
-    return (
-      <Loading
-        message='Loading event...'
-      />
-    )
+    return <Loading message="Loading event..." />;
   }
 
   const renderRegMessage = (status) => {
     switch (status) {
       case REGISTRATION_STATUS.CANCELLED:
-        return `You have cancelled your registration for ${event.ename || 'this event'}.`
+        return `You have cancelled your registration for ${
+          event.ename || "this event"
+        }.`;
       case REGISTRATION_STATUS.WAITLISTED:
-        return `You are currently waitlisted for ${event.ename || 'this event'}.`
-      default: 
-        return `Already registered for ${event.ename || 'this event'}!`
+        return `You are currently waitlisted for ${
+          event.ename || "this event"
+        }.`;
+      default:
+        return `Already registered for ${event.ename || "this event"}!`;
     }
-  }
+  };
 
   const renderFormQuestions = () => {
-    const reg = userAlreadyRegistered()
+    const reg = userAlreadyRegistered();
     if (reg) {
       return (
         <Fragment>
@@ -626,22 +696,35 @@ const FormRegister = (props) => {
             <Typography className={classes.deadlineText}>
               {renderRegMessage(reg.registrationStatus)}
             </Typography>
-            {reg.registrationStatus === REGISTRATION_STATUS.REGISTERED &&
-              <div>
-                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.email};${currEvent.id};${currEvent.year}`}/>
-                <Button variant="contained" color="primary" onClick={() => changeRegStatus(REGISTRATION_STATUS.CANCELLED)}>
+            {reg.registrationStatus === REGISTRATION_STATUS.REGISTERED && (
+              <div className="center">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.email};${currEvent.id};${currEvent.year}`}
+                  width="200px"
+                  alt="registration QR code"
+                />
+                <Typography></Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => changeRegStatus(REGISTRATION_STATUS.CANCELLED)}
+                >
                   Cancel Registration
                 </Button>
               </div>
-            }
-            {reg.registrationStatus === REGISTRATION_STATUS.CANCELLED &&
-              <Button variant="contained" color="primary" onClick={() => changeRegStatus(REGISTRATION_STATUS.REGISTERED)}>
+            )}
+            {reg.registrationStatus === REGISTRATION_STATUS.CANCELLED && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => changeRegStatus(REGISTRATION_STATUS.REGISTERED)}
+              >
                 Re-register
               </Button>
-            }
+            )}
           </div>
         </Fragment>
-      )
+      );
     }
     if (isDeadlinePassed()) {
       return (
@@ -651,17 +734,20 @@ const FormRegister = (props) => {
               Deadline Passed
             </Typography>
             <Typography>
-              The registration deadline for {event.ename || 'this event'} has already passed on {formData.deadline.toLocaleString(navigator.language, {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute:'2-digit'
-            })}.
+              The registration deadline for {event.ename || "this event"} has
+              already passed on{" "}
+              {formData.deadline.toLocaleString(navigator.language, {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+              })}
+              .
             </Typography>
           </div>
         </Fragment>
-      )
+      );
     }
     if (isEventFull()) {
       return (
@@ -671,25 +757,28 @@ const FormRegister = (props) => {
               Event is Full
             </Typography>
             <Typography>
-              We sincerely apologize, {event.ename || 'this event'} is no longer taking registrations. Please be on the lookout for our other events throughout the year!
+              We sincerely apologize, {event.ename || "this event"} is no longer
+              taking registrations. Please be on the lookout for our other
+              events throughout the year!
             </Typography>
           </div>
         </Fragment>
-      )
+      );
     }
     return (
       <Fragment>
-          <div style={styles.section}>
-            <Typography style={{ fontWeight: 'bold' }}>
-              Registration open now until {formData.deadline.toLocaleString(navigator.language, {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute:'2-digit'
+        <div style={styles.section}>
+          <Typography style={{ fontWeight: "bold" }}>
+            Registration open now until{" "}
+            {formData.deadline.toLocaleString(navigator.language, {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit"
             })}
-            </Typography>
-          </div>
+          </Typography>
+        </div>
         <div style={styles.section}>{loadQuestions()}</div>
         <div style={styles.divider}></div>
         <div style={styles.submitSection}>
@@ -698,8 +787,8 @@ const FormRegister = (props) => {
           </Button>
         </div>
       </Fragment>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -712,7 +801,7 @@ const FormRegister = (props) => {
         <title>Register for {formData.name}</title>
       </Helmet>
       <Container maxWidth="sm">
-      {regAlert}
+        {regAlert}
         <Paper>
           {/* Image */}
           <div style={styles.imageContainer}>
@@ -724,7 +813,9 @@ const FormRegister = (props) => {
           </div>
           <div style={{ ...styles.section, ...styles.divider }}>
             <h2 style={{ marginTop: 0 }}>{formData.name}</h2>
-            <p style={{ whiteSpace: "pre-line" }}>{formData.description.split("<br/>").join("\n")}</p>
+            <p style={{ whiteSpace: "pre-line" }}>
+              {formData.description.split("<br/>").join("\n")}
+            </p>
           </div>
           {renderFormQuestions()}
         </Paper>
@@ -735,8 +826,8 @@ const FormRegister = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    userRegisteredEvents: state.userState.userRegisteredEvents.data,
-  }
-}
+    userRegisteredEvents: state.userState.userRegisteredEvents.data
+  };
+};
 
 export default connect(mapStateToProps)(FormRegister);
