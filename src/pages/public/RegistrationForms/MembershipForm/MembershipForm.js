@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MembershipForm(props) {
   const classes = useStyles();
 
-  const { isSubmitting, handleSubmit, memberType, setMemberType, topics, setTopics, errors } = props;
+  const { isSubmitting, handleSubmit, memberType, setMemberType, topics, setTopics, values, errors } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -338,7 +338,16 @@ export default function MembershipForm(props) {
           />
         </Grid>
 
-
+        {(values.heard_from === 'Events' || values.heard_from === 'Boothing' || values.heard_from === 'Other') && (
+          <Grid item xs={12}>
+            <CustomTextField
+              {...props}
+              label="Please provide some more details of how you heard of BizTech (e.g. which event, boothing day, etc..) *"
+              groupName="heardFromSpecify"
+              autoComplete="heardFromSpecify"
+            />
+          </Grid>
+        )}
       </Grid>
       <br />
       {/* {memberType === MEMBER_TYPES.UBC && (

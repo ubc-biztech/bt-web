@@ -67,6 +67,10 @@ const MembershipFormContainer = (props) => {
     last_name: Yup.string().required('Last name is required'),
     education: Yup.string().required('Education is required'),
     prev_member: Yup.string().required('Please select Yes/No'),
+    heardFromSpecify: Yup.string().when("heard_from", {
+      is: val => (val && (val === 'Events' || val === 'Boothing' || val === 'Other')),
+      then: Yup.string().required('Please fill in this field')
+    }),
   })
 
   const UBCValidationSchema = Yup.object({
@@ -84,6 +88,10 @@ const MembershipFormContainer = (props) => {
       'International or domestic student indication is required'
     ),
     prev_member: Yup.string().required('Please select Yes/No'),
+    heardFromSpecify: Yup.string().when("heard_from", {
+      is: val => (val && (val === 'Events' || val === 'Boothing' || val === 'Other')),
+      then: Yup.string().required('Please fill in this field')
+    }),
   })
 
   const UniversityValidationSchema = Yup.object({
@@ -95,6 +103,10 @@ const MembershipFormContainer = (props) => {
     year: Yup.string().required('Level of study is required'),
     major: Yup.string().required('Major is required'),
     prev_member: Yup.string().required('Please select Yes/No'),
+    heardFromSpecify: Yup.string().when("heard_from", {
+      is: val => (val && (val === 'Events' || val === 'Boothing' || val === 'Other')),
+      then: Yup.string().required('Please fill in this field')
+    }),
   })
 
   const HighSchoolValidationSchema = Yup.object({
@@ -104,6 +116,10 @@ const MembershipFormContainer = (props) => {
     year: Yup.string().required('Level of study is required'),
     high_school: Yup.string().required('High School is required'),
     prev_member: Yup.string().required('Please select Yes/No'),
+    heardFromSpecify: Yup.string().when("heard_from", {
+      is: val => (val && (val === 'Events' || val === 'Boothing' || val === 'Other')),
+      then: Yup.string().required('Please fill in this field')
+    }),
   })
   
   const initialValues = {
@@ -120,6 +136,7 @@ const MembershipFormContainer = (props) => {
     international: '',
     university: '',
     high_school: '',
+    heardFromSpecify: '',
   }
 
   async function submitValues (values) {
@@ -137,6 +154,7 @@ const MembershipFormContainer = (props) => {
       international,
       diet,
       heard_from,
+      heardFromSpecify,
       university,
       high_school
     } = values
@@ -163,6 +181,7 @@ const MembershipFormContainer = (props) => {
       international: memberType === 'UBC' ? international : '',
       topics: topics.slice(0, -1),
       heard_from,
+      heardFromSpecify: (heard_from === 'Events' || heard_from === 'Boothing' || heard_from === 'Other') ? heardFromSpecify : '',
       university: memberType === 'UNI' ? university : '',
       high_school: memberType === 'HS' ? high_school : '',
     }
