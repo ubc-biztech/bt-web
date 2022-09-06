@@ -54,12 +54,6 @@ const styles = {
   },
   submitSection: {
     padding: "2rem"
-  },
-  center: {
-    textAlign: "center",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
   }
 };
 
@@ -697,7 +691,7 @@ const FormRegister = (props) => {
               {renderRegMessage(reg.registrationStatus)}
             </Typography>
             {reg.registrationStatus === REGISTRATION_STATUS.REGISTERED && (
-              <div className="center">
+              <div>
                 <img
                   src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.email};${currEvent.id};${currEvent.year}`}
                   width="200px"
