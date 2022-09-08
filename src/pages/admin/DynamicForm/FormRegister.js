@@ -153,13 +153,14 @@ const FormRegister = (props) => {
     },
   ]
 
-
-  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required,questionId}) => ({
+  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required,questionId,questionImageUrl,charLimit}) => ({
         questionType: type,
         question: label,
         choices: choices,
         required: required,
         questionId: questionId,
+        questionImageUrl: questionImageUrl,
+        charLimit: charLimit,
     }))
 
   const formData = {
@@ -290,7 +291,7 @@ const FormRegister = (props) => {
   const loadQuestions = () => {
     const returnArr = [];
     for (let i = 0; i < formData.questions.length; i++) {
-      const { question, questionType, required, choices } = formData.questions[
+      const { question, questionType, required, choices, questionImageUrl, charLimit } = formData.questions[
         i
       ];
       const choicesArr = choices ? choices.split(",") : [];
@@ -301,6 +302,15 @@ const FormRegister = (props) => {
               {question}
               {question && required && "*"}
             </p>
+            {questionImageUrl && (
+              <div style={styles.imageContainer}>
+                <img
+                  style={styles.image}
+                  src={questionImageUrl || ImagePlaceholder}
+                  alt="Registration Form"
+                />
+              </div>
+            )}
             <FormControl error={!!responseError[i]}>
               <FormGroup>
                 {choicesArr.map((item) => {
@@ -338,6 +348,15 @@ const FormRegister = (props) => {
               {question}
               {question && required && "*"}
             </p>
+            {questionImageUrl && (
+              <div style={styles.imageContainer}>
+                <img
+                  style={styles.image}
+                  src={questionImageUrl || ImagePlaceholder}
+                  alt="Registration Form"
+                />
+              </div>
+            )}
             <FormControl
               error={!!responseError[i]}
               helperText={!!responseError[i] && responseError[i]}
@@ -372,6 +391,15 @@ const FormRegister = (props) => {
               {question}
               {question && required && "*"}
             </p>
+            {questionImageUrl && (
+              <div style={styles.imageContainer}>
+                <img
+                  style={styles.image}
+                  src={questionImageUrl || ImagePlaceholder}
+                  alt="Registration Form"
+                />
+              </div>
+            )}
             {question === 'Email Address' ? (
               <Tooltip title="If you would like to change your account's email address, please contact an executive for support." arrow>
                 <TextField
@@ -394,6 +422,10 @@ const FormRegister = (props) => {
                 helperText={!!responseError[i] && responseError[i]}
                 className={classes.textfield}
                 fullWidth
+                multiline
+                inputProps={{
+                  maxLength: charLimit 
+                }}
                 margin="dense"
                 variant="outlined"
                 value={responseData[i]}
@@ -409,6 +441,15 @@ const FormRegister = (props) => {
                 {question}
                 {question && required && "*"}
               </p>
+              {questionImageUrl && (
+              <div style={styles.imageContainer}>
+                <img
+                  style={styles.image}
+                  src={questionImageUrl || ImagePlaceholder}
+                  alt="Registration Form"
+                />
+              </div>
+            )}
               <FormControl
                 error={!!responseError[i]}
                 helperText={!!responseError[i] && responseError[i]}
