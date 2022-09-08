@@ -11,6 +11,24 @@ import {
   Button,
 } from "@material-ui/core";
 import CloudUpload from '@material-ui/icons/CloudUpload';
+import ImagePlaceholder from "../../../../assets/placeholder.jpg";
+
+const styles = {
+  imageContainer: {
+    boxSizing: "border-box",
+    padding: "1rem",
+    display: "flex",
+    justifyContent: "stretch",
+    position: "relative",
+  },
+  image: {
+    background: "#EEEEEE",
+    borderRadius: 5,
+    width: "100%",
+    height: 300,
+    objectFit: "cover",
+  },
+}
 
 // LIVE PREVIEW QUESTION component
 const QuestionPreview = (props) => {
@@ -29,7 +47,7 @@ const QuestionPreview = (props) => {
   }));
   const classes = useStyles();
 
-  const { type, label, choices, required } = props;
+  const { type, label, choices, questionImageUrl, required } = props;
 
   const choicesArr = choices ? choices.split(",") : [];
 
@@ -42,6 +60,15 @@ const QuestionPreview = (props) => {
             {label}
             {label && required && "*"}
           </p>
+          {questionImageUrl && (
+            <div style={styles.imageContainer}>
+              <img
+                style={styles.image}
+                src={questionImageUrl || ImagePlaceholder}
+                alt="Registration Form"
+              />
+            </div>
+          )}
           <FormGroup>
             {choicesArr.map((item) => {
               return (
@@ -64,6 +91,15 @@ const QuestionPreview = (props) => {
             {label}
             {label && required && "*"}
           </p>
+          {questionImageUrl && (
+            <div style={styles.imageContainer}>
+              <img
+                style={styles.image}
+                src={questionImageUrl || ImagePlaceholder}
+                alt="Registration Form"
+              />
+            </div>
+          )}
           <Select
             className={classes.select}
             labelId="q-type"
@@ -89,9 +125,19 @@ const QuestionPreview = (props) => {
             {label}
             {label && required && "*"}
           </p>
+          {questionImageUrl && (
+            <div style={styles.imageContainer}>
+              <img
+                style={styles.image}
+                src={questionImageUrl || ImagePlaceholder}
+                alt="Registration Form"
+              />
+            </div>
+          )}
           <TextField
             className={classes.textfield}
             fullWidth
+            multiline
             margin="dense"
             variant="outlined"
           />
@@ -106,6 +152,15 @@ const QuestionPreview = (props) => {
             {label}
             {label && required && "*"}
           </p>
+          {questionImageUrl && (
+            <div style={styles.imageContainer}>
+              <img
+                style={styles.image}
+                src={questionImageUrl || ImagePlaceholder}
+                alt="Registration Form"
+              />
+            </div>
+          )}
           <Typography className={classes.uploadedFile}>
             No file uploaded yet!
           </Typography>
