@@ -486,19 +486,23 @@ const dummyData = [
     type: "TEXT",
     label: "How old are you",
     choices: "",
-    required: true
+    required: true,
+    charLimit: 100,
+    questionImageUrl: "",
   },
   {
     type: "CHECKBOX",
     label: "Which college do you attend?",
     choices: "UBC,SFU,KPU,Douglas",
-    required: true
+    required: true,
+    questionImageUrl: "",
   },
   {
     type: "SELECT",
     label: "How interested are you in this event?",
     choices: "1,2,3,4,5",
-    required: true
+    required: true,
+    questionImageUrl: "",
   }
 ];
 

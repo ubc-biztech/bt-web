@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Checkbox, MenuItem, Select, TextField } from "@material-ui/core";
+import { Checkbox, MenuItem, Select, TextField, Tooltip } from "@material-ui/core";
 import { Delete, KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import { useFormikContext } from "formik";
 
@@ -46,8 +46,7 @@ const CustomQuestion = (props) => {
 
   const { id, name, index, length } = props;
 
-  const { type, label, choices, required } = props.data;
-
+  const { type, label, choices, questionImageUrl, charLimit, required } = props.data;
   const questionStyles = {
     // -------- QUESTION COMPONENT STYLES ----------
     card: {
@@ -172,6 +171,43 @@ const CustomQuestion = (props) => {
           }
           value={label}
         />
+        <TextField
+          id={`${id}.questionImageUrl`}
+          name={`${name}.questionImageUrl`}
+          label="Question Image URL"
+          fullWidth
+          margin="normal"
+          variant="filled"
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={showError("questionImageUrl")}
+          helperText={
+            showError("questionImageUrl") &&
+            errors.registrationQuestions[index].questionImageUrl
+          }
+          value={questionImageUrl}
+        />
+        {(type === "TEXT") && (
+          <Tooltip title="If the character limit is left blank, there will be no limit." arrow>
+            <TextField
+              id={`${id}.charLimit`}
+              name={`${name}.charLimit`}
+              label="Character Limit"
+              fullWidth
+              margin="normal"
+              variant="filled"
+              onChange={handleChange}
+              type="number"
+              onBlur={handleBlur}
+              error={showError("charLimit")}
+              helperText={
+                showError("charLimit") &&
+                errors.registrationQuestions[index].charLimit
+              }
+              value={charLimit}
+            />
+          </Tooltip>
+        )}
 
         {(type === "SELECT" || type === "CHECKBOX") && (
           <TextField

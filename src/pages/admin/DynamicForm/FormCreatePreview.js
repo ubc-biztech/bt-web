@@ -159,6 +159,7 @@ const FormCreatePreview = (props) => {
         label={question.label}
         choices={question.choices}
         required={question.required}
+        questionImageUrl={question.questionImageUrl}
       />
     );
   });
