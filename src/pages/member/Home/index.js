@@ -9,7 +9,6 @@ import House from "assets/house.svg";
 // import Calendar from "assets/calendar.png";
 import UserProgress from "./UserProgress";
 import { COLORS } from "constants/index";
-import { SignalCellularNull } from "@material-ui/icons";
 // import { green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
@@ -139,7 +138,6 @@ function MemberHome(props) {
 
   // set featured event and nextEvent based on events
   useEffect(() => {
-    console.log(events)
     if (events) {
       getNextEvent();
       // getFeaturedEvent();
@@ -148,7 +146,7 @@ function MemberHome(props) {
 
   useEffect(() => {
     getFeaturedEvent();
-  }, [nextEvent])
+  }, [nextEvent]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function CardComponent({ children }) {
     return (
