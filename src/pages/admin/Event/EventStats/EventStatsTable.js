@@ -408,13 +408,6 @@ export class EventStatsTable extends Component {
         cellStyle: { whiteSpace: "nowrap" }
       },
       {
-        title: "Student Number",
-        field: "studentId",
-        type: "numeric",
-        sorting: false,
-        cellStyle: { whiteSpace: "nowrap" }
-      },
-      {
         title: "Email",
         field: "id",
         sorting: false,
@@ -425,7 +418,38 @@ export class EventStatsTable extends Component {
         field: "diet",
         sorting: false,
         cellStyle: { whiteSpace: "nowrap" }
-      }
+      },
+      {
+        title: "Student Number",
+        field: "studentId",
+        type: "numeric",
+        sorting: false,
+        cellStyle: { whiteSpace: "nowrap" }
+      },
+      {
+        title: "Faculty",
+        field: "faculty",
+        sorting: false,
+        cellStyle: { whiteSpace: "nowrap" }
+      },
+      {
+        title: "Year Level",
+        field: "year",
+        sorting: false,
+        cellStyle: { whiteSpace: "nowrap" }
+      },
+      {
+        title: "Gender",
+        field: "gender",
+        sorting: false,
+        cellStyle: { whiteSpace: "nowrap" }
+      },
+      {
+        title: "Heard about event from",
+        field: "heardFrom",
+        sorting: false,
+        cellStyle: { whiteSpace: "nowrap" }
+      },
     ];
 
     const registrationColumns = defaultColumns.concat(this.state.columns);
@@ -590,6 +614,12 @@ const PopoverCell = (props) => {
             vertical: "top",
             horizontal: "left"
           }}
+          PaperProps={{
+            style: { 
+              maxWidth: "50%",
+              whiteSpace: "pre-line"
+            }
+          }}
           onClose={handlePopoverClose}
           disableRestoreFocus
         >
@@ -598,7 +628,7 @@ const PopoverCell = (props) => {
               {popoverText}
             </Link>
           ) : (
-            <Typography sx={{ p: 1 }}>{popoverText}</Typography>
+            <Typography sx={{ p: 1 }}>{popoverText.split("<br/>").join("\n")}</Typography>
           )}
         </Popover>
       )}
