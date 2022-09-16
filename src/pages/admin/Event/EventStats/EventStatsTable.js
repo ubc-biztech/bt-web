@@ -615,7 +615,10 @@ const PopoverCell = (props) => {
             horizontal: "left"
           }}
           PaperProps={{
-            style: { maxWidth: "50%" }
+            style: { 
+              maxWidth: "50%",
+              whiteSpace: "pre-line"
+            }
           }}
           onClose={handlePopoverClose}
           disableRestoreFocus
@@ -625,7 +628,7 @@ const PopoverCell = (props) => {
               {popoverText}
             </Link>
           ) : (
-            <Typography sx={{ p: 1 }}>{popoverText}</Typography>
+            <Typography sx={{ p: 1 }}>{popoverText.split("<br/>").join("\n")}</Typography>
           )}
         </Popover>
       )}
