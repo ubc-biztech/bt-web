@@ -122,8 +122,12 @@ export class EventStatsTable extends Component {
     };
     await fetchBackend(`/registrations/${id}`, "PUT", body);
 
-    this.getEventTableData(this.props.event.id, this.props.event.year);
+    this.refreshTable();
   }
+
+  refreshTable = () => {
+    this.getEventTableData(this.props.event.id, this.props.event.year);
+  };
 
   /* updates stats and the rows in the table
      faculty, gender, dietary, and year stats are only computed on the initial render of the component
@@ -282,7 +286,7 @@ export class EventStatsTable extends Component {
   }
 
   componentDidMount() {
-    this.getEventTableData(this.props.event.id, this.props.event.year);
+    this.refreshTable();
   }
 
   /*
@@ -360,7 +364,7 @@ export class EventStatsTable extends Component {
       {
         title: "Registration Status",
         field: REGISTRATIONSTATUSLABEL,
-        sorting: false,
+        sorting: true,
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
           <div>
@@ -410,46 +414,39 @@ export class EventStatsTable extends Component {
       {
         title: "Email",
         field: "id",
-        sorting: false,
         cellStyle: { whiteSpace: "nowrap" }
       },
       {
         title: "Diet",
         field: "diet",
-        sorting: false,
         cellStyle: { whiteSpace: "nowrap" }
       },
       {
         title: "Student Number",
         field: "studentId",
         type: "numeric",
-        sorting: false,
         cellStyle: { whiteSpace: "nowrap" }
       },
       {
         title: "Faculty",
         field: "faculty",
-        sorting: false,
         cellStyle: { whiteSpace: "nowrap" }
       },
       {
         title: "Year Level",
         field: "year",
-        sorting: false,
         cellStyle: { whiteSpace: "nowrap" }
       },
       {
         title: "Gender",
         field: "gender",
-        sorting: false,
         cellStyle: { whiteSpace: "nowrap" }
       },
       {
         title: "Heard about event from",
         field: "heardFrom",
-        sorting: false,
         cellStyle: { whiteSpace: "nowrap" }
-      },
+      }
     ];
 
     const registrationColumns = defaultColumns.concat(this.state.columns);
@@ -461,7 +458,7 @@ export class EventStatsTable extends Component {
     return (
       <div style={styles.container}>
         {/* QR code scanner */}
-        <QrCheckIn event={this.props.event} />
+        <QrCheckIn event={this.props.event} refresh={this.refreshTable} />
 
         {/* padding for visual separation */}
         <div style={{ padding: "10px" }} />
@@ -471,7 +468,7 @@ export class EventStatsTable extends Component {
           variant="contained"
           color="primary"
           onClick={() =>
-            this.getEventTableData(this.props.event.id, this.props.event.year)
+            this.refreshTable()
           }
         >
           Refresh Table
@@ -485,12 +482,14 @@ export class EventStatsTable extends Component {
           style={styles.table}
           options={{
             search: true,
-            draggable: false,
-            padding: "dense",
+            draggable: true,
+            filtering: true,
+            padding: "default",
             pageSize: 25,
-            pageSizeOptions: [25, 50, 100, 200],
+            pageSizeOptions: [25, 50, 100, 200, 1000],
             actionsColumnIndex: 5,
             exportButton: true,
+            exportAllData: true,
             headerStyle: {
               fontWeight: "bold",
               backgroundColor: COLORS.CARD_PAPER_COLOR,
@@ -843,8 +842,12 @@ const QrCheckIn = (props) => {
       fetchBackend(`/registrations/${id}`, "PUT", body);
 
       setQrCode(defaultQrCode);
+
       // wait 10 seconds, then reset the scan stage
       cycleQrScanStage(QR_SCAN_STAGE.SUCCESS, 8000);
+
+      // refresh the entire table to reflect change
+      props.refresh();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qrCode]);

@@ -61,7 +61,7 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
     column.title = question.label;
     column.field = question.questionId;
     column.type = question.type;
-    column.sorting = false;
+    column.sorting = true;
 
     columns.push(column);
   });
