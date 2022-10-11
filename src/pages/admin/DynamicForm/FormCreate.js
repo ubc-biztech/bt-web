@@ -140,6 +140,7 @@ const FormCreateForm = (props) => {
       end,
       location,
       deadline,
+      feedback,
       registrationQuestions
     },
     errors,
@@ -452,6 +453,20 @@ const FormCreateForm = (props) => {
                   </Grid>
                 </Grid>
               </MuiPickersUtilsProvider>
+
+              <TextField
+                id="feedback"
+                name="feedback"
+                label="Feedback Form"
+                fullWidth
+                margin="normal"
+                variant="filled"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={feedback}
+                error={showError("feedback")}
+                helperText={showError("feedback") && errors.feedback}
+              />
             </div>
 
             <div style={styles.editorDivider}></div>
@@ -535,7 +550,8 @@ const FormCreate = (props) => {
         end: event.endDate ? new Date(event.endDate) : new Date(),
         location: event.elocation || "",
         deadline: event.deadline ? new Date(event.deadline) : new Date(),
-        registrationQuestions: event.registrationQuestions || dummyData
+        registrationQuestions: event.registrationQuestions || dummyData,
+        feedback: event.feedback || "",
       }
     : {
         imageUrl: "",
@@ -547,7 +563,8 @@ const FormCreate = (props) => {
         end: new Date(),
         location: "",
         deadline: new Date(),
-        registrationQuestions: dummyData
+        registrationQuestions: dummyData,
+        feedback: "",
       };
 
   const regQuestionSchema = Yup.object({
@@ -600,7 +617,8 @@ const FormCreate = (props) => {
       startDate: values.start,
       endDate: values.end,
       deadline: values.deadline,
-      registrationQuestions: values.registrationQuestions
+      registrationQuestions: values.registrationQuestions,
+      feedback: values.feedback
     };
 
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
@@ -633,7 +651,8 @@ const FormCreate = (props) => {
       endDate: values.end,
       deadline: values.deadline,
       isPublished: false,
-      registrationQuestions: values.registrationQuestions
+      registrationQuestions: values.registrationQuestions,
+      feedback: values.feedback
     };
 
     fetchBackend("/events", "POST", body)
