@@ -87,6 +87,11 @@ const styles = {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis"
+  },
+  toggleContainer: {
+    display: "flex",
+    justifyContent: "left",
+    alignItems: "bottom"
   }
 };
 
@@ -364,7 +369,6 @@ export class EventStatsTable extends Component {
       {
         title: "Registration Status",
         field: REGISTRATIONSTATUSLABEL,
-        sorting: true,
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
           <div>
@@ -417,6 +421,11 @@ export class EventStatsTable extends Component {
         cellStyle: { whiteSpace: "nowrap" }
       },
       {
+        title: "Last Updated",
+        field: "updatedAt",
+        cellStyle: { whiteSpace: "nowrap" }
+      },
+      {
         title: "Diet",
         field: "diet",
         cellStyle: { whiteSpace: "nowrap" }
@@ -424,7 +433,6 @@ export class EventStatsTable extends Component {
       {
         title: "Student Number",
         field: "studentId",
-        type: "numeric",
         cellStyle: { whiteSpace: "nowrap" }
       },
       {
@@ -462,6 +470,7 @@ export class EventStatsTable extends Component {
 
         {/* padding for visual separation */}
         <div style={{ padding: "10px" }} />
+        
 
         {/* refresh button */}
         <Button
@@ -471,7 +480,7 @@ export class EventStatsTable extends Component {
             this.refreshTable()
           }
         >
-          Refresh Table
+          Refresh Table Data
         </Button>
 
         <MaterialTable
@@ -496,7 +505,10 @@ export class EventStatsTable extends Component {
               color: COLORS.FONT_COLOR,
               whiteSpace: "nowrap"
             },
-            rowStyle: (rowData) => ({})
+            rowStyle: (rowData) => ({}),
+            filterCellStyle: {
+              backgroundColor: COLORS.CARD_PAPER_COLOR
+            }
           }}
           localization={{
             body: {
@@ -508,7 +520,10 @@ export class EventStatsTable extends Component {
                 >
                   No attendees to display.
                 </h1>
-              )
+              ),
+              filterRow: {
+                filterTooltip: "Filter (type in to search)"
+              }
             }
           }}
           components={{
@@ -856,11 +871,7 @@ const QrCheckIn = (props) => {
     <Paper className={[classes.qrRoot]}>
       {/* Toggle QR Scanner */}
       <div
-        style={{
-          display: "flex",
-          justifyContent: "left",
-          alignItems: "bottom"
-        }}
+        style={styles.toggleContainer}
       >
         <Link
           onClick={() => setVisible(!visible)}
@@ -884,7 +895,7 @@ const QrCheckIn = (props) => {
             }
           >
             {qrScanStage === QR_SCAN_STAGE.SUCCESS
-              ? `Checked-in successfully for ${checkInName}! To see the updated attendance, refresh the table using the button below.`
+              ? `Checked-in successfully for ${checkInName}! Your attendance table will be updated shortly.`
               : qrScanStage === QR_SCAN_STAGE.SCANNING
               ? "Ready to scan a QR code to check-in. 😎"
               : `🚨 ERROR: ${error}`}
@@ -933,5 +944,6 @@ const QrCheckIn = (props) => {
     </Paper>
   );
 };
+
 
 export default EventStatsTable;
