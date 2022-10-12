@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
-import { Button, Fab, Grid, TextField, Tooltip } from "@material-ui/core";
+import { Checkbox, Button, Fab, Grid, TextField, Tooltip } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import {
   KeyboardDateTimePicker,
@@ -123,6 +123,9 @@ const styles = {
     opacity: "0.63",
     fontSize: "1rem",
     fontWeight: "500"
+  },
+  nonMember: {
+    color: "white",
   }
 };
 
@@ -140,6 +143,9 @@ const FormCreateForm = (props) => {
       end,
       location,
       deadline,
+      price,
+      nonMembersPrice,
+      nonMembersAllowed,
       registrationQuestions
     },
     errors,
@@ -452,6 +458,51 @@ const FormCreateForm = (props) => {
                   </Grid>
                 </Grid>
               </MuiPickersUtilsProvider>
+              
+              <Tooltip title="If left blank, the event is free." arrow>
+                <TextField
+                  id="price"
+                  name="price"
+                  label="Price"
+                  fullWidth
+                  margin="normal"
+                  variant="filled"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={price}
+                  error={showError("price")}
+                  helperText={showError("price") && errors.price}
+                />
+              </Tooltip>
+              {nonMembersAllowed && (
+                <Tooltip title="If left blank, the non-member price will be assumed to be the same as the member price above." arrow>
+                  <TextField
+                    id="nonMembersPrice"
+                    name="nonMembersPrice"
+                    label="Non-Members Price"
+                    fullWidth
+                    margin="normal"
+                    variant="filled"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={nonMembersPrice}
+                    error={showError("price")}
+                    helperText={showError("price") && errors.price}
+                  />
+                </Tooltip>
+              )}
+              <div style={styles.nonMember}>
+                Non-members allowed?
+                <Checkbox
+                  id='nonMembersAllowed'
+                  name='nonMembersAllowed'
+                  color="primary"
+                  aria-label="Non-members allowed?"
+                  checked={nonMembersAllowed}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </div>
             </div>
 
             <div style={styles.editorDivider}></div>
@@ -575,6 +626,10 @@ const FormCreate = (props) => {
     deadline: Yup.date()
     .max(Yup.ref("end"), "Deadline cannot be later than End")
     .required(),
+    price: Yup.number("Valid number required")
+      .min(0, "Valid pricing required"),
+    nonMembersPrice: Yup.number("Valid number required")
+      .min(Yup.ref("price"), "Non-members price must be greater or equal to members price"),
     registrationQuestions: Yup.array().of(regQuestionSchema)
   });
 
@@ -591,6 +646,11 @@ const FormCreate = (props) => {
     const id = values.slug;
     const year = values.start.getFullYear();
 
+    const pricing = {
+      members: values.price,
+      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? values.nonMembersPrice : values.price}
+    }
+
     const body = {
       ename: values.eventName,
       description: values.description,
@@ -600,6 +660,7 @@ const FormCreate = (props) => {
       startDate: values.start,
       endDate: values.end,
       deadline: values.deadline,
+      pricing: values.price ? pricing : null,
       registrationQuestions: values.registrationQuestions
     };
 
@@ -621,6 +682,11 @@ const FormCreate = (props) => {
     const id = values.slug;
     const year = values.start.getFullYear();
 
+    const pricing = {
+      members: values.price,
+      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? values.nonMembersPrice : values.price}
+    }
+
     const body = {
       id,
       year,
@@ -632,6 +698,7 @@ const FormCreate = (props) => {
       startDate: values.start,
       endDate: values.end,
       deadline: values.deadline,
+      pricing: values.price ? pricing : null,
       isPublished: false,
       registrationQuestions: values.registrationQuestions
     };
