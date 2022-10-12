@@ -38,7 +38,9 @@ const combineEventAndRegistrationData = (users) => {
       ...user.dynamicResponses,
       studentId: user.studentId,
       id: user.id,
-      registrationStatus: user.registrationStatus 
+      registrationStatus: user.registrationStatus,
+      // convert the date to something more readable
+      updatedAt: new Date(user.updatedAt).toLocaleString()
     });
   });
 
