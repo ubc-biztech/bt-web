@@ -123,6 +123,7 @@ function LoginRedirect(props) {
                   "custom:student_id": ""
                 });
                 authUser["custom:student_id"] = null;
+                //add query string const
               }
               populateUserAndRedirect(
                 authUser,
@@ -138,10 +139,8 @@ function LoginRedirect(props) {
         } else {
           clearTimeout(timeoutRedirect);
           // If the user doesn't exist in the user pool, redirect to the 'user register' form
-          populateUserAndRedirect(
-            authUser,
-            "/RegistrationForms/MembershipForms/MembershipForm.js"
-          );
+          // redirectRoute = ``; // ${flag}`;
+          populateUserAndRedirect(authUser, "/signup");
         }
       })
       .catch(() => {

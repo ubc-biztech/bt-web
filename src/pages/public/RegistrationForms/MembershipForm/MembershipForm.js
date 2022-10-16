@@ -1,16 +1,18 @@
 import React from "react";
-import { Button, Grid, Typography,
+import {
+  Button,
+  Grid,
+  Typography,
   FormControlLabel,
   FormControl,
   RadioGroup,
   FormGroup,
   FormLabel,
   Checkbox,
-  Radio,
+  Radio
 } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
 import { makeStyles } from "@material-ui/core/styles";
-
 
 import { COLORS } from "constants/_constants/theme";
 import CustomTextField from "components/inputs/CustomTextField";
@@ -19,10 +21,10 @@ import { MEMBER_TYPES, MEMBER_LABELS } from "constants/_constants/memberTypes";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    marginBottom: "50px",
+    marginBottom: "50px"
   },
   gridContainer: {
-    marginTop: "5px",
+    marginTop: "5px"
   },
   registerButton: {
     textTransform: "none",
@@ -30,27 +32,36 @@ const useStyles = makeStyles((theme) => ({
     color: COLORS.BACKGROUND_COLOR,
     "&:disabled": {
       backgroundColor: COLORS.FONT_GRAY,
-      color: COLORS.WHITE,
-    },
+      color: COLORS.WHITE
+    }
   },
   registerIcon: {
     color: "inherit",
-    marginRight: "5px",
+    marginRight: "5px"
   },
   topics: {
     marginTop: "10px",
     paddingLeft: "10px",
-    marginBottom: "10px",
+    marginBottom: "10px"
   },
   paymentCheck: {
-    paddingBottom: "10px",
-  },
+    paddingBottom: "10px"
+  }
 }));
 
 export default function MembershipForm(props) {
   const classes = useStyles();
 
-  const { isSubmitting, handleSubmit, memberType, setMemberType, topics, setTopics, values, errors } = props;
+  const {
+    isSubmitting,
+    handleSubmit,
+    memberType,
+    setMemberType,
+    topics,
+    setTopics,
+    values,
+    errors
+  } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
@@ -65,9 +76,12 @@ export default function MembershipForm(props) {
                 Please select the option that's most relevant to you *
               </Typography>
             </FormLabel>
-            <RadioGroup value={memberType} onChange={(e) => {
-              setMemberType(e.target.value)
-            }}>
+            <RadioGroup
+              value={memberType}
+              onChange={(e) => {
+                setMemberType(e.target.value);
+              }}
+            >
               <FormControlLabel
                 value={MEMBER_TYPES.UBC}
                 control={<Radio />}
@@ -145,7 +159,7 @@ export default function MembershipForm(props) {
               "He/Him/His",
               "She/Her/Hers",
               "They/Them/Their",
-              "Other/Prefer not to say",
+              "Other/Prefer not to say"
             ]}
             groupName="pronouns"
           />
@@ -175,23 +189,23 @@ export default function MembershipForm(props) {
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                label="Level of study *"
-                listOfOptions={[
-                  "1st Year",
-                  "2nd Year",
-                  "3rd Year",
-                  "4th Year",
-                  "5+ Year",
-                  "Other",
-                  "Not Applicable",
-                ]}
-                groupName="year"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              label="Level of study *"
+              listOfOptions={[
+                "1st Year",
+                "2nd Year",
+                "3rd Year",
+                "4th Year",
+                "5+ Year",
+                "Other",
+                "Not Applicable"
+              ]}
+              groupName="year"
+            />
+          </Grid>
+        )}
 
         {memberType === MEMBER_TYPES.HIGH_SCHOOL && (
           <Grid item xs={12}>
@@ -204,7 +218,7 @@ export default function MembershipForm(props) {
                 "Grade 11",
                 "Grade 12",
                 "Pre-university",
-                "Other",
+                "Other"
               ]}
               groupName="year"
             />
@@ -213,37 +227,37 @@ export default function MembershipForm(props) {
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                label="Faculty *"
-                listOfOptions={[
-                  "Arts",
-                  "Commerce",
-                  "Science",
-                  "Engineering",
-                  "Kinesiology",
-                  "Land and Food Systems",
-                  "Forestry",
-                  "Other",
-                  "Not Applicable",
-                ]}
-                groupName="faculty"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              label="Faculty *"
+              listOfOptions={[
+                "Arts",
+                "Commerce",
+                "Science",
+                "Engineering",
+                "Kinesiology",
+                "Land and Food Systems",
+                "Forestry",
+                "Other",
+                "Not Applicable"
+              ]}
+              groupName="faculty"
+            />
+          </Grid>
+        )}
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12} className={classes.major}>
-              <CustomTextField
-                {...props}
-                label="Major *"
-                groupName="major"
-                autoComplete="major"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12} className={classes.major}>
+            <CustomTextField
+              {...props}
+              label="Major *"
+              groupName="major"
+              autoComplete="major"
+            />
+          </Grid>
+        )}
 
         {memberType === MEMBER_TYPES.UBC && (
           <Grid item xs={12}>
@@ -260,7 +274,15 @@ export default function MembershipForm(props) {
           <CustomSelect
             {...props}
             label="Any dietary restrictions?"
-            listOfOptions={["None", "Vegetarian", "Vegan", "Gluten Free", "Pescetarian", "Kosher", "Halal"]}
+            listOfOptions={[
+              "None",
+              "Vegetarian",
+              "Vegan",
+              "Gluten Free",
+              "Pescetarian",
+              "Kosher",
+              "Halal"
+            ]}
             groupName="diet"
           />
         </Grid>
@@ -275,25 +297,31 @@ export default function MembershipForm(props) {
         </Grid>
 
         <Grid item xs={12}>
-        <FormControl>
+          <FormControl>
             <FormLabel>
               <Typography>
                 What topics do you want to see discussed in future events?
               </Typography>
             </FormLabel>
-            <FormGroup onChange={(e) => {
-              if (topics.includes(e.target.value)) {
-                setTopics(topics.replace(`${e.target.value},`, ""))
-              } else {
-                setTopics(topics + `${e.target.value},`)
-              }
-            }}>
+            <FormGroup
+              onChange={(e) => {
+                if (topics.includes(e.target.value)) {
+                  setTopics(topics.replace(`${e.target.value},`, ""));
+                } else {
+                  setTopics(topics + `${e.target.value},`);
+                }
+              }}
+            >
               <FormControlLabel
                 control={<Checkbox name="Cyber Security" />}
                 label="Cyber Security"
                 value="Cyber Security"
               />
-              <FormControlLabel control={<Checkbox name="AI" />} label="AI" value="AI" />
+              <FormControlLabel
+                control={<Checkbox name="AI" />}
+                label="AI"
+                value="AI"
+              />
               <FormControlLabel
                 control={<Checkbox name="Tech Startups" />}
                 label="Tech Startups"
@@ -332,13 +360,15 @@ export default function MembershipForm(props) {
               "Faculty Newsletter",
               "Posters",
               "Events",
-              "Other",
+              "Other"
             ]}
             groupName="heard_from"
           />
         </Grid>
 
-        {(values.heard_from === 'Events' || values.heard_from === 'Boothing' || values.heard_from === 'Other') && (
+        {(values.heard_from === "Events" ||
+          values.heard_from === "Boothing" ||
+          values.heard_from === "Other") && (
           <Grid item xs={12}>
             <CustomTextField
               {...props}
