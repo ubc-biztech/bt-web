@@ -55,7 +55,14 @@ function LoginRedirect(props) {
             "us-west-2_w0R176hhp_Facebook"
           ) ||
           authUser["cognito:groups"]?.includes("us-west-2_w0R176hhp_Google");
-
+        console.log("OUATH FLAG 2", isOauthGroup);
+        console.log(
+          "OUATH TEST",
+          authUser["cognito:groups"]?.includes(
+            "us-west-2_w0R176hhp_Facebook"
+          ) ||
+            authUser["cognito:groups"]?.includes("us-west-2_w0R176hhp_Google")
+        );
         if (isAdminGroup) {
           populateUserAndRedirect(
             authUser,
@@ -125,10 +132,9 @@ function LoginRedirect(props) {
                 authUser["custom:student_id"] = null;
                 //add query string const
               }
-              populateUserAndRedirect(
-                authUser,
-                "/RegistrationForms/MembershipForms/MembershipForm.js"
-              );
+              populateUserAndRedirect(authUser, `/signup/${isOauthGroup}`);
+              // console.log("congratulations, your code doesn't work");
+              console.log("OAUTH FLAG", isOauthGroup);
             } else {
               console.log(
                 "Encountered an error querying database!",

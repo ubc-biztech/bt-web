@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { CLIENT_URL } from "constants/index";
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -10,19 +10,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import { MEMBER_TYPES } from "constants/_constants/memberTypes";
 
-import { COLORS } from 'constants/_constants/theme'
+import { COLORS } from "constants/_constants/theme";
 
-import { fetchBackend } from 'utils'
+import { fetchBackend } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: 850,
-      margin: 'auto'
+      margin: "auto"
     }
   },
   paper: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       margin: theme.spacing(3)
     }
   },
@@ -31,115 +31,119 @@ const useStyles = makeStyles((theme) => ({
   },
   registrationHeader: {
     borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
-    marginTop: '35px',
-    paddingLeft: '19px',
-    marginLeft: '11px'
+    marginTop: "35px",
+    paddingLeft: "19px",
+    marginLeft: "11px"
   },
   registrationText: {
-    fontWeight: 'bold',
-    fontSize: '24px'
+    fontWeight: "bold",
+    fontSize: "24px"
   },
   alreadyMember: {
-    height: '85vh',
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
+    height: "85vh",
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column"
   },
   alreadyMemberText: {
-    fontWeight: 'bold',
-    fontSize: '32px',
+    fontWeight: "bold",
+    fontSize: "32px"
   },
   description: {
     marginBottom: 16
   }
-}))
+}));
 
 const MembershipFormContainer = (props) => {
-  const classes = useStyles()
-  const { user } = props
+  const classes = useStyles();
+  const { user } = props;
   const [memberType, setMemberType] = useState(user?.education);
-  const [topics, setTopics] = useState('');
+  const [topics, setTopics] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
-    first_name: Yup.string().required('First name is required'),
-    last_name: Yup.string().required('Last name is required'),
-    education: Yup.string().required('Education is required'),
-    prev_member: Yup.string().required('Please select Yes/No'),
+    first_name: Yup.string().required("First name is required"),
+    last_name: Yup.string().required("Last name is required"),
+    education: Yup.string().required("Education is required"),
+    prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", {
-      is: val => (val && (val === 'Events' || val === 'Boothing' || val === 'Other')),
-      then: Yup.string().required('Please fill in this field')
-    }),
-  })
+      is: (val) =>
+        val && (val === "Events" || val === "Boothing" || val === "Other"),
+      then: Yup.string().required("Please fill in this field")
+    })
+  });
 
   const UBCValidationSchema = Yup.object({
     email: Yup.string().email().required(),
-    student_number: Yup.number('Valid Student ID required')
-      .min(9999999, 'Valid Student ID required')
-      .max(100000000, 'Valid Student ID required')
+    student_number: Yup.number("Valid Student ID required")
+      .min(9999999, "Valid Student ID required")
+      .max(100000000, "Valid Student ID required")
       .required(),
-    first_name: Yup.string().required('First name is required'),
-    last_name: Yup.string().required('Last name is required'),
-    faculty: Yup.string().required('Faculty is required'),
-    year: Yup.string().required('Level of study is required'),
-    major: Yup.string().required('Major is required'),
+    first_name: Yup.string().required("First name is required"),
+    last_name: Yup.string().required("Last name is required"),
+    faculty: Yup.string().required("Faculty is required"),
+    year: Yup.string().required("Level of study is required"),
+    major: Yup.string().required("Major is required"),
     international: Yup.string().required(
-      'International or domestic student indication is required'
+      "International or domestic student indication is required"
     ),
-    prev_member: Yup.string().required('Please select Yes/No'),
+    prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", {
-      is: val => (val && (val === 'Events' || val === 'Boothing' || val === 'Other')),
-      then: Yup.string().required('Please fill in this field')
-    }),
-  })
+      is: (val) =>
+        val && (val === "Events" || val === "Boothing" || val === "Other"),
+      then: Yup.string().required("Please fill in this field")
+    })
+  });
 
   const UniversityValidationSchema = Yup.object({
     email: Yup.string().email().required(),
-    first_name: Yup.string().required('First name is required'),
-    last_name: Yup.string().required('Last name is required'),
-    university: Yup.string().required('University name is required'),
-    faculty: Yup.string().required('Faculty is required'),
-    year: Yup.string().required('Level of study is required'),
-    major: Yup.string().required('Major is required'),
-    prev_member: Yup.string().required('Please select Yes/No'),
+    first_name: Yup.string().required("First name is required"),
+    last_name: Yup.string().required("Last name is required"),
+    university: Yup.string().required("University name is required"),
+    faculty: Yup.string().required("Faculty is required"),
+    year: Yup.string().required("Level of study is required"),
+    major: Yup.string().required("Major is required"),
+    prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", {
-      is: val => (val && (val === 'Events' || val === 'Boothing' || val === 'Other')),
-      then: Yup.string().required('Please fill in this field')
-    }),
-  })
+      is: (val) =>
+        val && (val === "Events" || val === "Boothing" || val === "Other"),
+      then: Yup.string().required("Please fill in this field")
+    })
+  });
 
   const HighSchoolValidationSchema = Yup.object({
     email: Yup.string().email().required(),
-    first_name: Yup.string().required('First name is required'),
-    last_name: Yup.string().required('Last name is required'),
-    year: Yup.string().required('Level of study is required'),
-    high_school: Yup.string().required('High School is required'),
-    prev_member: Yup.string().required('Please select Yes/No'),
+    first_name: Yup.string().required("First name is required"),
+    last_name: Yup.string().required("Last name is required"),
+    year: Yup.string().required("Level of study is required"),
+    high_school: Yup.string().required("High School is required"),
+    prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", {
-      is: val => (val && (val === 'Events' || val === 'Boothing' || val === 'Other')),
-      then: Yup.string().required('Please fill in this field')
-    }),
-  })
-  
-  const initialValues = {
-    email: (user && user.email) || '',
-    first_name: (user && user.fname) || '',
-    last_name: (user && user.lname) || '',
-    student_number: (user && user.id) || '',
-    pronouns: (user && user.gender) || '',
-    year: (user && user.year) || '',
-    major: (user && user.major) || '',
-    diet: (user && user.diet) || '',
-    faculty: (user && user.faculty) || '',
-    prev_member: '',
-    international: '',
-    university: '',
-    high_school: '',
-    heardFromSpecify: '',
-  }
+      is: (val) =>
+        val && (val === "Events" || val === "Boothing" || val === "Other"),
+      then: Yup.string().required("Please fill in this field")
+    })
+  });
 
-  async function submitValues (values) {
+  const initialValues = {
+    email: (user && user.email) || "",
+    first_name: (user && user.fname) || "",
+    last_name: (user && user.lname) || "",
+    student_number: (user && user.id) || "",
+    pronouns: (user && user.gender) || "",
+    year: (user && user.year) || "",
+    major: (user && user.major) || "",
+    diet: (user && user.diet) || "",
+    faculty: (user && user.faculty) || "",
+    prev_member: "",
+    international: "",
+    university: "",
+    high_school: "",
+    heardFromSpecify: ""
+  };
+
+  async function submitValues(values) {
     setIsSubmitting(true);
     const {
       email,
@@ -157,47 +161,61 @@ const MembershipFormContainer = (props) => {
       heardFromSpecify,
       university,
       high_school
-    } = values
+    } = values;
 
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     const paymentBody = {
-      paymentName: `BizTech Membership ${memberType !== 'UBC' ? '(Non-UBC Student)' : ''}`,
-      paymentImages: ['https://imgur.com/TRiZYtG.png'],
-      paymentPrice: memberType === 'UBC' ? 1000 : 1500,
-      paymentType: 'Member',
-      success_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}signup/success/Member/${email}`,
-      cancel_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}signup`,
+      paymentName: `BizTech Membership ${
+        memberType !== "UBC" ? "(Non-UBC Student)" : ""
+      }`,
+      paymentImages: ["https://imgur.com/TRiZYtG.png"],
+      paymentPrice: memberType === "UBC" ? 1000 : 1500,
+      paymentType: "Member",
+      success_url: `${
+        process.env.REACT_APP_STAGE === "local"
+          ? "http://localhost:3000/"
+          : CLIENT_URL
+      }signup/success/Member/${email}`,
+      cancel_url: `${
+        process.env.REACT_APP_STAGE === "local"
+          ? "http://localhost:3000/"
+          : CLIENT_URL
+      }signup`,
       education: memberType,
-      student_number: memberType === 'UBC' ? student_number : '',
+      student_number: memberType === "UBC" ? student_number : "",
       fname: first_name,
       lname: last_name,
-      major: (memberType === 'UBC' || memberType === 'UNI') ? major : '',
+      major: memberType === "UBC" || memberType === "UNI" ? major : "",
       email: email,
-      year: memberType !== 'NA' ? year : '',
-      faculty: (memberType === 'UBC' || memberType === 'UNI') ? faculty : '',
-      pronouns: pronouns || 'Other/Prefer not to say',
-      diet: diet || 'None',
+      year: memberType !== "NA" ? year : "",
+      faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
+      pronouns: pronouns || "Other/Prefer not to say",
+      diet: diet || "None",
       prev_member,
-      international: memberType === 'UBC' ? international : '',
+      international: memberType === "UBC" ? international : "",
       topics: topics.slice(0, -1),
       heard_from,
-      heardFromSpecify: (heard_from === 'Events' || heard_from === 'Boothing' || heard_from === 'Other') ? heardFromSpecify : '',
-      university: memberType === 'UNI' ? university : '',
-      high_school: memberType === 'HS' ? high_school : '',
-    }
+      heardFromSpecify:
+        heard_from === "Events" ||
+        heard_from === "Boothing" ||
+        heard_from === "Other"
+          ? heardFromSpecify
+          : "",
+      university: memberType === "UNI" ? university : "",
+      high_school: memberType === "HS" ? high_school : ""
+    };
 
-    fetchBackend('/payments', 'POST', paymentBody, false)
+    fetchBackend("/payments", "POST", paymentBody, false)
       .then(async (response) => {
-        setIsSubmitting(false)
+        setIsSubmitting(false);
         window.open(response, "_self");
       })
       .catch((err) => {
         alert(
           `An error has occured: ${err} Please contact an exec for support.`
-        )
-        setIsSubmitting(false)
-      })
-
+        );
+        setIsSubmitting(false);
+      });
   }
 
   const renderMemberForm = (isMember, isAdmin) => {
@@ -214,20 +232,22 @@ const MembershipFormContainer = (props) => {
         </Typography>
         <div className={classes.registrationHeader}>
           <Typography className={classes.description}>
-            Thank you for choosing to sign up to be a BizTech member! By signing up for
-            membership, you will also be a part of our mailing list!
+            Thank you for choosing to sign up to be a BizTech member! By signing
+            up for membership, you will also be a part of our mailing list!
           </Typography>
           <Typography className={classes.description}>
-            Please keep in mind that membership costs <b>$10.00 ($15.00 for non-UBC students)</b> and are valid for one school year (Sept-May), so if you
-            were a member last year and would like to continue being part of the
-            BizTech Network, kindly renew your membership by filling out this
-            form and completing the payment.
+            Please keep in mind that membership costs{" "}
+            <b>$10.00 ($15.00 for non-UBC students)</b> and are valid for one
+            school year (Sept-May), so if you were a member last year and would
+            like to continue being part of the BizTech Network, kindly renew
+            your membership by filling out this form and completing the payment.
           </Typography>
           <Typography>
-            The form below has been automatically filled with 
-            your current user information. You can change these fields which will also automatically
-            update your user profile in addition to your member status. However, you CANNOT change your email and student number;
-            if you wish to do so, please contact a BizTech executive for support. 
+            The form below has been automatically filled with your current user
+            information. You can change these fields which will also
+            automatically update your user profile in addition to your member
+            status. However, you CANNOT change your email and student number; if
+            you wish to do so, please contact a BizTech executive for support.
           </Typography>
         </div>
         <Formik
@@ -236,10 +256,10 @@ const MembershipFormContainer = (props) => {
             memberType === MEMBER_TYPES.UBC
               ? UBCValidationSchema
               : memberType === MEMBER_TYPES.UNIVERSITY
-                ? UniversityValidationSchema
-                : memberType === MEMBER_TYPES.HIGH_SCHOOL
-                  ? HighSchoolValidationSchema
-                  : validationSchema
+              ? UniversityValidationSchema
+              : memberType === MEMBER_TYPES.HIGH_SCHOOL
+              ? HighSchoolValidationSchema
+              : validationSchema
           }
           onSubmit={submitValues}
         >
@@ -250,21 +270,21 @@ const MembershipFormContainer = (props) => {
               memberType,
               setMemberType,
               topics,
-              setTopics,
-            }
-            return <MembershipForm {...props} />
+              setTopics
+            };
+            return <MembershipForm {...props} />;
           }}
         </Formik>
       </Fragment>
-    )
-  }
+    );
+  };
 
   return (
     <Fragment>
       {!user ? (
-        <LoginAccess 
-          header='To access the membership form, please sign in.'
-          redirect='/signup'
+        <LoginAccess
+          header="To access the membership form, please sign in."
+          redirect="/signup"
         />
       ) : (
         <div className={classes.layout}>
@@ -274,14 +294,14 @@ const MembershipFormContainer = (props) => {
           {renderMemberForm(user.isMember, user.admin)}
         </div>
       )}
-      </Fragment>
-  )
-}
+    </Fragment>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
-    user: state.userState.user.data,
-  }
-}
+    user: state.userState.user.data
+  };
+};
 
-export default connect(mapStateToProps, {})(MembershipFormContainer)
+export default connect(mapStateToProps, {})(MembershipFormContainer);

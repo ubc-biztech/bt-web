@@ -151,8 +151,16 @@ class Router extends Component {
           exact
           path="/signup"
           featureFlag={"REACT_APP_SHOW_MAXVP"}
+          render={() => <RegistrationForm user={user} />} // <RegistrationForm user={user} />
+        />
+
+        <Route
+          exact
+          path="/signup/:isOAuth"
+          featureFlag={"REACT_APP_SHOW_MAXVP"}
           render={() => <RegistrationForm user={user} />}
         />
+
         <Route
           exact
           path="/signup/success/:formType/:email"
