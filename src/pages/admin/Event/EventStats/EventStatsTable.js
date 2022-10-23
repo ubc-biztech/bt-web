@@ -37,6 +37,7 @@ import {
   combineEventAndRegistrationData,
   appendRegistrationQuestions
 } from "./utils";
+import DraggableTitle from "./DraggableTitle";
 
 const styles = {
   stats: {
@@ -367,7 +368,8 @@ export class EventStatsTable extends Component {
 
     const defaultColumns = [
       {
-        title: "Registration Status",
+        // title: "Registration Status",
+        title: <DraggableTitle title="Registration Status" />,
         field: REGISTRATIONSTATUSLABEL,
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
@@ -407,6 +409,7 @@ export class EventStatsTable extends Component {
       },
       {
         title: "First Name",
+        // title: <DraggableTitle title="First Name" />,
         field: "fname",
         cellStyle: { whiteSpace: "nowrap" }
       },
