@@ -22,6 +22,16 @@ const useStyles = makeStyles({
     width: "30%",
     margin: "15px 30px 15px 0",
     opacity: "50%"
+  },
+  subHeader: {
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
+  },
+  price: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "15px",
   }
 });
 
@@ -44,6 +54,31 @@ function EventCard(props) {
     return startDate < new Date().getTime()
   }
 
+  const renderSubHeader = (event) => {
+    const date = event.startDate
+      ? new Date(event.startDate).toLocaleDateString("en-US", {
+        day: "numeric",
+        weekday: "long",
+        month: "long",
+        year: "numeric",
+      })
+      : null
+    const membersPrice = event.pricing?.members === 0 || !event.pricing ? "Free!" : `$${event.pricing?.members.toFixed(2)}`
+    const nonMembersPrice = event.pricing?.nonMembers === undefined 
+      ? "Members only" 
+      : event.pricing?.nonMembers - event.pricing?.members !== 0
+        ? `Non-members: $${event.pricing?.nonMembers.toFixed(2)}`
+        : ""
+
+    return <div className={classes.subHeader}>
+      <div>{date}</div>
+      <div className={classes.price}>
+        <div>{membersPrice}</div>
+        <div>{nonMembersPrice}</div>
+      </div>
+    </div>
+  }
+  
   return (
     <Card className={isEventPassed(event) ? classes.passedCard : classes.card} style={cardStyle} key={event.id}>
       <CardActionArea
@@ -60,16 +95,7 @@ function EventCard(props) {
       </CardActionArea>
       <CardHeader
         title={event.ename}
-        subheader={
-          event.startDate
-            ? new Date(event.startDate).toLocaleDateString("en-US", {
-              day: "numeric",
-              weekday: "long",
-              month: "long",
-              year: "numeric",
-            })
-            : ""
-        }
+        subheader={renderSubHeader(event)}
         action={
           variant === "user" &&
           (favourited ? (

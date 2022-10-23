@@ -487,8 +487,8 @@ const FormCreateForm = (props) => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={nonMembersPrice}
-                    error={showError("price")}
-                    helperText={showError("price") && errors.price}
+                    error={showError("nonMembersPrice")}
+                    helperText={showError("nonMembersPrice") && errors.nonMembersPrice}
                   />
                 </Tooltip>
               )}
@@ -601,6 +601,9 @@ const FormCreate = (props) => {
         end: event.endDate ? new Date(event.endDate) : new Date(),
         location: event.elocation || "",
         deadline: event.deadline ? new Date(event.deadline) : new Date(),
+        price: event.pricing?.members || 0,
+        nonMembersAllowed: event.pricing?.nonMembers !== undefined,
+        nonMembersPrice: event.pricing?.nonMembers || 0,
         registrationQuestions: event.registrationQuestions || dummyData,
         feedback: event.feedback || "",
       }
@@ -614,6 +617,9 @@ const FormCreate = (props) => {
         end: new Date(),
         location: "",
         deadline: new Date(),
+        price: 0,
+        nonMembersAllowed: false,
+        nonMembersPrice: 0,
         registrationQuestions: dummyData,
         feedback: "",
       };
@@ -645,8 +651,10 @@ const FormCreate = (props) => {
     .required(),
     price: Yup.number("Valid number required")
       .min(0, "Valid pricing required"),
-    nonMembersPrice: Yup.number("Valid number required")
-      .min(Yup.ref("price"), "Non-members price must be greater or equal to members price"),
+    nonMembersPrice: Yup.number("Valid number required").when("nonMembersAllowed", {
+      is: true,
+      then: Yup.number().min(Yup.ref("price"), "Non-members price must be greater or equal to members price")
+    }),
     registrationQuestions: Yup.array().of(regQuestionSchema)
   });
 
@@ -664,8 +672,8 @@ const FormCreate = (props) => {
     const year = values.start.getFullYear();
 
     const pricing = {
-      members: values.price,
-      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? values.nonMembersPrice : values.price}
+      members: Number(values.price) || 0,
+      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0}
     }
 
     const body = {
@@ -677,7 +685,7 @@ const FormCreate = (props) => {
       startDate: values.start,
       endDate: values.end,
       deadline: values.deadline,
-      pricing: values.price ? pricing : null,
+      pricing,
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback
     };
@@ -701,8 +709,8 @@ const FormCreate = (props) => {
     const year = values.start.getFullYear();
 
     const pricing = {
-      members: values.price,
-      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? values.nonMembersPrice : values.price}
+      members: Number(values.price) || 0,
+      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0}
     }
 
     const body = {
@@ -716,7 +724,7 @@ const FormCreate = (props) => {
       startDate: values.start,
       endDate: values.end,
       deadline: values.deadline,
-      pricing: values.price ? pricing : null,
+      pricing,
       isPublished: false,
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback
