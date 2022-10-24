@@ -1,3 +1,6 @@
+import React from 'react';
+import DraggableTitle from "./DraggableTitle";
+
 // Constants
 const REGISTRATIONSTATUSLABEL = "registrationStatus"
 
@@ -60,10 +63,17 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
   registrationQuestions.forEach((question) => {
     const column = {};
 
-    column.title = question.label;
+    column.title = <DraggableTitle title={question.label} />;
     column.field = question.questionId;
     column.type = question.type;
     column.sorting = true;
+    column.render = (rowData) => {
+      return (
+        <div>
+          {rowData[question.questionId]}
+        </div>
+      )
+    }
 
     columns.push(column);
   });
