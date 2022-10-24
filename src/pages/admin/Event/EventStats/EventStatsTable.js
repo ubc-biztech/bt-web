@@ -279,6 +279,12 @@ export class EventStatsTable extends Component {
     this.setState({
       columns
     });
+
+    let presentedColumns = this.state.presentedColumns;
+
+    this.setState({
+      presentedColumns: presentedColumns.concat(columns)
+    })
   }
 
   async updateEventTableData(eventID) {
