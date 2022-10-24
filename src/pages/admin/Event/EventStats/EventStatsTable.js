@@ -105,12 +105,14 @@ export class EventStatsTable extends Component {
     super(props);
     this.state = {
       columns: {},
+      presentedColumns: [],
       registrationNumbers: {},
       faculties: {},
       years: {},
       dietary: {},
       genders: {},
       heardFrom: {},
+      isWaitlistShown: false,
       registrationVisible: { visible: false, style: { display: "none" } },
       facultyVisible: { visible: false, style: { display: "none" } },
       yearVisible: { visible: false, style: { display: "none" } },
@@ -290,6 +292,12 @@ export class EventStatsTable extends Component {
       }
     );
   }
+
+  showWaitlist = () => {
+    this.setState({
+      isWaitlistShown: !this.state.isWaitlistShown
+    });
+  };
 
   componentDidMount() {
     this.refreshTable();
@@ -508,7 +516,23 @@ export class EventStatsTable extends Component {
       }
     ];
 
-    const registrationColumns = defaultColumns.concat(this.state.columns);
+    const arrangeColumns = () => {
+      let curr = defaultColumns.concat(this.state.columns)
+      this.setState({ presentedColumns: curr });
+      return curr;
+    };
+
+    let registrationColumns = this.state.presentedColumns.length > 0 ? this.state.presentedColumns : arrangeColumns();
+
+    function handleColumnDrag(sourceIndex, destinationIndex) {
+      const sourceColumn = registrationColumns[sourceIndex];
+      const destinationColumn = registrationColumns[destinationIndex];
+
+      // Swapping the column order
+      registrationColumns[sourceIndex] = destinationColumn;
+      registrationColumns[destinationIndex] = sourceColumn;
+      this.setState({ presentedColumns: registrationColumns });
+    }
 
     /**
      * Creates stats + graphs/charts
@@ -534,10 +558,33 @@ export class EventStatsTable extends Component {
           Refresh Table Data
         </Button>
 
+        {/* waitlist button */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() =>
+            this.showWaitlist()
+          }
+        >
+          Show Waitlist
+        </Button>
+
+        {
+          this.state.isWaitlistShown &&
+            <div>
+              <div style={{ padding: "10px" }} />
+              {/* text to say hello */}
+              <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
+                To view the waitlist: 1) apply a Filter on the Registration Status column for "Waitlist". 2) Sort the table by Last Updated.
+              </Typography>
+            </div>
+        }
+
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
           columns={registrationColumns}
           data={this.state.rows}
+          handleColumnDrag={handleColumnDrag}
           // Configure options for the table
           style={styles.table}
           options={{
