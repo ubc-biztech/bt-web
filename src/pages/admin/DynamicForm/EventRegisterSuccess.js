@@ -141,7 +141,7 @@ const EventRegisterSuccess = ({
             See you soon!
           </Typography>
           <Typography>
-            You've successfully registered with <b>{user?.email}</b>.
+            You've successfully registered to the event.
           </Typography>
           <Typography>We've sent you an email! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
         </div>

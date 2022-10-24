@@ -121,6 +121,15 @@ const userReducer = (state = initialUserState, action) => {
           refreshing: false,
           lastUpdated: new Date(),
         },
+        userRegisteredEvents: {
+          ...state.userRegisteredEvents,
+          data: null,
+          fetched: false,
+          loading: false,
+          refreshing: false,
+          error: "",
+          lastUpdated: null,
+        },
       };
     default:
       return state;
