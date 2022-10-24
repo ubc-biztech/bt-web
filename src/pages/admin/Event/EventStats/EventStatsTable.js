@@ -368,7 +368,6 @@ export class EventStatsTable extends Component {
 
     const defaultColumns = [
       {
-        // title: "Registration Status",
         title: <DraggableTitle title="Registration Status" />,
         field: REGISTRATIONSTATUSLABEL,
         cellStyle: { whiteSpace: "nowrap" },
@@ -408,55 +407,104 @@ export class EventStatsTable extends Component {
         )
       },
       {
-        title: "First Name",
-        // title: <DraggableTitle title="First Name" />,
+        title: <DraggableTitle title="First Name" />,
         field: "fname",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.fname}
+          </div>
+        )
       },
       {
-        title: "Last Name",
+        title: <DraggableTitle title="Last Name" />,
         field: "lname",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.lname}
+          </div>
+        )
       },
       {
-        title: "Email",
+        title: <DraggableTitle title="Email" />,
         field: "id",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.id}
+          </div>
+        )
       },
       {
-        title: "Last Updated",
+        title: <DraggableTitle title="Last Updated" />,
         field: "updatedAt",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.updatedAt}
+          </div>
+        )
       },
       {
-        title: "Diet",
+        title: <DraggableTitle title="Diet" />,
         field: "diet",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.diet}
+          </div>
+        )
       },
       {
-        title: "Student Number",
+        title: <DraggableTitle title="Student Number" />,
         field: "studentId",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.studentId}
+          </div>
+        )
       },
       {
-        title: "Faculty",
+        title: <DraggableTitle title="Faculty" />,
         field: "faculty",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.faculty}
+          </div>
+        )
       },
       {
-        title: "Year Level",
+        title: <DraggableTitle title="Year Level" />,
         field: "year",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.year}
+          </div>
+        )
       },
       {
-        title: "Gender",
+        title: <DraggableTitle title="Gender" />,
         field: "gender",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.gender}
+          </div>
+        )
       },
       {
-        title: "Heard about event from",
+        title: <DraggableTitle title="Heard about event from" />,
         field: "heardFrom",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.heardFrom}
+          </div>
+        )
       }
     ];
 
