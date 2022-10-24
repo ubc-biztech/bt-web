@@ -37,6 +37,7 @@ import {
   combineEventAndRegistrationData,
   appendRegistrationQuestions
 } from "./utils";
+import DraggableTitle from "./DraggableTitle";
 
 const styles = {
   stats: {
@@ -87,6 +88,11 @@ const styles = {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis"
+  },
+  toggleContainer: {
+    display: "flex",
+    justifyContent: "left",
+    alignItems: "bottom"
   }
 };
 
@@ -99,12 +105,14 @@ export class EventStatsTable extends Component {
     super(props);
     this.state = {
       columns: {},
+      presentedColumns: [],
       registrationNumbers: {},
       faculties: {},
       years: {},
       dietary: {},
       genders: {},
       heardFrom: {},
+      isWaitlistShown: false,
       registrationVisible: { visible: false, style: { display: "none" } },
       facultyVisible: { visible: false, style: { display: "none" } },
       yearVisible: { visible: false, style: { display: "none" } },
@@ -122,8 +130,12 @@ export class EventStatsTable extends Component {
     };
     await fetchBackend(`/registrations/${id}`, "PUT", body);
 
-    this.getEventTableData(this.props.event.id, this.props.event.year);
+    this.refreshTable();
   }
+
+  refreshTable = () => {
+    this.getEventTableData(this.props.event.id, this.props.event.year);
+  };
 
   /* updates stats and the rows in the table
      faculty, gender, dietary, and year stats are only computed on the initial render of the component
@@ -267,6 +279,12 @@ export class EventStatsTable extends Component {
     this.setState({
       columns
     });
+
+    let presentedColumns = this.state.presentedColumns;
+
+    this.setState({
+      presentedColumns: presentedColumns.concat(columns)
+    })
   }
 
   async updateEventTableData(eventID) {
@@ -281,8 +299,14 @@ export class EventStatsTable extends Component {
     );
   }
 
+  showWaitlist = () => {
+    this.setState({
+      isWaitlistShown: !this.state.isWaitlistShown
+    });
+  };
+
   componentDidMount() {
-    this.getEventTableData(this.props.event.id, this.props.event.year);
+    this.refreshTable();
   }
 
   /*
@@ -358,9 +382,8 @@ export class EventStatsTable extends Component {
 
     const defaultColumns = [
       {
-        title: "Registration Status",
+        title: <DraggableTitle title="Registration Status" />,
         field: REGISTRATIONSTATUSLABEL,
-        sorting: false,
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
           <div>
@@ -398,61 +421,124 @@ export class EventStatsTable extends Component {
         )
       },
       {
-        title: "First Name",
+        title: <DraggableTitle title="First Name" />,
         field: "fname",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.fname}
+          </div>
+        )
       },
       {
-        title: "Last Name",
+        title: <DraggableTitle title="Last Name" />,
         field: "lname",
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.lname}
+          </div>
+        )
       },
       {
-        title: "Email",
+        title: <DraggableTitle title="Email" />,
         field: "id",
-        sorting: false,
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.id}
+          </div>
+        )
       },
       {
-        title: "Diet",
+        title: <DraggableTitle title="Last Updated" />,
+        field: "updatedAt",
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.updatedAt}
+          </div>
+        )
+      },
+      {
+        title: <DraggableTitle title="Diet" />,
         field: "diet",
-        sorting: false,
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.diet}
+          </div>
+        )
       },
       {
-        title: "Student Number",
+        title: <DraggableTitle title="Student Number" />,
         field: "studentId",
-        type: "numeric",
-        sorting: false,
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.studentId}
+          </div>
+        )
       },
       {
-        title: "Faculty",
+        title: <DraggableTitle title="Faculty" />,
         field: "faculty",
-        sorting: false,
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.faculty}
+          </div>
+        )
       },
       {
-        title: "Year Level",
+        title: <DraggableTitle title="Year Level" />,
         field: "year",
-        sorting: false,
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.year}
+          </div>
+        )
       },
       {
-        title: "Gender",
+        title: <DraggableTitle title="Gender" />,
         field: "gender",
-        sorting: false,
-        cellStyle: { whiteSpace: "nowrap" }
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.gender}
+          </div>
+        )
       },
       {
-        title: "Heard about event from",
+        title: <DraggableTitle title="Heard about event from" />,
         field: "heardFrom",
-        sorting: false,
-        cellStyle: { whiteSpace: "nowrap" }
-      },
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            {rowData.heardFrom}
+          </div>
+        )
+      }
     ];
 
-    const registrationColumns = defaultColumns.concat(this.state.columns);
+    const arrangeColumns = () => {
+      let curr = defaultColumns.concat(this.state.columns)
+      this.setState({ presentedColumns: curr });
+      return curr;
+    };
+
+    let registrationColumns = this.state.presentedColumns.length > 0 ? this.state.presentedColumns : arrangeColumns();
+
+    function handleColumnDrag(sourceIndex, destinationIndex) {
+      const sourceColumn = registrationColumns[sourceIndex];
+      const destinationColumn = registrationColumns[destinationIndex];
+
+      // Swapping the column order
+      registrationColumns[sourceIndex] = destinationColumn;
+      registrationColumns[destinationIndex] = sourceColumn;
+      this.setState({ presentedColumns: registrationColumns });
+    }
 
     /**
      * Creates stats + graphs/charts
@@ -461,43 +547,72 @@ export class EventStatsTable extends Component {
     return (
       <div style={styles.container}>
         {/* QR code scanner */}
-        <QrCheckIn event={this.props.event} />
+        <QrCheckIn event={this.props.event} refresh={this.refreshTable} />
 
         {/* padding for visual separation */}
         <div style={{ padding: "10px" }} />
+        
 
         {/* refresh button */}
         <Button
           variant="contained"
           color="primary"
           onClick={() =>
-            this.getEventTableData(this.props.event.id, this.props.event.year)
+            this.refreshTable()
           }
         >
-          Refresh Table
+          Refresh Table Data
         </Button>
+
+        {/* waitlist button */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() =>
+            this.showWaitlist()
+          }
+        >
+          Show Waitlist
+        </Button>
+
+        {
+          this.state.isWaitlistShown &&
+            <div>
+              <div style={{ padding: "10px" }} />
+              {/* text to say hello */}
+              <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
+                To view the waitlist: 1) apply a Filter on the Registration Status column for "Waitlist". 2) Sort the table by Last Updated.
+              </Typography>
+            </div>
+        }
 
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
           columns={registrationColumns}
           data={this.state.rows}
+          handleColumnDrag={handleColumnDrag}
           // Configure options for the table
           style={styles.table}
           options={{
             search: true,
-            draggable: false,
-            padding: "dense",
+            draggable: true,
+            filtering: true,
+            padding: "default",
             pageSize: 25,
-            pageSizeOptions: [25, 50, 100, 200],
+            pageSizeOptions: [25, 50, 100, 200, 1000],
             actionsColumnIndex: 5,
             exportButton: true,
+            exportAllData: true,
             headerStyle: {
               fontWeight: "bold",
               backgroundColor: COLORS.CARD_PAPER_COLOR,
               color: COLORS.FONT_COLOR,
               whiteSpace: "nowrap"
             },
-            rowStyle: (rowData) => ({})
+            rowStyle: (rowData) => ({}),
+            filterCellStyle: {
+              backgroundColor: COLORS.CARD_PAPER_COLOR
+            }
           }}
           localization={{
             body: {
@@ -509,7 +624,10 @@ export class EventStatsTable extends Component {
                 >
                   No attendees to display.
                 </h1>
-              )
+              ),
+              filterRow: {
+                filterTooltip: "Filter (type in to search)"
+              }
             }
           }}
           components={{
@@ -843,8 +961,12 @@ const QrCheckIn = (props) => {
       fetchBackend(`/registrations/${id}`, "PUT", body);
 
       setQrCode(defaultQrCode);
+
       // wait 10 seconds, then reset the scan stage
       cycleQrScanStage(QR_SCAN_STAGE.SUCCESS, 8000);
+
+      // refresh the entire table to reflect change
+      props.refresh();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qrCode]);
@@ -853,11 +975,7 @@ const QrCheckIn = (props) => {
     <Paper className={[classes.qrRoot]}>
       {/* Toggle QR Scanner */}
       <div
-        style={{
-          display: "flex",
-          justifyContent: "left",
-          alignItems: "bottom"
-        }}
+        style={styles.toggleContainer}
       >
         <Link
           onClick={() => setVisible(!visible)}
@@ -881,7 +999,7 @@ const QrCheckIn = (props) => {
             }
           >
             {qrScanStage === QR_SCAN_STAGE.SUCCESS
-              ? `Checked-in successfully for ${checkInName}! To see the updated attendance, refresh the table using the button below.`
+              ? `Checked-in successfully for ${checkInName}! Your attendance table will be updated shortly.`
               : qrScanStage === QR_SCAN_STAGE.SCANNING
               ? "Ready to scan a QR code to check-in. 😎"
               : `🚨 ERROR: ${error}`}
@@ -930,5 +1048,6 @@ const QrCheckIn = (props) => {
     </Paper>
   );
 };
+
 
 export default EventStatsTable;

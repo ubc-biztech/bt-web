@@ -1,3 +1,6 @@
+import React from 'react';
+import DraggableTitle from "./DraggableTitle";
+
 // Constants
 const REGISTRATIONSTATUSLABEL = "registrationStatus"
 
@@ -38,7 +41,9 @@ const combineEventAndRegistrationData = (users) => {
       ...user.dynamicResponses,
       studentId: user.studentId,
       id: user.id,
-      registrationStatus: user.registrationStatus 
+      registrationStatus: user.registrationStatus,
+      // convert the date to something more readable
+      updatedAt: new Date(user.updatedAt).toLocaleString()
     });
   });
 
@@ -58,10 +63,17 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
   registrationQuestions.forEach((question) => {
     const column = {};
 
-    column.title = question.label;
+    column.title = <DraggableTitle title={question.label} />;
     column.field = question.questionId;
     column.type = question.type;
-    column.sorting = false;
+    column.sorting = true;
+    column.render = (rowData) => {
+      return (
+        <div>
+          {rowData[question.questionId]}
+        </div>
+      )
+    }
 
     columns.push(column);
   });
