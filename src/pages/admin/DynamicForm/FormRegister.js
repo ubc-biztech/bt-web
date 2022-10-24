@@ -274,7 +274,7 @@ const FormRegister = (props) => {
       } else {
         setRegAlert(null)
       }
-      if (!(user?.isMember || user?.admin || !currEvent.pricing?.nonMembers || samePricing())) {
+      if (!(user?.isMember || user?.admin || currEvent.pricing?.nonMembers === undefined || samePricing())) {
         setIsModalOpen(true)
       }
     }
@@ -762,7 +762,7 @@ const FormRegister = (props) => {
     )
   }
 
-  if (!user && !currEvent.pricing?.nonMembers) {
+  if (!user && currEvent.pricing?.nonMembers === undefined) {
     return (
       <Fragment>
         {regAlert}
