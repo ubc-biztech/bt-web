@@ -69,9 +69,9 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
     column.sorting = true;
     column.render = (rowData) => {
       return (
-        <div>
+        <>
           {rowData[question.questionId]}
-        </div>
+        </>
       )
     }
 

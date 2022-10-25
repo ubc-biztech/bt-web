@@ -425,9 +425,9 @@ export class EventStatsTable extends Component {
         field: "fname",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.fname}
-          </div>
+          </>
         )
       },
       {
@@ -435,9 +435,9 @@ export class EventStatsTable extends Component {
         field: "lname",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.lname}
-          </div>
+          </>
         )
       },
       {
@@ -445,9 +445,9 @@ export class EventStatsTable extends Component {
         field: "id",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.id}
-          </div>
+          </>
         )
       },
       {
@@ -455,9 +455,9 @@ export class EventStatsTable extends Component {
         field: "updatedAt",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.updatedAt}
-          </div>
+          </>
         )
       },
       {
@@ -465,9 +465,9 @@ export class EventStatsTable extends Component {
         field: "diet",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.diet}
-          </div>
+          </>
         )
       },
       {
@@ -475,9 +475,9 @@ export class EventStatsTable extends Component {
         field: "studentId",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.studentId}
-          </div>
+          </>
         )
       },
       {
@@ -485,9 +485,9 @@ export class EventStatsTable extends Component {
         field: "faculty",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.faculty}
-          </div>
+          </>
         )
       },
       {
@@ -495,9 +495,9 @@ export class EventStatsTable extends Component {
         field: "year",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.year}
-          </div>
+          </>
         )
       },
       {
@@ -505,9 +505,9 @@ export class EventStatsTable extends Component {
         field: "gender",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.gender}
-          </div>
+          </>
         )
       },
       {
@@ -515,9 +515,9 @@ export class EventStatsTable extends Component {
         field: "heardFrom",
         cellStyle: { whiteSpace: "nowrap" },
         render: (rowData) => (
-          <div>
+          <>
             {rowData.heardFrom}
-          </div>
+          </>
         )
       }
     ];
