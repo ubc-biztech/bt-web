@@ -137,8 +137,14 @@ const FormCreatePreview = (props) => {
     },
     {
       type: "SELECT",
-      label: "Pronouns",
+      label: "Preferred Pronouns",
       choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+      required: true,
+    },
+    {
+      type: "SELECT",
+      label: "Any dietary restrictions?",
+      choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
       required: true,
     },
     {
