@@ -13,6 +13,7 @@ import { MEMBER_TYPES } from "constants/_constants/memberTypes";
 import { COLORS } from "constants/_constants/theme";
 
 import { fetchBackend } from "utils";
+import { log, updateUser, updateRegisteredEvents } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -159,8 +160,33 @@ const OAuthUserMembershipFormContainer = (props) => {
   //     .catch((err) => console.log(err));
   //   const { user } = Auth.currentAuthenticatedUser();
 
+  //   let user = await Auth.currentAuthenticatedUser();
+
+  // const { attributes } = user;
+
+  // const [userEmail, getOAuthAttributes] = useState("");
+  // email ={userEmail} onChange ={(e)=>getOAuthAttributes()};
+
+  async function getOAuthAttributes() {
+    // let user = await Auth.currentAuthenticatedUser();
+    return Auth.currentAuthenticatedUser({ bypassCache: true })
+      .then(async (authUser) => {
+        // const email = authUser.attributes["email"];
+        // if (email) {
+        //   // Perform redux actions to update user and registration states at the same time
+        //   await Promise.all([updateUser(email)]);
+        // }
+        const email = authUser.attributes.email;
+        // save only essential info to redux
+        this.props.setUser({
+          email: email
+        });
+      })
+      .catch(() => log("Couldn't fetch user email from Cognito"));
+  }
+
   const initialValues = {
-    email: "", //authUser, // <email> || "" <-- TODO need some way to get email from Cognito
+    email: getOAuthAttributes(), //authUser, // <email> || "" <-- TODO need some way to get email from Cognito
     password: "",
     confirmPassword: "",
     first_name: "",
