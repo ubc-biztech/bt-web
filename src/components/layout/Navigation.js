@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
 
 import { makeStyles } from "@material-ui/styles";
-import { List, ListItem, Divider } from "@material-ui/core";
+import { List, ListItem, Divider, Typography } from "@material-ui/core";
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import {
@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
     margin: "0.5em 1em",
     backgroundColor: "rgba(255, 255, 255, 0.5)",
   },
+  navItem: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "0.2em",
+  }
 }));
 
 function Nav(props) {
@@ -85,7 +91,12 @@ function Nav(props) {
         aria-label={label}
         disableGutters={true}
       >
-        {icon}
+        <div className={classes.navItem}>
+          {icon}
+          <Typography variant="caption" style={{ color: COLORS.WHITE }}>
+            {label}
+          </Typography>
+        </div>
       </ListItem>
     ) : null;
   }
