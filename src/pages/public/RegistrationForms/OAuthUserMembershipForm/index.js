@@ -145,48 +145,85 @@ const OAuthUserMembershipFormContainer = (props) => {
     prev_member: Yup.string().required("Please select Yes/No")
   });
 
-  // TODO: get user email from Cognito
-
-  //   Auth.currentSession({ bypassCache: true })
-  //       .then(async (session) => {
-  //         const authUser = session.idToken.payload;
-  //         const { email } = authUser;
-  //       }
-
-  //   Auth.currentAuthenticatedUser({
-  //     bypassCache: false // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
-  //   })
-  //     .then((user) => console.log(user))
-  //     .catch((err) => console.log(err));
-  //   const { user } = Auth.currentAuthenticatedUser();
-
-  //   let user = await Auth.currentAuthenticatedUser();
-
-  // const { attributes } = user;
-
-  // const [userEmail, getOAuthAttributes] = useState("");
-  // email ={userEmail} onChange ={(e)=>getOAuthAttributes()};
-
+  const [userEmail, setUserEmail] = useState("");
   async function getOAuthAttributes() {
     // let user = await Auth.currentAuthenticatedUser();
-    return Auth.currentAuthenticatedUser({ bypassCache: true })
+    Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(async (authUser) => {
-        // const email = authUser.attributes["email"];
-        // if (email) {
-        //   // Perform redux actions to update user and registration states at the same time
-        //   await Promise.all([updateUser(email)]);
-        // }
-        const email = authUser.attributes.email;
-        // save only essential info to redux
-        this.props.setUser({
-          email: email
-        });
+        setUserEmail(authUser.attributes.email);
+        console.log("has set useremail to authuser.attributes:" + userEmail);
       })
       .catch(() => log("Couldn't fetch user email from Cognito"));
   }
 
+  const RenderForm = () => {
+    console.log("entered renderform function");
+    if (userEmail == "") {
+      console.log("no useremail");
+      return null;
+    } else {
+      console.log("about to return formik");
+      return (
+        <Fragment>
+          <Typography className={classes.registrationText}>
+            UBC BizTech User Registration &amp; 2022/23 Membership
+          </Typography>
+          <div className={classes.registrationHeader}>
+            <Typography className={classes.description}>
+              OAUTH Thank you for signing up to be a BizTech Application user
+              and 2022/23 member! By signing up for membership, you will also be
+              a part of our mailing list!
+            </Typography>
+            <Typography className={classes.description}>
+              Please keep in mind that membership costs $10.00 and are valid for
+              one school year (Sept-May), so if you were a member last year and
+              would like to continue being part of the BizTech Network, kindly
+              renew your membership by filling out this form and completing the
+              payment.
+            </Typography>
+            <Typography>
+              You will be also prompted to enter a password; submitting this
+              form will automatically create your new account for our
+              application, where you can login using your email and password. If
+              you already have an account, please log in and access the
+              membership registration form.
+            </Typography>
+          </div>
+
+          <Formik
+            initialValues={initialValues}
+            validationSchema={
+              memberType === MEMBER_TYPES.UBC
+                ? UBCValidationSchema
+                : memberType === MEMBER_TYPES.UNIVERSITY
+                ? UniversityValidationSchema
+                : memberType === MEMBER_TYPES.HIGH_SCHOOL
+                ? HighSchoolValidationSchema
+                : validationSchema
+            }
+            onSubmit={submitValues}
+          >
+            {(props) => {
+              props = {
+                ...props,
+                isSubmitting,
+                memberType,
+                setMemberType,
+                topics,
+                setTopics
+              };
+              return <OAuthUserMembershipForm {...props} />;
+            }}
+          </Formik>
+        </Fragment>
+      );
+    }
+  };
+
+  getOAuthAttributes();
+
   const initialValues = {
-    email: getOAuthAttributes(), //authUser, // <email> || "" <-- TODO need some way to get email from Cognito
+    email: userEmail,
     password: "",
     confirmPassword: "",
     first_name: "",
@@ -200,6 +237,8 @@ const OAuthUserMembershipFormContainer = (props) => {
     university: "",
     high_school: ""
   };
+
+  console.log(initialValues.email);
 
   async function adminSkipPayment(values) {
     const {
@@ -362,59 +401,11 @@ const OAuthUserMembershipFormContainer = (props) => {
 
   return (
     <div className={classes.layout}>
-      <Helmet>
-        <title>UBC BizTech User Registration &amp; 2022/23 Membership</title>
-      </Helmet>
       <Fragment>
-        <Typography className={classes.registrationText}>
-          UBC BizTech User Registration &amp; 2022/23 Membership
-        </Typography>
-        <div className={classes.registrationHeader}>
-          <Typography className={classes.description}>
-            Thank you for signing up to be a BizTech Application user and
-            2022/23 member! By signing up for membership, you will also be a
-            part of our mailing list!
-          </Typography>
-          <Typography className={classes.description}>
-            Please keep in mind that membership costs $10.00 and are valid for
-            one school year (Sept-May), so if you were a member last year and
-            would like to continue being part of the BizTech Network, kindly
-            renew your membership by filling out this form and completing the
-            payment.
-          </Typography>
-          <Typography>
-            You will be also prompted to enter a password; submitting this form
-            will automatically create your new account for our application,
-            where you can login using your email and password. If you already
-            have an account, please log in and access the membership
-            registration form.
-          </Typography>
-        </div>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={
-            memberType === MEMBER_TYPES.UBC
-              ? UBCValidationSchema
-              : memberType === MEMBER_TYPES.UNIVERSITY
-              ? UniversityValidationSchema
-              : memberType === MEMBER_TYPES.HIGH_SCHOOL
-              ? HighSchoolValidationSchema
-              : validationSchema
-          }
-          onSubmit={submitValues}
-        >
-          {(props) => {
-            props = {
-              ...props,
-              isSubmitting,
-              memberType,
-              setMemberType,
-              topics,
-              setTopics
-            };
-            return <OAuthUserMembershipForm {...props} />;
-          }}
-        </Formik>
+        <Helmet>
+          <title>UBC BizTech User Registration &amp; 2022/23 Membership</title>
+        </Helmet>
+        <RenderForm />
       </Fragment>
     </div>
   );

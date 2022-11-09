@@ -143,6 +143,8 @@ const MembershipFormContainer = (props) => {
     heardFromSpecify: ""
   };
 
+  console.log(initialValues.email);
+
   async function submitValues(values) {
     setIsSubmitting(true);
     const {
@@ -219,6 +221,7 @@ const MembershipFormContainer = (props) => {
   }
 
   const renderMemberForm = (isMember, isAdmin) => {
+    console.log("rerendered");
     return isMember || isAdmin ? (
       <div className={classes.alreadyMember}>
         <Typography className={classes.alreadyMemberText}>
@@ -278,6 +281,8 @@ const MembershipFormContainer = (props) => {
       </Fragment>
     );
   };
+
+  console.log("rerendered");
 
   return (
     <Fragment>

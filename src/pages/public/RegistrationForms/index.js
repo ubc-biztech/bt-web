@@ -72,66 +72,68 @@ const RegistrationFormContainer = (props) => {
 
   // const testing = false;
 
-  return (
-    <Fragment>
-      {OAuthFlag && <OAuthUserMembershipForm />}
-
-      {!user && (
-        <div className={classes.layout}>
-          <Helmet>
-            <title>UBC BizTech Registration 2022/23</title>
-          </Helmet>
-          {formType === "" && (
-            <Fragment>
-              <Typography className={classes.registrationText}>
-                Please choose the option that is applicable to you.
-              </Typography>
-              <div className={classes.options}>
-                {!user && (
+  if (OAuthFlag) {
+    return <OAuthUserMembershipForm />;
+  } else {
+    return (
+      <Fragment>
+        {!user && (
+          <div className={classes.layout}>
+            <Helmet>
+              <title>UBC BizTech Registration 2022/23</title>
+            </Helmet>
+            {formType === "" && (
+              <Fragment>
+                <Typography className={classes.registrationText}>
+                  Please choose the option that is applicable to you.
+                </Typography>
+                <div className={classes.options}>
+                  {!user && (
+                    <Button
+                      color="primary"
+                      className={classes.selectButton}
+                      onClick={() => setFormType("UserMember")}
+                    >
+                      <div style={{ flexDirection: "column" }}>
+                        <Typography>
+                          User + Membership 2022/23 Registration
+                        </Typography>
+                        <img src={House} alt="not-found" />
+                        <Typography>
+                          I am not a user yet and want to make my account and
+                          membership all at once!
+                        </Typography>
+                      </div>
+                    </Button>
+                  )}
                   <Button
                     color="primary"
                     className={classes.selectButton}
-                    onClick={() => setFormType("UserMember")}
+                    onClick={() => setFormType("Member")}
                   >
                     <div style={{ flexDirection: "column" }}>
+                      <Typography>Membership 2022/23 Registration</Typography>
+                      <img
+                        src={Login}
+                        alt="not-found"
+                        className={classes.loginIcon}
+                      />
                       <Typography>
-                        User + Membership 2022/23 Registration
-                      </Typography>
-                      <img src={House} alt="not-found" />
-                      <Typography>
-                        I am not a user yet and want to make my account and
-                        membership all at once!
+                        I am a user already and am here to sign up or renew my
+                        membership status!
                       </Typography>
                     </div>
                   </Button>
-                )}
-                <Button
-                  color="primary"
-                  className={classes.selectButton}
-                  onClick={() => setFormType("Member")}
-                >
-                  <div style={{ flexDirection: "column" }}>
-                    <Typography>Membership 2022/23 Registration</Typography>
-                    <img
-                      src={Login}
-                      alt="not-found"
-                      className={classes.loginIcon}
-                    />
-                    <Typography>
-                      I am a user already and am here to sign up or renew my
-                      membership status!
-                    </Typography>
-                  </div>
-                </Button>
-              </div>
-            </Fragment>
-          )}
-        </div>
-      )}
-      {formType === "UserMember" && <UserMembershipForm />}
-      {(formType === "Member" || user) && <MembershipForm />}
-    </Fragment>
-  );
+                </div>
+              </Fragment>
+            )}
+          </div>
+        )}
+        {formType === "UserMember" && <UserMembershipForm />}
+        {((formType === "Member" && !OAuthFlag) || user) && <MembershipForm />}
+      </Fragment>
+    );
+  }
 };
 
 export default RegistrationFormContainer;
