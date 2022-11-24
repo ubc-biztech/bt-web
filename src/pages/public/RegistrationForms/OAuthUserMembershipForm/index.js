@@ -54,18 +54,6 @@ const OAuthUserMembershipFormContainer = (props) => {
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
-    password: Yup.string()
-      .required("Password is required")
-      .min(8, "Please make your password a minimum of 8 characters"),
-    confirmPassword: Yup.string()
-      .required("Password is required")
-      .when("password", {
-        is: (val) => val && val.length > 0,
-        then: Yup.string().oneOf(
-          [Yup.ref("password")],
-          "Password does not match"
-        )
-      }),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
     education: Yup.string().required("Education is required"),
@@ -74,18 +62,6 @@ const OAuthUserMembershipFormContainer = (props) => {
 
   const UBCValidationSchema = Yup.object({
     email: Yup.string().email().required(),
-    password: Yup.string()
-      .required("Password is required")
-      .min(8, "Please make your password a minimum of 8 characters"),
-    confirmPassword: Yup.string()
-      .required("Password is required")
-      .when("password", {
-        is: (val) => val && val.length > 0,
-        then: Yup.string().oneOf(
-          [Yup.ref("password")],
-          "Password does not match"
-        )
-      }),
     student_number: Yup.number("Valid Student ID required")
       .min(9999999, "Valid Student ID required")
       .max(100000000, "Valid Student ID required")
@@ -103,18 +79,6 @@ const OAuthUserMembershipFormContainer = (props) => {
 
   const UniversityValidationSchema = Yup.object({
     email: Yup.string().email().required(),
-    password: Yup.string()
-      .required("Password is required")
-      .min(8, "Please make your password a minimum of 8 characters"),
-    confirmPassword: Yup.string()
-      .required("Password is required")
-      .when("password", {
-        is: (val) => val && val.length > 0,
-        then: Yup.string().oneOf(
-          [Yup.ref("password")],
-          "Password does not match"
-        )
-      }),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
     university: Yup.string().required("University name is required"),
@@ -126,18 +90,6 @@ const OAuthUserMembershipFormContainer = (props) => {
 
   const HighSchoolValidationSchema = Yup.object({
     email: Yup.string().email().required(),
-    password: Yup.string()
-      .required("Password is required")
-      .min(8, "Please make your password a minimum of 8 characters"),
-    confirmPassword: Yup.string()
-      .required("Password is required")
-      .when("password", {
-        is: (val) => val && val.length > 0,
-        then: Yup.string().oneOf(
-          [Yup.ref("password")],
-          "Password does not match"
-        )
-      }),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
     year: Yup.string().required("Level of study is required"),
@@ -182,10 +134,9 @@ const OAuthUserMembershipFormContainer = (props) => {
               payment.
             </Typography>
             <Typography>
-              You will be also prompted to enter a password; submitting this
-              form will automatically create your new account for our
-              application, where you can login using your email and password. If
-              you already have an account, please log in and access the
+              Submitting this form will automatically create your new account
+              for our application, where you can login using an OAuth partner.
+              If you already have an account, please log in and access the
               membership registration form.
             </Typography>
           </div>
@@ -224,8 +175,6 @@ const OAuthUserMembershipFormContainer = (props) => {
 
   const initialValues = {
     email: userEmail,
-    password: "",
-    confirmPassword: "",
     first_name: "",
     last_name: "",
     student_number: "",
@@ -243,7 +192,6 @@ const OAuthUserMembershipFormContainer = (props) => {
   async function adminSkipPayment(values) {
     const {
       email,
-      password,
       first_name,
       last_name,
       pronouns,
@@ -273,12 +221,13 @@ const OAuthUserMembershipFormContainer = (props) => {
     try {
       await Auth.signUp({
         username: email,
-        password: password,
+        password: null,
         attributes: {
           name: first_name + " " + last_name,
           "custom:student_id": student_number
         }
       });
+      console.log(`auth.signup has been called with ${email}`);
     } catch (err) {
       // TODO: add error handler, do not let the form submit
       alert(`AWS Amplify error: ${err}`);
@@ -309,7 +258,6 @@ const OAuthUserMembershipFormContainer = (props) => {
   async function proceedToPayment(values) {
     const {
       email,
-      password,
       first_name,
       last_name,
       pronouns,
@@ -353,7 +301,6 @@ const OAuthUserMembershipFormContainer = (props) => {
       lname: last_name,
       major: memberType === "UBC" || memberType === "UNI" ? major : "",
       email: email,
-      password: password,
       year: memberType !== "NA" ? year : "",
       faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
       pronouns: pronouns || "Other/Prefer not to say",
@@ -405,7 +352,7 @@ const OAuthUserMembershipFormContainer = (props) => {
         <Helmet>
           <title>UBC BizTech User Registration &amp; 2022/23 Membership</title>
         </Helmet>
-        <RenderForm />
+        {RenderForm()}
       </Fragment>
     </div>
   );
