@@ -122,13 +122,13 @@ export class EventStatsTable extends Component {
     };
   }
 
-  async updateUserRegistrationStatus(id, registrationStatus) {
+  async updateUserRegistrationStatus(id, fname, registrationStatus) {
     const body = {
       eventID: this.props.event.id,
       year: this.props.event.year,
       registrationStatus
     };
-    await fetchBackend(`/registrations/${id}`, "PUT", body);
+    await fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
 
     this.refreshTable();
   }
@@ -335,6 +335,7 @@ export class EventStatsTable extends Component {
           ) {
             this.updateUserRegistrationStatus(
               rowData.id,
+              rowData.fname,
               REGISTRATION_STATUS.REGISTERED
             );
           }
@@ -347,6 +348,7 @@ export class EventStatsTable extends Component {
           ) {
             this.updateUserRegistrationStatus(
               rowData.id,
+              rowData.fname,
               REGISTRATION_STATUS.CHECKED_IN
             );
           }
@@ -359,6 +361,7 @@ export class EventStatsTable extends Component {
           ) {
             this.updateUserRegistrationStatus(
               rowData.id,
+              rowData.fname,
               REGISTRATION_STATUS.WAITLISTED
             );
           }
@@ -371,6 +374,7 @@ export class EventStatsTable extends Component {
           ) {
             this.updateUserRegistrationStatus(
               rowData.id,
+              rowData.fname,
               REGISTRATION_STATUS.CANCELLED
             );
           }
@@ -746,7 +750,7 @@ const PopoverCell = (props) => {
               {popoverText}
             </Link>
           ) : (
-            <Typography sx={{ p: 1 }}>{popoverText.split("<br/>").join("\n")}</Typography>
+            <Typography sx={{ p: 1 }}>{popoverText?.split("<br/>").join("\n")}</Typography>
           )}
         </Popover>
       )}
@@ -894,6 +898,7 @@ const QrCheckIn = (props) => {
     const id = qrCode.data.split(";");
     const userID = id[0];
     const eventIDAndYear = id[1] + ";" + id[2];
+    const userFName = id[3]
 
     // validate event ID and year as the current event
     if (eventIDAndYear !== props.event.id + ";" + props.event.year) {
@@ -944,13 +949,13 @@ const QrCheckIn = (props) => {
           return;
         }
 
-        checkInUser(userID);
+        checkInUser(userID, userFName);
       })
       .catch((error) => {
         console.log(error);
       });
 
-    const checkInUser = (id) => {
+    const checkInUser = (id, fname) => {
       const body = {
         eventID: props.event.id,
         year: props.event.year,
@@ -958,7 +963,7 @@ const QrCheckIn = (props) => {
       };
 
       // update the registration status of the user to checked in
-      fetchBackend(`/registrations/${id}`, "PUT", body);
+      fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
 
       setQrCode(defaultQrCode);
 
