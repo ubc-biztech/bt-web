@@ -143,7 +143,7 @@ const EventRegisterSuccess = ({
           <Typography>
             You've successfully registered to the event.
           </Typography>
-          <Typography>We've sent you an email! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
+          <Typography>We've sent you two emails, one with a calendar invite and one with a QR code! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
         </div>
         <div className={classes.whereToNextContainer}>
           <Typography className={classes.whereToNextHeading}>
