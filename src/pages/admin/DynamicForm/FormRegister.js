@@ -661,7 +661,8 @@ const FormRegister = (props) => {
       }
       const registrationBody = {
         email: responseData[0],
-        studentId: user.id,
+        fname: responseData[1],
+        studentId: user?.id,
         eventID: currEvent.id,
         year: currEvent.year,
         registrationStatus: "registered",
@@ -693,14 +694,14 @@ const FormRegister = (props) => {
     }
   };
 
-  const updateUserRegistrationStatus = async (id, registrationStatus) => {
+  const updateUserRegistrationStatus = async (id, fname, registrationStatus) => {
     const body = {
       eventID: eventId,
       year: Number(eventYear),
       registrationStatus
     };
     try {
-      await fetchBackend(`/registrations/${id}`, "PUT", body);
+      await fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
       alert('Successfully updated registration status! Please check your inbox (including Spam/Promotions) for an email.')
       window.location.reload()
     } catch (e) {
@@ -718,6 +719,7 @@ const FormRegister = (props) => {
         ) {
           updateUserRegistrationStatus(
             user?.email,
+            user?.fname,
             REGISTRATION_STATUS.REGISTERED
           );
         }
@@ -730,6 +732,7 @@ const FormRegister = (props) => {
         ) {
           updateUserRegistrationStatus(
             user?.email,
+            user?.fname,
             REGISTRATION_STATUS.CANCELLED
           );
         }
