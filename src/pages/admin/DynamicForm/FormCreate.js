@@ -116,7 +116,8 @@ const styles = {
     marginTop: 0,
     fontSize: "1.2rem",
     paddingTop: "1rem",
-    color: "#FFFFFF"
+    color: "#FFFFFF",
+    width: "40%"
   },
   editorSectionTitle: {
     color: "#FFFFFF",
@@ -126,18 +127,24 @@ const styles = {
   },
   nonMember: {
     color: "white",
+  },
+  previewButton: {
+    marginBottom: 24,
   }
 };
 
 const FormCreateForm = (props) => {
   const classes = useStyles();
   const { id: eventId, year: eventYear } = useParams();
+  const [viewUserForm, setViewUserForm] = useState(true);
+
   const {
     values: {
       imageUrl,
       eventName,
       slug,
       description,
+      partnerDescription,
       capacity,
       start,
       end,
@@ -147,7 +154,8 @@ const FormCreateForm = (props) => {
       nonMembersPrice,
       nonMembersAllowed,
       feedback,
-      registrationQuestions
+      registrationQuestions,
+      partnerRegistrationQuestions,
     },
     errors,
     touched,
@@ -224,6 +232,42 @@ const FormCreateForm = (props) => {
     </FieldArray>
   );
 
+  const partnerCustomQuestions = (
+    <FieldArray name="partnerRegistrationQuestions">
+      {({ push, swap, remove }) => {
+        return (
+          <>
+            {partnerRegistrationQuestions.map((question, index) => {
+              return (
+                <CustomQuestion
+                  id={`partnerRegistrationQuestions[${index}]`}
+                  name={`partnerRegistrationQuestions[${index}]`}
+                  key={index}
+                  index={index}
+                  length={partnerRegistrationQuestions.length}
+                  data={question}
+                  fnMove={swap}
+                  fnDelete={remove}
+                />
+              );
+            })}
+            {/* Add question */}
+            <div style={styles.addQuestion}>
+              <Fab
+                onClick={() => push({ ...defaultQuestion })}
+                className={classes.fab}
+                color="primary"
+                aria-label="add"
+              >
+                <Add />
+              </Fab>
+            </div>
+          </>
+        );
+      }}
+    </FieldArray>
+  );
+
   return (
     <form onSubmit={handleSubmit}>
       <Helmet>
@@ -233,21 +277,44 @@ const FormCreateForm = (props) => {
       <Grid container>
         <Grid
           item
-          xs={8}
+          xs={7}
           style={{
             maxHeight: "calc(100vh - 130px)"
           }}
         >
-          <FormCreatePreview
-            imageUrl={imageUrl}
-            eventName={eventName}
-            description={description}
-            questionsData={registrationQuestions}
-          />
+          <div style={styles.preview} className="discrete-scrollbar">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setViewUserForm(!viewUserForm)}
+              style={styles.previewButton}
+            >
+              {viewUserForm ? "View Partner Form Preview" : "View User Form Preview"}
+            </Button>
+            {viewUserForm ? (
+              <FormCreatePreview
+                imageUrl={imageUrl}
+                type={"attendee"}
+                eventName={eventName}
+                description={description}
+                questionsData={registrationQuestions}
+              />
+            ) : 
+            (
+              <FormCreatePreview
+                imageUrl={imageUrl}
+                type={"partner"}check
+                eventName={eventName}
+                description={partnerDescription}
+                questionsData={partnerRegistrationQuestions}
+              />
+            )
+            }
+          </div>
         </Grid>
         <Grid
           item
-          xs={4}
+          xs={5}
           style={{
             maxHeight: "calc(100vh - 130px)"
           }}
@@ -257,44 +324,59 @@ const FormCreateForm = (props) => {
             {/* Editor Head */}
             <div style={{ ...styles.editorSection, ...styles.editorHeadmast }}>
               <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
-              <div style={{ display: "flex", gap: "1rem" }}>
-                {isSaved ? 
-                <Link
-                  variant="contained"
-                  component={Button}
-                  color="primary"
-                  to={{ pathname: `/event/${eventId}/${eventYear}/register`}}
-                  target="_blank"
-                >
-                  Event Link
-                </Link> : <></>}
-
-                {isSaved &&
-                  (isPublished ? (
-                    <Button
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <div style={{ display: "flex", gap: "1rem" }}>
+                  {isSaved &&
+                    (isPublished ? (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handlePublish(false)}
+                      >
+                        Unpublish
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handlePublish(true)}
+                      >
+                        Publish
+                      </Button>
+                    ))
+                  }
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                  >
+                    Save
+                  </Button>
+                </div>
+                <div style={{ display: "flex", gap: "1rem" }}>
+                  {isSaved ? 
+                    <Link
                       variant="contained"
+                      component={Button}
                       color="primary"
-                      onClick={() => handlePublish(false)}
+                      to={{ pathname: `/event/${eventId}/${eventYear}/register`}}
+                      target="_blank"
                     >
-                      Unpublish
-                    </Button>
-                  ) : (
-                    <Button
+                      Event Link
+                    </Link> : <></>
+                  }
+                  {isSaved ? 
+                    <Link
                       variant="contained"
+                      component={Button}
                       color="primary"
-                      onClick={() => handlePublish(true)}
+                      to={{ pathname: `/event/${eventId}/${eventYear}/register/partner`}}
+                      target="_blank"
                     >
-                      Publish
-                    </Button>
-                  ))}
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmit}
-                >
-                  Save
-                </Button>
+                      Partner Event Link
+                    </Link> : <></>
+                  }
+                </div>
               </div>
             </div>
             <div style={styles.editorDivider}></div>
@@ -353,7 +435,12 @@ const FormCreateForm = (props) => {
               />
               {slug && (
                 <div style={{ color: "#FFFFFF", opacity: "0.7" }}>
-                  {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register"}
+                  <div>
+                    {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register"}
+                  </div>
+                  <div>
+                  {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register/partner"}
+                  </div>
                 </div>
               )}
               <TextField
@@ -522,8 +609,29 @@ const FormCreateForm = (props) => {
 
             <div style={styles.editorDivider}></div>
             <div style={styles.editorSection}>
-              {/* Dynamic Questions */}
+              <h3 style={styles.editorSectionTitle}>Attendee Form Custom Questions</h3>
               {CustomQuestions}
+            </div>
+            <div style={styles.editorSection}>
+              <TextField
+                id="partnerDescription"
+                name="partnerDescription"
+                label="Partner Form Description"
+                fullWidth
+                required
+                multiline
+                rows={4}
+                margin="normal"
+                variant="filled"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={partnerDescription}
+                error={showError("partnerDescription")}
+                helperText={showError("partnerDescription") && errors.partnerDescription}
+              />
+              <h3 style={styles.editorSectionTitle}>Partner Form Custom Questions</h3>
+              {/* custom questions for partner*/}
+              {partnerCustomQuestions} 
             </div>
           </div>
         </Grid>
@@ -572,6 +680,16 @@ const dummyData = [
   }
 ];
 
+const partnerDummyData = [
+  {
+    type: "CHECKBOX",
+    label: "What role would you be open to at this event? Check all that apply.",
+    choices: "Keynote Speaker,Workshop Lead,Boothing,Networking Delegate",
+    required: true,
+    questionImageUrl: "",
+  }
+]
+
 const FormCreate = (props) => {
   const { events } = props;
   const { id: eventId, year: eventYear } = useParams();
@@ -596,6 +714,7 @@ const FormCreate = (props) => {
         eventName: event.ename || "",
         slug: event.id || "",
         description: event.description || "",
+        partnerDescription: event.partnerDescription || "",
         capacity: event.capac || "",
         start: event.startDate ? new Date(event.startDate) : new Date(),
         end: event.endDate ? new Date(event.endDate) : new Date(),
@@ -606,12 +725,14 @@ const FormCreate = (props) => {
         nonMembersPrice: event.pricing?.nonMembers || 0,
         registrationQuestions: event.registrationQuestions || dummyData,
         feedback: event.feedback || "",
+        partnerRegistrationQuestions: event.partnerRegistrationQuestions || partnerDummyData,
       }
     : {
         imageUrl: "",
         eventName: "",
         slug: "",
         description: "",
+        partnerDescription: "",
         capacity: "",
         start: new Date(),
         end: new Date(),
@@ -622,6 +743,7 @@ const FormCreate = (props) => {
         nonMembersPrice: 0,
         registrationQuestions: dummyData,
         feedback: "",
+        partnerRegistrationQuestions: partnerDummyData,
       };
 
   const regQuestionSchema = Yup.object({
@@ -638,6 +760,7 @@ const FormCreate = (props) => {
       .matches(/^[a-z\-0-9]*$/, "Slug must be lowercase and have no whitespace")
       .required(),
     description: Yup.string().required(),
+    partnerDescription: Yup.string().required(),
     capacity: Yup.number("Valid number required")
       .min(0, "Valid capacity required")
       .required(),
@@ -655,7 +778,8 @@ const FormCreate = (props) => {
       is: true,
       then: Yup.number().min(Yup.ref("price"), "Non-members price must be greater or equal to members price")
     }),
-    registrationQuestions: Yup.array().of(regQuestionSchema)
+    registrationQuestions: Yup.array().of(regQuestionSchema),
+    partnerRegistrationQuestions: Yup.array().of(regQuestionSchema)
   });
 
   async function submitValues(values) {
@@ -679,6 +803,7 @@ const FormCreate = (props) => {
     const body = {
       ename: values.eventName,
       description: values.description,
+      partnerDescription: values.partnerDescription,
       capac: parseInt(values.capacity),
       elocation: values.location,
       imageUrl: values.imageUrl,
@@ -687,7 +812,8 @@ const FormCreate = (props) => {
       deadline: values.deadline,
       pricing,
       registrationQuestions: values.registrationQuestions,
-      feedback: values.feedback
+      feedback: values.feedback,
+      partnerRegistrationQuestions: values.partnerRegistrationQuestions
     };
 
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
@@ -718,6 +844,7 @@ const FormCreate = (props) => {
       year,
       ename: values.eventName,
       description: values.description,
+      partnerDescription: values.partnerDescription,
       capac: parseInt(values.capacity),
       elocation: values.location,
       imageUrl: values.imageUrl,
@@ -727,7 +854,8 @@ const FormCreate = (props) => {
       pricing,
       isPublished: false,
       registrationQuestions: values.registrationQuestions,
-      feedback: values.feedback
+      feedback: values.feedback,
+      partnerRegistrationQuestions: values.partnerRegistrationQuestions
     };
 
     fetchBackend("/events", "POST", body)
