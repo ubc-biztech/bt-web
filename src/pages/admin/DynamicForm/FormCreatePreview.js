@@ -96,66 +96,106 @@ const formStyles = {
 };
 
 const FormCreatePreview = (props) => {
-  const { imageUrl, eventName, description, questionsData } = props;
+  const { imageUrl, type, eventName, description, questionsData } = props;
 
-  const basicQuestions = [
-    {
-      type: "TEXT",
-      label: "Email Address",
-      choices: "",
-      required: true
-    },
-    {
-      type: "TEXT",
-      label: "First Name",
-      choices: "",
-      required: true
-    },
-    {
-      type: "TEXT",
-      label: "Last Name",
-      choices: "",
-      required: true
-    },
-    {
-      type: "SELECT",
-      label: "Year Level",
-      choices: "1st Year,2nd Year,3rd Year,4th Year,5+ Year,Other,Not Applicable",
-      required: true,
-    },
-    {
-      type: "SELECT",
-      label: "Faculty",
-      choices: "Arts,Commerce,Science,Engineering,Kinesiology,Land and Food Systems,Forestry,Other,Not Applicable",
-      required: true,
-    },
-    {
-      type: "TEXT",
-      label: "Major/Specialization",
-      choices: "",
-      required: true,
-    },
-    {
-      type: "SELECT",
-      label: "Preferred Pronouns",
-      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
-      required: true,
-    },
-    {
-      type: "SELECT",
-      label: "Any dietary restrictions?",
-      choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
-      required: true,
-    },
-    {
-      type: "SELECT",
-      label: "How did you hear about this event?",
-      choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
-      required: true,
-    },
-  ]
+  const basicQuestions = {
+    "attendee": [
+      {
+        type: "TEXT",
+        label: "Email Address",
+        choices: "",
+        required: true
+      },
+      {
+        type: "TEXT",
+        label: "First Name",
+        choices: "",
+        required: true
+      },
+      {
+        type: "TEXT",
+        label: "Last Name",
+        choices: "",
+        required: true
+      },
+      {
+        type: "SELECT",
+        label: "Year Level",
+        choices: "1st Year,2nd Year,3rd Year,4th Year,5+ Year,Other,Not Applicable",
+        required: true,
+      },
+      {
+        type: "SELECT",
+        label: "Faculty",
+        choices: "Arts,Commerce,Science,Engineering,Kinesiology,Land and Food Systems,Forestry,Other,Not Applicable",
+        required: true,
+      },
+      {
+        type: "TEXT",
+        label: "Major/Specialization",
+        choices: "",
+        required: true,
+      },
+      {
+        type: "SELECT",
+        label: "Preferred Pronouns",
+        choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+        required: true,
+      },
+      {
+        type: "SELECT",
+        label: "Any dietary restrictions?",
+        choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
+        required: true,
+      },
+      {
+        type: "SELECT",
+        label: "How did you hear about this event?",
+        choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
+        required: true,
+      },
+    ],
+  "partner": [
+      {
+        type: "TEXT",
+        label: "Email Address",
+        choices: "",
+        required: true
+      },
+      {
+        type: "TEXT",
+        label: "First Name",
+        choices: "",
+        required: true
+      },
+      {
+        type: "TEXT",
+        label: "Last Name",
+        choices: "",
+        required: true
+      },
+      {
+        type: "TEXT",
+        label: "Pronouns",
+        choices: "",
+        required: true
+      },
+      {
+        type: "TEXT",
+        label: "Company Name",
+        choices: "",
+        required: true
+      },
+      {
+        type: "TEXT",
+        label: "Role/Occupation at Company",
+        choices: "",
+        required: true,
+      },
+    ]
+  }
 
-  const allQuestions = basicQuestions.concat(questionsData)
+  const allQuestions = basicQuestions[type].concat(questionsData)
 
   const displayQuestions = allQuestions.map((question, index) => {
     return (
@@ -171,7 +211,7 @@ const FormCreatePreview = (props) => {
   });
 
   return (
-    <div style={styles.preview} className="discrete-scrollbar">
+    <div>
       <Container maxWidth="sm">
         <Paper>
           {/* Image */}
@@ -184,7 +224,7 @@ const FormCreatePreview = (props) => {
           </div>
           {(eventName || description) && (
             <div style={{ ...formStyles.section, ...formStyles.divider }}>
-              <h2 style={{ marginTop: 0 }}>{eventName}</h2>
+              <h2 style={{ marginTop: 0 }}>{eventName}{type === "partner" ? " Partner Confirmation Form" : ""}</h2>
               <p style={{ whiteSpace: "pre-line" }}>{description.split("<br/>").join("\n")}</p>
             </div>
           )}

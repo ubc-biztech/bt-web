@@ -11,12 +11,8 @@ import {
   Paper,
   Select,
   TextField,
-  Tooltip,
   Typography,
-  Modal,
 } from "@material-ui/core";
-import CardMembershipIcon from "@material-ui/icons/CardMembership";
-import { Alert } from "@material-ui/lab";
 import CloudUpload from '@material-ui/icons/CloudUpload';
 import React, { useEffect, useState, useCallback, Fragment } from "react";
 import { connect } from 'react-redux';
@@ -26,12 +22,7 @@ import { fetchBackend } from "utils";
 import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 import { COLORS } from "../../../constants/_constants/theme";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
-import LoginAccess from "components/LoginAccess/LoginAccess";
 import Loading from "pages/Loading";
-import {
-  REGISTRATION_STATUS,
-  CLIENT_URL,
-} from "constants/index";
 
 const styles = {
   // Container for custom form image
@@ -129,13 +120,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FormRegister = (props) => {
-  const { user, event, userRegisteredEvents } = props;
+const FormRegisterPartner = (props) => {
+  const { event } = props;
   const history = useHistory();
   const [currEvent, setCurrEvent] = useState(event);
-  const [registeredEvents, setRegisteredEvents] = useState(userRegisteredEvents)
-  const [regAlert, setRegAlert] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const basicQuestions = [
     {
@@ -157,44 +145,26 @@ const FormRegister = (props) => {
       required: true
     },
     {
-      questionType: "SELECT",
-      question: "Year Level",
-      choices: "1st Year,2nd Year,3rd Year,4th Year,5+ Year,Other,Not Applicable",
-      required: true,
-    },
-    {
-      questionType: "SELECT",
-      question: "Faculty",
-      choices: "Arts,Commerce,Science,Engineering,Kinesiology,Land and Food Systems,Forestry,Other,Not Applicable",
-      required: true,
+      questionType: "TEXT",
+      question: "Pronouns",
+      choices: "",
+      required: true
     },
     {
       questionType: "TEXT",
-      question: "Major/Specialization",
+      question: "Company Name",
       choices: "",
-      required: true,
+      required: true
     },
     {
-      questionType: "SELECT",
-      question: "Preferred Pronouns",
-      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
-      required: true,
-    },
-    {
-      questionType: "SELECT",
-      question: "Any dietary restrictions?",
-      choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
-      required: true,
-    },
-    {
-      questionType: "SELECT",
-      question: "How did you hear about this event?",
-      choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
+      questionType: "TEXT",
+      question: "Role/Occupation at Company",
+      choices: "",
       required: true,
     },
   ]
 
-  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required,questionId,questionImageUrl,charLimit}) => ({
+  const parsedRegistrationQuestions = currEvent.partnerRegistrationQuestions?.map(({type,label,choices,required,questionId,questionImageUrl,charLimit}) => ({
         questionType: type,
         question: label,
         choices: choices,
@@ -208,7 +178,7 @@ const FormRegister = (props) => {
     image_url: currEvent.imageUrl || "",
     name: currEvent.ename || "",
     slug: currEvent.id || "",
-    description: currEvent.description || "",
+    description: currEvent.partnerDescription || "",
     capacity: currEvent.capac || "",
     start: currEvent.startDate ? new Date(currEvent.startDate) : new Date(),
     end: currEvent.endDate ? new Date(currEvent.endDate) : new Date(),
@@ -232,53 +202,13 @@ const FormRegister = (props) => {
 
   useEffect(() => {
     const fetchEvent = async () => {
-      if (!registeredEvents && user) {
-        const registered = await fetchBackend(`/registrations?email=${user?.email}`, 'GET')
-        setRegisteredEvents(registered)
-      }
       if (!currEvent) {
-        const params = new URLSearchParams({
-          count: true
-        });
         const eventData = await fetchBackend(`/events/${eventId}/${eventYear}`, "GET", undefined, false);
-        const regData = await fetchBackend(`/events/${eventId}/${eventYear}?${params}`, "GET", undefined, false);
-        eventData.counts = regData;
         setCurrEvent(eventData);
       }
     }
     fetchEvent()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (user) {
-      const newData = responseData.slice()
-      newData[0] = user.email
-      newData[1] = user.fname
-      newData[2] = user.lname
-      newData[3] = user.year
-      newData[4] = user.faculty
-      newData[5] = user.major
-      newData[6] = user.gender
-      newData[7] = user.diet
-      setResponseData(newData)
-    }
-  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (currEvent) {
-      const remaining = currEvent.capac - (currEvent.counts.registeredCount + currEvent.counts.checkedInCount)
-      if (remaining > 0 && remaining <= 20) {
-        setRegAlert(<Alert severity="error" className={classes.regAlert}>Warning: {currEvent.ename || 'this event'} only has {remaining} spot{remaining > 1 ? 's' : ''} left!</Alert>)
-      } else if (remaining <= 0 && !user) {
-        setRegAlert(<Alert severity="error" className={classes.regAlert}>Warning: {currEvent.ename || 'this event'} is full!</Alert>)
-      } else {
-        setRegAlert(null)
-      }
-      if (!(user?.isMember || user?.admin || currEvent.pricing?.nonMembers === undefined || samePricing())) {
-        setIsModalOpen(true)
-      }
-    }
-  }, [currEvent]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateField = useCallback(
     (index, value) => {
@@ -451,34 +381,16 @@ const FormRegister = (props) => {
             )}
             {question === 'Email Address' ? (
               <>
-                {user ? (
-                  <Tooltip title="If you would like to change your account's email address, please contact an executive for support." arrow>
-                    <TextField
-                      error={!!responseError[i]}
-                      helperText={!!responseError[i] && responseError[i]}
-                      className={classes.textfield}
-                      fullWidth
-                      margin="dense"
-                      variant="outlined"
-                      InputProps={{
-                        readOnly: true
-                      }}
-                      value={responseData[i]}
-                      onChange={(e) => updateField(i, e.target.value)}
-                    />
-                  </Tooltip>
-                ) : (
-                  <TextField
-                    error={!!responseError[i]}
-                    helperText={!!responseError[i] && responseError[i]}
-                    className={classes.textfield}
-                    fullWidth
-                    margin="dense"
-                    variant="outlined"
-                    value={responseData[i]}
-                    onChange={(e) => updateField(i, e.target.value)}
-                  />
-                )}
+                <TextField
+                  error={!!responseError[i]}
+                  helperText={!!responseError[i] && responseError[i]}
+                  className={classes.textfield}
+                  fullWidth
+                  margin="dense"
+                  variant="outlined"
+                  value={responseData[i]}
+                  onChange={(e) => updateField(i, e.target.value)}
+                />
               </>
             ) : (
               <TextField
@@ -593,63 +505,6 @@ const FormRegister = (props) => {
     return res;
   };
 
-  const samePricing = () => {
-    return currEvent.pricing?.members === currEvent.pricing?.nonMembers
-  }
-
-  const handlePaymentSubmit = () => {
-    setIsSubmitting(true)
-    if (isValidSubmission()) {
-      const dynamicResponses = {}
-      for (let i = basicQuestions.length; i < formData.questions.length; i++) {
-        if (formData.questions[i].questionType === "CHECKBOX") {
-          dynamicResponses[formData.questions[i].questionId] = responseData[i]?.join(', ')
-        } else {
-          dynamicResponses[formData.questions[i].questionId] = responseData[i]
-        }
-      }
-      const paymentBody = {
-        paymentName: `${currEvent.ename} ${user?.isMember || samePricing() ? "" : "(Non-member)"}`,
-        paymentImages: [formData.image_url],
-        paymentPrice: (user?.isMember ? currEvent.pricing?.members : currEvent.pricing.nonMembers) * 100,
-        paymentType: 'Event',
-        success_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}event/${currEvent.id}/${currEvent.year}/register/success`,
-        cancel_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}event/${currEvent.id}/${currEvent.year}/register`,
-        email: responseData[0],
-        fname: responseData[1],
-        studentId: user?.id,
-        eventID: currEvent.id,
-        year: currEvent.year,
-        registrationStatus: "registered",
-        isPartner: "",
-        basicInformation: JSON.stringify({
-          fname: responseData[1],
-          lname: responseData[2],
-          year: responseData[3],
-          faculty: responseData[4],
-          major: responseData[5],
-          gender: responseData[6],
-          diet: responseData[7],
-          heardFrom: responseData[8],
-        }),
-        dynamicResponses: JSON.stringify(dynamicResponses),
-      }
-      fetchBackend('/payments', 'POST', paymentBody, false)
-        .then(async (response) => {
-          setIsSubmitting(false)
-          window.open(response, "_self");
-        })
-        .catch((err) => {
-          alert(
-            `An error has occured: ${err} Please contact an exec for support.`
-          )
-          setIsSubmitting(false)
-        })
-    } else {
-      setIsSubmitting(false)
-      console.error("Form errors");
-    }
-  }
   const handleSubmit = () => {
     setIsSubmitting(true)
     if (isValidSubmission()) {
@@ -664,26 +519,22 @@ const FormRegister = (props) => {
       const registrationBody = {
         email: responseData[0],
         fname: responseData[1],
-        studentId: user?.id,
         eventID: currEvent.id,
         year: currEvent.year,
         registrationStatus: "registered",
-        isPartner: false,
+        isPartner: true,
         basicInformation: {
           fname: responseData[1],
           lname: responseData[2],
-          year: responseData[3],
-          faculty: responseData[4],
-          major: responseData[5],
-          gender: responseData[6],
-          diet: responseData[7],
-          heardFrom: responseData[8],
+          gender: responseData[3],
+          companyName: responseData[4],
+          role: responseData[5],
         },
         dynamicResponses,
       }
       fetchBackend('/registrations', 'POST', registrationBody, false)
         .then(() => {
-          history.push(`/event/${currEvent.id}/${currEvent.year}/register/success/attendee`)
+          history.push(`/event/${currEvent.id}/${currEvent.year}/register/success/partner`)
         })
         .catch((err) => {
           alert(
@@ -697,68 +548,10 @@ const FormRegister = (props) => {
     }
   };
 
-  const updateUserRegistrationStatus = async (id, fname, registrationStatus) => {
-    const body = {
-      eventID: eventId,
-      year: Number(eventYear),
-      registrationStatus
-    };
-    try {
-      await fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
-      alert('Successfully updated registration status! Please check your inbox (including Spam/Promotions) for an email.')
-      window.location.reload()
-    } catch (e) {
-      alert('An error has occurred. Please contact a BizTech exec for support.')
-    }
-  }
-
-  const changeRegStatus = (newStatus) => {
-    switch (newStatus) {
-      case REGISTRATION_STATUS.REGISTERED:
-        if (
-          window.confirm(
-            `Do you want to re-register for ${event.ename || 'this event'}?\nYou will be sent an email confirming your registration.`
-          )
-        ) {
-          updateUserRegistrationStatus(
-            user?.email,
-            user?.fname,
-            REGISTRATION_STATUS.REGISTERED
-          );
-        }
-        break;
-      case REGISTRATION_STATUS.CANCELLED:
-        if (
-          window.confirm(
-            `Are you sure you would cancel your spot at ${event.ename || 'this event'}?\nYou will be sent an email regarding your cancellation.`
-          )
-        ) {
-          updateUserRegistrationStatus(
-            user?.email,
-            user?.fname,
-            REGISTRATION_STATUS.CANCELLED
-          );
-        }
-        break;
-      default:
-        return {};
-    }
-  }
-
-  const isEventFull = () => {
-    return currEvent.capac - (currEvent.counts?.registeredCount + currEvent.counts?.checkedInCount) <= 0
-  }
-
   const isDeadlinePassed = () => {
     const deadline = new Date(event.deadline).getTime()
     return deadline < new Date().getTime()
   }
-
-  const userAlreadyRegistered = () => (
-    registeredEvents?.data.find((e) => (
-      e['eventID;year'] === currEvent.id + ';' + currEvent.year
-    ))
-  )
 
   if (!currEvent) {
     return (
@@ -768,52 +561,7 @@ const FormRegister = (props) => {
     )
   }
 
-  if (!user && currEvent.pricing?.nonMembers === undefined) {
-    return (
-      <Fragment>
-        {regAlert}
-        <LoginAccess
-          header='This event is for members only. To access the form, please sign in.'
-          redirect={`/event/${eventId}/${eventYear}/register`}
-        />
-      </Fragment>
-    )
-  }
-
-  const renderRegMessage = (status) => {
-    switch (status) {
-      case REGISTRATION_STATUS.CANCELLED:
-        return `You have cancelled your registration for ${currEvent.ename || 'this event'}.`
-      case REGISTRATION_STATUS.WAITLISTED:
-        return `You are currently waitlisted for ${currEvent.ename || 'this event'}.`
-      default: 
-        return `Already registered for ${currEvent.ename || 'this event'}!`
-    }
-  }
-
   const renderFormQuestions = () => {
-    const reg = userAlreadyRegistered()
-    if (reg) {
-      return (
-        <Fragment>
-          <div style={styles.section}>
-            <Typography className={classes.boldText}>
-              {renderRegMessage(reg.registrationStatus)}
-            </Typography>
-            {reg.registrationStatus === REGISTRATION_STATUS.REGISTERED &&
-              <Button variant="contained" color="primary" onClick={() => changeRegStatus(REGISTRATION_STATUS.CANCELLED)}>
-                Cancel Registration
-              </Button>
-            }
-            {reg.registrationStatus === REGISTRATION_STATUS.CANCELLED &&
-              <Button variant="contained" color="primary" onClick={() => changeRegStatus(REGISTRATION_STATUS.REGISTERED)}>
-                Re-register
-              </Button>
-            }
-          </div>
-        </Fragment>
-      )
-    }
     if (isDeadlinePassed()) {
       return (
         <Fragment>
@@ -834,47 +582,8 @@ const FormRegister = (props) => {
         </Fragment>
       )
     }
-    if (isEventFull()) {
-      return (
-        <Fragment>
-          <div style={styles.section}>
-            <Typography className={classes.boldText}>
-              Event is Full
-            </Typography>
-            <Typography>
-              We sincerely apologize, {currEvent.ename || 'this event'} is no longer taking registrations. Please be on the lookout for our other events throughout the year!
-            </Typography>
-          </div>
-        </Fragment>
-      )
-    }
     return (
       <Fragment>
-          <Modal
-          open={isModalOpen}
-          >
-          <div style={styles.modal}>
-            <Typography className={classes.boldText}>Hey there!</Typography>
-            <div style={styles.modalText}>
-              <Typography>We noticed you aren't a member yet. This may be because you aren't signed in, or your account hasn't been registered to become a member for this academic year.</Typography>
-              <Typography>This event is available to non-members, but please note that you will be paying ${(currEvent?.pricing?.nonMembers - currEvent?.pricing?.members).toFixed(2)} more.</Typography>
-              <Typography>Consider registering as a member this year to get access to ALL of our events at the best price!</Typography>
-            </div>
-            <div style={styles.modalButtons}>
-              <Button variant="contained" color="primary" onClick={() => history.push('/signup')}>
-                Register
-              </Button>
-              {!user && (
-                <Button variant="contained" color="primary" onClick={() => history.push('/login')}>
-                  Sign-in
-                </Button>
-              )}
-              <Button variant="contained" color="primary" onClick={() => setIsModalOpen(false)}>
-                Continue anyway
-              </Button>
-            </div>
-          </div>
-        </Modal>
           <div style={styles.section}>
             <Typography style={{ fontWeight: 'bold' }}>
               Registration open now until {formData.deadline.toLocaleString(navigator.language, {
@@ -889,18 +598,6 @@ const FormRegister = (props) => {
         <div style={styles.section}>{loadQuestions()}</div>
         <div style={styles.divider}></div>
         <div style={styles.submitSection}>
-          {!user?.admin && ((user?.isMember && currEvent.pricing?.members > 0) || (!user?.isMember && currEvent.pricing?.nonMembers)) ? (
-            <Button 
-              variant="contained" 
-              color="primary" 
-              onClick={handlePaymentSubmit}
-              className={classes.registerButton}
-              disabled={isSubmitting}
-            >
-              <CardMembershipIcon className={classes.registerIcon} />
-              Proceed to Payment
-            </Button>
-          ) : (
             <Button 
               variant="contained" 
               color="primary" 
@@ -910,7 +607,6 @@ const FormRegister = (props) => {
             >
               Submit
             </Button>
-          )}
         </div>
       </Fragment>
     )
@@ -927,7 +623,6 @@ const FormRegister = (props) => {
         <title>Register for {formData.name}</title>
       </Helmet>
       <Container maxWidth="sm">
-      {regAlert}
         <Paper>
           {/* Image */}
           <div style={styles.imageContainer}>
@@ -954,4 +649,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(FormRegister);
+export default connect(mapStateToProps)(FormRegisterPartner);

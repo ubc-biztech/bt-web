@@ -43,7 +43,8 @@ const combineEventAndRegistrationData = (users) => {
       id: user.id,
       registrationStatus: user.registrationStatus,
       // convert the date to something more readable
-      updatedAt: new Date(user.updatedAt).toLocaleString()
+      updatedAt: new Date(user.updatedAt).toLocaleString(),
+      isPartner: user.isPartner
     });
   });
 

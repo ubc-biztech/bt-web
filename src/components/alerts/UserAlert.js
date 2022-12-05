@@ -17,7 +17,7 @@ export default function UserAlert() {
 
   return (
     <>
-      {!ignoreAlertPaths.find((p) => (path.includes(p))) && 
+      {!ignoreAlertPaths.find((p) => (path.includes(p) || path.slice(-7) === "partner")) && 
       <Alert severity="warning">
         You are not logged in and are currently viewing as guest.&nbsp;
         <Link to="/login">Login</Link>&nbsp;or&nbsp;<Link to="/signup">Signup</Link>&nbsp;to be able to register for
