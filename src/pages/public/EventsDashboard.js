@@ -9,6 +9,8 @@ import React, {
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import Joyride from "react-joyride";
+import { Link } from 'react-router-dom';
 
 import {
   Tabs,
@@ -181,6 +183,40 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const steps = [
+  {
+    disableBeacon: true,
+    target: ".search-all",
+    title: "All Events",
+    content:
+      "Here you can see the Upcoming and Past events"
+  },
+  {
+    target: ".favourite",
+    title: "Favourite Events",
+    content:
+      "Here you can see your favourite and registered events"
+  },
+  {
+    target: ".event-card",
+    title: "Event",
+    content:
+      "Click on an event to know more about it"
+  },
+  {
+    target: ".search-btn",
+    title: "Search",
+    content:
+    <div>
+      <p>Search for any event here</p>
+      <p>Click&nbsp;
+        <Link to="/member/profile">here</Link> 
+        &nbsp;to go to Profile 
+      </p>
+    </div>
+  }
+];
+
 function EventsDashboard (props) {
   const [isSearch, setIsSearch] = useState(false)
   const [searchText, setSearchText] = useState('')
@@ -346,6 +382,7 @@ function EventsDashboard (props) {
         {!isMobile && (
           <div className={classes.sidePanelLayout}>
             <Typography variant='h1' className={classes.header}>Events</Typography>
+            <div className='favourite'>
             <List>
               {Object.values(PERSONALIZATION_STATES).map((pState) => {
                 return (!(pState.displayName !== 'All' && !user) &&
@@ -365,6 +402,7 @@ function EventsDashboard (props) {
                   </ListItem>
               )})}
             </List>
+            </div>
           </div>
         )}
 
@@ -376,6 +414,7 @@ function EventsDashboard (props) {
                 Events
               </Typography>
             ) : (
+              <div className='search-all'> 
               <Tabs
                 value={timeIndex}
                 indicatorColor='primary'
@@ -390,16 +429,19 @@ function EventsDashboard (props) {
                   />
                 ))}
               </Tabs>
+              </div>
             )}
 
             {/* The search button */}
             <div className={classes.search}>
+            <div className='search-btn'>
               <IconButton
                 className={classes.searchIcon}
                 onClick={handleStartSearch}
               >
                 <Search style={{ color: COLORS.CARD_PAPER_COLOR }} />
               </IconButton>
+              </div>
               <InputBase
                 inputRef={searchInput}
                 placeholder='Search…'
@@ -473,9 +515,17 @@ function EventsDashboard (props) {
           )}
 
           {/* The list of events */}
+          <div className='event-card'>
           <div className={classes.rows}>{generateEventCards()}</div>
+          </div>
         </div>
       </div>
+      <Joyride
+            steps={steps}
+            continuous = {true}
+            showProgress = {true}
+            disableScrolling = {true}
+        />
     </div>
   )
 }

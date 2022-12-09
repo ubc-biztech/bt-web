@@ -11,6 +11,9 @@ import UserProgress from "./UserProgress";
 import { COLORS } from "constants/index";
 // import { green } from "@material-ui/core/colors";
 
+import Joyride from "react-joyride";
+import { Link } from 'react-router-dom';
+
 const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: "85%",
@@ -60,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
     color: COLORS.FONT_COLOR
   }
 }));
+
 
 function MemberHome(props) {
   const { user, registered, events } = props;
@@ -193,6 +197,46 @@ function MemberHome(props) {
     });
   }
 
+  const steps = [
+    {
+      disableBeacon: true,
+      target: ".summary",
+      title: "Summary",
+      content:
+        "Here is a summary of all your events"
+    },
+    {
+      target: ".stickers",
+      title: "Stickers",
+      content:
+        "Here are all the stickers you have earned."
+    },
+    {
+      target: ".prizes",
+      title: "Prizes",
+      content:
+        "Here are all the prizes you have won."
+    },
+    {
+      target: ".next-event",
+      title: "Your Next Event",
+      content:
+        "Here is your next event"
+    },
+    {
+      target: ".featured-event",
+      title: "Featured Event",
+      content:
+      <div>
+        <p>Here is the current featured event</p>
+        <p>Click&nbsp;
+          <Link to="/events">here</Link> 
+          &nbsp;to go to Events 
+        </p>
+      </div>
+    }
+  ];
+
   return (
     <React.Fragment>
       <Helmet>
@@ -211,25 +255,32 @@ function MemberHome(props) {
             <img src={House} className={classes.house} alt="BizTech House" />
           </CardComponent>
 
-          <CardComponent>
-            <Typography variant="h2">Summary</Typography>
-            {registered ? (
-              <UserProgress registeredEvents={registered} events={events} />
-            ) : (
-              <Typography>No Past Registration Data found</Typography>
-            )}
-          </CardComponent>
+          <div className="summary">
+            <CardComponent>
+              <Typography variant="h2">Summary</Typography>
+              {registered ? (
+                <UserProgress registeredEvents={registered} events={events} />
+              ) : (
+                <Typography>No Past Registration Data found</Typography>
+              )}
+            </CardComponent>
+          </div>
         </div>
         <div className={classes.column}>
-          <CardComponent>
-            <Typography variant="h2">Sticker Collection</Typography>
-            <Typography>Coming soon!</Typography>
-          </CardComponent>
+          <div className="stickers">
+            <CardComponent>
+              <Typography variant="h2">Sticker Collection</Typography>
+              <Typography>Coming soon!</Typography>
+            </CardComponent>
+          </div>
+          <div className="prizes">
           <CardComponent>
             <Typography variant="h2">Prizes</Typography>
             <Typography>Coming soon!</Typography>
           </CardComponent>
+          </div>
           <div className={classes.flexbox}>
+            <div className="next-event">
             <div className={classes.column}>
               <CardComponent>
                 <Typography variant="h2" className={classes.green}>
@@ -243,6 +294,8 @@ function MemberHome(props) {
                 </Typography>
               </CardComponent>
             </div>
+            </div>
+            <div className="featured-event">
             <div className={classes.column}>
               <FeaturedEventsCard
                 eventName={featuredEvent.ename}
@@ -250,9 +303,15 @@ function MemberHome(props) {
                 eventDeadline={featuredEvent.deadline}
               ></FeaturedEventsCard>
             </div>
+            </div>
           </div>
         </div>
       </div>
+      <Joyride
+            steps={steps}
+            continuous = {true}
+            showProgress = {true}
+        />
     </React.Fragment>
   );
 }
