@@ -122,7 +122,7 @@ const OAuthUserMembershipFormContainer = (props) => {
           </Typography>
           <div className={classes.registrationHeader}>
             <Typography className={classes.description}>
-              OAUTH Thank you for signing up to be a BizTech Application user
+              Thank you for signing up to be a BizTech Application user
               and 2022/23 member! By signing up for membership, you will also be
               a part of our mailing list!
             </Typography>
@@ -218,25 +218,9 @@ const OAuthUserMembershipFormContainer = (props) => {
       admin: true
     };
 
-    try {
-      await Auth.signUp({
-        username: email,
-        password: null,
-        attributes: {
-          name: first_name + " " + last_name,
-          "custom:student_id": student_number
-        }
-      });
-      console.log(`auth.signup has been called with ${email}`);
-    } catch (err) {
-      // TODO: add error handler, do not let the form submit
-      alert(`AWS Amplify error: ${err}`);
-      setIsSubmitting(false);
-      return;
-    }
-
     fetchBackend("/users", "POST", userBody, false)
       .then(async () => {
+        console.log(userBody);
         history.push({
           pathname: `/signup/success/UserMember/${email}`
         });
@@ -284,12 +268,12 @@ const OAuthUserMembershipFormContainer = (props) => {
       paymentName: "BizTech Membership",
       paymentImages: ["https://imgur.com/TRiZYtG.png"],
       paymentPrice: 1000,
-      paymentType: "UserMember",
+      paymentType: 'OAuthMember',
       success_url: `${
         process.env.REACT_APP_STAGE === "local"
           ? "http://localhost:3000/"
           : CLIENT_URL
-      }signup/success/UserMember/${email}`,
+      }signup/success/Member/${email}`,
       cancel_url: `${
         process.env.REACT_APP_STAGE === "local"
           ? "http://localhost:3000/"
@@ -312,6 +296,8 @@ const OAuthUserMembershipFormContainer = (props) => {
       university: memberType === "UNI" ? university : "",
       high_school: memberType === "HS" ? high_school : ""
     };
+
+    console.log("put together payment body and sent to backend")
     fetchBackend("/payments", "POST", paymentBody, false)
       .then(async (response) => {
         setIsSubmitting(false);
@@ -323,10 +309,14 @@ const OAuthUserMembershipFormContainer = (props) => {
         );
         setIsSubmitting(false);
       });
+    console.log("posted to backend")
   }
 
   async function submitValues(values) {
     setIsSubmitting(true);
+    // checks to see if email already exists 
+    // tangent: doesnt even work, but it's okay its a feature 
+    
     fetchBackend(`/users/check/${values.email}`, "GET", undefined, false)
       .then((response) => {
         if (response) {
