@@ -175,7 +175,8 @@ function MemberProfile (props) {
     faculty: Faculty,
     year: Year,
     diet: Diet,
-    gender: user.gender
+    gender: user.gender,
+    viewedFeatures: user.viewedFeatures
   }
 
   const handleEdit = () => {

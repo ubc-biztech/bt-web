@@ -137,6 +137,7 @@ const MembershipFormContainer = (props) => {
     university: '',
     high_school: '',
     heardFromSpecify: '',
+    viewedFeatures: '[]',
   }
 
   async function submitValues (values) {

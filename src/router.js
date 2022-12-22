@@ -46,35 +46,24 @@ class Router extends Component {
     return Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(async (authUser) => {
         const email = authUser.attributes.email;
-        if (
-          email.substring(email.indexOf("@") + 1, email.length) ===
-          "ubcbiztech.com"
-        ) {
-          await this.props.setUser({
-            // name: authUser.attributes.name, // we don't need admin name for now
-            email: authUser.attributes.email,
-            admin: true
-          });
+        if (email) {
+          // Perform redux actions to update user and registration states at the same time
+          await Promise.all([
+            fetchUser({ userId: email }),
+            fetchUserRegisteredEvents({ userId: email })
+          ]);
         } else {
-          if (email) {
-            // Perform redux actions to update user and registration states at the same time
-            await Promise.all([
-              fetchUser({ userId: email }),
-              fetchUserRegisteredEvents({ userId: email })
-            ]);
-          } else {
-            // Parse first name and last name
-            const initialName = authUser.attributes.name.split(" ");
-            const fname = initialName[0];
-            const lname = initialName[1];
+          // Parse first name and last name
+          const initialName = authUser.attributes.name.split(" ");
+          const fname = initialName[0];
+          const lname = initialName[1];
 
-            // save only essential info to redux
-            await setUser({
-              email: email,
-              fname,
-              lname
-            });
-          }
+          // save only essential info to redux
+          await setUser({
+            email: email,
+            fname,
+            lname
+          });
         }
       })
       .catch(() => log("Not signed in"));

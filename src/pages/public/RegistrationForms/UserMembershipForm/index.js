@@ -196,6 +196,7 @@ const UserMembershipFormContainer = (props) => {
       gender: pronouns || 'Other/Prefer not to say',
       diet: diet || 'None',
       isMember: true,
+      viewedFeatures: '[]',
       admin: true
     }
 
