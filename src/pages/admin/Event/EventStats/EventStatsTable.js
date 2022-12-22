@@ -106,6 +106,8 @@ export class EventStatsTable extends Component {
     this.state = {
       columns: {},
       presentedColumns: [],
+      partnerColumns: {},
+      presentedPartnerColumns: [],
       registrationNumbers: {},
       faculties: {},
       years: {},
@@ -118,7 +120,8 @@ export class EventStatsTable extends Component {
       yearVisible: { visible: false, style: { display: "none" } },
       dietaryVisible: { visible: false, style: { display: "none" } },
       gendersVisible: { visible: false, style: { display: "none" } },
-      heardFromVisible: { visible: false, style: { display: "none" } }
+      heardFromVisible: { visible: false, style: { display: "none" } },
+      tableType: "attendee",
     };
   }
 
@@ -284,6 +287,20 @@ export class EventStatsTable extends Component {
 
     this.setState({
       presentedColumns: presentedColumns.concat(columns)
+    })
+  }
+
+  setPartnerColumns(partnerRegistrationQuestions) {
+    const columns = [];
+
+    appendRegistrationQuestions(columns, partnerRegistrationQuestions);
+
+    this.setState({
+      columns
+    });
+
+    this.setState({
+      presentedPartnerColumns: this.state.presentedPartnerColumns.concat(columns)
     })
   }
 
@@ -526,13 +543,132 @@ export class EventStatsTable extends Component {
       }
     ];
 
+    const defaultPartnerColumns = [
+      {
+        title: <DraggableTitle title="Registration Status" />,
+        field: REGISTRATIONSTATUSLABEL,
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <div>
+            <Select
+              value={rowData.registrationStatus}
+              onClick={(event) => changeRegistration(event, rowData)}
+              style={{
+                backgroundColor:
+                  rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
+                    ? COLORS.LIGHT_GREEN
+                    : rowData.registrationStatus ===
+                      REGISTRATION_STATUS.WAITLISTED
+                    ? COLORS.LIGHT_YELLOW
+                    : rowData.registrationStatus ===
+                      REGISTRATION_STATUS.CANCELLED
+                    ? COLORS.LIGHT_RED
+                    : COLORS.LIGHT_BACKGROUND_COLOR,
+                paddingLeft: "10px"
+              }}
+            >
+              <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>
+                Waitlisted
+              </MenuItem>
+              <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>
+                Checked in
+              </MenuItem>
+              <MenuItem value={REGISTRATION_STATUS.REGISTERED}>
+                Registered
+              </MenuItem>
+              <MenuItem value={REGISTRATION_STATUS.CANCELLED}>
+                Cancelled
+              </MenuItem>
+            </Select>
+          </div>
+        )
+      },
+      {
+        title: <DraggableTitle title="First Name" />,
+        field: "fname",
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <>
+            {rowData.fname}
+          </>
+        )
+      },
+      {
+        title: <DraggableTitle title="Last Name" />,
+        field: "lname",
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <>
+            {rowData.lname}
+          </>
+        )
+      },
+      {
+        title: <DraggableTitle title="Email" />,
+        field: "id",
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <>
+            {rowData.id}
+          </>
+        )
+      },
+      {
+        title: <DraggableTitle title="Last Updated" />,
+        field: "updatedAt",
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <>
+            {rowData.updatedAt}
+          </>
+        )
+      },
+      {
+        title: <DraggableTitle title="Gender" />,
+        field: "gender",
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <>
+            {rowData.gender}
+          </>
+        )
+      },
+      {
+        title: <DraggableTitle title="Company Name" />,
+        field: "companyName",
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <>
+            {rowData.gender}
+          </>
+        )
+      },
+      {
+        title: <DraggableTitle title="Role/Occupation at Company" />,
+        field: "role",
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => (
+          <>
+            {rowData.gender}
+          </>
+        )
+      }
+    ];
+
     const arrangeColumns = () => {
       let curr = defaultColumns.concat(this.state.columns)
       this.setState({ presentedColumns: curr });
       return curr;
     };
 
+    const arrangePartnerColumns = () => {
+      let curr = defaultPartnerColumns.concat(this.state.partnerColumns)
+      this.setState({ presentedPartnerColumns: curr });
+      return curr;
+    }
+
     let registrationColumns = this.state.presentedColumns.length > 0 ? this.state.presentedColumns : arrangeColumns();
+    let registrationPartnerColumns = this.state.presentedPartnerColumns.length > 0 ? this.state.presentedPartnerColumns : arrangePartnerColumns();
 
     function handleColumnDrag(sourceIndex, destinationIndex) {
       const sourceColumn = registrationColumns[sourceIndex];
@@ -544,6 +680,25 @@ export class EventStatsTable extends Component {
       this.setState({ presentedColumns: registrationColumns });
     }
 
+    function handlePartnerColumnDrag(sourceIndex, destinationIndex) {
+      const sourceColumn = registrationPartnerColumns[sourceIndex];
+      const destinationColumn = registrationPartnerColumns[destinationIndex];
+
+      // Swapping the column order
+      registrationPartnerColumns[sourceIndex] = destinationColumn;
+      registrationPartnerColumns[destinationIndex] = sourceColumn;
+      this.setState({ presentedPartnerColumns: registrationPartnerColumns });
+    }
+
+    function filterRows(rows, isPartner) {
+      if (rows) {
+        return rows.filter((row) => (
+          row.isPartner === isPartner
+        ))
+      } else {
+        return []
+      }
+    }
     /**
      * Creates stats + graphs/charts
      * Creates event table using MaterialTable library
@@ -551,34 +706,44 @@ export class EventStatsTable extends Component {
     return (
       <div style={styles.container}>
         {/* QR code scanner */}
-        <QrCheckIn event={this.props.event} refresh={this.refreshTable} />
+        <QrCheckIn event={this.props.event} refresh={this.refreshTable} rows={this.state.rows}/>
 
         {/* padding for visual separation */}
-        <div style={{ padding: "10px" }} />
-        
+        <div style={{ padding: "10px" }}>
+          {/* refresh button */}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              this.refreshTable()
+            }
+          >
+            Refresh Table Data
+          </Button>
 
-        {/* refresh button */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            this.refreshTable()
-          }
-        >
-          Refresh Table Data
-        </Button>
+          {/* waitlist button */}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              this.showWaitlist()
+            }
+          >
+            Show Waitlist
+          </Button>
 
-        {/* waitlist button */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() =>
-            this.showWaitlist()
-          }
-        >
-          Show Waitlist
-        </Button>
-
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              this.setState({
+                tableType: this.state.tableType === "attendee" ? "partner" : "attendee"
+              })
+            }
+          >
+            {this.state.tableType === "attendee" ? "Show Partners Table" : "Show Attendees Table"}
+          </Button>
+        </div>
         {
           this.state.isWaitlistShown &&
             <div>
@@ -592,9 +757,9 @@ export class EventStatsTable extends Component {
 
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
-          columns={registrationColumns}
-          data={this.state.rows}
-          handleColumnDrag={handleColumnDrag}
+          columns={this.state.tableType === "attendee" ? registrationColumns : registrationPartnerColumns}
+          data={filterRows(this.state.rows, this.state.tableType === "partner")}
+          handleColumnDrag={this.state.tableType === "attendee" ? handleColumnDrag : handlePartnerColumnDrag}
           // Configure options for the table
           style={styles.table}
           options={{
@@ -890,6 +1055,25 @@ const QrCheckIn = (props) => {
 
   // checks if the QR code is valid whenever the QR code is changed
   useEffect(() => {
+    const checkInUser = (id, fname) => {
+      const body = {
+        eventID: props.event.id,
+        year: props.event.year,
+        registrationStatus: REGISTRATION_STATUS.CHECKED_IN
+      };
+
+      // update the registration status of the user to checked in
+      fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
+
+      setQrCode(defaultQrCode);
+
+      // wait 10 seconds, then reset the scan stage
+      cycleQrScanStage(QR_SCAN_STAGE.SUCCESS, 8000);
+
+      // refresh the entire table to reflect change
+      props.refresh();
+    };
+  
     if (!qrCode || qrCode.data === "" || qrScanStage !== QR_SCAN_STAGE.SCANNING)
       return;
 
@@ -913,66 +1097,47 @@ const QrCheckIn = (props) => {
       return;
     }
 
-    const params = new URLSearchParams({
-      users: true
-    });
+    const user = props.rows?.filter((row) => row.id === userID)[0];
 
-    fetchBackend(
-      `/events/${props.event.id}/${props.event.year.toString()}?${params}`,
-      "GET"
-    )
-      .then((users) => {
-        // filter the users to get the one with the same id
-        const user = users.filter((user) => user.id === userID)[0];
+    if (!user) {
+      cycleQrScanStage(QR_SCAN_STAGE.FAILED, 6000);
+      setError("Person is not registered for this event.");
+      return;
+    }
+    // fetchBackend(
+    //   `/events/${props.event.id}/${props.event.year.toString()}?${params}`,
+    //   "GET"
+    // )
+    //   .then((users) => {
+    //     // filter the users to get the one with the same id
+    //     const user = users.filter((user) => user.id === userID)[0];
 
-        if (!user) {
-          cycleQrScanStage(QR_SCAN_STAGE.FAILED, 6000);
-          setError("Person is not registered for this event.");
-          return;
-        }
+    //     if (!user) {
+    //       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 6000);
+    //       setError("Person is not registered for this event.");
+    //       return;
+    //     }
 
-        // get the person's name
-        setCheckInName(`${user.firstName ? user.firstName : user.fname} ${user.lastName ? user.lastName : user.lname} (${userID})`);
+    // get the person's name
+    setCheckInName(`${user.firstName ? user.firstName : user.fname} ${user.lastName ? user.lastName : user.lname} (${userID})`);
 
-        // If the user is already checked in, show an error
-        if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
-          cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
-          setError(`Person is already checked in.`);
-          return;
-        } else if (user.registrationStatus === REGISTRATION_STATUS.CANCELLED) {
-          cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
-          setError(`Person had their registration cancelled. Cannot check-in.`);
-          return;
-        } else if (user.registrationStatus === REGISTRATION_STATUS.WAITLISTED) { 
-          cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
-          setError(`Person is on the waitlist. Cannot check-in.`);
-          return;
-        }
+    // If the user is already checked in, show an error
+    if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
+      cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
+      setError(`Person is already checked in.`);
+      return;
+    } else if (user.registrationStatus === REGISTRATION_STATUS.CANCELLED) {
+      cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
+      setError(`Person had their registration cancelled. Cannot check-in.`);
+      return;
+    } else if (user.registrationStatus === REGISTRATION_STATUS.WAITLISTED) { 
+      cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
+      setError(`Person is on the waitlist. Cannot check-in.`);
+      return;
+    }
 
-        checkInUser(userID, userFName);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    checkInUser(userID, userFName);
 
-    const checkInUser = (id, fname) => {
-      const body = {
-        eventID: props.event.id,
-        year: props.event.year,
-        registrationStatus: REGISTRATION_STATUS.CHECKED_IN
-      };
-
-      // update the registration status of the user to checked in
-      fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
-
-      setQrCode(defaultQrCode);
-
-      // wait 10 seconds, then reset the scan stage
-      cycleQrScanStage(QR_SCAN_STAGE.SUCCESS, 8000);
-
-      // refresh the entire table to reflect change
-      props.refresh();
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qrCode]);
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, useParams } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column"
   },
   successMessageContainer: {
-    marginTop: "75px",
     paddingLeft: "19px",
     marginLeft: "13px"
   },
@@ -113,6 +112,8 @@ const EventRegisterSuccess = ({
 }) => {
   const classes = useStyles();
 
+  const { type } = useParams();
+
   const [displayLinkMessage, setDisplayLinkMessage] = useState(false);
 
   let blinkingTimer;
@@ -137,100 +138,118 @@ const EventRegisterSuccess = ({
     <Grid container spacing={4} className={classes.main}>
       <Grid item xs={12} lg={7} className={classes.leftColumn}>
         <div className={classes.successMessageContainer}>
-          <Typography className={classes.successMessageHeading}>
-            See you soon!
-          </Typography>
-          <Typography>
-            You've successfully registered to the event.
-          </Typography>
-          <Typography>We've sent you two emails, one with a calendar invite and one with a QR code! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
-        </div>
-        <div className={classes.whereToNextContainer}>
-          <Typography className={classes.whereToNextHeading}>
-            What's next?
-          </Typography>
-          <Typography>
-            Share the event with friends!
-            <LinkIcon
-              className={classes.linkIcon}
-              onClick={() => copyLinkToClipboard()}
-            />
-          </Typography>
-        </div>
-        <div className={classes.linkCopiedMessageContainer}>
-          {displayLinkMessage ? (
-            <Typography className={classes.linkCopiedMessage} variant="caption">
-              Registration Link Copied to Clipboard!
-            </Typography>
+          
+          {type === "partner" ? (
+            <div>
+              <Typography className={classes.successMessageHeading}>
+                Thank you for being a part of our event!
+              </Typography>
+              <Typography>
+                You've successfully registered to the event. Our directors will review the information and coordinate with you further.
+              </Typography>
+            </div>
           ) : (
-            <Typography
-              className={classes.linkCopiedMessageHidden}
-              variant="caption"
-            >
-              Registration Link Copied to Clipboard!
-            </Typography>
+            <div>
+              <Typography className={classes.successMessageHeading}>
+                  See you soon!
+              </Typography>
+              <Typography>
+                  You've successfully registered to the event.
+              </Typography>
+            </div>
           )}
+          <Typography>We've sent you two emails, one with a calendar invite and one with a QR code to check-in to our event! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
         </div>
-      </Grid>
-      <Grid item xs={12} lg={5} className={classes.rightColumn}>
-        <div className={classes.imageContainer}>
-          <img
-            src={SpeechBubble}
-            alt="Speech Bubble"
-            className={classes.speechBubble}
-          />
-          <img
-            src={HouseChef}
-            alt="House with Chef Hat"
-            className={classes.houseChefImage}
-          />
-        </div>
-        {upcomingEvents.length > 0 && (
-          <div className={classes.upcomingEventsContainer}>
-            <Typography className={classes.upcomingEventsHeading}>
-              Upcoming Events:
-            </Typography>
-
-            {upcomingEvents.map((event) => {
-              const eventStart =
-                event.startDate &&
-                new Date(event.startDate).toLocaleDateString("en-US", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric"
-                });
-              const eventEnd =
-                event.endDate &&
-                new Date(event.endDate).toLocaleDateString("en-US", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric"
-                });
-
-              return (
-                <div
-                  key={`${event.id};${event.year}`}
-                  className={classes.upcomingEventsItem}
+        {type !== "partner" && (
+          <div>
+            <div className={classes.whereToNextContainer}>
+              <Typography className={classes.whereToNextHeading}>
+                What's next?
+              </Typography>
+              <Typography>
+                Share the event with friends!
+                <LinkIcon
+                  className={classes.linkIcon}
+                  onClick={() => copyLinkToClipboard()}
+                />
+              </Typography>
+            </div>
+            <div className={classes.linkCopiedMessageContainer}>
+              {displayLinkMessage ? (
+                <Typography className={classes.linkCopiedMessage} variant="caption">
+                  Registration Link Copied to Clipboard!
+                </Typography>
+              ) : (
+                <Typography
+                  className={classes.linkCopiedMessageHidden}
+                  variant="caption"
                 >
-                  <Typography
-                    className={classes.upcomingEventsEname}
-                    onClick={() => redirectEvent(event.id, event.year)}
-                  >
-                    {event.ename}
-                  </Typography>
-                  <Typography
-                    className={classes.upcomingEventsDate}
-                    variant="caption"
-                  >
-                    {eventStart}
-                    {eventEnd && eventEnd !== eventStart ? ` - ${eventEnd}` : ""}
-                  </Typography>
-                </div>
-            );
-          })}
-        </div>
+                  Registration Link Copied to Clipboard!
+                </Typography>
+              )}
+            </div>
+          </div>
         )}
       </Grid>
+        <Grid item xs={12} lg={5} className={classes.rightColumn}>
+          <div className={classes.imageContainer}>
+            <img
+              src={SpeechBubble}
+              alt="Speech Bubble"
+              className={classes.speechBubble}
+            />
+            <img
+              src={HouseChef}
+              alt="House with Chef Hat"
+              className={classes.houseChefImage}
+            />
+          </div>
+          {type !== "partner" && upcomingEvents.length > 0 && (
+            <div className={classes.upcomingEventsContainer}>
+              <Typography className={classes.upcomingEventsHeading}>
+                Upcoming Events:
+              </Typography>
+
+              {upcomingEvents.map((event) => {
+                const eventStart =
+                  event.startDate &&
+                  new Date(event.startDate).toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                  });
+                const eventEnd =
+                  event.endDate &&
+                  new Date(event.endDate).toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                  });
+
+                return (
+                  <div
+                    key={`${event.id};${event.year}`}
+                    className={classes.upcomingEventsItem}
+                  >
+                    <Typography
+                      className={classes.upcomingEventsEname}
+                      onClick={() => redirectEvent(event.id, event.year)}
+                    >
+                      {event.ename}
+                    </Typography>
+                    <Typography
+                      className={classes.upcomingEventsDate}
+                      variant="caption"
+                    >
+                      {eventStart}
+                      {eventEnd && eventEnd !== eventStart ? ` - ${eventEnd}` : ""}
+                    </Typography>
+                  </div>
+              );
+            })}
+          </div>
+          )}
+        </Grid>
     </Grid>
   );
 };
