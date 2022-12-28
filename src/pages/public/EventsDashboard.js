@@ -207,6 +207,10 @@ const steps = [
   {
     target: ".search-btn",
     title: "Search",
+    disableBeacon: true,
+    hideCloseButton: true,
+    hideFooter: true,
+    disableOverlayClose: true,
     content:
     <div>
       <p>Search for any event here</p>
