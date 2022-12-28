@@ -13,7 +13,7 @@ import { COLORS } from "constants/index";
 
 import Joyride from "react-joyride";
 import { Link } from 'react-router-dom';
-import { checkViewedFeatures } from "utils";
+import { checkViewedFeatures, setViewedFeatures } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -199,7 +199,8 @@ function MemberHome(props) {
   }
 
   function ShowOnbaording() {
-    if (!checkViewedFeatures(user, "Check5")) {
+    if (!checkViewedFeatures(user, "Home")) {
+      setViewedFeatures(user, 'Home')
       return (      
       <Joyride
         steps={steps}

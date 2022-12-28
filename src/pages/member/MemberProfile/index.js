@@ -21,7 +21,7 @@ import {
 
 import House from 'assets/house.svg'
 import { COLORS } from 'constants/index'
-import { fetchBackend, setViewedFeatures } from 'utils'
+import { checkViewedFeatures, fetchBackend, setViewedFeatures } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
   profilePageContainer: {
@@ -269,9 +269,17 @@ function MemberProfile (props) {
     getRecentEvent()
   }
 
-  function SetOnboarding() {
-    setViewedFeatures(user, 'Check4');
-    return null;
+  function ShowOnboarding() {
+    if (!checkViewedFeatures(user, 'Profile')) {
+      setViewedFeatures(user, 'Profile')
+      return (
+        <div>
+
+        </div>
+      );
+    } else {
+      return null
+    }
   }
 
   const classes = useStyles()
@@ -518,8 +526,8 @@ function MemberProfile (props) {
           </Card>
         </div>
       </div>
-      <SetOnboarding>
-      </SetOnboarding>
+      <ShowOnboarding>
+      </ShowOnboarding>
     </div>
   )
 }

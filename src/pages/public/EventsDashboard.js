@@ -32,7 +32,7 @@ import Loading from 'pages/Loading'
 import { COLORS } from 'constants/index'
 import { setUser, fetchUserRegisteredEvents } from 'store/user/userActions'
 import { fetchEvents } from 'store/event/eventActions'
-import { fetchBackend } from 'utils'
+import { checkViewedFeatures, fetchBackend, setViewedFeatures } from 'utils'
 
 // States for the filters
 const PERSONALIZATION_STATES = {
@@ -221,6 +221,41 @@ const steps = [
     </div>
   }
 ];
+
+function ShowOnbaording() {
+  if (!checkViewedFeatures(user, 'Events')) {
+    setViewedFeatures(user, 'Events') 
+    return (
+      <Joyride
+            steps={steps}
+            continuous = {true}
+            showProgress = {true}
+            disableScrolling = {true}
+            styles={{
+              options: {
+                backgroundColor: '#182138',
+                primaryColor: '#79D03F',
+                textColor: '#FFFFFF',
+                zIndex: 1000,
+              },
+              tooltip: {
+                borderRadius: 10
+              },
+              buttonNext: {
+                outline: 'none',
+                borderRadius: 5
+              },
+              buttonBack: {
+                outline: 'none',
+                borderRadius: 5
+              }
+            }}
+        />
+    );
+  } else {
+    return null
+  }
+}
 
 function EventsDashboard (props) {
   const [isSearch, setIsSearch] = useState(false)
@@ -525,31 +560,8 @@ function EventsDashboard (props) {
           </div>
         </div>
       </div>
-      <Joyride
-            steps={steps}
-            continuous = {true}
-            showProgress = {true}
-            disableScrolling = {true}
-            styles={{
-              options: {
-                backgroundColor: '#182138',
-                primaryColor: '#79D03F',
-                textColor: '#FFFFFF',
-                zIndex: 1000,
-              },
-              tooltip: {
-                borderRadius: 10
-              },
-              buttonNext: {
-                outline: 'none',
-                borderRadius: 5
-              },
-              buttonBack: {
-                outline: 'none',
-                borderRadius: 5
-              }
-            }}
-        />
+        <ShowOnbaording>
+        </ShowOnbaording>
     </div>
   )
 }
