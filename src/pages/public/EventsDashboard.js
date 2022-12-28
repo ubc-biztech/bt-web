@@ -200,6 +200,7 @@ const steps = [
   {
     target: ".event-card",
     title: "Event",
+    disableBeacon: true,
     content:
       "Click on an event to know more about it"
   },
@@ -210,7 +211,7 @@ const steps = [
     <div>
       <p>Search for any event here</p>
       <p>Click&nbsp;
-        <Link to="/member/profile">here</Link> 
+        <Link to="/member/profile" style={{ color: '#79D03F' }}>here</Link> 
         &nbsp;to go to Profile 
       </p>
     </div>
@@ -525,6 +526,25 @@ function EventsDashboard (props) {
             continuous = {true}
             showProgress = {true}
             disableScrolling = {true}
+            styles={{
+              options: {
+                backgroundColor: '#182138',
+                primaryColor: '#79D03F',
+                textColor: '#FFFFFF',
+                zIndex: 1000,
+              },
+              tooltip: {
+                borderRadius: 10
+              },
+              buttonNext: {
+                outline: 'none',
+                borderRadius: 5
+              },
+              buttonBack: {
+                outline: 'none',
+                borderRadius: 5
+              }
+            }}
         />
     </div>
   )

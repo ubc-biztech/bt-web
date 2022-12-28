@@ -21,7 +21,7 @@ import {
 
 import House from 'assets/house.svg'
 import { COLORS } from 'constants/index'
-import { fetchBackend } from 'utils'
+import { fetchBackend, setViewedFeatures } from 'utils'
 
 const useStyles = makeStyles((theme) => ({
   profilePageContainer: {
@@ -269,6 +269,11 @@ function MemberProfile (props) {
     getRecentEvent()
   }
 
+  function SetOnboarding() {
+    setViewedFeatures(user, 'Check4');
+    return null;
+  }
+
   const classes = useStyles()
   return (
     <div className={classes.profilePageContainer}>
@@ -513,6 +518,8 @@ function MemberProfile (props) {
           </Card>
         </div>
       </div>
+      <SetOnboarding>
+      </SetOnboarding>
     </div>
   )
 }

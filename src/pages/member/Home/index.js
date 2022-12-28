@@ -13,6 +13,7 @@ import { COLORS } from "constants/index";
 
 import Joyride from "react-joyride";
 import { Link } from 'react-router-dom';
+import { checkViewedFeatures } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -197,6 +198,39 @@ function MemberHome(props) {
     });
   }
 
+  function ShowOnbaording() {
+    if (!checkViewedFeatures(user, "Check5")) {
+      return (      
+      <Joyride
+        steps={steps}
+        continuous = {true}
+        showProgress = {true}
+        styles={{
+          options: {
+            backgroundColor: '#182138',
+            primaryColor: '#79D03F',
+            textColor: '#FFFFFF',
+            zIndex: 1000,
+          },
+          tooltip: {
+            borderRadius: 10
+          },
+          buttonNext: {
+            outline: 'none',
+            borderRadius: 5
+          },
+          buttonBack: {
+            outline: 'none',
+            borderRadius: 5
+          }
+        }}
+      />
+    );
+  } else {
+    return null;
+  }
+}
+
   const steps = [
     {
       disableBeacon: true,
@@ -226,11 +260,15 @@ function MemberHome(props) {
     {
       target: ".featured-event",
       title: "Featured Event",
+      disableBeacon: true,
+      hideCloseButton: true,
+      hideFooter: true,
+      disableOverlayClose: true,
       content:
       <div>
         <p>Here is the current featured event</p>
         <p>Click&nbsp;
-          <Link to="/events">here</Link> 
+          <Link to="/events" style={{ color: '#79D03F' }}>here</Link> 
           &nbsp;to go to Events 
         </p>
       </div>
@@ -307,11 +345,8 @@ function MemberHome(props) {
           </div>
         </div>
       </div>
-      <Joyride
-            steps={steps}
-            continuous = {true}
-            showProgress = {true}
-        />
+      <ShowOnbaording>
+      </ShowOnbaording>
     </React.Fragment>
   );
 }
