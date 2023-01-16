@@ -27,6 +27,8 @@ import AdminRoutes from "pages/admin"
 import MemberRoutes from "pages/member"
 import PublicEventRoutes from "pages/public/Event"
 
+import EventRedeem from "pages/public/EventRedeem";
+
 import {
   setUser,
   fetchUser,
@@ -121,6 +123,11 @@ class Router extends Component {
           {userNotMember && <MemberAlert />}
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
+              <Route
+                exact 
+                path="/redeem"
+                render={() => <EventRedeem />} 
+              />
               {/* ADMIN ROUTES */}
               {user && <Route path="/admin" component={AdminRoutes} />}
 
