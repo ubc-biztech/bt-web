@@ -177,11 +177,11 @@ export class EventStatsTable extends Component {
   heardFromNumbers(users) {
     const heardFrom = {};
     users.forEach((user) => {
-      if (user.basicInformation.heardFrom) {
-        heardFrom[user.basicInformation.heardFrom] = heardFrom[
-          user.basicInformation.heardFrom
+      if (user.basicInformation?.heardFrom) {
+        heardFrom[user.basicInformation?.heardFrom] = heardFrom[
+          user.basicInformation?.heardFrom
         ]
-          ? heardFrom[user.basicInformation.heardFrom] + 1
+          ? heardFrom[user.basicInformation?.heardFrom] + 1
           : 1;
       }
     });
@@ -220,31 +220,31 @@ export class EventStatsTable extends Component {
     const dietary = {};
     const genders = {};
     users.forEach((user) => {
-      if (user.basicInformation.faculty) {
-        faculties[user.basicInformation.faculty] = faculties[
-          user.basicInformation.faculty
+      if (user.basicInformation?.faculty) {
+        faculties[user.basicInformation?.faculty] = faculties[
+          user.basicInformation?.faculty
         ]
-          ? faculties[user.basicInformation.faculty] + 1
+          ? faculties[user.basicInformation?.faculty] + 1
           : 1;
       }
-      if (user.basicInformation.year) {
-        const yearInt = parseInt(user.basicInformation.year);
+      if (user.basicInformation?.year) {
+        const yearInt = parseInt(user.basicInformation?.year);
         if (yearInt) {
           years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1;
         }
       }
-      if (user.basicInformation.diet) {
-        dietary[user.basicInformation.diet] = dietary[
-          user.basicInformation.diet
+      if (user.basicInformation?.diet) {
+        dietary[user.basicInformation?.diet] = dietary[
+          user.basicInformation?.diet
         ]
-          ? dietary[user.basicInformation.diet] + 1
+          ? dietary[user.basicInformation?.diet] + 1
           : 1;
       }
-      if (user.basicInformation.gender) {
-        genders[user.basicInformation.gender] = genders[
-          user.basicInformation.gender
+      if (user.basicInformation?.gender) {
+        genders[user.basicInformation?.gender] = genders[
+          user.basicInformation?.gender
         ]
-          ? genders[user.basicInformation.gender] + 1
+          ? genders[user.basicInformation?.gender] + 1
           : 1;
       }
     });
@@ -693,7 +693,7 @@ export class EventStatsTable extends Component {
     function filterRows(rows, isPartner) {
       if (rows) {
         return rows.filter((row) => (
-          row.isPartner === isPartner
+          Boolean(row.isPartner) === isPartner 
         ))
       } else {
         return []
