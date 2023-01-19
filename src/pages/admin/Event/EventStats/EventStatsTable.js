@@ -34,10 +34,12 @@ import {
 import { fetchBackend } from "utils";
 import {
   REGISTRATIONSTATUSLABEL,
-  combineEventAndRegistrationData,
-  appendRegistrationQuestions
+  prepareRowData,
+  appendRegistrationQuestions,
+  POINTSLABEL
 } from "./utils";
 import DraggableTitle from "./DraggableTitle";
+import PointsField from "./PointsField";
 
 const styles = {
   stats: {
@@ -149,21 +151,38 @@ export class EventStatsTable extends Component {
       eventID: eventID,
       year: eventYear
     });
-    await fetchBackend(
-      `/events/${eventID}/${eventYear.toString()}`,
-      "GET"
-    ).then(async (event) => {
-      this.setColumns(event.registrationQuestions);
-    });
+
     await fetchBackend(`/registrations?${params}`, "GET")
       .then((response) => {
-        this.heardFromNumbers(response.data);
-        this.registrationNumbers(response.data);
-        this.notRegistrationNumbers(response.data);
-        this.setRows(response.data);
+        const heardFrom = this.heardFromNumbers(response.data);
+        const registrationNumbers = this.registrationNumbers(response.data);
+        const {
+          faculties,
+          years,
+          genders,
+          dietary
+        } = this.notRegistrationNumbers(response.data);
+        const rows = prepareRowData(response.data);
+
+        this.setState({
+          rows,
+          heardFrom,
+          registrationNumbers,
+          faculties,
+          years,
+          genders,
+          dietary
+        });
       })
       .catch((err) => {
         console.log("No registrations for this event");
+      }); 
+
+      await fetchBackend(
+        `/events/${eventID}/${eventYear.toString()}`,
+        "GET"
+      ).then(async (event) => {
+        this.setColumns(event.registrationQuestions);
       });
   }
 
@@ -186,9 +205,7 @@ export class EventStatsTable extends Component {
       }
     });
 
-    this.setState({
-      heardFrom
-    });
+    return heardFrom;
   }
 
   registrationNumbers(users) {
@@ -203,9 +220,7 @@ export class EventStatsTable extends Component {
       }
     });
 
-    this.setState({
-      registrationNumbers
-    });
+    return registrationNumbers;
   }
 
   /**
@@ -249,25 +264,12 @@ export class EventStatsTable extends Component {
       }
     });
 
-    this.setState({
+    return {
       faculties,
       years,
       genders,
       dietary
-    });
-  }
-
-  /**
-   * Prepares the row data for the eventStatsTable by combining events backend user data with the
-   * registration responses
-   * @param {*} users the response from the events backend
-   */
-  setRows(users) {
-    const data = combineEventAndRegistrationData(users);
-
-    this.setState({
-      rows: data
-    });
+    };
   }
 
   /**
@@ -279,11 +281,13 @@ export class EventStatsTable extends Component {
 
     appendRegistrationQuestions(columns, registrationQuestions);
 
-    this.setState({
-      columns
-    });
+    // this.setState({
+    //   columns
+    // });
 
     let presentedColumns = this.state.presentedColumns;
+
+    console.log("presentedColumns", presentedColumns, "columns", columns);
 
     this.setState({
       presentedColumns: presentedColumns.concat(columns)
@@ -296,10 +300,7 @@ export class EventStatsTable extends Component {
     appendRegistrationQuestions(columns, partnerRegistrationQuestions);
 
     this.setState({
-      columns
-    });
-
-    this.setState({
+      columns,
       presentedPartnerColumns: this.state.presentedPartnerColumns.concat(columns)
     })
   }
@@ -540,6 +541,26 @@ export class EventStatsTable extends Component {
             {rowData.heardFrom}
           </>
         )
+      },
+      {
+        title: <DraggableTitle title="Points" />,
+        field: POINTSLABEL,
+        cellStyle: { whiteSpace: "nowrap" },
+        render: (rowData) => {
+          console.log("rendering pointsfield using", rowData);
+          return (
+          <div>
+            <PointsField
+              points={rowData.points} 
+              id={rowData.id}
+              fname={rowData.fname}
+              registrationStatus={rowData.registrationStatus}
+              eventID={this.props.event.id}
+              eventYear={this.props.event.year}
+              refreshTable={this.refreshTable}
+              />
+          </div>
+        )}
       }
     ];
 
@@ -656,7 +677,9 @@ export class EventStatsTable extends Component {
     ];
 
     const arrangeColumns = () => {
-      let curr = defaultColumns.concat(this.state.columns)
+      console.log("arranging Columns");
+      let curr = defaultColumns.concat(this.state.columns);
+      console.log("arranged columns", curr);
       this.setState({ presentedColumns: curr });
       return curr;
     };
@@ -667,6 +690,7 @@ export class EventStatsTable extends Component {
       return curr;
     }
 
+    console.log("presentedColumns length, ", this.state.presentedColumns.length);
     let registrationColumns = this.state.presentedColumns.length > 0 ? this.state.presentedColumns : arrangeColumns();
     let registrationPartnerColumns = this.state.presentedPartnerColumns.length > 0 ? this.state.presentedPartnerColumns : arrangePartnerColumns();
 
@@ -691,6 +715,7 @@ export class EventStatsTable extends Component {
     }
 
     function filterRows(rows, isPartner) {
+      console.log("material table is rendering, filtering rows ", rows);
       if (rows) {
         return rows.filter((row) => (
           row.isPartner === isPartner
@@ -869,7 +894,7 @@ const PopoverCell = (props) => {
 
   const open = Boolean(anchorPosition);
 
-  const dropdownColumnFieldNames = [REGISTRATIONSTATUSLABEL];
+  const excludeFromOnclickPopoverColumns = [REGISTRATIONSTATUSLABEL, POINTSLABEL];
 
   return (
     <>
@@ -882,7 +907,7 @@ const PopoverCell = (props) => {
       />
       {/* NOTE: if any more dropdown columns are added in the future to the the default columns of the MaterialTable, 
             you will need to exclude the column from the Popover effect as shown below */}
-      {dropdownColumnFieldNames.includes(props.columnDef.field) ? (
+      {excludeFromOnclickPopoverColumns.includes(props.columnDef.field) ? (
         <></>
       ) : (
         <Popover
