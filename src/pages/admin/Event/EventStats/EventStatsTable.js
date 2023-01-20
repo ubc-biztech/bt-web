@@ -13,9 +13,7 @@ import {
 } from "react-vis";
 
 import {
-  MenuItem,
   Paper,
-  Select,
   Typography,
   makeStyles,
   Link,
@@ -35,11 +33,9 @@ import { fetchBackend } from "utils";
 import {
   REGISTRATIONSTATUSLABEL,
   prepareRowData,
-  appendRegistrationQuestions,
   POINTSLABEL
 } from "./utils";
-import DraggableTitle from "./DraggableTitle";
-import PointsField from "./PointsField";
+import { getDefaultColumns, getDefaultPartnerColumns, getDynamicQuestionColumns } from "./TableColumns";
 
 const styles = {
   stats: {
@@ -125,22 +121,31 @@ export class EventStatsTable extends Component {
       heardFromVisible: { visible: false, style: { display: "none" } },
       tableType: "attendee",
     };
-  }
-
-  async updateUserRegistrationStatus(id, fname, registrationStatus) {
-    const body = {
-      eventID: this.props.event.id,
-      year: this.props.event.year,
-      registrationStatus
-    };
-    await fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
-
-    this.refreshTable();
-  }
+  } 
 
   refreshTable = () => {
     this.getEventTableData(this.props.event.id, this.props.event.year);
   };
+
+  async initializeTableColumns() {
+    const { id: eventID, year: eventYear} = this.props.event;
+    await fetchBackend(
+      `/events/${eventID}/${eventYear.toString()}`,
+      "GET"
+    ).then(async (event) => {
+      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable);
+      const dynamicQuestionColumns = getDynamicQuestionColumns(event.registrationQuestions);
+
+      const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.refreshTable);
+      // dynamic Partner questions not implemented yet.
+      
+      const presentedColumns = defaultColumns.concat(dynamicQuestionColumns);
+      this.setState({
+        presentedColumns,
+        presentedPartnerColumns: defaultPartnerColumns
+      });
+    });
+  }
 
   /* updates stats and the rows in the table
      faculty, gender, dietary, and year stats are only computed on the initial render of the component
@@ -177,13 +182,6 @@ export class EventStatsTable extends Component {
       .catch((err) => {
         console.log("No registrations for this event");
       }); 
-
-      await fetchBackend(
-        `/events/${eventID}/${eventYear.toString()}`,
-        "GET"
-      ).then(async (event) => {
-        this.setColumns(event.registrationQuestions);
-      });
   }
 
   /**
@@ -272,39 +270,6 @@ export class EventStatsTable extends Component {
     };
   }
 
-  /**
-   * Populates the column headers for the eventStatsTable with registration questions
-   * @param {*} registrationQuestions an array of registration questions
-   */
-  setColumns(registrationQuestions) {
-    const columns = [];
-
-    appendRegistrationQuestions(columns, registrationQuestions);
-
-    // this.setState({
-    //   columns
-    // });
-
-    let presentedColumns = this.state.presentedColumns;
-
-    console.log("presentedColumns", presentedColumns, "columns", columns);
-
-    this.setState({
-      presentedColumns: presentedColumns.concat(columns)
-    })
-  }
-
-  setPartnerColumns(partnerRegistrationQuestions) {
-    const columns = [];
-
-    appendRegistrationQuestions(columns, partnerRegistrationQuestions);
-
-    this.setState({
-      columns,
-      presentedPartnerColumns: this.state.presentedPartnerColumns.concat(columns)
-    })
-  }
-
   async updateEventTableData(eventID) {
     const params = new URLSearchParams({
       users: true
@@ -324,6 +289,7 @@ export class EventStatsTable extends Component {
   };
 
   componentDidMount() {
+    this.initializeTableColumns();
     this.refreshTable();
   }
 
@@ -336,363 +302,9 @@ export class EventStatsTable extends Component {
     }
   }
 
-  render() {
-    /**
-     * Helper function to determine whether to display action for check-in or undo check-in
-     * @param {*} rowData data about the current row
-     */
-
-    const changeRegistration = (event, rowData) => {
-      // TODO: refactor code smell
-      switch (event.target.value) {
-        case REGISTRATION_STATUS.REGISTERED:
-          if (
-            window.confirm(
-              `Do you want to register ${rowData.fname} ${rowData.lname}?\nThis will send an email to the user.`
-            )
-          ) {
-            this.updateUserRegistrationStatus(
-              rowData.id,
-              rowData.fname,
-              REGISTRATION_STATUS.REGISTERED
-            );
-          }
-          break;
-        case REGISTRATION_STATUS.CHECKED_IN:
-          if (
-            window.confirm(
-              `Do you want to check in ${rowData.fname} ${rowData.lname}?\nThis will NOT send an email to the user.`
-            )
-          ) {
-            this.updateUserRegistrationStatus(
-              rowData.id,
-              rowData.fname,
-              REGISTRATION_STATUS.CHECKED_IN
-            );
-          }
-          break;
-        case REGISTRATION_STATUS.WAITLISTED:
-          if (
-            window.confirm(
-              `Do you want to waitlist ${rowData.fname} ${rowData.lname}?\nThis will send an email to the user.`
-            )
-          ) {
-            this.updateUserRegistrationStatus(
-              rowData.id,
-              rowData.fname,
-              REGISTRATION_STATUS.WAITLISTED
-            );
-          }
-          break;
-        case REGISTRATION_STATUS.CANCELLED:
-          if (
-            window.confirm(
-              `Did ${rowData.fname} ${rowData.lname} cancel?\nThis will send an email to the user.`
-            )
-          ) {
-            this.updateUserRegistrationStatus(
-              rowData.id,
-              rowData.fname,
-              REGISTRATION_STATUS.CANCELLED
-            );
-          }
-          break;
-        default:
-          return {};
-      }
-    };
-
-    const defaultColumns = [
-      {
-        title: <DraggableTitle title="Registration Status" />,
-        field: REGISTRATIONSTATUSLABEL,
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <div>
-            <Select
-              value={rowData.registrationStatus}
-              onClick={(event) => changeRegistration(event, rowData)}
-              style={{
-                backgroundColor:
-                  rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
-                    ? COLORS.LIGHT_GREEN
-                    : rowData.registrationStatus ===
-                      REGISTRATION_STATUS.WAITLISTED
-                    ? COLORS.LIGHT_YELLOW
-                    : rowData.registrationStatus ===
-                      REGISTRATION_STATUS.CANCELLED
-                    ? COLORS.LIGHT_RED
-                    : COLORS.LIGHT_BACKGROUND_COLOR,
-                paddingLeft: "10px"
-              }}
-            >
-              <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>
-                Waitlisted
-              </MenuItem>
-              <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>
-                Checked in
-              </MenuItem>
-              <MenuItem value={REGISTRATION_STATUS.REGISTERED}>
-                Registered
-              </MenuItem>
-              <MenuItem value={REGISTRATION_STATUS.CANCELLED}>
-                Cancelled
-              </MenuItem>
-            </Select>
-          </div>
-        )
-      },
-      {
-        title: <DraggableTitle title="First Name" />,
-        field: "fname",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.fname}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Last Name" />,
-        field: "lname",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.lname}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Email" />,
-        field: "id",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.id}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Last Updated" />,
-        field: "updatedAt",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.updatedAt}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Diet" />,
-        field: "diet",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.diet}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Student Number" />,
-        field: "studentId",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.studentId}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Faculty" />,
-        field: "faculty",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.faculty}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Year Level" />,
-        field: "year",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.year}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Gender" />,
-        field: "gender",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.gender}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Heard about event from" />,
-        field: "heardFrom",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.heardFrom}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Points" />,
-        field: POINTSLABEL,
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => {
-          console.log("rendering pointsfield using", rowData);
-          return (
-          <div>
-            <PointsField
-              points={rowData.points} 
-              id={rowData.id}
-              fname={rowData.fname}
-              registrationStatus={rowData.registrationStatus}
-              eventID={this.props.event.id}
-              eventYear={this.props.event.year}
-              refreshTable={this.refreshTable}
-              />
-          </div>
-        )}
-      }
-    ];
-
-    const defaultPartnerColumns = [
-      {
-        title: <DraggableTitle title="Registration Status" />,
-        field: REGISTRATIONSTATUSLABEL,
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <div>
-            <Select
-              value={rowData.registrationStatus}
-              onClick={(event) => changeRegistration(event, rowData)}
-              style={{
-                backgroundColor:
-                  rowData.registrationStatus === REGISTRATION_STATUS.CHECKED_IN
-                    ? COLORS.LIGHT_GREEN
-                    : rowData.registrationStatus ===
-                      REGISTRATION_STATUS.WAITLISTED
-                    ? COLORS.LIGHT_YELLOW
-                    : rowData.registrationStatus ===
-                      REGISTRATION_STATUS.CANCELLED
-                    ? COLORS.LIGHT_RED
-                    : COLORS.LIGHT_BACKGROUND_COLOR,
-                paddingLeft: "10px"
-              }}
-            >
-              <MenuItem value={REGISTRATION_STATUS.WAITLISTED}>
-                Waitlisted
-              </MenuItem>
-              <MenuItem value={REGISTRATION_STATUS.CHECKED_IN}>
-                Checked in
-              </MenuItem>
-              <MenuItem value={REGISTRATION_STATUS.REGISTERED}>
-                Registered
-              </MenuItem>
-              <MenuItem value={REGISTRATION_STATUS.CANCELLED}>
-                Cancelled
-              </MenuItem>
-            </Select>
-          </div>
-        )
-      },
-      {
-        title: <DraggableTitle title="First Name" />,
-        field: "fname",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.fname}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Last Name" />,
-        field: "lname",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.lname}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Email" />,
-        field: "id",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.id}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Last Updated" />,
-        field: "updatedAt",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.updatedAt}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Gender" />,
-        field: "gender",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.gender}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Company Name" />,
-        field: "companyName",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.gender}
-          </>
-        )
-      },
-      {
-        title: <DraggableTitle title="Role/Occupation at Company" />,
-        field: "role",
-        cellStyle: { whiteSpace: "nowrap" },
-        render: (rowData) => (
-          <>
-            {rowData.gender}
-          </>
-        )
-      }
-    ];
-
-    const arrangeColumns = () => {
-      console.log("arranging Columns");
-      let curr = defaultColumns.concat(this.state.columns);
-      console.log("arranged columns", curr);
-      this.setState({ presentedColumns: curr });
-      return curr;
-    };
-
-    const arrangePartnerColumns = () => {
-      let curr = defaultPartnerColumns.concat(this.state.partnerColumns)
-      this.setState({ presentedPartnerColumns: curr });
-      return curr;
-    }
-
-    console.log("presentedColumns length, ", this.state.presentedColumns.length);
-    let registrationColumns = this.state.presentedColumns.length > 0 ? this.state.presentedColumns : arrangeColumns();
-    let registrationPartnerColumns = this.state.presentedPartnerColumns.length > 0 ? this.state.presentedPartnerColumns : arrangePartnerColumns();
+  render() { 
+    let registrationColumns = this.state.presentedColumns;
+    let registrationPartnerColumns = this.state.presentedPartnerColumns;
 
     function handleColumnDrag(sourceIndex, destinationIndex) {
       const sourceColumn = registrationColumns[sourceIndex];
@@ -715,7 +327,6 @@ export class EventStatsTable extends Component {
     }
 
     function filterRows(rows, isPartner) {
-      console.log("material table is rendering, filtering rows ", rows);
       if (rows) {
         return rows.filter((row) => (
           row.isPartner === isPartner
@@ -782,7 +393,7 @@ export class EventStatsTable extends Component {
 
         <MaterialTable
           title={`${this.props.event.ename} Attendance`}
-          columns={this.state.tableType === "attendee" ? registrationColumns : registrationPartnerColumns}
+          columns = {this.state.tableType === "attendee" ? this.state.presentedColumns : this.state.presentedPartnerColumns}
           data={filterRows(this.state.rows, this.state.tableType === "partner")}
           handleColumnDrag={this.state.tableType === "attendee" ? handleColumnDrag : handlePartnerColumnDrag}
           // Configure options for the table

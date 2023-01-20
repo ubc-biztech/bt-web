@@ -1,95 +1,86 @@
 import { TextField, Typography } from "@material-ui/core";
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchBackend } from "../../../../utils";
 
-class PointsField extends Component {
-    constructor(props) {
-        // console.log("PointsField constructor props: ", props);
-        super(props)
-        this.state = {
-            value: props.points,
-            editing: false
-        }
-    }
+const PointsField = (props) => {
+    const [value, setValue] = useState(props.points);
+    const [isEditing, setIsEditing] = useState(false);
 
-    componentDidMount() {
-        console.log("pointsfield mounted, value: ", this.state.value, " points prop: ", this.props.points)
-        this.setState({ value: this.props.points });
-    }
+    useEffect(() => {
+        setValue(props.points);
+    }, [props.points]);
 
-    handleBlur = async (event) => {
+
+    const handleBlur = async (event) => {
         if (event.type === "blur" || event.key === "Enter") {
-            this.setState({ editing: false });
+            setIsEditing(false);
             
-            if (this.state.value !== this.props.points) {
-                this.changeUserPoints();
+            if (value !== props.points) {
+                changeUserPoints();
             }
         }
     };
 
-    changeUserPoints = async () => {
+    const changeUserPoints = async () => {
         try {
-            this.validatePoints(this.state.value);
+            validatePoints(value);
 
             if (window.confirm("Are you sure you want to change the points value?")) {
-                await this.updateUserPoints(this.props.id, this.props.fname, this.state.value);
+                await updateUserPoints(props.id, props.fname, value);
             } else {
-                this.setState({ value: this.props.points });
+                setValue(props.points);
             }
         } catch (error) {
             console.log(error);
             alert(error);
-            this.setState({ value: this.props.points });
+            setValue(props.points);
         }
     }
 
-    validatePoints = (points) => {
+    const updateUserPoints = async (id, fname, points) => {
+        const body = {
+            eventID: props.eventID,
+            year: props.eventYear,
+            points
+        };
+        await fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
+
+        props.refreshTable();
+    }
+
+    const validatePoints = (points) => {
         if (isNaN(points) || points == null || points === "") {
             throw new Error("Points must be a number");
         }
         return;
     }
 
-    handleChange = (event) => {
-        this.setState({ value: event.target.value });
+    const handleChange = (event) => {
+        setValue(event.target.value);
     };
 
-    handleFocus = () => {
-        this.setState({ editing: true });
+    const handleFocus = () => {
+        setIsEditing(true);
     };
 
-    render() {
-        if (!this.state.editing) {
-            return (
-                <Typography
-                    onClick={this.handleFocus}
-                >
-                    {this.state.value}
-                </Typography>
-            )
-        } else {
-            return (
-                <TextField
-                    autoFocus
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    onBlur={this.handleBlur}
-                    onKeyPress={this.handleBlur}
-                />
-            )
-        }
-    }
-
-    updateUserPoints = async (id, fname, points) => {
-        const body = {
-            eventID: this.props.eventID,
-            year: this.props.eventYear,
-            registrationStatus: this.props.registrationStatus,
-            points
-        };
-        await fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
-
-        this.props.refreshTable();
+    if (!isEditing) {
+        return (
+            <Typography
+                onClick={handleFocus}
+            >
+                {value}
+            </Typography>
+        )
+    } else {
+        return (
+            <TextField
+                autoFocus
+                value={value}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                onKeyPress={handleBlur}
+            />
+        )
     }
 }
 
