@@ -133,14 +133,6 @@ const EventRedeem = () => {
     }
   }, [email, registrations])
 
-  if (isLoading) {
-    return (
-      <div style={styles.container}>
-        <Loading/>
-      </div>
-    )
-  }
-
   return (
     <>
       <Modal
@@ -155,7 +147,9 @@ const EventRedeem = () => {
           </div>
           <div style={styles.modalButtons}>
             <Button variant="contained" color="primary" 
-              onClick={() => setEmail(email)}
+              onClick={() => {
+                setEmail(input)
+              }}
             >
               Yes
             </Button>
@@ -169,31 +163,37 @@ const EventRedeem = () => {
           </div>
         </div>
       </Modal>
-      <div style={styles.container}>
-        {email ? (
-          <Typography className={classes.centerText}>{error || `Redeemed Successfully! Email used: ${email}`}</Typography>
-          ) : (
-          <div style={styles.inputContainer}>
-            <Typography className={classes.centerText}>To redeem points, please enter the email you used to register for Blueprint.</Typography>
-            <TextField 
-              className={classes.textfield}
-              onChange={(e) => setInput(e.target.value)}
-              value={input}
-              variant="outlined"
-            />
-            <Button
-              variant="contained" 
-              color="primary" 
-              onClick={() => {
-                setIsModalOpen(true)
-              }}
-            >
-              Confirm
-            </Button>
-          </div>
-          )
-        }
-      </div>
+      {isLoading ? (
+        <div style={styles.container}>
+          <Loading/>
+        </div>
+      ) : (
+        <div style={styles.container}>
+          {email ? (
+            <Typography className={classes.centerText}>{error || `Redeemed Successfully! Email used: ${email}`}</Typography>
+            ) : (
+            <div style={styles.inputContainer}>
+              <Typography className={classes.centerText}>To redeem points, please enter the email you used to register for Blueprint.</Typography>
+              <TextField 
+                className={classes.textfield}
+                onChange={(e) => setInput(e.target.value)}
+                value={input}
+                variant="outlined"
+              />
+              <Button
+                variant="contained" 
+                color="primary" 
+                onClick={() => {
+                  setIsModalOpen(true)
+                }}
+              >
+                Confirm
+              </Button>
+            </div>
+            )
+          }
+        </div>
+      )}
     </>
   )
 }
