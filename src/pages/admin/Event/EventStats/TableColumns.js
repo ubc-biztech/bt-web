@@ -14,6 +14,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
           <RegistrationField 
             id={rowData.id}
             fname={rowData.fname}
+            lname={rowData.lname}
             registrationStatus={rowData.registrationStatus}
             eventID={eventID}
             eventYear={eventYear}
@@ -151,6 +152,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
           <RegistrationField 
             id={rowData.id}
             fname={rowData.fname}
+            lname={rowData.lname}
             registrationStatus={rowData.registrationStatus}
             eventID={eventID}
             eventYear={eventYear}

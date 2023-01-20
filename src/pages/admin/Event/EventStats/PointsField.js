@@ -41,7 +41,7 @@ const PointsField = (props) => {
         const body = {
             eventID: props.eventID,
             year: props.eventYear,
-            points
+            points: parseInt(points)
         };
         await fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
 
