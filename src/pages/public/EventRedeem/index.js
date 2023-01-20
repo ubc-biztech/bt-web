@@ -131,7 +131,7 @@ const EventRedeem = () => {
     if (email && registrations.length > 0) {
       submitEmail()
     }
-  }, [email, registrations])
+  }, [email, registrations]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
