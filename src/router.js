@@ -124,8 +124,8 @@ class Router extends Component {
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
               <Route
-                exact 
-                path="/redeem"
+                exact
+                path="/redeem/:eventID/:year/:qrID"
                 render={() => <EventRedeem />} 
               />
               {/* ADMIN ROUTES */}
