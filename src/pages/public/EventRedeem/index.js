@@ -85,8 +85,8 @@ const EventRedeem = () => {
 
   const fetchRegistrations = async () => {
     const params = new URLSearchParams({
-      eventID: "blueprint",
-      year: "2023"
+      eventID,
+      year
     });
     await fetchBackend(`/registrations?${params}`, "GET")
       .then((response) => {
