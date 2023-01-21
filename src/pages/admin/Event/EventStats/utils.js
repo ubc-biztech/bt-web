@@ -3,6 +3,7 @@ import DraggableTitle from "./DraggableTitle";
 
 // Constants
 const REGISTRATIONSTATUSLABEL = "registrationStatus"
+const POINTSLABEL = "points"
 
 
 /**
@@ -28,11 +29,10 @@ const parseDynamicResponses = (registrations) => {
 };
 
 /**
- * Combines the users from the events backend with the registration question responses.
- * @param {*} users the response from the events backend
- * @param {*} registrationResponses the array of user response objects
+ * Helper function to flatten the registration data into a format suitable for the MaterialTable
+ * @param {*} users the response from the registration backend
  */
-const combineEventAndRegistrationData = (users) => {
+const prepareRowData = (users) => {
   const idToUserMap = new Map();
 
   users.forEach((user) => {
@@ -44,7 +44,8 @@ const combineEventAndRegistrationData = (users) => {
       registrationStatus: user.registrationStatus,
       // convert the date to something more readable
       updatedAt: new Date(user.updatedAt).toLocaleString(),
-      isPartner: user.isPartner
+      isPartner: user.isPartner,
+      points: user.points
     });
   });
 
@@ -82,7 +83,8 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
 
 export {
   REGISTRATIONSTATUSLABEL,
+  POINTSLABEL,
   parseDynamicResponses,
-  combineEventAndRegistrationData,
+  prepareRowData,
   appendRegistrationQuestions,
 };
