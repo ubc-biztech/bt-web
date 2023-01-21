@@ -88,10 +88,13 @@ const EventRedeem = () => {
       eventID,
       year
     });
-    await fetchBackend(`/registrations?${params}`, "GET")
+    await fetchBackend(`/registrations?${params}`, "GET", undefined, false)
       .then((response) => {
         setRegistrations(response.data)
         setIsLoading(false)
+    }).catch((err) => {
+      setError(err)
+      setIsLoading(false)
     })
   }
 
@@ -105,7 +108,7 @@ const EventRedeem = () => {
         "eventID": eventID,
         "year": Number(year),
         "email": email
-      }).then((res) => {
+      }, false).then((res) => {
         localStorage.setItem("BP2023EMAIL", email)
         setIsModalOpen(false)
         setIsLoading(false)
@@ -125,7 +128,7 @@ const EventRedeem = () => {
     if (email) {
       setEmail(email)
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (email && registrations.length > 0) {
