@@ -622,6 +622,7 @@ const FormRegister = (props) => {
         year: currEvent.year,
         registrationStatus: "registered",
         isPartner: "",
+        points: "0",
         basicInformation: JSON.stringify({
           fname: responseData[1],
           lname: responseData[2],
@@ -669,6 +670,7 @@ const FormRegister = (props) => {
         year: currEvent.year,
         registrationStatus: "registered",
         isPartner: false,
+        points: 0,
         basicInformation: {
           fname: responseData[1],
           lname: responseData[2],
