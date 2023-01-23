@@ -25,13 +25,65 @@
   font-weight: 700;
 }
 
+@font-face {
+  font-family: 'Noe display';
+  src: url('./assets/font/noe-display-bold.woff2') format('woff2'), url('./assets/font/noe-display-bold.woff') format('woff'), url('./assets/font/noe-display-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: 'Noe display';
+  src: url('./assets/font/noe-display-regular.woff2') format('woff2'), url('./assets/font/noe-display-regular.woff') format('woff'), url('./assets/font/noe-display-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: 'Proximanova';
+  src: url('./assets/font/ProximaNova-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: 'Proximanova';
+  src: url('./assets/font/ProximaNova-Bold.otf') format('opentype'), url('./assets/font/ProximaNova-Extrabold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: 'Proximanova';
+  src: url('./assets/font/ProximaNova-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: 'Proximanova';
+  src: url('./assets/font/ProximaNova-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: 'Proximanova';
+  src: url('./assets/font/ProximaNova-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: auto;
+}
+
 .content {
   padding-top: 14px;
   margin-left: 110px;
 
   @media screen and (max-width: $md) {
-    margin-left: 10px;
-    margin-bottom: $bottom_nav_size;
+    margin-left: 0px;
+    background-color: "transparent";
+    background-image: linear-gradient(4.01deg, #312934 3.28%, #323043 21.77%, #353a56 48.54%, #323b58 74.34%, #333f5e 96.72%);
+    margin-bottom: 0px;
   }
 }
 
