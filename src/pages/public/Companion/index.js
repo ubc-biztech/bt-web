@@ -26,8 +26,8 @@ const Companion = () => {
     if (email) {
       fetchUserData();
     }
-  }, [])
-  console.log(data)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const workshops = {
     "acba6e61-b8d9-4a1e-8ca9-305efcf40cbf": {
       "Tech Entrepreneurship (CloudAdvisors)":             
@@ -154,7 +154,6 @@ const Companion = () => {
     {isLoading ? <Loading/> : (
       <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
       <div className="container-35 w-container">
-        <a href="#" className="w-nav-brand"><img src="images/BP-biztech-logo.svg" loading="lazy" width="39" alt="" className="image-147"/></a>
         <nav role="navigation" className="nav-menu-7 w-nav-menu">
           <a href="#welcome" className="nav-link-28 w-nav-link">Welcome</a>
           <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
@@ -179,6 +178,7 @@ const Companion = () => {
                 style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)`, paddingBottom: 10 }}
                 width="60"
                 src={Rocketbook}
+                alt="/"
               />
             )}
           </Step>
@@ -188,6 +188,7 @@ const Companion = () => {
                 style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)` }}
                 width="100"
                 src="https://instax.com/common2/img/top/image_01.png"
+                alt="/"
               />
             )}
           </Step>
@@ -197,6 +198,7 @@ const Companion = () => {
                 style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)` }}
                 width="100"
                 src="https://instax.com/common2/img/top/image_01.png"
+                alt="/"
               />
             )}
           </Step>
@@ -206,6 +208,7 @@ const Companion = () => {
                 style={{ opacity: `${accomplished ? 1 : 0.7}` }}
                 width="50"
                 src={SonyXM5}
+                alt="/"
               />
             )}
           </Step>
@@ -215,6 +218,7 @@ const Companion = () => {
                 style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)` }}
                 width="50"
                 src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-2022-hero-silver-wifi-select_FMT_WHH?wid=940&hei=1112&fmt=png-alpha&.v=1664387253605"
+                alt="/"
               />
             )}
           </Step>
