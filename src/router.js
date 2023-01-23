@@ -16,6 +16,7 @@ import LoginRedirect from "pages/public/LoginRedirect"
 import ForgotPassword from "pages/public/ForgotPassword";
 import FormSuccess from "pages/public/RegistrationForms/FormSuccess"
 import RegistrationForm from "pages/public/RegistrationForms"
+import Companion from "pages/public/Companion"
 
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
@@ -121,6 +122,10 @@ class Router extends Component {
           {userNotMember && <MemberAlert />}
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
+              <Route
+                path="/companion/:email?"
+                render={() => <Companion />} 
+              />
               {/* ADMIN ROUTES */}
               {user && <Route path="/admin" component={AdminRoutes} />}
 
