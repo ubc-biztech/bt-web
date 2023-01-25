@@ -130,7 +130,7 @@ class Router extends Component {
                 render={() => <EventRedeem />} 
               />
               <Route
-                path="/companion/:email?"
+                path="/companion"
                 render={() => <Companion />} 
               />
               {/* ADMIN ROUTES */}
