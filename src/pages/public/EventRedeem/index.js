@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import Lottie from "lottie-react";
+
+import {useParams, withRouter} from "react-router-dom";
 import { Button, TextField, Typography, makeStyles, Modal } from "@material-ui/core";
 import { fetchBackend } from "utils";
 import Loading from "pages/Loading";
+
+import BlueprintLogo from "assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
+import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 
 const styles = {
   container: {
@@ -11,13 +17,16 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center", // mobile-centric padding
+    padding: "0 10px", // adding spacing between children
+    // bring up the height of the container
   },
   inputContainer: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    margin: "5px"
   },
   modal: {
     display: "flex",
@@ -44,8 +53,57 @@ const styles = {
     display: "flex",
     flexDirection: "row",
     gap: 10,
+  },
+  successContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   }
 };
+
+const prefixNameText = [
+    "Congrats",
+    "You did it",
+    "Way to go",
+    "You're a champ",
+    "Bravo",
+    "Brilliant",
+    "Incredible",
+    "Amazing",
+    "Sensational",
+    "Kudos",
+    "Fantastic",
+    "Cheers"
+];
+
+const suffixNameText = [
+    "Enjoy your spoils and keep up the good work!",
+    "You're well on your way to some awesome prizes!",
+    "Keep it up and you'll be on your way to some awesome prizes!",
+    "You are doing great! Keep it up!",
+    "Taking a step closer to some awesome tech prizes!",
+    "May your tech skills soar to new heights at Blueprint!",
+    "Cheers to your amazing experience at Blueprint!",
+    "The BizTech Team is cheering you on!",
+    "Loving the progress you're making at Blueprint!",
+    "Showing the tech world what you're made of!",
+    "Really making a run for those prizes, aren't you?!",
+    "Taking initiative and shaping the future - keep it up!",
+    "Way to go, BizTech superstar!",
+    "You're making waves at Blueprint 🌊",
+    "Making a name for yourself and unlocking awesome rewards, I see?",
+    "Your tech savvy is paving the way to rewards and recognition!",
+    "You're unlocking amazing opportunities - keep it up!",
+    "Onward and upward with those prizes!",
+    "Go get 'em! Those prizes aren't gonna win themselves!",
+    "Blueprint is the perfect place to show off your tech skills!",
+    "You are making a difference at Blueprint!",
+    "Impressive work - you're making a name for yourself!",
+    "You're really setting the tone for success at Blueprint!",
+    "You've got the tech world talking!",
+    "The BizTech world is lucky to have you!",
+];
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
@@ -56,7 +114,13 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 8,
   },
   centerText: {
-    textAlign: "center",
+    textAlign: "center", // readable font size for mobile
+    fontSize: "1.3rem",
+  },
+  pointsText: { // bold italicize
+    fontWeight: "bold",
+    fontStyle: "italic",
+    fontSize: "1.5rem",
   },
   boldText: {
     fontWeight: "bold",
@@ -71,13 +135,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const EventRedeem = () => {
+const EventRedeem = ({ history }) => {
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSuccessAnimationFinished, setIsSuccessAnimationFinished] = useState(false);
   const [registrations, setRegistrations] = useState([]);
   const [error, setError] = useState("");
+
+  const [pointsAwardedText, setPointsAwardedText] = useState(0);
+  const [congratNameText, setCongratNameText] = useState("");
 
   const classes = useStyles();
 
@@ -110,6 +178,8 @@ const EventRedeem = () => {
         "email": email
       }, false).then((res) => {
         localStorage.setItem("BP2023EMAIL", email)
+        determinePointsAwardedText(res.response.redeemed_points)
+        determineCongratText(res.response.first_name)
         setIsModalOpen(false)
         setIsLoading(false)
       }).catch((err) => {
@@ -128,6 +198,7 @@ const EventRedeem = () => {
     if (email) {
       setEmail(email)
     }
+    determinePointsAwardedText(-1);
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -136,12 +207,32 @@ const EventRedeem = () => {
     }
   }, [email, registrations]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const finishSuccess = () => {
+    setIsSuccessAnimationFinished(true);
+  }
+
+  const determineCongratText = (firstName) => {
+    if (firstName) {
+        setCongratNameText(`${prefixNameText[Math.floor(Math.random() * prefixNameText.length)]}, ${firstName}!`)
+    } else {
+        setCongratNameText(`${prefixNameText[Math.floor(Math.random() * prefixNameText.length)]}!`)
+    }
+  }
+
+  const determinePointsAwardedText = (points) => {
+      if (points > 0) {
+        setPointsAwardedText(`+${points} points`)
+      } else {
+        setPointsAwardedText(`Already Redeemed`)
+      }
+  }
+
   return (
     <>
       <Modal
         open={isModalOpen}
         >
-        <div style={styles.modal}>
+        <motion.div style={styles.modal} animate={{ opacity: isModalOpen ? 1 : 0 }}>
           <Typography className={classes.boldText}>{input}</Typography>
           <Typography className={classes.errorText}>{error}</Typography>
           <div style={styles.modalText}>
@@ -149,56 +240,115 @@ const EventRedeem = () => {
             <Typography className={classes.centerText}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
           </div>
           <div style={styles.modalButtons}>
-            <Button variant="contained" color="primary" 
+            <Button variant="contained" color="primary"
               onClick={() => {
                 setEmail(input)
+                setIsModalOpen(false)
               }}
+              style={{ backgroundColor: "#FFC107", marginRight: 10 }}
             >
               Yes
             </Button>
-            <Button variant="contained" color="primary" 
+            <Button variant="contained" color="primary"
               onClick={() => {
-                setError("")
                 setIsModalOpen(false)
               }}>
               No
             </Button>
           </div>
-        </div>
+        </motion.div>
       </Modal>
       {isLoading ? (
         <div style={styles.container}>
           <Loading/>
         </div>
       ) : (
-        <div style={styles.container}>
-          {email ? (
-            <Typography className={classes.centerText}>{error || `Redeemed Successfully! Email used: ${email}`}</Typography>
+          <motion.div style={styles.container}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}>
+          {email ? ( <>
+                  { !isSuccessAnimationFinished ?
+                      <div style={styles.successContainer}>
+
+                      <Lottie animationData={SuccessAnimation} onLoopComplete={finishSuccess} />;
+
+                      </div> :
+
+                      <>
+                        <motion.div style={styles.successContainer}
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.5, ease: 'easeOut' }}>
+
+                          <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "50%", height: "auto", marginBottom: 20 }}/>
+
+                        </motion.div>
+
+
+
+                        <motion.div style={styles.successContainer}
+                                    initial={{ opacity: 0, scale: 0.5 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.5, ease: 'easeOut' }}>
+
+                          <Typography variant="h1">{congratNameText}</Typography>
+
+                          <Typography className={classes.centerText}>{
+                            suffixNameText[Math.floor(Math.random() * suffixNameText.length)]
+                          }</Typography>
+                        </motion.div>
+
+                          <motion.div style={styles.successContainer}
+                                      initial={{ opacity: 0, scale: 0.5 }}
+                                      animate={{ opacity: 1, scale: 1 }}
+                                      transition={{ duration: 0.6, ease: 'easeOut' }}>
+                            <Typography className={classes.pointsText} style={{margin: "20px 0"}}>{pointsAwardedText}</Typography>
+
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                size="large"
+                                onClick={() => {
+                                  history.push("/companion");
+                                }}
+                            >
+                              Return to Companion
+                            </Button>
+                          </motion.div>
+                      </>
+                  }
+            </>
             ) : (
-            <div style={styles.inputContainer}>
-              <Typography className={classes.centerText}>To redeem points, please enter the email you used to register for Blueprint.</Typography>
-              <TextField 
-                className={classes.textfield}
-                onChange={(e) => setInput(e.target.value)}
-                value={input}
-                variant="outlined"
-              />
-              <Button
-                variant="contained" 
-                color="primary" 
-                onClick={() => {
-                  setIsModalOpen(true)
-                }}
-              >
-                Confirm
-              </Button>
-            </div>
+            <>
+              <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
+              <div style={styles.inputContainer}>
+                <Typography variant="h1">Welcome!</Typography>
+                <Typography className={classes.centerText}>To redeem points, please enter the email you used to register for Blueprint.</Typography>
+                <TextField
+                  className={classes.textfield}
+                  style={{ marginTop: 20, marginBottom: 20 }}
+                  onChange={(e) => setInput(e.target.value)}
+                  value={input}
+                  variant="outlined"
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    setIsModalOpen(true)
+                  }}
+                >
+                  Confirm
+                </Button>
+              </div>
+            </>
             )
           }
-        </div>
+        </motion.div>
       )}
     </>
   )
 }
 
-export default EventRedeem;
+export default withRouter(EventRedeem);
