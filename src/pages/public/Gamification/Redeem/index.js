@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import { useParams, withRouter } from "react-router-dom"
 
 const Redeem = ({ history }) => {
-  console.log(history)
   const { eventID, year, qrID } = useParams()
 
   useEffect(() => {
