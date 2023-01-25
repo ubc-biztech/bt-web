@@ -50,7 +50,7 @@ function Nav(props) {
   const barUnselected = { borderLeft: `6px solid ${COLORS.BACKGROUND_COLOR}` };
 
   const pathname = history.location.pathname;
-  const ignoreNavPaths = ["/redeem", "/companion"]
+  const ignoreNavPaths = ["/redeem", "/redemption", "/companion"]
   const [selectedItem, setSelectedItem] = useState(pathname);
   useEffect(() => {
     history.listen((location) => {

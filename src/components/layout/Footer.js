@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 function Footer() {
   const classes = useStyles();
 
-  const ignoreFooterPaths = ["/redeem", "/companion"]
+  const ignoreFooterPaths = ["/redeem", "/redemption", "/companion"]
 
   const location = useLocation()
   const [path, setPath] = useState(location.pathname)

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 
-import {useParams, withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Button, TextField, Typography, makeStyles, Modal } from "@material-ui/core";
 import { fetchBackend } from "utils";
 import Loading from "pages/Loading";
 
 import BlueprintLogo from "assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
+import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
 
 const styles = {
   container: {
@@ -135,12 +136,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const EventRedeem = ({ history }) => {
+const Redemption = (props, { history }) => {
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccessAnimationFinished, setIsSuccessAnimationFinished] = useState(false);
+  const [isErrorAnimationFinished, setIsErrorAnimationFinished] = useState(false);
   const [registrations, setRegistrations] = useState([]);
   const [error, setError] = useState("");
 
@@ -149,7 +151,7 @@ const EventRedeem = ({ history }) => {
 
   const classes = useStyles();
 
-  const { eventID, year, qrID } = useParams()
+  const { eventID, year, qrID } = props?.location?.state || {}
 
   const fetchRegistrations = async () => {
     const params = new URLSearchParams({
@@ -193,12 +195,17 @@ const EventRedeem = ({ history }) => {
   }
 
   useEffect(() => {
-    fetchRegistrations();
     const email = localStorage.getItem("BP2023EMAIL");
     if (email) {
       setEmail(email)
     }
-    determinePointsAwardedText(-1);
+    if (!eventID || !year || !qrID) {
+      setError("We are missing some information and are unable to redeem the code. Please contact an exec if you think this is a mistake.")
+      setIsLoading(false)
+    } else {
+      fetchRegistrations();
+      determinePointsAwardedText(-1);
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -209,6 +216,10 @@ const EventRedeem = ({ history }) => {
 
   const finishSuccess = () => {
     setIsSuccessAnimationFinished(true);
+  }
+
+  const finishError = () => {
+    setIsErrorAnimationFinished(true);
   }
 
   const determineCongratText = (firstName) => {
@@ -268,10 +279,14 @@ const EventRedeem = ({ history }) => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}>
           {email ? ( <>
-                  { !isSuccessAnimationFinished ?
+                  { !isSuccessAnimationFinished && !isErrorAnimationFinished ?
                       <div style={styles.successContainer}>
 
-                      <Lottie animationData={SuccessAnimation} onLoopComplete={finishSuccess} />;
+                      {error ? (
+                        <Lottie animationData={ErrorAnimation} onLoopComplete={finishError}/>
+                      ) : (
+                        <Lottie animationData={SuccessAnimation} onLoopComplete={finishSuccess} />
+                      )};
 
                       </div> :
 
@@ -291,19 +306,27 @@ const EventRedeem = ({ history }) => {
                                     initial={{ opacity: 0, scale: 0.5 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.5, ease: 'easeOut' }}>
+                          
+                          {error ? (
+                            <Typography className={classes.centerText} style={{margin: "20px 0"}}>{error}</Typography>
+                          ) : (
+                            <>
+                              <Typography variant="h1">{congratNameText}</Typography>
 
-                          <Typography variant="h1">{congratNameText}</Typography>
+                              <Typography className={classes.centerText}>{
+                                suffixNameText[Math.floor(Math.random() * suffixNameText.length)]
+                              }</Typography>
+                              
+                              <Typography className={classes.pointsText} style={{margin: "20px 0"}}>{pointsAwardedText}</Typography>
+                            </>
+                          )}
 
-                          <Typography className={classes.centerText}>{
-                            suffixNameText[Math.floor(Math.random() * suffixNameText.length)]
-                          }</Typography>
                         </motion.div>
 
                           <motion.div style={styles.successContainer}
                                       initial={{ opacity: 0, scale: 0.5 }}
                                       animate={{ opacity: 1, scale: 1 }}
-                                      transition={{ duration: 0.6, ease: 'easeOut' }}>
-                            <Typography className={classes.pointsText} style={{margin: "20px 0"}}>{pointsAwardedText}</Typography>
+                                      transition={{ duration: 0.6, ease: 'easeOut' }}> 
 
                             <Button
                                 variant="contained"
@@ -351,4 +374,4 @@ const EventRedeem = ({ history }) => {
   )
 }
 
-export default withRouter(EventRedeem);
+export default withRouter(Redemption);
