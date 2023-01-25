@@ -123,7 +123,7 @@ class Router extends Component {
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
               <Route
-                path="/companion/:email?"
+                path="/companion"
                 render={() => <Companion />} 
               />
               {/* ADMIN ROUTES */}
