@@ -11377,7 +11377,17 @@ figcaption {
 
 .div-block-89 {
   background-color: transparent;
-  background-image: linear-gradient(4.01deg, #312934 3.28%, #323043 21.77%, #353a56 48.54%, #323b58 74.34%, #333f5e 96.72%);
+  background-image: linear-gradient(4.01deg, #C2ACB5, #6498CD);
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .section-24 {
@@ -11902,7 +11912,7 @@ figcaption {
   color: #f9c9b8;
   font-size: 75px;
   font-weight: 700;
-  letter-spacing: 7px;
+  letter-spacing: 2px;
   text-transform: uppercase;
 }
 
@@ -12073,6 +12083,16 @@ figcaption {
   color: #fff;
   font-size: 25px;
   line-height: 28px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.red {
+  color: red;
 }
 
 html.w-mod-js *[data-ix="fade-in-bottom-page-loads"] {
@@ -16271,7 +16291,7 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
   }
 
   .nav-menu-7 {
-    background-color: #333e5c;
+    background-color: #6498CD;
   }
 
   .image-140 {
@@ -18245,7 +18265,7 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
   }
 }
 
-@media screen and (max-width: 479px) {
+@media screen {
   .page-heading {
     padding-left: 0px;
     color: #fff;
@@ -21015,7 +21035,7 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
 
   .heading-34 {
     max-width: 80%;
-    margin-bottom: 25px;
+    margin-bottom: 40px;
     font-size: 35px;
     line-height: 35px;
     text-align: center;
@@ -21033,9 +21053,71 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
     text-align: center;
   }
 
+  .flexbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   .current-total {
     margin-top: 30px;
+    margin-bottom: -20px;
     color: #fff;
+  }
+
+  .dot {
+    height: 25px;
+    line-height: 25px;
+    width: 25px;
+    background-color: #FEE9DF;
+    border-radius: 50%;
+    color: #6495CD;
+    text-align: center;
+    position: absolute;
+    display: block;
+    z-index: -1;
+  }
+
+  .vertical-line {
+    border-left: 1px solid white;
+    margin-left: 10px;
+    margin-top: 100px;
+    height: 30px;
+  }
+
+  .checkmark {
+    position: absolute;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-top: 70%;
+    margin-left: -50%;
+    
+  }
+
+  .checkmark::before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 50%;
+    width: 3px;
+    background-color: #39FF14;
+    content: "";
+    transform: translateX(10px) rotate(-45deg);
+    transform-origin: left bottom;
+  }
+
+  .checkmark::after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background-color: #39FF14;
+    content: "";
+    transform: translateX(10px) rotate(-45deg);
+    transform-origin: left bottom;
   }
 
   .activity-items {
@@ -21064,9 +21146,26 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
 
   .section-30 {
     max-width: 90%;
+    height: 100%;
     margin-top: 35px;
     margin-right: auto;
     margin-left: auto;
+  }
+
+  .seatingwrapper {
+    position: relative;
+    width: 90%;
+    height: 0;
+    padding-top: 67.5%;
+  }
+
+  .seating {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
   }
 
   .text-block-70.reminders {
@@ -23492,7 +23591,7 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
   }
 }
 
-@media screen and (max-width: 479px) {
+@media screen {
   #w-node-cd22eb82-e320-1f0e-817b-939af30c5324-909d947b {
     -ms-grid-column: 1;
     grid-column-start: 1;
