@@ -5,7 +5,7 @@ import { Alert } from "@material-ui/lab";
 import "./RegisterAlert.scss";
 
 export default function MemberAlert() {
-  const ignoreAlertPaths = ['/login', '/login-redirect', '/signup', '/signup/success', '/signup/success', '/companion']
+  const ignoreAlertPaths = ['/login', '/login-redirect', '/signup', '/signup/success', '/signup/success', '/redeem', '/companion']
   const location = useLocation()
   const [path, setPath] = useState(location.pathname)
 
