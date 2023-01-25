@@ -28,7 +28,8 @@ import AdminRoutes from "pages/admin"
 import MemberRoutes from "pages/member"
 import PublicEventRoutes from "pages/public/Event"
 
-import EventRedeem from "pages/public/EventRedeem";
+import Redeem from "pages/public/Gamification/Redeem";
+import Redemption from "pages/public/Gamification/Redemption";
 
 import {
   setUser,
@@ -127,7 +128,12 @@ class Router extends Component {
               <Route
                 exact
                 path="/redeem/:eventID/:year/:qrID"
-                render={() => <EventRedeem />} 
+                render={() => <Redeem/>} 
+              />
+              <Route
+                exact
+                path="/redemption"
+                render={() => <Redemption />}
               />
               <Route
                 path="/companion"
