@@ -10,6 +10,7 @@ import Loading from "pages/Loading";
 import BlueprintLogo from "assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
+import { COLORS } from "../../../../constants/_constants/theme";
 
 const styles = {
   container: {
@@ -133,7 +134,15 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     fontSize: "16px",
     textAlign: "center",
-  }
+  },
+  button: {
+    marginRight: 5,
+    marginLeft: 5,
+    "&:disabled": {
+      backgroundColor: COLORS.FONT_GRAY,
+      color: COLORS.WHITE,
+    },
+  },
 }));
 
 const Redemption = ({ history, location }) => {
@@ -251,16 +260,17 @@ const Redemption = ({ history, location }) => {
             <Typography className={classes.centerText}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
           </div>
           <div style={styles.modalButtons}>
-            <Button variant="contained" color="primary"
+            <Button variant="contained" color="primary" disabled={isLoading} className={classes.button}
               onClick={() => {
                 setEmail(input)
               }}
-              style={{ backgroundColor: "#FFC107", marginRight: 10 }}
             >
               Yes
             </Button>
-            <Button variant="contained" color="primary"
+            <Button variant="contained" color="secondary" disabled={isLoading} className={classes.button}
               onClick={() => {
+                setError("")
+                setEmail("")
                 setIsModalOpen(false)
               }}>
               No
@@ -278,7 +288,7 @@ const Redemption = ({ history, location }) => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}>
           {email ? ( <>
-                  { !isSuccessAnimationFinished && !isErrorAnimationFinished ?
+                  { !isSuccessAnimationFinished && !isErrorAnimationFinished  && !isModalOpen ?
                       <div style={styles.successContainer}>
 
                       {error ? (
