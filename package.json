@@ -14,6 +14,8 @@
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.7.0",
     "formik": "^2.0.7",
+    "framer-motion": "^4.1.17",
+    "lottie-react": "^2.3.1",
     "markdown-to-jsx": "^6.11.4",
     "material-table": "^1.54.1",
     "node-sass": "^4.14.1",
