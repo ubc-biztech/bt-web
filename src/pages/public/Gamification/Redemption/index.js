@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Redemption = (props, { history }) => {
+const Redemption = ({ history, location }) => {
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -151,7 +151,7 @@ const Redemption = (props, { history }) => {
 
   const classes = useStyles();
 
-  const { eventID, year, qrID } = props?.location?.state || {}
+  const { eventID, year, qrID } = location?.state || {}
 
   const fetchRegistrations = async () => {
     const params = new URLSearchParams({
