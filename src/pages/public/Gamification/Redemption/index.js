@@ -254,7 +254,6 @@ const Redemption = ({ history, location }) => {
             <Button variant="contained" color="primary"
               onClick={() => {
                 setEmail(input)
-                setIsModalOpen(false)
               }}
               style={{ backgroundColor: "#FFC107", marginRight: 10 }}
             >
