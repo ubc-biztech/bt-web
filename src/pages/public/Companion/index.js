@@ -507,7 +507,9 @@ const Companion = () => {
               </div>
               <div id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34">Hello, {regData.fname}!</h1>
-                <div className="text-block-72"><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#x27;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+                <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see your personalized schedule, table seating, event layout, and of course, your progression towards chances at amazing prizes. If you need a refresher on how gamification works, we have provided a small set of guidelines below.</div>
+                <div className="text-block-72">The theme for this year's conference is <strong>Technology in Everyday Life</strong>. In our current world, technology impacts almost every aspect of our daily lives. Every industry, from financial, transportation to even health, has begun to evolve and utilize technology to improve efficiency and effectiveness. Inspired by this, we are here to offer you engaging workshops and unique networking opportunities that highlight the ways we use technology today.</div>
+                <div className="text-block-72">We hope you have an amazing time with us at Blueprint 2023!</div>
               </div>
               <div id="Timeline" className="section-29 wf-section">
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
@@ -544,7 +546,7 @@ const Companion = () => {
                     className="seating"
                     width="100%"
                     height="100%"
-                    src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FT7fR29dF82CuAGwVQbsOqz%2FBP-2023-Seating%3Fnode-id%3D1%253A2%26scaling%3Dscale-down%26page-id%3D0%253A1%26hide-ui%3D1"
+                    src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FT7fR29dF82CuAGwVQbsOqz%2FBP-2023-Seating%3Fpage-id%3D0%253A1%26node-id%3D97%253A10%26viewport%3D442%252C440%252C0.21%26scaling%3Dscale-down%26hide-ui%3D1"
                     allowFullScreen
                   />
                 </div>
@@ -567,7 +569,7 @@ const Companion = () => {
               </div>
               <div id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34">REMINDERS</h1>
-                <div className="text-block-70 reminders">Wear Business Casual!<br />Be There at 10:30 am<br />Contact email: ubcbiztech@gmail.com</div>
+                <div className="text-block-70 reminders">Wear Business Casual!<br/>Be There at 10:30 am<br/>Contact email: melissa@gmail.com</div>
               </div>
             </div>
           )}
