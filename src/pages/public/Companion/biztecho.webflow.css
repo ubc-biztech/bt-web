@@ -11885,7 +11885,6 @@ figcaption {
   display: -ms-flexbox;
   display: flex;
   max-width: 80%;
-  margin-top: 25px;
   margin-left: auto;
   margin-right: auto;
   -webkit-box-orient: vertical;
@@ -12020,7 +12019,7 @@ figcaption {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  margin-top: 60px;
+  margin-top: 40px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
@@ -12037,7 +12036,6 @@ figcaption {
 }
 
 .text-block-70.reminders {
-  margin-top: 10px;
   margin-bottom: 30px;
   font-size: 35px;
   line-height: 60px;
@@ -21171,7 +21169,6 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
   }
 
   .text-block-70.reminders {
-    margin-top: 0px;
     font-size: 16px;
     line-height: 27px;
   }
