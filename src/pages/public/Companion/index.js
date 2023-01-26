@@ -3,6 +3,7 @@ import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ProgressBar, Step } from "react-step-progress-bar"
 import ConfettiExplosion from "react-confetti-explosion"
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
 
 import { fetchBackend } from 'utils'
 import Rocketbook from "../../../assets/rocketbook.png"
@@ -510,30 +511,61 @@ const Companion = () => {
                 <div className="text-block-72"><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#x27;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
               </div>
               <div id="Timeline" className="section-29 wf-section">
+                <div id = "Schedule" className='section-31'>
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
-                <div className="activity">
-                  <div className="columns-23 w-row">
-                    <div className="table-number"><strong>Table Number: </strong>{scheduleData.tablenumber}</div>
-                    <div className="activity-items"><strong>10:30 am - 11:00 am</strong> Registration & Check in</div>
-                    <div className="activity-items"><strong>11:00 am - 11:40 am</strong> Opening Remarks & Keynote</div>
-                    <div className="activity-items">
-                      <strong style={{ marginTop: "auto", marginBottom: "auto" }}>11:50 am - 12:30 pm</strong>
-                      {workshops["fdcd18bc-8335-42dd-9ea8-ef927e742695"][scheduleData.workshop1.trim()]}
-                    </div>
-                    <div className="activity-items"><strong>12:30 pm - 1:30 pm</strong> Lunch & Networking</div>
-                    <div className="activity-items">
-                      <strong style={{ marginTop: "auto", marginBottom: "auto" }}>11:50 am - 12:30 pm</strong>
-                      {workshops["aeeb699e-b2c9-47c7-aa57-b3a657fdf947"][scheduleData.workshop2.trim()]}
-                    </div>
-                    <div className="activity-items"><strong>2:10 pm - 2:20 pm</strong> Coffee Break</div>
-                    <div className="activity-items">
-                      <strong style={{ marginTop: "auto", marginBottom: "auto" }}>2:20 pm - 3:00 pm</strong>
-                      {workshops["acba6e61-b8d9-4a1e-8ca9-305efcf40cbf"][scheduleData.workshop3.trim()]}
-                    </div>
-                    <div className="activity-items"><strong>3:00 pm - 4:00 pm</strong> Boothing Session & Networking</div>
-                    <div className="activity-items"><strong>4:00 pm - 4:30 pm</strong> Panel Session</div>
-                    <div className="activity-items"><strong>4:30 pm - 5:00 pm</strong> Closing Remarks & Raffles</div>
-                  </div>
+                <div className="table-number"><strong>Table Number: </strong>{scheduleData.tablenumber}</div>
+                <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px' }}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align = "center" style={{ color: "white", fontWeight: "bold" }}>Time</TableCell>
+                      <TableCell align="center" style={{ color: "white", fontWeight: "bold" }}>Activity</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>10:30 am - 11:00 am</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Registration & Check in</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>11:00 am - 11:40 am</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Opening Remarks & Keynote</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>11:50 am - 12:30 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>{workshops["fdcd18bc-8335-42dd-9ea8-ef927e742695"][scheduleData.workshop1.trim()]}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>12:30 pm - 1:30 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Lunch & Networking</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>11:50 am - 12:30 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>{workshops["aeeb699e-b2c9-47c7-aa57-b3a657fdf947"][scheduleData.workshop2.trim()]}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>2:10 pm - 2:20 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Coffee Break</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>2:20 pm - 3:00 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>{workshops["acba6e61-b8d9-4a1e-8ca9-305efcf40cbf"][scheduleData.workshop3.trim()]}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>3:00 pm - 4:00 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Boothing Session & Networking</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>4:00 pm - 4:30 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Panel Session</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>4:30 pm - 5:00 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Closing Remarks & Raffles</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+                </TableContainer>
                 </div>
               </div>
               <div id="Floor-Plan" className="section-30 wf-section">

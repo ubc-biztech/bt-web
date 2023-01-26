@@ -11884,7 +11884,7 @@ figcaption {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  margin-top: 60px;
+  margin-top: 25px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
@@ -11975,8 +11975,6 @@ figcaption {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
 }
 
 .workshop-details {
@@ -11984,10 +11982,6 @@ figcaption {
   flex-direction: column;
   align-items: center;
   width: 100%;
-}
-
-.workshop-detail {
-  font-size: 12px;
 }
 
 .columns-23 {
