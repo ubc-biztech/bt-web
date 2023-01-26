@@ -11388,6 +11388,8 @@ figcaption {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 .section-24 {
@@ -21065,6 +21067,7 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
     margin-top: 30px;
     margin-bottom: -20px;
     color: #fff;
+    font-size: large;
   }
 
   .dot {
@@ -21094,7 +21097,7 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
     height: 15px;
     margin-top: 70%;
     margin-left: -50%;
-    
+
   }
 
   .checkmark::before {
@@ -23691,4 +23694,14 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
     -ms-grid-row-span: 1;
     grid-row-end: 4;
   }
+}
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: var(--red);
+  transform-origin: 0%;
 }

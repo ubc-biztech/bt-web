@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { ProgressBar, Step } from "react-step-progress-bar"
 import ConfettiExplosion from "react-confetti-explosion"
+
 import { fetchBackend } from 'utils'
 import Rocketbook from "../../../assets/rocketbook.png"
 import SonyXM5 from "../../../assets/sonyxm5.png"
@@ -10,6 +13,9 @@ import Loading from 'pages/Loading'
 import readSpreadsheet from 'utils/_utils/sheets'
 import { TextField, Button, Modal, makeStyles, Typography } from '@material-ui/core'
 import { COLORS } from "../../../constants/_constants/theme";
+import BlueprintLogo from "../../../assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
+import GamificationActivityTable from './GamificationActivityTable'
+import GamificationRewardTable from './GamificationRewardTable'
 
 const styles = {
   modal: {
@@ -42,15 +48,13 @@ const styles = {
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
-    background: "#1F2A47",
-    width: "75%",
     borderRadius: 10,
-    marginTop: 8,
-    marginBottom: 8,
+    marginBottom: 20,
   },
   centerText: {
     textAlign: "center", // readable font size for mobile
     fontSize: "1.3rem",
+    marginBottom: "1rem",
   },
   boldText: {
     fontWeight: "bold",
@@ -72,6 +76,35 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }))
+
+// eslint-disable-next-line no-unused-vars
+function FadeInWhenVisible({ children, className, id }) {
+  const controls = useAnimation();
+  const [ref, inView] = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  return (
+      <motion.div
+          className={className}
+          id={id}
+          ref={ref}
+          animate={controls}
+          initial="hidden"
+          transition={{ duration: 0.3 }}
+          variants={{
+            visible: { opacity: 1, scale: 1 },
+            hidden: { opacity: 1, scale: 0.8 }
+          }}
+      >
+        {children}
+      </motion.div>
+  );
+}
 
 const Companion = () => {
   const maxPoints = 150
@@ -112,10 +145,10 @@ const Companion = () => {
     await fetchBackend(`/registrations?${params}`, "GET", undefined, false)
       .then((response) => {
         setRegistrations(response.data)
-    }).catch((err) => {
-      setPageError(err)
-      setIsLoading(false)
-    })
+      }).catch((err) => {
+        setPageError(err)
+        setIsLoading(false)
+      })
   }
 
   useEffect(() => {
@@ -136,122 +169,130 @@ const Companion = () => {
 
   const workshops = {
     "acba6e61-b8d9-4a1e-8ca9-305efcf40cbf": {
-      "Tech Entrepreneurship (CloudAdvisors)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Tech Entrepreneurship</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Rahul Rao (CloudAdvisors)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2311</div>
-        </div>
-      </div>,
-      "FinTech (SAP)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>FinTech</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Phil Houmphan (SAP)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2314</div>
-        </div>
-      </div>,
-      "Venture Capital (Front Row Ventures)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Venture Capital & Start-ups</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Gabriel D. (Front Row Ventures)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-        </div>
-      </div>,
-      "Data Analytics (KPMG)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Data Analytics</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Emily Chee (KPMG)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2309</div>
-        </div>
-      </div>,
+      "Tech Entrepreneurship (CloudAdvisors)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Tech Entrepreneurship</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Rahul Rao (CloudAdvisors)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2311</div>
+          </div>
+        </div>,
+      "FinTech (SAP)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>FinTech</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Phil Houmphan (SAP)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2314</div>
+          </div>
+        </div>,
+      "Venture Capital (Front Row Ventures)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Venture Capital & Start-ups</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Gabriel D. (Front Row Ventures)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
+          </div>
+        </div>,
+      "Data Analytics (KPMG)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Data Analytics</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Emily Chee (KPMG)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2309</div>
+          </div>
+        </div>,
     },
     "aeeb699e-b2c9-47c7-aa57-b3a657fdf947": {
-      "Customer Success (Athennian)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Customer Success</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Hilton Nguyen (Athennian)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2309</div>
-        </div>
-      </div>,
-      "Product Management (Yelp)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Product Management</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Kyle Chua (Yelp)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2311</div>
-        </div>
-      </div>,
-      "Project Management (Microsoft)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Project Management</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Ashar Kazi (Microsoft)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2314</div>
-        </div>
-      </div>,
-      "Generative AI (Apply Digital)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Generative AI</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Nicholas Ning (Farpoint)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-        </div>
-      </div>,
-      "Generative AI (Farpoint)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Generative AI</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Nicholas Ning (Farpoint)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-        </div>
-      </div>,
+      "Customer Success (Athennian)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Customer Success</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Hilton Nguyen (Athennian)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2309</div>
+          </div>
+        </div>,
+      "Product Management (Yelp)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Product Management</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Kyle Chua (Yelp)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2311</div>
+          </div>
+        </div>,
+      "Project Management (Microsoft)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Project Management</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Ashar Kazi (Microsoft)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2314</div>
+          </div>
+        </div>,
+      "Generative AI (Apply Digital)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Generative AI</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Nicholas Ning (Farpoint)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
+          </div>
+        </div>,
+      "Generative AI (Farpoint)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Generative AI</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Nicholas Ning (Farpoint)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
+          </div>
+        </div>,
     },
     "fdcd18bc-8335-42dd-9ea8-ef927e742695": {
-      "Cybersecurity (PwC)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Cybersecurity</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Liam Adams (PwC)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2311</div>
+      "Cybersecurity (PwC)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Cybersecurity</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Liam Adams (PwC)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2311</div>
+          </div>
+        </div>,
+      "SaaS Marketing (Visier)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Risk Advisory</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Neumann Lim (Deloitte)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
+          </div>
+        </div>,
+      "Risk Advisory (Deloitte)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Risk Advisory</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Neumann Lim (Deloitte)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
+          </div>
+        </div>,
+      "Software Engineering (Tesla)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Software Engineering</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Brooke Isenberg (Tesla)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2309</div>
+          </div>
+        </div>,
+      "Embedded Systems (Tesla)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Software Engineering</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Brooke Isenberg (Tesla)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2309</div>
+          </div>
+        </div>,
+      "Digital Transformation (IBM)":
+        <div className="workshop">
+          <div className="workshop-details">
+            <div className="workshop-detail"><strong>Digital Transformation</strong></div>
+            <div className="workshop-detail"><strong>Speaker:</strong> Armando Elias (IBM)</div>
+            <div className="workshop-detail"><strong>Room:</strong> 2314</div>
+          </div>
         </div>
-      </div>,
-      "SaaS Marketing (Visier)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Risk Advisory</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Neumann Lim (Deloitte)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-        </div>
-      </div>,
-      "Risk Advisory (Deloitte)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Risk Advisory</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Neumann Lim (Deloitte)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-        </div>
-      </div>,
-      "Software Engineering (Tesla)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Software Engineering</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Brooke Isenberg (Tesla)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2309</div>
-        </div>
-      </div>,
-      "Digital Transformation (IBM)":             
-      <div className="workshop">
-        <div className="workshop-details">
-          <div className="workshop-detail"><strong>Digital Transformation</strong></div>
-          <div className="workshop-detail"><strong>Speaker:</strong> Armando Elias (IBM)</div>
-          <div className="workshop-detail"><strong>Room:</strong> 2314</div>
-        </div>
-      </div>
     }
   }
 
@@ -271,7 +312,7 @@ const Companion = () => {
   {
     name: "Sony WH-1000XM5",
     points: 120
-  }, 
+  },
   {
     name: "10th Generation iPad",
     points: 150
@@ -299,61 +340,70 @@ const Companion = () => {
   }
 
   return (
-    <>
+    <div className="div-block-89 attendees">
       <Modal
         open={isModalOpen}
       >
-      <div style={styles.modal}>
-        <Typography className={classes.boldText}>{input}</Typography>
-        <Typography className={classes.errorText}>{error}</Typography>
-        <div style={styles.modalText}>
-          <Typography className={classes.centerText}>Are you sure you want to use this email?</Typography>
-          <Typography className={classes.centerText}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
+        <div style={styles.modal}>
+          <Typography className={classes.boldText}>{input}</Typography>
+          <Typography className={classes.errorText}>{error}</Typography>
+          <div style={styles.modalText}>
+            <Typography className={classes.centerText}>Are you sure you want to use this email?</Typography>
+            <Typography className={classes.centerText}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
+          </div>
+          <div style={styles.modalButtons}>
+            <Button variant="contained" color="primary" disabled={isLoading} className={classes.button}
+              onClick={() => {
+                setIsLoading(true)
+                setEmail(input)
+              }}
+            >
+              Yes
+            </Button>
+            <Button variant="contained" color="secondary" disabled={isLoading} className={classes.button}
+              onClick={() => {
+                setError("")
+                setEmail("")
+                setIsModalOpen(false)
+              }}>
+              No
+            </Button>
+          </div>
         </div>
-        <div style={styles.modalButtons}>
-          <Button variant="contained" color="primary" disabled={isLoading} className={classes.button}
-            onClick={() => {
-              setIsLoading(true)
-              setEmail(input)
-            }}
-          >
-            Yes
-          </Button>
-          <Button variant="contained" color="secondary" disabled={isLoading} className={classes.button}
-            onClick={() => {
-              setError("")
-              setEmail("")
-              setIsModalOpen(false)
-            }}>
-            No
-          </Button>
-        </div>
-      </div>
-    </Modal>
-      <div className="div-block-89 attendees">
-      {isLoading ? <Loading/> : (
-        <div>
-          {!email || !regData ? (
-            <div className="welcome-container">
-              <strong className="text-block-72">Welcome to Blueprint 2023!</strong>
-              <div className="text-block-72 centered">Please enter your email you used to register for Blueprint.</div>
-              <TextField 
-                className={classes.textfield}
-                onChange={(e) => setInput(e.target.value)}
-                value={input}
-                variant="outlined"
-              />
-              <Button
-                variant="contained" 
-                color="primary" 
-                onClick={() => {
-                  setIsModalOpen(true)
-                }}
-              >
-                Confirm
-              </Button>
-            </div>
-          ) : (
+      </Modal>
+    {isLoading ? <Loading/> : (
+      <div>
+        {!email || !regData ? (
+          <motion.div className="welcome-container"
+               initial={{ opacity: 0, scale: 0.5 }}
+               animate={{ opacity: 1, scale: 1 }}
+               transition={{ duration: 1 }}>
+            <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
+            <Typography variant="h1">Welcome!</Typography>
+            <Typography className={classes.centerText}>Please enter the email you used to register for Blueprint.</Typography>
+            <TextField
+              className={classes.textfield}
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
+              variant="outlined"
+              label="Email"
+              autoCapitalize={false}
+              inputProps={{
+                autoCapitalize: 'none'
+              }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setIsModalOpen(true)
+              }}
+            >
+              Confirm
+            </Button>
+          </motion.div>
+        ) : (
+
             <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
               <div className="container-35 w-container">
                 <nav role="navigation" className="nav-menu-7 w-nav-menu">
@@ -368,12 +418,12 @@ const Companion = () => {
               </div>
               <div id="points" className="section-30 wf-section">
                 <h1 className="heading-34">YOUR POINTS</h1>
-                {regData.points >= maxPoints && <ConfettiExplosion height={3000}/>}
+                {regData.points >= maxPoints && <ConfettiExplosion height={4500} />}
                 <ProgressBar
-                  percent={(regData.points/maxPoints) * 100}
+                  percent={(regData.points / maxPoints) * 100}
                   filledBackground="linear-gradient(to right, #F8C9B8, #FEE9DF)"
                   width="90%"
-                  stepPositions={[(regData.points/maxPoints) * 100, (50/maxPoints) * 100, (70/maxPoints) * 100, (90/maxPoints) * 100, (120/maxPoints) * 100, (150/maxPoints) * 100]}
+                  stepPositions={[(regData.points / maxPoints) * 100, (50 / maxPoints) * 100, (70 / maxPoints) * 100, (90 / maxPoints) * 100, (120 / maxPoints) * 100, (150 / maxPoints) * 100]}
                 >
                   <Step>
                     {() => (
@@ -448,73 +498,82 @@ const Companion = () => {
                 </ProgressBar>
                 <div className="current-total"><strong>Current Total: </strong>{regData.points}</div>
                 <div className="current-total">
-                {regData.points >= maxPoints ? (
-                  <strong>All prizes unlocked!</strong>
-                ) : (
-                  <strong>{nextPrize().points-regData.points + " points away from the " + nextPrize().name + "!"}</strong>
-                )}
+                  {regData.points >= maxPoints ? (
+                    <strong>All prizes unlocked!</strong>
+                  ) : (
+                    <strong>{nextPrize().points - regData.points + " points away from the " + nextPrize().name + "!"}</strong>
+                  )}
                 </div>
               </div>
               <div id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34">Hello, {regData.fname}!</h1>
-                <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see your personalized schedule, table seating, event layout, and of course, your progression towards chances at amazing prizes. If you need a refresher on how gamification works, we have provided a small set of guidelines below.</div>
-                <div className="text-block-72">The theme for this year's conference is <strong>Technology in Everyday Life</strong>. In our current world, technology impacts almost every aspect of our daily lives. Every industry, from financial, transportation to even health, has begun to evolve and utilize technology to improve efficiency and effectiveness. Inspired by this, we are here to offer you engaging workshops and unique networking opportunities that highlight the ways we use technology today.</div>
-                <div className="text-block-72">We hope you have an amazing time with us at Blueprint 2023!</div>
+                <div className="text-block-72"><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#x27;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
               </div>
               <div id="Timeline" className="section-29 wf-section">
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
                 <div className="activity">
                   <div className="columns-23 w-row">
-                  <div className="table-number"><strong>Table Number: </strong>{scheduleData.tablenumber}</div>
-                  <div className="activity-items"><strong>10:30 am - 11:00 am</strong> Registration & Check in</div>
-                  <div className="activity-items"><strong>11:00 am - 11:40 am</strong> Opening Remarks & Keynote</div>
-                  <div className="activity-items">
-                    <strong style={{ marginTop: "auto", marginBottom: "auto" }}>11:50 am - 12:30 pm</strong> 
-                    {workshops["fdcd18bc-8335-42dd-9ea8-ef927e742695"][scheduleData.workshop1.trim()]}
-                  </div>
-                  <div className="activity-items"><strong>12:30 pm - 1:30 pm</strong> Lunch & Networking</div>
-                  <div className="activity-items">
-                    <strong style={{ marginTop: "auto", marginBottom: "auto" }}>11:50 am - 12:30 pm</strong>
-                    {workshops["aeeb699e-b2c9-47c7-aa57-b3a657fdf947"][scheduleData.workshop2.trim()]}
-                  </div>
-                  <div className="activity-items"><strong>2:10 pm - 2:20 pm</strong> Coffee Break</div>
-                  <div className="activity-items">
-                    <strong style={{ marginTop: "auto", marginBottom: "auto" }}>2:20 pm - 3:00 pm</strong>
-                    {workshops["acba6e61-b8d9-4a1e-8ca9-305efcf40cbf"][scheduleData.workshop3.trim()]}
-                  </div>
-                  <div className="activity-items"><strong>3:00 pm - 4:00 pm</strong> Boothing Session & Networking</div>
-                  <div className="activity-items"><strong>4:00 pm - 4:30 pm</strong> Panel Session</div>
-                  <div className="activity-items"><strong>4:30 pm - 5:00 pm</strong> Closing Remarks & Raffles</div>
+                    <div className="table-number"><strong>Table Number: </strong>{scheduleData.tablenumber}</div>
+                    <div className="activity-items"><strong>10:30 am - 11:00 am</strong> Registration & Check in</div>
+                    <div className="activity-items"><strong>11:00 am - 11:40 am</strong> Opening Remarks & Keynote</div>
+                    <div className="activity-items">
+                      <strong style={{ marginTop: "auto", marginBottom: "auto" }}>11:50 am - 12:30 pm</strong>
+                      {workshops["fdcd18bc-8335-42dd-9ea8-ef927e742695"][scheduleData.workshop1.trim()]}
+                    </div>
+                    <div className="activity-items"><strong>12:30 pm - 1:30 pm</strong> Lunch & Networking</div>
+                    <div className="activity-items">
+                      <strong style={{ marginTop: "auto", marginBottom: "auto" }}>11:50 am - 12:30 pm</strong>
+                      {workshops["aeeb699e-b2c9-47c7-aa57-b3a657fdf947"][scheduleData.workshop2.trim()]}
+                    </div>
+                    <div className="activity-items"><strong>2:10 pm - 2:20 pm</strong> Coffee Break</div>
+                    <div className="activity-items">
+                      <strong style={{ marginTop: "auto", marginBottom: "auto" }}>2:20 pm - 3:00 pm</strong>
+                      {workshops["acba6e61-b8d9-4a1e-8ca9-305efcf40cbf"][scheduleData.workshop3.trim()]}
+                    </div>
+                    <div className="activity-items"><strong>3:00 pm - 4:00 pm</strong> Boothing Session & Networking</div>
+                    <div className="activity-items"><strong>4:00 pm - 4:30 pm</strong> Panel Session</div>
+                    <div className="activity-items"><strong>4:30 pm - 5:00 pm</strong> Closing Remarks & Raffles</div>
                   </div>
                 </div>
               </div>
               <div id="Floor-Plan" className="section-30 wf-section">
                 <h1 className="heading-34">Layout</h1>
                 <div className="seatingwrapper">
-                  <iframe 
+                  <iframe
                     title="seating"
                     className="seating"
                     width="100%"
                     height="100%"
-                    src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FT7fR29dF82CuAGwVQbsOqz%2FBP-2023-Seating%3Fnode-id%3D97%253A10%26scaling%3Dscale-down%26page-id%3D0%253A1%26hide-ui%3D1" 
+                    src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FT7fR29dF82CuAGwVQbsOqz%2FBP-2023-Seating%3Fnode-id%3D1%253A2%26scaling%3Dscale-down%26page-id%3D0%253A1%26hide-ui%3D1"
                     allowFullScreen
                   />
                 </div>
               </div>
               <div id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34 big">gamification rules</h1>
-                <div className="text-block-72"><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#x27;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</div>
+                <div className="text-block-72">
+                  Collect points to earn raffle entries to rewards by completing event activities -
+                  <br></br>
+                  You will be shown QR codes after completing each activity to redeem your points!
+                  <GamificationActivityTable />
+                </div>
+              </div>
+              <div id="Rules" className="section-31 wf-section">
+                <h1 className="heading-34 big">gamification prizes</h1>
+                <div className="text-block-72">
+                  By reaching certain point thresholds, you will unlock raffle entries to the following prizes!
+                  <GamificationRewardTable />
+                </div>
               </div>
               <div id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34">REMINDERS</h1>
-                <div className="text-block-70 reminders">Dress code is business casual!<br/>Be There at 10:30 am<br/>Contact email: melissa@gmail.com</div>
+                <div className="text-block-70 reminders">Wear Business Casual!<br />Be There at 10:30 am<br />Contact email: ubcbiztech@gmail.com</div>
               </div>
             </div>
           )}
-      </div>
+        </div>
       )}
     </div>
-  </>
   )
 }
 
