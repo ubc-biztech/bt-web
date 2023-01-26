@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { ProgressBar, Step } from "react-step-progress-bar"
 import ConfettiExplosion from "react-confetti-explosion"
+
 import { fetchBackend } from 'utils'
 import Rocketbook from "../../../assets/rocketbook.png"
 import SonyXM5 from "../../../assets/sonyxm5.png"
@@ -8,11 +11,52 @@ import "./biztecho.webflow.css"
 import "react-step-progress-bar/styles.css"
 import Loading from 'pages/Loading'
 import readSpreadsheet from 'utils/_utils/sheets'
-import { TextField, Button } from '@material-ui/core'
+
+import {TextField, Button, Typography, makeStyles} from '@material-ui/core'
+import BlueprintLogo from "../../../assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
 import GamificationActivityTable from './GamificationActivityTable'
 import GamificationRewardTable from './GamificationRewardTable'
 
+const useStyles = makeStyles((theme) => ({
+  centerText: {
+    textAlign: "center", // readable font size for mobile
+    fontSize: "1.3rem",
+    marginBottom: "1rem",
+  },
+}))
+
+// eslint-disable-next-line no-unused-vars
+function FadeInWhenVisible({ children, className, id }) {
+  const controls = useAnimation();
+  const [ref, inView] = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  return (
+      <motion.div
+          className={className}
+          id={id}
+          ref={ref}
+          animate={controls}
+          initial="hidden"
+          transition={{ duration: 0.3 }}
+          variants={{
+            visible: { opacity: 1, scale: 1 },
+            hidden: { opacity: 1, scale: 0.8 }
+          }}
+      >
+        {children}
+      </motion.div>
+  );
+}
+
 const Companion = () => {
+  const classes = useStyles();
+
   const maxPoints = 150
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
@@ -199,26 +243,26 @@ const Companion = () => {
   }
 
   const prizeList = [
-    {
-      name: "Rocketbook Pro",
-      points: 50
-    },
-    {
-      name: "first Fujifilm Mini Instax",
-      points: 70
-    },
-    {
-      name: "second Fujifilm Mini Instax",
-      points: 90
-    },
-    {
-      name: "Sony WH-1000XM5",
-      points: 120
-    },
-    {
-      name: "10th Generation iPad",
-      points: 150
-    }]
+  {
+    name: "Rocketbook Pro",
+    points: 50
+  },
+  {
+    name: "first Fujifilm Mini Instax",
+    points: 70
+  },
+  {
+    name: "second Fujifilm Mini Instax",
+    points: 90
+  },
+  {
+    name: "Sony WH-1000XM5",
+    points: 120
+  },
+  {
+    name: "10th Generation iPad",
+    points: 150
+  }]
 
   const nextPrize = () => {
     let next = prizeList[0]
@@ -243,26 +287,60 @@ const Companion = () => {
 
   return (
     <div className="div-block-89 attendees">
-      {isLoading ? <Loading /> : (
-        <div>
-          {!email || error ? (
-            <div className="welcome-container">
-              <strong className="text-block-72">Welcome to Blueprint 2023!</strong>
-              <div className="text-block-72 centered">Please enter your email you used to register for Blueprint. Note that once you confirm, you will not be able to change this.</div>
-              <TextField
-                className="input-field"
-                onChange={(e) => setInput(e.target.value)}
-                value={input}
-                variant="outlined"
-              />
-              <div className="text-block-72 red centered">{error}</div>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  setIsLoading(true);
-                  setEmail(input)
-                }}
+    {isLoading ? <Loading/> : (
+      <div>
+        {!email || error ? (
+          <motion.div className="welcome-container"
+               initial={{ opacity: 0, scale: 0.5 }}
+               animate={{ opacity: 1, scale: 1 }}
+               transition={{ duration: 1 }}>
+            <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
+            <Typography variant="h1">Welcome!</Typography>
+            <Typography className={classes.centerText}>Please enter the email you used to register for Blueprint.</Typography>
+            <TextField
+              className="input-field"
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
+              variant="outlined"
+              label="Email"
+              autoCapitalize={false}
+              inputProps={{
+                autoCapitalize: 'none'
+              }}
+            />
+            <div className="text-block-72 red centered">{error}</div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setIsLoading(true);
+                setEmail(input)
+              }}
+            >
+              Confirm
+            </Button>
+          </motion.div>
+        ) : (
+          <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
+            <div className="container-35 w-container">
+              <nav role="navigation" className="nav-menu-7 w-nav-menu">
+                <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
+                <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
+                <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
+                <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
+              </nav>
+              <div className="menu-button-11 w-nav-button">
+                <div className="w-icon-nav-menu"></div>
+              </div>
+            </div>
+            <div id="points" className="section-30 wf-section">
+              <h1 className="heading-34">YOUR POINTS</h1>
+              {regData.points >= maxPoints && <ConfettiExplosion height={2750}/>}
+              <ProgressBar
+                percent={(regData.points/maxPoints) * 100}
+                filledBackground="linear-gradient(to right, #F8C9B8, #FEE9DF)"
+                width="90%"
+                stepPositions={[(regData.points/maxPoints) * 100, (50/maxPoints) * 100, (70/maxPoints) * 100, (90/maxPoints) * 100, (120/maxPoints) * 100, (150/maxPoints) * 100]}
               >
                 Confirm
               </Button>
