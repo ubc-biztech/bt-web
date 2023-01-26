@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { ProgressBar, Step } from "react-step-progress-bar"
 import ConfettiExplosion from "react-confetti-explosion"
+
 import { fetchBackend } from 'utils'
 import Rocketbook from "../../../assets/rocketbook.png"
 import SonyXM5 from "../../../assets/sonyxm5.png"
@@ -8,9 +11,48 @@ import "./biztecho.webflow.css"
 import "react-step-progress-bar/styles.css"
 import Loading from 'pages/Loading'
 import readSpreadsheet from 'utils/_utils/sheets'
-import { TextField, Button } from '@material-ui/core'
+import {TextField, Button, Typography, makeStyles} from '@material-ui/core'
+import BlueprintLogo from "../../../assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
+
+const useStyles = makeStyles((theme) => ({
+  centerText: {
+    textAlign: "center", // readable font size for mobile
+    fontSize: "1.3rem",
+    marginBottom: "1rem",
+  },
+}))
+
+function FadeInWhenVisible({ children, className, id }) {
+  const controls = useAnimation();
+  const [ref, inView] = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  return (
+      <motion.div
+          className={className}
+          id={id}
+          ref={ref}
+          animate={controls}
+          initial="hidden"
+          transition={{ duration: 0.3 }}
+          variants={{
+            visible: { opacity: 1, scale: 1 },
+            hidden: { opacity: 1, scale: 0.8 }
+          }}
+      >
+        {children}
+      </motion.div>
+  );
+}
 
 const Companion = () => {
+  const classes = useStyles();
+
   const maxPoints = 150
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
@@ -69,7 +111,7 @@ const Companion = () => {
 
   const workshops = {
     "acba6e61-b8d9-4a1e-8ca9-305efcf40cbf": {
-      "Tech Entrepreneurship (CloudAdvisors)":             
+      "Tech Entrepreneurship (CloudAdvisors)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Tech Entrepreneurship</strong></div>
@@ -77,7 +119,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2311</div>
         </div>
       </div>,
-      "FinTech (SAP)":             
+      "FinTech (SAP)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>FinTech</strong></div>
@@ -85,7 +127,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2314</div>
         </div>
       </div>,
-      "Venture Capital (Front Row Ventures)":             
+      "Venture Capital (Front Row Ventures)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Venture Capital & Start-ups</strong></div>
@@ -93,7 +135,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2504</div>
         </div>
       </div>,
-      "Data Analytics (KPMG)":             
+      "Data Analytics (KPMG)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Data Analytics</strong></div>
@@ -103,7 +145,7 @@ const Companion = () => {
       </div>,
     },
     "aeeb699e-b2c9-47c7-aa57-b3a657fdf947": {
-      "Customer Success (Athennian)":             
+      "Customer Success (Athennian)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Customer Success</strong></div>
@@ -111,7 +153,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2309</div>
         </div>
       </div>,
-      "Product Management (Yelp)":             
+      "Product Management (Yelp)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Product Management</strong></div>
@@ -119,7 +161,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2311</div>
         </div>
       </div>,
-      "Project Management (Microsoft)":             
+      "Project Management (Microsoft)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Project Management</strong></div>
@@ -127,7 +169,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2314</div>
         </div>
       </div>,
-      "Generative AI (Apply Digital)":             
+      "Generative AI (Apply Digital)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Generative AI</strong></div>
@@ -135,7 +177,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2504</div>
         </div>
       </div>,
-      "Generative AI (Farpoint)":             
+      "Generative AI (Farpoint)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Generative AI</strong></div>
@@ -145,7 +187,7 @@ const Companion = () => {
       </div>,
     },
     "fdcd18bc-8335-42dd-9ea8-ef927e742695": {
-      "Cybersecurity (PwC)":             
+      "Cybersecurity (PwC)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Cybersecurity</strong></div>
@@ -153,7 +195,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2311</div>
         </div>
       </div>,
-      "SaaS Marketing (Visier)":             
+      "SaaS Marketing (Visier)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Risk Advisory</strong></div>
@@ -161,7 +203,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2504</div>
         </div>
       </div>,
-      "Risk Advisory (Deloitte)":             
+      "Risk Advisory (Deloitte)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Risk Advisory</strong></div>
@@ -169,7 +211,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2504</div>
         </div>
       </div>,
-      "Software Engineering (Tesla)":             
+      "Software Engineering (Tesla)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Software Engineering</strong></div>
@@ -177,7 +219,7 @@ const Companion = () => {
           <div className="workshop-detail"><strong>Room:</strong> 2309</div>
         </div>
       </div>,
-      "Digital Transformation (IBM)":             
+      "Digital Transformation (IBM)":
       <div className="workshop">
         <div className="workshop-details">
           <div className="workshop-detail"><strong>Digital Transformation</strong></div>
@@ -204,7 +246,7 @@ const Companion = () => {
   {
     name: "Sony WH-1000XM5",
     points: 120
-  }, 
+  },
   {
     name: "10th Generation iPad",
     points: 150
@@ -236,19 +278,28 @@ const Companion = () => {
     {isLoading ? <Loading/> : (
       <div>
         {!email || error ? (
-          <div className="welcome-container">
-            <strong className="text-block-72">Welcome to Blueprint 2023!</strong>
-            <div className="text-block-72 centered">Please enter your email you used to register for Blueprint. Note that once you confirm, you will not be able to change this.</div>
-            <TextField 
+          <motion.div className="welcome-container"
+               initial={{ opacity: 0, scale: 0.5 }}
+               animate={{ opacity: 1, scale: 1 }}
+               transition={{ duration: 1 }}>
+            <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
+            <Typography variant="h1">Welcome!</Typography>
+            <Typography className={classes.centerText}>Please enter the email you used to register for Blueprint.</Typography>
+            <TextField
               className="input-field"
               onChange={(e) => setInput(e.target.value)}
               value={input}
               variant="outlined"
+              label="Email"
+              autoCapitalize={false}
+              inputProps={{
+                autoCapitalize: 'none'
+              }}
             />
             <div className="text-block-72 red centered">{error}</div>
             <Button
-              variant="contained" 
-              color="primary" 
+              variant="contained"
+              color="primary"
               onClick={() => {
                 setIsLoading(true);
                 setEmail(input)
@@ -256,7 +307,7 @@ const Companion = () => {
             >
               Confirm
             </Button>
-          </div>
+          </motion.div>
         ) : (
           <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
             <div className="container-35 w-container">
@@ -353,7 +404,7 @@ const Companion = () => {
               <div className="current-total"><strong>Current Total: </strong>{regData.points}</div>
               <div className="current-total">
               {regData.points >= maxPoints ? (
-                <strong>All prizes unlocked!</strong>
+                <strong>All prize raffles unlocked!</strong>
               ) : (
                 <strong>{nextPrize().points-regData.points + " points away from the " + nextPrize().name + "!"}</strong>
               )}
@@ -367,11 +418,12 @@ const Companion = () => {
               <h1 className="heading-34">YOUR SCHEDULE</h1>
               <div className="activity">
                 <div className="columns-23 w-row">
-                <div className="table-number"><strong>Table Number: </strong>{scheduleData.tablenumber}</div>
+                <div className="table-number">
+                  <strong>Table Number: {scheduleData.tablenumber} </strong></div>
                 <div className="activity-items"><strong>10:30 am - 11:00 am</strong> Registration & Check in</div>
                 <div className="activity-items"><strong>11:00 am - 11:40 am</strong> Opening Remarks & Keynote</div>
                 <div className="activity-items">
-                  <strong style={{ marginTop: "auto", marginBottom: "auto" }}>11:50 am - 12:30 pm</strong> 
+                  <strong style={{ marginTop: "auto", marginBottom: "auto" }}>11:50 am - 12:30 pm</strong>
                   {workshops["fdcd18bc-8335-42dd-9ea8-ef927e742695"][scheduleData.workshop1.trim()]}
                 </div>
                 <div className="activity-items"><strong>12:30 pm - 1:30 pm</strong> Lunch & Networking</div>
@@ -393,12 +445,12 @@ const Companion = () => {
             <div id="Floor-Plan" className="section-30 wf-section">
               <h1 className="heading-34">Layout</h1>
               <div className="seatingwrapper">
-                <iframe 
+                <iframe
                   title="seating"
                   className="seating"
                   width="100%"
                   height="100%"
-                  src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FT7fR29dF82CuAGwVQbsOqz%2FBP-2023-Seating%3Fnode-id%3D1%253A2%26scaling%3Dscale-down%26page-id%3D0%253A1%26hide-ui%3D1" 
+                  src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FT7fR29dF82CuAGwVQbsOqz%2FBP-2023-Seating%3Fnode-id%3D1%253A2%26scaling%3Dscale-down%26page-id%3D0%253A1%26hide-ui%3D1"
                   allowFullScreen
                 />
               </div>
@@ -409,7 +461,7 @@ const Companion = () => {
             </div>
             <div id="Rules" className="section-31 wf-section">
               <h1 className="heading-34">REMINDERS</h1>
-              <div className="text-block-70 reminders">Wear Formal!<br/>Be There at 10:30 am<br/>Contact email: ubcbiztech@gmail.com</div>
+              <div className="text-block-70 reminders">Wear Business Casual!<br/>Be There at 10:30 am<br/>Contact email: ubcbiztech@gmail.com</div>
             </div>
           </div>
         )}
