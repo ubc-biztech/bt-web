@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+// eslint-disable-next-line no-unused-vars
 function FadeInWhenVisible({ children, className, id }) {
   const controls = useAnimation();
   const [ref, inView] = useInView();
