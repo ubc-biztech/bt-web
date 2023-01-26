@@ -169,8 +169,13 @@ const Redemption = ({ history, location }) => {
     });
     await fetchBackend(`/registrations?${params}`, "GET", undefined, false)
       .then((response) => {
-        setRegistrations(response.data)
-        setIsLoading(false)
+        if (response.data.length === 0) {
+          setError("The information we received is incorrect and we are unable to redeem the code. Please contact an exec if you think this is a mistake.")
+          setIsLoading(false)
+        } else {
+          setRegistrations(response.data)
+          setIsLoading(false)
+        }
     }).catch((err) => {
       setError(err)
       setIsLoading(false)

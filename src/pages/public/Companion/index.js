@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import Lottie from "lottie-react"
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ProgressBar, Step } from "react-step-progress-bar"
-import ConfettiExplosion from "react-confetti-explosion"
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper , TextField, Button, Modal, makeStyles, Typography } from '@material-ui/core';
 
 import { fetchBackend } from 'utils'
 import Rocketbook from "../../../assets/rocketbook.png"
@@ -12,9 +12,10 @@ import "./biztecho.webflow.css"
 import "react-step-progress-bar/styles.css"
 import Loading from 'pages/Loading'
 import readSpreadsheet from 'utils/_utils/sheets'
-import { TextField, Button, Modal, makeStyles, Typography } from '@material-ui/core'
+
 import { COLORS } from "../../../constants/_constants/theme";
 import BlueprintLogo from "../../../assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
+import CelebrationAnimation from "assets/2023/blueprint/68064-success-celebration.json"
 import GamificationActivityTable from './GamificationActivityTable'
 import GamificationRewardTable from './GamificationRewardTable'
 
@@ -118,6 +119,7 @@ const Companion = () => {
   const [scheduleData, setScheduleData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCelebrationFinished, setIsCelebrationFinished] = useState(false);
 
   const classes = useStyles();
   
@@ -419,7 +421,7 @@ const Companion = () => {
               </div>
               <div id="points" className="section-30 wf-section">
                 <h1 className="heading-34">YOUR POINTS</h1>
-                {regData.points >= maxPoints && <ConfettiExplosion height={4500} />}
+                {regData.points >= maxPoints && !isCelebrationFinished && <div className="celebration-animation"><Lottie animationData={CelebrationAnimation} onLoopComplete={() => setIsCelebrationFinished(true)} /></div>}
                 <ProgressBar
                   percent={(regData.points / maxPoints) * 100}
                   filledBackground="linear-gradient(to right, #F8C9B8, #FEE9DF)"
@@ -512,10 +514,10 @@ const Companion = () => {
                 <div className="text-block-72">The theme for this year's conference is <strong>Technology in Everyday Life</strong>. In our current world, technology impacts almost every aspect of our daily lives. Every industry, from financial, transportation to even health, has begun to evolve and utilize technology to improve efficiency and effectiveness. Inspired by this, we are here to offer you engaging workshops and unique networking opportunities that highlight the ways we use technology today.</div>
                 <div className="text-block-72">We hope you have an amazing time with us at Blueprint 2023!</div>
               </div>
-              <div id="Timeline" className="section-29 wf-section">
+              <div id="Timeline" className="section-30 wf-section">
                 <div id = "Schedule" className='section-31'>
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
-                <div className="table-number"><strong>Table Number: </strong>{scheduleData.tablenumber}</div>
+                <div className="table-number"><strong>Table Number: </strong><div>{scheduleData.tablenumber}</div></div>
                 <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px' }}>
                 <Table>
                   <TableHead>
