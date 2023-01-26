@@ -5,6 +5,7 @@ const rewards = [
   { name: "iPad", points: "150 points" },
   { name: "Sony WH-1000XM5 Headphones", points: "120 points" },
   { name: "Fujifilm Mini Instax", points: "90 points" },
+  { name: "Fujifilm Mini Instax", points: "70 points" },
   { name: "Rocketbook Pro Letter Sized", points: "50 points" },
 ];
 

@@ -11,17 +11,69 @@ import "./biztecho.webflow.css"
 import "react-step-progress-bar/styles.css"
 import Loading from 'pages/Loading'
 import readSpreadsheet from 'utils/_utils/sheets'
-
-import {TextField, Button, Typography, makeStyles} from '@material-ui/core'
+import { TextField, Button, Modal, makeStyles, Typography } from '@material-ui/core'
+import { COLORS } from "../../../constants/_constants/theme";
 import BlueprintLogo from "../../../assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
 import GamificationActivityTable from './GamificationActivityTable'
 import GamificationRewardTable from './GamificationRewardTable'
 
+const styles = {
+  modal: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#172037",
+    borderColor: "#172037",
+    margin: "auto",
+    borderRadius: 5,
+    padding: 10,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  },
+  modalText: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  modalButtons: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
+  },
+}
+
 const useStyles = makeStyles((theme) => ({
+  textfield: {
+    borderRadius: 10,
+    marginBottom: 20,
+  },
   centerText: {
     textAlign: "center", // readable font size for mobile
     fontSize: "1.3rem",
     marginBottom: "1rem",
+  },
+  boldText: {
+    fontWeight: "bold",
+    fontSize: "24px",
+    marginBottom: 8,
+  },
+  errorText: {
+    fontWeight: "bold",
+    color: "red",
+    fontSize: "16px",
+    textAlign: "center",
+  },
+  button: {
+    marginRight: 5,
+    marginLeft: 5,
+    "&:disabled": {
+      backgroundColor: COLORS.FONT_GRAY,
+      color: COLORS.WHITE,
+    },
   },
 }))
 
@@ -55,8 +107,6 @@ function FadeInWhenVisible({ children, className, id }) {
 }
 
 const Companion = () => {
-  const classes = useStyles();
-
   const maxPoints = 150
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
@@ -66,7 +116,10 @@ const Companion = () => {
   const [regData, setRegData] = useState(null)
   const [scheduleData, setScheduleData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const classes = useStyles();
+  
   const fetchUserData = async () => {
     const reg = registrations.find((entry) => entry.id === email)
     if (reg) {
@@ -76,9 +129,10 @@ const Companion = () => {
       const assignment = spreadsheet.find((entry) => entry.email === email);
       setScheduleData(assignment)
       localStorage.setItem("BP2023EMAIL", email)
+      setIsModalOpen(false)
       setIsLoading(false)
     } else {
-      setError("This email does not match any of our records. If you believe this is a mistake, please contact a BizTech exec.")
+      setError("This email does not match an existing entry our records. Please check that your input is valid and is the same email you used to register for the event. Note that emails are case-sensitive.")
       setIsLoading(false)
     }
   }
@@ -287,9 +341,39 @@ const Companion = () => {
 
   return (
     <div className="div-block-89 attendees">
+      <Modal
+        open={isModalOpen}
+      >
+        <div style={styles.modal}>
+          <Typography className={classes.boldText}>{input}</Typography>
+          <Typography className={classes.errorText}>{error}</Typography>
+          <div style={styles.modalText}>
+            <Typography className={classes.centerText}>Are you sure you want to use this email?</Typography>
+            <Typography className={classes.centerText}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
+          </div>
+          <div style={styles.modalButtons}>
+            <Button variant="contained" color="primary" disabled={isLoading} className={classes.button}
+              onClick={() => {
+                setIsLoading(true)
+                setEmail(input)
+              }}
+            >
+              Yes
+            </Button>
+            <Button variant="contained" color="secondary" disabled={isLoading} className={classes.button}
+              onClick={() => {
+                setError("")
+                setEmail("")
+                setIsModalOpen(false)
+              }}>
+              No
+            </Button>
+          </div>
+        </div>
+      </Modal>
     {isLoading ? <Loading/> : (
       <div>
-        {!email || error ? (
+        {!email || !regData ? (
           <motion.div className="welcome-container"
                initial={{ opacity: 0, scale: 0.5 }}
                animate={{ opacity: 1, scale: 1 }}
@@ -298,7 +382,7 @@ const Companion = () => {
             <Typography variant="h1">Welcome!</Typography>
             <Typography className={classes.centerText}>Please enter the email you used to register for Blueprint.</Typography>
             <TextField
-              className="input-field"
+              className={classes.textfield}
               onChange={(e) => setInput(e.target.value)}
               value={input}
               variant="outlined"
@@ -308,44 +392,18 @@ const Companion = () => {
                 autoCapitalize: 'none'
               }}
             />
-            <div className="text-block-72 red centered">{error}</div>
             <Button
               variant="contained"
               color="primary"
               onClick={() => {
-                setIsLoading(true);
-                setEmail(input)
+                setIsModalOpen(true)
               }}
             >
               Confirm
             </Button>
           </motion.div>
         ) : (
-          <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
-            <div className="container-35 w-container">
-              <nav role="navigation" className="nav-menu-7 w-nav-menu">
-                <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
-                <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
-                <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
-                <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
-              </nav>
-              <div className="menu-button-11 w-nav-button">
-                <div className="w-icon-nav-menu"></div>
-              </div>
-            </div>
-            <div id="points" className="section-30 wf-section">
-              <h1 className="heading-34">YOUR POINTS</h1>
-              {regData.points >= maxPoints && <ConfettiExplosion height={2750}/>}
-              <ProgressBar
-                percent={(regData.points/maxPoints) * 100}
-                filledBackground="linear-gradient(to right, #F8C9B8, #FEE9DF)"
-                width="90%"
-                stepPositions={[(regData.points/maxPoints) * 100, (50/maxPoints) * 100, (70/maxPoints) * 100, (90/maxPoints) * 100, (120/maxPoints) * 100, (150/maxPoints) * 100]}
-              >
-                Confirm
-              </Button>
-            </div>
-          ) : (
+
             <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
               <div className="container-35 w-container">
                 <nav role="navigation" className="nav-menu-7 w-nav-menu">
@@ -353,7 +411,6 @@ const Companion = () => {
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
                   <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
-                  {/* <a href="#Prizes" className="nav-link-30 w-nav-link">Prizes</a> */}
                 </nav>
                 <div className="menu-button-11 w-nav-button">
                   <div className="w-icon-nav-menu"></div>
@@ -361,7 +418,7 @@ const Companion = () => {
               </div>
               <div id="points" className="section-30 wf-section">
                 <h1 className="heading-34">YOUR POINTS</h1>
-                {regData.points >= maxPoints && <ConfettiExplosion height={2750} />}
+                {regData.points >= maxPoints && <ConfettiExplosion height={4500} />}
                 <ProgressBar
                   percent={(regData.points / maxPoints) * 100}
                   filledBackground="linear-gradient(to right, #F8C9B8, #FEE9DF)"
