@@ -222,41 +222,6 @@ const steps = [
   }
 ];
 
-function ShowOnbaording() {
-  if (!checkViewedFeatures(user, 'Events')) {
-    setViewedFeatures(user, 'Events') 
-    return (
-      <Joyride
-            steps={steps}
-            continuous = {true}
-            showProgress = {true}
-            disableScrolling = {true}
-            styles={{
-              options: {
-                backgroundColor: '#182138',
-                primaryColor: '#79D03F',
-                textColor: '#FFFFFF',
-                zIndex: 1000,
-              },
-              tooltip: {
-                borderRadius: 10
-              },
-              buttonNext: {
-                outline: 'none',
-                borderRadius: 5
-              },
-              buttonBack: {
-                outline: 'none',
-                borderRadius: 5
-              }
-            }}
-        />
-    );
-  } else {
-    return null
-  }
-}
-
 function EventsDashboard (props) {
   const [isSearch, setIsSearch] = useState(false)
   const [searchText, setSearchText] = useState('')
@@ -355,6 +320,41 @@ function EventsDashboard (props) {
       (event.ename || '').toLowerCase().includes(searchText.toLowerCase())
     )
   }, [events, isSearch, searchText])
+
+  function ShowOnbaording() {
+    if (!checkViewedFeatures(user, 'Events')) {
+      setViewedFeatures(user, 'Home')
+      return (
+        <Joyride
+              steps={steps}
+              continuous = {true}
+              showProgress = {true}
+              disableScrolling = {true}
+              styles={{
+                options: {
+                  backgroundColor: '#182138',
+                  primaryColor: '#79D03F',
+                  textColor: '#FFFFFF',
+                  zIndex: 1000,
+                },
+                tooltip: {
+                  borderRadius: 10
+                },
+                buttonNext: {
+                  outline: 'none',
+                  borderRadius: 5
+                },
+                buttonBack: {
+                  outline: 'none',
+                  borderRadius: 5
+                }
+              }}
+          />
+      );
+    } else {
+      return null
+    }
+  }
 
   const generateEventCards = useCallback(() => {
     // only show published events to members

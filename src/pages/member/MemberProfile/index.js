@@ -270,16 +270,9 @@ function MemberProfile (props) {
   }
 
   function ShowOnboarding() {
-    if (!checkViewedFeatures(user, 'Profile')) {
-      setViewedFeatures(user, 'Profile')
-      return (
-        <div>
-
-        </div>
-      );
-    } else {
-      return null
-    }
+    setViewedFeatures(user, 'Home');
+    setViewedFeatures(user, 'Events');
+    return null;
   }
 
   const classes = useStyles()

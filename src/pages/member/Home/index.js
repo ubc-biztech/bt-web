@@ -200,8 +200,7 @@ function MemberHome(props) {
 
   function ShowOnbaording() {
     if (!checkViewedFeatures(user, "Home")) {
-      setViewedFeatures(user, 'Home')
-      return (      
+      return (     
       <Joyride
         steps={steps}
         continuous = {true}
@@ -226,9 +225,9 @@ function MemberHome(props) {
           }
         }}
       />
-    );
+    )
   } else {
-    return null;
+    return null
   }
 }
 
