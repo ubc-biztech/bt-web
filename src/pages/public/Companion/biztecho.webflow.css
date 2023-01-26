@@ -11435,9 +11435,10 @@ figcaption {
   position: sticky;
   z-index: 9999999;
   margin-top: 25px;
+  align-items: center;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .nav-link-28 {
