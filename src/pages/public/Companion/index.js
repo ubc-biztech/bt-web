@@ -603,7 +603,7 @@ const Companion = () => {
               </div>
               <div id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34">REMINDERS</h1>
-                <div className="text-block-70 reminders">Wear Business Casual!<br/>Be There at 10:30 am<br/>Contact email: melissa@gmail.com</div>
+                <div className="text-block-70 reminders">Wear Business Casual!<br/>Be There at 10:30 am<br/>Contact email: melissa@ubcbiztech.com</div>
               </div>
             </div>
           )}
