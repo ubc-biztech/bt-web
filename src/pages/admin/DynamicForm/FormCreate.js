@@ -153,6 +153,7 @@ const FormCreateForm = (props) => {
       price,
       nonMembersPrice,
       nonMembersAllowed,
+      feedback,
       registrationQuestions,
       partnerRegistrationQuestions,
     },
@@ -590,6 +591,19 @@ const FormCreateForm = (props) => {
                   onBlur={handleBlur}
                 />
               </div>
+              <TextField
+                id="feedback"
+                name="feedback"
+                label="Feedback Form"
+                fullWidth
+                margin="normal"
+                variant="filled"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={feedback}
+                error={showError("feedback")}
+                helperText={showError("feedback") && errors.feedback}
+              />
             </div>
 
             <div style={styles.editorDivider}></div>
@@ -709,6 +723,7 @@ const FormCreate = (props) => {
         nonMembersAllowed: event.pricing?.nonMembers !== undefined,
         nonMembersPrice: event.pricing?.nonMembers || 0,
         registrationQuestions: event.registrationQuestions || dummyData,
+        feedback: event.feedback || "",
         partnerRegistrationQuestions: event.partnerRegistrationQuestions || partnerDummyData,
       }
     : {
@@ -726,6 +741,7 @@ const FormCreate = (props) => {
         nonMembersAllowed: false,
         nonMembersPrice: 0,
         registrationQuestions: dummyData,
+        feedback: "",
         partnerRegistrationQuestions: partnerDummyData,
       };
 
@@ -795,6 +811,7 @@ const FormCreate = (props) => {
       deadline: values.deadline,
       pricing,
       registrationQuestions: values.registrationQuestions,
+      feedback: values.feedback,
       partnerRegistrationQuestions: values.partnerRegistrationQuestions
     };
 
@@ -836,6 +853,7 @@ const FormCreate = (props) => {
       pricing,
       isPublished: false,
       registrationQuestions: values.registrationQuestions,
+      feedback: values.feedback,
       partnerRegistrationQuestions: values.partnerRegistrationQuestions
     };
 

@@ -16,6 +16,7 @@ import LoginRedirect from "pages/public/LoginRedirect"
 import ForgotPassword from "pages/public/ForgotPassword";
 import FormSuccess from "pages/public/RegistrationForms/FormSuccess"
 import RegistrationForm from "pages/public/RegistrationForms"
+import Companion from "pages/public/Companion"
 
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
@@ -26,6 +27,9 @@ import NotFound from "pages/NotFound"
 import AdminRoutes from "pages/admin"
 import MemberRoutes from "pages/member"
 import PublicEventRoutes from "pages/public/Event"
+
+import Redeem from "pages/public/Gamification/Redeem";
+import Redemption from "pages/public/Gamification/Redemption";
 
 import {
   setUser,
@@ -121,6 +125,20 @@ class Router extends Component {
           {userNotMember && <MemberAlert />}
             {pathname === "/" || pathname === "" ? null : <Header />}
             <Switch>
+              <Route
+                exact
+                path="/redeem/:eventID/:year/:qrID"
+                render={() => <Redeem/>} 
+              />
+              <Route
+                exact
+                path="/redemption"
+                render={() => <Redemption />}
+              />
+              <Route
+                path="/companion"
+                render={() => <Companion />} 
+              />
               {/* ADMIN ROUTES */}
               {user && <Route path="/admin" component={AdminRoutes} />}
 

@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Heart from "../../assets/heart.svg";
 import { COLORS } from "../../constants/_constants/theme";
+
+import { useLocation } from "react-router-dom";
 
 import IconContainer from "./IconContainer";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+
 
 const ICONS_MARGIN_RIGHT = "10px";
 
@@ -38,6 +41,19 @@ const useStyles = makeStyles((theme) => ({
 
 function Footer() {
   const classes = useStyles();
+
+  const ignoreFooterPaths = ["/redeem", "/redemption", "/companion"]
+
+  const location = useLocation()
+  const [path, setPath] = useState(location.pathname)
+
+  useEffect(() => {
+    setPath(location.pathname)
+  }, [location.pathname])
+
+  if (ignoreFooterPaths.find((p) => path.includes(p))) {
+    return <></>
+  }
 
   return (
     <div className={classes.container}>

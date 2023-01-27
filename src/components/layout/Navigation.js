@@ -50,6 +50,7 @@ function Nav(props) {
   const barUnselected = { borderLeft: `6px solid ${COLORS.BACKGROUND_COLOR}` };
 
   const pathname = history.location.pathname;
+  const ignoreNavPaths = ["/redeem", "/redemption", "/companion"]
   const [selectedItem, setSelectedItem] = useState(pathname);
   useEffect(() => {
     history.listen((location) => {
@@ -88,6 +89,10 @@ function Nav(props) {
         {icon}
       </ListItem>
     ) : null;
+  }
+
+  if (ignoreNavPaths.find((p) => selectedItem.includes(p))) {
+    return <></>
   }
 
   return (
