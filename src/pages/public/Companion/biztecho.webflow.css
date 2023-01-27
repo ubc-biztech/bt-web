@@ -11454,6 +11454,17 @@ figcaption {
   justify-content: center;
 }
 
+.container-navigation {
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 9999999;
+  margin-top: 10px;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .nav-link-28 {
   font-family: Proximanova, Arial, sans-serif;
   color: #fff;
@@ -11463,6 +11474,9 @@ figcaption {
 .w-nav-link {
   margin-right: 10px;
   margin-left: 10px;
+  text-decoration: underline;
+  -webkit-text-decoration-color: rgba(255, 255, 255, 0.6); /* Safari */
+  text-decoration-color: rgba(255, 255, 255, 0.6);
 }
 
 .nav-link-28.w--current {

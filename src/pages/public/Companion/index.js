@@ -15,6 +15,10 @@ import readSpreadsheet from 'utils/_utils/sheets'
 
 import { COLORS } from "../../../constants/_constants/theme";
 import BlueprintLogo from "../../../assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
+import CompanionFooter from "../../../assets/2023/blueprint/Companion footer.svg";
+import FlagshipGraphic from "../../../assets/2023/blueprint/Blueprint companion header.png";
+import TimeAndLocation from "../../../assets/2023/blueprint/Time and Location.svg";
+
 import CelebrationAnimation from "assets/2023/blueprint/68064-success-celebration.json"
 import GamificationActivityTable from './GamificationActivityTable'
 import GamificationRewardTable from './GamificationRewardTable'
@@ -122,7 +126,7 @@ const Companion = () => {
   const [isCelebrationFinished, setIsCelebrationFinished] = useState(false);
 
   const classes = useStyles();
-  
+
   const fetchUserData = async () => {
     const reg = registrations.find((entry) => entry.id === email)
     if (reg) {
@@ -408,7 +412,10 @@ const Companion = () => {
         ) : (
 
             <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
-              <div className="container-35 w-container">
+              <FadeInWhenVisible className="container-35 w-container">
+                <img src={FlagshipGraphic} alt="Blueprint Introduction" style={{ width: "80%", height: "auto"}}/>
+              </FadeInWhenVisible>
+              <FadeInWhenVisible className="container-navigation w-container">
                 <nav role="navigation" className="nav-menu-7 w-nav-menu">
                   <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
@@ -418,8 +425,8 @@ const Companion = () => {
                 <div className="menu-button-11 w-nav-button">
                   <div className="w-icon-nav-menu"></div>
                 </div>
-              </div>
-              <div id="points" className="section-30 wf-section">
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="points" className="section-30 wf-section">
                 <h1 className="heading-34">YOUR POINTS</h1>
                 {regData.points >= maxPoints && !isCelebrationFinished && <div className="celebration-animation"><Lottie animationData={CelebrationAnimation} onLoopComplete={() => setIsCelebrationFinished(true)} /></div>}
                 <ProgressBar
@@ -507,14 +514,14 @@ const Companion = () => {
                     <strong>{nextPrize().points - regData.points + " points away from the " + nextPrize().name + "!"}</strong>
                   )}
                 </div>
-              </div>
-              <div id="welcome" className="section-30 wf-section">
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34">Hello, {regData.fname}!</h1>
                 <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see your personalized schedule, table seating, event layout, and of course, your progression towards chances at amazing prizes. If you need a refresher on how gamification works, we have provided a small set of guidelines below.</div>
                 <div className="text-block-72">The theme for this year's conference is <strong>Technology in Everyday Life</strong>. In our current world, technology impacts almost every aspect of our daily lives. Every industry, from financial, transportation to even health, has begun to evolve and utilize technology to improve efficiency and effectiveness. Inspired by this, we are here to offer you engaging workshops and unique networking opportunities that highlight the ways we use technology today.</div>
                 <div className="text-block-72">We hope you have an amazing time with us at Blueprint 2023!</div>
-              </div>
-              <div id="Timeline" className="section-30 wf-section">
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
                 <div id = "Schedule" className='section-31'>
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
                 <div className="table-number"><strong>Table Number: </strong><div>{scheduleData.tablenumber}</div></div>
@@ -571,8 +578,8 @@ const Companion = () => {
                 </Table>
                 </TableContainer>
                 </div>
-              </div>
-              <div id="Floor-Plan" className="section-30 wf-section">
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="Floor-Plan" className="section-30 wf-section">
                 <h1 className="heading-34">Layout</h1>
                 <div className="seatingwrapper">
                   <iframe
@@ -584,8 +591,8 @@ const Companion = () => {
                     allowFullScreen
                   />
                 </div>
-              </div>
-              <div id="Rules" className="section-31 wf-section">
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34 big">gamification rules</h1>
                 <div className="text-block-72">
                   Collect points to earn raffle entries to rewards by completing event activities -
@@ -593,18 +600,20 @@ const Companion = () => {
                   You will be shown QR codes after completing each activity to redeem your points!
                   <GamificationActivityTable />
                 </div>
-              </div>
-              <div id="Rules" className="section-31 wf-section">
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34 big">gamification prizes</h1>
                 <div className="text-block-72">
                   By reaching certain point thresholds, you will unlock raffle entries to the following prizes!
                   <GamificationRewardTable />
                 </div>
-              </div>
+              </FadeInWhenVisible>
               <div id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34">REMINDERS</h1>
-                <div className="text-block-70 reminders">Wear Business Casual!<br/>Be There at 10:30 am<br/>Contact email: melissa@ubcbiztech.com</div>
+                <img src={TimeAndLocation} alt="Blueprint footer" style={{ width: "60%", height: "auto", marginBottom: "25px"}}/>
+                <div className="text-block-70 reminders">Wear Business Casual!<br/>Contact email: melissa@ubcbiztech.com</div>
               </div>
+              <img src={CompanionFooter} alt="Blueprint footer" style={{ width: "100%", height: "auto", marginBottom: "-10px"}}/>
             </div>
           )}
         </div>
