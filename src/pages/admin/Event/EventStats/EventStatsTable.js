@@ -147,6 +147,10 @@ export class EventStatsTable extends Component {
     });
   }
 
+  refreshTable = () => {
+    this.getEventTableData(this.props.event.id, this.props.event.year);
+  };
+
   /* updates stats and the rows in the table
      faculty, gender, dietary, and year stats are only computed on the initial render of the component
      # of registered/checkedin etc. is computed every single time this function is called
