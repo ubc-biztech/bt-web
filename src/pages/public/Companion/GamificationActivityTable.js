@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 const activities = [
   { name: "Submit a question for panelists prior to the event", points: "10 points" },
   { name: "Early check-in", points: "20 points" },
-  // { name: "Win the Kahoot quiz (top 3 teams)", points: "5 points" },
+  { name: "Win the kickoff event *", points: "10 points" },
   { name: "Attend a workshop", points: "15 points each" },
   { name: "Win in your workshop-specific game", points: "50 points" },
   { name: "Take a photo at the photobooth with people from your table", points: "15 points" },

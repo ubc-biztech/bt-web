@@ -11385,14 +11385,8 @@ figcaption {
 .celebration-animation {
   position: absolute;
   z-index: 3;
-  top: 0.75%;
+  top: 3%;
   width: 80%;
-}
-
-@media screen and (min-width: 600px) {
-  .celebration-animation {
-    top: -2.5%;
-  }
 }
 
 .welcome-container {
