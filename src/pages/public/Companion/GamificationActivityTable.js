@@ -23,7 +23,7 @@ function GamificationActivityTable() {
           <TableHead>
             <TableRow>
               <TableCell style={{ color: "white", fontWeight: "bold" }}>Activity</TableCell>
-              <TableCell align="right" style={{ color: "white", fontWeight: "bold" }}>Points</TableCell>
+              <TableCell align="center" style={{ color: "white", fontWeight: "bold" }}>Points</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -32,7 +32,7 @@ function GamificationActivityTable() {
                 <TableCell component="th" scope="row" style={{ color: "white" }}>
                   {activity.name}
                 </TableCell>
-                <TableCell align="right" style={{ color: "white" }}><b>{activity.points}</b></TableCell>
+                <TableCell align="center" style={{ color: "white" }}><b>{activity.points}</b></TableCell>
               </TableRow>
             ))}
           </TableBody>

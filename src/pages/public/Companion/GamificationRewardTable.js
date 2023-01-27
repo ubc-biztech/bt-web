@@ -17,7 +17,7 @@ function GamificationRewardTable() {
           <TableHead>
             <TableRow>
               <TableCell style={{ color: "white", fontWeight: "bold" }}>Reward</TableCell>
-              <TableCell align="right" style={{ color: "white", fontWeight: "bold" }}>Points</TableCell>
+              <TableCell align="center" style={{ color: "white", fontWeight: "bold" }}>Points</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -26,7 +26,7 @@ function GamificationRewardTable() {
                 <TableCell component="th" scope="row" style={{ color: "white" }}>
                   {reward.name}
                 </TableCell>
-                <TableCell align="right" style={{ color: "white" }}><b>{reward.points}</b></TableCell>
+                <TableCell align="center" style={{ color: "white" }}><b>{reward.points}</b></TableCell>
               </TableRow>
             ))}
           </TableBody>
