@@ -17,6 +17,7 @@ import ForgotPassword from "pages/public/ForgotPassword";
 import FormSuccess from "pages/public/RegistrationForms/FormSuccess"
 import RegistrationForm from "pages/public/RegistrationForms"
 import Companion from "pages/public/Companion"
+import CompanionReset from "./pages/public/Companion/ResetPage";
 
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
@@ -134,6 +135,11 @@ class Router extends Component {
                 exact
                 path="/redemption"
                 render={() => <Redemption />}
+              />
+              <Route
+                  exact
+                  path="/companion/reset"
+                  render={() => <CompanionReset />}
               />
               <Route
                 path="/companion"

@@ -124,6 +124,7 @@ const Companion = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCelebrationFinished, setIsCelebrationFinished] = useState(false);
+  const [showQRCode, setShowQRCode] = useState(false);
 
   const classes = useStyles();
 
@@ -427,6 +428,18 @@ const Companion = () => {
                 </div>
               </FadeInWhenVisible>
               <FadeInWhenVisible id="points" className="section-30 wf-section">
+                <Button variant="contained" color="primary" onClick={() => {
+                  setShowQRCode(!showQRCode)
+                }}>
+                  { showQRCode ? "Hide QR Code for Check-in" : "Show QR Code for Check-in" }
+                </Button>
+                { showQRCode && <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${email};blueprint;2023`}
+                    width="100%"
+                    alt="registration QR code"
+                /> }
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="points" className="section-30 wf-section">
                 <h1 className="heading-34">YOUR POINTS</h1>
                 {regData.points >= maxPoints && !isCelebrationFinished && <div className="celebration-animation"><Lottie animationData={CelebrationAnimation} onLoopComplete={() => setIsCelebrationFinished(true)} /></div>}
                 <ProgressBar
@@ -517,14 +530,13 @@ const Companion = () => {
               </FadeInWhenVisible>
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34">Hello, {regData.fname}!</h1>
-                <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see your personalized schedule, table seating, event layout, and of course, your progression towards chances at amazing prizes. If you need a refresher on how gamification works, we have provided a small set of guidelines below.</div>
+                <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see your personalized schedule, event layout, and of course, your progression towards chances at amazing prizes. If you need a refresher on how gamification works, we have provided a small set of guidelines below.</div>
                 <div className="text-block-72">The theme for this year's conference is <strong>Technology in Everyday Life</strong>. In our current world, technology impacts almost every aspect of our daily lives. Every industry, from financial, transportation to even health, has begun to evolve and utilize technology to improve efficiency and effectiveness. Inspired by this, we are here to offer you engaging workshops and unique networking opportunities that highlight the ways we use technology today.</div>
                 <div className="text-block-72">We hope you have an amazing time with us at Blueprint 2023!</div>
               </FadeInWhenVisible>
               <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
                 <div id = "Schedule" className='section-31'>
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
-                <div className="table-number"><strong>Table Number: </strong><div>{scheduleData.tablenumber}</div></div>
                 <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px' }}>
                 <Table>
                   <TableHead>
