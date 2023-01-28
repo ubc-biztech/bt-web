@@ -124,6 +124,7 @@ const Companion = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCelebrationFinished, setIsCelebrationFinished] = useState(false);
+  const [showQRCode, setShowQRCode] = useState(false);
 
   const classes = useStyles();
 
@@ -425,6 +426,18 @@ const Companion = () => {
                 <div className="menu-button-11 w-nav-button">
                   <div className="w-icon-nav-menu"></div>
                 </div>
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="points" className="section-30 wf-section">
+                <Button variant="contained" color="primary" onClick={() => {
+                  setShowQRCode(!showQRCode)
+                }}>
+                  { showQRCode ? "Hide QR Code for Check-in" : "Show QR Code for Check-in" }
+                </Button>
+                { showQRCode && <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${email};blueprint;2023`}
+                    width="100%"
+                    alt="registration QR code"
+                /> }
               </FadeInWhenVisible>
               <FadeInWhenVisible id="points" className="section-30 wf-section">
                 <h1 className="heading-34">YOUR POINTS</h1>
