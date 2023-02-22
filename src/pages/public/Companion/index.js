@@ -419,21 +419,28 @@ const Companion = () => {
         ) : (
 
             <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
+              <div style={{display: "flex" , flexDirection: renderMobileOnly ? "column" : "row", borderStyle: "solid", borderColor: "red"}}>
               <FadeInWhenVisible className="container-35 w-container">
-                <img src={InnoventLogo} alt="Innovent Logo" style={{ width: "30%", height: "auto"}}/>
+                <img src={InnoventLogo} alt="Innovent Logo" style={{ width: renderMobileOnly ? "30%" : "70%", height: "auto"}}/>
               </FadeInWhenVisible>
               <FadeInWhenVisible className="container-navigation w-container">
-                {renderMobileOnly ? (<nav role="navigation" className="nav-menu-7 w-nav-menu">
+                {renderMobileOnly ? (
+                  <div style={{width:"100%", borderStyle: "solid", borderColor: "blue"}}>
+                <nav role="navigation" className="nav-menu-7 w-nav-menu">
                   <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
                   <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
-                </nav>) : (<nav role="navigation" className="nav-menu-7 w-nav-menu">
-                  <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
-                  <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
-                  <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
-                  <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
-                </nav>)}
+                </nav>
+                </div>) : (
+                  <div style={{width: "100%", display: "flex", flexDirection: "row", borderStyle: "solid", borderColor: "blue"}}>
+                <nav role="navigation" className="nav-menu-7 w-nav-menu" style={{width: "100%", borderStyle: "solid", borderColor: "red"}}>
+                  <a href="#welcome" className="nav-link-30 w-nav-link" style={{marginRight: "20%"}}>Welcome</a>
+                  <a href="#Timeline" className="nav-link-30 w-nav-link" style={{marginRight: "20%"}}>Schedule</a>
+                  <a href="#Floor-Plan" className="nav-link-30 w-nav-link" style={{marginRight: "20%"}}>Layout</a>
+                  <a href="#Rules" className="nav-link-30 w-nav-link" style={{marginRight: "20%"}}>Rules</a>
+                </nav>
+                </div>)}
                 {/* <nav role="navigation" className="nav-menu-7 w-nav-menu">
                   <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
@@ -444,6 +451,8 @@ const Companion = () => {
                   <div className="w-icon-nav-menu"></div>
                 </div>
               </FadeInWhenVisible>
+              </div>
+
               <FadeInWhenVisible id="points" className="section-30 wf-section">
                 <Button variant="contained" color="primary" onClick={() => {
                   setShowQRCode(!showQRCode)
