@@ -18,7 +18,8 @@ const activities = [
 function GamificationActivityTable() {
   return (
     <>
-      <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px' }}>
+    <div style={{width: "100%"}}>
+      <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px'}}>
         <Table>
           <TableHead>
             <TableRow>
@@ -38,6 +39,7 @@ function GamificationActivityTable() {
           </TableBody>
         </Table>
       </TableContainer>
+      </div>
       <div style={{ fontSize: "14px" }}>
         * Visit the Biztech booth and show your post to redeem!
       </div>

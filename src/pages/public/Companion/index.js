@@ -3,7 +3,8 @@ import Lottie from "lottie-react"
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { ProgressBar, Step } from "react-step-progress-bar"
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper , TextField, Button, Modal, makeStyles, Typography } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper , TextField, Button, Modal, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
+import { useTheme } from "@material-ui/styles";
 
 import { fetchBackend } from 'utils'
 import Rocketbook from "../../../assets/rocketbook.png"
@@ -15,9 +16,11 @@ import readSpreadsheet from 'utils/_utils/sheets'
 
 import { COLORS } from "../../../constants/_constants/theme";
 import BlueprintLogo from "../../../assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
-import CompanionFooter from "../../../assets/2023/blueprint/Companion footer.svg";
+import CompanionFooter from "../../../assets/2023/blueprint/InnoventFooter.png";
 import FlagshipGraphic from "../../../assets/2023/blueprint/Blueprint companion header.png";
 import TimeAndLocation from "../../../assets/2023/blueprint/Time and Location.svg";
+import BizTechLogo from "../../../assets/2023/blueprint/BizTechLogo.png";
+import InnoventLogo from  "../../../assets/2023/blueprint/InnoventLogo.png";
 
 import CelebrationAnimation from "assets/2023/blueprint/68064-success-celebration.json"
 import GamificationActivityTable from './GamificationActivityTable'
@@ -127,6 +130,9 @@ const Companion = () => {
   const [showQRCode, setShowQRCode] = useState(false);
 
   const classes = useStyles();
+  const theme = useTheme();
+;
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
 
   const fetchUserData = async () => {
     const reg = registrations.find((entry) => entry.id === email)
@@ -386,7 +392,7 @@ const Companion = () => {
                initial={{ opacity: 0, scale: 0.5 }}
                animate={{ opacity: 1, scale: 1 }}
                transition={{ duration: 1 }}>
-            <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
+            <img src={InnoventLogo} alt="Innovent Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
             <Typography variant="h1">Welcome!</Typography>
             <Typography className={classes.centerText}>Please enter the email you used to register for Blueprint.</Typography>
             <TextField
@@ -414,15 +420,26 @@ const Companion = () => {
 
             <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
               <FadeInWhenVisible className="container-35 w-container">
-                <img src={FlagshipGraphic} alt="Blueprint Introduction" style={{ width: "80%", height: "auto"}}/>
+                <img src={InnoventLogo} alt="Innovent Logo" style={{ width: "30%", height: "auto"}}/>
               </FadeInWhenVisible>
               <FadeInWhenVisible className="container-navigation w-container">
-                <nav role="navigation" className="nav-menu-7 w-nav-menu">
+                {renderMobileOnly ? (<nav role="navigation" className="nav-menu-7 w-nav-menu">
                   <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
                   <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
-                </nav>
+                </nav>) : (<nav role="navigation" className="nav-menu-7 w-nav-menu">
+                  <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
+                  <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
+                  <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
+                  <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
+                </nav>)}
+                {/* <nav role="navigation" className="nav-menu-7 w-nav-menu">
+                  <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
+                  <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
+                  <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
+                  <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
+                </nav> */}
                 <div className="menu-button-11 w-nav-button">
                   <div className="w-icon-nav-menu"></div>
                 </div>
@@ -535,7 +552,7 @@ const Companion = () => {
                 <div className="text-block-72">We hope you have an amazing time with us at Blueprint 2023!</div>
               </FadeInWhenVisible>
               <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
-                <div id = "Schedule" className='section-31'>
+                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%"}}>
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
                 <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px' }}>
                 <Table>
@@ -606,16 +623,16 @@ const Companion = () => {
               </FadeInWhenVisible>
               <FadeInWhenVisible id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34 big">gamification rules</h1>
-                <div className="text-block-72">
-                  Collect points to earn raffle entries to rewards by completing event activities -
-                  <br></br>
-                  You will be shown QR codes after completing each activity to redeem your points!
+                <div className="text-block-72" style={{width: "60%"}}>
+                  Collect points to earn raffle entries to rewards by completing event activities.
+                  {/* <br></br> */}
+                   You will be shown QR codes after completing each activity to redeem your points!
                   <GamificationActivityTable />
                 </div>
               </FadeInWhenVisible>
               <FadeInWhenVisible id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34 big">gamification prizes</h1>
-                <div className="text-block-72">
+                <div className="text-block-72" style={{width: "60%"}}>
                   By reaching certain point thresholds, you will unlock raffle entries to the following prizes!
                   <GamificationRewardTable />
                 </div>
