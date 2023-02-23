@@ -473,7 +473,18 @@ const Companion = () => {
               </FadeInWhenVisible>
 
               <FadeInWhenVisible>
-                <CatalogItem></CatalogItem>
+                <div className="catalog" style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+
+                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
+                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
+                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
+                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
+                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
+                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
+                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
+                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
+                </div>
+                
                 <div style={{width: "25%", height: "200px" ,backgroundColor: "white", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
                   Your Wallet
                   <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
