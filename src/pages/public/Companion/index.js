@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { ProgressBar, Step } from "react-step-progress-bar"
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper , TextField, Button, Modal, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
 import { useTheme } from "@material-ui/styles";
+import CatalogItem from './CatalogItem'
 
 import { fetchBackend } from 'utils'
 import Rocketbook from "../../../assets/rocketbook.png"
@@ -21,6 +22,7 @@ import FlagshipGraphic from "../../../assets/2023/blueprint/Blueprint companion 
 import TimeAndLocation from "../../../assets/2023/blueprint/Time and Location.svg";
 import BizTechLogo from "../../../assets/2023/blueprint/BizTechLogo.png";
 import InnoventLogo from  "../../../assets/2023/blueprint/InnoventLogo.png";
+
 
 import CelebrationAnimation from "assets/2023/blueprint/68064-success-celebration.json"
 import GamificationActivityTable from './GamificationActivityTable'
@@ -418,14 +420,18 @@ const Companion = () => {
           </motion.div>
         ) : (
 
-            <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
-              <div style={{display: "flex" , flexDirection: renderMobileOnly ? "column" : "row", borderStyle: "solid", borderColor: "red"}}>
+            <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav" style={{backgroundColor: "#011627"}}>
+              <div style={{
+                display: "flex" , flexDirection: renderMobileOnly ? "column" : "row", 
+                borderStyle: "solid", borderColor: "red", 
+                justifyContent: renderMobileOnly ? "" : "space-between", 
+                paddingRight: renderMobileOnly ? "0" : "150px"}}>
               <FadeInWhenVisible className="container-35 w-container">
                 <img src={InnoventLogo} alt="Innovent Logo" style={{ width: renderMobileOnly ? "30%" : "70%", height: "auto"}}/>
               </FadeInWhenVisible>
               <FadeInWhenVisible className="container-navigation w-container">
                 {renderMobileOnly ? (
-                  <div style={{width:"100%", borderStyle: "solid", borderColor: "blue"}}>
+                  <div style={{width:"100%", borderStyle: "solid", borderColor: "blue", display: "flex", justifyContent: "center"}}>
                 <nav role="navigation" className="nav-menu-7 w-nav-menu">
                   <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
@@ -433,12 +439,12 @@ const Companion = () => {
                   <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
                 </nav>
                 </div>) : (
-                  <div style={{width: "100%", display: "flex", flexDirection: "row", borderStyle: "solid", borderColor: "blue"}}>
-                <nav role="navigation" className="nav-menu-7 w-nav-menu" style={{width: "100%", borderStyle: "solid", borderColor: "red"}}>
-                  <a href="#welcome" className="nav-link-30 w-nav-link" style={{marginRight: "20%"}}>Welcome</a>
-                  <a href="#Timeline" className="nav-link-30 w-nav-link" style={{marginRight: "20%"}}>Schedule</a>
-                  <a href="#Floor-Plan" className="nav-link-30 w-nav-link" style={{marginRight: "20%"}}>Layout</a>
-                  <a href="#Rules" className="nav-link-30 w-nav-link" style={{marginRight: "20%"}}>Rules</a>
+                  <div style={{width: "700px"}}>
+                <nav role="navigation" className="nav-menu-7 w-nav-menu" style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                  <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
+                  <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
+                  <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
+                  <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
                 </nav>
                 </div>)}
                 {/* <nav role="navigation" className="nav-menu-7 w-nav-menu">
@@ -465,6 +471,23 @@ const Companion = () => {
                     alt="registration QR code"
                 /> }
               </FadeInWhenVisible>
+
+              <FadeInWhenVisible>
+                <CatalogItem></CatalogItem>
+                <div style={{width: "25%", height: "200px" ,backgroundColor: "white", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
+                  Your Wallet
+                  <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
+
+                  <div style={{width: "45%", height: "100px", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "1%"}}>
+                    Balance
+                  </div>
+                  <div style={{width: "45%", height: "100px", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "1%"}}>
+                    Total Spent
+                  </div>
+                  </div>
+                </div>
+              </FadeInWhenVisible>
+
               <FadeInWhenVisible id="points" className="section-30 wf-section">
                 <h1 className="heading-34">YOUR POINTS</h1>
                 {regData.points >= maxPoints && !isCelebrationFinished && <div className="celebration-animation"><Lottie animationData={CelebrationAnimation} onLoopComplete={() => setIsCelebrationFinished(true)} /></div>}
@@ -554,6 +577,13 @@ const Companion = () => {
                   )}
                 </div>
               </FadeInWhenVisible>
+
+          
+
+
+
+
+
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34">Hello, {regData.fname}!</h1>
                 <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see your personalized schedule, event layout, and of course, your progression towards chances at amazing prizes. If you need a refresher on how gamification works, we have provided a small set of guidelines below.</div>
