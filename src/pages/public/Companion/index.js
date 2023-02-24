@@ -420,10 +420,9 @@ const Companion = () => {
           </motion.div>
         ) : (
 
-            <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav" style={{backgroundColor: "#011627"}}>
+            <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
               <div style={{
                 display: "flex" , flexDirection: renderMobileOnly ? "column" : "row", 
-                borderStyle: "solid", borderColor: "red", 
                 justifyContent: renderMobileOnly ? "" : "space-between", 
                 paddingRight: renderMobileOnly ? "0" : "150px"}}>
               <FadeInWhenVisible className="container-35 w-container">
@@ -437,6 +436,7 @@ const Companion = () => {
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
                   <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
+                  <a href="#Marketplace" className="nav-link-30 w-nav-link">Marketplace</a>
                 </nav>
                 </div>) : (
                   <div style={{width: "700px"}}>
@@ -445,6 +445,7 @@ const Companion = () => {
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
                   <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
+                  <a href="#Marketplace" className="nav-link-30 w-nav-link">Marketplace</a>
                 </nav>
                 </div>)}
                 {/* <nav role="navigation" className="nav-menu-7 w-nav-menu">
@@ -459,7 +460,10 @@ const Companion = () => {
               </FadeInWhenVisible>
               </div>
 
-              <FadeInWhenVisible id="points" className="section-30 wf-section">
+
+                {/* QR Code for Check-in */}
+
+              {/* <FadeInWhenVisible id="points" className="section-30 wf-section">
                 <Button variant="contained" color="primary" onClick={() => {
                   setShowQRCode(!showQRCode)
                 }}>
@@ -470,124 +474,103 @@ const Companion = () => {
                     width="100%"
                     alt="registration QR code"
                 /> }
-              </FadeInWhenVisible>
+              </FadeInWhenVisible> */}
 
-              <FadeInWhenVisible>
-                <div className="catalog" style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
 
-                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
-                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
-                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
-                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
-                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
-                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
-                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
-                <CatalogItem item={"Product Name"} description={"efjwofjiwefjieofjiewfjeijfifjweijfw"} price={"$20"}></CatalogItem>
-                </div>
-                
-                <div style={{width: "25%", height: "200px" ,backgroundColor: "white", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
-                  Your Wallet
-                  <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
 
-                  <div style={{width: "45%", height: "100px", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "1%"}}>
-                    Balance
-                  </div>
-                  <div style={{width: "45%", height: "100px", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "1%"}}>
-                    Total Spent
-                  </div>
-                  </div>
-                </div>
-              </FadeInWhenVisible>
+        
 
-              <FadeInWhenVisible id="points" className="section-30 wf-section">
+                {/* your points section */}
+
+              {/* <FadeInWhenVisible id="points" className="section-30 wf-section">
                 <h1 className="heading-34">YOUR POINTS</h1>
                 {regData.points >= maxPoints && !isCelebrationFinished && <div className="celebration-animation"><Lottie animationData={CelebrationAnimation} onLoopComplete={() => setIsCelebrationFinished(true)} /></div>}
                 <ProgressBar
-                  percent={(regData.points / maxPoints) * 100}
-                  filledBackground="linear-gradient(to right, #F8C9B8, #FEE9DF)"
-                  width="90%"
-                  stepPositions={[(regData.points / maxPoints) * 100, (50 / maxPoints) * 100, (70 / maxPoints) * 100, (90 / maxPoints) * 100, (120 / maxPoints) * 100, (150 / maxPoints) * 100]}
+                percent={(regData.points / maxPoints) * 100}
+                filledBackground="linear-gradient(to right, #F8C9B8, #FEE9DF)"
+                width="90%"
+                stepPositions={[(regData.points / maxPoints) * 100, (50 / maxPoints) * 100, (70 / maxPoints) * 100, (90 / maxPoints) * 100, (120 / maxPoints) * 100, (150 / maxPoints) * 100]}
                 >
-                  <Step>
-                    {() => (
-                      <span className="dot"></span>
-                    )}
+                <Step>
+                {() => (
+                  <span className="dot"></span>
+                  )}
                   </Step>
                   <Step transition="scale">
+                  {({ accomplished }) => (
+                    <div>
+                    <img
+                    style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)`, paddingBottom: 10 }}
+                    width="60"
+                    src={Rocketbook}
+                    alt="/"
+                    />
+                    {accomplished && <div className="checkmark"></div>}
+                    </div>
+                    )}
+                    </Step>
+                    <Step transition="scale">
                     {({ accomplished }) => (
                       <div>
-                        <img
-                          style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)`, paddingBottom: 10 }}
-                          width="60"
-                          src={Rocketbook}
-                          alt="/"
-                        />
-                        {accomplished && <div className="checkmark"></div>}
+                      <img
+                      style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)` }}
+                      width="100"
+                      src="https://instax.com/common2/img/top/image_01.png"
+                      alt="/"
+                      />
+                      {accomplished && <div className="checkmark" style={{ marginTop: "33%" }}></div>}
                       </div>
-                    )}
-                  </Step>
-                  <Step transition="scale">
-                    {({ accomplished }) => (
-                      <div>
+                      )}
+                      </Step>
+                      <Step transition="scale">
+                      {({ accomplished }) => (
+                        <div>
                         <img
-                          style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)` }}
-                          width="100"
-                          src="https://instax.com/common2/img/top/image_01.png"
-                          alt="/"
+                        style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)` }}
+                        width="100"
+                        src="https://instax.com/common2/img/top/image_01.png"
+                        alt="/"
                         />
                         {accomplished && <div className="checkmark" style={{ marginTop: "33%" }}></div>}
-                      </div>
-                    )}
-                  </Step>
-                  <Step transition="scale">
-                    {({ accomplished }) => (
-                      <div>
-                        <img
-                          style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)` }}
-                          width="100"
-                          src="https://instax.com/common2/img/top/image_01.png"
-                          alt="/"
-                        />
-                        {accomplished && <div className="checkmark" style={{ marginTop: "33%" }}></div>}
-                      </div>
-                    )}
-                  </Step>
-                  <Step transition="scale">
-                    {({ accomplished }) => (
-                      <div>
-                        <img
+                        </div>
+                        )}
+                        </Step>
+                        <Step transition="scale">
+                        {({ accomplished }) => (
+                          <div>
+                          <img
                           style={{ opacity: `${accomplished ? 1 : 0.7}` }}
                           width="50"
                           src={SonyXM5}
                           alt="/"
-                        />
-                        {accomplished && <div className="checkmark" style={{ marginTop: "59%" }}></div>}
-                      </div>
-                    )}
-                  </Step>
-                  <Step transition="scale">
-                    {({ accomplished }) => (
-                      <div>
-                        <img
-                          style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)` }}
-                          width="60"
-                          src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-2022-hero-silver-wifi-select_FMT_WHH?wid=940&hei=1112&fmt=png-alpha&.v=1664387253605"
-                          alt="/"
-                        />
-                        {accomplished && <div className="checkmark"></div>}
-                      </div>
-                    )}
-                  </Step>
-                </ProgressBar>
-                <div className="current-total"><strong>Current Total: </strong>{regData.points}</div>
-                <div className="current-total">
-                  {regData.points >= maxPoints ? (
-                    <strong>All prizes unlocked!</strong>
-                  ) : (
-                    <strong>{nextPrize().points - regData.points + " points away from the " + nextPrize().name + "!"}</strong>
-                  )}
-                </div>
-              </FadeInWhenVisible>
+                          />
+                          {accomplished && <div className="checkmark" style={{ marginTop: "59%" }}></div>}
+                          </div>
+                          )}
+                          </Step>
+                          <Step transition="scale">
+                          {({ accomplished }) => (
+                            <div>
+                            <img
+                            style={{ opacity: `${accomplished ? 1 : 0.7}`, filter: `grayscale(${accomplished ? 0 : 100}%)` }}
+                            width="60"
+                            src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-2022-hero-silver-wifi-select_FMT_WHH?wid=940&hei=1112&fmt=png-alpha&.v=1664387253605"
+                            alt="/"
+                            />
+                            {accomplished && <div className="checkmark"></div>}
+                            </div>
+                            )}
+                            </Step>
+                            </ProgressBar>
+                            <div className="current-total"><strong>Current Total: </strong>{regData.points}</div>
+                            <div className="current-total">
+                            {regData.points >= maxPoints ? (
+                              <strong>All prizes unlocked!</strong>
+                              ) : (
+                                <strong>{nextPrize().points - regData.points + " points away from the " + nextPrize().name + "!"}</strong>
+                                )}
+                                </div>
+                              </FadeInWhenVisible> */}
 
           
 
@@ -601,6 +584,25 @@ const Companion = () => {
                 <div className="text-block-72">The theme for this year's conference is <strong>Technology in Everyday Life</strong>. In our current world, technology impacts almost every aspect of our daily lives. Every industry, from financial, transportation to even health, has begun to evolve and utilize technology to improve efficiency and effectiveness. Inspired by this, we are here to offer you engaging workshops and unique networking opportunities that highlight the ways we use technology today.</div>
                 <div className="text-block-72">We hope you have an amazing time with us at Blueprint 2023!</div>
               </FadeInWhenVisible>
+
+              <FadeInWhenVisible id="welcome" className="section-30 wf-section">
+                <h1 className="heading-34">YOUR WALLET</h1>
+                <div style={{width: renderMobileOnly ? "80%" : "25%", height: "150px" ,backgroundColor: "white", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
+                  <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
+
+                  <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
+                    Balance
+                    <div style={{fontWeight: "bold", fontSize: "30px"}}>$25</div>
+                  </div>
+                  <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
+                    Total Spent
+                    <div style={{fontWeight: "bold", fontSize: "30px"}}>$10</div>
+                  </div>
+                  </div>
+                </div>
+              </FadeInWhenVisible>
+
+
               <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
                 <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%"}}>
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
@@ -690,8 +692,35 @@ const Companion = () => {
               <div id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34">REMINDERS</h1>
                 <img src={TimeAndLocation} alt="Blueprint footer" style={{ width: "60%", height: "auto", marginBottom: "25px"}}/>
-                <div className="text-block-70 reminders">Wear Business Casual!<br/>Contact email: melissa@ubcbiztech.com</div>
+                <div className="text-block-70 reminders">Wear Business Casual!<br/>Contact email: kamryn@ubcbiztech.com</div>
               </div>
+
+                              <FadeInWhenVisible id="Catalog" className="section-31 wf-section">
+                              <h1 id="Marketplace" className="heading-34">MARKETPLACE</h1>
+                                <div className="catalog" style={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center"}}>
+                
+                                <CatalogItem item={"Arduino Nano BLE Sense"} description={"A version of Arduino that is optimized for machine learning. Has additional built-in components such as bluetooth low energy support, a microphone, and various sensors."} quantity={3} price={"$45.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Arduino Uno"} description={"A standard microcontroller that can be programmed in conjunction with circuit components such as LEDs, sensors, and digital displays."} quantity={3} price={"$35.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Arduino Nano"} description={"Essentially a smaller version of the Arduino Uno"} quantity={2} price={"$40.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Elegoo Uno"} description={"A microcontroller with the same capabilities of the Arduino Uno, but requires more initial setup to use."} quantity={2} price={"$25.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Sensor"} description={"Circuit components that perform specialized duties such as sensing temperature, heat, distance, humidity, etc."} quantity={46} price={"$4.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"LCD"} description={"A digital display component."} quantity={3} price={"$10.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Servo"} description={"A digital display component."} quantity={3} price={"$5.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Cardstock"} description={"No description."} quantity={0} price={"$2.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Cardboard"} description={"No description."} quantity={0} price={"$5.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Clear and Masking Tape"} description={"No description."} quantity={0} price={"$1.00/long strip"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Duct Tape"} description={"No description."} quantity={0} price={"$1.50/long strip"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Glue Gun Sticks"} description={"No description."} quantity={0} price={"$1.00/stick"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Soldering"} description={"Thin board that hosts circuits (similar to a breadboard)."} quantity={0} price={"$1.00/board"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing (PLA)"} description={"Rapid prototyping method that uses PLA filament to print virtual builds."} quantity={"N/A"} price={"$3.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing (ABS)"} description={"Rapid prototyping method that uses ABS filament to print virtual builds."} quantity={"N/A"} price={"$5.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing"} description={"Rapid prototyping method that uses filament to print virtual builds."} quantity={"N/A"} price={"$8.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"K’nex Blocks"} description={"Rapid prototyping blocks that connect to each other."} quantity={"N/A"} price={"$5.00/small bag"} isMobile={renderMobileOnly}></CatalogItem>
+                
+                                </div>
+                
+                              </FadeInWhenVisible>
+
               <img src={CompanionFooter} alt="Blueprint footer" style={{ width: "100%", height: "auto", marginBottom: "-10px"}}/>
             </div>
           )}
