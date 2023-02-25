@@ -23,6 +23,21 @@ import TimeAndLocation from "../../../assets/2023/blueprint/Time and Location.sv
 import BizTechLogo from "../../../assets/2023/blueprint/BizTechLogo.png";
 import InnoventLogo from  "../../../assets/2023/blueprint/InnoventLogo.png";
 
+import Printer from "../../../assets/2023/innovent/3d-printer.jpg";
+import ArduinoNanoBle from "../../../assets/2023/innovent/arduino-nano-ble.jpg";
+import ArduinoNano from "../../../assets/2023/innovent/arduino-nano.jpg";
+import ArduinoUno from "../../../assets/2023/innovent/arduino-uno.jpg";
+import Cardboard from "../../../assets/2023/innovent/cardboard.jpg";
+import Cardstock from "../../../assets/2023/innovent/cardstock.jpg";
+import DuctTape from "../../../assets/2023/innovent/duct-tape.jpg";
+import ElegooUno from "../../../assets/2023/innovent/elegoo-uno.jpg";
+import GlueGunSticks from "../../../assets/2023/innovent/glue-gun-sticks.jpeg";
+import KnexBlocks from "../../../assets/2023/innovent/knex-blocks.png";
+import LCD from "../../../assets/2023/innovent/lcd.jpeg";
+import MaskingTape from "../../../assets/2023/innovent/masking-tape.jpeg";
+import Servo from "../../../assets/2023/innovent/servo.jpeg";
+import Soldering from "../../../assets/2023/innovent/soldering.jpeg";
+
 
 import CelebrationAnimation from "assets/2023/blueprint/68064-success-celebration.json"
 import GamificationActivityTable from './GamificationActivityTable'
@@ -432,7 +447,7 @@ const Companion = () => {
                 {renderMobileOnly ? (
                   <div style={{width:"100%", borderStyle: "solid", borderColor: "blue", display: "flex", justifyContent: "center"}}>
                 <nav role="navigation" className="nav-menu-7 w-nav-menu">
-                  <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
+                  {/* <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a> */}
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
                   <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
@@ -441,7 +456,7 @@ const Companion = () => {
                 </div>) : (
                   <div style={{width: "700px"}}>
                 <nav role="navigation" className="nav-menu-7 w-nav-menu" style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                  <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
+                  {/* <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a> */}
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
                   <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
@@ -459,22 +474,6 @@ const Companion = () => {
                 </div>
               </FadeInWhenVisible>
               </div>
-
-
-                {/* QR Code for Check-in */}
-
-              {/* <FadeInWhenVisible id="points" className="section-30 wf-section">
-                <Button variant="contained" color="primary" onClick={() => {
-                  setShowQRCode(!showQRCode)
-                }}>
-                  { showQRCode ? "Hide QR Code for Check-in" : "Show QR Code for Check-in" }
-                </Button>
-                { showQRCode && <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${email};blueprint;2023`}
-                    width="100%"
-                    alt="registration QR code"
-                /> }
-              </FadeInWhenVisible> */}
 
 
 
@@ -603,6 +602,37 @@ const Companion = () => {
               </FadeInWhenVisible>
 
 
+                {/* QR Code for Check-in */}
+
+                <FadeInWhenVisible id="points" className="section-30 wf-section">
+                <Button variant="contained" color="#D5E9E8" onClick={() => {
+                  setShowQRCode(!showQRCode)
+                }}>
+                  { showQRCode ? "Hide QR Code to Purchase" : "Purchase an Item" }
+                </Button>
+                { showQRCode && <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${email};blueprint;2023`}
+                    width="100%"
+                    alt="registration QR code"
+                /> }
+              </FadeInWhenVisible>
+
+              <FadeInWhenVisible id="welcome" className="section-30 wf-section">
+                <h1 className="heading-34">QUICK LINKS</h1>
+                {/* <div style={{width: renderMobileOnly ? "80%" : "25%", height: "150px", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
+                  <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around"}}>
+
+                  <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
+                    Applicant Package
+                  </div>
+                  <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
+                    Slide Submission
+                  </div>
+                  </div>
+                </div> */}
+              </FadeInWhenVisible>
+
+
               <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
                 <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%"}}>
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
@@ -689,37 +719,38 @@ const Companion = () => {
                   <GamificationRewardTable />
                 </div>
               </FadeInWhenVisible>
-              <div id="Rules" className="section-31 wf-section">
-                <h1 className="heading-34">REMINDERS</h1>
-                <img src={TimeAndLocation} alt="Blueprint footer" style={{ width: "60%", height: "auto", marginBottom: "25px"}}/>
-                <div className="text-block-70 reminders">Wear Business Casual!<br/>Contact email: kamryn@ubcbiztech.com</div>
-              </div>
+            
 
                               <FadeInWhenVisible id="Catalog" className="section-31 wf-section">
                               <h1 id="Marketplace" className="heading-34">MARKETPLACE</h1>
                                 <div className="catalog" style={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center"}}>
                 
-                                <CatalogItem item={"Arduino Nano BLE Sense"} description={"A version of Arduino that is optimized for machine learning. Has additional built-in components such as bluetooth low energy support, a microphone, and various sensors."} quantity={3} price={"$45.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Arduino Uno"} description={"A standard microcontroller that can be programmed in conjunction with circuit components such as LEDs, sensors, and digital displays."} quantity={3} price={"$35.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Arduino Nano"} description={"Essentially a smaller version of the Arduino Uno"} quantity={2} price={"$40.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Elegoo Uno"} description={"A microcontroller with the same capabilities of the Arduino Uno, but requires more initial setup to use."} quantity={2} price={"$25.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Arduino Nano BLE Sense"} image={ArduinoNanoBle} description={"A version of Arduino that is optimized for machine learning. Has additional built-in components such as bluetooth low energy support, a microphone, and various sensors."} quantity={3} price={"$45.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Arduino Uno"} image={ArduinoUno} description={"A standard microcontroller that can be programmed in conjunction with circuit components such as LEDs, sensors, and digital displays."} quantity={3} price={"$35.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Arduino Nano"} image={ArduinoNano} description={"Essentially a smaller version of the Arduino Uno"} quantity={2} price={"$40.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Elegoo Uno"} image={ElegooUno} description={"A microcontroller with the same capabilities of the Arduino Uno, but requires more initial setup to use."} quantity={2} price={"$25.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"Sensor"} description={"Circuit components that perform specialized duties such as sensing temperature, heat, distance, humidity, etc."} quantity={46} price={"$4.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"LCD"} description={"A digital display component."} quantity={3} price={"$10.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Servo"} description={"A digital display component."} quantity={3} price={"$5.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Cardstock"} description={"No description."} quantity={0} price={"$2.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Cardboard"} description={"No description."} quantity={0} price={"$5.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Clear and Masking Tape"} description={"No description."} quantity={0} price={"$1.00/long strip"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Duct Tape"} description={"No description."} quantity={0} price={"$1.50/long strip"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Glue Gun Sticks"} description={"No description."} quantity={0} price={"$1.00/stick"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Soldering"} description={"Thin board that hosts circuits (similar to a breadboard)."} quantity={0} price={"$1.00/board"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"LCD"} image={LCD} description={"A digital display component."} quantity={3} price={"$10.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Servo"} image={Servo} description={"A digital display component."} quantity={3} price={"$5.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Cardstock"} image={Cardstock} description={"No description."} quantity={0} price={"$2.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Cardboard"} image={Cardboard} description={"No description."} quantity={0} price={"$5.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Clear and Masking Tape"} image={MaskingTape} description={"No description."} quantity={0} price={"$1.00/long strip"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Duct Tape"} image={DuctTape} description={"No description."} quantity={0} price={"$1.50/long strip"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Glue Gun Sticks"} image={GlueGunSticks} description={"No description."} quantity={0} price={"$1.00/stick"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Soldering"} image={Soldering} description={"Thin board that hosts circuits (similar to a breadboard)."} quantity={0} price={"$1.00/board"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"3D Printing (PLA)"} description={"Rapid prototyping method that uses PLA filament to print virtual builds."} quantity={"N/A"} price={"$3.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"3D Printing (ABS)"} description={"Rapid prototyping method that uses ABS filament to print virtual builds."} quantity={"N/A"} price={"$5.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"3D Printing"} description={"Rapid prototyping method that uses filament to print virtual builds."} quantity={"N/A"} price={"$8.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"K’nex Blocks"} description={"Rapid prototyping blocks that connect to each other."} quantity={"N/A"} price={"$5.00/small bag"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing"} image={Printer} description={"Rapid prototyping method that uses filament to print virtual builds."} quantity={"N/A"} price={"$8.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"K’nex Blocks"} image={KnexBlocks} description={"Rapid prototyping blocks that connect to each other."} quantity={"N/A"} price={"$5.00/small bag"} isMobile={renderMobileOnly}></CatalogItem>
                 
                                 </div>
                 
                               </FadeInWhenVisible>
+                <div id="Rules" className="section-31 wf-section">
+                <h1 className="heading-34">REMINDERS</h1>
+                <img src={TimeAndLocation} alt="Blueprint footer" style={{ width: "60%", height: "auto", marginBottom: "25px"}}/>
+                <div className="text-block-70 reminders">Wear Business Casual!<br/>Contact email: kamryn@ubcbiztech.com</div>
+              </div>
 
               <img src={CompanionFooter} alt="Blueprint footer" style={{ width: "100%", height: "auto", marginBottom: "-10px"}}/>
             </div>
