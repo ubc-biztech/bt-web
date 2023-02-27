@@ -45,7 +45,8 @@ const prepareRowData = (users) => {
       // convert the date to something more readable
       updatedAt: new Date(user.updatedAt).toLocaleString(),
       isPartner: user.isPartner,
-      points: user.points
+      points: user.points,
+      teamID: user.teamID,
     });
   });
 

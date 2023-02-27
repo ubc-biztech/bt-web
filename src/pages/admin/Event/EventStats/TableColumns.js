@@ -11,7 +11,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
         <div>
-          <RegistrationField 
+          <RegistrationField
             id={rowData.id}
             fname={rowData.fname}
             lname={rowData.lname}
@@ -52,6 +52,23 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
         </>
       )
     },
+    {
+      title: <DraggableTitle title="Points (user)" />,
+      field: POINTSLABEL,
+      cellStyle: { whiteSpace: "nowrap" },
+      render: (rowData) => (
+          <div>
+            <PointsField
+                points={rowData.points}
+                id={rowData.id}
+                fname={rowData.fname}
+                registrationStatus={rowData.registrationStatus}
+                eventID={eventID}
+                eventYear={eventYear}
+                refreshTable={refreshTable}
+            />
+          </div>
+    )},
     {
       title: <DraggableTitle title="Last Updated" />,
       field: "updatedAt",
@@ -123,21 +140,13 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Points" />,
-      field: POINTSLABEL,
+      title: <DraggableTitle title="Team ID" />,
+      field: "teamID",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
-        <div>
-          <PointsField
-            points={rowData.points} 
-            id={rowData.id}
-            fname={rowData.fname}
-            registrationStatus={rowData.registrationStatus}
-            eventID={eventID}
-            eventYear={eventYear}
-            refreshTable={refreshTable}
-            />
-        </div>
+          <>
+            {rowData.teamID}
+          </>
       )
     }
   ];
@@ -149,7 +158,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
         <div>
-          <RegistrationField 
+          <RegistrationField
             id={rowData.id}
             fname={rowData.fname}
             lname={rowData.lname}
