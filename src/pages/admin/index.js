@@ -10,6 +10,7 @@ import AdminHome from "./Home";
 // import EventEdit from "./Event/EventEdit";
 import EventStats from "./Event/EventStats";
 import Memberships from "./Memberships/Memberships";
+import Companion from "./Companion";
 
 import { fetchEvents } from "store/event/eventActions";
 
@@ -47,7 +48,7 @@ const AdminRoutes = (props) => {
         render={() => <AdminHome events={events} />}
       />
       <Route exact path="/admin/memberships" render={() => <Memberships />} />
-
+      <Route exact path="/admin/edit-companion" render={() => <Companion />} />
       <Redirect to="/404" />
     </Switch>
   ) : (
