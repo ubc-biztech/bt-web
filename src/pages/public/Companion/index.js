@@ -133,13 +133,14 @@ function FadeInWhenVisible({ children, className, id }) {
 }
 
 const Companion = () => {
-  const maxPoints = 150
+  // const maxPoints = 150
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [pageError, setPageError] = useState("");
   const [error, setError] = useState("");
   const [registrations, setRegistrations] = useState([]);
   const [regData, setRegData] = useState(null)
+  const [teamData, setTeamData] = useState(null);
   const [scheduleData, setScheduleData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -159,7 +160,7 @@ const Companion = () => {
       const spreadsheet = await readSpreadsheet();
       const assignment = spreadsheet.find((entry) => entry.email === email);
       setScheduleData(assignment)
-      localStorage.setItem("BP2023EMAIL", email)
+      localStorage.setItem("INNOVENT2023EMAIL", email)
       setIsModalOpen(false)
       setIsLoading(false)
     } else {
@@ -170,7 +171,7 @@ const Companion = () => {
 
   const fetchRegistrations = async () => {
     const params = new URLSearchParams({
-      eventID: "blueprint",
+      eventID: "innovent",
       year: 2023
     });
     await fetchBackend(`/registrations?${params}`, "GET", undefined, false)
@@ -182,9 +183,24 @@ const Companion = () => {
       })
   }
 
+  // const fetchTeamData = async () => {
+  //   await fetchBackend("/team/getTeamFromUserID", "post", {
+  //     "eventID": "innovent", 
+  //       "year": 2023, 
+  //       "user_id": email,
+  //     })
+  //       .then((response) => {
+  //         setTeamData(response.data);
+  //       })
+  //       .catch((err) => {
+  //         console.log(`unable to fetch user ${email} data`); 
+  //         console.log("error here: ", err)
+  //       });
+  // }
+
   useEffect(() => {
     fetchRegistrations();
-    const email = localStorage.getItem("BP2023EMAIL");
+    const email = localStorage.getItem("INNOVENT2023EMAIL");
     if (email) {
       setEmail(email)
     } else {
@@ -197,6 +213,27 @@ const Companion = () => {
       fetchUserData()
     }
   }, [email, registrations]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (email && registrations.length > 0) {
+      async function fetchTeamData() {
+        await fetchBackend("/team/getTeamFromUserID", "post", {
+          "eventID": "innovent", 
+            "year": 2023, 
+            "user_id": "victorv@ubcbiztech.com",
+          })
+            .then((response) => {
+              console.log("aaa", response);
+              setTeamData(response.data);
+            })
+            .catch((err) => {
+              console.log(`unable to fetch user ${email} data`); 
+              console.log("error here: ", err)
+            });
+      }
+      fetchTeamData()
+    }
+  }, [email])
 
   const workshops = {
     "acba6e61-b8d9-4a1e-8ca9-305efcf40cbf": {
@@ -411,7 +448,7 @@ const Companion = () => {
                transition={{ duration: 1 }}>
             <img src={InnoventLogo} alt="Innovent Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
             <Typography variant="h1">Welcome!</Typography>
-            <Typography className={classes.centerText}>Please enter the email you used to register for Blueprint.</Typography>
+            <Typography className={classes.centerText}>Please enter the email you used to register for InnoVent.</Typography>
             <TextField
               className={classes.textfield}
               onChange={(e) => setInput(e.target.value)}
@@ -579,9 +616,9 @@ const Companion = () => {
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34">Hello, {regData.fname}!</h1>
-                <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see your personalized schedule, event layout, and of course, your progression towards chances at amazing prizes. If you need a refresher on how gamification works, we have provided a small set of guidelines below.</div>
-                <div className="text-block-72">The theme for this year's conference is <strong>Technology in Everyday Life</strong>. In our current world, technology impacts almost every aspect of our daily lives. Every industry, from financial, transportation to even health, has begun to evolve and utilize technology to improve efficiency and effectiveness. Inspired by this, we are here to offer you engaging workshops and unique networking opportunities that highlight the ways we use technology today.</div>
-                <div className="text-block-72">We hope you have an amazing time with us at Blueprint 2023!</div>
+                <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see your personalized schedule, event layout, your current account balance, and a catalog of items.</div>
+                <div className="text-block-72">InnoVent is a design and case competition targeted towards business and engineering students who have an interest in entrepreneurship and a passion for design. A completely new event to both UBC Biztech and UBC IEEE, this event is an unconventional competition that demands innovation and  cross-functional collaboration.</div>
+                <div className="text-block-72">We hope you have an amazing time with us at InnoVent 2023!</div>
               </FadeInWhenVisible>
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
@@ -591,11 +628,11 @@ const Companion = () => {
 
                   <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
                     Balance
-                    <div style={{fontWeight: "bold", fontSize: "30px"}}>$25</div>
+                    <div style={{fontWeight: "bold", fontSize: "30px"}}>{teamData.points}</div>
                   </div>
                   <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
                     Total Spent
-                    <div style={{fontWeight: "bold", fontSize: "30px"}}>$10</div>
+                    <div style={{fontWeight: "bold", fontSize: "30px"}}>{teamData.pointsSpent}</div>
                   </div>
                   </div>
                 </div>
@@ -604,7 +641,7 @@ const Companion = () => {
 
                 {/* QR Code for Check-in */}
 
-                <FadeInWhenVisible id="points" className="section-30 wf-section">
+                {/* <FadeInWhenVisible id="points" className="section-30 wf-section">
                 <Button variant="contained" color="#D5E9E8" onClick={() => {
                   setShowQRCode(!showQRCode)
                 }}>
@@ -615,7 +652,7 @@ const Companion = () => {
                     width="100%"
                     alt="registration QR code"
                 /> }
-              </FadeInWhenVisible>
+              </FadeInWhenVisible> */}
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34">QUICK LINKS</h1>
@@ -636,7 +673,9 @@ const Companion = () => {
               <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
                 <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%"}}>
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
-                <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px' }}>
+                <h3 style={{color: "white"}}>Friday, March 3rd</h3>
+                <h5 style={{color: "white"}}>Henry Angus Big 4 Conference Room</h5>
+                <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px', border: "solid", borderColor: "rgba(1, 1, 1, 0.1)", borderWidth: "3px"}}>
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -646,44 +685,108 @@ const Companion = () => {
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>10:30 am - 11:00 am</b></TableCell>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>6:15 pm - 6:45 pm</b></TableCell>
                       <TableCell align="center" style={{ color: "white" }}>Registration & Check in</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>11:00 am - 11:40 am</b></TableCell>
-                      <TableCell align="center" style={{ color: "white" }}>Opening Remarks & Keynote</TableCell>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>6:45 pm - 7:00 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Opening Ceremony</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>11:50 am - 12:30 pm</b></TableCell>
-                      <TableCell align="center" style={{ color: "white" }}>{workshops["fdcd18bc-8335-42dd-9ea8-ef927e742695"][scheduleData.workshop1.trim()]}</TableCell>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>7:00 pm - 7:20 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Keynote</TableCell>
                     </TableRow>
                     <TableRow>
-                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>12:30 pm - 1:30 pm</b></TableCell>
-                    <TableCell align="center" style={{ color: "white" }}>Lunch & Networking</TableCell>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>7:20 pm - 8:00 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Dinner + Meet your Teams</TableCell>
                     </TableRow>
                     <TableRow>
-                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>11:50 am - 12:30 pm</b></TableCell>
-                    <TableCell align="center" style={{ color: "white" }}>{workshops["aeeb699e-b2c9-47c7-aa57-b3a657fdf947"][scheduleData.workshop2.trim()]}</TableCell>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>8:00 pm - 8:45 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Professional Networking</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+                </TableContainer>
+                </div>
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
+                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%"}}>
+                <h3 style={{color: "white"}}>Saturday, March 4th</h3>
+                <h5 style={{color: "white"}}>Macleod UBC IEEE Building</h5>
+                <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px', border: "solid", borderColor: "rgba(1, 1, 1, 0.1)", borderWidth: "3px"}}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align = "center" style={{ color: "white", fontWeight: "bold" }}>Time</TableCell>
+                      <TableCell align="center" style={{ color: "white", fontWeight: "bold" }}>Activity</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>9:30 am - 10:00 am</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Sign-In</TableCell>
                     </TableRow>
                     <TableRow>
-                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>2:10 pm - 2:20 pm</b></TableCell>
-                    <TableCell align="center" style={{ color: "white" }}>Coffee Break</TableCell>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>10:00 am - 12:00 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Work Session with Mentors</TableCell>
                     </TableRow>
                     <TableRow>
-                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>2:20 pm - 3:00 pm</b></TableCell>
-                    <TableCell align="center" style={{ color: "white" }}>{workshops["acba6e61-b8d9-4a1e-8ca9-305efcf40cbf"][scheduleData.workshop3.trim()]}</TableCell>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>12:00 pm - 12:30 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Lunch</TableCell>
                     </TableRow>
                     <TableRow>
-                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>3:00 pm - 4:00 pm</b></TableCell>
-                    <TableCell align="center" style={{ color: "white" }}>Boothing Session & Networking</TableCell>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>12:30 pm - 7:00 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Work Session with Mentors</TableCell>
                     </TableRow>
                     <TableRow>
-                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>4:00 pm - 4:30 pm</b></TableCell>
-                    <TableCell align="center" style={{ color: "white" }}>Panel Session</TableCell>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>7:00 pm - 9:00 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Asyncrhonous Work Session</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+                </TableContainer>
+                </div>
+              </FadeInWhenVisible>
+              <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
+                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%"}}>
+                <h3 style={{color: "white"}}>Sunday, March 5th</h3>
+                <h5 style={{color: "white"}}>Macleod UBC IEEE Building & Henry Angus 491</h5>
+                <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px', border: "solid", borderColor: "rgba(1, 1, 1, 0.1)", borderWidth: "3px"}}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align = "center" style={{ color: "white", fontWeight: "bold" }}>Time</TableCell>
+                      <TableCell align="center" style={{ color: "white", fontWeight: "bold" }}>Activity</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>11:00 pm - 1:00 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Sign-In + Work Session</TableCell>
                     </TableRow>
                     <TableRow>
-                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>4:30 pm - 5:00 pm</b></TableCell>
-                    <TableCell align="center" style={{ color: "white" }}>Closing Remarks & Raffles</TableCell>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>1:00 pm - 1:30 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Lunch</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>1:30 pm - 3:30 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Work Session</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>3:30pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Pitch Deck Submission</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>3:30 pm - 4:45 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>First Round Judging</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>4:45 pm - 5:00 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Walk to HA 491</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>5:00 pm - 6:00 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Top 3 Finalists, Final Round, Closing</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -704,7 +807,7 @@ const Companion = () => {
                 </div>
               </FadeInWhenVisible>
               <FadeInWhenVisible id="Rules" className="section-31 wf-section">
-                <h1 className="heading-34 big">gamification rules</h1>
+                <h1 className="heading-34 big">Competition Streams</h1>
                 <div className="text-block-72" style={{width: "60%"}}>
                   Collect points to earn raffle entries to rewards by completing event activities.
                   {/* <br></br> */}
@@ -713,7 +816,7 @@ const Companion = () => {
                 </div>
               </FadeInWhenVisible>
               <FadeInWhenVisible id="Rules" className="section-31 wf-section">
-                <h1 className="heading-34 big">gamification prizes</h1>
+                <h1 className="heading-34 big">Prizes</h1>
                 <div className="text-block-72" style={{width: "60%"}}>
                   By reaching certain point thresholds, you will unlock raffle entries to the following prizes!
                   <GamificationRewardTable />
