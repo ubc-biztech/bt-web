@@ -157,6 +157,7 @@ const Redemption = ({ history, location }) => {
 
   const [pointsAwardedText, setPointsAwardedText] = useState(0);
   const [congratNameText, setCongratNameText] = useState("");
+  const [timestampText, setTimestampText] = useState("");
 
   const classes = useStyles();
 
@@ -187,15 +188,17 @@ const Redemption = ({ history, location }) => {
   const submitEmail = async () => {
     setIsLoading(true)
     if (checkEmail()) {
-      await fetchBackend("/qr", "POST", {
+      await fetchBackend("/qrscan", "POST", {
         "qrCodeID": qrID,
         "eventID": eventID,
         "year": Number(year),
-        "email": email
+        "email": email,
+        "negativePointsConfirmed": false // this is here so the api call doesn't fail for now. 
       }, false).then((res) => {
         localStorage.setItem("BP2023EMAIL", email)
         determinePointsAwardedText(res.response.redeemed_points)
         determineCongratText(res.response.first_name)
+        determineTimestampText()
         setIsModalOpen(false)
         setIsLoading(false)
       }).catch((err) => {
@@ -250,6 +253,11 @@ const Redemption = ({ history, location }) => {
       } else {
         setPointsAwardedText(`Already Redeemed`)
       }
+  }
+
+  const determineTimestampText = () => {
+    const date = new Date().toLocaleString("en-US", { timeZone: "PST" })
+    setTimestampText(date)
   }
 
   return (
@@ -352,6 +360,7 @@ const Redemption = ({ history, location }) => {
                             >
                               Return to Companion
                             </Button>
+                            <Typography className={classes.centerText} style={{ margin: "20px 0" }}>{timestampText}</Typography>
                           </motion.div>
                       </>
                   }
