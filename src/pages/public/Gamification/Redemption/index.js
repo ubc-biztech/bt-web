@@ -7,7 +7,7 @@ import { Button, TextField, Typography, makeStyles, Modal } from "@material-ui/c
 import { fetchBackend } from "utils";
 import Loading from "pages/Loading";
 
-import BlueprintLogo from "assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
+import InnoventLogo from "assets/2023/blueprint/InnoventLogo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
 import { COLORS } from "../../../../constants/_constants/theme";
@@ -22,13 +22,14 @@ const styles = {
     alignItems: "center", // mobile-centric padding
     padding: "0 10px", // adding spacing between children
     // bring up the height of the container
+    backgroundImage: "linear-gradient(4.01deg, #7193AE, #011627)",
   },
   inputContainer: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    margin: "5px"
+    margin: "5px",
   },
   modal: {
     display: "flex",
@@ -310,7 +311,7 @@ const Redemption = ({ history, location }) => {
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.5, ease: 'easeOut' }}>
 
-                          <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "50%", height: "auto", marginBottom: 20 }}/>
+                          <img src={InnoventLogo} alt="Innovent Logo" style={{ width: "50%", height: "auto", marginBottom: 20 }}/>
 
                         </motion.div>
 
@@ -358,10 +359,10 @@ const Redemption = ({ history, location }) => {
             </>
             ) : (
             <>
-              <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
+              <img src={InnoventLogo} alt="Innovent Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
               <div style={styles.inputContainer}>
                 <Typography variant="h1">Welcome!</Typography>
-                <Typography className={classes.centerText}>To redeem points, please enter the email you used to register for Blueprint.</Typography>
+                <Typography className={classes.centerText}>To redeem points, please enter the email you used to register for InnoVent.</Typography>
                 <TextField
                   className={classes.textfield}
                   style={{ marginTop: 20, marginBottom: 20 }}

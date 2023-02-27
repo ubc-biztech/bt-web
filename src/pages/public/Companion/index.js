@@ -38,6 +38,10 @@ import MaskingTape from "../../../assets/2023/innovent/masking-tape.jpeg";
 import Servo from "../../../assets/2023/innovent/servo.jpeg";
 import Soldering from "../../../assets/2023/innovent/soldering.jpeg";
 
+import StreamPrizes from "../../../assets/2023/innovent/stream-prizes.png";
+import Streams from "../../../assets/2023/innovent/streams.png";
+import WinningPrizes from "../../../assets/2023/innovent/winning-prize.png";
+
 
 import CelebrationAnimation from "assets/2023/blueprint/68064-success-celebration.json"
 import GamificationActivityTable from './GamificationActivityTable'
@@ -183,20 +187,22 @@ const Companion = () => {
       })
   }
 
-  // const fetchTeamData = async () => {
-  //   await fetchBackend("/team/getTeamFromUserID", "post", {
-  //     "eventID": "innovent", 
-  //       "year": 2023, 
-  //       "user_id": email,
-  //     })
-  //       .then((response) => {
-  //         setTeamData(response.data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(`unable to fetch user ${email} data`); 
-  //         console.log("error here: ", err)
-  //       });
-  // }
+  const fetchTeamData = async () => {
+    await fetchBackend("/team/getTeamFromUserID", "post", {
+      "eventID": "innovent", 
+        "year": 2023, 
+        "user_id": email,
+      }, false)
+        .then((response) => {
+          console.log("aaa", response);
+          // setTeamData(response);
+          setTeamData(response.response);
+        })
+        .catch((err) => {
+          console.log(`unable to fetch user ${email} data`); 
+          console.log("error here: ", err)
+        });
+  }
 
   useEffect(() => {
     fetchRegistrations();
@@ -216,24 +222,13 @@ const Companion = () => {
 
   useEffect(() => {
     if (email && registrations.length > 0) {
-      async function fetchTeamData() {
-        await fetchBackend("/team/getTeamFromUserID", "post", {
-          "eventID": "innovent", 
-            "year": 2023, 
-            "user_id": "victorv@ubcbiztech.com",
-          })
-            .then((response) => {
-              console.log("aaa", response);
-              setTeamData(response.data);
-            })
-            .catch((err) => {
-              console.log(`unable to fetch user ${email} data`); 
-              console.log("error here: ", err)
-            });
-      }
       fetchTeamData()
     }
-  }, [email])
+  }, [email, registrations])
+
+  useEffect(() => {
+    console.log("team data here", teamData);
+  }, [teamData]);
 
   const workshops = {
     "acba6e61-b8d9-4a1e-8ca9-305efcf40cbf": {
@@ -487,7 +482,7 @@ const Companion = () => {
                   {/* <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a> */}
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
-                  <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
+                  <a href="#Rules" className="nav-link-30 w-nav-link">Prizes</a>
                   <a href="#Marketplace" className="nav-link-30 w-nav-link">Marketplace</a>
                 </nav>
                 </div>) : (
@@ -496,7 +491,7 @@ const Companion = () => {
                   {/* <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a> */}
                   <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
-                  <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
+                  <a href="#Rules" className="nav-link-30 w-nav-link">Prizes</a>
                   <a href="#Marketplace" className="nav-link-30 w-nav-link">Marketplace</a>
                 </nav>
                 </div>)}
@@ -623,10 +618,10 @@ const Companion = () => {
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34">YOUR WALLET</h1>
-                <div style={{width: renderMobileOnly ? "80%" : "25%", height: "150px" ,backgroundColor: "white", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
+                <div style={{width: renderMobileOnly ? "80%" : "25%", height: "150px" ,backgroundColor: "transparent", border: "solid", borderColor: "white", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
                   <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
 
-                  <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
+                  <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%", borderWidth: "9px"}}>
                     Balance
                     <div style={{fontWeight: "bold", fontSize: "30px"}}>{teamData.points}</div>
                   </div>
@@ -812,14 +807,59 @@ const Companion = () => {
                   Collect points to earn raffle entries to rewards by completing event activities.
                   {/* <br></br> */}
                    You will be shown QR codes after completing each activity to redeem your points!
-                  <GamificationActivityTable />
+                   <TableContainer component={Paper} style={{ backgroundColor: "transparent", marginTop: '10px', marginBottom: '10px' }}>
+        <Table>
+          <TableBody>
+
+              <TableRow>
+                <TableCell component="th" scope="row" style={{ color: "white" }}>
+                  Sustainability 
+                </TableCell>
+                <TableCell align="right" style={{ color: "white" }}><i>Building future generations</i></TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row" style={{ color: "white" }}>
+                  Accessibility
+                </TableCell>
+                <TableCell align="right" style={{ color: "white" }}><i>Removing everyday barriers</i></TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row" style={{ color: "white" }}>
+                  Humanity
+                </TableCell>
+                <TableCell align="right" style={{ color: "white" }}><i>Empowering marginalized communities</i></TableCell>
+              </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+
                 </div>
+
               </FadeInWhenVisible>
               <FadeInWhenVisible id="Rules" className="section-31 wf-section">
                 <h1 className="heading-34 big">Prizes</h1>
                 <div className="text-block-72" style={{width: "60%"}}>
-                  By reaching certain point thresholds, you will unlock raffle entries to the following prizes!
-                  <GamificationRewardTable />
+
+                  <TableContainer component={Paper} style={{ backgroundColor: "transparent", marginTop: '10px', marginBottom: '10px' }}>
+        <Table>
+          <TableBody>
+
+              <TableRow>
+                <TableCell component="th" scope="row" style={{ color: "white" }}>
+                  Stream Winners (Top 3)
+                </TableCell>
+                <TableCell align="right" style={{ color: "white" }}><b>$500</b></TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row" style={{ color: "white" }}>
+                  Overall winner (First Place)
+                </TableCell>
+                <TableCell align="right" style={{ color: "white" }}><b>+ $500</b></TableCell>
+              </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+                  
                 </div>
               </FadeInWhenVisible>
             
@@ -849,10 +889,10 @@ const Companion = () => {
                                 </div>
                 
                               </FadeInWhenVisible>
-                <div id="Rules" className="section-31 wf-section">
-                <h1 className="heading-34">REMINDERS</h1>
-                <img src={TimeAndLocation} alt="Blueprint footer" style={{ width: "60%", height: "auto", marginBottom: "25px"}}/>
-                <div className="text-block-70 reminders">Wear Business Casual!<br/>Contact email: kamryn@ubcbiztech.com</div>
+                <div id="Rules" className="section-31 wf-section" style={{marginTop: "20px"}}>
+                {/* <h1 className="heading-34">REMINDERS</h1>
+                <img src={TimeAndLocation} alt="Blueprint footer" style={{ width: "60%", height: "auto", marginBottom: "25px"}}/> */}
+                Contact kamryn@ubcbiztech.com for any questions or concerns.
               </div>
 
               <img src={CompanionFooter} alt="Blueprint footer" style={{ width: "100%", height: "auto", marginBottom: "-10px"}}/>

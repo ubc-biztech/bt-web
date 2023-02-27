@@ -11,13 +11,13 @@ function CatalogItem (props) {
             </div>
             <img src={props.image} width="100%" style={{maxHeight:"180px"}}></img>
             </div>
-            <div style={{ width: "100%", backgroundColor: "white", display: "flex", flexDirection: "column", padding: "1%", borderRadius: "0px 0px 8px 8px", borderTopStyle: "solid"}}>
+            <div style={{ width: "100%", backgroundColor: "white", fontFamily: "Proximanova, Arial, sans-serif", display: "flex", flexDirection: "column", padding: "1%", borderRadius: "0px 0px 8px 8px", borderTopStyle: "solid"}}>
                 <div style={{fontWeight: "bold", marginBottom: "5px"}}>{props.item}</div>
                 <div style={{fontWeight: "bold"}}>{props.price}</div>
-                <div>{props.quantity} in stock</div>
+                <div>{props.quantity} total</div>
        
             </div>
-           
+            
         </div>
 
 
