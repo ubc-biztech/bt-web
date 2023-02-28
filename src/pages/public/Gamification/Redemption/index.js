@@ -194,7 +194,7 @@ const Redemption = ({ history, location }) => {
         "eventID": eventID,
         "year": Number(year),
         "email": email,
-        "negativePointsConfirmed": false // this is here so the api call doesn't fail for now. 
+        "negativePointsConfirmed": true // this is here so the api call doesn't fail for now. 
       }, false).then((res) => {
         localStorage.setItem("BP2023EMAIL", email)
         determinePointsAwardedText(res.response.redeemed_points)
@@ -252,7 +252,8 @@ const Redemption = ({ history, location }) => {
       if (points > 0) {
         setPointsAwardedText(`+${points} points`)
       } else {
-        setPointsAwardedText(`Already Redeemed`)
+        // setPointsAwardedText(`Already Redeemed`)
+        setPointsAwardedText(`${points} points`)
       }
   }
 
