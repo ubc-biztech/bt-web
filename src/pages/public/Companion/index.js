@@ -527,23 +527,28 @@ const Companion = () => {
               </FadeInWhenVisible>
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
-                <h1 className="heading-34" id="Wallet">{teamName}'s WALLET</h1>
-                <button onClick={() => setIsEditorOpen(true)}>Edit team name</button>
-                {isEditorOpen && <form onSubmit={handleTeamChange}>
-                  <input value={teamName} onChange={handleTeamNameChange}></input>
-                  <button>save</button>
-                  <button onClick={cancelEditor}>cancel</button>
+                <h1 className="heading-34" style={{marginBottom: "10px"}} id="Wallet">{teamName}'s WALLET</h1>
+                <div>
+                {isEditorOpen && <form onSubmit={handleTeamChange} style={{marginBottom: "20px"}}>
+                  <input value={teamName} onChange={handleTeamNameChange} style={{height: "5px", borderRadius: "10px", padding: "10px", fontSize: "8px"}}></input>
+                  <button className="button">save</button>
+                  <button className="button" onClick={cancelEditor}>cancel</button>
                 </form>}
+                </div>
+                {!isEditorOpen && <button className="button" onClick={() => setIsEditorOpen(true)} style={{marginBottom: "20px"}}>Edit team name</button>}
+
                 <div style={{width: renderMobileOnly ? "80%" : "25%", height: "150px" ,backgroundColor: "transparent", border: "solid", borderColor: "white", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
                   <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
 
                   <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%", borderWidth: "9px"}}>
                     Balance
                     <div style={{fontWeight: "bold", fontSize: "30px"}}>{teamData.points}</div>
+                    InnoBucks
                   </div>
                   <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
                     Total Spent
                     <div style={{fontWeight: "bold", fontSize: "30px"}}>{teamData.pointsSpent}</div>
+                    InnoBucks
                   </div>
                   </div>
                 </div>
