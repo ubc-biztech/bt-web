@@ -14,7 +14,7 @@ function CatalogItem (props) {
             <div style={{ width: "100%", backgroundColor: "white", fontFamily: "Proximanova, Arial, sans-serif", display: "flex", flexDirection: "column", padding: "1%", borderRadius: "0px 0px 8px 8px", borderTopStyle: "solid"}}>
                 <div style={{fontWeight: "bold", marginBottom: "5px"}}>{props.item}</div>
                 <div style={{fontWeight: "bold"}}>{props.price}</div>
-                <div>{props.quantity} total</div>
+                <div>{props.quantity}</div>
        
             </div>
             

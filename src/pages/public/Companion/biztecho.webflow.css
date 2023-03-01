@@ -11557,6 +11557,10 @@ figcaption {
   color: #fff;
   font-size: 20px;
 }
+.nav-link-31 {
+  color: #fff;
+  font-size: 15px;
+}
 
 .nav-link-30:hover {
   color: #f7c9b7;
@@ -16374,10 +16378,6 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
 
   .menu-button-11.w--open {
     background-color: transparent;
-  }
-
-  .nav-menu-7 {
-    background-color: #6498CD;
   }
 
   .image-140 {

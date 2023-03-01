@@ -145,11 +145,14 @@ const Companion = () => {
   const [registrations, setRegistrations] = useState([]);
   const [regData, setRegData] = useState(null)
   const [teamData, setTeamData] = useState(null);
+  const [teamName, setTeamName] = useState(null);
   const [scheduleData, setScheduleData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isCelebrationFinished, setIsCelebrationFinished] = useState(false);
   const [showQRCode, setShowQRCode] = useState(false);
+
 
   const classes = useStyles();
   const theme = useTheme();
@@ -197,10 +200,12 @@ const Companion = () => {
           console.log("aaa", response);
           // setTeamData(response);
           setTeamData(response.response);
+          setTeamName(response.response.teamName);
         })
         .catch((err) => {
           console.log(`unable to fetch user ${email} data`); 
           console.log("error here: ", err)
+          
         });
   }
 
@@ -230,135 +235,7 @@ const Companion = () => {
     console.log("team data here", teamData);
   }, [teamData]);
 
-  const workshops = {
-    "acba6e61-b8d9-4a1e-8ca9-305efcf40cbf": {
-      "Tech Entrepreneurship (CloudAdvisors)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Tech Entrepreneurship</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Rahul Rao (CloudAdvisors)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2311</div>
-          </div>
-        </div>,
-      "FinTech (SAP)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>FinTech</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Phil Houmphan (SAP)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2314</div>
-          </div>
-        </div>,
-      "Venture Capital (Front Row Ventures)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Venture Capital & Start-ups</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Gabriel D. (Front Row Ventures)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-          </div>
-        </div>,
-      "Data Analytics (KPMG)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Data Analytics</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Emily Chee (KPMG)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2309</div>
-          </div>
-        </div>,
-    },
-    "aeeb699e-b2c9-47c7-aa57-b3a657fdf947": {
-      "Customer Success (Athennian)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Customer Success</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Hilton Nguyen (Athennian)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2309</div>
-          </div>
-        </div>,
-      "Product Management (Yelp)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Product Management</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Kyle Chua (Yelp)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2311</div>
-          </div>
-        </div>,
-      "Project Management (Microsoft)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Project Management</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Ashar Kazi (Microsoft)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2314</div>
-          </div>
-        </div>,
-      "Generative AI (Apply Digital)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Generative AI</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Nicholas Ning (Farpoint)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-          </div>
-        </div>,
-      "Generative AI (Farpoint)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Generative AI</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Nicholas Ning (Farpoint)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-          </div>
-        </div>,
-    },
-    "fdcd18bc-8335-42dd-9ea8-ef927e742695": {
-      "Cybersecurity (PwC)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Cybersecurity</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Liam Adams (PwC)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2311</div>
-          </div>
-        </div>,
-      "SaaS Marketing (Visier)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Risk Advisory</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Neumann Lim (Deloitte)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-          </div>
-        </div>,
-      "Risk Advisory (Deloitte)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Risk Advisory</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Neumann Lim (Deloitte)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2504</div>
-          </div>
-        </div>,
-      "Software Engineering (Tesla)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Software Engineering</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Brooke Isenberg (Tesla)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2309</div>
-          </div>
-        </div>,
-      "Embedded Systems (Tesla)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Software Engineering</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Brooke Isenberg (Tesla)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2309</div>
-          </div>
-        </div>,
-      "Digital Transformation (IBM)":
-        <div className="workshop">
-          <div className="workshop-details">
-            <div className="workshop-detail"><strong>Digital Transformation</strong></div>
-            <div className="workshop-detail"><strong>Speaker:</strong> Armando Elias (IBM)</div>
-            <div className="workshop-detail"><strong>Room:</strong> 2314</div>
-          </div>
-        </div>
-    }
-  }
-
+  
   const prizeList = [
   {
     name: "Rocketbook Pro",
@@ -380,6 +257,41 @@ const Companion = () => {
     name: "10th Generation iPad",
     points: 150
   }]
+
+  const handleTeamNameChange = (event) => {
+    setTeamName(event.target.value);
+
+  }
+
+  const changeTeamName = async () => {
+    if (teamName) {
+      await fetchBackend("/team/changeTeamName", "post", {
+        "eventID": "innovent", 
+        "year": 2023, 
+        "user_id": email,
+        "team_name": teamName
+      }, false)
+        .then((response) => {
+          console.log("teamName changed successfully", response);
+        })
+        .catch((err) => {
+          console.log('did not change team name'); 
+        });
+    }
+  }
+
+  const cancelEditor = () => {
+    setTeamName(teamData.teamName);
+    setIsEditorOpen(false);
+
+  }
+
+  const handleTeamChange = (event) => {
+    event.preventDefault();
+    changeTeamName();
+    setIsEditorOpen(false);
+
+  }
 
   const nextPrize = () => {
     let next = prizeList[0]
@@ -477,21 +389,19 @@ const Companion = () => {
               </FadeInWhenVisible>
               <FadeInWhenVisible className="container-navigation w-container">
                 {renderMobileOnly ? (
-                  <div style={{width:"100%", borderStyle: "solid", borderColor: "blue", display: "flex", justifyContent: "center"}}>
-                <nav role="navigation" className="nav-menu-7 w-nav-menu">
-                  {/* <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a> */}
-                  <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
-                  <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
-                  <a href="#Rules" className="nav-link-30 w-nav-link">Prizes</a>
-                  <a href="#Marketplace" className="nav-link-30 w-nav-link">Marketplace</a>
+                  <div style={{width:"100%", display: "flex", flexDirection: "row", justifyContent: "center"}}>
+                <nav role="navigation" className="nav-menu-7 w-nav-menu" style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", fontSize: "40px"}}>
+                  <a href="#Wallet" className="nav-link-31 w-nav-link">Wallet</a>
+                  <a href="#QuickLinks" className="nav-link-31 w-nav-link">Quick Links</a>
+                  <a href="#Schedule" className="nav-link-31 w-nav-link">Schedule</a>
+                  <a href="#Marketplace" className="nav-link-31 w-nav-link">Marketplace</a>
                 </nav>
                 </div>) : (
                   <div style={{width: "700px"}}>
                 <nav role="navigation" className="nav-menu-7 w-nav-menu" style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                  {/* <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a> */}
-                  <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
-                  <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
-                  <a href="#Rules" className="nav-link-30 w-nav-link">Prizes</a>
+                  <a href="#Wallet" className="nav-link-30 w-nav-link">Wallet</a>
+                  <a href="#QuickLinks" className="nav-link-30 w-nav-link">Quick Links</a>
+                  <a href="#Schedule" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Marketplace" className="nav-link-30 w-nav-link">Marketplace</a>
                 </nav>
                 </div>)}
@@ -617,7 +527,13 @@ const Companion = () => {
               </FadeInWhenVisible>
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
-                <h1 className="heading-34">YOUR WALLET</h1>
+                <h1 className="heading-34" id="Wallet">{teamName}'s WALLET</h1>
+                <button onClick={() => setIsEditorOpen(true)}>Edit team name</button>
+                {isEditorOpen && <form onSubmit={handleTeamChange}>
+                  <input value={teamName} onChange={handleTeamNameChange}></input>
+                  <button>save</button>
+                  <button onClick={cancelEditor}>cancel</button>
+                </form>}
                 <div style={{width: renderMobileOnly ? "80%" : "25%", height: "150px" ,backgroundColor: "transparent", border: "solid", borderColor: "white", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
                   <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
 
@@ -650,7 +566,7 @@ const Companion = () => {
               </FadeInWhenVisible> */}
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
-                <h1 className="heading-34">QUICK LINKS</h1>
+                <h1 className="heading-34" id="QuickLinks">QUICK LINKS</h1>
                 {/* <div style={{width: renderMobileOnly ? "80%" : "25%", height: "150px", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
                   <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around"}}>
 
@@ -788,108 +704,34 @@ const Companion = () => {
                 </TableContainer>
                 </div>
               </FadeInWhenVisible>
-              <FadeInWhenVisible id="Floor-Plan" className="section-30 wf-section">
-                <h1 className="heading-34">Layout</h1>
-                <div className="seatingwrapper">
-                  <iframe
-                    title="seating"
-                    className="seating"
-                    width="100%"
-                    height="100%"
-                    src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FT7fR29dF82CuAGwVQbsOqz%2FBP-2023-Seating%3Fpage-id%3D0%253A1%26node-id%3D97%253A10%26viewport%3D442%252C440%252C0.21%26scaling%3Dscale-down%26hide-ui%3D1"
-                    allowFullScreen
-                  />
-                </div>
-              </FadeInWhenVisible>
-              <FadeInWhenVisible id="Rules" className="section-31 wf-section">
-                <h1 className="heading-34 big">Competition Streams</h1>
-                <div className="text-block-72" style={{width: "60%"}}>
-                  Collect points to earn raffle entries to rewards by completing event activities.
-                  {/* <br></br> */}
-                   You will be shown QR codes after completing each activity to redeem your points!
-                   <TableContainer component={Paper} style={{ backgroundColor: "transparent", marginTop: '10px', marginBottom: '10px' }}>
-        <Table>
-          <TableBody>
-
-              <TableRow>
-                <TableCell component="th" scope="row" style={{ color: "white" }}>
-                  Sustainability 
-                </TableCell>
-                <TableCell align="right" style={{ color: "white" }}><i>Building future generations</i></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row" style={{ color: "white" }}>
-                  Accessibility
-                </TableCell>
-                <TableCell align="right" style={{ color: "white" }}><i>Removing everyday barriers</i></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row" style={{ color: "white" }}>
-                  Humanity
-                </TableCell>
-                <TableCell align="right" style={{ color: "white" }}><i>Empowering marginalized communities</i></TableCell>
-              </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-
-                </div>
-
-              </FadeInWhenVisible>
-              <FadeInWhenVisible id="Rules" className="section-31 wf-section">
-                <h1 className="heading-34 big">Prizes</h1>
-                <div className="text-block-72" style={{width: "60%"}}>
-
-                  <TableContainer component={Paper} style={{ backgroundColor: "transparent", marginTop: '10px', marginBottom: '10px' }}>
-        <Table>
-          <TableBody>
-
-              <TableRow>
-                <TableCell component="th" scope="row" style={{ color: "white" }}>
-                  Stream Winners (Top 3)
-                </TableCell>
-                <TableCell align="right" style={{ color: "white" }}><b>$500</b></TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row" style={{ color: "white" }}>
-                  Overall winner (First Place)
-                </TableCell>
-                <TableCell align="right" style={{ color: "white" }}><b>+ $500</b></TableCell>
-              </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-                  
-                </div>
-              </FadeInWhenVisible>
             
 
                               <FadeInWhenVisible id="Catalog" className="section-31 wf-section">
                               <h1 id="Marketplace" className="heading-34">MARKETPLACE</h1>
                                 <div className="catalog" style={{display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center"}}>
                 
-                                <CatalogItem item={"Arduino Nano BLE Sense"} image={ArduinoNanoBle} description={"A version of Arduino that is optimized for machine learning. Has additional built-in components such as bluetooth low energy support, a microphone, and various sensors."} quantity={3} price={"$45.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Arduino Uno"} image={ArduinoUno} description={"A standard microcontroller that can be programmed in conjunction with circuit components such as LEDs, sensors, and digital displays."} quantity={3} price={"$35.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Arduino Nano"} image={ArduinoNano} description={"Essentially a smaller version of the Arduino Uno"} quantity={2} price={"$40.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Elegoo Uno"} image={ElegooUno} description={"A microcontroller with the same capabilities of the Arduino Uno, but requires more initial setup to use."} quantity={2} price={"$25.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Sensor"} description={"Circuit components that perform specialized duties such as sensing temperature, heat, distance, humidity, etc."} quantity={46} price={"$4.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"LCD"} image={LCD} description={"A digital display component."} quantity={3} price={"$10.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Servo"} image={Servo} description={"A digital display component."} quantity={3} price={"$5.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Cardstock"} image={Cardstock} description={"No description."} quantity={0} price={"$2.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Cardboard"} image={Cardboard} description={"No description."} quantity={0} price={"$5.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Clear and Masking Tape"} image={MaskingTape} description={"No description."} quantity={0} price={"$1.00/long strip"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Duct Tape"} image={DuctTape} description={"No description."} quantity={0} price={"$1.50/long strip"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Glue Gun Sticks"} image={GlueGunSticks} description={"No description."} quantity={0} price={"$1.00/stick"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Soldering"} image={Soldering} description={"Thin board that hosts circuits (similar to a breadboard)."} quantity={0} price={"$1.00/board"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"3D Printing (PLA)"} description={"Rapid prototyping method that uses PLA filament to print virtual builds."} quantity={"N/A"} price={"$3.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"3D Printing (ABS)"} description={"Rapid prototyping method that uses ABS filament to print virtual builds."} quantity={"N/A"} price={"$5.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"3D Printing"} image={Printer} description={"Rapid prototyping method that uses filament to print virtual builds."} quantity={"N/A"} price={"$8.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"K’nex Blocks"} image={KnexBlocks} description={"Rapid prototyping blocks that connect to each other."} quantity={"N/A"} price={"$5.00/small bag"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Arduino Nano BLE Sense"} image={ArduinoNanoBle} description={"A version of Arduino that is optimized for machine learning. Has additional built-in components such as bluetooth low energy support, a microphone, and various sensors."} quantity={"3 total"} price={"$45.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Arduino Uno"} image={ArduinoUno} description={"A standard microcontroller that can be programmed in conjunction with circuit components such as LEDs, sensors, and digital displays."} quantity={"3 total"} price={"$35.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Arduino Nano"} image={ArduinoNano} description={"Essentially a smaller version of the Arduino Uno"} quantity={"2 total"} price={"$40.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Elegoo Uno"} image={ElegooUno} description={"A microcontroller with the same capabilities of the Arduino Uno, but requires more initial setup to use."} quantity={"2 total"} price={"$25.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Sensor"} description={"Circuit components that perform specialized duties such as sensing temperature, heat, distance, humidity, etc."} quantity={"46 total"} price={"$4.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"LCD"} image={LCD} description={"A digital display component."} quantity={"3 Total"} price={"$10.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Servo"} image={Servo} description={"A digital display component."} quantity={"6 Total"} price={"$5.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Cardstock"} image={Cardstock} description={"No description."} quantity={""} price={"$2.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Cardboard"} image={Cardboard} description={"No description."} quantity={""} price={"$5.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Clear and Masking Tape"} image={MaskingTape} description={"No description."} quantity={""} price={"$1.00/long strip"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Duct Tape"} image={DuctTape} description={"No description."} quantity={""} price={"$1.50/long strip"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Glue Gun Sticks"} image={GlueGunSticks} description={"No description."} quantity={""} price={"$1.00/stick"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Soldering"} image={Soldering} description={"Thin board that hosts circuits (similar to a breadboard)."} quantity={""} price={"$1.00/board"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing (PLA)"} description={"Rapid prototyping method that uses PLA filament to print virtual builds."} quantity={" "} price={"$3.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing (ABS)"} description={"Rapid prototyping method that uses ABS filament to print virtual builds."} quantity={" "} price={"$5.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing"} image={Printer} description={"Rapid prototyping method that uses filament to print virtual builds."} quantity={" "} price={"$8.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"K’nex Blocks"} image={KnexBlocks} description={"Rapid prototyping blocks that connect to each other."} quantity={""} price={"$5.00/small bag"} isMobile={renderMobileOnly}></CatalogItem>
                 
                                 </div>
                 
                               </FadeInWhenVisible>
-                <div id="Rules" className="section-31 wf-section" style={{marginTop: "20px"}}>
+                <div id="Rules" className="section-31 wf-section" style={{marginTop: "20px", textAlign: "center"}}>
                 {/* <h1 className="heading-34">REMINDERS</h1>
                 <img src={TimeAndLocation} alt="Blueprint footer" style={{ width: "60%", height: "auto", marginBottom: "25px"}}/> */}
                 Contact kamryn@ubcbiztech.com for any questions or concerns.
