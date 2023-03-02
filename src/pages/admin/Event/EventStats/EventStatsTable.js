@@ -18,7 +18,7 @@ import {
   makeStyles,
   Link,
   Button,
-  Popover
+  Popover, TextField
 } from "@material-ui/core";
 
 import { Alert } from "@material-ui/lab";
@@ -36,6 +36,7 @@ import {
   POINTSLABEL
 } from "./utils";
 import { getDefaultColumns, getDefaultPartnerColumns, getDynamicQuestionColumns } from "./TableColumns";
+import {Field, Form, Formik} from "formik";
 
 const styles = {
   stats: {
@@ -112,7 +113,9 @@ export class EventStatsTable extends Component {
       dietary: {},
       genders: {},
       heardFrom: {},
+      teamID: {},
       isWaitlistShown: false,
+      isAdminTeamFormationShown: false,
       registrationVisible: { visible: false, style: { display: "none" } },
       facultyVisible: { visible: false, style: { display: "none" } },
       yearVisible: { visible: false, style: { display: "none" } },
@@ -121,7 +124,7 @@ export class EventStatsTable extends Component {
       heardFromVisible: { visible: false, style: { display: "none" } },
       tableType: "attendee",
     };
-  } 
+  }
 
   refreshTable = () => {
     this.getEventTableData(this.props.event.id, this.props.event.year);
@@ -138,7 +141,7 @@ export class EventStatsTable extends Component {
 
       const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.refreshTable);
       // dynamic Partner questions not implemented yet.
-      
+
       const presentedColumns = defaultColumns.concat(dynamicQuestionColumns);
       this.setState({
         presentedColumns,
@@ -169,7 +172,8 @@ export class EventStatsTable extends Component {
           faculties,
           years,
           genders,
-          dietary
+          dietary,
+          teamID
         } = this.notRegistrationNumbers(response.data);
         const rows = prepareRowData(response.data);
 
@@ -180,12 +184,13 @@ export class EventStatsTable extends Component {
           faculties,
           years,
           genders,
-          dietary
+          dietary,
+          teamID
         });
       })
       .catch((err) => {
         console.log("No registrations for this event");
-      }); 
+      });
   }
 
   /**
@@ -292,6 +297,12 @@ export class EventStatsTable extends Component {
     });
   };
 
+  showAdminTeamFormation = () => {
+    this.setState({
+      isAdminTeamFormationShown: !this.state.isAdminTeamFormationShown
+    });
+  };
+
   componentDidMount() {
     this.initializeTableColumns();
     this.refreshTable();
@@ -306,7 +317,7 @@ export class EventStatsTable extends Component {
     }
   }
 
-  render() { 
+  render() {
     let registrationColumns = this.state.presentedColumns;
     let registrationPartnerColumns = this.state.presentedPartnerColumns;
 
@@ -333,7 +344,7 @@ export class EventStatsTable extends Component {
     function filterRows(rows, isPartner) {
       if (rows) {
         return rows.filter((row) => (
-          Boolean(row.isPartner) === isPartner 
+          Boolean(row.isPartner) === isPartner
         ))
       } else {
         return []
@@ -383,6 +394,16 @@ export class EventStatsTable extends Component {
           >
             {this.state.tableType === "attendee" ? "Show Partners Table" : "Show Attendees Table"}
           </Button>
+
+          <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                  this.showAdminTeamFormation()
+              }
+          >
+            Make Team
+          </Button>
         </div>
         {
           this.state.isWaitlistShown &&
@@ -392,6 +413,103 @@ export class EventStatsTable extends Component {
               <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
                 To view the waitlist: 1) apply a Filter on the Registration Status column for "Waitlist". 2) Sort the table by Last Updated.
               </Typography>
+            </div>
+        }
+        {
+            this.state.isAdminTeamFormationShown &&
+            <div>
+              <div style={{ padding: "10px" }} />
+            {/*  Formik form for team formation, up to 4 members */}
+                <Formik
+                    initialValues={{
+                        teamName: "",
+                        teamMember: "",
+                        teamMember2: "",
+                        teamMember3: "",
+                        teamMember4: "",
+                    }}
+                    onSubmit={async (values, { setSubmitting }) => {
+                        setSubmitting(true);
+
+                        const teamMembersArrayAppend = [];
+
+                        if (values.teamMember)  teamMembersArrayAppend.push(values.teamMember);
+                        if (values.teamMember2) teamMembersArrayAppend.push(values.teamMember2);
+                        if (values.teamMember3) teamMembersArrayAppend.push(values.teamMember3);
+                        if (values.teamMember4) teamMembersArrayAppend.push(values.teamMember4);
+
+                        const response = {
+                            team_name: values.teamName ? values.teamName : "Placeholder",
+                            eventID: this.props.event.id,
+                            year: parseInt(this.props.event.year),
+                            memberIDs: teamMembersArrayAppend,
+                        }
+
+                        await fetchBackend(`/team/make`, "POST", response, true);
+                        // alert the user that the team has been made
+                        alert("Team has been made: " + values.teamName + " with members: " + teamMembersArrayAppend);
+
+                        setSubmitting(false);
+                        this.refreshTable();
+                    }}
+                >
+                    {({ isSubmitting, values }) => (
+                        <Form>
+                            <Field
+                                name="teamName"
+                                type="text"
+                                placeholder="Team Name"
+                                as={TextField}
+                                variant="filled"
+                                style={{ margin: "10px" }}
+                            />
+                            <Field
+                                name="teamMember"
+                                type="text"
+                                placeholder="Team Member Email 1"
+                                as={TextField}
+                                variant="filled"
+                                style={{ margin: "10px" }}
+                            />
+                            <Field
+                                name="teamMember2"
+                                type="text"
+                                placeholder="Team Member Email 2"
+                                as={TextField}
+                                variant="filled"
+                                style={{ margin: "10px" }}
+                            />
+                            <Field
+                                name="teamMember3"
+                                type="text"
+                                placeholder="Team Member Email 3"
+                                as={TextField}
+                                variant="filled"
+                                style={{ margin: "10px" }}
+                            />
+                            <Field
+                                name="teamMember4"
+                                type="text"
+                                placeholder="Team Member Email 4"
+                                as={TextField}
+                                variant="filled"
+                                style={{ margin: "10px" }}
+                            />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                disabled={isSubmitting}
+                            >
+                                Submit New Team
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
+
+                <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
+                    To view the teams or to make Team point changes, contact a member of the dev team
+                </Typography>
             </div>
         }
 
@@ -446,7 +564,7 @@ export class EventStatsTable extends Component {
 
         {/* padding for visual separation */}
         <div style={{ padding: "10px" }} />
-        
+
         <Statistic
           statName="Registration status: "
           statObj={this.state.registrationNumbers}
@@ -520,7 +638,7 @@ const PopoverCell = (props) => {
         onMouseDown={handlePopoverOpen}
         style={styles.ellipsis}
       />
-      {/* NOTE: if any more dropdown columns are added in the future to the the default columns of the MaterialTable, 
+      {/* NOTE: if any more dropdown columns are added in the future to the the default columns of the MaterialTable,
             you will need to exclude the column from the Popover effect as shown below */}
       {excludeFromOnclickPopoverColumns.includes(props.columnDef.field) ? (
         <></>
@@ -542,7 +660,7 @@ const PopoverCell = (props) => {
             horizontal: "left"
           }}
           PaperProps={{
-            style: { 
+            style: {
               maxWidth: "50%",
               whiteSpace: "pre-line"
             }
@@ -713,7 +831,7 @@ const QrCheckIn = (props) => {
       // refresh the entire table to reflect change
       props.refresh();
     };
-  
+
     if (!qrCode || qrCode.data === "" || qrScanStage !== QR_SCAN_STAGE.SCANNING)
       return;
 
@@ -770,7 +888,7 @@ const QrCheckIn = (props) => {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
       setError(`Person had their registration cancelled. Cannot check-in.`);
       return;
-    } else if (user.registrationStatus === REGISTRATION_STATUS.WAITLISTED) { 
+    } else if (user.registrationStatus === REGISTRATION_STATUS.WAITLISTED) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
       setError(`Person is on the waitlist. Cannot check-in.`);
       return;

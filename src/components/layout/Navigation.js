@@ -16,6 +16,7 @@ import {
 import BiztechIcon from "components/icons/BiztechIcon";
 import LogoutIcon from "components/icons/LogoutIcon";
 import AssessmentIcon from "@material-ui/icons/Assessment";
+import PetsIcon from "@material-ui/icons/Pets";
 
 import "./Navigation.scss";
 import { COLORS } from "constants/index";
@@ -140,6 +141,24 @@ function Nav(props) {
               onClick={handleItemClick.bind(null, "/admin/memberships")}
               bar={
                 selectedItem === "/admin/memberships"
+                  ? barSelected
+                  : barUnselected
+              }
+            />
+            <MenuItem
+              label="Companion"
+              icon={
+                <PetsIcon
+                  style={
+                    selectedItem === "/admin/edit-companion"
+                      ? selected
+                      : unselected
+                  }
+                />
+              }
+              onClick={handleItemClick.bind(null, "/admin/edit-companion")}
+              bar={
+                selectedItem === "/admin/edit-companion"
                   ? barSelected
                   : barUnselected
               }

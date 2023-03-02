@@ -12,6 +12,7 @@ const rewards = [
 function GamificationRewardTable() {
   return (
     <>
+    <div style={{width: "100%"}}>
       <TableContainer component={Paper} style={{ backgroundColor: "transparent", marginTop: '10px', marginBottom: '10px' }}>
         <Table>
           <TableHead>
@@ -32,6 +33,7 @@ function GamificationRewardTable() {
           </TableBody>
         </Table>
       </TableContainer>
+            </div>
     </>
   );
 }

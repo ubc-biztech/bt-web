@@ -7,7 +7,7 @@ import { Button, TextField, Typography, makeStyles, Modal } from "@material-ui/c
 import { fetchBackend } from "utils";
 import Loading from "pages/Loading";
 
-import BlueprintLogo from "assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
+import InnoventLogo from "assets/2023/innovent/InnoventLogo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
 import { COLORS } from "../../../../constants/_constants/theme";
@@ -22,13 +22,14 @@ const styles = {
     alignItems: "center", // mobile-centric padding
     padding: "0 10px", // adding spacing between children
     // bring up the height of the container
+    backgroundImage: "linear-gradient(4.01deg, #7193AE, #011627)",
   },
   inputContainer: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    margin: "5px"
+    margin: "5px",
   },
   modal: {
     display: "flex",
@@ -85,24 +86,24 @@ const suffixNameText = [
     "Keep it up and you'll be on your way to some awesome prizes!",
     "You are doing great! Keep it up!",
     "Taking a step closer to some awesome tech prizes!",
-    "May your tech skills soar to new heights at Blueprint!",
-    "Cheers to your amazing experience at Blueprint!",
+    "May your tech skills soar to new heights at InnoVent!",
+    "Cheers to your amazing experience at InnoVent!",
     "The BizTech Team is cheering you on!",
-    "Loving the progress you're making at Blueprint!",
+    "Loving the progress you're making at InnoVent!",
     "Showing the tech world what you're made of!",
     "Really making a run for those prizes, aren't you?!",
     "Taking initiative and shaping the future - keep it up!",
     "Way to go, BizTech superstar!",
-    "You're making waves at Blueprint 🌊",
+    "You're making waves at InnoVent 🌊",
     "Making a name for yourself and unlocking awesome rewards, I see?",
     "Your tech savvy is paving the way to rewards and recognition!",
     "You're unlocking amazing opportunities - keep it up!",
     "Onward and upward with those prizes!",
     "Go get 'em! Those prizes aren't gonna win themselves!",
-    "Blueprint is the perfect place to show off your tech skills!",
-    "You are making a difference at Blueprint!",
+    "InnoVent is the perfect place to show off your tech skills!",
+    "You are making a difference at InnoVent!",
     "Impressive work - you're making a name for yourself!",
-    "You're really setting the tone for success at Blueprint!",
+    "You're really setting the tone for success at InnoVent!",
     "You've got the tech world talking!",
     "The BizTech world is lucky to have you!",
 ];
@@ -157,6 +158,7 @@ const Redemption = ({ history, location }) => {
 
   const [pointsAwardedText, setPointsAwardedText] = useState(0);
   const [congratNameText, setCongratNameText] = useState("");
+  const [timestampText, setTimestampText] = useState("");
 
   const classes = useStyles();
 
@@ -187,15 +189,17 @@ const Redemption = ({ history, location }) => {
   const submitEmail = async () => {
     setIsLoading(true)
     if (checkEmail()) {
-      await fetchBackend("/qr", "POST", {
+      await fetchBackend("/qrscan", "POST", {
         "qrCodeID": qrID,
         "eventID": eventID,
         "year": Number(year),
-        "email": email
+        "email": email,
+        "negativePointsConfirmed": true // this is here so the api call doesn't fail for now. 
       }, false).then((res) => {
         localStorage.setItem("BP2023EMAIL", email)
         determinePointsAwardedText(res.response.redeemed_points)
         determineCongratText(res.response.first_name)
+        determineTimestampText()
         setIsModalOpen(false)
         setIsLoading(false)
       }).catch((err) => {
@@ -248,8 +252,14 @@ const Redemption = ({ history, location }) => {
       if (points > 0) {
         setPointsAwardedText(`+${points} points`)
       } else {
-        setPointsAwardedText(`Already Redeemed`)
+        // setPointsAwardedText(`Already Redeemed`)
+        setPointsAwardedText(`${points} points`)
       }
+  }
+
+  const determineTimestampText = () => {
+    const date = new Date().toLocaleString("en-US", { timeZone: "PST" })
+    setTimestampText(date)
   }
 
   return (
@@ -310,7 +320,7 @@ const Redemption = ({ history, location }) => {
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.5, ease: 'easeOut' }}>
 
-                          <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "50%", height: "auto", marginBottom: 20 }}/>
+                          <img src={InnoventLogo} alt="Innovent Logo" style={{ width: "50%", height: "auto", marginBottom: 20 }}/>
 
                         </motion.div>
 
@@ -352,16 +362,17 @@ const Redemption = ({ history, location }) => {
                             >
                               Return to Companion
                             </Button>
+                            <Typography className={classes.centerText} style={{ margin: "20px 0" }}>{timestampText}</Typography>
                           </motion.div>
                       </>
                   }
             </>
             ) : (
             <>
-              <img src={BlueprintLogo} alt="Blueprint Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
+              <img src={InnoventLogo} alt="Innovent Logo" style={{ width: "35%", height: "auto", marginBottom: 20 }}/>
               <div style={styles.inputContainer}>
                 <Typography variant="h1">Welcome!</Typography>
-                <Typography className={classes.centerText}>To redeem points, please enter the email you used to register for Blueprint.</Typography>
+                <Typography className={classes.centerText}>To redeem points, please enter the email you used to register for InnoVent.</Typography>
                 <TextField
                   className={classes.textfield}
                   style={{ marginTop: 20, marginBottom: 20 }}
