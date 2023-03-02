@@ -35,6 +35,10 @@ import Servo from "../../../assets/2023/innovent/servo.jpeg";
 import Soldering from "../../../assets/2023/innovent/soldering.jpeg";
 
 
+// import StreamPrizes from "../../../assets/2023/innovent/stream-prizes.png";
+// import Streams from "../../../assets/2023/innovent/streams.png";
+// import WinningPrizes from "../../../assets/2023/innovent/winning-prize.png";
+
 
 // import CelebrationAnimation from "assets/2023/blueprint/68064-success-celebration.json"
 // import GamificationActivityTable from './GamificationActivityTable'
