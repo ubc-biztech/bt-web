@@ -143,6 +143,7 @@ const Companion = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [isEditCancelled, setIsEditCancelled] = useState(false);
   // const [isCelebrationFinished, setIsCelebrationFinished] = useState(false);
   // const [showQRCode, setShowQRCode] = useState(false);
 
@@ -224,7 +225,7 @@ const Companion = () => {
     if (email && registrations.length > 0) {
       fetchTeamData() 
     }
-  }, [email, registrations]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [email, registrations, isEditCancelled]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     console.log("team data here", teamData);
@@ -276,8 +277,10 @@ const Companion = () => {
   }
 
   const cancelEditor = () => {
+    setIsEditCancelled(!isEditCancelled);
     setTeamName(teamData.teamName);
     setIsEditorOpen(false);
+   
 
   }
 
@@ -520,8 +523,8 @@ const Companion = () => {
                 <div>
                 {isEditorOpen && <form onSubmit={handleTeamChange} style={{marginBottom: "30px"}}>
                   <input value={teamName} onChange={handleTeamNameChange} style={{height: "5px", borderRadius: "10px", padding: "10px", fontSize: "8px"}}></input>
-                  <button className="button">save</button>
-                  <button className="button" onClick={cancelEditor}>cancel</button>
+                  <button type="submit" className="button">save</button>
+                  <button type="button" className="button" onClick={cancelEditor}>cancel</button>
                 </form>}
                 </div>
                 {!isEditorOpen && <button className="button" onClick={() => setIsEditorOpen(true)} style={{marginBottom: "20px"}}>Edit team name</button>}
