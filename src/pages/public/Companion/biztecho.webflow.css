@@ -11508,6 +11508,16 @@ figcaption {
   align-items: center;
   display: flex;
   flex-direction: row;
+  margin-left: 5%;
+  /* justify-content: center; */
+}
+
+.container-36 {
+  margin-top: 25px;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 5%;
   justify-content: center;
 }
 

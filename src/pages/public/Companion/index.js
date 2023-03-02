@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import Lottie from "lottie-react"
+// import Lottie from "lottie-react"
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { ProgressBar, Step } from "react-step-progress-bar"
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper , TextField, Button, Modal, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
 import { useTheme } from "@material-ui/styles";
 import CatalogItem from './CatalogItem'
 
 import { fetchBackend } from 'utils'
-import Rocketbook from "../../../assets/rocketbook.png"
-import SonyXM5 from "../../../assets/sonyxm5.png"
 import "./biztecho.webflow.css"
 import "react-step-progress-bar/styles.css"
 import Loading from 'pages/Loading'
 import readSpreadsheet from 'utils/_utils/sheets'
 
 import { COLORS } from "../../../constants/_constants/theme";
-import BlueprintLogo from "../../../assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
+// import BlueprintLogo from "../../../assets/2023/blueprint/Blueprint 2023 Transparent Logo.png";
 import CompanionFooter from "../../../assets/2023/blueprint/InnoventFooter.png";
-import FlagshipGraphic from "../../../assets/2023/blueprint/Blueprint companion header.png";
-import TimeAndLocation from "../../../assets/2023/blueprint/Time and Location.svg";
-import BizTechLogo from "../../../assets/2023/blueprint/BizTechLogo.png";
-import InnoventLogo from  "../../../assets/2023/blueprint/InnoventLogo.png";
+// import FlagshipGraphic from "../../../assets/2023/blueprint/Blueprint companion header.png";
+// import BizTechLogo from "../../../assets/2023/blueprint/BizTechLogo.png";
+import InnoventLogo from  "../../../assets/2023/innovent/InnoventLogo.png";
 
 import Printer from "../../../assets/2023/innovent/3d-printer.jpg";
 import ArduinoNanoBle from "../../../assets/2023/innovent/arduino-nano-ble.jpg";
@@ -38,14 +34,11 @@ import MaskingTape from "../../../assets/2023/innovent/masking-tape.jpeg";
 import Servo from "../../../assets/2023/innovent/servo.jpeg";
 import Soldering from "../../../assets/2023/innovent/soldering.jpeg";
 
-import StreamPrizes from "../../../assets/2023/innovent/stream-prizes.png";
-import Streams from "../../../assets/2023/innovent/streams.png";
-import WinningPrizes from "../../../assets/2023/innovent/winning-prize.png";
 
 
-import CelebrationAnimation from "assets/2023/blueprint/68064-success-celebration.json"
-import GamificationActivityTable from './GamificationActivityTable'
-import GamificationRewardTable from './GamificationRewardTable'
+// import CelebrationAnimation from "assets/2023/blueprint/68064-success-celebration.json"
+// import GamificationActivityTable from './GamificationActivityTable'
+// import GamificationRewardTable from './GamificationRewardTable'
 
 const styles = {
   modal: {
@@ -146,12 +139,12 @@ const Companion = () => {
   const [regData, setRegData] = useState(null)
   const [teamData, setTeamData] = useState(null);
   const [teamName, setTeamName] = useState(null);
-  const [scheduleData, setScheduleData] = useState(null)
+  // const [scheduleData, setScheduleData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [isCelebrationFinished, setIsCelebrationFinished] = useState(false);
-  const [showQRCode, setShowQRCode] = useState(false);
+  // const [isCelebrationFinished, setIsCelebrationFinished] = useState(false);
+  // const [showQRCode, setShowQRCode] = useState(false);
 
 
   const classes = useStyles();
@@ -164,9 +157,9 @@ const Companion = () => {
     if (reg) {
       setError("")
       setRegData(reg)
-      const spreadsheet = await readSpreadsheet();
-      const assignment = spreadsheet.find((entry) => entry.email === email);
-      setScheduleData(assignment)
+      await readSpreadsheet();
+      // const assignment = spreadsheet.find((entry) => entry.email === email);
+      // setScheduleData(assignment)
       localStorage.setItem("INNOVENT2023EMAIL", email)
       setIsModalOpen(false)
       setIsLoading(false)
@@ -175,6 +168,8 @@ const Companion = () => {
       setIsLoading(false)
     }
   }
+  
+
 
   const fetchRegistrations = async () => {
     const params = new URLSearchParams({
@@ -227,36 +222,36 @@ const Companion = () => {
 
   useEffect(() => {
     if (email && registrations.length > 0) {
-      fetchTeamData()
+      fetchTeamData() 
     }
-  }, [email, registrations])
+  }, [email, registrations]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     console.log("team data here", teamData);
   }, [teamData]);
 
   
-  const prizeList = [
-  {
-    name: "Rocketbook Pro",
-    points: 50
-  },
-  {
-    name: "first Fujifilm Mini Instax",
-    points: 70
-  },
-  {
-    name: "second Fujifilm Mini Instax",
-    points: 90
-  },
-  {
-    name: "Sony WH-1000XM5",
-    points: 120
-  },
-  {
-    name: "10th Generation iPad",
-    points: 150
-  }]
+  // const prizeList = [
+  // {
+  //   name: "Rocketbook Pro",
+  //   points: 50
+  // },
+  // {
+  //   name: "first Fujifilm Mini Instax",
+  //   points: 70
+  // },
+  // {
+  //   name: "second Fujifilm Mini Instax",
+  //   points: 90
+  // },
+  // {
+  //   name: "Sony WH-1000XM5",
+  //   points: 120
+  // },
+  // {
+  //   name: "10th Generation iPad",
+  //   points: 150
+  // }]
 
   const handleTeamNameChange = (event) => {
     setTeamName(event.target.value);
@@ -293,18 +288,18 @@ const Companion = () => {
 
   }
 
-  const nextPrize = () => {
-    let next = prizeList[0]
-    let nextDiff = Number.MAX_VALUE
-    prizeList.forEach((prize) => {
-      const diff = prize.points - regData.points
-      if (diff > 0 && diff < nextDiff) {
-        next = prize
-        nextDiff = diff
-      }
-    })
-    return next
-  }
+  // const nextPrize = () => {
+  //   let next = prizeList[0]
+  //   let nextDiff = Number.MAX_VALUE
+  //   prizeList.forEach((prize) => {
+  //     const diff = prize.points - regData.points
+  //     if (diff > 0 && diff < nextDiff) {
+  //       next = prize
+  //       nextDiff = diff
+  //     }
+  //   })
+  //   return next
+  // }
 
   if (pageError) {
     return (
@@ -382,10 +377,10 @@ const Companion = () => {
             <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar-16 w-nav">
               <div style={{
                 display: "flex" , flexDirection: renderMobileOnly ? "column" : "row", 
-                justifyContent: renderMobileOnly ? "" : "space-between", 
+                justifyContent: renderMobileOnly ? "" : "left", 
                 paddingRight: renderMobileOnly ? "0" : "150px"}}>
-              <FadeInWhenVisible className="container-35 w-container">
-                <img src={InnoventLogo} alt="Innovent Logo" style={{ width: renderMobileOnly ? "30%" : "70%", height: "auto"}}/>
+              <FadeInWhenVisible className= {renderMobileOnly ? "container-36 w-container" : "container-35 w-container" }>
+                <img src={InnoventLogo} alt="Innovent Logo" style={{ width: renderMobileOnly ? "30%" : "45%", height: "auto"}}/>
               </FadeInWhenVisible>
               <FadeInWhenVisible className="container-navigation w-container">
                 {renderMobileOnly ? (
@@ -398,19 +393,13 @@ const Companion = () => {
                 </nav>
                 </div>) : (
                   <div style={{width: "700px"}}>
-                <nav role="navigation" className="nav-menu-7 w-nav-menu" style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                <nav role="navigation" className="nav-menu-7 w-nav-menu" style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", position: "absolute"}}>
                   <a href="#Wallet" className="nav-link-30 w-nav-link">Wallet</a>
                   <a href="#QuickLinks" className="nav-link-30 w-nav-link">Quick Links</a>
                   <a href="#Schedule" className="nav-link-30 w-nav-link">Schedule</a>
                   <a href="#Marketplace" className="nav-link-30 w-nav-link">Marketplace</a>
                 </nav>
                 </div>)}
-                {/* <nav role="navigation" className="nav-menu-7 w-nav-menu">
-                  <a href="#welcome" className="nav-link-30 w-nav-link">Welcome</a>
-                  <a href="#Timeline" className="nav-link-30 w-nav-link">Schedule</a>
-                  <a href="#Floor-Plan" className="nav-link-30 w-nav-link">Layout</a>
-                  <a href="#Rules" className="nav-link-30 w-nav-link">Rules</a>
-                </nav> */}
                 <div className="menu-button-11 w-nav-button">
                   <div className="w-icon-nav-menu"></div>
                 </div>
@@ -527,9 +516,9 @@ const Companion = () => {
               </FadeInWhenVisible>
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
-                <h1 className="heading-34" style={{marginBottom: "10px"}} id="Wallet">{teamName}'s WALLET</h1>
+                <h1 className="heading-34" style={{marginBottom: "20px"}} id="Wallet">{teamName}'s WALLET</h1>
                 <div>
-                {isEditorOpen && <form onSubmit={handleTeamChange} style={{marginBottom: "20px"}}>
+                {isEditorOpen && <form onSubmit={handleTeamChange} style={{marginBottom: "30px"}}>
                   <input value={teamName} onChange={handleTeamNameChange} style={{height: "5px", borderRadius: "10px", padding: "10px", fontSize: "8px"}}></input>
                   <button className="button">save</button>
                   <button className="button" onClick={cancelEditor}>cancel</button>
@@ -587,7 +576,7 @@ const Companion = () => {
 
 
               <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
-                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%"}}>
+                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%", textAlign: "center"}}>
                 <h1 className="heading-34">YOUR SCHEDULE</h1>
                 <h3 style={{color: "white"}}>Friday, March 3rd</h3>
                 <h5 style={{color: "white"}}>Henry Angus Big 4 Conference Room</h5>
@@ -626,7 +615,7 @@ const Companion = () => {
                 </div>
               </FadeInWhenVisible>
               <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
-                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%"}}>
+                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%", textAlign: "center"}}>
                 <h3 style={{color: "white"}}>Saturday, March 4th</h3>
                 <h5 style={{color: "white"}}>Macleod UBC IEEE Building</h5>
                 <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px', border: "solid", borderColor: "rgba(1, 1, 1, 0.1)", borderWidth: "3px"}}>
@@ -664,7 +653,7 @@ const Companion = () => {
                 </div>
               </FadeInWhenVisible>
               <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
-                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%"}}>
+                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%", textAlign: "center"}}>
                 <h3 style={{color: "white"}}>Sunday, March 5th</h3>
                 <h5 style={{color: "white"}}>Macleod UBC IEEE Building & Henry Angus 491</h5>
                 <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px', border: "solid", borderColor: "rgba(1, 1, 1, 0.1)", borderWidth: "3px"}}>
@@ -722,16 +711,16 @@ const Companion = () => {
                                 <CatalogItem item={"Sensor"} description={"Circuit components that perform specialized duties such as sensing temperature, heat, distance, humidity, etc."} quantity={"46 total"} price={"$4.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"LCD"} image={LCD} description={"A digital display component."} quantity={"3 Total"} price={"$10.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"Servo"} image={Servo} description={"A digital display component."} quantity={"6 Total"} price={"$5.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Cardstock"} image={Cardstock} description={"No description."} quantity={""} price={"$2.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Cardboard"} image={Cardboard} description={"No description."} quantity={""} price={"$5.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Clear and Masking Tape"} image={MaskingTape} description={"No description."} quantity={""} price={"$1.00/long strip"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Duct Tape"} image={DuctTape} description={"No description."} quantity={""} price={"$1.50/long strip"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Glue Gun Sticks"} image={GlueGunSticks} description={"No description."} quantity={""} price={"$1.00/stick"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Soldering"} image={Soldering} description={"Thin board that hosts circuits (similar to a breadboard)."} quantity={""} price={"$1.00/board"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"3D Printing (PLA)"} description={"Rapid prototyping method that uses PLA filament to print virtual builds."} quantity={" "} price={"$3.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"3D Printing (ABS)"} description={"Rapid prototyping method that uses ABS filament to print virtual builds."} quantity={" "} price={"$5.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"3D Printing"} image={Printer} description={"Rapid prototyping method that uses filament to print virtual builds."} quantity={" "} price={"$8.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"K’nex Blocks"} image={KnexBlocks} description={"Rapid prototyping blocks that connect to each other."} quantity={""} price={"$5.00/small bag"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Cardstock"} image={Cardstock} description={"No description."} quantity={"unlimited"} price={"$2.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Cardboard"} image={Cardboard} description={"No description."} quantity={"unlimited"} price={"$5.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Clear and Masking Tape"} image={MaskingTape} description={"No description."} quantity={"unlimited"} price={"$1.00/long strip"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Duct Tape"} image={DuctTape} description={"No description."} quantity={"unlimited"} price={"$1.50/long strip"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Glue Gun Sticks"} image={GlueGunSticks} description={"No description."} quantity={"unlimited"} price={"$1.00/stick"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Soldering"} image={Soldering} description={"Thin board that hosts circuits (similar to a breadboard)."} quantity={"unlimited"} price={"$1.00/board"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing (PLA)"} description={"Rapid prototyping method that uses PLA filament to print virtual builds."} quantity={"unlimited"} price={"$3.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing (ABS)"} description={"Rapid prototyping method that uses ABS filament to print virtual builds."} quantity={"unlimited"} price={"$5.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing"} image={Printer} description={"Rapid prototyping method that uses filament to print virtual builds."} quantity={"unlimited"} price={"$8.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"K’nex Blocks"} image={KnexBlocks} description={"Rapid prototyping blocks that connect to each other."} quantity={"unlimited"} price={"$5.00/small bag"} isMobile={renderMobileOnly}></CatalogItem>
                 
                                 </div>
                 
