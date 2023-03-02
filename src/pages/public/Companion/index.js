@@ -674,15 +674,15 @@ const Companion = () => {
                       <TableCell align="center" style={{ color: "white" }}>Lunch</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>1:30 pm - 3:30 pm</b></TableCell>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>1:30 pm - 3:00 pm</b></TableCell>
                       <TableCell align="center" style={{ color: "white" }}>Work Session</TableCell>
                     </TableRow>
                     <TableRow>
-                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>3:30pm</b></TableCell>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>3:00pm</b></TableCell>
                     <TableCell align="center" style={{ color: "white" }}>Pitch Deck Submission</TableCell>
                     </TableRow>
                     <TableRow>
-                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>3:30 pm - 4:45 pm</b></TableCell>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>3:00 pm - 4:45 pm</b></TableCell>
                     <TableCell align="center" style={{ color: "white" }}>First Round Judging</TableCell>
                     </TableRow>
                     <TableRow>

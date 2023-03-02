@@ -7,7 +7,7 @@ import { Button, TextField, Typography, makeStyles, Modal } from "@material-ui/c
 import { fetchBackend } from "utils";
 import Loading from "pages/Loading";
 
-import InnoventLogo from "assets/2023/blueprint/InnoventLogo.png";
+import InnoventLogo from "assets/2023/innovent/InnoventLogo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
 import { COLORS } from "../../../../constants/_constants/theme";
@@ -86,24 +86,24 @@ const suffixNameText = [
     "Keep it up and you'll be on your way to some awesome prizes!",
     "You are doing great! Keep it up!",
     "Taking a step closer to some awesome tech prizes!",
-    "May your tech skills soar to new heights at Blueprint!",
-    "Cheers to your amazing experience at Blueprint!",
+    "May your tech skills soar to new heights at InnoVent!",
+    "Cheers to your amazing experience at InnoVent!",
     "The BizTech Team is cheering you on!",
-    "Loving the progress you're making at Blueprint!",
+    "Loving the progress you're making at InnoVent!",
     "Showing the tech world what you're made of!",
     "Really making a run for those prizes, aren't you?!",
     "Taking initiative and shaping the future - keep it up!",
     "Way to go, BizTech superstar!",
-    "You're making waves at Blueprint 🌊",
+    "You're making waves at InnoVent 🌊",
     "Making a name for yourself and unlocking awesome rewards, I see?",
     "Your tech savvy is paving the way to rewards and recognition!",
     "You're unlocking amazing opportunities - keep it up!",
     "Onward and upward with those prizes!",
     "Go get 'em! Those prizes aren't gonna win themselves!",
-    "Blueprint is the perfect place to show off your tech skills!",
-    "You are making a difference at Blueprint!",
+    "InnoVent is the perfect place to show off your tech skills!",
+    "You are making a difference at InnoVent!",
     "Impressive work - you're making a name for yourself!",
-    "You're really setting the tone for success at Blueprint!",
+    "You're really setting the tone for success at InnoVent!",
     "You've got the tech world talking!",
     "The BizTech world is lucky to have you!",
 ];
