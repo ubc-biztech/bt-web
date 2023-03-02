@@ -380,7 +380,7 @@ const Companion = () => {
                 justifyContent: renderMobileOnly ? "" : "left", 
                 paddingRight: renderMobileOnly ? "0" : "150px"}}>
               <FadeInWhenVisible className= {renderMobileOnly ? "container-36 w-container" : "container-35 w-container" }>
-                <img src={InnoventLogo} alt="Innovent Logo" style={{ width: renderMobileOnly ? "30%" : "45%", height: "auto"}}/>
+                <img src={InnoventLogo} alt="Innovent Logo" style={{ width: renderMobileOnly ? "30%" : "200px", height: "auto"}}/>
               </FadeInWhenVisible>
               <FadeInWhenVisible className="container-navigation w-container">
                 {renderMobileOnly ? (

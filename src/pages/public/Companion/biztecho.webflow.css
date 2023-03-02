@@ -11509,6 +11509,7 @@ figcaption {
   display: flex;
   flex-direction: row;
   margin-left: 5%;
+  margin-right: 20%;
   /* justify-content: center; */
 }
 
