@@ -2970,23 +2970,21 @@ figcaption {
 }
 
 .button {
-  padding: 10px 25px;
-  border-style: solid;
-  border-width: 1px;
+  padding: 5px 15px;
   border-color: #0f0c4f;
-  border-radius: 40px;
-  background-color: #0f0c4f;
+  border-radius: 20px;
+  background-color: D5EAE8;
   box-shadow: 0 4px 11px 0 rgba(1, 58, 117, 0.33);
   -webkit-transition: all 200ms ease;
   transition: all 200ms ease;
-  color: #fff;
-  font-size: 16px;
+  color: black;
+  font-size: 8px;
   font-weight: 300;
 }
 
 .button:hover {
-  border: 1px solid #096ad0;
-  background-color: #096ad0;
+  border: 1px solid #FB9BA7;
+  background-color: #FB9BA7;
   box-shadow: 0 6px 20px 0 rgba(1, 58, 117, 0.33);
   -webkit-transform: translate(0px, -4px);
   -ms-transform: translate(0px, -4px);
@@ -11510,6 +11508,17 @@ figcaption {
   align-items: center;
   display: flex;
   flex-direction: row;
+  margin-left: 5%;
+  margin-right: 20%;
+  /* justify-content: center; */
+}
+
+.container-36 {
+  margin-top: 25px;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 5%;
   justify-content: center;
 }
 
@@ -11556,6 +11565,10 @@ figcaption {
 .nav-link-30 {
   color: #fff;
   font-size: 20px;
+}
+.nav-link-31 {
+  color: #fff;
+  font-size: 15px;
 }
 
 .nav-link-30:hover {
@@ -16374,10 +16387,6 @@ html.w-mod-js *[data-ix="scale-on-scroll"] {
 
   .menu-button-11.w--open {
     background-color: transparent;
-  }
-
-  .nav-menu-7 {
-    background-color: #6498CD;
   }
 
   .image-140 {

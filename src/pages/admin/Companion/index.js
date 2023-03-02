@@ -274,7 +274,7 @@ const Companion = () => {
                     <Box>{QR.isActive ? "Active" : "Inactive"}</Box>
                     <Box>{QR.isUnlimitedScans ? "Unlimited Scans" : "One-time Scan"}</Box>
                   </Box>
-                  <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://${process.env.REACT_APP_STAGE === "production" ? "" : "dev."}app.ubcbiztech.com/redeem/${QR["eventID;year"].split(";")[0]}/${QR["eventID;year"].split(";")[1]}/${QR.id}`}/>
+                  <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://${process.env.REACT_APP_STAGE === "production" ? "" : "dev."}app.ubcbiztech.com/redeem/${QR["eventID;year"].split(";")[0]}/${QR["eventID;year"].split(";")[1]}/${QR.id}`} alt="QR"/>
                 </Box>
                 <Divider className={classes.divider}/>
               </>
