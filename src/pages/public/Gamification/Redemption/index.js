@@ -587,9 +587,14 @@ const Redemption = ({ history, location }) => {
                   To redeem points, please enter the email you used to register
                   for InnoVent.
                 </Typography>
-                <Button
+                <TextField
                   className={classes.textfield}
                   style={{ marginTop: 20, marginBottom: 20 }}
+                  onChange={(e) => setInput(e.target.value)}
+                  value={input}
+                  variant="outlined"
+                />
+                <Button
                   variant="contained"
                   color="primary"
                   onClick={() => {
