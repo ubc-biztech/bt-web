@@ -231,28 +231,6 @@ const Companion = () => {
     console.log("team data here", teamData);
   }, [teamData]);
 
-  
-  // const prizeList = [
-  // {
-  //   name: "Rocketbook Pro",
-  //   points: 50
-  // },
-  // {
-  //   name: "first Fujifilm Mini Instax",
-  //   points: 70
-  // },
-  // {
-  //   name: "second Fujifilm Mini Instax",
-  //   points: 90
-  // },
-  // {
-  //   name: "Sony WH-1000XM5",
-  //   points: 120
-  // },
-  // {
-  //   name: "10th Generation iPad",
-  //   points: 150
-  // }]
 
   const handleTeamNameChange = (event) => {
     setTeamName(event.target.value);
@@ -564,17 +542,19 @@ const Companion = () => {
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34" id="QuickLinks">QUICK LINKS</h1>
-                {/* <div style={{width: renderMobileOnly ? "80%" : "25%", height: "150px", borderRadius: "9px", display: "flex", flexDirection: "column", padding: "1%", textAlign: "center", justifyContent: "space-around"}}>
-                  <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around"}}>
+                <div style={{width: renderMobileOnly ? "80%" : "20%", borderRadius: "9px", display: "flex", flexDirection: "row", textAlign: "center", justifyContent: "space-around"}}>
 
-                  <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
-                    Applicant Package
+                <a href="https://docs.google.com/document/d/170lTS-UWvujGdW6dvXEt5eGWq0xbceVfJDWdnXvXSJo/edit" target="_blank">
+                <div>
+                  <button className="button-link" style={{marginBottom: "20px"}}>Applicant Package</button>
                   </div>
-                  <div style={{width: "45%", height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignContent: "center", textAlign:"center", borderRadius: "9px", backgroundColor: "#D5EAE8", padding: "2%"}}>
-                    Slide Submission
+                </a>
+                <a href="https://forms.gle/koR3hVSbw99MbAWQ8" target="_blank">
+                  <div>
+                  <button className="button-link" style={{marginBottom: "20px"}}>Submission Form</button>
                   </div>
-                  </div>
-                </div> */}
+                </a>
+                </div>
               </FadeInWhenVisible>
 
 
