@@ -2971,7 +2971,7 @@ figcaption {
 
 .button {
   padding: 5px 15px;
-  border-color: #0f0c4f;
+  border: solid white;
   border-radius: 20px;
   background-color: D5EAE8;
   box-shadow: 0 4px 11px 0 rgba(1, 58, 117, 0.33);
@@ -2998,9 +2998,9 @@ figcaption {
   padding: 5px 15px;
   width: 150px;
   height: 50px;
-  border-color: #fff;
+  border: solid white;
   border-radius: 20px;
-  background-color: D5EAE8;
+  background-color: white;
   box-shadow: 0 4px 11px 0 rgba(1, 58, 117, 0.33);
   -webkit-transition: all 200ms ease;
   transition: all 200ms ease;

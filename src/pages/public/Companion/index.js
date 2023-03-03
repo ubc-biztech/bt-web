@@ -551,12 +551,12 @@ const Companion = () => {
 
                 <a href="https://docs.google.com/document/d/170lTS-UWvujGdW6dvXEt5eGWq0xbceVfJDWdnXvXSJo/edit" target="_blank" rel="noopener noreferrer">
                 <div>
-                  <button className="button-link" style={{marginBottom: "20px"}}>Applicant Package</button>
+                  <button className="button-link" style={{marginRight: "10px"}}>Participant Package</button>
                   </div>
                 </a>
                 <a href="https://forms.gle/koR3hVSbw99MbAWQ8" target="_blank" rel="noopener noreferrer">
                   <div>
-                  <button className="button-link" style={{marginBottom: "20px"}}>Submission Form</button>
+                  <button className="button-link" style={{marginLeft: "10px"}}>Pitch Submission Form</button>
                   </div>
                 </a>
                 </div>
@@ -596,6 +596,10 @@ const Companion = () => {
                     <TableRow>
                     <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>8:00 pm - 8:45 pm</b></TableCell>
                     <TableCell align="center" style={{ color: "white" }}>Professional Networking</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>8:45 pm - 9:00 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Closing Remarks</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
