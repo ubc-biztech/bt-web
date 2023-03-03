@@ -2971,7 +2971,7 @@ figcaption {
 
 .button {
   padding: 5px 15px;
-  border-color: #0f0c4f;
+  border: solid white;
   border-radius: 20px;
   background-color: D5EAE8;
   box-shadow: 0 4px 11px 0 rgba(1, 58, 117, 0.33);
@@ -2980,9 +2980,11 @@ figcaption {
   color: black;
   font-size: 8px;
   font-weight: 300;
+  font-family: "gilroy"
 }
 
-.button:hover {
+.button:hover, .button-link:hover {
+  font-family: "gilroy";
   border: 1px solid #FB9BA7;
   background-color: #FB9BA7;
   box-shadow: 0 6px 20px 0 rgba(1, 58, 117, 0.33);
@@ -2991,6 +2993,24 @@ figcaption {
   transform: translate(0px, -4px);
   color: #fff;
 }
+
+.button-link {
+  padding: 5px 15px;
+  width: 150px;
+  height: 50px;
+  border: solid white;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0 4px 11px 0 rgba(1, 58, 117, 0.33);
+  -webkit-transition: all 200ms ease;
+  transition: all 200ms ease;
+  color: black;
+  font-size: 15px;
+  font-weight: 300;
+  font-family: "gilroy";
+}
+
+
 
 .button.ghost {
   border: 1px solid #096ad0;
