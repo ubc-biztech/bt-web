@@ -83,10 +83,47 @@ const prefixNameText = [
   "Sensational",
   "Kudos",
   "Fantastic",
+  "Cheers",
+  "Congrats",
+  "You did it",
+  "Way to go",
+  "You're a champ",
+  "Bravo",
+  "Brilliant",
+  "Incredible",
+  "Amazing",
+  "Sensational",
+  "Kudos",
+  "Fantastic",
   "Cheers"
 ];
 
 const suffixNameText = [
+  "Enjoy your spoils and keep up the good work!",
+  "You're well on your way to some awesome prizes!",
+  "Keep it up and you'll be on your way to some awesome prizes!",
+  "You are doing great! Keep it up!",
+  "Taking a step closer to some awesome tech prizes!",
+  "May your skills soar to new heights at Innovent!",
+  "Cheers to your amazing experience at Innovent!",
+  "The BizTech Team is cheering you on!",
+  "Loving the progress you're making at Innovent!",
+  "Showing the world what you're made of!",
+  "Really making a run for those prizes, aren't you?!",
+  "Taking initiative and shaping the future - keep it up!",
+  "Way to go, BizTech superstar!",
+  "You're making waves at Innovent 🌊",
+  "Making a name for yourself and unlocking awesome rewards, I see?",
+  "Your tech savvy is paving the way to rewards and recognition!",
+  "You're unlocking amazing opportunities - keep it up!",
+  "Onward and upward with those prizes!",
+  "Go get 'em! Those prizes aren't gonna win themselves!",
+  "Innovent is the perfect place to show off your skills!",
+  "You are making a difference at Innovent!",
+  "Impressive work - you're making a name for yourself!",
+  "You're really setting the tone for success at Innovent!",
+  "You've got the whole world talking!",
+  "The BizTech world is lucky to have you!",
   "Enjoy your spoils and keep up the good work!",
   "You're well on your way to some awesome prizes!",
   "Keep it up and you'll be on your way to some awesome prizes!",
@@ -176,6 +213,7 @@ const Redemption = ({ history, location }) => {
   const [congratNameText, setCongratNameText] = useState("");
   const [congratSuffixText, setCongratSuffixText] = useState("");
   const [timestampText, setTimestampText] = useState("");
+  const [negativePointsAwardedText, setNegativePointsAwardedText] = useState(0);
 
   const classes = useStyles();
 
@@ -228,7 +266,6 @@ const Redemption = ({ history, location }) => {
           determineCongratSuffixText(res.response.redeemed_points);
           determineTimestampText();
           setIsEmailModalOpen(false);
-          setNegativeQRModalOpen(false);
           setIsLoading(false);
         })
         .catch((err) => {
@@ -289,7 +326,7 @@ const Redemption = ({ history, location }) => {
 
   const determineCongratSuffixText = (points) => {
     if (points > 0) {
-      setCongratNameText(
+      setCongratSuffixText(
         suffixNameText[Math.floor(Math.random() * suffixNameText.length)]
       );
     } else {
@@ -301,10 +338,13 @@ const Redemption = ({ history, location }) => {
     if (points > 0) {
       setPointsAwardedText(`+${points} InnoBucks`);
     } else {
+      var pts = `${points} InnoBucks`;
       setPointsAwardedText(`${points} InnoBucks`);
+      setNegativePointsAwardedText(
+        pts.substring(1, `${points} InnoBucks`.length)
+      );
     }
   };
-
   const determineTimestampText = () => {
     const date = new Date().toLocaleString("en-US", { timeZone: "PST" });
     setTimestampText(date);
@@ -390,38 +430,45 @@ const Redemption = ({ history, location }) => {
           style={styles.modal}
           animate={{ opacity: isNegativeQRModalOpen ? 1 : 0 }}
         >
+          <img
+            src={InnoventLogo}
+            alt="Innovent Logo"
+            style={{ width: "20%", height: "auto", marginBottom: 60 }}
+          />
           <Typography className={classes.boldText}>
-            You are about to spend {pointsAwardedText}
+            You are about to spend {negativePointsAwardedText}
           </Typography>
           <div style={styles.modalText}>
             <Typography className={classes.centerText}>
               Confirm this purchase
             </Typography>
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={isLoading}
-            className={classes.button}
-            onClick={() => {
-              setNegativeQRModalOpen(false);
-              setIsNegativeQRPointsConfirmed(true);
-            }}
-          >
-            Yes
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            disabled={isLoading}
-            className={classes.button}
-            onClick={() => {
-              setError("QR code not redeemed.");
-              setNegativeQRModalOpen(false);
-            }}
-          >
-            No
-          </Button>
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={isLoading}
+              className={classes.button}
+              onClick={() => {
+                setNegativeQRModalOpen(false);
+                setIsNegativeQRPointsConfirmed(true);
+              }}
+            >
+              Yes
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={isLoading}
+              className={classes.button}
+              onClick={() => {
+                setError("QR code not redeemed.");
+                setNegativeQRModalOpen(false);
+              }}
+            >
+              No
+            </Button>
+          </div>
         </motion.div>
       </Modal>
 
@@ -540,14 +587,9 @@ const Redemption = ({ history, location }) => {
                   To redeem points, please enter the email you used to register
                   for InnoVent.
                 </Typography>
-                <TextField
+                <Button
                   className={classes.textfield}
                   style={{ marginTop: 20, marginBottom: 20 }}
-                  onChange={(e) => setInput(e.target.value)}
-                  value={input}
-                  variant="outlined"
-                />
-                <Button
                   variant="contained"
                   color="primary"
                   onClick={() => {
