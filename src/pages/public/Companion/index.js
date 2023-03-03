@@ -19,7 +19,7 @@ import CompanionFooter from "../../../assets/2023/blueprint/InnoventFooter.png";
 // import BizTechLogo from "../../../assets/2023/blueprint/BizTechLogo.png";
 import InnoventLogo from  "../../../assets/2023/innovent/InnoventLogo.png";
 
-import Printer from "../../../assets/2023/innovent/3d-printer.jpg";
+import Printer from "../../../assets/2023/innovent/3d-printer.png";
 import ArduinoNanoBle from "../../../assets/2023/innovent/arduino-nano-ble.jpg";
 import ArduinoNano from "../../../assets/2023/innovent/arduino-nano.jpg";
 import ArduinoUno from "../../../assets/2023/innovent/arduino-uno.jpg";
@@ -33,6 +33,11 @@ import LCD from "../../../assets/2023/innovent/lcd.jpeg";
 import MaskingTape from "../../../assets/2023/innovent/masking-tape.jpeg";
 import Servo from "../../../assets/2023/innovent/servo.jpeg";
 import Soldering from "../../../assets/2023/innovent/soldering.jpeg";
+import ABS from "../../../assets/2023/innovent/abs.png";
+import PLA from "../../../assets/2023/innovent/pla.png";
+import Sensor from "../../../assets/2023/innovent/sensor.png";
+import Sauder from "../../../assets/2023/innovent/sauder.png";
+import AMD from "../../../assets/2023/innovent/amd.png";
 
 
 
@@ -491,7 +496,7 @@ const Companion = () => {
 
               <FadeInWhenVisible id="welcome" className="section-30 wf-section">
                 <h1 className="heading-34">Hello, {regData.fname}!</h1>
-                <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see your personalized schedule, event layout, your current account balance, and a catalog of items.</div>
+                <div className="text-block-72">This will be your friend throughout the event! Check back regularly to see important links, your personalized schedule, your team's current account balance, and the catalog of purchasable materials.</div>
                 <div className="text-block-72">InnoVent is a design and case competition targeted towards business and engineering students who have an interest in entrepreneurship and a passion for design. A completely new event to both UBC Biztech and UBC IEEE, this event is an unconventional competition that demands innovation and  cross-functional collaboration.</div>
                 <div className="text-block-72">We hope you have an amazing time with us at InnoVent 2023!</div>
               </FadeInWhenVisible>
@@ -544,12 +549,12 @@ const Companion = () => {
                 <h1 className="heading-34" id="QuickLinks">QUICK LINKS</h1>
                 <div style={{width: renderMobileOnly ? "80%" : "20%", borderRadius: "9px", display: "flex", flexDirection: "row", textAlign: "center", justifyContent: "space-around"}}>
 
-                <a href="https://docs.google.com/document/d/170lTS-UWvujGdW6dvXEt5eGWq0xbceVfJDWdnXvXSJo/edit" target="_blank">
+                <a href="https://docs.google.com/document/d/170lTS-UWvujGdW6dvXEt5eGWq0xbceVfJDWdnXvXSJo/edit" target="_blank" rel="noopener noreferrer">
                 <div>
                   <button className="button-link" style={{marginBottom: "20px"}}>Applicant Package</button>
                   </div>
                 </a>
-                <a href="https://forms.gle/koR3hVSbw99MbAWQ8" target="_blank">
+                <a href="https://forms.gle/koR3hVSbw99MbAWQ8" target="_blank" rel="noopener noreferrer">
                   <div>
                   <button className="button-link" style={{marginBottom: "20px"}}>Submission Form</button>
                   </div>
@@ -681,6 +686,42 @@ const Companion = () => {
                 </TableContainer>
                 </div>
               </FadeInWhenVisible>
+
+              <FadeInWhenVisible id="Timeline" className="section-30 wf-section">
+                <div id = "Schedule" className='section-31' style={{overflowX:"auto", width: "60%", textAlign: "center"}}>
+                <h1 className="heading-34">MINI GAMES SCHEDULE</h1>
+                <h3 style={{color: "white"}}>Saturday, March 4th</h3>
+                <h5 style={{color: "white"}}>Macleod UBC IEEE Building</h5>
+                <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px', border: "solid", borderColor: "rgba(1, 1, 1, 0.1)", borderWidth: "3px"}}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align = "center" style={{ color: "white", fontWeight: "bold" }}>Time</TableCell>
+                      <TableCell align="center" style={{ color: "white", fontWeight: "bold" }}>Activity</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>11:30 am</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Are you smarter than a 1st Year Engineer?</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>2:30 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Paper Airplanes</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>4:30 pm</b></TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Are you smarter than a 1st Year Business Student?</TableCell>
+                    </TableRow>
+                    <TableRow>
+                    <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>6:30 pm</b></TableCell>
+                    <TableCell align="center" style={{ color: "white" }}>Pong Ball Spoon Game</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+                </TableContainer>
+                </div>
+              </FadeInWhenVisible>
             
 
                               <FadeInWhenVisible id="Catalog" className="section-31 wf-section">
@@ -691,7 +732,7 @@ const Companion = () => {
                                 <CatalogItem item={"Arduino Uno"} image={ArduinoUno} description={"A standard microcontroller that can be programmed in conjunction with circuit components such as LEDs, sensors, and digital displays."} quantity={"3 total"} price={"$35.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"Arduino Nano"} image={ArduinoNano} description={"Essentially a smaller version of the Arduino Uno"} quantity={"2 total"} price={"$40.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"Elegoo Uno"} image={ElegooUno} description={"A microcontroller with the same capabilities of the Arduino Uno, but requires more initial setup to use."} quantity={"2 total"} price={"$25.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"Sensor"} description={"Circuit components that perform specialized duties such as sensing temperature, heat, distance, humidity, etc."} quantity={"46 total"} price={"$4.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"Sensors (click for list)"} image={Sensor} description={"Circuit components that perform specialized duties such as sensing temperature, heat, distance, humidity, etc."} quantity={"46 total"} price={"$4.00/unit"} isMobile={renderMobileOnly} isSensor={true}></CatalogItem>
                                 <CatalogItem item={"LCD"} image={LCD} description={"A digital display component."} quantity={"3 Total"} price={"$10.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"Servo"} image={Servo} description={"A digital display component."} quantity={"6 Total"} price={"$5.00/unit"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"Cardstock"} image={Cardstock} description={"No description."} quantity={"unlimited"} price={"$2.00/sheet"} isMobile={renderMobileOnly}></CatalogItem>
@@ -700,20 +741,30 @@ const Companion = () => {
                                 <CatalogItem item={"Duct Tape"} image={DuctTape} description={"No description."} quantity={"unlimited"} price={"$1.50/long strip"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"Glue Gun Sticks"} image={GlueGunSticks} description={"No description."} quantity={"unlimited"} price={"$1.00/stick"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"Soldering"} image={Soldering} description={"Thin board that hosts circuits (similar to a breadboard)."} quantity={"unlimited"} price={"$1.00/board"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"3D Printing (PLA)"} description={"Rapid prototyping method that uses PLA filament to print virtual builds."} quantity={"unlimited"} price={"$3.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
-                                <CatalogItem item={"3D Printing (ABS)"} description={"Rapid prototyping method that uses ABS filament to print virtual builds."} quantity={"unlimited"} price={"$5.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing (PLA)"} image={PLA} description={"Rapid prototyping method that uses PLA filament to print virtual builds."} quantity={"unlimited"} price={"$3.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
+                                <CatalogItem item={"3D Printing (ABS)"} image={ABS} description={"Rapid prototyping method that uses ABS filament to print virtual builds."} quantity={"unlimited"} price={"$5.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"3D Printing"} image={Printer} description={"Rapid prototyping method that uses filament to print virtual builds."} quantity={"unlimited"} price={"$8.00/10g"} isMobile={renderMobileOnly}></CatalogItem>
                                 <CatalogItem item={"K’nex Blocks"} image={KnexBlocks} description={"Rapid prototyping blocks that connect to each other."} quantity={"unlimited"} price={"$5.00/small bag"} isMobile={renderMobileOnly}></CatalogItem>
                 
                                 </div>
                 
                               </FadeInWhenVisible>
-                <div id="Rules" className="section-31 wf-section" style={{marginTop: "20px", textAlign: "center"}}>
-                {/* <h1 className="heading-34">REMINDERS</h1>
-                <img src={TimeAndLocation} alt="Blueprint footer" style={{ width: "60%", height: "auto", marginBottom: "25px"}}/> */}
-                Contact kamryn@ubcbiztech.com for any questions or concerns.
+
+                <div id="sponsors" className="section-31 wf-section" style={{marginTop: "20px", textAlign: "center"}}>
+
+              <FadeInWhenVisible id="welcome" className="section-30 wf-section">
+                <h1 className="heading-34" id="QuickLinks">SPONSORS</h1>
+                <div style={{width: renderMobileOnly ? "80%" : "20%", borderRadius: "9px", display: "flex", flexDirection: renderMobileOnly ? "column" : "row", justifyContent: "center", alignItems: "center"}}>
+                <img src={AMD} alt="AMD Logo" width="75%" style={{marginRight: renderMobileOnly ? "" : "20%"}}/>
+                <img src={Sauder} alt="Sauder Logo" width="100%"/>
+                </div>
+              </FadeInWhenVisible>
               </div>
 
+                <div id="Rules" className="section-31 wf-section" style={{marginTop: "20px", textAlign: "center"}}>
+        
+                Contact kamryn@ubcbiztech.com for any questions or concerns.
+              </div>
               <img src={CompanionFooter} alt="Blueprint footer" style={{ width: "100%", height: "auto", marginBottom: "-10px"}}/>
             </div>
           )}

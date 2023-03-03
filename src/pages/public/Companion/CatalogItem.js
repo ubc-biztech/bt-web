@@ -5,7 +5,12 @@ function CatalogItem (props) {
 
             <div className="title" style={{width: "100%", height: "200px", backgroundColor: "white", padding: "6px", borderRadius: "8px 8px 0px 0px"}}>
             <div class="overlay">
+                {props.isSensor && <a href="https://docs.google.com/spreadsheets/d/1w5DVbzyhot8gXKIa7hCGjDOgqdQ1NppAL84kZuYqN_8/edit" target="_blank" rel="noopener noreferrer">
                 <div className="hidden-text" style={{marginBottom: "5px"}}>{props.description}</div>
+                </a> }
+
+                {!props.isSensor && <div className="hidden-text" style={{marginBottom: "5px"}}>{props.description}</div>}
+                
             </div>
             <img src={props.image} alt="catalog item" width="100%" style={{width:"100%", height: "100%", objectFit: "contain"}}></img>
             </div>
@@ -13,7 +18,6 @@ function CatalogItem (props) {
                 <div style={{fontWeight: "bold", marginBottom: "5px"}}>{props.item}</div>
                 <div style={{fontWeight: "bold"}}>{props.price}</div>
                 <div>{props.quantity}</div>
-       
             </div>
             
         </div>
