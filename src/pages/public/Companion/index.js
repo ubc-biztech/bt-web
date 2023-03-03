@@ -198,7 +198,6 @@ const Companion = () => {
         "user_id": email,
       }, false)
         .then((response) => {
-          console.log("aaa", response);
           // setTeamData(response);
           setTeamData(response.response);
           setTeamName(response.response.teamName);
@@ -232,10 +231,6 @@ const Companion = () => {
     }
   }, [email, registrations, isEditCancelled]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    console.log("team data here", teamData);
-  }, [teamData]);
-
 
   const handleTeamNameChange = (event) => {
     setTeamName(event.target.value);
@@ -251,7 +246,7 @@ const Companion = () => {
         "team_name": teamName
       }, false)
         .then((response) => {
-          console.log("teamName changed successfully", response);
+          console.log(`teamName changed successfully to ${response.response.teamName}`);
         })
         .catch((err) => {
           console.log('did not change team name'); 
