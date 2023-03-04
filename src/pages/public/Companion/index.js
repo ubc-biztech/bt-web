@@ -292,7 +292,7 @@ const Companion = () => {
         <div className="text-block-72 red">A page error occured, please refresh the page. If the problem persists, contact a BizTech exec for support.</div>
       </div>
     )
-  }
+    }
 
   return (
     <div className="div-block-89 attendees">
@@ -658,7 +658,7 @@ const Companion = () => {
                   <TableBody>
                     <TableRow>
                       <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>11:00 pm - 1:00 pm</b></TableCell>
-                      <TableCell align="center" style={{ color: "white" }}>Sign-In + Work Session</TableCell>
+                      <TableCell align="center" style={{ color: "white" }}>Async Work Session</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell component="th" scope="row" align = "center" style={{ color: "white" }}><b>1:00 pm - 1:30 pm</b></TableCell>
@@ -764,7 +764,7 @@ const Companion = () => {
               </FadeInWhenVisible>
               </div>
 
-                <div id="Rules" className="section-31 wf-section" style={{marginTop: "20px", textAlign: "center"}}>
+                <div id="Rules" className="section-31 wf-section" style={{marginTop: "20px", textAlign: "center", color: "white"}}>
         
                 Contact kamryn@ubcbiztech.com for any questions or concerns.
               </div>
