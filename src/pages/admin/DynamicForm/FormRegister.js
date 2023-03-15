@@ -31,6 +31,8 @@ import Loading from "pages/Loading";
 import {
   REGISTRATION_STATUS,
   CLIENT_URL,
+  BASIC_QUESTIONS,
+  QUESTION_DOMAINS
 } from "constants/index";
 
 const styles = {
@@ -60,29 +62,6 @@ const styles = {
   submitSection: {
     padding: "2rem"
   },
-  modal: {
-    display: "flex",
-    flexDirection: "column",
-    width: "50%",
-    backgroundColor: "#172037",
-    borderColor: "#172037",
-    margin: "auto",
-    borderRadius: 5,
-    padding: 10,
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-  },
-  modalText: {
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  modalButtons: {
-    display: "flex",
-    flexDirection: "row",
-    gap: 10,
-  }
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -127,6 +106,39 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     marginRight: 4,
   },
+  modal: {
+    display: "flex",
+    flexDirection: "column",
+    width: "80%",
+    maxWidth: 400,
+    backgroundColor: "#172037",
+    borderColor: "#172037",
+    margin: "auto",
+    borderRadius: 5,
+    padding: 10,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
+  },
+  modalHeader: {
+    textAlign: "center",
+    marginBottom: 20,
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  modalText: {
+    marginBottom: 20,
+  },
+  modalButtons: {
+    display: "flex",
+    justifyContent: "space-between",
+    '& > button': {
+      width: '30%',
+      borderRadius: '5px',
+      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)'
+    }
+  }
 }));
 
 const FormRegister = (props) => {
@@ -135,66 +147,11 @@ const FormRegister = (props) => {
   const [currEvent, setCurrEvent] = useState(event);
   const [registeredEvents, setRegisteredEvents] = useState(userRegisteredEvents)
   const [regAlert, setRegAlert] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [questionDomain, setQuestionDomain] = useState("")
+  const [isNonMemberModalOpen, setisNonMemberModalOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const basicQuestions = [
-    {
-      questionType: "TEXT",
-      question: "Email Address",
-      choices: "",
-      required: true
-    },
-    {
-      questionType: "TEXT",
-      question: "First Name",
-      choices: "",
-      required: true
-    },
-    {
-      questionType: "TEXT",
-      question: "Last Name",
-      choices: "",
-      required: true
-    },
-    {
-      questionType: "SELECT",
-      question: "Year Level",
-      choices: "1st Year,2nd Year,3rd Year,4th Year,5+ Year,Other,Not Applicable",
-      required: true,
-    },
-    {
-      questionType: "SELECT",
-      question: "Faculty",
-      choices: "Arts,Commerce,Science,Engineering,Kinesiology,Land and Food Systems,Forestry,Other,Not Applicable",
-      required: true,
-    },
-    {
-      questionType: "TEXT",
-      question: "Major/Specialization",
-      choices: "",
-      required: true,
-    },
-    {
-      questionType: "SELECT",
-      question: "Preferred Pronouns",
-      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
-      required: true,
-    },
-    {
-      questionType: "SELECT",
-      question: "Any dietary restrictions?",
-      choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
-      required: true,
-    },
-    {
-      questionType: "SELECT",
-      question: "How did you hear about this event?",
-      choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
-      required: true,
-    },
-  ]
 
-  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required,questionId,questionImageUrl,charLimit}) => ({
+  const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(({type,label,choices,required,questionId,questionImageUrl,charLimit,domain}) => ({
         questionType: type,
         question: label,
         choices: choices,
@@ -202,7 +159,10 @@ const FormRegister = (props) => {
         questionId: questionId,
         questionImageUrl: questionImageUrl,
         charLimit: charLimit,
+        questionDomain: domain,
     }))
+  
+  const domainSpecificQuestions = parsedRegistrationQuestions?.filter((question) => question.questionDomain === undefined || question.questionDomain === questionDomain )
 
   const formData = {
     image_url: currEvent.imageUrl || "",
@@ -214,7 +174,7 @@ const FormRegister = (props) => {
     end: currEvent.endDate ? new Date(currEvent.endDate) : new Date(),
     location: currEvent.elocation || "",
     deadline: currEvent.deadline ? new Date(currEvent.deadline) : new Date(),
-    questions: basicQuestions.concat(parsedRegistrationQuestions || [])
+    questions: BASIC_QUESTIONS.concat(domainSpecificQuestions || [])
   }
 
   const classes = useStyles();
@@ -275,7 +235,7 @@ const FormRegister = (props) => {
         setRegAlert(null)
       }
       if (!(user?.isMember || user?.admin || currEvent.pricing?.nonMembers === undefined || samePricing())) {
-        setIsModalOpen(true)
+        setisNonMemberModalOpen(true)
       }
     }
   }, [currEvent]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -340,9 +300,7 @@ const FormRegister = (props) => {
   const loadQuestions = () => {
     const returnArr = [];
     for (let i = 0; i < formData.questions.length; i++) {
-      const { question, questionType, required, choices, questionImageUrl, charLimit } = formData.questions[
-        i
-      ];
+      const { question, questionType, required, choices, questionImageUrl, charLimit } = formData.questions[i];
       const choicesArr = choices ? choices.split(",") : [];
       if (questionType === "CHECKBOX") {
         returnArr.push(
@@ -601,7 +559,7 @@ const FormRegister = (props) => {
     setIsSubmitting(true)
     if (isValidSubmission()) {
       const dynamicResponses = {}
-      for (let i = basicQuestions.length; i < formData.questions.length; i++) {
+      for (let i = BASIC_QUESTIONS.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
           dynamicResponses[formData.questions[i].questionId] = responseData[i]?.join(', ')
         } else {
@@ -655,7 +613,7 @@ const FormRegister = (props) => {
     setIsSubmitting(true)
     if (isValidSubmission()) {
       const dynamicResponses = {}
-      for (let i = basicQuestions.length; i < formData.questions.length; i++) {
+      for (let i = BASIC_QUESTIONS.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
           dynamicResponses[formData.questions[i].questionId] = responseData[i]?.join(', ')
         } else {
@@ -853,16 +811,16 @@ const FormRegister = (props) => {
     return (
       <Fragment>
           <Modal
-          open={isModalOpen}
+          open={isNonMemberModalOpen}
           >
-          <div style={styles.modal}>
-            <Typography className={classes.boldText}>Hey there!</Typography>
-            <div style={styles.modalText}>
+          <div className={classes.modal}>
+            <Typography className={classes.modalHeader}>Hey there!</Typography>
+            <div className={classes.modalText}>
               <Typography>We noticed you aren't a member yet. This may be because you aren't signed in, or your account hasn't been registered to become a member for this academic year.</Typography>
               <Typography>This event is available to non-members, but please note that you will be paying ${(currEvent?.pricing?.nonMembers - currEvent?.pricing?.members).toFixed(2)} more.</Typography>
               <Typography>Consider registering as a member this year to get access to ALL of our events at the best price!</Typography>
             </div>
-            <div style={styles.modalButtons}>
+            <div className={classes.modalButtons}>
               <Button variant="contained" color="primary" onClick={() => history.push('/signup')}>
                 Register
               </Button>
@@ -871,23 +829,41 @@ const FormRegister = (props) => {
                   Sign-in
                 </Button>
               )}
-              <Button variant="contained" color="primary" onClick={() => setIsModalOpen(false)}>
+              <Button variant="contained" color="primary" onClick={() => setisNonMemberModalOpen(false)}>
                 Continue anyway
               </Button>
             </div>
           </div>
         </Modal>
-          <div style={styles.section}>
-            <Typography style={{ fontWeight: 'bold' }}>
-              Registration open now until {formData.deadline.toLocaleString(navigator.language, {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute:'2-digit'
-            })}
-            </Typography>
+        <Modal
+          open={event.hasDomainSpecificQuestions === true && !questionDomain && !isNonMemberModalOpen}
+          >
+          <div className={classes.modal}>
+            <Typography className={classes.modalHeader}>What role would you like to apply for?</Typography>
+            <div className={classes.modalButtons}>
+              <Button variant="contained" color="primary" onClick={() => { setQuestionDomain(QUESTION_DOMAINS.SWE) }}>
+                Software Engineer
+              </Button>
+              <Button variant="contained" color="primary" onClick={() => { setQuestionDomain(QUESTION_DOMAINS.PM) }}>
+                Project Manager
+              </Button>
+              <Button variant="contained" color="primary" onClick={() => { setQuestionDomain(QUESTION_DOMAINS.UX) }}>
+                UI/UX Designer
+              </Button>
+            </div>
           </div>
+        </Modal>
+        <div style={styles.section}>
+          <Typography style={{ fontWeight: 'bold' }}>
+            Registration open now until {formData.deadline.toLocaleString(navigator.language, {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute:'2-digit'
+          })}
+          </Typography>
+        </div>
         <div style={styles.section}>{loadQuestions()}</div>
         <div style={styles.divider}></div>
         <div style={styles.submitSection}>
