@@ -180,7 +180,8 @@ const useStyles = makeStyles((theme) => ({
     // bold italicize
     fontWeight: "bold",
     fontStyle: "italic",
-    fontSize: "1.5rem"
+    fontSize: "1.5rem",
+    color: constantStyles.textColor,
   },
   boldText: {
     fontWeight: "bold",
@@ -558,7 +559,7 @@ const Redemption = ({ history, location }) => {
                       </Typography>
                     ) : (
                       <>
-                        <Typography variant="h1">{congratNameText}</Typography>
+                        <Typography className={classes.welcome}>{congratNameText}</Typography>
 
                         <Typography className={classes.themeText}>
                           {congratSuffixText}
