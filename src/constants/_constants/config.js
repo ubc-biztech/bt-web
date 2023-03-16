@@ -3,9 +3,9 @@
 //     ? aws_config
 //     : aws_exports
 
-export const API_URL = "https://api-dev.ubcbiztech.com"
+export const API_URL = process.env.REACT_APP_STAGE === 'production' ? "https://api.ubcbiztech.com" : "https://api-dev.ubcbiztech.com"
 
-export const CLIENT_URL = "https://dev.app.ubcbiztech.com/"
+export const CLIENT_URL = process.env.REACT_APP_STAGE === 'production' ? "https://app.ubcbiztech.com/" : "https://dev.app.ubcbiztech.com/"
 
 export const AWS_CONFIG = {
   Auth: {

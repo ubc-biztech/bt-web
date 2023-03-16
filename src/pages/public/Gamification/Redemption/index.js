@@ -13,10 +13,11 @@ import {
 import { fetchBackend } from "utils";
 import Loading from "pages/Loading";
 
-import InnoventLogo from "assets/2023/innovent/InnoventLogo.png";
+import BizTechDBLogo from "assets/2023/data&beyond/BizTechD&BLogo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
 import { COLORS } from "../../../../constants/_constants/theme";
+import { constantStyles } from '../../../../constants/_constants/companion';
 
 const styles = {
   container: {
@@ -28,7 +29,7 @@ const styles = {
     alignItems: "center", // mobile-centric padding
     padding: "0 10px", // adding spacing between children
     // bring up the height of the container
-    backgroundImage: "linear-gradient(4.01deg, #7193AE, #011627)"
+    backgroundImage: constantStyles.backgroundGradient,
   },
   inputContainer: {
     display: "flex",
@@ -67,7 +68,8 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundImage: constantStyles.backgroundGradient,
   }
 };
 
@@ -104,24 +106,24 @@ const suffixNameText = [
   "Keep it up and you'll be on your way to some awesome prizes!",
   "You are doing great! Keep it up!",
   "Taking a step closer to some awesome tech prizes!",
-  "May your skills soar to new heights at Innovent!",
-  "Cheers to your amazing experience at Innovent!",
+  "May your skills soar to new heights at Data and Beyond!",
+  "Cheers to your amazing experience at Data and Beyond!",
   "The BizTech Team is cheering you on!",
-  "Loving the progress you're making at Innovent!",
+  "Loving the progress you're making at Data and Beyond!",
   "Showing the world what you're made of!",
   "Really making a run for those prizes, aren't you?!",
   "Taking initiative and shaping the future - keep it up!",
   "Way to go, BizTech superstar!",
-  "You're making waves at Innovent 🌊",
+  "You're making waves at Data and Beyond 🌊",
   "Making a name for yourself and unlocking awesome rewards, I see?",
   "Your tech savvy is paving the way to rewards and recognition!",
   "You're unlocking amazing opportunities - keep it up!",
   "Onward and upward with those prizes!",
   "Go get 'em! Those prizes aren't gonna win themselves!",
-  "Innovent is the perfect place to show off your skills!",
-  "You are making a difference at Innovent!",
+  "Data and Beyond is the perfect place to show off your skills!",
+  "You are making a difference at Data and Beyond!",
   "Impressive work - you're making a name for yourself!",
-  "You're really setting the tone for success at Innovent!",
+  "You're really setting the tone for success at Data and Beyond!",
   "You've got the whole world talking!",
   "The BizTech world is lucky to have you!",
   "Enjoy your spoils and keep up the good work!",
@@ -129,24 +131,24 @@ const suffixNameText = [
   "Keep it up and you'll be on your way to some awesome prizes!",
   "You are doing great! Keep it up!",
   "Taking a step closer to some awesome tech prizes!",
-  "May your skills soar to new heights at Innovent!",
-  "Cheers to your amazing experience at Innovent!",
+  "May your skills soar to new heights at Data and Beyond!",
+  "Cheers to your amazing experience at Data and Beyond!",
   "The BizTech Team is cheering you on!",
-  "Loving the progress you're making at Innovent!",
+  "Loving the progress you're making at Data and Beyond!",
   "Showing the world what you're made of!",
   "Really making a run for those prizes, aren't you?!",
   "Taking initiative and shaping the future - keep it up!",
   "Way to go, BizTech superstar!",
-  "You're making waves at Innovent 🌊",
+  "You're making waves at Data and Beyond 🌊",
   "Making a name for yourself and unlocking awesome rewards, I see?",
   "Your tech savvy is paving the way to rewards and recognition!",
   "You're unlocking amazing opportunities - keep it up!",
   "Onward and upward with those prizes!",
   "Go get 'em! Those prizes aren't gonna win themselves!",
-  "Innovent is the perfect place to show off your skills!",
-  "You are making a difference at Innovent!",
+  "Data and Beyond is the perfect place to show off your skills!",
+  "You are making a difference at Data and Beyond!",
   "Impressive work - you're making a name for yourself!",
-  "You're really setting the tone for success at Innovent!",
+  "You're really setting the tone for success at Data and Beyond!",
   "You've got the whole world talking!",
   "The BizTech world is lucky to have you!"
 ];
@@ -159,9 +161,20 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 8,
     marginBottom: 8
   },
+  welcome: {
+    textAlign: "center", // readable font size for mobile
+    fontSize: "1.8rem",
+    fontWeight: "bold",
+    color: constantStyles.textColor,
+  },
   centerText: {
     textAlign: "center", // readable font size for mobile
-    fontSize: "1.3rem"
+    fontSize: "1.3rem",
+  },
+  themeText: {
+    textAlign: "center", // readable font size for mobile
+    fontSize: "1.3rem",
+    color: constantStyles.textColor,
   },
   pointsText: {
     // bold italicize
@@ -187,6 +200,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: COLORS.FONT_GRAY,
       color: COLORS.WHITE
     }
+  },
+  DBButton: {
+    marginBottom: 16,
   }
 }));
 
@@ -218,6 +234,16 @@ const Redemption = ({ history, location }) => {
   const classes = useStyles();
 
   const { eventID, year, qrID } = location?.state || {};
+
+  // Temp for Data and Beyond
+  const id = qrID.slice(6)
+  const links = {
+    "data-challenge-1": "https://docs.google.com/forms/d/e/1FAIpQLScdJC-w2ypk9109ud-77VfgK4srdaujYeE8LBFXkbHf8fhY0w/viewform",
+    "data-challenge-2": "https://docs.google.com/forms/d/e/1FAIpQLSdAmNcw4iwlsIej01iOOte7QVpTC3gBUU99zTrP88STCMtetQ/viewform",
+    "data-challenge-3": "https://docs.google.com/forms/d/e/1FAIpQLSdpbfthDx27LrMzyvMkK_W9jFytG5D4805qNNDY26VCQKmnKQ/viewform",
+    "data-challenge-4": "https://docs.google.com/forms/d/e/1FAIpQLSedwv5fsVU99OJrgIu5HozWoMM06C0xkULP3vT4u_quv5HVWw/viewform",
+    "data-challenge-5": "https://docs.google.com/forms/d/e/1FAIpQLSf3tESUF_w_4JK7H9ngtg9oqcl7ld4hGssIcr6dl1zGtedAgA/viewform",
+  }
 
   const fetchRegistrations = async () => {
     const params = new URLSearchParams({
@@ -260,7 +286,7 @@ const Redemption = ({ history, location }) => {
         false
       )
         .then((res) => {
-          localStorage.setItem("INNOVENT2023EMAIL", email);
+          localStorage.setItem("D&B2023EMAIL", email);
           determinePointsAwardedText(res.response.redeemed_points);
           determineCongratText(res.response.first_name);
           determineCongratSuffixText(res.response.redeemed_points);
@@ -281,7 +307,7 @@ const Redemption = ({ history, location }) => {
   };
 
   useEffect(() => {
-    const email = localStorage.getItem("INNOVENT2023EMAIL");
+    const email = localStorage.getItem("D&B2023EMAIL");
     if (email) {
       setEmail(email);
     }
@@ -336,12 +362,12 @@ const Redemption = ({ history, location }) => {
 
   const determinePointsAwardedText = (points) => {
     if (points > 0) {
-      setPointsAwardedText(`+${points} InnoBucks`);
+      setPointsAwardedText(`+${points} Points`);
     } else {
-      var pts = `${points} InnoBucks`;
-      setPointsAwardedText(`${points} InnoBucks`);
+      var pts = `${points} Points`;
+      setPointsAwardedText(`${points} Points`);
       setNegativePointsAwardedText(
-        pts.substring(1, `${points} InnoBucks`.length)
+        pts.substring(1, `${points} Points`.length)
       );
     }
   };
@@ -364,7 +390,7 @@ const Redemption = ({ history, location }) => {
           err.message.message &&
           err.message.message.includes("already scanned")
         ) {
-          // TEMPORARY for innovent: remove this conditional branch once we have a better way to handle this
+          // TEMPORARY for Data and Beyond: remove this conditional branch once we have a better way to handle this
           // this is neccessary because the backend error message for already scanned QRs is not
           // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
           setError(
@@ -431,9 +457,9 @@ const Redemption = ({ history, location }) => {
           animate={{ opacity: isNegativeQRModalOpen ? 1 : 0 }}
         >
           <img
-            src={InnoventLogo}
-            alt="Innovent Logo"
-            style={{ width: "20%", height: "auto", marginBottom: 60 }}
+            src={BizTechDBLogo}
+            alt="Data and Beyond Logo"
+            style={{ width: "20%", height: "auto" }}
           />
           <Typography className={classes.boldText}>
             You are about to spend {negativePointsAwardedText}
@@ -511,8 +537,8 @@ const Redemption = ({ history, location }) => {
                     transition={{ duration: 0.5, ease: "easeOut" }}
                   >
                     <img
-                      src={InnoventLogo}
-                      alt="Innovent Logo"
+                      src={BizTechDBLogo}
+                      alt="Data and Beyond Logo"
                       style={{ width: "50%", height: "auto", marginBottom: 20 }}
                     />
                   </motion.div>
@@ -525,7 +551,7 @@ const Redemption = ({ history, location }) => {
                   >
                     {error ? (
                       <Typography
-                        className={classes.centerText}
+                        className={classes.themeText}
                         style={{ margin: "20px 0" }}
                       >
                         {error}
@@ -534,7 +560,7 @@ const Redemption = ({ history, location }) => {
                       <>
                         <Typography variant="h1">{congratNameText}</Typography>
 
-                        <Typography className={classes.centerText}>
+                        <Typography className={classes.themeText}>
                           {congratSuffixText}
                         </Typography>
 
@@ -554,6 +580,19 @@ const Redemption = ({ history, location }) => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                   >
+                    {links[id] &&
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        className={classes.DBButton}
+                        onClick={() => {
+                          window.open(links[id]);
+                        }}
+                      >
+                        Proceed to Challenge
+                      </Button>
+                    }
                     <Button
                       variant="contained"
                       color="primary"
@@ -565,7 +604,7 @@ const Redemption = ({ history, location }) => {
                       Return to Companion
                     </Button>
                     <Typography
-                      className={classes.centerText}
+                      className={classes.themeText}
                       style={{ margin: "20px 0" }}
                     >
                       {timestampText}
@@ -577,15 +616,15 @@ const Redemption = ({ history, location }) => {
           ) : (
             <>
               <img
-                src={InnoventLogo}
-                alt="Innovent Logo"
-                style={{ width: "35%", height: "auto", marginBottom: 20 }}
+                src={BizTechDBLogo}
+                alt="Data and Beyond Logo"
+                style={{ width: "35%", height: "auto" }}
               />
               <div style={styles.inputContainer}>
-                <Typography variant="h1">Welcome!</Typography>
-                <Typography className={classes.centerText}>
+                <Typography className={classes.welcome}>Welcome!</Typography>
+                <Typography className={classes.themeText}>
                   To redeem points, please enter the email you used to register
-                  for InnoVent.
+                  for Data and Beyond.
                 </Typography>
                 <TextField
                   className={classes.textfield}
