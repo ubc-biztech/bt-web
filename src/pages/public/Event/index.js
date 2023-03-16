@@ -92,7 +92,7 @@ const MemberRoutes = (props) => {
       />
       <Route 
         exact
-        path='/event/:id/:year/register/success/:type'
+        path='/event/:id/:year/register/success/:type?'
         render={() => (
           <EventRegisterSuccess
             user={user}

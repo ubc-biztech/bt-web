@@ -18,6 +18,7 @@ import FormSuccess from "pages/public/RegistrationForms/FormSuccess"
 import RegistrationForm from "pages/public/RegistrationForms"
 import Companion from "pages/public/Companion"
 import CompanionReset from "./pages/public/Companion/ResetPage";
+import Leaderboard from "pages/public/Companion/Leaderboard";
 
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
@@ -114,132 +115,150 @@ class Router extends Component {
     // Alert the user about the need to register if they haven't
     const userNotMember = user && !user.isMember && !user.admin
     // check if the user state has been updated
+    const companionPaths = ['/redeem', '/redemption', '/companion', '/leaderboard']
+    
+    const routes = 
+    <Switch>
+      <Route
+        exact
+        path="/redeem/:eventID/:year/:qrID"
+        render={() => <Redeem/>} 
+      />
+      <Route
+        exact
+        path="/redemption"
+        render={() => <Redemption />}
+      />
+      <Route
+          exact
+          path="/companion/reset"
+          render={() => <CompanionReset />}
+      />
+      <Route
+        path="/companion"
+        render={() => <Companion />} 
+      />
+      <Route
+        path="/leaderboard"
+        render={() => <Leaderboard />}
+      />
+      {/* ADMIN ROUTES */}
+      {user && <Route path="/admin" component={AdminRoutes} />}
+
+      {/* MEMBER ROUTES */}
+      {user && <Route path="/member" component={MemberRoutes} />}
+
+      {/* PUBLIC EVENT-SPECIFIC ROUTES */}
+      {<Route path="/event/:id/:year" component={PublicEventRoutes} />}
+
+      {/* COMMON ROUTES */}
+      <Route
+        exact
+        path="/signup"
+        featureFlag={"REACT_APP_SHOW_MAXVP"}
+        render={() => <RegistrationForm user={user}/>}
+      />
+      <Route
+        exact
+        path="/signup/success/:formType/:email"
+        featureFlag={"REACT_APP_SHOW_MAXVP"}
+        render={() => <FormSuccess />}
+      />
+      <Route
+        exact
+        path="/events"
+        featureFlag={"REACT_APP_SHOW_MAXVP"}
+        render={() => <EventsDashboard />}
+      />
+      {/* MISCELLANEOUS ROUTES */}
+      <Route exact path="/forbidden" render={() => <Forbidden />} />
+
+      <Route
+        exact
+        path="/404"
+        render={() => (
+          <NotFound message="That page could not be found!" />
+        )}
+      />
+
+      {/* AUTHENTICATION ROUTES */}
+      {/* <Route (SIGNUP LOOKS UNUSED)
+      exact
+      path='/signup'
+      featureFlag={'REACT_APP_SHOW_MAXVP'}
+      render={() => <Signup />} /> */}
+      <Route
+        exact
+        path="/login-redirect"
+        render={() => <LoginRedirect />}
+      />
+      <Route exact path="/login" render={() => {
+        if (user) {
+          return <Redirect to="/" />;
+        } else {
+          return <Login />;
+        }
+      }} />
+      <Route
+        exact
+        path="/forgot-password"
+        render={() => {
+          if (user) {
+            return <Redirect to="/" />;
+          } else {
+            return <ForgotPassword />;
+          }
+        }}
+      />
+      {/*
+    <Route
+      path='/'
+      render={() => user
+        ? user.admin
+          ? <Redirect to='/admin/home' />
+          : <Redirect to='/member/home' />
+        : <Redirect to='/login' />
+      } />
+      */}
+      <Route
+        path="/"
+        render={() =>
+          user ? (
+            user.admin ? (
+              <Redirect to="/admin/home" />
+            ) : (
+              <Redirect to="/member/home" />
+            )
+          ) : (
+            <Redirect to="/login" />
+          )
+        }
+      />
+    </Switch>
+
     if (!loaded) return <Loading />;
     else {
       return (
         // eslint-disable-line curly
         <BrowserRouter>
           <ScrollToTop />
-          {user && <Nav admin={user.admin} />}
-          <div className="content">
-          {!user && <UserAlert />}
-          {userNotMember && <MemberAlert />}
-            {pathname === "/" || pathname === "" ? null : <Header />}
-            <Switch>
-              <Route
-                exact
-                path="/redeem/:eventID/:year/:qrID"
-                render={() => <Redeem/>} 
-              />
-              <Route
-                exact
-                path="/redemption"
-                render={() => <Redemption />}
-              />
-              <Route
-                  exact
-                  path="/companion/reset"
-                  render={() => <CompanionReset />}
-              />
-              <Route
-                path="/companion"
-                render={() => <Companion />} 
-              />
-              {/* ADMIN ROUTES */}
-              {user && <Route path="/admin" component={AdminRoutes} />}
-
-              {/* MEMBER ROUTES */}
-              {user && <Route path="/member" component={MemberRoutes} />}
-
-              {/* PUBLIC EVENT-SPECIFIC ROUTES */}
-              {<Route path="/event/:id/:year" component={PublicEventRoutes} />}
-
-              {/* COMMON ROUTES */}
-              <Route
-                exact
-                path="/signup"
-                featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <RegistrationForm user={user}/>}
-              />
-              <Route
-                exact
-                path="/signup/success/:formType/:email"
-                featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <FormSuccess />}
-              />
-              <Route
-                exact
-                path="/events"
-                featureFlag={"REACT_APP_SHOW_MAXVP"}
-                render={() => <EventsDashboard />}
-              />
-              {/* MISCELLANEOUS ROUTES */}
-              <Route exact path="/forbidden" render={() => <Forbidden />} />
-
-              <Route
-                exact
-                path="/404"
-                render={() => (
-                  <NotFound message="That page could not be found!" />
-                )}
-              />
-
-              {/* AUTHENTICATION ROUTES */}
-              {/* <Route (SIGNUP LOOKS UNUSED)
-              exact
-              path='/signup'
-              featureFlag={'REACT_APP_SHOW_MAXVP'}
-              render={() => <Signup />} /> */}
-              <Route
-                exact
-                path="/login-redirect"
-                render={() => <LoginRedirect />}
-              />
-              <Route exact path="/login" render={() => {
-                if (user) {
-                  return <Redirect to="/" />;
-                } else {
-                  return <Login />;
-                }
-              }} />
-              <Route
-                exact
-                path="/forgot-password"
-                render={() => {
-                  if (user) {
-                    return <Redirect to="/" />;
-                  } else {
-                    return <ForgotPassword />;
-                  }
-                }}
-              />
-              {/*
-            <Route
-              path='/'
-              render={() => user
-                ? user.admin
-                  ? <Redirect to='/admin/home' />
-                  : <Redirect to='/member/home' />
-                : <Redirect to='/login' />
-              } />
-              */}
-              <Route
-                path="/"
-                render={() =>
-                  user ? (
-                    user.admin ? (
-                      <Redirect to="/admin/home" />
-                    ) : (
-                      <Redirect to="/member/home" />
-                    )
-                  ) : (
-                    <Redirect to="/login" />
-                  )
-                }
-              />
-            </Switch>
-            {pathname === "/" || pathname === "" ? null : <Footer />}
-          </div>
+          {!companionPaths.find((p) => pathname.includes(p)) ? (
+            <>
+              {user && <Nav admin={user.admin} />}
+              <div className="content">
+              {!user && <UserAlert />}
+              {userNotMember && <MemberAlert />}
+                {pathname === "/" || pathname === "" ? null : <Header />}
+                {routes}
+                {pathname === "/" || pathname === "" ? null : <Footer />}
+              </div>
+            </>
+          ) :
+          (
+            <>
+            {routes}
+            </>
+          )}
         </BrowserRouter>
       );
     }

@@ -419,7 +419,7 @@ const FormRegister = (props) => {
                       margin="dense"
                       variant="outlined"
                       InputProps={{
-                        readOnly: true
+                        readOnly: user && !user.admin
                       }}
                       value={responseData[i]}
                       onChange={(e) => updateField(i, e.target.value)}

@@ -6,7 +6,7 @@ import "./RegisterAlert.scss";
 
 
 export default function UserAlert() {
-  const ignoreAlertPaths = ['/login', '/login-redirect', '/signup', '/signup/success', '/redeem', '/redemption', '/companion']
+  const ignoreAlertPaths = ['/login', '/login-redirect', '/signup', '/signup/success']
 
   const location = useLocation()
   const [path, setPath] = useState(location.pathname)
