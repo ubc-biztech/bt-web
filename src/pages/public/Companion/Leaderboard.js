@@ -117,7 +117,7 @@ const Leaderboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [timer, setTimer] = useState(30)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const TOTAL_POSSIBLE = 73 + 25
+  const TOTAL_POSSIBLE = 68 + 25
   const colours = {
     "0": "#3CB371",
   }

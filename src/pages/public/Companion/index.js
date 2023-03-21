@@ -230,7 +230,7 @@ const Companion = () => {
   const [placements, setPlacements] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const TOTAL_POSSIBLE = 73 + 25
+  const TOTAL_POSSIBLE = 68 + 25
 
   const classes = useStyles();
   const theme = useTheme();
@@ -484,7 +484,7 @@ const Companion = () => {
                       </Step>
                     </ProgressBar>
                     <div style={{...styles.text, marginTop: "25px", fontWeight: "bold", ...{fontSize: renderMobileOnly ? constantStyles.mobileFontSize + 4 : 20}}}>{renderPlacement()}</div>
-                    <div style={{...styles.text, marginTop: "10px", fontWeight: "bold", ...{fontSize: renderMobileOnly ? constantStyles.mobileFontSize + 4 : 20}}}>{teamPoints.possible === 0 ? `Your team collected a total of ${teamPoints.current} throughout the challenge. Fantastic work!` : `Your team is currently at ${teamPoints.current} points and can still gain up to ${teamPoints.possible} points. Keep progressing!`}</div>
+                    <div style={{...styles.text, marginTop: "10px", fontWeight: "bold", ...{fontSize: renderMobileOnly ? constantStyles.mobileFontSize + 4 : 20}}}>{teamPoints.possible === 0 ? `Your team collected a total of ${teamPoints.current} points throughout the challenge. Fantastic work!` : `Your team is currently at ${teamPoints.current} points and can still gain up to ${teamPoints.possible} points. Keep progressing!`}</div>
                     <div style={{...styles.text, ...(renderMobileOnly && {fontSize: constantStyles.mobileFontSize})}}>Please note that your current total and placement may not be completely accurate, as will manually assess the results and fix grading errors where necessary. Please refresh the page to update your total as you go. Thanks for your patience!</div>
                 </FadeInWhenVisible>
               }
