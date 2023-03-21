@@ -181,15 +181,6 @@ function Login() {
           });
         }
         setPassword("");
-
-        // const signUpResponse = Auth.signUp({
-        //   username: email,
-        //   password: password,
-        //   attributes: {
-        //     name: 'Alvin',
-        //   }
-        // })
-        // console.log(signUpResponse)
       }
     }
     setIsLoading(false);
