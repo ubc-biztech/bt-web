@@ -845,7 +845,7 @@ const FormRegister = (props) => {
                 Software Engineer
               </Button>
               <Button variant="contained" color="primary" onClick={() => { setQuestionDomain(QUESTION_DOMAINS.PM) }}>
-                Project Manager
+                Product Manager
               </Button>
               <Button variant="contained" color="primary" onClick={() => { setQuestionDomain(QUESTION_DOMAINS.UX) }}>
                 UI/UX Designer
