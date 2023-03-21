@@ -74,6 +74,19 @@ const RegistrationField = (props) => {
             );
           }
           break;
+        case REGISTRATION_STATUS.INCOMPLETE:
+          if (
+            window.confirm(
+              `This status is only used when the registrant has not paid. Are you sure ${props.fname} ${props.lname} has not paid?`
+            )
+          ) {
+            updateUserRegistrationStatus(
+              props.id,
+              props.fname,
+              REGISTRATION_STATUS.INCOMPLETE
+            );
+          }
+          break;
         default:
           return {};
       }
@@ -104,6 +117,9 @@ const RegistrationField = (props) => {
             </MenuItem>
         <MenuItem value={REGISTRATION_STATUS.CANCELLED}>
         Cancelled
+        </MenuItem>
+        <MenuItem value={REGISTRATION_STATUS.INCOMPLETE}>
+        Incomplete
         </MenuItem>
     </Select>
     )

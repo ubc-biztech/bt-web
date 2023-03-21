@@ -2,13 +2,15 @@ export const REGISTRATION_STATUS = {
   REGISTERED: 'registered',
   CHECKED_IN: 'checkedIn',
   WAITLISTED: 'waitlist',
-  CANCELLED: 'cancelled'
+  CANCELLED: 'cancelled',
+  INCOMPLETE: 'incomplete'
 }
 export const REGISTRATION_LABELS = {
   registered: 'Registered',
   checkedIn: 'Checked In',
   waitlist: 'Waitlisted',
   cancelled: 'Cancelled',
+  incomplete: 'Incomplete',
   1: '1st Year',
   2: '2nd Year',
   3: '3rd Year',
