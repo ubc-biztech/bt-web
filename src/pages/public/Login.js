@@ -220,7 +220,7 @@ function Login() {
               </div>
               Sign In with Google
             </Button>
-            <Button
+            {/* <Button
               onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
               style={styles.facebookButton}
             >
@@ -228,7 +228,7 @@ function Login() {
                 <img style={styles.socialIcon} alt="Facebook" src="./fb.png" />
               </div>
               Sign In with Facebook
-            </Button>
+            </Button> */}
             <Typography variant="h2" style={styles.loginMember}>
               Email Password Sign In
             </Typography>

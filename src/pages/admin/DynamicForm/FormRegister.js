@@ -52,7 +52,7 @@ const styles = {
     objectFit: "cover"
   },
   section: {
-    padding: "1rem 2rem",
+    padding: "1rem 2rem"
   },
   divider: {
     borderStyle: "none none solid none",
@@ -66,7 +66,7 @@ const styles = {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginBottom: "4rem",
+    marginBottom: "4rem"
   },
   textfield: {
     background: "#1F2A47",
@@ -651,13 +651,7 @@ const FormRegister = (props) => {
           dynamicResponses[formData.questions[i].questionId] = responseData[i];
         }
       }
-      const paymentBody = {
-        paymentName: `${currEvent.ename} ${user?.isMember || samePricing() ? "" : "(Non-member)"}`,
-        paymentImages: [formData.image_url],
-        paymentPrice: (user?.isMember ? currEvent.pricing?.members : currEvent.pricing.nonMembers) * 100,
-        paymentType: 'Event',
-        success_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}event/${currEvent.id}/${currEvent.year}/register/success`,
-        cancel_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}event/${currEvent.id}/${currEvent.year}/register`,
+      const registrationBody = {
         email: responseData[0],
         fname: responseData[1],
         studentId: user?.id,
@@ -674,46 +668,60 @@ const FormRegister = (props) => {
           major: responseData[5],
           gender: responseData[6],
           diet: responseData[7],
-          heardFrom: responseData[8],
+          heardFrom: responseData[8]
         },
-        dynamicResponses,
-      }
-      fetchBackend('/registrations', 'POST', registrationBody, false)
+        dynamicResponses
+      };
+      fetchBackend("/registrations", "POST", registrationBody, false)
         .then((response) => {
           if (response.url) {
-            setIsSubmitting(false)
+            setIsSubmitting(false);
             window.open(response.url, "_self");
           } else {
             const paymentBody = {
-              paymentName: `${currEvent.ename} ${user?.isMember || samePricing() ? "" : "(Non-member)"}`,
+              paymentName: `${currEvent.ename} ${
+                user?.isMember || samePricing() ? "" : "(Non-member)"
+              }`,
               paymentImages: [formData.image_url],
-              paymentPrice: (user?.isMember ? currEvent.pricing?.members : currEvent.pricing.nonMembers) * 100,
-              paymentType: 'Event',
-              success_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}event/${currEvent.id}/${currEvent.year}/register/success`,
-              cancel_url: `${process.env.REACT_APP_STAGE === 'local' ? 'http://localhost:3000/' : CLIENT_URL}event/${currEvent.id}/${currEvent.year}/register`,
+              paymentPrice:
+                (user?.isMember
+                  ? currEvent.pricing?.members
+                  : currEvent.pricing.nonMembers) * 100,
+              paymentType: "Event",
+              success_url: `${
+                process.env.REACT_APP_STAGE === "local"
+                  ? "http://localhost:3000/"
+                  : CLIENT_URL
+              }event/${currEvent.id}/${currEvent.year}/register/success`,
+              cancel_url: `${
+                process.env.REACT_APP_STAGE === "local"
+                  ? "http://localhost:3000/"
+                  : CLIENT_URL
+              }event/${currEvent.id}/${currEvent.year}/register`,
               email: responseData[0],
               fname: responseData[1],
               eventID: currEvent.id,
-              year: currEvent.year,
-            }
-            fetchBackend('/payments', 'POST', paymentBody, false)
+              year: currEvent.year
+            };
+            fetchBackend("/payments", "POST", paymentBody, false)
               .then(async (response) => {
-                setIsSubmitting(false)
+                setIsSubmitting(false);
                 window.open(response, "_self");
-              }).catch((err) => {
-              alert(
-                `An error has occured: ${err} Please contact an exec for support.`
-              )
-              setIsSubmitting(false)
-            })
+              })
+              .catch((err) => {
+                alert(
+                  `An error has occured: ${err} Please contact an exec for support.`
+                );
+                setIsSubmitting(false);
+              });
           }
         })
         .catch((err) => {
           alert(
             `An error has occured: ${err} Please contact an exec for support.`
-          )
-          setIsSubmitting(false)
-        })
+          );
+          setIsSubmitting(false);
+        });
     } else {
       setIsSubmitting(false);
       console.error("Form errors");
@@ -847,7 +855,7 @@ const FormRegister = (props) => {
 
   const userAlreadyRegistered = () =>
     registeredEvents?.data.find(
-      (e) => e["eventID;year"] === event.id + ";" + event.year
+      (e) => e["eventID;year"] === currEvent.id + ";" + currEvent.year
     );
 
   if (!currEvent) {
@@ -873,9 +881,13 @@ const FormRegister = (props) => {
           currEvent.ename || "this event"
         }.`;
       case REGISTRATION_STATUS.WAITLISTED:
-        return `You are currently waitlisted for ${currEvent.ename || 'this event'}.`
-      default: 
-        return `Already registered for ${currEvent.ename || 'this event'}!`
+        return `You are currently waitlisted for ${
+          currEvent.ename || "this event"
+        }.`;
+      case REGISTRATION_STATUS.INCOMPLETE:
+        return `You have not completed your payment yet!`;
+      default:
+        return `Already registered for ${currEvent.ename || "this event"}!`;
     }
   };
 
@@ -905,12 +917,16 @@ const FormRegister = (props) => {
               >
                 Re-register
               </Button>
-            }
-            {reg.registrationStatus === REGISTRATION_STATUS.INCOMPLETE &&
-              <Button variant="contained" color="primary" onClick={() => window.open(reg.checkoutLink, "_self")}>
+            )}
+            {reg.registrationStatus === REGISTRATION_STATUS.INCOMPLETE && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => window.open(reg.checkoutLink, "_self")}
+              >
                 Complete Payment
               </Button>
-            }
+            )}
           </div>
         </Fragment>
       );
@@ -938,12 +954,15 @@ const FormRegister = (props) => {
         </Fragment>
       );
     }
-    if (userAlreadyRegistered()) {
+    if (isEventFull()) {
       return (
         <Fragment>
           <div style={styles.section}>
-            <Typography className={classes.deadlineText}>
-              Already registered for this event!
+            <Typography className={classes.boldText}>Event is Full</Typography>
+            <Typography>
+              We sincerely apologize, {currEvent.ename || "this event"} is no
+              longer taking registrations. Please be on the lookout for our
+              other events throughout the year!
             </Typography>
           </div>
         </Fragment>
@@ -1021,7 +1040,13 @@ const FormRegister = (props) => {
               >
                 Software Engineer
               </Button>
-              <Button variant="contained" color="primary" onClick={() => { setQuestionDomain(QUESTION_DOMAINS.PM) }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setQuestionDomain(QUESTION_DOMAINS.PM);
+                }}
+              >
                 Product Manager
               </Button>
               <Button
@@ -1091,7 +1116,7 @@ const FormRegister = (props) => {
         <title>Register for {formData.name}</title>
       </Helmet>
       <Container maxWidth="sm">
-      {regAlert}
+        {regAlert}
         <Paper className={classes.paper}>
           {/* Image */}
           <div style={styles.imageContainer}>
