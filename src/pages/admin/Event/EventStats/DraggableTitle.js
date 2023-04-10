@@ -2,11 +2,12 @@ import React from 'react';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 
 const DraggableTitle = ({ title }) => {
-    return title;
-        // <div style={{display: "flex", flexDirection: "row", justifyContent: 'center', alignItems: 'center'}}>
-        //     <DragIndicatorIcon />
-        //     <span>{title}</span>
-        // </div>
+    return (
+        <div style={{display: "flex", flexDirection: "row", justifyContent: 'center', alignItems: 'center'}}>
+            <DragIndicatorIcon />
+            <span>{title}</span>
+        </div>
+    );
 };
 
 export default DraggableTitle;
