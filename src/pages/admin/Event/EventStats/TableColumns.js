@@ -119,7 +119,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: "Gender",
+      title: "Pronouns",
       field: "gender",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -209,7 +209,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: "Gender",
+      title: "Pronouns",
       field: "gender",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
