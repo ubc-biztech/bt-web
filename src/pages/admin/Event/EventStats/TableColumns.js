@@ -225,7 +225,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
         <>
-          {rowData.gender}
+          {rowData.companyName}
         </>
       )
     },
@@ -235,7 +235,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
         <>
-          {rowData.gender}
+          {rowData.role}
         </>
       )
     }
