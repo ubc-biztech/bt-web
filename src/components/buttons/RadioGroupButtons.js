@@ -5,7 +5,7 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  TextField,
+  TextField
 } from "@material-ui/core";
 
 export default function RadioGroupButtons(props) {
@@ -21,7 +21,7 @@ export default function RadioGroupButtons(props) {
     groupName,
     displayName,
     options,
-    otherOption,
+    otherOption
   } = props;
 
   const change = (name, e) => {

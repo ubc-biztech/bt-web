@@ -5,26 +5,33 @@ import { Alert } from "@material-ui/lab";
 import "./RegisterAlert.scss";
 
 export default function MemberAlert() {
-  const ignoreAlertPaths = ['/login', '/login-redirect', '/signup', '/signup/success', '/signup/success']
-  const location = useLocation()
-  const [path, setPath] = useState(location.pathname)
+  const ignoreAlertPaths = [
+    "/login",
+    "/login-redirect",
+    "/signup",
+    "/signup/success",
+    "/signup/success"
+  ];
+  const location = useLocation();
+  const [path, setPath] = useState(location.pathname);
 
   useEffect(() => {
-    setPath(location.pathname)
-  }, [location.pathname])
+    setPath(location.pathname);
+  }, [location.pathname]);
 
   useEffect(() => {
-    setPath(location.pathname)
-  }, [location.pathname])
+    setPath(location.pathname);
+  }, [location.pathname]);
 
   return (
     <>
-      {!ignoreAlertPaths.find((p) => (path.includes(p))) && 
+      {!ignoreAlertPaths.find((p) => path.includes(p)) && (
         <Alert severity="warning">
           You are currently not a member!&nbsp;
-          <Link to="/signup">Register here</Link>&nbsp;to renew your membership for the academic year!
+          <Link to="/login-redirect">Register here</Link>&nbsp;to become a
+          member for this academic year!
         </Alert>
-      }
+      )}
     </>
   );
 }
