@@ -62,7 +62,6 @@ export default function MembershipForm(props) {
     setMemberType,
     topics,
     setTopics,
-    values,
     errors
   } = props;
 
@@ -146,7 +145,6 @@ export default function MembershipForm(props) {
           <Grid item xs={12}>
             <CustomTextField
               {...props}
-              readOnly={true}
               label="Student Number *"
               groupName="student_number"
               autoComplete="student_number"
@@ -368,19 +366,6 @@ export default function MembershipForm(props) {
             groupName="heard_from"
           />
         </Grid>
-
-        {(values.heard_from === "Events" ||
-          values.heard_from === "Boothing" ||
-          values.heard_from === "Other") && (
-          <Grid item xs={12}>
-            <CustomTextField
-              {...props}
-              label="Please provide some more details of how you heard of BizTech (e.g. which event, boothing day, etc..) *"
-              groupName="heardFromSpecify"
-              autoComplete="heardFromSpecify"
-            />
-          </Grid>
-        )}
       </Grid>
       <br />
       {/* {memberType === MEMBER_TYPES.UBC && (

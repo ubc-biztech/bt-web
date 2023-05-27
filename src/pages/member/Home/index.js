@@ -80,7 +80,7 @@ function MemberHome(props) {
       (ev) =>
         ev.ename !== nextEvent.ename &&
         new Date(ev.startDate).getTime() > new Date().getTime() &&
-        new Date(ev.deadline).getTime() > new Date().getTime() && 
+        new Date(ev.deadline).getTime() > new Date().getTime() &&
         ev.isPublished
     );
     if (index !== -1) {
@@ -146,7 +146,7 @@ function MemberHome(props) {
 
   useEffect(() => {
     getFeaturedEvent();
-  }, [nextEvent]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [nextEvent]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function CardComponent({ children }) {
     return (

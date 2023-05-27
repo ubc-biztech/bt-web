@@ -140,12 +140,14 @@ export class EventStatsTable extends Component {
       const dynamicQuestionColumns = getDynamicQuestionColumns(event.registrationQuestions);
 
       const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.refreshTable);
-      // dynamic Partner questions not implemented yet.
+      const dynamicPartnerQuestionColumns = getDynamicQuestionColumns(event.partnerRegistrationQuestions);
 
       const presentedColumns = defaultColumns.concat(dynamicQuestionColumns);
+      const presentedPartnerColumns = defaultPartnerColumns.concat(dynamicPartnerQuestionColumns);
+
       this.setState({
         presentedColumns,
-        presentedPartnerColumns: defaultPartnerColumns
+        presentedPartnerColumns
       });
     });
   }

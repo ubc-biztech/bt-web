@@ -207,32 +207,31 @@ function Login() {
             <Typography variant="h1" color="primary">
               Sign In
             </Typography>
-            {/* <Typography>Sign in as a BizTech Exec</Typography>
-          <Button
-            onClick={() => Auth.federatedSignIn({ provider: "Google" })}
-            style={styles.googleButton}
-          >
-            <div style={styles.left}>
-              <img
-                style={styles.socialIcon}
-                alt="Google"
-                src="./google.png"
-              />
-            </div>
-            Sign In with Google
-          </Button>
-          <Button
-            onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
-            style={styles.facebookButton}
-          >
-            <div style={styles.left}>
-              <img style={styles.socialIcon} alt="Facebook" src="./fb.png" />
-            </div>
-            Sign In with Facebook
-          </Button>
-          <Typography variant="h2" style={styles.loginMember}>
-            Email Password Sign In
-          </Typography> */}
+            <Button
+              onClick={() => Auth.federatedSignIn({ provider: "Google" })}
+              style={styles.googleButton}
+            >
+              <div style={styles.left}>
+                <img
+                  style={styles.socialIcon}
+                  alt="Google"
+                  src="./google.png"
+                />
+              </div>
+              Sign In with Google
+            </Button>
+            {/* <Button
+              onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
+              style={styles.facebookButton}
+            >
+              <div style={styles.left}>
+                <img style={styles.socialIcon} alt="Facebook" src="./fb.png" />
+              </div>
+              Sign In with Facebook
+            </Button> */}
+            <Typography variant="h2" style={styles.loginMember}>
+              Email Password Sign In
+            </Typography>
             <form>
               <Typography style={styles.emailLogin}>Email:</Typography>
               <input
