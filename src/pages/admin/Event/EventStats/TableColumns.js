@@ -1,12 +1,11 @@
 import React from "react";
 import RegistrationField from "./RegistrationField";
 import PointsField from "./PointsField";
-import DraggableTitle from "./DraggableTitle";
 import { REGISTRATIONSTATUSLABEL, POINTSLABEL } from "./utils";;
 
 const getDefaultColumns = (eventID, eventYear, refreshTable) => [
     {
-      title: <DraggableTitle title="Registration Status" />,
+      title: "Registration Status",
       field: REGISTRATIONSTATUSLABEL,
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -23,7 +22,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="First Name" />,
+      title: "First Name",
       field: "fname",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -33,7 +32,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Last Name" />,
+      title: "Last Name",
       field: "lname",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -43,7 +42,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Email" />,
+      title: "Email",
       field: "id",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -53,7 +52,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Points (user)" />,
+      title: "Points (user)",
       field: POINTSLABEL,
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -70,7 +69,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
           </div>
     )},
     {
-      title: <DraggableTitle title="Last Updated" />,
+      title: "Last Updated",
       field: "updatedAt",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -80,7 +79,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Diet" />,
+      title: "Diet",
       field: "diet",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -90,7 +89,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Student Number" />,
+      title: "Student Number",
       field: "studentId",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -100,7 +99,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Faculty" />,
+      title: "Faculty",
       field: "faculty",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -110,7 +109,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Year Level" />,
+      title: "Year Level",
       field: "year",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -120,7 +119,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Gender" />,
+      title: "Pronouns",
       field: "gender",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -130,7 +129,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Heard about event from" />,
+      title: "Heard about event from",
       field: "heardFrom",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -140,7 +139,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Team ID" />,
+      title: "Team ID",
       field: "teamID",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -153,7 +152,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
 
   const getDefaultPartnerColumns = (eventID, eventYear, refreshTable) => [
     {
-      title: <DraggableTitle title="Registration Status" />,
+      title: "Registration Status",
       field: REGISTRATIONSTATUSLABEL,
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -170,7 +169,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="First Name" />,
+      title: "First Name",
       field: "fname",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -180,7 +179,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Last Name" />,
+      title: "Last Name",
       field: "lname",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -190,7 +189,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Email" />,
+      title: "Email",
       field: "id",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -200,7 +199,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Last Updated" />,
+      title: "Last Updated",
       field: "updatedAt",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -210,7 +209,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Gender" />,
+      title: "Pronouns",
       field: "gender",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -220,7 +219,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Company Name" />,
+      title: "Company Name",
       field: "companyName",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -230,7 +229,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
       )
     },
     {
-      title: <DraggableTitle title="Role/Occupation at Company" />,
+      title: "Role/Occupation at Company",
       field: "role",
       cellStyle: { whiteSpace: "nowrap" },
       render: (rowData) => (
@@ -249,7 +248,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
     let columns = [];
     registrationQuestions.forEach((question) => {
       columns.push({
-        title: <DraggableTitle title={question.label} />,
+        title: question.label,
         field: question.questionId,
         type: question.type,
         sorting: true,
