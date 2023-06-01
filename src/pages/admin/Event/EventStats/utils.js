@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 // Constants
-const REGISTRATIONSTATUSLABEL = "registrationStatus"
-const POINTSLABEL = "points"
+const REGISTRATIONSTATUSLABEL = "registrationStatus";
+const POINTSLABEL = "points";
 
 
 /**
@@ -74,8 +74,8 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
         <>
           {rowData[question.questionId]}
         </>
-      )
-    }
+      );
+    };
 
     columns.push(column);
   });

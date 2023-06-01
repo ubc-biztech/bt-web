@@ -143,8 +143,6 @@ const MembershipFormContainer = (props) => {
     heardFromSpecify: ""
   };
 
-  console.log(initialValues.email);
-
   async function submitValues(values) {
     setIsSubmitting(true);
     const {
@@ -188,7 +186,7 @@ const MembershipFormContainer = (props) => {
       fname: first_name,
       lname: last_name,
       major: memberType === "UBC" || memberType === "UNI" ? major : "",
-      email: email,
+      email,
       year: memberType !== "NA" ? year : "",
       faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
       pronouns: pronouns || "Other/Prefer not to say",
@@ -221,7 +219,6 @@ const MembershipFormContainer = (props) => {
   }
 
   const renderMemberForm = (isMember, isAdmin) => {
-    console.log("rerendered");
     return isMember || isAdmin ? (
       <div className={classes.alreadyMember}>
         <Typography className={classes.alreadyMemberText}>
@@ -259,10 +256,10 @@ const MembershipFormContainer = (props) => {
             memberType === MEMBER_TYPES.UBC
               ? UBCValidationSchema
               : memberType === MEMBER_TYPES.UNIVERSITY
-              ? UniversityValidationSchema
-              : memberType === MEMBER_TYPES.HIGH_SCHOOL
-              ? HighSchoolValidationSchema
-              : validationSchema
+                ? UniversityValidationSchema
+                : memberType === MEMBER_TYPES.HIGH_SCHOOL
+                  ? HighSchoolValidationSchema
+                  : validationSchema
           }
           onSubmit={submitValues}
         >
@@ -281,8 +278,6 @@ const MembershipFormContainer = (props) => {
       </Fragment>
     );
   };
-
-  console.log("rerendered");
 
   return (
     <Fragment>

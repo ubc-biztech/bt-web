@@ -157,14 +157,14 @@ function Login() {
       // if any errors with inputs, set state and rerender (don't call signin/signup)
       setErrors({
         ...errors,
-        emailError: emailError,
-        passwordError: passwordError
+        emailError,
+        passwordError
       });
     } else {
       try {
         await Auth.signIn({
           username: email,
-          password: password
+          password
         });
         history.push("/login-redirect");
       } catch (error) {
@@ -237,7 +237,6 @@ function Login() {
               <input
                 style={styles.inputText}
                 type="text"
-                email="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyPress={handleKeyPress}
@@ -249,7 +248,6 @@ function Login() {
               <input
                 style={styles.inputText}
                 type="password"
-                email="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyPress={handleKeyPress}

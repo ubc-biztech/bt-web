@@ -18,7 +18,6 @@ export async function fetchMemberships(params = {}) {
       undefined,
       false
     );
-    const data = await response.json();
     // "success" saves the response data
     await Store.dispatch({
       type: FETCH_MEMBERSHIPS_SUCCESS,

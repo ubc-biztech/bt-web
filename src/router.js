@@ -76,7 +76,7 @@ class Router extends Component {
 
             // save only essential info to redux
             await setUser({
-              email: email,
+              email,
               fname,
               lname
             });

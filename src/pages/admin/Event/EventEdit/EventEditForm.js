@@ -66,7 +66,7 @@ export default function EventEditForm(props) {
 
   const handleInfoClick = () => {
     alert(
-      'Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing "What\'s here?"'
+      "Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing \"What's here?\""
     );
   };
 
@@ -74,32 +74,32 @@ export default function EventEditForm(props) {
     const value = e.target.value;
     let location, longitude, latitude;
     switch (value) {
-      case "Nest":
-        location = "UBC AMS Nest";
-        longitude = "-123.249818";
-        latitude = "49.266503";
-        break;
-      case "Hennings":
-        location = "Hennings";
-        longitude = "-123.252198";
-        latitude = "49.266487";
-        break;
-      case "Sauder":
-        location = "UBC Sauder School of Business";
-        longitude = "-123.253800";
-        latitude = "49.264861";
-        break;
-      case "Birmingham":
-        location = "Birmingham, Henry Angus";
-        longitude = "-123.253929";
-        latitude = "49.265112";
-        break;
-      case "Orchard":
-        location = "Orchard Commons";
-        longitude = "-123.251181";
-        latitude = "49.260396";
-        break;
-      default:
+    case "Nest":
+      location = "UBC AMS Nest";
+      longitude = "-123.249818";
+      latitude = "49.266503";
+      break;
+    case "Hennings":
+      location = "Hennings";
+      longitude = "-123.252198";
+      latitude = "49.266487";
+      break;
+    case "Sauder":
+      location = "UBC Sauder School of Business";
+      longitude = "-123.253800";
+      latitude = "49.264861";
+      break;
+    case "Birmingham":
+      location = "Birmingham, Henry Angus";
+      longitude = "-123.253929";
+      latitude = "49.265112";
+      break;
+    case "Orchard":
+      location = "Orchard Commons";
+      longitude = "-123.251181";
+      latitude = "49.260396";
+      break;
+    default:
     }
     e.persist();
     setFieldValue("elocation", location);

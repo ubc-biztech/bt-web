@@ -51,7 +51,7 @@ function Nav(props) {
   const barUnselected = { borderLeft: `6px solid ${COLORS.BACKGROUND_COLOR}` };
 
   const pathname = history.location.pathname;
-  const ignoreNavPaths = ["/redeem", "/redemption", "/companion"]
+  const ignoreNavPaths = ["/redeem", "/redemption", "/companion"];
   const [selectedItem, setSelectedItem] = useState(pathname);
   useEffect(() => {
     history.listen((location) => {
@@ -63,7 +63,7 @@ function Nav(props) {
     Auth.signOut()
       .then(() => {
         props.logout();
-        history.push('/login');
+        history.push("/login");
       })
       .catch((err) => console.log(err));
   };
@@ -93,7 +93,7 @@ function Nav(props) {
   }
 
   if (ignoreNavPaths.find((p) => selectedItem.includes(p))) {
-    return <></>
+    return <></>;
   }
 
   return (

@@ -155,7 +155,7 @@ const FormCreatePreview = (props) => {
         required: true,
       },
     ],
-  "partner": [
+    "partner": [
       {
         type: "TEXT",
         label: "Email Address",
@@ -193,9 +193,9 @@ const FormCreatePreview = (props) => {
         required: true,
       },
     ]
-  }
+  };
 
-  const allQuestions = basicQuestions[type].concat(questionsData)
+  const allQuestions = basicQuestions[type].concat(questionsData);
 
   const displayQuestions = allQuestions.map((question, index) => {
     return (

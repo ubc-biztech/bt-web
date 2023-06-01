@@ -8,7 +8,7 @@ import {
   CssBaseline,
   Typography
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab"
+import { Alert } from "@material-ui/lab";
 import { Link, useHistory } from "react-router-dom";
 import LoginImage from "assets/login.svg";
 import { COLORS } from "constants/index";
@@ -159,8 +159,8 @@ function ForgotPassword() {
     if (emailError || passwordError) {
       // if any errors with inputs, set state and rerender (don't call signin/signup)
       setErrors({
-        emailError: emailError,
-        passwordError: passwordError,
+        emailError,
+        passwordError,
         verificationError: verificationCodeError
       });
     } else if (confirmPassword !== password) {
@@ -199,7 +199,7 @@ function ForgotPassword() {
         sendResetEmail();
       }
     }
-  }
+  };
 
   return (
     <div style={styles.main}>
@@ -224,7 +224,6 @@ function ForgotPassword() {
                     <input
                       style={styles.inputText}
                       type="text"
-                      email="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       onKeyPress={handleKeyPress}
@@ -291,7 +290,6 @@ function ForgotPassword() {
                 <input
                   style={styles.inputText}
                   type="email"
-                  email="verification code"
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -304,7 +302,6 @@ function ForgotPassword() {
                 <input
                   style={styles.inputText}
                   type="password"
-                  email="new password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -318,7 +315,6 @@ function ForgotPassword() {
                 <input
                   style={styles.inputText}
                   type="password"
-                  email="confirm new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   onKeyPress={handleKeyPress}

@@ -299,16 +299,16 @@ const FormCreateForm = (props) => {
                 description={description}
                 questionsData={registrationQuestions}
               />
-            ) : 
-            (
-              <FormCreatePreview
-                imageUrl={imageUrl}
-                type={"partner"}check
-                eventName={eventName}
-                description={partnerDescription}
-                questionsData={partnerRegistrationQuestions}
-              />
-            )
+            ) :
+              (
+                <FormCreatePreview
+                  imageUrl={imageUrl}
+                  type={"partner"}check
+                  eventName={eventName}
+                  description={partnerDescription}
+                  questionsData={partnerRegistrationQuestions}
+                />
+              )
             }
           </div>
         </Grid>
@@ -354,23 +354,23 @@ const FormCreateForm = (props) => {
                   </Button>
                 </div>
                 <div style={{ display: "flex", gap: "1rem" }}>
-                  {isSaved ? 
+                  {isSaved ?
                     <Link
                       variant="contained"
                       component={Button}
                       color="primary"
-                      to={{ pathname: `/event/${eventId}/${eventYear}/register`}}
+                      to={{ pathname: `/event/${eventId}/${eventYear}/register` }}
                       target="_blank"
                     >
                       Event Link
                     </Link> : <></>
                   }
-                  {isSaved ? 
+                  {isSaved ?
                     <Link
                       variant="contained"
                       component={Button}
                       color="primary"
-                      to={{ pathname: `/event/${eventId}/${eventYear}/register/partner`}}
+                      to={{ pathname: `/event/${eventId}/${eventYear}/register/partner` }}
                       target="_blank"
                     >
                       Partner Event Link
@@ -439,7 +439,7 @@ const FormCreateForm = (props) => {
                     {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register"}
                   </div>
                   <div>
-                  {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register/partner"}
+                    {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register/partner"}
                   </div>
                 </div>
               )}
@@ -527,7 +527,7 @@ const FormCreateForm = (props) => {
                 helperText={showError("location") && errors.location}
               />
 
-<MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
                     <KeyboardDateTimePicker
@@ -546,7 +546,7 @@ const FormCreateForm = (props) => {
                   </Grid>
                 </Grid>
               </MuiPickersUtilsProvider>
-              
+
               <Tooltip title="If left blank, the event is free." arrow>
                 <TextField
                   id="price"
@@ -629,8 +629,8 @@ const FormCreateForm = (props) => {
                 helperText={showError("partnerDescription") && errors.partnerDescription}
               />
               <h3 style={styles.editorSectionTitle}>Partner Form Custom Questions</h3>
-              {/* custom questions for partner*/}
-              {partnerCustomQuestions} 
+              {/* custom questions for partner */}
+              {partnerCustomQuestions}
             </div>
           </div>
         </Grid>
@@ -687,7 +687,7 @@ const partnerDummyData = [
     required: true,
     questionImageUrl: "",
   }
-]
+];
 
 const FormCreate = (props) => {
   const { events } = props;
@@ -709,41 +709,41 @@ const FormCreate = (props) => {
 
   const initialValues = event
     ? {
-        imageUrl: event.imageUrl || "",
-        eventName: event.ename || "",
-        slug: event.id || "",
-        description: event.description || "",
-        partnerDescription: event.partnerDescription || "",
-        capacity: event.capac || "",
-        start: event.startDate ? new Date(event.startDate) : new Date(),
-        end: event.endDate ? new Date(event.endDate) : new Date(),
-        location: event.elocation || "",
-        deadline: event.deadline ? new Date(event.deadline) : new Date(),
-        price: event.pricing?.members || 0,
-        nonMembersAllowed: event.pricing?.nonMembers !== undefined,
-        nonMembersPrice: event.pricing?.nonMembers || 0,
-        registrationQuestions: event.registrationQuestions || dummyData,
-        feedback: event.feedback || "",
-        partnerRegistrationQuestions: event.partnerRegistrationQuestions || partnerDummyData,
-      }
+      imageUrl: event.imageUrl || "",
+      eventName: event.ename || "",
+      slug: event.id || "",
+      description: event.description || "",
+      partnerDescription: event.partnerDescription || "",
+      capacity: event.capac || "",
+      start: event.startDate ? new Date(event.startDate) : new Date(),
+      end: event.endDate ? new Date(event.endDate) : new Date(),
+      location: event.elocation || "",
+      deadline: event.deadline ? new Date(event.deadline) : new Date(),
+      price: event.pricing?.members || 0,
+      nonMembersAllowed: event.pricing?.nonMembers !== undefined,
+      nonMembersPrice: event.pricing?.nonMembers || 0,
+      registrationQuestions: event.registrationQuestions || dummyData,
+      feedback: event.feedback || "",
+      partnerRegistrationQuestions: event.partnerRegistrationQuestions || partnerDummyData,
+    }
     : {
-        imageUrl: "",
-        eventName: "",
-        slug: "",
-        description: "",
-        partnerDescription: "",
-        capacity: "",
-        start: new Date(),
-        end: new Date(),
-        location: "",
-        deadline: new Date(),
-        price: 0,
-        nonMembersAllowed: false,
-        nonMembersPrice: 0,
-        registrationQuestions: dummyData,
-        feedback: "",
-        partnerRegistrationQuestions: partnerDummyData,
-      };
+      imageUrl: "",
+      eventName: "",
+      slug: "",
+      description: "",
+      partnerDescription: "",
+      capacity: "",
+      start: new Date(),
+      end: new Date(),
+      location: "",
+      deadline: new Date(),
+      price: 0,
+      nonMembersAllowed: false,
+      nonMembersPrice: 0,
+      registrationQuestions: dummyData,
+      feedback: "",
+      partnerRegistrationQuestions: partnerDummyData,
+    };
 
   const regQuestionSchema = Yup.object({
     type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD"]).required(),
@@ -769,8 +769,8 @@ const FormCreate = (props) => {
       .required(),
     location: Yup.string().required(),
     deadline: Yup.date()
-    .max(Yup.ref("end"), "Deadline cannot be later than End")
-    .required(),
+      .max(Yup.ref("end"), "Deadline cannot be later than End")
+      .required(),
     price: Yup.number("Valid number required")
       .min(0, "Valid pricing required"),
     nonMembersPrice: Yup.number("Valid number required").when("nonMembersAllowed", {
@@ -796,8 +796,8 @@ const FormCreate = (props) => {
 
     const pricing = {
       members: Number(values.price) || 0,
-      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0}
-    }
+      ...(values.nonMembersAllowed) && { nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0 }
+    };
 
     const body = {
       ename: values.eventName,
@@ -835,8 +835,8 @@ const FormCreate = (props) => {
 
     const pricing = {
       members: Number(values.price) || 0,
-      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0}
-    }
+      ...(values.nonMembersAllowed) && { nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0 }
+    };
 
     const body = {
       id,

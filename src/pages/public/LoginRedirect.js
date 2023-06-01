@@ -27,15 +27,15 @@ function LoginRedirect(props) {
     // save only essential info to redux
     const userObject = admin
       ? {
-          email: authUser.email,
-          admin
-        }
+        email: authUser.email,
+        admin
+      }
       : {
-          email: authUser.email,
-          fname,
-          lname,
-          admin
-        };
+        email: authUser.email,
+        fname,
+        lname,
+        admin
+      };
     props.setUser(userObject);
     history.push(redirectRoute);
     console.log("AUTH USER HERE", authUser);
@@ -130,7 +130,7 @@ function LoginRedirect(props) {
                   "custom:student_id": ""
                 });
                 authUser["custom:student_id"] = null;
-                //add query string const
+                // add query string const
               }
               populateUserAndRedirect(authUser, `/signup/${isOauthGroup}`);
               // console.log("congratulations, your code doesn't work");

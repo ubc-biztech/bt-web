@@ -58,8 +58,8 @@ const sendFavouriteData = async (userID, eventID, isFavourite) => {
   }
   settingFavouriteData = true;
   const bodyData = {
-    eventID: eventID,
-    isFavourite: isFavourite,
+    eventID,
+    isFavourite,
   };
   try {
     await fetchBackend(`/users/favEvent/${userID}`, "PATCH", bodyData);
@@ -94,8 +94,8 @@ const EventDescription = ({
   const [snackMsg, setSnackMsg] = React.useState("");
   // called after the first dom mutation, right before render()
   useEffect(() => {
-    if (event && user && user.['favedEventsID;year']) {
-      if (user['favedEventsID;year'].indexOf(`${event.id};${event.year}`) !== -1) {
+    if (event && user && user["favedEventsID;year"]) {
+      if (user["favedEventsID;year"].indexOf(`${event.id};${event.year}`) !== -1) {
         setEventFavStatus(true);
       }
     }

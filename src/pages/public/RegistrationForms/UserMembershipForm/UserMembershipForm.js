@@ -191,23 +191,23 @@ export default function UserMembershipForm(props) {
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                label="Level of study *"
-                listOfOptions={[
-                  "1st Year",
-                  "2nd Year",
-                  "3rd Year",
-                  "4th Year",
-                  "5+ Year",
-                  "Other",
-                  "Not Applicable",
-                ]}
-                groupName="year"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              label="Level of study *"
+              listOfOptions={[
+                "1st Year",
+                "2nd Year",
+                "3rd Year",
+                "4th Year",
+                "5+ Year",
+                "Other",
+                "Not Applicable",
+              ]}
+              groupName="year"
+            />
+          </Grid>
+        )}
 
         {memberType === MEMBER_TYPES.HIGH_SCHOOL && (
           <Grid item xs={12}>
@@ -229,37 +229,37 @@ export default function UserMembershipForm(props) {
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                label="Faculty *"
-                listOfOptions={[
-                  "Arts",
-                  "Commerce",
-                  "Science",
-                  "Engineering",
-                  "Kinesiology",
-                  "Land and Food Systems",
-                  "Forestry",
-                  "Other",
-                  "Not Applicable",
-                ]}
-                groupName="faculty"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              label="Faculty *"
+              listOfOptions={[
+                "Arts",
+                "Commerce",
+                "Science",
+                "Engineering",
+                "Kinesiology",
+                "Land and Food Systems",
+                "Forestry",
+                "Other",
+                "Not Applicable",
+              ]}
+              groupName="faculty"
+            />
+          </Grid>
+        )}
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12} className={classes.major}>
-              <CustomTextField
-                {...props}
-                label="Major *"
-                groupName="major"
-                autoComplete="major"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12} className={classes.major}>
+            <CustomTextField
+              {...props}
+              label="Major *"
+              groupName="major"
+              autoComplete="major"
+            />
+          </Grid>
+        )}
 
         {memberType === MEMBER_TYPES.UBC && (
           <Grid item xs={12}>
@@ -299,9 +299,9 @@ export default function UserMembershipForm(props) {
             </FormLabel>
             <FormGroup onChange={(e) => {
               if (topics.includes(e.target.value)) {
-                setTopics(topics.replace(`${e.target.value},`, ""))
+                setTopics(topics.replace(`${e.target.value},`, ""));
               } else {
-                setTopics(topics + `${e.target.value},`)
+                setTopics(topics + `${e.target.value},`);
               }
             }}>
               <FormControlLabel
@@ -354,7 +354,7 @@ export default function UserMembershipForm(props) {
           />
         </Grid>
 
-        {(values.heard_from === 'Events' || values.heard_from === 'Boothing' || values.heard_from === 'Other') && (
+        {(values.heard_from === "Events" || values.heard_from === "Boothing" || values.heard_from === "Other") && (
           <Grid item xs={12}>
             <CustomTextField
               {...props}
