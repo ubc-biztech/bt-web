@@ -8,6 +8,7 @@ export default class PieChart extends React.Component {
       chartData: props.chartData,
     };
   }
+
   render() {
     return (
       <div>
@@ -22,16 +23,16 @@ export default class PieChart extends React.Component {
               datalabels: {
                 formatter: (value, ctx) => {
                   let sum = 0;
-                  let dataArr = ctx.chart.data.datasets[0].data;
+                  const dataArr = ctx.chart.data.datasets[0].data;
                   // eslint-disable-next-line
                   dataArr.map((data) => {
                     sum += data;
                   });
-                  let number = (value * 100) / sum;
+                  const number = (value * 100) / sum;
                   if (number < 4) {
                     return null;
                   } else {
-                    let percentage = number.toFixed(0) + "%";
+                    const percentage = number.toFixed(0) + "%";
                     return percentage;
                   }
                 },

@@ -31,7 +31,7 @@ export async function fetchBackend(
       if (status < 200 || status >= 300) {
         // eslint-disable-next-line
         return Promise.reject({
-          status: status,
+          status,
           message: response,
         });
       }

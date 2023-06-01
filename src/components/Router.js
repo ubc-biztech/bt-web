@@ -54,7 +54,7 @@ class Router extends Component {
             admin: true,
           });
         } else {
-          const email = authUser.attributes["email"];
+          const email = authUser.attributes.email;
           if (email) {
             // Perform redux actions to update user and registration states at the same time
             await Promise.all([
@@ -69,7 +69,7 @@ class Router extends Component {
 
             // save only essential info to redux
             this.props.setUser({
-              email: email,
+              email,
               fname,
               lname,
             });

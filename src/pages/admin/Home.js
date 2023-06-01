@@ -50,9 +50,9 @@ function AdminHome(props) {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [eventMenuClicked, setEventMenuClicked] = React.useState(null);
-  const filteredEvents = events.sort((a, b) => { 
-    return new Date(b.startDate) - new Date(a.startDate)
-  })
+  const filteredEvents = events.sort((a, b) => {
+    return new Date(b.startDate) - new Date(a.startDate);
+  });
 
   const handleClick = (e, event) => {
     setAnchorEl(e.currentTarget);
@@ -99,9 +99,9 @@ function AdminHome(props) {
   };
 
   const isEventPassed = (event) => {
-    const startDate = new Date(event.startDate).getTime()
-    return startDate < new Date().getTime()
-  }
+    const startDate = new Date(event.startDate).getTime();
+    return startDate < new Date().getTime();
+  };
 
   function createEventCard(event) {
     const image = event.imageUrl || require("assets/placeholder.jpg");
@@ -123,11 +123,11 @@ function AdminHome(props) {
           subheader={
             event.startDate
               ? new Date(event.startDate).toLocaleDateString("en-US", {
-                  day: "numeric",
-                  weekday: "long",
-                  month: "long",
-                  year: "numeric",
-                })
+                day: "numeric",
+                weekday: "long",
+                month: "long",
+                year: "numeric",
+              })
               : ""
           }
           action={

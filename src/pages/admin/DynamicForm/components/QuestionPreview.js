@@ -10,7 +10,7 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import CloudUpload from '@material-ui/icons/CloudUpload';
+import CloudUpload from "@material-ui/icons/CloudUpload";
 import ImagePlaceholder from "../../../../assets/placeholder.jpg";
 
 const styles = {
@@ -28,7 +28,7 @@ const styles = {
     height: 300,
     objectFit: "cover",
   },
-}
+};
 
 // LIVE PREVIEW QUESTION component
 const QuestionPreview = (props) => {

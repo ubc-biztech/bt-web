@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
   text: {
     margin: "2px",
-    display: 'inline-block',
+    display: "inline-block",
     color: COLORS.BIZTECH_GREEN
   }
 });
@@ -66,10 +66,10 @@ const EventStats = (props) => {
       <EventStatsTable event={event} />
     </>
   ) : (
-      <NotFound
-        message={`The event with id ${eventId} and year ${eventYear} could not be found`}
-      />
-    );
+    <NotFound
+      message={`The event with id ${eventId} and year ${eventYear} could not be found`}
+    />
+  );
 };
 
 export default EventStats;

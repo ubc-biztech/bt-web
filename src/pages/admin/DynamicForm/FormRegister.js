@@ -169,11 +169,11 @@ const FormRegister = (props) => {
     }) => ({
       questionType: type,
       question: label,
-      choices: choices,
-      required: required,
-      questionId: questionId,
-      questionImageUrl: questionImageUrl,
-      charLimit: charLimit,
+      choices,
+      required,
+      questionId,
+      questionImageUrl,
+      charLimit,
       questionDomain: domain
     })
   );
@@ -804,38 +804,38 @@ const FormRegister = (props) => {
 
   const changeRegStatus = (newStatus) => {
     switch (newStatus) {
-      case REGISTRATION_STATUS.REGISTERED:
-        if (
-          window.confirm(
-            `Do you want to re-register for ${
-              event.ename || "this event"
-            }?\nYou will be sent an email confirming your registration.`
-          )
-        ) {
-          updateUserRegistrationStatus(
-            user?.email,
-            user?.fname,
-            REGISTRATION_STATUS.REGISTERED
-          );
-        }
-        break;
-      case REGISTRATION_STATUS.CANCELLED:
-        if (
-          window.confirm(
-            `Are you sure you would cancel your spot at ${
-              event.ename || "this event"
-            }?\nYou will be sent an email regarding your cancellation.`
-          )
-        ) {
-          updateUserRegistrationStatus(
-            user?.email,
-            user?.fname,
-            REGISTRATION_STATUS.CANCELLED
-          );
-        }
-        break;
-      default:
-        return {};
+    case REGISTRATION_STATUS.REGISTERED:
+      if (
+        window.confirm(
+          `Do you want to re-register for ${
+            event.ename || "this event"
+          }?\nYou will be sent an email confirming your registration.`
+        )
+      ) {
+        updateUserRegistrationStatus(
+          user?.email,
+          user?.fname,
+          REGISTRATION_STATUS.REGISTERED
+        );
+      }
+      break;
+    case REGISTRATION_STATUS.CANCELLED:
+      if (
+        window.confirm(
+          `Are you sure you would cancel your spot at ${
+            event.ename || "this event"
+          }?\nYou will be sent an email regarding your cancellation.`
+        )
+      ) {
+        updateUserRegistrationStatus(
+          user?.email,
+          user?.fname,
+          REGISTRATION_STATUS.CANCELLED
+        );
+      }
+      break;
+    default:
+      return {};
     }
   };
 
@@ -876,18 +876,18 @@ const FormRegister = (props) => {
 
   const renderRegMessage = (status) => {
     switch (status) {
-      case REGISTRATION_STATUS.CANCELLED:
-        return `You have cancelled your registration for ${
-          currEvent.ename || "this event"
-        }.`;
-      case REGISTRATION_STATUS.WAITLISTED:
-        return `You are currently waitlisted for ${
-          currEvent.ename || "this event"
-        }.`;
-      case REGISTRATION_STATUS.INCOMPLETE:
-        return `You have not completed your payment yet!`;
-      default:
-        return `Already registered for ${currEvent.ename || "this event"}!`;
+    case REGISTRATION_STATUS.CANCELLED:
+      return `You have cancelled your registration for ${
+        currEvent.ename || "this event"
+      }.`;
+    case REGISTRATION_STATUS.WAITLISTED:
+      return `You are currently waitlisted for ${
+        currEvent.ename || "this event"
+      }.`;
+    case REGISTRATION_STATUS.INCOMPLETE:
+      return "You have not completed your payment yet!";
+    default:
+      return `Already registered for ${currEvent.ename || "this event"}!`;
     }
   };
 
@@ -1079,27 +1079,27 @@ const FormRegister = (props) => {
           {!user?.admin &&
           ((user?.isMember && currEvent.pricing?.members > 0) ||
             (!user?.isMember && currEvent.pricing?.nonMembers)) ? (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handlePaymentSubmit}
-              className={classes.registerButton}
-              disabled={isSubmitting}
-            >
-              <CardMembershipIcon className={classes.registerIcon} />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handlePaymentSubmit}
+                className={classes.registerButton}
+                disabled={isSubmitting}
+              >
+                <CardMembershipIcon className={classes.registerIcon} />
               Proceed to Payment
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit}
-              className={classes.registerButton}
-              disabled={isSubmitting}
-            >
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+                className={classes.registerButton}
+                disabled={isSubmitting}
+              >
               Submit
-            </Button>
-          )}
+              </Button>
+            )}
         </div>
       </Fragment>
     );

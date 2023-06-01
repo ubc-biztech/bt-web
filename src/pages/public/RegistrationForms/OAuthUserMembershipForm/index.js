@@ -12,8 +12,7 @@ import { MEMBER_TYPES } from "constants/_constants/memberTypes";
 
 import { COLORS } from "constants/_constants/theme";
 
-import { fetchBackend } from "utils";
-import { log, updateUser, updateRegisteredEvents } from "utils";
+import { fetchBackend, log } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -99,22 +98,17 @@ const OAuthUserMembershipFormContainer = (props) => {
 
   const [userEmail, setUserEmail] = useState("");
   async function getOAuthAttributes() {
-    // let user = await Auth.currentAuthenticatedUser();
     Auth.currentAuthenticatedUser({ bypassCache: true })
       .then(async (authUser) => {
         setUserEmail(authUser.attributes.email);
-        console.log("has set useremail to authuser.attributes:" + userEmail);
       })
       .catch(() => log("Couldn't fetch user email from Cognito"));
   }
 
   const RenderForm = () => {
-    console.log("entered renderform function");
-    if (userEmail == "") {
-      console.log("no useremail");
+    if (userEmail === "") {
       return null;
     } else {
-      console.log("about to return formik");
       return (
         <Fragment>
           <Typography className={classes.registrationText}>
@@ -147,10 +141,10 @@ const OAuthUserMembershipFormContainer = (props) => {
               memberType === MEMBER_TYPES.UBC
                 ? UBCValidationSchema
                 : memberType === MEMBER_TYPES.UNIVERSITY
-                ? UniversityValidationSchema
-                : memberType === MEMBER_TYPES.HIGH_SCHOOL
-                ? HighSchoolValidationSchema
-                : validationSchema
+                  ? UniversityValidationSchema
+                  : memberType === MEMBER_TYPES.HIGH_SCHOOL
+                    ? HighSchoolValidationSchema
+                    : validationSchema
             }
             onSubmit={submitValues}
           >
@@ -187,8 +181,6 @@ const OAuthUserMembershipFormContainer = (props) => {
     high_school: ""
   };
 
-  console.log(initialValues.email);
-
   async function adminSkipPayment(values) {
     const {
       email,
@@ -209,7 +201,7 @@ const OAuthUserMembershipFormContainer = (props) => {
       fname: first_name,
       lname: last_name,
       major: memberType === "UBC" || memberType === "UNI" ? major : "",
-      email: email,
+      email,
       year: memberType !== "NA" ? year : "",
       faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
       gender: pronouns || "Other/Prefer not to say",
@@ -220,7 +212,6 @@ const OAuthUserMembershipFormContainer = (props) => {
 
     fetchBackend("/users", "POST", userBody, false)
       .then(async () => {
-        console.log(userBody);
         history.push({
           pathname: `/signup/success/UserMember/${email}`
         });
@@ -268,7 +259,7 @@ const OAuthUserMembershipFormContainer = (props) => {
       paymentName: "BizTech Membership",
       paymentImages: ["https://imgur.com/TRiZYtG.png"],
       paymentPrice: 1000,
-      paymentType: 'OAuthMember',
+      paymentType: "OAuthMember",
       success_url: `${
         process.env.REACT_APP_STAGE === "local"
           ? "http://localhost:3000/"
@@ -284,7 +275,7 @@ const OAuthUserMembershipFormContainer = (props) => {
       fname: first_name,
       lname: last_name,
       major: memberType === "UBC" || memberType === "UNI" ? major : "",
-      email: email,
+      email,
       year: memberType !== "NA" ? year : "",
       faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
       pronouns: pronouns || "Other/Prefer not to say",
@@ -297,7 +288,6 @@ const OAuthUserMembershipFormContainer = (props) => {
       high_school: memberType === "HS" ? high_school : ""
     };
 
-    console.log("put together payment body and sent to backend")
     fetchBackend("/payments", "POST", paymentBody, false)
       .then(async (response) => {
         setIsSubmitting(false);
@@ -309,19 +299,18 @@ const OAuthUserMembershipFormContainer = (props) => {
         );
         setIsSubmitting(false);
       });
-    console.log("posted to backend")
   }
 
   async function submitValues(values) {
     setIsSubmitting(true);
     // checks to see if email already exists 
     // tangent: doesnt even work, but it's okay its a feature 
-    
+
     fetchBackend(`/users/check/${values.email}`, "GET", undefined, false)
       .then((response) => {
         if (response) {
           alert(
-            'A user with the given email already exists! Please log in and choose the "Membership Renewal" signup option instead. If you are still experiencing issues, contact an exec for support.'
+            "A user with the given email already exists! Please log in and choose the \"Membership Renewal\" signup option instead. If you are still experiencing issues, contact an exec for support."
           );
           setIsSubmitting(false);
         } else {

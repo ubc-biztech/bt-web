@@ -1,22 +1,22 @@
-import React from 'react'
-import { COLORS } from '../../constants/_constants/theme'
+import React from "react";
+import { COLORS } from "../../constants/_constants/theme";
 
-import { Typography, MenuItem, Select, FormHelperText } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { useTheme } from '@material-ui/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { Typography, MenuItem, Select, FormHelperText } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
   errorSelect: {
     backgroundColor: COLORS.TEXTFIELD,
-    borderRadius: '4px',
-    paddingLeft: '10px',
+    borderRadius: "4px",
+    paddingLeft: "10px",
     border: `1px solid ${COLORS.ERROR_RED}`
   },
   select: {
     backgroundColor: COLORS.TEXTFIELD,
-    borderRadius: '4px',
-    paddingLeft: '10px'
+    borderRadius: "4px",
+    paddingLeft: "10px"
   },
   errorMsg: {
     color: COLORS.ERROR_RED
@@ -28,16 +28,16 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "4px",
   },
   menuItem: {
-    [theme.breakpoints.down('sm')]: {
-      overflowX: 'scroll'
+    [theme.breakpoints.down("sm")]: {
+      overflowX: "scroll"
     }
   }
-}))
+}));
 
 export default function CustomSelect (props) {
-  const classes = useStyles()
-  const theme = useTheme()
-  const renderMobileOnly = useMediaQuery(theme.breakpoints.down('sm'))
+  const classes = useStyles();
+  const theme = useTheme();
+  const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
 
   const {
     errors,
@@ -48,17 +48,17 @@ export default function CustomSelect (props) {
     label,
     listOfOptions,
     initialValues
-  } = props
+  } = props;
 
   const handleSelectChange = (e, groupName) => {
-    e.preventDefault()
-    const value = e.target.value
+    e.preventDefault();
+    const value = e.target.value;
 
     if (value) {
-      setFieldTouched(groupName, true, false)
-      setFieldValue(groupName, value)
+      setFieldTouched(groupName, true, false);
+      setFieldValue(groupName, value);
     }
-  }
+  };
 
   return (
     <div className={renderMobileOnly ? classes.mobileContainer : undefined}>
@@ -73,8 +73,8 @@ export default function CustomSelect (props) {
         MenuProps={{
           getContentAnchorEl: null,
           anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'left'
+            vertical: "bottom",
+            horizontal: "left"
           }
         }}
         inputProps={{
@@ -84,9 +84,9 @@ export default function CustomSelect (props) {
         }}
         fullWidth
         onClick={(e) => {
-          handleSelectChange(e, groupName)
+          handleSelectChange(e, groupName);
         }}
-        defaultValue={initialValues ? initialValues[groupName] : ''}
+        defaultValue={initialValues ? initialValues[groupName] : ""}
       >
         {listOfOptions.map((option) => (
           <MenuItem key={option} value={option} className={classes.menuItem}>
@@ -100,5 +100,5 @@ export default function CustomSelect (props) {
         </FormHelperText>
       ) : null}
     </div>
-  )
+  );
 }

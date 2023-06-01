@@ -76,30 +76,30 @@ const EventEdit = (props) => {
 
   const initialValues = event
     ? {
-        ename: event.ename,
-        slug: event.id,
-        description: event.description,
-        capacity: event.capac,
-        facebookUrl: event.facebookUrl,
-        elocation: event.elocation || "",
-        longitude: event.longitude || "",
-        latitude: event.latitude || "",
-        imageUrl: event.imageUrl,
-        startDate: event.startDate,
-        endDate: event.endDate,
-      }
+      ename: event.ename,
+      slug: event.id,
+      description: event.description,
+      capacity: event.capac,
+      facebookUrl: event.facebookUrl,
+      elocation: event.elocation || "",
+      longitude: event.longitude || "",
+      latitude: event.latitude || "",
+      imageUrl: event.imageUrl,
+      startDate: event.startDate,
+      endDate: event.endDate,
+    }
     : {
-        ename: "",
-        description: "",
-        capacity: "",
-        facebookUrl: "",
-        elocation: "",
-        longitude: "",
-        latitude: "",
-        imageUrl: "",
-        startDate: "",
-        endDate: "",
-      };
+      ename: "",
+      description: "",
+      capacity: "",
+      facebookUrl: "",
+      elocation: "",
+      longitude: "",
+      latitude: "",
+      imageUrl: "",
+      startDate: "",
+      endDate: "",
+    };
 
   if (!loaded)
     return (
@@ -161,7 +161,7 @@ const EventEdit = (props) => {
       .then((response) => {
         alert(response.message);
         // TODO: refactor using redux to update the event
-        history.push(`/admin/home`);
+        history.push("/admin/home");
         window.location.reload();
       })
       .catch((err) => {

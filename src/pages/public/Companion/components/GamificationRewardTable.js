@@ -12,28 +12,28 @@ const rewards = [
 function GamificationRewardTable() {
   return (
     <>
-    <div style={{width: "100%"}}>
-      <TableContainer component={Paper} style={{ backgroundColor: "transparent", marginTop: '10px', marginBottom: '10px' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ color: "white", fontWeight: "bold" }}>Reward</TableCell>
-              <TableCell align="right" style={{ color: "white", fontWeight: "bold" }}>Points</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rewards.map((reward, index) => (
-              <TableRow key={index}>
-                <TableCell component="th" scope="row" style={{ color: "white" }}>
-                  {reward.name}
-                </TableCell>
-                <TableCell align="right" style={{ color: "white" }}><b>{reward.points}</b></TableCell>
+      <div style={{ width: "100%" }}>
+        <TableContainer component={Paper} style={{ backgroundColor: "transparent", marginTop: "10px", marginBottom: "10px" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell style={{ color: "white", fontWeight: "bold" }}>Reward</TableCell>
+                <TableCell align="right" style={{ color: "white", fontWeight: "bold" }}>Points</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-            </div>
+            </TableHead>
+            <TableBody>
+              {rewards.map((reward, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row" style={{ color: "white" }}>
+                    {reward.name}
+                  </TableCell>
+                  <TableCell align="right" style={{ color: "white" }}><b>{reward.points}</b></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </>
   );
 }

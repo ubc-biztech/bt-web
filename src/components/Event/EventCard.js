@@ -50,9 +50,9 @@ function EventCard(props) {
   const image = event.imageUrl || require("assets/default.png");
 
   const isEventPassed = (event) => {
-    const startDate = new Date(event.startDate).getTime()
-    return startDate < new Date().getTime()
-  }
+    const startDate = new Date(event.startDate).getTime();
+    return startDate < new Date().getTime();
+  };
 
   const renderSubHeader = (event) => {
     const date = event.startDate
@@ -62,13 +62,13 @@ function EventCard(props) {
         month: "long",
         year: "numeric",
       })
-      : null
-    const membersPrice = event.pricing?.members === 0 || !event.pricing ? "Free!" : `$${event.pricing?.members.toFixed(2)}`
-    const nonMembersPrice = event.pricing?.nonMembers === undefined 
-      ? "Members only" 
+      : null;
+    const membersPrice = event.pricing?.members === 0 || !event.pricing ? "Free!" : `$${event.pricing?.members.toFixed(2)}`;
+    const nonMembersPrice = event.pricing?.nonMembers === undefined
+      ? "Members only"
       : event.pricing?.nonMembers - event.pricing?.members !== 0
         ? `Non-members: $${event.pricing?.nonMembers.toFixed(2)}`
-        : ""
+        : "";
 
     return <div className={classes.subHeader}>
       <div>{date}</div>
@@ -76,9 +76,9 @@ function EventCard(props) {
         <div>{membersPrice}</div>
         <div>{nonMembersPrice}</div>
       </div>
-    </div>
-  }
-  
+    </div>;
+  };
+
   return (
     <Card className={isEventPassed(event) ? classes.passedCard : classes.card} style={cardStyle} key={event.id}>
       <CardActionArea
