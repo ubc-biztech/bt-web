@@ -1,8 +1,12 @@
 import React from "react";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { fetchBackend } from "../../../../utils";
-import { COLORS, REGISTRATION_STATUS } from "../../../../constants";
+import {
+  fetchBackend
+} from "../../../../utils";
+import {
+  COLORS, REGISTRATION_STATUS
+} from "../../../../constants";
 
 const RegistrationField = (props) => {
   const updateUserRegistrationStatus = async (id, fname, registrationStatus) => {
@@ -88,7 +92,8 @@ const RegistrationField = (props) => {
       }
       break;
     default:
-      return {};
+      return {
+      };
     }
   };
 

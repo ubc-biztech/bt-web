@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  motion
+} from "framer-motion";
 import Lottie from "lottie-react";
 
-import { withRouter } from "react-router-dom";
+import {
+  withRouter
+} from "react-router-dom";
 import {
   Button,
   TextField,
@@ -10,14 +16,20 @@ import {
   makeStyles,
   Modal
 } from "@material-ui/core";
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 import Loading from "pages/Loading";
 
 import BizTechDBLogo from "assets/2023/data&beyond/BizTechD&BLogo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
-import { COLORS } from "../../../../constants/_constants/theme";
-import { constantStyles } from "../../../../constants/_constants/companion";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
+import {
+  constantStyles
+} from "../../../../constants/_constants/companion";
 
 const styles = {
   container: {
@@ -207,7 +219,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Redemption = ({ history, location }) => {
+const Redemption = ({
+  history, location
+}) => {
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
@@ -234,7 +248,10 @@ const Redemption = ({ history, location }) => {
 
   const classes = useStyles();
 
-  const { eventID, year, qrID } = location?.state || {};
+  const {
+    eventID, year, qrID
+  } = location?.state || {
+  };
 
   // Temp for Data and Beyond
   const id = qrID.slice(6);
@@ -373,7 +390,9 @@ const Redemption = ({ history, location }) => {
     }
   };
   const determineTimestampText = () => {
-    const date = new Date().toLocaleString("en-US", { timeZone: "PST" });
+    const date = new Date().toLocaleString("en-US", {
+      timeZone: "PST"
+    });
     setTimestampText(date);
   };
 
@@ -410,7 +429,9 @@ const Redemption = ({ history, location }) => {
       <Modal open={isEmailModalOpen}>
         <motion.div
           style={styles.modal}
-          animate={{ opacity: isEmailModalOpen ? 1 : 0 }}
+          animate={{
+            opacity: isEmailModalOpen ? 1 : 0
+          }}
         >
           <Typography className={classes.boldText}>{input}</Typography>
           <Typography className={classes.errorText}>{error}</Typography>
@@ -455,12 +476,17 @@ const Redemption = ({ history, location }) => {
       <Modal open={isNegativeQRModalOpen}>
         <motion.div
           style={styles.modal}
-          animate={{ opacity: isNegativeQRModalOpen ? 1 : 0 }}
+          animate={{
+            opacity: isNegativeQRModalOpen ? 1 : 0
+          }}
         >
           <img
             src={BizTechDBLogo}
             alt="Data and Beyond Logo"
-            style={{ width: "20%", height: "auto" }}
+            style={{
+              width: "20%",
+              height: "auto"
+            }}
           />
           <Typography className={classes.boldText}>
             You are about to spend {negativePointsAwardedText}
@@ -506,9 +532,17 @@ const Redemption = ({ history, location }) => {
       ) : (
         <motion.div
           style={styles.container}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{
+            opacity: 0,
+            scale: 0.5
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1
+          }}
+          transition={{
+            duration: 0.5
+          }}
         >
           {email ? (
             <>
@@ -533,27 +567,51 @@ const Redemption = ({ history, location }) => {
                   <>
                     <motion.div
                       style={styles.successContainer}
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeOut"
+                      }}
                     >
                       <img
                         src={BizTechDBLogo}
                         alt="Data and Beyond Logo"
-                        style={{ width: "50%", height: "auto", marginBottom: 20 }}
+                        style={{
+                          width: "50%",
+                          height: "auto",
+                          marginBottom: 20
+                        }}
                       />
                     </motion.div>
 
                     <motion.div
                       style={styles.successContainer}
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeOut"
+                      }}
                     >
                       {error ? (
                         <Typography
                           className={classes.themeText}
-                          style={{ margin: "20px 0" }}
+                          style={{
+                            margin: "20px 0"
+                          }}
                         >
                           {error}
                         </Typography>
@@ -567,7 +625,9 @@ const Redemption = ({ history, location }) => {
 
                           <Typography
                             className={classes.pointsText}
-                            style={{ margin: "20px 0" }}
+                            style={{
+                              margin: "20px 0"
+                            }}
                           >
                             {pointsAwardedText}
                           </Typography>
@@ -577,9 +637,18 @@ const Redemption = ({ history, location }) => {
 
                     <motion.div
                       style={styles.successContainer}
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        ease: "easeOut"
+                      }}
                     >
                       {links[id] &&
                       <Button
@@ -606,7 +675,9 @@ const Redemption = ({ history, location }) => {
                       </Button>
                       <Typography
                         className={classes.themeText}
-                        style={{ margin: "20px 0" }}
+                        style={{
+                          margin: "20px 0"
+                        }}
                       >
                         {timestampText}
                       </Typography>
@@ -619,7 +690,10 @@ const Redemption = ({ history, location }) => {
               <img
                 src={BizTechDBLogo}
                 alt="Data and Beyond Logo"
-                style={{ width: "35%", height: "auto" }}
+                style={{
+                  width: "35%",
+                  height: "auto"
+                }}
               />
               <div style={styles.inputContainer}>
                 <Typography className={classes.welcome}>Welcome!</Typography>
@@ -629,7 +703,10 @@ const Redemption = ({ history, location }) => {
                 </Typography>
                 <TextField
                   className={classes.textfield}
-                  style={{ marginTop: 20, marginBottom: 20 }}
+                  style={{
+                    marginTop: 20,
+                    marginBottom: 20
+                  }}
                   onChange={(e) => setInput(e.target.value)}
                   value={input}
                   variant="outlined"

@@ -1,12 +1,16 @@
 import React from "react";
-import { motion } from "framer-motion";
+import {
+  motion
+} from "framer-motion";
 
 import First from "../../../../assets/2023/data&beyond/1st.png";
 import Second from "../../../../assets/2023/data&beyond/2nd.png";
 import Third from "../../../../assets/2023/data&beyond/3rd.png";
 import Star from "../../../../assets/2023/data&beyond/star.png";
 
-export default function PodiumStep({ podium, winner }) {
+export default function PodiumStep({
+  podium, winner
+}) {
   const offset = podium.length - winner.position;
   const placements = {
     0: First,
@@ -32,7 +36,9 @@ export default function PodiumStep({ podium, winner }) {
         initial="hidden"
         animate="visible"
         variants={{
-          hidden: { opacity: 0 },
+          hidden: {
+            opacity: 0
+          },
           visible: {
             opacity: 1,
             transition: {
@@ -42,7 +48,11 @@ export default function PodiumStep({ podium, winner }) {
           },
         }}
       >
-        <div style={{ fontWeight: "bold", color: "white", fontSize: "36px" }}>{winner.name}</div>
+        <div style={{
+          fontWeight: "bold",
+          color: "white",
+          fontSize: "36px"
+        }}>{winner.name}</div>
       </motion.div>
       <motion.div
         style={{
@@ -61,7 +71,10 @@ export default function PodiumStep({ podium, winner }) {
         initial="hidden"
         animate="visible"
         variants={{
-          hidden: { height: 0, opacity: 0 },
+          hidden: {
+            height: 0,
+            opacity: 0
+          },
           visible: {
             height: `${(70 * (offset / podium.length)) + 30}%`,
             opacity: 1,
@@ -73,14 +86,29 @@ export default function PodiumStep({ podium, winner }) {
           },
         }}
       >
-        <img src={placements[winner.position]} alt="Placement" style={{ width: "15%", height: "auto", alignSelf: "center", ...(winner.position === 0 && { marginRight: "7%" }) }}></img>
+        <img src={placements[winner.position]} alt="Placement" style={{
+          width: "15%",
+          height: "auto",
+          alignSelf: "center",
+          ...(winner.position === 0 && {
+            marginRight: "7%"
+          })
+        }}></img>
         {winner.position === 0 && (
           <motion.div
-            style={{ position: "absolute", left: "52%", top: "40%", width: "15%", height: "auto" }}
+            style={{
+              position: "absolute",
+              left: "52%",
+              top: "40%",
+              width: "15%",
+              height: "auto"
+            }}
             initial="hidden"
             animate="visible"
             variants={{
-              hidden: { opacity: 0 },
+              hidden: {
+                opacity: 0
+              },
               visible: {
                 opacity: 1,
                 transition: {
@@ -93,7 +121,10 @@ export default function PodiumStep({ podium, winner }) {
             <img src={Star} alt="Star"></img>
           </motion.div>
         )}
-        <span style={{ alignSelf: "flex-end", color: "white" }}>
+        <span style={{
+          alignSelf: "flex-end",
+          color: "white"
+        }}>
           {winner.position + 1}
         </span>
       </motion.div>

@@ -1,6 +1,8 @@
 import React from "react";
 import PodiumStep from "./PodiumStep";
-export default function Podium({ winners }) {
+export default function Podium({
+  winners
+}) {
   const podium = [1, 0, 2]
     .reduce((podiumOrder, position) => [...podiumOrder, winners[position]], [])
     .filter(Boolean);

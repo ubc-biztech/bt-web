@@ -1,10 +1,18 @@
 import React from "react";
-import { Button, Grid, Typography, useMediaQuery } from "@material-ui/core";
+import {
+  Button, Grid, Typography, useMediaQuery
+} from "@material-ui/core";
 import EventAvailableIcon from "@material-ui/icons/EventAvailable";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  useTheme
+} from "@material-ui/styles";
 
-import { COLORS } from "../../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
 import CustomTextField from "../../../../components/inputs/CustomTextField";
 import CustomSelect from "../../../../components/inputs/CustomSelect";
 import CustomLink from "components/links/CustomLink";
@@ -265,7 +273,10 @@ export default function RegisterEventForm(props) {
         disabled={isSubmitting}
       >
         <EventAvailableIcon
-          style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px" }}
+          style={{
+            color: COLORS.BACKGROUND_COLOR,
+            marginRight: "5px"
+          }}
         />
         register
       </Button>

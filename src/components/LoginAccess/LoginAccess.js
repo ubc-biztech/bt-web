@@ -1,8 +1,18 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
-import { Helmet } from "react-helmet";
-import { Link, useHistory } from "react-router-dom";
+import React, {
+  useState
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  Auth
+} from "aws-amplify";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Link, useHistory
+} from "react-router-dom";
 
 import {
   Button,
@@ -11,11 +21,17 @@ import {
   CssBaseline,
   Typography
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import {
+  Alert
+} from "@material-ui/lab";
 
 import LoginImage from "assets/login.svg";
-import { COLORS } from "constants/index";
-import { setUser } from "store/user/userActions";
+import {
+  COLORS
+} from "constants/index";
+import {
+  setUser
+} from "store/user/userActions";
 
 const styles = {
   main: {
@@ -170,7 +186,9 @@ function Login (props) {
           username: email,
           password
         });
-        history.push("/login-redirect", { redirect: props.redirect });
+        history.push("/login-redirect", {
+          redirect: props.redirect
+        });
       } catch (error) {
         console.log("caught error", error);
         if (error.name === "UserNotFoundException") {
@@ -276,4 +294,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setUser })(Login);
+export default connect(mapStateToProps, {
+  setUser
+})(Login);

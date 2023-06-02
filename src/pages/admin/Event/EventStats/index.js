@@ -1,9 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { makeStyles } from "@material-ui/core/styles";
-import { Link, Typography } from "@material-ui/core";
-import { COLORS } from "../../../../constants/_constants/theme";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  useParams, useHistory
+} from "react-router-dom";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Link, Typography
+} from "@material-ui/core";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
 
 import NotFound from "pages/NotFound";
 import EventStatsTable from "./EventStatsTable";
@@ -22,11 +34,15 @@ const useStyles = makeStyles({
 });
 
 const EventStats = (props) => {
-  const { events } = props;
+  const {
+    events
+  } = props;
   const classes = useStyles();
 
   const history = useHistory();
-  const { id: eventId, year: eventYear } = useParams();
+  const {
+    id: eventId, year: eventYear
+  } = useParams();
 
   const [event, setEvent] = useState(null);
   const [loaded, setLoaded] = useState(false);

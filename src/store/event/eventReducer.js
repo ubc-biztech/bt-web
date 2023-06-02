@@ -16,7 +16,9 @@ const initialEventState = {
 };
 
 const eventReducer = (state = initialEventState, action) => {
-  const { type, payload, refresh = false } = action;
+  const {
+    type, payload, refresh = false
+  } = action;
 
   switch (type) {
   // fetch events

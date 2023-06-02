@@ -1,6 +1,8 @@
 import React from "react";
 import ReactMarkdown from "markdown-to-jsx";
-import { Link, Typography } from "@material-ui/core";
+import {
+  Link, Typography
+} from "@material-ui/core";
 
 const options = {
   overrides: {
@@ -10,18 +12,37 @@ const options = {
         gutterBottom: true,
       },
     },
-    h2: { component: Typography, props: { gutterBottom: true, variant: "h6" } },
+    h2: {
+      component: Typography,
+      props: {
+        gutterBottom: true,
+        variant: "h6"
+      }
+    },
     h3: {
       component: Typography,
-      props: { gutterBottom: true, variant: "subtitle1" },
+      props: {
+        gutterBottom: true,
+        variant: "subtitle1"
+      },
     },
     h4: {
       component: Typography,
-      props: { gutterBottom: true, variant: "caption", paragraph: true },
+      props: {
+        gutterBottom: true,
+        variant: "caption",
+        paragraph: true
+      },
     },
-    p: { component: Typography },
-    span: { component: Typography },
-    a: { component: Link },
+    p: {
+      component: Typography
+    },
+    span: {
+      component: Typography
+    },
+    a: {
+      component: Link
+    },
     li: {
       // eslint-disable-next-line
       component: ({ classes, ...props }) => (

@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Grid, Typography,
+import {
+  Button, Grid, Typography,
   FormControlLabel,
   FormControl,
   RadioGroup,
@@ -9,13 +10,19 @@ import { Button, Grid, Typography,
   FormGroup,
 } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 
 
-import { COLORS } from "constants/_constants/theme";
+import {
+  COLORS
+} from "constants/_constants/theme";
 import CustomTextField from "components/inputs/CustomTextField";
 import CustomSelect from "components/inputs/CustomSelect";
-import { MEMBER_TYPES, MEMBER_LABELS } from "constants/_constants/memberTypes";
+import {
+  MEMBER_TYPES, MEMBER_LABELS
+} from "constants/_constants/memberTypes";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -50,7 +57,9 @@ const useStyles = makeStyles((theme) => ({
 export default function UserMembershipForm(props) {
   const classes = useStyles();
 
-  const { isSubmitting, handleSubmit, memberType, setMemberType, topics, setTopics, values, errors } = props;
+  const {
+    isSubmitting, handleSubmit, memberType, setMemberType, topics, setTopics, values, errors
+  } = props;
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>

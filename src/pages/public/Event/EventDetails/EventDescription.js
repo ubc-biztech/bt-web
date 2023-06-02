@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState, useEffect
+} from "react";
 
 import Markdown from "components/layout/Markdown";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Button, Paper, Slide, Snackbar, Typography } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Button, Paper, Slide, Snackbar, Typography
+} from "@material-ui/core";
 
 import {
   Star as StarIcon,
@@ -11,8 +17,12 @@ import {
   Visibility as VisibilityIcon,
 } from "@material-ui/icons";
 
-import { COLORS } from "constants/index";
-import { fetchBackend } from "utils";
+import {
+  COLORS
+} from "constants/index";
+import {
+  fetchBackend
+} from "utils";
 
 let settingFavouriteData = false;
 const useStyles = makeStyles((theme) => ({
@@ -150,7 +160,9 @@ const EventDescription = ({
   return (
     <React.Fragment>
       <Paper className={classes.paper}>
-        <div style={{ position: "relative" }}>
+        <div style={{
+          position: "relative"
+        }}>
           <Typography variant="h1" className={classes.title}>
             {event.id}
           </Typography>
@@ -176,7 +188,9 @@ const EventDescription = ({
           {registrationStatus ? (
             <React.Fragment>
               <Button
-                style={{ backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR }}
+                style={{
+                  backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR
+                }}
                 className={classes.button}
                 onClick={() => {
                   handleClickRegisterEvent(user.id, event.id, false);
@@ -186,7 +200,9 @@ const EventDescription = ({
               </Button>
               <Button
                 disabled
-                style={{ backgroundColor: COLORS.BIZTECH_GREEN }}
+                style={{
+                  backgroundColor: COLORS.BIZTECH_GREEN
+                }}
                 className={classes.button}
               >
                 Registered
@@ -194,7 +210,9 @@ const EventDescription = ({
             </React.Fragment>
           ) : (
             <Button
-              style={{ backgroundColor: COLORS.BIZTECH_GREEN }}
+              style={{
+                backgroundColor: COLORS.BIZTECH_GREEN
+              }}
               className={classes.button}
               onClick={() => {
                 handleClickRegisterEvent(user.id, event.id, true);

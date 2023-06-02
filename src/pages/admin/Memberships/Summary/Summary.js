@@ -1,7 +1,11 @@
 import React from "react";
-import { COLORS } from "../../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
 import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import SummaryPieChart from "./SummaryPieChart";
 import SummaryHBarChart from "./SummaryHBarChart";

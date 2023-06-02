@@ -15,13 +15,21 @@ import {
   Radio,
 } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  useTheme
+} from "@material-ui/styles";
 
-import { COLORS } from "../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../constants/_constants/theme";
 import CustomTextField from "../../../components/inputs/CustomTextField";
 import CustomSelect from "../../../components/inputs/CustomSelect";
-import { MEMBER_TYPES, MEMBER_LABELS } from "constants/_constants/memberTypes";
+import {
+  MEMBER_TYPES, MEMBER_LABELS
+} from "constants/_constants/memberTypes";
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
@@ -46,7 +54,9 @@ export default function MemberCreateForm(props) {
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
   // const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
 
-  const { isSubmitting, memberType, setMemberType } = props;
+  const {
+    isSubmitting, memberType, setMemberType
+  } = props;
 
   return (
     <form action="https://api-dev.ubcbiztech.com/memberships/payment" method="POST" >
@@ -323,7 +333,10 @@ export default function MemberCreateForm(props) {
         disabled={isSubmitting}
       >
         <CardMembershipIcon
-          style={{ color: COLORS.BACKGROUND_COLOR, marginRight: "5px" }}
+          style={{
+            color: COLORS.BACKGROUND_COLOR,
+            marginRight: "5px"
+          }}
         />
         Proceed to Payment!
       </Button>
