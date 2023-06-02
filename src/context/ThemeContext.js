@@ -1,9 +1,13 @@
-import React, { createContext, useState } from "react";
+import React, {
+  createContext, useState
+} from "react";
 import {
   createMuiTheme,
   ThemeProvider as MuiThemeProvider
 } from "@material-ui/core/styles";
-import { COLORS } from "constants/index";
+import {
+  COLORS
+} from "constants/index";
 
 export const fontFamily = [
   "Gilroy",
@@ -232,4 +236,6 @@ function ThemeProvider (props) {
 
 const ThemeConsumer = ThemeContext.Consumer;
 
-export { ThemeProvider, ThemeConsumer };
+export {
+  ThemeProvider, ThemeConsumer
+};

@@ -29,7 +29,9 @@ const initialUserState = {
 };
 
 const userReducer = (state = initialUserState, action) => {
-  const { type, payload, refresh = false } = action;
+  const {
+    type, payload, refresh = false
+  } = action;
 
   switch (type) {
   case SET_USER:

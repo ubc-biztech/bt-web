@@ -1,17 +1,33 @@
-import React, { Fragment } from "react";
-import { withRouter, useParams, useHistory } from "react-router-dom";
-import { Auth } from "aws-amplify";
+import React, {
+  Fragment
+} from "react";
+import {
+  withRouter, useParams, useHistory
+} from "react-router-dom";
+import {
+  Auth
+} from "aws-amplify";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography } from "@material-ui/core";
-import { useTheme } from "@material-ui/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Grid, Typography
+} from "@material-ui/core";
+import {
+  useTheme
+} from "@material-ui/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
+import {
+  ArrowBack as ArrowBackIcon
+} from "@material-ui/icons";
 
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
-import { COLORS } from "constants/_constants/theme";
+import {
+  COLORS
+} from "constants/_constants/theme";
 
 import BiztechIcon from "components/icons/BiztechIcon";
 import Discord from "components/icons/discord.svg";
@@ -128,7 +144,9 @@ const FormSuccess = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-  const { formType, email } = useParams();
+  const {
+    formType, email
+  } = useParams();
   const history = useHistory();
 
   const resendVerificationEmail = async () => {

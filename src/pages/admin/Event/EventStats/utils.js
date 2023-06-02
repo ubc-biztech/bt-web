@@ -11,12 +11,17 @@ const POINTSLABEL = "points";
  * @param {*} registrations the response from the registration endpoint
  */
 const parseDynamicResponses = (registrations) => {
-  const { data } = registrations;
+  const {
+    data
+  } = registrations;
   const parsedData = [];
 
   data.forEach((user) => {
-    const { dynamicResponses } = user;
-    const userResponse = {};
+    const {
+      dynamicResponses
+    } = user;
+    const userResponse = {
+    };
 
     userResponse.id = user.id;
     userResponse.dynamicResponses = dynamicResponses;
@@ -63,7 +68,8 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
   }
 
   registrationQuestions.forEach((question) => {
-    const column = {};
+    const column = {
+    };
 
     column.title = question.label;
     column.field = question.questionId;

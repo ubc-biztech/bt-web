@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, {
+  useState
+} from "react";
 import styled from "styled-components";
 import Paper from "@material-ui/core/Paper";
-import { ReactComponent as LeftArrowIcon } from "../../../../assets/leftarrow.svg";
-import { ReactComponent as RightArrowIcon } from "../../../../assets/rightarrow.svg";
-import { COLORS } from "../../../../constants/_constants/theme";
+import {
+  ReactComponent as LeftArrowIcon
+} from "../../../../assets/leftarrow.svg";
+import {
+  ReactComponent as RightArrowIcon
+} from "../../../../assets/rightarrow.svg";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
 import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from "@material-ui/core/NativeSelect";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import QuestionsBox from "./QuestionsBox";
-import { IconButton } from "@material-ui/core";
+import {
+  IconButton
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -57,9 +69,12 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: "1px solid white"
     }
   },
-  disabled: {},
-  focused: {},
-  error: {}
+  disabled: {
+  },
+  focused: {
+  },
+  error: {
+  }
 }));
 
 const StyledOption = styled.option`

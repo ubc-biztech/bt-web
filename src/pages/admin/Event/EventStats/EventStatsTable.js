@@ -1,7 +1,11 @@
-import React, { useState, Component, useEffect } from "react";
+import React, {
+  useState, Component, useEffect
+} from "react";
 import QRIcon from "../../../../components/icons/qr-icon.png";
 
-import MaterialTable, { MTableCell } from "material-table";
+import MaterialTable, {
+  MTableCell
+} from "material-table";
 import {
   RadialChart,
   XYPlot,
@@ -21,7 +25,9 @@ import {
   Popover, TextField
 } from "@material-ui/core";
 
-import { Alert } from "@material-ui/lab";
+import {
+  Alert
+} from "@material-ui/lab";
 import QrReader from "react-web-qr-reader";
 
 import {
@@ -29,14 +35,20 @@ import {
   REGISTRATION_LABELS,
   COLORS
 } from "constants/index";
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 import {
   REGISTRATIONSTATUSLABEL,
   prepareRowData,
   POINTSLABEL
 } from "./utils";
-import { getDefaultColumns, getDefaultPartnerColumns, getDynamicQuestionColumns } from "./TableColumns";
-import { Field, Form, Formik } from "formik";
+import {
+  getDefaultColumns, getDefaultPartnerColumns, getDynamicQuestionColumns
+} from "./TableColumns";
+import {
+  Field, Form, Formik
+} from "formik";
 
 const styles = {
   stats: {
@@ -103,25 +115,64 @@ export class EventStatsTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns: {},
+      columns: {
+      },
       presentedColumns: [],
-      partnerColumns: {},
+      partnerColumns: {
+      },
       presentedPartnerColumns: [],
-      registrationNumbers: {},
-      faculties: {},
-      years: {},
-      dietary: {},
-      genders: {},
-      heardFrom: {},
-      teamID: {},
+      registrationNumbers: {
+      },
+      faculties: {
+      },
+      years: {
+      },
+      dietary: {
+      },
+      genders: {
+      },
+      heardFrom: {
+      },
+      teamID: {
+      },
       isWaitlistShown: false,
       isAdminTeamFormationShown: false,
-      registrationVisible: { visible: false, style: { display: "none" } },
-      facultyVisible: { visible: false, style: { display: "none" } },
-      yearVisible: { visible: false, style: { display: "none" } },
-      dietaryVisible: { visible: false, style: { display: "none" } },
-      gendersVisible: { visible: false, style: { display: "none" } },
-      heardFromVisible: { visible: false, style: { display: "none" } },
+      registrationVisible: {
+        visible: false,
+        style: {
+          display: "none"
+        }
+      },
+      facultyVisible: {
+        visible: false,
+        style: {
+          display: "none"
+        }
+      },
+      yearVisible: {
+        visible: false,
+        style: {
+          display: "none"
+        }
+      },
+      dietaryVisible: {
+        visible: false,
+        style: {
+          display: "none"
+        }
+      },
+      gendersVisible: {
+        visible: false,
+        style: {
+          display: "none"
+        }
+      },
+      heardFromVisible: {
+        visible: false,
+        style: {
+          display: "none"
+        }
+      },
       tableType: "attendee",
     };
   }
@@ -131,7 +182,9 @@ export class EventStatsTable extends Component {
   };
 
   async initializeTableColumns() {
-    const { id: eventID, year: eventYear } = this.props.event;
+    const {
+      id: eventID, year: eventYear
+    } = this.props.event;
     await fetchBackend(
       `/events/${eventID}/${eventYear.toString()}`,
       "GET"
@@ -199,7 +252,8 @@ export class EventStatsTable extends Component {
    */
 
   heardFromNumbers(users) {
-    const heardFrom = {};
+    const heardFrom = {
+    };
     users.forEach((user) => {
       if (user.basicInformation?.heardFrom) {
         heardFrom[user.basicInformation?.heardFrom] = heardFrom[
@@ -214,7 +268,8 @@ export class EventStatsTable extends Component {
   }
 
   registrationNumbers(users) {
-    const registrationNumbers = {};
+    const registrationNumbers = {
+    };
     users.forEach((user) => {
       if (user.registrationStatus) {
         registrationNumbers[user.registrationStatus] = registrationNumbers[
@@ -235,10 +290,14 @@ export class EventStatsTable extends Component {
    * each data set is an array of data (arrays) sets b/c different charts accept different data
    */
   notRegistrationNumbers(users) {
-    const faculties = {};
-    const years = {};
-    const dietary = {};
-    const genders = {};
+    const faculties = {
+    };
+    const years = {
+    };
+    const dietary = {
+    };
+    const genders = {
+    };
     users.forEach((user) => {
       if (user.basicInformation?.faculty) {
         faculties[user.basicInformation?.faculty] = faculties[
@@ -326,7 +385,9 @@ export class EventStatsTable extends Component {
       // Swapping the column order
       registrationColumns[sourceIndex] = destinationColumn;
       registrationColumns[destinationIndex] = sourceColumn;
-      this.setState({ presentedColumns: registrationColumns });
+      this.setState({
+        presentedColumns: registrationColumns
+      });
     }
 
     function handlePartnerColumnDrag(sourceIndex, destinationIndex) {
@@ -336,7 +397,9 @@ export class EventStatsTable extends Component {
       // Swapping the column order
       registrationPartnerColumns[sourceIndex] = destinationColumn;
       registrationPartnerColumns[destinationIndex] = sourceColumn;
-      this.setState({ presentedPartnerColumns: registrationPartnerColumns });
+      this.setState({
+        presentedPartnerColumns: registrationPartnerColumns
+      });
     }
 
     function filterRows(rows, isPartner) {
@@ -358,7 +421,9 @@ export class EventStatsTable extends Component {
         <QrCheckIn event={this.props.event} refresh={this.refreshTable} rows={this.state.rows}/>
 
         {/* padding for visual separation */}
-        <div style={{ padding: "10px" }}>
+        <div style={{
+          padding: "10px"
+        }}>
           {/* refresh button */}
           <Button
             variant="contained"
@@ -406,9 +471,13 @@ export class EventStatsTable extends Component {
         {
           this.state.isWaitlistShown &&
             <div>
-              <div style={{ padding: "10px" }} />
+              <div style={{
+                padding: "10px"
+              }} />
               {/* text to say hello */}
-              <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
+              <Typography variant="h5" style={{
+                color: COLORS.FONT_COLOR
+              }}>
                 To view the waitlist: 1) apply a Filter on the Registration Status column for "Waitlist". 2) Sort the table by Last Updated.
               </Typography>
             </div>
@@ -416,7 +485,9 @@ export class EventStatsTable extends Component {
         {
           this.state.isAdminTeamFormationShown &&
             <div>
-              <div style={{ padding: "10px" }} />
+              <div style={{
+                padding: "10px"
+              }} />
               {/*  Formik form for team formation, up to 4 members */}
               <Formik
                 initialValues={{
@@ -426,7 +497,9 @@ export class EventStatsTable extends Component {
                   teamMember3: "",
                   teamMember4: "",
                 }}
-                onSubmit={async (values, { setSubmitting }) => {
+                onSubmit={async (values, {
+                  setSubmitting
+                }) => {
                   setSubmitting(true);
 
                   const teamMembersArrayAppend = [];
@@ -451,7 +524,9 @@ export class EventStatsTable extends Component {
                   this.refreshTable();
                 }}
               >
-                {({ isSubmitting, values }) => (
+                {({
+                  isSubmitting, values
+                }) => (
                   <Form>
                     <Field
                       name="teamName"
@@ -459,7 +534,9 @@ export class EventStatsTable extends Component {
                       placeholder="Team Name"
                       as={TextField}
                       variant="filled"
-                      style={{ margin: "10px" }}
+                      style={{
+                        margin: "10px"
+                      }}
                     />
                     <Field
                       name="teamMember"
@@ -467,7 +544,9 @@ export class EventStatsTable extends Component {
                       placeholder="Team Member Email 1"
                       as={TextField}
                       variant="filled"
-                      style={{ margin: "10px" }}
+                      style={{
+                        margin: "10px"
+                      }}
                     />
                     <Field
                       name="teamMember2"
@@ -475,7 +554,9 @@ export class EventStatsTable extends Component {
                       placeholder="Team Member Email 2"
                       as={TextField}
                       variant="filled"
-                      style={{ margin: "10px" }}
+                      style={{
+                        margin: "10px"
+                      }}
                     />
                     <Field
                       name="teamMember3"
@@ -483,7 +564,9 @@ export class EventStatsTable extends Component {
                       placeholder="Team Member Email 3"
                       as={TextField}
                       variant="filled"
-                      style={{ margin: "10px" }}
+                      style={{
+                        margin: "10px"
+                      }}
                     />
                     <Field
                       name="teamMember4"
@@ -491,7 +574,9 @@ export class EventStatsTable extends Component {
                       placeholder="Team Member Email 4"
                       as={TextField}
                       variant="filled"
-                      style={{ margin: "10px" }}
+                      style={{
+                        margin: "10px"
+                      }}
                     />
                     <Button
                       variant="contained"
@@ -505,7 +590,9 @@ export class EventStatsTable extends Component {
                 )}
               </Formik>
 
-              <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
+              <Typography variant="h5" style={{
+                color: COLORS.FONT_COLOR
+              }}>
                     To view the teams or to make Team point changes, contact a member of the dev team
               </Typography>
             </div>
@@ -534,7 +621,8 @@ export class EventStatsTable extends Component {
               color: COLORS.FONT_COLOR,
               whiteSpace: "nowrap"
             },
-            rowStyle: (rowData) => ({}),
+            rowStyle: (rowData) => ({
+            }),
             filterCellStyle: {
               backgroundColor: COLORS.CARD_PAPER_COLOR
             }
@@ -561,7 +649,9 @@ export class EventStatsTable extends Component {
         />
 
         {/* padding for visual separation */}
-        <div style={{ padding: "10px" }} />
+        <div style={{
+          padding: "10px"
+        }} />
 
         <Statistic
           statName="Registration status: "
@@ -605,8 +695,13 @@ const PopoverCell = (props) => {
   const handlePopoverOpen = (event) => {
     setPopoverText(event.target.getAttribute("value"));
 
-    const { top, left } = event.currentTarget.getBoundingClientRect();
-    setAnchorPosition({ top, left });
+    const {
+      top, left
+    } = event.currentTarget.getBoundingClientRect();
+    setAnchorPosition({
+      top,
+      left
+    });
   };
 
   const handlePopoverClose = () => {
@@ -671,7 +766,9 @@ const PopoverCell = (props) => {
               {popoverText}
             </Link>
           ) : (
-            <Typography sx={{ p: 1 }}>{popoverText?.split("<br/>").join("\n")}</Typography>
+            <Typography sx={{
+              p: 1
+            }}>{popoverText?.split("<br/>").join("\n")}</Typography>
           )}
         </Popover>
       )}
@@ -726,8 +823,14 @@ const Statistic = (props) => {
       <div
         style={
           visible
-            ? { display: "flex", paddingBottom: "20px", paddingLeft: "50px" }
-            : { display: "none" }
+            ? {
+              display: "flex",
+              paddingBottom: "20px",
+              paddingLeft: "50px"
+            }
+            : {
+              display: "none"
+            }
         }
       >
         <RadialChart
@@ -739,7 +842,12 @@ const Statistic = (props) => {
           innerRadius={100}
         />
         <XYPlot
-          margin={{ left: 40, right: 30, top: 30, bottom: 70 }}
+          margin={{
+            left: 40,
+            right: 30,
+            top: 30,
+            bottom: 70
+          }}
           xType="ordinal"
           width={300}
           height={300}
@@ -771,7 +879,9 @@ const CAMERA_FACING_MODE = {
 const QrCheckIn = (props) => {
   const classes = useStyles();
   const [visible, setVisible] = useState(false);
-  const defaultQrCode = { data: "" };
+  const defaultQrCode = {
+    data: ""
+  };
   const [qrCode, setQrCode] = useState(defaultQrCode);
   const [qrScanStage, setQrScanStage] = useState(QR_SCAN_STAGE.SCANNING);
   const [cameraFacingMode, setCameraFacingMode] = useState(

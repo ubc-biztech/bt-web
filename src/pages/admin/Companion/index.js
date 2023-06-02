@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  Helmet
+} from "react-helmet";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import {
   Typography,
   Box,
@@ -12,8 +18,12 @@ import {
   Tooltip,
   Divider,
 } from "@material-ui/core";
-import { fetchBackend } from "utils";
-import { COLORS } from "constants/index";
+import {
+  fetchBackend
+} from "utils";
+import {
+  COLORS
+} from "constants/index";
 
 const useStyles = makeStyles({
   card: {
@@ -107,7 +117,9 @@ const Companion = () => {
 
   const createQR = async () => {
     const keys = Object.keys(errors);
-    const newErrors = { ...errors };
+    const newErrors = {
+      ...errors
+    };
     let validation = true;
     keys.forEach((key) => {
       if (newQR[key] === "") {
@@ -150,7 +162,9 @@ const Companion = () => {
 
       <div className={classes.row}>
         <div className={classes.columnLeft}>
-          <Typography variant="h1" style={{ color: COLORS.BIZTECH_GREEN }}>
+          <Typography variant="h1" style={{
+            color: COLORS.BIZTECH_GREEN
+          }}>
             Companion QRs
           </Typography>
           <Paper className={classes.section}>
@@ -173,8 +187,14 @@ const Companion = () => {
                   margin="normal"
                   variant="filled"
                   onChange={(e) => {
-                    setErrors({ ...errors, id: false });
-                    setNewQR({ ...newQR, id: e.target.value });}
+                    setErrors({
+                      ...errors,
+                      id: false
+                    });
+                    setNewQR({
+                      ...newQR,
+                      id: e.target.value
+                    });}
                   }
                   value={newQR.id}
                   error={errors.id}
@@ -190,8 +210,14 @@ const Companion = () => {
                   margin="normal"
                   variant="filled"
                   onChange={(e) => {
-                    setErrors({ ...errors, eventID: false });
-                    setNewQR({ ...newQR, eventID: e.target.value });}
+                    setErrors({
+                      ...errors,
+                      eventID: false
+                    });
+                    setNewQR({
+                      ...newQR,
+                      eventID: e.target.value
+                    });}
                   }
                   value={newQR.eventID}
                   error={errors.eventID}
@@ -207,8 +233,14 @@ const Companion = () => {
                 margin="normal"
                 variant="filled"
                 onChange={(e) => {
-                  setErrors({ ...errors, year: false });
-                  setNewQR({ ...newQR, year: e.target.value });}
+                  setErrors({
+                    ...errors,
+                    year: false
+                  });
+                  setNewQR({
+                    ...newQR,
+                    year: e.target.value
+                  });}
                 }
                 value={newQR.year}
                 error={errors.year}
@@ -224,8 +256,14 @@ const Companion = () => {
                   margin="normal"
                   variant="filled"
                   onChange={(e) => {
-                    setErrors({ ...errors, points: false });
-                    setNewQR({ ...newQR, points: e.target.value });}
+                    setErrors({
+                      ...errors,
+                      points: false
+                    });
+                    setNewQR({
+                      ...newQR,
+                      points: e.target.value
+                    });}
                   }
                   value={newQR.points}
                   error={errors.points}
@@ -242,7 +280,10 @@ const Companion = () => {
                   color="primary"
                   aria-label="Unlimited Scans?"
                   checked={newQR.isUnlimitedScans}
-                  onChange={() => setNewQR({ ...newQR, isUnlimitedScans: !newQR.isUnlimitedScans })}
+                  onChange={() => setNewQR({
+                    ...newQR,
+                    isUnlimitedScans: !newQR.isUnlimitedScans
+                  })}
                 />
               </Box>
               <Button

@@ -12,12 +12,18 @@ import {
   Radio
 } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 
-import { COLORS } from "constants/_constants/theme";
+import {
+  COLORS
+} from "constants/_constants/theme";
 import CustomTextField from "components/inputs/CustomTextField";
 import CustomSelect from "components/inputs/CustomSelect";
-import { MEMBER_TYPES, MEMBER_LABELS } from "constants/_constants/memberTypes";
+import {
+  MEMBER_TYPES, MEMBER_LABELS
+} from "constants/_constants/memberTypes";
 
 const useStyles = makeStyles((theme) => ({
   form: {

@@ -1,7 +1,11 @@
 import React from "react";
-import { Provider } from "react-redux";
+import {
+  Provider
+} from "react-redux";
 
-import { ThemeProvider } from "context/ThemeContext";
+import {
+  ThemeProvider
+} from "context/ThemeContext";
 import store from "./store/rootStore";
 
 import CssBaseline from "@material-ui/core/CssBaseline";

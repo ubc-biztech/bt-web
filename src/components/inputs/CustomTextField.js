@@ -1,9 +1,17 @@
 import React from "react";
-import { COLORS } from "../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../constants/_constants/theme";
 
-import { Typography, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/styles";
+import {
+  Typography, TextField
+} from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  useTheme
+} from "@material-ui/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles(() => ({

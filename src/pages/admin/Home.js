@@ -1,8 +1,14 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import {
+  useHistory
+} from "react-router-dom";
+import {
+  Helmet
+} from "react-helmet";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import {
   Box,
   Card,
@@ -15,10 +21,16 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import { MoreVert as MoreVertIcon } from "@material-ui/icons";
+import {
+  MoreVert as MoreVertIcon
+} from "@material-ui/icons";
 
-import { COLORS } from "constants/index";
-import { deleteEvent } from "store/event/eventActions";
+import {
+  COLORS
+} from "constants/index";
+import {
+  deleteEvent
+} from "store/event/eventActions";
 
 const useStyles = makeStyles({
   card: {
@@ -44,7 +56,9 @@ const useStyles = makeStyles({
 });
 
 function AdminHome(props) {
-  const { events } = props;
+  const {
+    events
+  } = props;
   const classes = useStyles();
 
   const history = useHistory();
@@ -118,7 +132,9 @@ function AdminHome(props) {
           />
         </CardActionArea>
         <CardHeader
-          classes={{ subheader: classes.cardHeader }}
+          classes={{
+            subheader: classes.cardHeader
+          }}
           title={event.ename}
           subheader={
             event.startDate
@@ -153,7 +169,9 @@ function AdminHome(props) {
 
       <div className={classes.row}>
         <div className={classes.columnLeft}>
-          <Typography variant="h1" style={{ color: COLORS.BIZTECH_GREEN }}>
+          <Typography variant="h1" style={{
+            color: COLORS.BIZTECH_GREEN
+          }}>
             BizTech Admins
           </Typography>
         </div>

@@ -8,8 +8,12 @@ import {
   MarkSeries,
 } from "react-vis";
 
-import { LinearProgress, Typography } from "@material-ui/core";
-import { COLORS } from "constants/index";
+import {
+  LinearProgress, Typography
+} from "@material-ui/core";
+import {
+  COLORS
+} from "constants/index";
 
 const EVENT_PROGRESS_GOAL = 5;
 
@@ -24,7 +28,8 @@ const classes = {
 };
 
 const getData = () => {
-  const data = {};
+  const data = {
+  };
   const date = new Date();
   let month = date.getMonth();
   let year = date.getFullYear();
@@ -51,7 +56,9 @@ const sixMonthsAgo = () => {
   }
 };
 
-const UserProgress = ({ registeredEvents, events }) => {
+const UserProgress = ({
+  registeredEvents, events
+}) => {
   // filter only checkedIn events, and only return event IDs
   const checkedInEventIDs = registeredEvents.flatMap((event) => {
     return event.registrationStatus === "checkedIn" ? [event.eventID] : [];
@@ -92,15 +99,23 @@ const UserProgress = ({ registeredEvents, events }) => {
   return (
     <React.Fragment>
       <div style={classes.container}>
-        <Typography style={{ marginRight: "14px" }}>Events Attended:</Typography>
-        <Typography style={{ marginRight: "14px" }}>
-          <span style={{ color: COLORS.BIZTECH_GREEN }}>
+        <Typography style={{
+          marginRight: "14px"
+        }}>Events Attended:</Typography>
+        <Typography style={{
+          marginRight: "14px"
+        }}>
+          <span style={{
+            color: COLORS.BIZTECH_GREEN
+          }}>
             {checkedInEventIDs.length}
           </span>
           {/* /{EVENT_PROGRESS_GOAL} */}
         </Typography>
         <LinearProgress
-          style={{ flex: 2 }}
+          style={{
+            flex: 2
+          }}
           variant="determinate"
           value={
             checkedInEventIDs.length * EVENT_PROGRESS_GOAL > 100
@@ -119,14 +134,18 @@ const UserProgress = ({ registeredEvents, events }) => {
           tickTotal={6}
           tickSize={0}
           style={{
-            text: { fill: "white" },
+            text: {
+              fill: "white"
+            },
           }}
         />
         <YAxis
           tickTotal={3}
           tickSize={0}
           style={{
-            text: { fill: "white" },
+            text: {
+              fill: "white"
+            },
           }}
         />
         <LineSeries
@@ -134,7 +153,8 @@ const UserProgress = ({ registeredEvents, events }) => {
           data={timestampData}
           stroke={COLORS.FONT_COLOR}
           color={COLORS.BIZTECH_GREEN}
-          style={{}}
+          style={{
+          }}
         />
         <MarkSeries
           // animation

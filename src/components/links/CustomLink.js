@@ -1,8 +1,12 @@
 import React from "react";
-import { Link } from "@material-ui/core";
+import {
+  Link
+} from "@material-ui/core";
 
 export default function CustomLink(props) {
-  const { href, target, rel, children } = props;
+  const {
+    href, target, rel, children
+  } = props;
   return (
     <Link
       href={href}

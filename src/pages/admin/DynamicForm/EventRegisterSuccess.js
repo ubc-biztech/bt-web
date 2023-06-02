@@ -1,14 +1,24 @@
-import React, { useState } from "react";
-import { withRouter, useParams } from "react-router-dom";
+import React, {
+  useState
+} from "react";
+import {
+  withRouter, useParams
+} from "react-router-dom";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Grid, Typography
+} from "@material-ui/core";
 
 import LinkIcon from "@material-ui/icons/Link";
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
-import { COLORS } from "../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../constants/_constants/theme";
 
 const ICON_SIZE = "24px";
 const FLASH_TIME = "50";
@@ -82,7 +92,8 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     color: `${COLORS.FONT_COLOR}`
   },
-  upcomingEventsDate: {},
+  upcomingEventsDate: {
+  },
   imageContainer: {
     display: "flex",
     justifyContent: "flex-end"
@@ -112,7 +123,9 @@ const EventRegisterSuccess = ({
 }) => {
   const classes = useStyles();
 
-  const { type } = useParams();
+  const {
+    type
+  } = useParams();
 
   const [displayLinkMessage, setDisplayLinkMessage] = useState(false);
 

@@ -1,20 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  useHistory
+} from "react-router-dom";
+import {
+  Helmet
+} from "react-helmet";
 
 import EventDescription from "./EventDescription";
 import QuickRegister from "pages/member/Event/QuickRegister";
 import Loading from "pages/Loading";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Typography
+} from "@material-ui/core";
 
-import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
+import {
+  ArrowBack as ArrowBackIcon
+} from "@material-ui/icons";
 
-import { REGISTRATION_STATUS } from "constants/index";
-import { fetchUserRegisteredEvents } from "store/user/userActions";
-import { fetchBackend } from "utils";
+import {
+  REGISTRATION_STATUS
+} from "constants/index";
+import {
+  fetchUserRegisteredEvents
+} from "store/user/userActions";
+import {
+  fetchBackend
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -41,7 +61,9 @@ const useStyles = makeStyles((theme) => ({
 const EventDetails = (props) => {
   const classes = useStyles();
   const history = useHistory();
-  const { eventId, event, loading, user, userRegisteredEvents } = props;
+  const {
+    eventId, event, loading, user, userRegisteredEvents
+  } = props;
 
   const [registration, setRegistration] = useState(null);
   const [registrationStatus, setRegistrationStatus] = useState(false);
@@ -51,7 +73,9 @@ const EventDetails = (props) => {
     // first, check if the user is logged in
     if (!user.id) return;
     if (!userRegisteredEvents) {
-      fetchUserRegisteredEvents({ userId: user.email });
+      fetchUserRegisteredEvents({
+        userId: user.email
+      });
     } else {
       const userRegistrationObject = userRegisteredEvents.find(
         (registration) => registration.eventID === eventId
@@ -191,4 +215,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {})(EventDetails);
+export default connect(mapStateToProps, {
+})(EventDetails);

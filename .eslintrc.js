@@ -26,13 +26,18 @@ module.exports = {
     "eol-last": ["warn", "always"],
     "indent": ["warn", 2],
     "no-prototype-builtins": "off",
-    "no-trailing-spaces": ["warn", { "ignoreComments": true }],
+    "no-trailing-spaces": ["warn", {
+      "ignoreComments": true
+    }],
     "no-unused-vars": "warn",
     "object-curly-spacing": ["warn", "always"],
     "padded-blocks": ["warn", "never"],
     "quotes": ["warn", "double"],
     "semi": ["warn", "always"],
-    "space-in-parens": ["warn", "never"]
+    "space-in-parens": ["warn", "never"],
+    "object-property-newline": ["warn", {
+    }],
+    "object-curly-newline": ["warn", "always"]
   },
   settings: {
     "import/resolver": {

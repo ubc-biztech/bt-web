@@ -10,7 +10,9 @@ import {
   SET_USER,
   LOGOUT
 } from "constants/index";
-import { fetchBackend, log } from "utils";
+import {
+  fetchBackend, log
+} from "utils";
 
 // ACTION CREATORS
 export function setUser (userData) {
@@ -59,10 +61,16 @@ export function logout () {
 }
 
 // ACTIONS
-export async function fetchUser (params = {}) {
+export async function fetchUser (params = {
+}) {
   try {
-    const { userId, refresh = false } = params;
-    await Store.dispatch({ type: FETCH_USER_REQUEST, refresh });
+    const {
+      userId, refresh = false
+    } = params;
+    await Store.dispatch({
+      type: FETCH_USER_REQUEST,
+      refresh
+    });
     const response = await fetchBackend(`/users/${userId}`, "GET");
     const payload = {
       email: response.id,
@@ -80,16 +88,25 @@ export async function fetchUser (params = {}) {
       "favedEventsID;year": response["favedEventsID;year"],
       isMember: response.isMember
     };
-    await Store.dispatch({ type: FETCH_USER_SUCCESS, payload });
+    await Store.dispatch({
+      type: FETCH_USER_SUCCESS,
+      payload
+    });
   } catch (err) {
-    await Store.dispatch({ type: FETCH_USER_ERROR, payload: err });
+    await Store.dispatch({
+      type: FETCH_USER_ERROR,
+      payload: err
+    });
     log(err);
   }
 }
 
-export async function fetchUserRegisteredEvents (params = {}) {
+export async function fetchUserRegisteredEvents (params = {
+}) {
   try {
-    const { userId, refresh = false } = params;
+    const {
+      userId, refresh = false
+    } = params;
     await Store.dispatch({
       type: FETCH_USER_REGISTERED_EVENTS_REQUEST,
       refresh

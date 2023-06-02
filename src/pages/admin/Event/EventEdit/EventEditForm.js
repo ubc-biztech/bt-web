@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, {
+  useEffect
+} from "react";
 import DateFnsUtils from "@date-io/date-fns";
 
 import {
@@ -13,7 +15,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
 } from "@material-ui/pickers";
-import { Info as InfoIcon } from "@material-ui/icons";
+import {
+  Info as InfoIcon
+} from "@material-ui/icons";
 
 export default function EventEditForm(props) {
   const {
@@ -43,7 +47,13 @@ export default function EventEditForm(props) {
   } = props;
 
   useEffect(() => {
-    updatePreview({ ename, description, imageUrl, startDate, endDate });
+    updatePreview({
+      ename,
+      description,
+      imageUrl,
+      startDate,
+      endDate
+    });
   }, [updatePreview, ename, description, imageUrl, startDate, endDate]);
 
   const change = (name, e) => {
@@ -206,7 +216,9 @@ export default function EventEditForm(props) {
             onChange={change.bind(null, "longitude")}
           />
         </Grid>
-        <Grid item xs={12} sm={4} style={{ display: "flex" }}>
+        <Grid item xs={12} sm={4} style={{
+          display: "flex"
+        }}>
           <TextField
             id="latitude"
             label="Latitude"
@@ -216,7 +228,9 @@ export default function EventEditForm(props) {
             value={latitude}
             onChange={change.bind(null, "latitude")}
           />
-          <InfoIcon onClick={handleInfoClick} style={{ cursor: "pointer" }} />
+          <InfoIcon onClick={handleInfoClick} style={{
+            cursor: "pointer"
+          }} />
         </Grid>
         <Grid item xs={12}>
           <TextField

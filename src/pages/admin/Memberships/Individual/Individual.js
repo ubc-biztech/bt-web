@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, {
+  useState
+} from "react";
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core/styles";
-import { COLORS } from "../../../../constants/_constants/theme";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
@@ -14,7 +20,9 @@ import Select from "react-dropdown-select";
 import IndividualGrid from "./IndividualGrid";
 import IndividualHeaderBox from "./IndividualHeaderBox";
 import CheckBoxGrid from "./CheckBoxGrid";
-import { IconButton } from "@material-ui/core";
+import {
+  IconButton
+} from "@material-ui/core";
 
 // todo: currently bugged
 const useStyles = makeStyles((theme) => ({
@@ -236,7 +244,11 @@ const Individual = (props) => {
                       .filter((x) => x.id === memberID)
                       .map((x) => x.first_name.length < 1) ? (
                       <RadioButtonUncheckedIcon
-                        style={{ color: "C4C4C4", width: 25, height: 25 }}
+                        style={{
+                          color: "C4C4C4",
+                          width: 25,
+                          height: 25
+                        }}
                       />
                     ) : (
                       <RadioButtonCheckedIcon
@@ -734,7 +746,11 @@ const Individual = (props) => {
                       />
                     ) : (
                       <CheckBoxOutlineBlankIcon
-                        style={{ color: "C4C4C4", width: 30, height: 30 }}
+                        style={{
+                          color: "C4C4C4",
+                          width: 30,
+                          height: 30
+                        }}
                       />
                     )}
                 </IconButton>
@@ -831,7 +847,11 @@ const Individual = (props) => {
                       .filter((x) => x.id === memberID)
                       .map((x) => x.firstName).length < 1 ? (
                       <RadioButtonUncheckedIcon
-                        style={{ color: "C4C4C4", width: 25, height: 25 }}
+                        style={{
+                          color: "C4C4C4",
+                          width: 25,
+                          height: 25
+                        }}
                       />
                     ) : (
                       <RadioButtonCheckedIcon

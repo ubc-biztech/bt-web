@@ -1,6 +1,12 @@
-import { TextField, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { fetchBackend } from "../../../../utils";
+import {
+  TextField, Typography
+} from "@material-ui/core";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  fetchBackend
+} from "../../../../utils";
 
 const PointsField = (props) => {
   const [value, setValue] = useState(props.points);

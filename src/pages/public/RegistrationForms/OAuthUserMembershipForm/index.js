@@ -1,18 +1,40 @@
-import React, { useState, Fragment } from "react";
-import { CLIENT_URL } from "constants/index";
-import { Auth } from "aws-amplify";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
+import React, {
+  useState, Fragment
+} from "react";
+import {
+  CLIENT_URL
+} from "constants/index";
+import {
+  Auth
+} from "aws-amplify";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Formik
+} from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
+import {
+  useHistory
+} from "react-router-dom";
 import OAuthUserMembershipForm from "./OAuthUserMembershipForm";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-import { MEMBER_TYPES } from "constants/_constants/memberTypes";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Typography
+} from "@material-ui/core";
+import {
+  MEMBER_TYPES
+} from "constants/_constants/memberTypes";
 
-import { COLORS } from "constants/_constants/theme";
+import {
+  COLORS
+} from "constants/_constants/theme";
 
-import { fetchBackend, log } from "utils";
+import {
+  fetchBackend, log
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -98,7 +120,9 @@ const OAuthUserMembershipFormContainer = (props) => {
 
   const [userEmail, setUserEmail] = useState("");
   async function getOAuthAttributes() {
-    Auth.currentAuthenticatedUser({ bypassCache: true })
+    Auth.currentAuthenticatedUser({
+      bypassCache: true
+    })
       .then(async (authUser) => {
         setUserEmail(authUser.attributes.email);
       })

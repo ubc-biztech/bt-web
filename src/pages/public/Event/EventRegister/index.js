@@ -1,22 +1,42 @@
-import React, { useState, Fragment } from "react";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
+import React, {
+  useState, Fragment
+} from "react";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Formik
+} from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
+import {
+  useHistory
+} from "react-router-dom";
 
 import EventView from "components/Event/EventView";
 import EventRegisterForm from "./EventRegisterForm";
 import EventRegisterSuccess from "../../../admin/DynamicForm/EventRegisterSuccess";
 import NotFound from "pages/NotFound";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
-import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Grid, Paper, Typography
+} from "@material-ui/core";
+import {
+  Skeleton
+} from "@material-ui/lab";
+import {
+  ArrowBack as ArrowBackIcon
+} from "@material-ui/icons";
 
-import { COLORS } from "../../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
 
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 import LoginAccess from "components/LoginAccess/LoginAccess";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +74,9 @@ const useStyles = makeStyles((theme) => ({
 const EventFormContainer = (props) => {
   const classes = useStyles();
   const history = useHistory();
-  const { user, eventId, event, upcomingEvents, loading } = props;
+  const {
+    user, eventId, event, upcomingEvents, loading
+  } = props;
 
   const initialRegistrationState = {
     // set to true to see success page
@@ -110,7 +132,9 @@ const EventFormContainer = (props) => {
     // id: "",
   };
 
-  const { isRegistered, registeredEmail } = registration;
+  const {
+    isRegistered, registeredEmail
+  } = registration;
 
   const isDeadlinePassed = (event) => {
     const deadline = new Date(event.deadline).getTime();
