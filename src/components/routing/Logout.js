@@ -1,9 +1,17 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
+import {
+  connect
+} from "react-redux";
+import {
+  Auth
+} from "aws-amplify";
 
-import { Button } from "@material-ui/core";
-import { logout } from "store/user/userActions";
+import {
+  Button
+} from "@material-ui/core";
+import {
+  logout
+} from "store/user/userActions";
 
 export function Logout(props) {
   return (
@@ -23,4 +31,6 @@ export function Logout(props) {
   );
 }
 
-export default connect(null, { logout })(Logout);
+export default connect(null, {
+  logout
+})(Logout);

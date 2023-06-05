@@ -7,7 +7,9 @@ import * as serviceWorker from "./serviceWorker";
 
 import "./index.scss";
 import "./overwrites.scss";
-import { AWS_CONFIG } from "./constants";
+import {
+  AWS_CONFIG
+} from "./constants";
 
 Amplify.configure(AWS_CONFIG);
 

@@ -1,5 +1,9 @@
-import { Auth } from "aws-amplify";
-import { API_URL } from "constants/index";
+import {
+  Auth
+} from "aws-amplify";
+import {
+  API_URL
+} from "constants/index";
 
 export async function fetchBackend(
   endpoint,
@@ -7,7 +11,8 @@ export async function fetchBackend(
   data,
   authenticatedCall = true
 ) {
-  let headers = {};
+  let headers = {
+  };
   if (method === "POST") {
     headers = {
       Accept: "application/json",
@@ -21,7 +26,11 @@ export async function fetchBackend(
   }
   const body = JSON.stringify(data);
   let status;
-  return fetch(API_URL + endpoint, { method, headers, body })
+  return fetch(API_URL + endpoint, {
+    method,
+    headers,
+    body
+  })
     .then((response) => {
       status = response.status;
       return response.json();
@@ -31,7 +40,7 @@ export async function fetchBackend(
       if (status < 200 || status >= 300) {
         // eslint-disable-next-line
         return Promise.reject({
-          status: status,
+          status,
           message: response,
         });
       }

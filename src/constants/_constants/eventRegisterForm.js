@@ -53,10 +53,10 @@ export const BASIC_QUESTIONS = [
     choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
     required: true,
   },
-]
+];
 
 export const QUESTION_DOMAINS = {
   SWE: "SWE",
   PM: "PM",
   UX: "UX"
-}
+};

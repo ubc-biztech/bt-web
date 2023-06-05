@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  motion
+} from "framer-motion";
 import Lottie from "lottie-react";
 
-import { withRouter } from "react-router-dom";
+import {
+  withRouter
+} from "react-router-dom";
 import {
   Button,
   TextField,
@@ -10,14 +16,20 @@ import {
   makeStyles,
   Modal
 } from "@material-ui/core";
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 import Loading from "pages/Loading";
 
 import BizTechDBLogo from "assets/2023/data&beyond/BizTechD&BLogo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
-import { COLORS } from "../../../../constants/_constants/theme";
-import { constantStyles } from '../../../../constants/_constants/companion';
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
+import {
+  constantStyles
+} from "../../../../constants/_constants/companion";
 
 const styles = {
   container: {
@@ -207,7 +219,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Redemption = ({ history, location }) => {
+const Redemption = ({
+  history, location
+}) => {
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
@@ -234,17 +248,20 @@ const Redemption = ({ history, location }) => {
 
   const classes = useStyles();
 
-  const { eventID, year, qrID } = location?.state || {};
+  const {
+    eventID, year, qrID
+  } = location?.state || {
+  };
 
   // Temp for Data and Beyond
-  const id = qrID.slice(6)
+  const id = qrID.slice(6);
   const links = {
     "data-challenge-1": "https://docs.google.com/forms/d/e/1FAIpQLScdJC-w2ypk9109ud-77VfgK4srdaujYeE8LBFXkbHf8fhY0w/viewform",
     "data-challenge-2": "https://docs.google.com/forms/d/e/1FAIpQLSdAmNcw4iwlsIej01iOOte7QVpTC3gBUU99zTrP88STCMtetQ/viewform",
     "data-challenge-3": "https://docs.google.com/forms/d/e/1FAIpQLSdpbfthDx27LrMzyvMkK_W9jFytG5D4805qNNDY26VCQKmnKQ/viewform",
     "data-challenge-4": "https://docs.google.com/forms/d/e/1FAIpQLSedwv5fsVU99OJrgIu5HozWoMM06C0xkULP3vT4u_quv5HVWw/viewform",
     "data-challenge-5": "https://docs.google.com/forms/d/e/1FAIpQLSf3tESUF_w_4JK7H9ngtg9oqcl7ld4hGssIcr6dl1zGtedAgA/viewform",
-  }
+  };
 
   const fetchRegistrations = async () => {
     const params = new URLSearchParams({
@@ -279,9 +296,9 @@ const Redemption = ({ history, location }) => {
         "POST",
         {
           qrCodeID: qrID,
-          eventID: eventID,
+          eventID,
           year: Number(year),
-          email: email,
+          email,
           negativePointsConfirmed: isNegativeQRPointsConfirmed
         },
         false
@@ -357,7 +374,7 @@ const Redemption = ({ history, location }) => {
         suffixNameText[Math.floor(Math.random() * suffixNameText.length)]
       );
     } else {
-      setCongratSuffixText(`Successfully purchased!`);
+      setCongratSuffixText("Successfully purchased!");
     }
   };
 
@@ -365,7 +382,7 @@ const Redemption = ({ history, location }) => {
     if (points > 0) {
       setPointsAwardedText(`+${points} Points`);
     } else {
-      var pts = `${points} Points`;
+      const pts = `${points} Points`;
       setPointsAwardedText(`${points} Points`);
       setNegativePointsAwardedText(
         pts.substring(1, `${points} Points`.length)
@@ -373,34 +390,36 @@ const Redemption = ({ history, location }) => {
     }
   };
   const determineTimestampText = () => {
-    const date = new Date().toLocaleString("en-US", { timeZone: "PST" });
+    const date = new Date().toLocaleString("en-US", {
+      timeZone: "PST"
+    });
     setTimestampText(date);
   };
 
   const handleQrScanError = (err) => {
     switch (err.status) {
-      case 405:
-        determinePointsAwardedText(err.message.qr_points);
-        setNegativeQRModalOpen(true);
-        break;
-      case 406:
-        setError("You do not have sufficient funds to make this purchase.");
-        break;
-      default:
-        if (
-          err.message.message &&
+    case 405:
+      determinePointsAwardedText(err.message.qr_points);
+      setNegativeQRModalOpen(true);
+      break;
+    case 406:
+      setError("You do not have sufficient funds to make this purchase.");
+      break;
+    default:
+      if (
+        err.message.message &&
           err.message.message.includes("already scanned")
-        ) {
-          // TEMPORARY for Data and Beyond: remove this conditional branch once we have a better way to handle this
-          // this is neccessary because the backend error message for already scanned QRs is not
-          // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
-          setError(
-            "This code is already scanned and can only be redeemed once."
-          );
-        } else {
-          setError(err.message.message);
-        }
-        break;
+      ) {
+        // TEMPORARY for Data and Beyond: remove this conditional branch once we have a better way to handle this
+        // this is neccessary because the backend error message for already scanned QRs is not
+        // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
+        setError(
+          "This code is already scanned and can only be redeemed once."
+        );
+      } else {
+        setError(err.message.message);
+      }
+      break;
     }
     console.log(err);
   };
@@ -410,7 +429,9 @@ const Redemption = ({ history, location }) => {
       <Modal open={isEmailModalOpen}>
         <motion.div
           style={styles.modal}
-          animate={{ opacity: isEmailModalOpen ? 1 : 0 }}
+          animate={{
+            opacity: isEmailModalOpen ? 1 : 0
+          }}
         >
           <Typography className={classes.boldText}>{input}</Typography>
           <Typography className={classes.errorText}>{error}</Typography>
@@ -455,12 +476,17 @@ const Redemption = ({ history, location }) => {
       <Modal open={isNegativeQRModalOpen}>
         <motion.div
           style={styles.modal}
-          animate={{ opacity: isNegativeQRModalOpen ? 1 : 0 }}
+          animate={{
+            opacity: isNegativeQRModalOpen ? 1 : 0
+          }}
         >
           <img
             src={BizTechDBLogo}
             alt="Data and Beyond Logo"
-            style={{ width: "20%", height: "auto" }}
+            style={{
+              width: "20%",
+              height: "auto"
+            }}
           />
           <Typography className={classes.boldText}>
             You are about to spend {negativePointsAwardedText}
@@ -506,82 +532,125 @@ const Redemption = ({ history, location }) => {
       ) : (
         <motion.div
           style={styles.container}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{
+            opacity: 0,
+            scale: 0.5
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1
+          }}
+          transition={{
+            duration: 0.5
+          }}
         >
           {email ? (
             <>
               {!isSuccessAnimationFinished &&
               !isErrorAnimationFinished &&
               !isEmailModalOpen ? (
-                <div style={styles.successContainer}>
-                  {error ? (
-                    <Lottie
-                      animationData={ErrorAnimation}
-                      onLoopComplete={finishError}
-                    />
-                  ) : (
-                    <Lottie
-                      animationData={SuccessAnimation}
-                      onLoopComplete={finishSuccess}
-                    />
-                  )}
-                  ;
-                </div>
-              ) : (
-                <>
-                  <motion.div
-                    style={styles.successContainer}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                  >
-                    <img
-                      src={BizTechDBLogo}
-                      alt="Data and Beyond Logo"
-                      style={{ width: "50%", height: "auto", marginBottom: 20 }}
-                    />
-                  </motion.div>
-
-                  <motion.div
-                    style={styles.successContainer}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                  >
+                  <div style={styles.successContainer}>
                     {error ? (
-                      <Typography
-                        className={classes.themeText}
-                        style={{ margin: "20px 0" }}
-                      >
-                        {error}
-                      </Typography>
+                      <Lottie
+                        animationData={ErrorAnimation}
+                        onLoopComplete={finishError}
+                      />
                     ) : (
-                      <>
-                        <Typography className={classes.welcome}>{congratNameText}</Typography>
-
-                        <Typography className={classes.themeText}>
-                          {congratSuffixText}
-                        </Typography>
-
-                        <Typography
-                          className={classes.pointsText}
-                          style={{ margin: "20px 0" }}
-                        >
-                          {pointsAwardedText}
-                        </Typography>
-                      </>
+                      <Lottie
+                        animationData={SuccessAnimation}
+                        onLoopComplete={finishSuccess}
+                      />
                     )}
-                  </motion.div>
+                  ;
+                  </div>
+                ) : (
+                  <>
+                    <motion.div
+                      style={styles.successContainer}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <img
+                        src={BizTechDBLogo}
+                        alt="Data and Beyond Logo"
+                        style={{
+                          width: "50%",
+                          height: "auto",
+                          marginBottom: 20
+                        }}
+                      />
+                    </motion.div>
 
-                  <motion.div
-                    style={styles.successContainer}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                  >
-                    {links[id] &&
+                    <motion.div
+                      style={styles.successContainer}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {error ? (
+                        <Typography
+                          className={classes.themeText}
+                          style={{
+                            margin: "20px 0"
+                          }}
+                        >
+                          {error}
+                        </Typography>
+                      ) : (
+                        <>
+                          <Typography className={classes.welcome}>{congratNameText}</Typography>
+
+                          <Typography className={classes.themeText}>
+                            {congratSuffixText}
+                          </Typography>
+
+                          <Typography
+                            className={classes.pointsText}
+                            style={{
+                              margin: "20px 0"
+                            }}
+                          >
+                            {pointsAwardedText}
+                          </Typography>
+                        </>
+                      )}
+                    </motion.div>
+
+                    <motion.div
+                      style={styles.successContainer}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {links[id] &&
                       <Button
                         variant="contained"
                         color="primary"
@@ -593,33 +662,38 @@ const Redemption = ({ history, location }) => {
                       >
                         Proceed to Challenge
                       </Button>
-                    }
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      onClick={() => {
-                        history.push("/companion");
-                      }}
-                    >
+                      }
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        onClick={() => {
+                          history.push("/companion");
+                        }}
+                      >
                       Return to Companion
-                    </Button>
-                    <Typography
-                      className={classes.themeText}
-                      style={{ margin: "20px 0" }}
-                    >
-                      {timestampText}
-                    </Typography>
-                  </motion.div>
-                </>
-              )}
+                      </Button>
+                      <Typography
+                        className={classes.themeText}
+                        style={{
+                          margin: "20px 0"
+                        }}
+                      >
+                        {timestampText}
+                      </Typography>
+                    </motion.div>
+                  </>
+                )}
             </>
           ) : (
             <>
               <img
                 src={BizTechDBLogo}
                 alt="Data and Beyond Logo"
-                style={{ width: "35%", height: "auto" }}
+                style={{
+                  width: "35%",
+                  height: "auto"
+                }}
               />
               <div style={styles.inputContainer}>
                 <Typography className={classes.welcome}>Welcome!</Typography>
@@ -629,7 +703,10 @@ const Redemption = ({ history, location }) => {
                 </Typography>
                 <TextField
                   className={classes.textfield}
-                  style={{ marginTop: 20, marginBottom: 20 }}
+                  style={{
+                    marginTop: 20,
+                    marginBottom: 20
+                  }}
                   onChange={(e) => setInput(e.target.value)}
                   value={input}
                   variant="outlined"

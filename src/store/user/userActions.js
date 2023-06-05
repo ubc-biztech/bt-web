@@ -1,4 +1,4 @@
-import Store from 'store/rootStore'
+import Store from "store/rootStore";
 
 import {
   FETCH_USER_REQUEST,
@@ -9,8 +9,10 @@ import {
   FETCH_USER_REGISTERED_EVENTS_ERROR,
   SET_USER,
   LOGOUT
-} from 'constants/index'
-import { fetchBackend, log } from 'utils'
+} from "constants/index";
+import {
+  fetchBackend, log
+} from "utils";
 
 // ACTION CREATORS
 export function setUser (userData) {
@@ -28,8 +30,8 @@ export function setUser (userData) {
     gender,
     admin,
     isMember,
-  } = userData
-  const favedEvents = userData['favedEventsID;year']
+  } = userData;
+  const favedEvents = userData["favedEventsID;year"];
 
   return {
     type: SET_USER,
@@ -46,24 +48,30 @@ export function setUser (userData) {
       heardFrom,
       gender,
       admin,
-      'favedEventsID;year': favedEvents,
+      "favedEventsID;year": favedEvents,
       isMember
     }
-  }
+  };
 }
 
 export function logout () {
   return {
     type: LOGOUT
-  }
+  };
 }
 
 // ACTIONS
-export async function fetchUser (params = {}) {
+export async function fetchUser (params = {
+}) {
   try {
-    const { userId, refresh = false } = params
-    await Store.dispatch({ type: FETCH_USER_REQUEST, refresh })
-    const response = await fetchBackend(`/users/${userId}`, 'GET')
+    const {
+      userId, refresh = false
+    } = params;
+    await Store.dispatch({
+      type: FETCH_USER_REQUEST,
+      refresh
+    });
+    const response = await fetchBackend(`/users/${userId}`, "GET");
     const payload = {
       email: response.id,
       fname: response.fname,
@@ -77,33 +85,42 @@ export async function fetchUser (params = {}) {
       heardFrom: response.heardFrom,
       gender: response.gender,
       admin: response.admin,
-      'favedEventsID;year': response['favedEventsID;year'],
+      "favedEventsID;year": response["favedEventsID;year"],
       isMember: response.isMember
-    }
-    await Store.dispatch({ type: FETCH_USER_SUCCESS, payload })
+    };
+    await Store.dispatch({
+      type: FETCH_USER_SUCCESS,
+      payload
+    });
   } catch (err) {
-    await Store.dispatch({ type: FETCH_USER_ERROR, payload: err })
-    log(err)
+    await Store.dispatch({
+      type: FETCH_USER_ERROR,
+      payload: err
+    });
+    log(err);
   }
 }
 
-export async function fetchUserRegisteredEvents (params = {}) {
+export async function fetchUserRegisteredEvents (params = {
+}) {
   try {
-    const { userId, refresh = false } = params
+    const {
+      userId, refresh = false
+    } = params;
     await Store.dispatch({
       type: FETCH_USER_REGISTERED_EVENTS_REQUEST,
       refresh
-    })
-    const response = await fetchBackend(`/registrations?email=${userId}`, 'GET')
+    });
+    const response = await fetchBackend(`/registrations?email=${userId}`, "GET");
     await Store.dispatch({
       type: FETCH_USER_REGISTERED_EVENTS_SUCCESS,
       payload: response
-    })
+    });
   } catch (err) {
     await Store.dispatch({
       type: FETCH_USER_REGISTERED_EVENTS_ERROR,
       payload: err
-    })
-    log(err)
+    });
+    log(err);
   }
 }

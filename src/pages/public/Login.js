@@ -1,8 +1,18 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
-import { Helmet } from "react-helmet";
-import { Link, useHistory } from "react-router-dom";
+import React, {
+  useState
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  Auth
+} from "aws-amplify";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Link, useHistory
+} from "react-router-dom";
 
 import {
   Button,
@@ -11,11 +21,17 @@ import {
   CssBaseline,
   Typography
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import {
+  Alert
+} from "@material-ui/lab";
 
 import LoginImage from "assets/login.svg";
-import { COLORS } from "constants/index";
-import { setUser } from "store/user/userActions";
+import {
+  COLORS
+} from "constants/index";
+import {
+  setUser
+} from "store/user/userActions";
 
 const styles = {
   main: {
@@ -157,14 +173,14 @@ function Login() {
       // if any errors with inputs, set state and rerender (don't call signin/signup)
       setErrors({
         ...errors,
-        emailError: emailError,
-        passwordError: passwordError
+        emailError,
+        passwordError
       });
     } else {
       try {
         await Auth.signIn({
           username: email,
-          password: password
+          password
         });
         history.push("/login-redirect");
       } catch (error) {
@@ -208,7 +224,9 @@ function Login() {
               Sign In
             </Typography>
             <Button
-              onClick={() => Auth.federatedSignIn({ provider: "Google" })}
+              onClick={() => Auth.federatedSignIn({
+                provider: "Google"
+              })}
               style={styles.googleButton}
             >
               <div style={styles.left}>
@@ -237,7 +255,6 @@ function Login() {
               <input
                 style={styles.inputText}
                 type="text"
-                email="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyPress={handleKeyPress}
@@ -249,7 +266,6 @@ function Login() {
               <input
                 style={styles.inputText}
                 type="password"
-                email="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyPress={handleKeyPress}
@@ -300,4 +316,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setUser })(Login);
+export default connect(mapStateToProps, {
+  setUser
+})(Login);

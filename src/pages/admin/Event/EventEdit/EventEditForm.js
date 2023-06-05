@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, {
+  useEffect
+} from "react";
 import DateFnsUtils from "@date-io/date-fns";
 
 import {
@@ -13,7 +15,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
 } from "@material-ui/pickers";
-import { Info as InfoIcon } from "@material-ui/icons";
+import {
+  Info as InfoIcon
+} from "@material-ui/icons";
 
 export default function EventEditForm(props) {
   const {
@@ -43,7 +47,13 @@ export default function EventEditForm(props) {
   } = props;
 
   useEffect(() => {
-    updatePreview({ ename, description, imageUrl, startDate, endDate });
+    updatePreview({
+      ename,
+      description,
+      imageUrl,
+      startDate,
+      endDate
+    });
   }, [updatePreview, ename, description, imageUrl, startDate, endDate]);
 
   const change = (name, e) => {
@@ -66,7 +76,7 @@ export default function EventEditForm(props) {
 
   const handleInfoClick = () => {
     alert(
-      'Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing "What\'s here?"'
+      "Longitude and latitude are used for routing purposes for the mobile app. These values can be found on Google Maps by right clicking any location and pressing \"What's here?\""
     );
   };
 
@@ -74,32 +84,32 @@ export default function EventEditForm(props) {
     const value = e.target.value;
     let location, longitude, latitude;
     switch (value) {
-      case "Nest":
-        location = "UBC AMS Nest";
-        longitude = "-123.249818";
-        latitude = "49.266503";
-        break;
-      case "Hennings":
-        location = "Hennings";
-        longitude = "-123.252198";
-        latitude = "49.266487";
-        break;
-      case "Sauder":
-        location = "UBC Sauder School of Business";
-        longitude = "-123.253800";
-        latitude = "49.264861";
-        break;
-      case "Birmingham":
-        location = "Birmingham, Henry Angus";
-        longitude = "-123.253929";
-        latitude = "49.265112";
-        break;
-      case "Orchard":
-        location = "Orchard Commons";
-        longitude = "-123.251181";
-        latitude = "49.260396";
-        break;
-      default:
+    case "Nest":
+      location = "UBC AMS Nest";
+      longitude = "-123.249818";
+      latitude = "49.266503";
+      break;
+    case "Hennings":
+      location = "Hennings";
+      longitude = "-123.252198";
+      latitude = "49.266487";
+      break;
+    case "Sauder":
+      location = "UBC Sauder School of Business";
+      longitude = "-123.253800";
+      latitude = "49.264861";
+      break;
+    case "Birmingham":
+      location = "Birmingham, Henry Angus";
+      longitude = "-123.253929";
+      latitude = "49.265112";
+      break;
+    case "Orchard":
+      location = "Orchard Commons";
+      longitude = "-123.251181";
+      latitude = "49.260396";
+      break;
+    default:
     }
     e.persist();
     setFieldValue("elocation", location);
@@ -206,7 +216,9 @@ export default function EventEditForm(props) {
             onChange={change.bind(null, "longitude")}
           />
         </Grid>
-        <Grid item xs={12} sm={4} style={{ display: "flex" }}>
+        <Grid item xs={12} sm={4} style={{
+          display: "flex"
+        }}>
           <TextField
             id="latitude"
             label="Latitude"
@@ -216,7 +228,9 @@ export default function EventEditForm(props) {
             value={latitude}
             onChange={change.bind(null, "latitude")}
           />
-          <InfoIcon onClick={handleInfoClick} style={{ cursor: "pointer" }} />
+          <InfoIcon onClick={handleInfoClick} style={{
+            cursor: "pointer"
+          }} />
         </Grid>
         <Grid item xs={12}>
           <TextField

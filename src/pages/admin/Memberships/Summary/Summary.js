@@ -1,11 +1,15 @@
 import React from "react";
-import { COLORS } from "../../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
 import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import SummaryPieChart from "./SummaryPieChart";
 import SummaryHBarChart from "./SummaryHBarChart";
-import 'chartjs-plugin-datalabels';
+import "chartjs-plugin-datalabels";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -14,11 +18,11 @@ const useStyles = makeStyles((theme) => ({
     },
     paddingBottom: "12px",
     marginTop: "60px",
-    width: '100%',
+    width: "100%",
   },
   content: {
     padding: theme.spacing(3),
-    width: '100%',
+    width: "100%",
   },
   numResponses: {
     color: "#AEC4F4",
