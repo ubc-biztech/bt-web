@@ -1,14 +1,24 @@
-import React, { useState } from "react";
-import { withRouter, useParams } from "react-router-dom";
+import React, {
+  useState
+} from "react";
+import {
+  withRouter, useParams
+} from "react-router-dom";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Grid, Typography
+} from "@material-ui/core";
 
 import LinkIcon from "@material-ui/icons/Link";
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
-import { COLORS } from "../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../constants/_constants/theme";
 
 const ICON_SIZE = "24px";
 const FLASH_TIME = "50";
@@ -82,7 +92,8 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     color: `${COLORS.FONT_COLOR}`
   },
-  upcomingEventsDate: {},
+  upcomingEventsDate: {
+  },
   imageContainer: {
     display: "flex",
     justifyContent: "flex-end"
@@ -112,7 +123,9 @@ const EventRegisterSuccess = ({
 }) => {
   const classes = useStyles();
 
-  const { type } = useParams();
+  const {
+    type
+  } = useParams();
 
   const [displayLinkMessage, setDisplayLinkMessage] = useState(false);
 
@@ -138,7 +151,7 @@ const EventRegisterSuccess = ({
     <Grid container spacing={4} className={classes.main}>
       <Grid item xs={12} lg={7} className={classes.leftColumn}>
         <div className={classes.successMessageContainer}>
-          
+
           {type === "partner" ? (
             <div>
               <Typography className={classes.successMessageHeading}>
@@ -191,34 +204,34 @@ const EventRegisterSuccess = ({
           </div>
         )}
       </Grid>
-        <Grid item xs={12} lg={5} className={classes.rightColumn}>
-          <div className={classes.imageContainer}>
-            <img
-              src={SpeechBubble}
-              alt="Speech Bubble"
-              className={classes.speechBubble}
-            />
-            <img
-              src={HouseChef}
-              alt="House with Chef Hat"
-              className={classes.houseChefImage}
-            />
-          </div>
-          {type !== "partner" && upcomingEvents.length > 0 && (
-            <div className={classes.upcomingEventsContainer}>
-              <Typography className={classes.upcomingEventsHeading}>
+      <Grid item xs={12} lg={5} className={classes.rightColumn}>
+        <div className={classes.imageContainer}>
+          <img
+            src={SpeechBubble}
+            alt="Speech Bubble"
+            className={classes.speechBubble}
+          />
+          <img
+            src={HouseChef}
+            alt="House with Chef Hat"
+            className={classes.houseChefImage}
+          />
+        </div>
+        {type !== "partner" && upcomingEvents.length > 0 && (
+          <div className={classes.upcomingEventsContainer}>
+            <Typography className={classes.upcomingEventsHeading}>
                 Upcoming Events:
-              </Typography>
+            </Typography>
 
-              {upcomingEvents.map((event) => {
-                const eventStart =
+            {upcomingEvents.map((event) => {
+              const eventStart =
                   event.startDate &&
                   new Date(event.startDate).toLocaleDateString("en-US", {
                     day: "numeric",
                     month: "long",
                     year: "numeric"
                   });
-                const eventEnd =
+              const eventEnd =
                   event.endDate &&
                   new Date(event.endDate).toLocaleDateString("en-US", {
                     day: "numeric",
@@ -226,30 +239,30 @@ const EventRegisterSuccess = ({
                     year: "numeric"
                   });
 
-                return (
-                  <div
-                    key={`${event.id};${event.year}`}
-                    className={classes.upcomingEventsItem}
+              return (
+                <div
+                  key={`${event.id};${event.year}`}
+                  className={classes.upcomingEventsItem}
+                >
+                  <Typography
+                    className={classes.upcomingEventsEname}
+                    onClick={() => redirectEvent(event.id, event.year)}
                   >
-                    <Typography
-                      className={classes.upcomingEventsEname}
-                      onClick={() => redirectEvent(event.id, event.year)}
-                    >
-                      {event.ename}
-                    </Typography>
-                    <Typography
-                      className={classes.upcomingEventsDate}
-                      variant="caption"
-                    >
-                      {eventStart}
-                      {eventEnd && eventEnd !== eventStart ? ` - ${eventEnd}` : ""}
-                    </Typography>
-                  </div>
+                    {event.ename}
+                  </Typography>
+                  <Typography
+                    className={classes.upcomingEventsDate}
+                    variant="caption"
+                  >
+                    {eventStart}
+                    {eventEnd && eventEnd !== eventStart ? ` - ${eventEnd}` : ""}
+                  </Typography>
+                </div>
               );
             })}
           </div>
-          )}
-        </Grid>
+        )}
+      </Grid>
     </Grid>
   );
 };

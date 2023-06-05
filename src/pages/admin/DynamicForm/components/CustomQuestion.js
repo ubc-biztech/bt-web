@@ -1,8 +1,16 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Checkbox, MenuItem, Select, TextField, Tooltip } from "@material-ui/core";
-import { Delete, KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
-import { useFormikContext } from "formik";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Checkbox, MenuItem, Select, TextField, Tooltip
+} from "@material-ui/core";
+import {
+  Delete, KeyboardArrowDown, KeyboardArrowUp
+} from "@material-ui/icons";
+import {
+  useFormikContext
+} from "formik";
 
 // Styling Material UI Components
 const useStyles = makeStyles((theme) => ({
@@ -44,9 +52,13 @@ const CustomQuestion = (props) => {
     submitCount
   } = useFormikContext();
 
-  const { id, name, index, length } = props;
+  const {
+    id, name, index, length
+  } = props;
 
-  const { type, label, choices, questionImageUrl, charLimit, required } = props.data;
+  const {
+    type, label, choices, questionImageUrl, charLimit, required
+  } = props.data;
   const questionStyles = {
     // -------- QUESTION COMPONENT STYLES ----------
     card: {

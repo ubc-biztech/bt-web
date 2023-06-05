@@ -1,7 +1,13 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { COLORS } from "../../constants/_constants/theme";
+import {
+  Typography
+} from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  COLORS
+} from "../../constants/_constants/theme";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -66,7 +72,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DateComponent(props) {
   const classes = useStyles();
-  const { month, dayOfMonth, dayOfWeek } = props;
+  const {
+    month, dayOfMonth, dayOfWeek
+  } = props;
 
   return (
     <div className={classes.container}>

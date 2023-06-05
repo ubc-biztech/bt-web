@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  Link, useLocation
+} from "react-router-dom";
 
-import { Alert } from "@material-ui/lab";
+import {
+  Alert
+} from "@material-ui/lab";
 import "./RegisterAlert.scss";
 
 export default function MemberAlert() {

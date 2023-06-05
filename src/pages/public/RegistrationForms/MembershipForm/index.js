@@ -1,18 +1,38 @@
-import React, { useState, Fragment } from "react";
-import { CLIENT_URL } from "constants/index";
-import { connect } from "react-redux";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
+import React, {
+  useState, Fragment
+} from "react";
+import {
+  CLIENT_URL
+} from "constants/index";
+import {
+  connect
+} from "react-redux";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Formik
+} from "formik";
 import * as Yup from "yup";
 import MembershipForm from "./MembershipForm";
 import LoginAccess from "components/LoginAccess/LoginAccess";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-import { MEMBER_TYPES } from "constants/_constants/memberTypes";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Typography
+} from "@material-ui/core";
+import {
+  MEMBER_TYPES
+} from "constants/_constants/memberTypes";
 
-import { COLORS } from "constants/_constants/theme";
+import {
+  COLORS
+} from "constants/_constants/theme";
 
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -56,7 +76,9 @@ const useStyles = makeStyles((theme) => ({
 
 const MembershipFormContainer = (props) => {
   const classes = useStyles();
-  const { user } = props;
+  const {
+    user
+  } = props;
   const [memberType, setMemberType] = useState(user?.education);
   const [topics, setTopics] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -143,8 +165,6 @@ const MembershipFormContainer = (props) => {
     heardFromSpecify: ""
   };
 
-  console.log(initialValues.email);
-
   async function submitValues(values) {
     setIsSubmitting(true);
     const {
@@ -188,7 +208,7 @@ const MembershipFormContainer = (props) => {
       fname: first_name,
       lname: last_name,
       major: memberType === "UBC" || memberType === "UNI" ? major : "",
-      email: email,
+      email,
       year: memberType !== "NA" ? year : "",
       faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
       pronouns: pronouns || "Other/Prefer not to say",
@@ -221,7 +241,6 @@ const MembershipFormContainer = (props) => {
   }
 
   const renderMemberForm = (isMember, isAdmin) => {
-    console.log("rerendered");
     return isMember || isAdmin ? (
       <div className={classes.alreadyMember}>
         <Typography className={classes.alreadyMemberText}>
@@ -259,10 +278,10 @@ const MembershipFormContainer = (props) => {
             memberType === MEMBER_TYPES.UBC
               ? UBCValidationSchema
               : memberType === MEMBER_TYPES.UNIVERSITY
-              ? UniversityValidationSchema
-              : memberType === MEMBER_TYPES.HIGH_SCHOOL
-              ? HighSchoolValidationSchema
-              : validationSchema
+                ? UniversityValidationSchema
+                : memberType === MEMBER_TYPES.HIGH_SCHOOL
+                  ? HighSchoolValidationSchema
+                  : validationSchema
           }
           onSubmit={submitValues}
         >
@@ -281,8 +300,6 @@ const MembershipFormContainer = (props) => {
       </Fragment>
     );
   };
-
-  console.log("rerendered");
 
   return (
     <Fragment>
@@ -309,4 +326,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {})(MembershipFormContainer);
+export default connect(mapStateToProps, {
+})(MembershipFormContainer);

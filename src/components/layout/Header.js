@@ -1,7 +1,9 @@
 import React from "react";
 import BiztechIcon from "../icons/BiztechIcon";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 const ICON_SIZE = "28px";

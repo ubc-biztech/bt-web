@@ -1,6 +1,8 @@
 import React from "react";
 
-const Logout = ({ fill, size }) => (
+const Logout = ({
+  fill, size
+}) => (
   <svg
     width="26"
     height="26"
