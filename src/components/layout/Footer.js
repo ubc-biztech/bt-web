@@ -1,12 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState, useEffect
+} from "react";
 import Heart from "../../assets/heart.svg";
-import { COLORS } from "../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../constants/_constants/theme";
 
-import { useLocation } from "react-router-dom";
+import {
+  useLocation
+} from "react-router-dom";
 
 import IconContainer from "./IconContainer";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 

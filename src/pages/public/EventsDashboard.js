@@ -6,9 +6,15 @@ import React, {
   useRef,
   useCallback
 } from "react";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import {
+  connect
+} from "react-redux";
+import {
+  useHistory
+} from "react-router-dom";
+import {
+  Helmet
+} from "react-helmet";
 
 import {
   Tabs,
@@ -21,16 +27,28 @@ import {
   InputBase,
   Chip
 } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import {
+  makeStyles, useTheme
+} from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { StarBorder, PlaylistAddCheck, Search } from "@material-ui/icons";
+import {
+  StarBorder, PlaylistAddCheck, Search
+} from "@material-ui/icons";
 import EventCard from "components/Event/EventCard";
 import Loading from "pages/Loading";
 
-import { COLORS } from "constants/index";
-import { setUser, fetchUserRegisteredEvents } from "store/user/userActions";
-import { fetchEvents } from "store/event/eventActions";
-import { fetchBackend } from "utils";
+import {
+  COLORS
+} from "constants/index";
+import {
+  setUser, fetchUserRegisteredEvents
+} from "store/user/userActions";
+import {
+  fetchEvents
+} from "store/event/eventActions";
+import {
+  fetchBackend
+} from "utils";
 
 // States for the filters
 const PERSONALIZATION_STATES = {
@@ -196,14 +214,22 @@ function EventsDashboard (props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { events, user, userRegisteredEvents, loading } = props;
+  const {
+    events, user, userRegisteredEvents, loading
+  } = props;
   useEffect(() => {
     fetchEvents();
-    if (user && user.email) fetchUserRegisteredEvents({ userId: user.email });
+    if (user && user.email) fetchUserRegisteredEvents({
+      userId: user.email
+    });
   }, []);
 
   const handleFavouriteEvent = async (eventId, year, toggle) => {
-    const body = { eventID: eventId, year, isFavourite: toggle };
+    const body = {
+      eventID: eventId,
+      year,
+      isFavourite: toggle
+    };
     await fetchBackend(`/users/favEvent/${user.email}`, "PATCH", body);
     const oldEventIds = user["favedEventsID;year"] ? user["favedEventsID;year"] : [];
     const newEventIds = toggle
@@ -317,8 +343,13 @@ function EventsDashboard (props) {
           handleFavourite={handleFavouriteEvent}
           cardStyle={
             isMobile
-              ? { width: "100%", marginRight: 0 }
-              : { width: "calc(50% - 30px)" }
+              ? {
+                width: "100%",
+                marginRight: 0
+              }
+              : {
+                width: "calc(50% - 30px)"
+              }
           }
         />
       )) :
@@ -398,7 +429,9 @@ function EventsDashboard (props) {
                 className={classes.searchIcon}
                 onClick={handleStartSearch}
               >
-                <Search style={{ color: COLORS.CARD_PAPER_COLOR }} />
+                <Search style={{
+                  color: COLORS.CARD_PAPER_COLOR
+                }} />
               </IconButton>
               <InputBase
                 inputRef={searchInput}
@@ -428,7 +461,8 @@ function EventsDashboard (props) {
                       color='primary'
                       label={tState.displayName}
                       onDelete={() =>
-                        handleTimeChange({}, TIME_STATES.ALL.index)
+                        handleTimeChange({
+                        }, TIME_STATES.ALL.index)
                       }
                     />
                   ) : (
@@ -438,7 +472,8 @@ function EventsDashboard (props) {
                       size='small'
                       color='secondary'
                       label={tState.displayName}
-                      onClick={() => handleTimeChange({}, tState.index)}
+                      onClick={() => handleTimeChange({
+                      }, tState.index)}
                     />
                   ))
               )}
@@ -491,4 +526,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setUser })(EventsDashboard);
+export default connect(mapStateToProps, {
+  setUser
+})(EventsDashboard);

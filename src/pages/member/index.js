@@ -1,15 +1,25 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Redirect, Switch } from "react-router-dom";
+import React, {
+  useEffect
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  Redirect, Switch
+} from "react-router-dom";
 
 import Route from "components/routing/Route";
 
 import MemberProfile from "./MemberProfile";
 import MemberHome from "./Home";
-import { fetchEvents } from "store/event/eventActions";
+import {
+  fetchEvents
+} from "store/event/eventActions";
 
 const MemberRoutes = (props) => {
-  const { events, user, userEventsRegistered } = props;
+  const {
+    events, user, userEventsRegistered
+  } = props;
 
   useEffect(() => {
     fetchEvents();
@@ -59,4 +69,5 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, {})(MemberRoutes);
+export default connect(mapStateToProps, {
+})(MemberRoutes);

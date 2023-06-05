@@ -1,5 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import {
   Checkbox,
   FormControlLabel,
@@ -47,7 +49,9 @@ const QuestionPreview = (props) => {
   }));
   const classes = useStyles();
 
-  const { type, label, choices, questionImageUrl, required } = props;
+  const {
+    type, label, choices, questionImageUrl, required
+  } = props;
 
   const choicesArr = choices ? choices.split(",") : [];
 
@@ -55,8 +59,14 @@ const QuestionPreview = (props) => {
   if (type === "CHECKBOX") {
     return (
       label && (
-        <div style={{ paddingBottom: "1.5rem" }}>
-          <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
             {label}
             {label && required && "*"}
           </p>
@@ -86,8 +96,14 @@ const QuestionPreview = (props) => {
   } else if (type === "SELECT") {
     return (
       label && (
-        <div style={{ paddingBottom: "1.5rem" }}>
-          <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
             {label}
             {label && required && "*"}
           </p>
@@ -120,8 +136,14 @@ const QuestionPreview = (props) => {
   } else if (type === "TEXT") {
     return (
       label && (
-        <div style={{ paddingBottom: "1.5rem" }}>
-          <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
             {label}
             {label && required && "*"}
           </p>
@@ -147,8 +169,14 @@ const QuestionPreview = (props) => {
   } else if (type === "UPLOAD") {
     return (
       label && (
-        <div style={{ paddingBottom: "1.5rem" }}>
-          <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
             {label}
             {label && required && "*"}
           </p>
@@ -166,7 +194,10 @@ const QuestionPreview = (props) => {
           </Typography>
           <Button variant="contained" color="primary" component="label">
             Upload
-            <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
+            <CloudUpload style={{
+              color: "black",
+              marginLeft: 6
+            }}/>
           </Button>
         </div>
       )

@@ -1,7 +1,11 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardActionArea, CardHeader, CardMedia } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Card, CardActionArea, CardHeader, CardMedia
+} from "@material-ui/core";
 import {
   Star as StarIcon,
   StarBorder as StarBorderIcon,
@@ -38,7 +42,8 @@ const useStyles = makeStyles({
 
 function EventCard(props) {
   const {
-    cardStyle = {},
+    cardStyle = {
+    },
     event,
     favourited = false,
     handleCardClick,

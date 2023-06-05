@@ -1,8 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
-import { fetchBackend } from "../../../utils";
-import { COLORS } from "../../../constants/_constants/theme";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  fetchBackend
+} from "../../../utils";
+import {
+  COLORS
+} from "../../../constants/_constants/theme";
+import {
+  makeStyles, useTheme
+} from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import ListIcon from "@material-ui/icons/List";
 import StarBorderIcon from "@material-ui/icons/StarBorder";

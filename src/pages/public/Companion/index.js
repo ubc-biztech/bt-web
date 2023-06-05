@@ -1,23 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState, useEffect
+} from "react";
 // import Lottie from "lottie-react"
-import { motion, useAnimation } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal, makeStyles, Typography, useMediaQuery } from "@material-ui/core";
-import { useTheme } from "@material-ui/styles";
+import {
+  motion, useAnimation
+} from "framer-motion";
+import {
+  useInView
+} from "react-intersection-observer";
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Button, Modal, makeStyles, Typography, useMediaQuery
+} from "@material-ui/core";
+import {
+  useTheme
+} from "@material-ui/styles";
 
-import { fetchBackend } from "utils";
-import { ProgressBar, Step } from "react-step-progress-bar";
+import {
+  fetchBackend
+} from "utils";
+import {
+  ProgressBar, Step
+} from "react-step-progress-bar";
 import "react-step-progress-bar/styles.css";
 import Loading from "pages/Loading";
 import readSpreadsheet from "utils/_utils/sheets";
 
-import { COLORS } from "../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../constants/_constants/theme";
 import BizTechDBLogo from "../../../assets/2023/data&beyond/BizTechD&BLogo.png";
 import DBLogo from "../../../assets/2023/data&beyond/D&BLogo.png";
 import BoltDog from "../../../assets/2023/data&beyond/BoltDog.png";
 import DBPartners from "../../../assets/2023/data&beyond/D&BPartners.png";
 
-import { constantStyles } from "../../../constants/_constants/companion";
+import {
+  constantStyles
+} from "../../../constants/_constants/companion";
 
 const styles = {
   container: {
@@ -187,7 +205,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // eslint-disable-next-line no-unused-vars
-function FadeInWhenVisible({ children, style, id }) {
+function FadeInWhenVisible({
+  children, style, id
+}) {
   const controls = useAnimation();
   const [ref, inView] = useInView();
 
@@ -204,10 +224,18 @@ function FadeInWhenVisible({ children, style, id }) {
       ref={ref}
       animate={controls}
       initial="hidden"
-      transition={{ duration: 0.3 }}
+      transition={{
+        duration: 0.3
+      }}
       variants={{
-        visible: { opacity: 1, scale: 1 },
-        hidden: { opacity: 1, scale: 0.8 }
+        visible: {
+          opacity: 1,
+          scale: 1
+        },
+        hidden: {
+          opacity: 1,
+          scale: 0.8
+        }
       }}
     >
       {children}
@@ -318,7 +346,10 @@ const Companion = () => {
         const result = entry.Score.split("/");
         const score = Number(result[0].trim());
         if (!(points.find((obj) => obj.name === entry.Team))) {
-          points.push({ name: entry.Team, current: 0 });
+          points.push({
+            name: entry.Team,
+            current: 0
+          });
         }
         const i = points.findIndex((obj) => obj.name === entry.Team);
         points[i].current += isNaN(score) ? 0 : score;
@@ -326,7 +357,10 @@ const Companion = () => {
     });
     teams.forEach((team) => {
       if (!(points.find((obj) => obj.name === team.teamName))) {
-        points.push({ name: team.teamName, current: 0 });
+        points.push({
+          name: team.teamName,
+          current: 0
+        });
       }
       const i = points.findIndex((obj) => obj.name === team.teamName);
       points[i].current += team.points;
@@ -407,13 +441,25 @@ const Companion = () => {
         <div>
           {!email || !regData ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}>
+              initial={{
+                opacity: 0,
+                scale: 0.5
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1
+              }}
+              transition={{
+                duration: 1
+              }}>
               <div style={styles.column}>
                 <img src={BizTechDBLogo} alt="D&B Logo" style={styles.introLogo}/>
-                <Typography variant="h1" className={classes.boldText} style={{ color: constantStyles.textColor }}>Welcome!</Typography>
-                <Typography className={classes.centerText} style={{ color: constantStyles.textColor }}>Please enter the email you used to register for Data & Beyond.</Typography>
+                <Typography variant="h1" className={classes.boldText} style={{
+                  color: constantStyles.textColor
+                }}>Welcome!</Typography>
+                <Typography className={classes.centerText} style={{
+                  color: constantStyles.textColor
+                }}>Please enter the email you used to register for Data & Beyond.</Typography>
                 <TextField
                   className={classes.textfield}
                   onChange={(e) => setInput(e.target.value)}
@@ -446,11 +492,28 @@ const Companion = () => {
               <div>
                 <FadeInWhenVisible style={styles.column}>
                   <img src={DBLogo} alt="D&B Logo" style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo}/>
-                  <nav role="navigation" style={{ ...styles.nav, ...(renderMobileOnly && { width: "100%" }) }}>
-                    <a href="#Welcome" style={{ ...styles.link, fontSize: constantStyles.fontSize }}>Welcome</a>
-                    {teamData && <a href="#DataChallenge" style={{ ...styles.link, fontSize: constantStyles.fontSize }}>Data Challenge</a>}
-                    <a href="#Schedule" style={{ ...styles.link, fontSize: constantStyles.fontSize }}>Schedule</a>
-                    <a href="#Partners" style={{ ...styles.link, fontSize: constantStyles.fontSize }}>Partners</a>
+                  <nav role="navigation" style={{
+                    ...styles.nav,
+                    ...(renderMobileOnly && {
+                      width: "100%"
+                    })
+                  }}>
+                    <a href="#Welcome" style={{
+                      ...styles.link,
+                      fontSize: constantStyles.fontSize
+                    }}>Welcome</a>
+                    {teamData && <a href="#DataChallenge" style={{
+                      ...styles.link,
+                      fontSize: constantStyles.fontSize
+                    }}>Data Challenge</a>}
+                    <a href="#Schedule" style={{
+                      ...styles.link,
+                      fontSize: constantStyles.fontSize
+                    }}>Schedule</a>
+                    <a href="#Partners" style={{
+                      ...styles.link,
+                      fontSize: constantStyles.fontSize
+                    }}>Partners</a>
                   </nav>
                 </FadeInWhenVisible>
               </div>
@@ -460,15 +523,35 @@ const Companion = () => {
                   :
                   <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {regData.fname}!</h1>
                 }
-                <div style={{ ...styles.text, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>This will be your friend throughout the event! Check back regularly to see the event schedule, and your team's current point total during the Data Challenge!</div>
-                <div style={{ ...styles.text, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Data & Beyond is a half-day conference hosted in collaboration between UBC BizTech and BOLT UBC. The theme is "Launching Careers in Data" - as data becomes ever-present in our lives, there are endless opportunities offered in numerous industries and we want to guide you through the journey of discovering the prospects of data science-related careers.</div>
-                <div style={{ ...styles.text, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>We hope you have an amazing time with us at Data & Beyond 2023!</div>
+                <div style={{
+                  ...styles.text,
+                  ...(renderMobileOnly && {
+                    fontSize: constantStyles.mobileFontSize
+                  })
+                }}>This will be your friend throughout the event! Check back regularly to see the event schedule, and your team's current point total during the Data Challenge!</div>
+                <div style={{
+                  ...styles.text,
+                  ...(renderMobileOnly && {
+                    fontSize: constantStyles.mobileFontSize
+                  })
+                }}>Data & Beyond is a half-day conference hosted in collaboration between UBC BizTech and BOLT UBC. The theme is "Launching Careers in Data" - as data becomes ever-present in our lives, there are endless opportunities offered in numerous industries and we want to guide you through the journey of discovering the prospects of data science-related careers.</div>
+                <div style={{
+                  ...styles.text,
+                  ...(renderMobileOnly && {
+                    fontSize: constantStyles.mobileFontSize
+                  })
+                }}>We hope you have an amazing time with us at Data & Beyond 2023!</div>
               </FadeInWhenVisible>
 
               {teamData &&
                 <FadeInWhenVisible id="welcome" style={styles.column}>
                   <h1 id="DataChallenge" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Data Challenge</h1>
-                  <img src={BoltDog} alt="Bolt Dog" style={{ marginTop: -30, marginRight: 100, height: 150, width: "auto" }}/>
+                  <img src={BoltDog} alt="Bolt Dog" style={{
+                    marginTop: -30,
+                    marginRight: 100,
+                    height: 150,
+                    width: "auto"
+                  }}/>
                   <ProgressBar
                     percent={(teamPoints.current/TOTAL_POSSIBLE) * 100}
                     filledBackground="linear-gradient(to right, #ABADF7, #8FEEE7)"
@@ -483,48 +566,155 @@ const Companion = () => {
                       )}
                     </Step>
                   </ProgressBar>
-                  <div style={{ ...styles.text, marginTop: "25px", fontWeight: "bold", ...{ fontSize: renderMobileOnly ? constantStyles.mobileFontSize + 4 : 20 } }}>{renderPlacement()}</div>
-                  <div style={{ ...styles.text, marginTop: "10px", fontWeight: "bold", ...{ fontSize: renderMobileOnly ? constantStyles.mobileFontSize + 4 : 20 } }}>{teamPoints.possible === 0 ? `Your team collected a total of ${teamPoints.current} points throughout the challenge. Fantastic work!` : `Your team is currently at ${teamPoints.current} points and can still gain up to ${teamPoints.possible} points. Keep progressing!`}</div>
-                  <div style={{ ...styles.text, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Please note that your current total and placement may not be completely accurate, as will manually assess the results and fix grading errors where necessary. Please refresh the page to update your total as you go. Thanks for your patience!</div>
+                  <div style={{
+                    ...styles.text,
+                    marginTop: "25px",
+                    fontWeight: "bold",
+                    ...{
+                      fontSize: renderMobileOnly ? constantStyles.mobileFontSize + 4 : 20
+                    }
+                  }}>{renderPlacement()}</div>
+                  <div style={{
+                    ...styles.text,
+                    marginTop: "10px",
+                    fontWeight: "bold",
+                    ...{
+                      fontSize: renderMobileOnly ? constantStyles.mobileFontSize + 4 : 20
+                    }
+                  }}>{teamPoints.possible === 0 ? `Your team collected a total of ${teamPoints.current} points throughout the challenge. Fantastic work!` : `Your team is currently at ${teamPoints.current} points and can still gain up to ${teamPoints.possible} points. Keep progressing!`}</div>
+                  <div style={{
+                    ...styles.text,
+                    ...(renderMobileOnly && {
+                      fontSize: constantStyles.mobileFontSize
+                    })
+                  }}>Please note that your current total and placement may not be completely accurate, as will manually assess the results and fix grading errors where necessary. Please refresh the page to update your total as you go. Thanks for your patience!</div>
                 </FadeInWhenVisible>
               }
               <FadeInWhenVisible id="Timeline">
-                <div id="Schedule" style={{ ...styles.column, width: "90%" }}>
+                <div id="Schedule" style={{
+                  ...styles.column,
+                  width: "90%"
+                }}>
                   <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Your Schedule</h1>
-                  <h3 style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize, marginBottom: "8px", marginTop: "-12px" }) }}>Friday, March 17th</h3>
-                  <h5 style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize, marginBottom: "8px" }) }}>Birmingham & CPA Hall</h5>
+                  <h3 style={{
+                    color: constantStyles.textColor,
+                    ...(renderMobileOnly && {
+                      fontSize: constantStyles.mobileFontSize,
+                      marginBottom: "8px",
+                      marginTop: "-12px"
+                    })
+                  }}>Friday, March 17th</h3>
+                  <h5 style={{
+                    color: constantStyles.textColor,
+                    ...(renderMobileOnly && {
+                      fontSize: constantStyles.mobileFontSize,
+                      marginBottom: "8px"
+                    })
+                  }}>Birmingham & CPA Hall</h5>
                   <TableContainer component={Paper} style={styles.tableBorder}>
                     <Table>
                       <TableHead>
                         <TableRow>
-                          <TableCell align = "center" style={{ color: constantStyles.textColor, fontWeight: "bold", ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Time</TableCell>
-                          <TableCell align="center" style={{ color: constantStyles.textColor, fontWeight: "bold", ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Activity</TableCell>
+                          <TableCell align = "center" style={{
+                            color: constantStyles.textColor,
+                            fontWeight: "bold",
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}>Time</TableCell>
+                          <TableCell align="center" style={{
+                            color: constantStyles.textColor,
+                            fontWeight: "bold",
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}>Activity</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         <TableRow>
-                          <TableCell component="th" scope="row" align = "center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}><b>5:30 pm - 6:00 pm</b></TableCell>
-                          <TableCell align="center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Registration & Check in</TableCell>
+                          <TableCell component="th" scope="row" align = "center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}><b>5:30 pm - 6:00 pm</b></TableCell>
+                          <TableCell align="center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}>Registration & Check in</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell component="th" scope="row" align = "center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}><b>6:00 pm - 6:15 pm</b></TableCell>
-                          <TableCell align="center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Opening (BizTech and BOLT Introduction)</TableCell>
+                          <TableCell component="th" scope="row" align = "center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}><b>6:00 pm - 6:15 pm</b></TableCell>
+                          <TableCell align="center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}>Opening (BizTech and BOLT Introduction)</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell component="th" scope="row" align = "center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}><b>6:15 pm - 6:30 pm</b></TableCell>
-                          <TableCell align="center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Keynote Speech</TableCell>
+                          <TableCell component="th" scope="row" align = "center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}><b>6:15 pm - 6:30 pm</b></TableCell>
+                          <TableCell align="center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}>Keynote Speech</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell component="th" scope="row" align = "center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}><b>6:30 pm - 7:00 pm</b></TableCell>
-                          <TableCell align="center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Workshop: {regData.dynamicResponses["a3f58578-219c-4e8f-b4be-8af8f6b9e1fb"]}</TableCell>
+                          <TableCell component="th" scope="row" align = "center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}><b>6:30 pm - 7:00 pm</b></TableCell>
+                          <TableCell align="center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}>Workshop: {regData.dynamicResponses["a3f58578-219c-4e8f-b4be-8af8f6b9e1fb"]}</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell component="th" scope="row" align = "center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}><b>7:30 pm - 8:00 pm</b></TableCell>
-                          <TableCell align="center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Data Challenge</TableCell>
+                          <TableCell component="th" scope="row" align = "center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}><b>7:30 pm - 8:00 pm</b></TableCell>
+                          <TableCell align="center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}>Data Challenge</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell component="th" scope="row" align = "center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}><b>8:00 pm - 9:00 pm</b></TableCell>
-                          <TableCell align="center" style={{ color: constantStyles.textColor, ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>Boothing and Networking Session</TableCell>
+                          <TableCell component="th" scope="row" align = "center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}><b>8:00 pm - 9:00 pm</b></TableCell>
+                          <TableCell align="center" style={{
+                            color: constantStyles.textColor,
+                            ...(renderMobileOnly && {
+                              fontSize: constantStyles.mobileFontSize
+                            })
+                          }}>Boothing and Networking Session</TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
@@ -538,7 +728,14 @@ const Companion = () => {
                 </div>
               </FadeInWhenVisible>
 
-              <div style={{ ...styles.text, width: "100%", marginBottom: "0px", ...(renderMobileOnly && { fontSize: constantStyles.mobileFontSize }) }}>
+              <div style={{
+                ...styles.text,
+                width: "100%",
+                marginBottom: "0px",
+                ...(renderMobileOnly && {
+                  fontSize: constantStyles.mobileFontSize
+                })
+              }}>
                 Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
               </div>
             </div>

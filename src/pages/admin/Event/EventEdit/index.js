@@ -1,18 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  useParams, useHistory
+} from "react-router-dom";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Formik
+} from "formik";
 import * as Yup from "yup";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Typography } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Paper, Typography
+} from "@material-ui/core";
 
 import Loading from "pages/Loading";
 import NotFound from "pages/NotFound";
 import EventView from "components/Event/EventView";
 import EventEditForm from "./EventEditForm";
 
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -33,15 +47,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EventEdit = (props) => {
-  const { events } = props;
+  const {
+    events
+  } = props;
 
   const classes = useStyles();
-  const { id: eventId, year: eventYear } = useParams();
+  const {
+    id: eventId, year: eventYear
+  } = useParams();
   const history = useHistory();
 
   const [event, setEvent] = useState(null);
   const [loaded, setLoaded] = useState(false);
-  const [previewEvent, setPreviewEvent] = useState({});
+  const [previewEvent, setPreviewEvent] = useState({
+  });
 
   useEffect(() => {
     // Get the initial values

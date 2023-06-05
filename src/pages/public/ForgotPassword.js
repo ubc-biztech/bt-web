@@ -1,6 +1,12 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
+import React, {
+  useState
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  Auth
+} from "aws-amplify";
 import {
   Button,
   Card,
@@ -8,11 +14,19 @@ import {
   CssBaseline,
   Typography
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { Link, useHistory } from "react-router-dom";
+import {
+  Alert
+} from "@material-ui/lab";
+import {
+  Link, useHistory
+} from "react-router-dom";
 import LoginImage from "assets/login.svg";
-import { COLORS } from "constants/index";
-import { setUser } from "store/user/userActions";
+import {
+  COLORS
+} from "constants/index";
+import {
+  setUser
+} from "store/user/userActions";
 
 const styles = {
   main: {
@@ -240,7 +254,9 @@ function ForgotPassword() {
                 </div>
               )}
               {/* return to login page */}
-              <div style={{ marginTop: "10px" }}>
+              <div style={{
+                marginTop: "10px"
+              }}>
                 <Typography>
                   <Link to="/login" style={styles.recoverPasswordLink}>
                     Return to login
@@ -342,4 +358,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setUser })(ForgotPassword);
+export default connect(mapStateToProps, {
+  setUser
+})(ForgotPassword);

@@ -16,15 +16,31 @@ import {
   Modal
 } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
-import { Alert } from "@material-ui/lab";
+import {
+  Alert
+} from "@material-ui/lab";
 import CloudUpload from "@material-ui/icons/CloudUpload";
-import React, { useEffect, useState, useCallback, Fragment } from "react";
-import { connect } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { fetchBackend } from "utils";
-import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
-import { COLORS } from "../../../constants/_constants/theme";
+import React, {
+  useEffect, useState, useCallback, Fragment
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  useParams, useHistory
+} from "react-router-dom";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  fetchBackend
+} from "utils";
+import {
+  ArrowBack as ArrowBackIcon
+} from "@material-ui/icons";
+import {
+  COLORS
+} from "../../../constants/_constants/theme";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 import LoginAccess from "components/LoginAccess/LoginAccess";
 import Loading from "pages/Loading";
@@ -145,7 +161,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const FormRegister = (props) => {
-  const { user, event, userRegisteredEvents } = props;
+  const {
+    user, event, userRegisteredEvents
+  } = props;
   const history = useHistory();
   const [currEvent, setCurrEvent] = useState(event);
   const [registeredEvents, setRegisteredEvents] = useState(
@@ -201,7 +219,9 @@ const FormRegister = (props) => {
 
   const [refresh, setRefresh] = useState(false);
 
-  const { id: eventId, year: eventYear } = useParams();
+  const {
+    id: eventId, year: eventYear
+  } = useParams();
 
   const [responseData, setResponseData] = useState(
     Array.from(Array(formData.questions.length))
@@ -339,12 +359,19 @@ const FormRegister = (props) => {
         // .. once finished..
         const rawLog = reader.result.split(",")[1]; // extract only the file data part
         const dataSend = {
-          dataReq: { data: rawLog, name: file.name, type: file.type },
+          dataReq: {
+            data: rawLog,
+            name: file.name,
+            type: file.type
+          },
           fname: "uploadFilesToGoogleDrive"
         }; // preapre info to send to API
         fetch(
           "https://script.google.com/macros/s/AKfycbyX8joJ5WeyqZxrUh-iS-Cay17N3ygO-YMuoNVaBN5o4jl6Cy0k9X0JcxRrwiWy1OEoiQ/exec", // your AppsScript URL
-          { method: "POST", body: JSON.stringify(dataSend) }
+          {
+            method: "POST",
+            body: JSON.stringify(dataSend)
+          }
         ) // send to Api
           .then((res) => res.json())
           .then((e) => {
@@ -374,8 +401,14 @@ const FormRegister = (props) => {
       const choicesArr = choices ? choices.split(",") : [];
       if (questionType === "CHECKBOX") {
         returnArr.push(
-          <div style={{ paddingBottom: "1.5rem" }}>
-            <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+          <div style={{
+            paddingBottom: "1.5rem"
+          }}>
+            <p style={{
+              opacity: "0.7",
+              fontSize: "1rem",
+              margin: "0.5rem 0"
+            }}>
               {question}
               {question && required && "*"}
             </p>
@@ -420,8 +453,14 @@ const FormRegister = (props) => {
         );
       } else if (questionType === "SELECT") {
         returnArr.push(
-          <div style={{ paddingBottom: "1.5rem" }}>
-            <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+          <div style={{
+            paddingBottom: "1.5rem"
+          }}>
+            <p style={{
+              opacity: "0.7",
+              fontSize: "1rem",
+              margin: "0.5rem 0"
+            }}>
               {question}
               {question && required && "*"}
             </p>
@@ -463,8 +502,14 @@ const FormRegister = (props) => {
         );
       } else if (questionType === "TEXT") {
         returnArr.push(
-          <div style={{ paddingBottom: "1.5rem" }}>
-            <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+          <div style={{
+            paddingBottom: "1.5rem"
+          }}>
+            <p style={{
+              opacity: "0.7",
+              fontSize: "1rem",
+              margin: "0.5rem 0"
+            }}>
               {question}
               {question && required && "*"}
             </p>
@@ -531,8 +576,14 @@ const FormRegister = (props) => {
         );
       } else if (questionType === "UPLOAD") {
         returnArr.push(
-          <div style={{ paddingBottom: "1.5rem" }}>
-            <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+          <div style={{
+            paddingBottom: "1.5rem"
+          }}>
+            <p style={{
+              opacity: "0.7",
+              fontSize: "1rem",
+              margin: "0.5rem 0"
+            }}>
               {question}
               {question && required && "*"}
             </p>
@@ -555,7 +606,10 @@ const FormRegister = (props) => {
                     href={responseData[i]}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ width: "100%", wordWrap: "break-word" }}
+                    style={{
+                      width: "100%",
+                      wordWrap: "break-word"
+                    }}
                   >
                     {responseData[i]}
                   </a>
@@ -567,10 +621,15 @@ const FormRegister = (props) => {
                 variant="contained"
                 color="primary"
                 component="label"
-                style={{ width: "150px" }}
+                style={{
+                  width: "150px"
+                }}
               >
                 {responseData[i] ? "Reupload" : "Upload"}
-                <CloudUpload style={{ color: "black", marginLeft: 6 }} />
+                <CloudUpload style={{
+                  color: "black",
+                  marginLeft: 6
+                }} />
                 <input
                   hidden
                   type="file"
@@ -641,7 +700,8 @@ const FormRegister = (props) => {
   const handlePaymentSubmit = () => {
     setIsSubmitting(true);
     if (isValidSubmission()) {
-      const dynamicResponses = {};
+      const dynamicResponses = {
+      };
       for (let i = BASIC_QUESTIONS.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
           dynamicResponses[formData.questions[i].questionId] = responseData[
@@ -730,7 +790,8 @@ const FormRegister = (props) => {
   const handleSubmit = () => {
     setIsSubmitting(true);
     if (isValidSubmission()) {
-      const dynamicResponses = {};
+      const dynamicResponses = {
+      };
       for (let i = BASIC_QUESTIONS.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
           dynamicResponses[formData.questions[i].questionId] = responseData[
@@ -835,7 +896,8 @@ const FormRegister = (props) => {
       }
       break;
     default:
-      return {};
+      return {
+      };
     }
   };
 
@@ -1062,7 +1124,9 @@ const FormRegister = (props) => {
           </div>
         </Modal>
         <div style={styles.section}>
-          <Typography style={{ fontWeight: "bold" }}>
+          <Typography style={{
+            fontWeight: "bold"
+          }}>
             Registration open now until{" "}
             {formData.deadline.toLocaleString(navigator.language, {
               year: "numeric",
@@ -1126,9 +1190,16 @@ const FormRegister = (props) => {
               alt="Event"
             />
           </div>
-          <div style={{ ...styles.section, ...styles.divider }}>
-            <h2 style={{ marginTop: 0 }}>{formData.name}</h2>
-            <p style={{ whiteSpace: "pre-line" }}>
+          <div style={{
+            ...styles.section,
+            ...styles.divider
+          }}>
+            <h2 style={{
+              marginTop: 0
+            }}>{formData.name}</h2>
+            <p style={{
+              whiteSpace: "pre-line"
+            }}>
               {formData.description.split("<br/>").join("\n")}
             </p>
           </div>

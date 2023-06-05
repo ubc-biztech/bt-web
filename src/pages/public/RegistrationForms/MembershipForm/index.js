@@ -1,18 +1,38 @@
-import React, { useState, Fragment } from "react";
-import { CLIENT_URL } from "constants/index";
-import { connect } from "react-redux";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
+import React, {
+  useState, Fragment
+} from "react";
+import {
+  CLIENT_URL
+} from "constants/index";
+import {
+  connect
+} from "react-redux";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Formik
+} from "formik";
 import * as Yup from "yup";
 import MembershipForm from "./MembershipForm";
 import LoginAccess from "components/LoginAccess/LoginAccess";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-import { MEMBER_TYPES } from "constants/_constants/memberTypes";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Typography
+} from "@material-ui/core";
+import {
+  MEMBER_TYPES
+} from "constants/_constants/memberTypes";
 
-import { COLORS } from "constants/_constants/theme";
+import {
+  COLORS
+} from "constants/_constants/theme";
 
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -56,7 +76,9 @@ const useStyles = makeStyles((theme) => ({
 
 const MembershipFormContainer = (props) => {
   const classes = useStyles();
-  const { user } = props;
+  const {
+    user
+  } = props;
   const [memberType, setMemberType] = useState(user?.education);
   const [topics, setTopics] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -304,4 +326,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {})(MembershipFormContainer);
+export default connect(mapStateToProps, {
+})(MembershipFormContainer);

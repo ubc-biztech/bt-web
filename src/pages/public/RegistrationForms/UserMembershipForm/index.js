@@ -1,18 +1,40 @@
-import React, { useState, Fragment } from "react";
-import { CLIENT_URL } from "constants/index";
-import { Auth } from "aws-amplify";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
+import React, {
+  useState, Fragment
+} from "react";
+import {
+  CLIENT_URL
+} from "constants/index";
+import {
+  Auth
+} from "aws-amplify";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Formik
+} from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
+import {
+  useHistory
+} from "react-router-dom";
 import UserMembershipForm from "./UserMembershipForm";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-import { MEMBER_TYPES } from "constants/_constants/memberTypes";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Typography
+} from "@material-ui/core";
+import {
+  MEMBER_TYPES
+} from "constants/_constants/memberTypes";
 
-import { COLORS } from "constants/_constants/theme";
+import {
+  COLORS
+} from "constants/_constants/theme";
 
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {

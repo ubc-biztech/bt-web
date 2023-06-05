@@ -1,6 +1,8 @@
 import React from "react";
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import {
+  makeStyles, useTheme
+} from "@material-ui/core/styles";
 import {
   Button,
   Card,
@@ -20,8 +22,12 @@ import {
 } from "@material-ui/icons";
 
 import House from "assets/house.svg";
-import { COLORS } from "constants/index";
-import { fetchBackend } from "utils";
+import {
+  COLORS
+} from "constants/index";
+import {
+  fetchBackend
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   profilePageContainer: {
@@ -349,7 +355,9 @@ function MemberProfile (props) {
                           id='standard-read-only-input'
                           label='Student ID'
                           value={ID}
-                          inputProps={{ readOnly: true }}
+                          inputProps={{
+                            readOnly: true
+                          }}
                         />
                       </div>
                       <div className={classes.button}>
@@ -403,7 +411,9 @@ function MemberProfile (props) {
                           id='standard-read-only-input'
                           label='Email'
                           value={Email}
-                          inputProps={{ readOnly: true }}
+                          inputProps={{
+                            readOnly: true
+                          }}
                         />
                       </div>
                     </div>
@@ -445,7 +455,12 @@ function MemberProfile (props) {
       <div className={classes.column}>
         <div
           style={
-            isMobile ? { marginLeft: 0, paddingTop: 20 } : { marginLeft: 40 }
+            isMobile ? {
+              marginLeft: 0,
+              paddingTop: 20
+            } : {
+              marginLeft: 40
+            }
           }
         >
           <Card>
@@ -455,12 +470,19 @@ function MemberProfile (props) {
                 <div className={classes.membershipCardEventNumberText}>
                   <Typography
                     className={classes.membershipCardEventNumber}
-                    style={{ color: "#96FF50" }}
+                    style={{
+                      color: "#96FF50"
+                    }}
                   >
                     {eventsAttended || 0}
                   </Typography>
-                  <div style={{ paddingLeft: 4 }}>
-                    <Typography style={{ color: "#AEC4F4", fontSize: 20 }}>
+                  <div style={{
+                    paddingLeft: 4
+                  }}>
+                    <Typography style={{
+                      color: "#AEC4F4",
+                      fontSize: 20
+                    }}>
                       events attended
                     </Typography>
                   </div>
@@ -470,12 +492,22 @@ function MemberProfile (props) {
           </Card>
         </div>
 
-        <div style={isMobile ? { paddingTop: 20 } : { paddingTop: 40 }}>
+        <div style={isMobile ? {
+          paddingTop: 20
+        } : {
+          paddingTop: 40
+        }}>
           <Card
             style={
               isMobile
-                ? { height: 535, marginLeft: 0 }
-                : { height: 495, marginLeft: 40 }
+                ? {
+                  height: 535,
+                  marginLeft: 0
+                }
+                : {
+                  height: 495,
+                  marginLeft: 40
+                }
             }
           >
             <div className={classes.eventsContent}>

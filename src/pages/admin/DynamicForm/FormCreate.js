@@ -1,20 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
-import { makeStyles } from "@material-ui/core/styles";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
-import { Checkbox, Button, Fab, Grid, TextField, Tooltip } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import {
+  Checkbox, Button, Fab, Grid, TextField, Tooltip
+} from "@material-ui/core";
+import {
+  Add
+} from "@material-ui/icons";
 import {
   KeyboardDateTimePicker,
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
-import { useParams, useHistory, Link } from "react-router-dom";
+import {
+  useParams, useHistory, Link
+} from "react-router-dom";
 import CustomQuestion from "./components/CustomQuestion";
 import FormCreatePreview from "./FormCreatePreview";
-import { FieldArray, Formik } from "formik";
+import {
+  FieldArray, Formik
+} from "formik";
 import * as Yup from "yup";
-import { fetchBackend, log } from "utils";
-import { fetchEvents } from "store/event/eventActions";
+import {
+  fetchBackend, log
+} from "utils";
+import {
+  fetchEvents
+} from "store/event/eventActions";
 
 
 // Styling Material UI Components
@@ -135,7 +153,9 @@ const styles = {
 
 const FormCreateForm = (props) => {
   const classes = useStyles();
-  const { id: eventId, year: eventYear } = useParams();
+  const {
+    id: eventId, year: eventYear
+  } = useParams();
   const [viewUserForm, setViewUserForm] = useState(true);
 
   const {
@@ -198,7 +218,9 @@ const FormCreateForm = (props) => {
 
   const CustomQuestions = (
     <FieldArray name="registrationQuestions">
-      {({ push, swap, remove }) => {
+      {({
+        push, swap, remove
+      }) => {
         return (
           <>
             {registrationQuestions.map((question, index) => {
@@ -218,7 +240,9 @@ const FormCreateForm = (props) => {
             {/* Add question */}
             <div style={styles.addQuestion}>
               <Fab
-                onClick={() => push({ ...defaultQuestion })}
+                onClick={() => push({
+                  ...defaultQuestion
+                })}
                 className={classes.fab}
                 color="primary"
                 aria-label="add"
@@ -234,7 +258,9 @@ const FormCreateForm = (props) => {
 
   const partnerCustomQuestions = (
     <FieldArray name="partnerRegistrationQuestions">
-      {({ push, swap, remove }) => {
+      {({
+        push, swap, remove
+      }) => {
         return (
           <>
             {partnerRegistrationQuestions.map((question, index) => {
@@ -254,7 +280,9 @@ const FormCreateForm = (props) => {
             {/* Add question */}
             <div style={styles.addQuestion}>
               <Fab
-                onClick={() => push({ ...defaultQuestion })}
+                onClick={() => push({
+                  ...defaultQuestion
+                })}
                 className={classes.fab}
                 color="primary"
                 aria-label="add"
@@ -322,10 +350,20 @@ const FormCreateForm = (props) => {
           {/* Editor Pane */}
           <div style={styles.editor} className="discrete-scrollbar">
             {/* Editor Head */}
-            <div style={{ ...styles.editorSection, ...styles.editorHeadmast }}>
+            <div style={{
+              ...styles.editorSection,
+              ...styles.editorHeadmast
+            }}>
               <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <div style={{ display: "flex", gap: "1rem" }}>
+              <div style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem"
+              }}>
+                <div style={{
+                  display: "flex",
+                  gap: "1rem"
+                }}>
                   {isSaved &&
                     (isPublished ? (
                       <Button
@@ -353,13 +391,18 @@ const FormCreateForm = (props) => {
                     Save
                   </Button>
                 </div>
-                <div style={{ display: "flex", gap: "1rem" }}>
+                <div style={{
+                  display: "flex",
+                  gap: "1rem"
+                }}>
                   {isSaved ?
                     <Link
                       variant="contained"
                       component={Button}
                       color="primary"
-                      to={{ pathname: `/event/${eventId}/${eventYear}/register` }}
+                      to={{
+                        pathname: `/event/${eventId}/${eventYear}/register`
+                      }}
                       target="_blank"
                     >
                       Event Link
@@ -370,7 +413,9 @@ const FormCreateForm = (props) => {
                       variant="contained"
                       component={Button}
                       color="primary"
-                      to={{ pathname: `/event/${eventId}/${eventYear}/register/partner` }}
+                      to={{
+                        pathname: `/event/${eventId}/${eventYear}/register/partner`
+                      }}
                       target="_blank"
                     >
                       Partner Event Link
@@ -434,7 +479,10 @@ const FormCreateForm = (props) => {
                 helperText={showError("slug") && errors.slug}
               />
               {slug && (
-                <div style={{ color: "#FFFFFF", opacity: "0.7" }}>
+                <div style={{
+                  color: "#FFFFFF",
+                  opacity: "0.7"
+                }}>
                   <div>
                     {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register"}
                   </div>
@@ -690,8 +738,12 @@ const partnerDummyData = [
 ];
 
 const FormCreate = (props) => {
-  const { events } = props;
-  const { id: eventId, year: eventYear } = useParams();
+  const {
+    events
+  } = props;
+  const {
+    id: eventId, year: eventYear
+  } = useParams();
   const history = useHistory();
 
   const [event, setEvent] = useState(null);
@@ -796,7 +848,9 @@ const FormCreate = (props) => {
 
     const pricing = {
       members: Number(values.price) || 0,
-      ...(values.nonMembersAllowed) && { nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0 }
+      ...(values.nonMembersAllowed) && {
+        nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0
+      }
     };
 
     const body = {
@@ -835,7 +889,9 @@ const FormCreate = (props) => {
 
     const pricing = {
       members: Number(values.price) || 0,
-      ...(values.nonMembersAllowed) && { nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0 }
+      ...(values.nonMembersAllowed) && {
+        nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0
+      }
     };
 
     const body = {
@@ -875,7 +931,9 @@ const FormCreate = (props) => {
   const isSaved = !!(eventId && eventYear);
 
   async function handlePublish(publish = false) {
-    const body = { isPublished: publish };
+    const body = {
+      isPublished: publish
+    };
 
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
       .then((response) => {

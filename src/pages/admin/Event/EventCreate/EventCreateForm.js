@@ -1,8 +1,14 @@
-import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, {
+  useEffect
+} from "react";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
 import slugify from "slugify";
-import { COLORS } from "../../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
 
 import {
   Button,
@@ -16,7 +22,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
 } from "@material-ui/pickers";
-import { Info as InfoIcon } from "@material-ui/icons";
+import {
+  Info as InfoIcon
+} from "@material-ui/icons";
 
 const useStyles = makeStyles(() => ({
   underline: {
@@ -33,9 +41,12 @@ const useStyles = makeStyles(() => ({
       backgroundColor: "transparent"
     }
   },
-  disabled: {},
-  focused: {},
-  error: {},
+  disabled: {
+  },
+  focused: {
+  },
+  error: {
+  },
 }));
 
 export default function EventCreateForm(props) {
@@ -65,7 +76,13 @@ export default function EventCreateForm(props) {
   } = props;
 
   useEffect(() => {
-    updatePreview({ ename, description, imageUrl, startDate, endDate });
+    updatePreview({
+      ename,
+      description,
+      imageUrl,
+      startDate,
+      endDate
+    });
   }, [updatePreview, ename, description, imageUrl, startDate, endDate]);
 
   const change = (name, e) => {
@@ -76,7 +93,9 @@ export default function EventCreateForm(props) {
 
   const handleEventNameChange = (name, e) => {
     e.persist();
-    const newSlug = slugify(e.target.value, { lower: true });
+    const newSlug = slugify(e.target.value, {
+      lower: true
+    });
     setFieldValue("slug", newSlug);
     handleChange(e);
     setFieldTouched(name, true, false);
@@ -139,7 +158,9 @@ export default function EventCreateForm(props) {
   const createMenuItems = (listOfMenuItems) => {
     return listOfMenuItems.map((menuItem) => (
       <MenuItem
-        style={{ backgroundColor: COLORS.CARD_PAPER_COLOR }}
+        style={{
+          backgroundColor: COLORS.CARD_PAPER_COLOR
+        }}
         key={menuItem}
         value={menuItem}
       >
@@ -284,7 +305,9 @@ export default function EventCreateForm(props) {
             }}
           />
         </Grid>
-        <Grid item xs={12} sm={4} style={{ display: "flex" }}>
+        <Grid item xs={12} sm={4} style={{
+          display: "flex"
+        }}>
           <TextField
             id="latitude"
             label="Latitude"
@@ -297,7 +320,9 @@ export default function EventCreateForm(props) {
               className: classes.underline,
             }}
           />
-          <InfoIcon onClick={handleInfoClick} style={{ cursor: "pointer" }} />
+          <InfoIcon onClick={handleInfoClick} style={{
+            cursor: "pointer"
+          }} />
         </Grid>
         <Grid item xs={12}>
           <TextField

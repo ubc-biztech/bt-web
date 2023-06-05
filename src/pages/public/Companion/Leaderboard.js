@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, Typography, Modal, Button } from "@material-ui/core";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  makeStyles, Typography, Modal, Button
+} from "@material-ui/core";
 import readSpreadsheet from "utils/_utils/sheets";
-import { ProgressBar, Step } from "react-step-progress-bar";
+import {
+  ProgressBar, Step
+} from "react-step-progress-bar";
 import Loading from "pages/Loading";
 
 import BizTechDBLogo from "../../../assets/2023/data&beyond/BizTechD&BLogo.png";
@@ -11,7 +17,9 @@ import ThirdPlace from "../../../assets/2023/data&beyond/thirdplace.png";
 import Wave from "../../../assets/2023/data&beyond/wave.png";
 import "./animations.css";
 import Podium from "./components/Podium";
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 
 const styles = {
   container: {
@@ -150,7 +158,10 @@ const Leaderboard = () => {
         const result = entry.Score.split("/");
         const score = Number(result[0].trim());
         if (!(points.find((obj) => obj.name === entry.Team))) {
-          points.push({ name: entry.Team, current: 0 });
+          points.push({
+            name: entry.Team,
+            current: 0
+          });
         }
         const i = points.findIndex((obj) => obj.name === entry.Team);
         points[i].current += isNaN(score) ? 0 : score;
@@ -158,7 +169,10 @@ const Leaderboard = () => {
     });
     teams.forEach((team) => {
       if (!(points.find((obj) => obj.name === team.teamName))) {
-        points.push({ name: team.teamName, current: 0 });
+        points.push({
+          name: team.teamName,
+          current: 0
+        });
       }
       const i = points.findIndex((obj) => obj.name === team.teamName);
       points[i].current += team.points;
@@ -211,14 +225,19 @@ const Leaderboard = () => {
     <div style={styles.container}>
       <Modal open={isModalOpen} onBackdropClick={() => setIsModalOpen(false)}>
         <div style={styles.modal}>
-          <Podium winners={teamData.slice(0, 3).map((winner, position) => ({ ...winner, position }))}/>
+          <Podium winners={teamData.slice(0, 3).map((winner, position) => ({
+            ...winner,
+            position
+          }))}/>
           <img src={Wave} alt="wave" style={styles.waveFooter}></img>
         </div>
       </Modal>
       {isLoading ? <Loading /> :
         <>
           <div style={styles.title}>Data Challenge Leaderboard</div>
-          <div style={{ marginBottom: "20px" }}>Next update in {timer} second{timer !== 1 && "s"}</div>
+          <div style={{
+            marginBottom: "20px"
+          }}>Next update in {timer} second{timer !== 1 && "s"}</div>
           <Button
             variant="contained"
             color="primary"
@@ -233,9 +252,17 @@ const Leaderboard = () => {
               <>
                 {team.current !== 0 &&
                 <div style={styles.row} key={team.name + idx}>
-                  <Typography className={classes.boldText} style={{ ...(colours[idx] && { color: colours[idx] }) }}>{team.name}</Typography>
+                  <Typography className={classes.boldText} style={{
+                    ...(colours[idx] && {
+                      color: colours[idx]
+                    })
+                  }}>{team.name}</Typography>
                   <div style={styles.icon}>
-                    {trophies[idx] && <img src={trophies[idx]} alt="trophy" style={{ width: "100%", height: "100%", marginRight: "50%" }}/>}
+                    {trophies[idx] && <img src={trophies[idx]} alt="trophy" style={{
+                      width: "100%",
+                      height: "100%",
+                      marginRight: "50%"
+                    }}/>}
                   </div>
                   <ProgressBar
                     percent={team.current/TOTAL_POSSIBLE * 100}
@@ -247,7 +274,14 @@ const Leaderboard = () => {
                   >
                     <Step>
                       {() => (
-                        <div style={{ ...(morePoints(idx) && styles.glow), height: 25, width: `${((windowWidth - 150) * 0.70) * (team.current/TOTAL_POSSIBLE)}px`, borderRadius: 10, position: "absolute", right: "50%" }}></div>
+                        <div style={{
+                          ...(morePoints(idx) && styles.glow),
+                          height: 25,
+                          width: `${((windowWidth - 150) * 0.70) * (team.current/TOTAL_POSSIBLE)}px`,
+                          borderRadius: 10,
+                          position: "absolute",
+                          right: "50%"
+                        }}></div>
                       )}
                     </Step>
                     <Step>
@@ -259,7 +293,11 @@ const Leaderboard = () => {
                   <div style={styles.icon}>
                     {renderChangeIcon(idx)}
                   </div>
-                  <Typography className={classes.boldText} style={{ ...(colours[idx] && { color: colours[idx] }) }}>{`${team.current} Points`}</Typography>
+                  <Typography className={classes.boldText} style={{
+                    ...(colours[idx] && {
+                      color: colours[idx]
+                    })
+                  }}>{`${team.current} Points`}</Typography>
                 </div>
                 }
               </>
