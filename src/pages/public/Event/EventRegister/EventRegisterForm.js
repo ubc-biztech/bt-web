@@ -40,7 +40,7 @@ export default function RegisterEventForm(props) {
 
   const {
     handleSubmit,
-    isSubmitting, /* isUBCStudent  setIsUBCStuden t */
+    isSubmitting /* isUBCStudent  setIsUBCStuden t */
   } = props;
 
   return (

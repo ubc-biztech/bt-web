@@ -16,8 +16,8 @@ import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 
 import { COLORS } from "../../../../constants/_constants/theme";
 
-import { fetchBackend } from 'utils'
-import LoginAccess from 'components/LoginAccess/LoginAccess'
+import { fetchBackend } from "utils";
+import LoginAccess from "components/LoginAccess/LoginAccess";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -96,14 +96,14 @@ const EventFormContainer = (props) => {
   // });
 
   const initialValues = {
-    email: user?.email || '',
-    fname: user?.fname || '',
-    lname: user?.lname || '',
-    year: user?.year || '',
-    faculty: user?.faculty || '',
-    major: user?.major || '',
-    biztechMemberStatus: '',
-    hopinStatus: '',
+    email: user?.email || "",
+    fname: user?.fname || "",
+    lname: user?.lname || "",
+    year: user?.year || "",
+    faculty: user?.faculty || "",
+    major: user?.major || "",
+    biztechMemberStatus: "",
+    hopinStatus: "",
     // diet: "",
     heardFrom: ""
     // gender: "",
@@ -113,17 +113,17 @@ const EventFormContainer = (props) => {
   const { isRegistered, registeredEmail } = registration;
 
   const isDeadlinePassed = (event) => {
-    const deadline = new Date(event.deadline).getTime()
-    return deadline < new Date().getTime()
-  }
+    const deadline = new Date(event.deadline).getTime();
+    return deadline < new Date().getTime();
+  };
 
   if (!user) {
     return (
-      <LoginAccess 
+      <LoginAccess
         header='To register for our events, please sign in.'
         redirect={`/event/${eventId}/${event.year}/register`}
       />
-    )
+    );
   }
   if (loading) {
     return (
@@ -213,33 +213,33 @@ const EventFormContainer = (props) => {
               </div>
             </Fragment>
           ) : (
-          <Fragment>
-            <div className={classes.registrationHeader}>
-              <Typography className={classes.registrationText}>
+            <Fragment>
+              <div className={classes.registrationHeader}>
+                <Typography className={classes.registrationText}>
                 Registration
-              </Typography>
-              <Typography>
+                </Typography>
+                <Typography>
                 We need to know a little bit about you to get started.
-              </Typography>
-            </div>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={
+                </Typography>
+              </div>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={
                 /* isUBCStudent ? UBCValidationSchema : */
-                validationSchema
-              }
-              onSubmit={submitValues}
-            >
-              {(props) => {
-                props = {
-                  ...props
+                  validationSchema
+                }
+                onSubmit={submitValues}
+              >
+                {(props) => {
+                  props = {
+                    ...props
                   // isUBCStudent,
                   // setIsUBCStudent,
-                };
-                return <EventRegisterForm {...props} />;
-              }}
-            </Formik>
-          </Fragment>
+                  };
+                  return <EventRegisterForm {...props} />;
+                }}
+              </Formik>
+            </Fragment>
           )
         )}
       </EventView>

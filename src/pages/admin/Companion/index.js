@@ -77,7 +77,7 @@ const Companion = () => {
     eventID: false,
     year: false,
     points: false
-  })
+  });
 
   const classes = useStyles();
 
@@ -86,61 +86,61 @@ const Companion = () => {
       const data = await fetchBackend("/qr", "GET", undefined);
       setQRs(data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     fetchQRs();
-  }, [])
+  }, []);
 
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   const generateIDString = (length) => {
-      let result = "";
-      const charactersLength = characters.length;
-      for ( let i = 0; i < length; i++ ) {
-          result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      }
-      return result + "-";
-  }
+    let result = "";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result + "-";
+  };
 
   const createQR = async () => {
-    const keys = Object.keys(errors)
-    const newErrors = { ...errors }
-    let validation = true
+    const keys = Object.keys(errors);
+    const newErrors = { ...errors };
+    let validation = true;
     keys.forEach((key) => {
       if (newQR[key] === "") {
-        validation = false
-        newErrors[key] = true
+        validation = false;
+        newErrors[key] = true;
       }
-    })
+    });
     if (validation) {
       try {
-        const data = { 
-          ...newQR, 
-          id: generateIDString(5) + newQR.id, 
-          year: Number(newQR.year), 
-          points: Number(newQR.points), 
-          isActive: true  
-        }
-        const res = await fetchBackend("/qr", "POST", data)
+        const data = {
+          ...newQR,
+          id: generateIDString(5) + newQR.id,
+          year: Number(newQR.year),
+          points: Number(newQR.points),
+          isActive: true
+        };
+        const res = await fetchBackend("/qr", "POST", data);
         setNewQR({
           id: "",
           eventID: "",
           year: new Date().getFullYear(),
           points: 0,
           isUnlimitedScans: false,
-        })
-        alert(res.message)
-        fetchQRs()
+        });
+        alert(res.message);
+        fetchQRs();
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     } else {
-      setErrors(newErrors)
+      setErrors(newErrors);
     }
-  }
+  };
 
   return (
     <>
@@ -173,8 +173,8 @@ const Companion = () => {
                   margin="normal"
                   variant="filled"
                   onChange={(e) => {
-                    setErrors({...errors, id: false})
-                    setNewQR({...newQR, id: e.target.value})}
+                    setErrors({ ...errors, id: false });
+                    setNewQR({ ...newQR, id: e.target.value });}
                   }
                   value={newQR.id}
                   error={errors.id}
@@ -190,8 +190,8 @@ const Companion = () => {
                   margin="normal"
                   variant="filled"
                   onChange={(e) => {
-                    setErrors({...errors, eventID: false})
-                    setNewQR({...newQR, eventID: e.target.value})}
+                    setErrors({ ...errors, eventID: false });
+                    setNewQR({ ...newQR, eventID: e.target.value });}
                   }
                   value={newQR.eventID}
                   error={errors.eventID}
@@ -207,8 +207,8 @@ const Companion = () => {
                 margin="normal"
                 variant="filled"
                 onChange={(e) => {
-                  setErrors({...errors, year: false})
-                  setNewQR({...newQR, year: e.target.value})}
+                  setErrors({ ...errors, year: false });
+                  setNewQR({ ...newQR, year: e.target.value });}
                 }
                 value={newQR.year}
                 error={errors.year}
@@ -224,8 +224,8 @@ const Companion = () => {
                   margin="normal"
                   variant="filled"
                   onChange={(e) => {
-                    setErrors({...errors, points: false})
-                    setNewQR({...newQR, points: e.target.value})}
+                    setErrors({ ...errors, points: false });
+                    setNewQR({ ...newQR, points: e.target.value });}
                   }
                   value={newQR.points}
                   error={errors.points}
@@ -242,7 +242,7 @@ const Companion = () => {
                   color="primary"
                   aria-label="Unlimited Scans?"
                   checked={newQR.isUnlimitedScans}
-                  onChange={() => setNewQR({...newQR, isUnlimitedScans: !newQR.isUnlimitedScans})}
+                  onChange={() => setNewQR({ ...newQR, isUnlimitedScans: !newQR.isUnlimitedScans })}
                 />
               </Box>
               <Button
@@ -264,7 +264,7 @@ const Companion = () => {
             >
               Existing QRs
             </Box>
-            {QRs.map((QR) => 
+            {QRs.map((QR) =>
               <>
                 <Box key={QR.id} className={classes.rowFlex}>
                   <Box className={classes.columnFlex}>
@@ -279,11 +279,11 @@ const Companion = () => {
                 <Divider className={classes.divider}/>
               </>
             )}
-          </Paper>  
+          </Paper>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Companion
+export default Companion;

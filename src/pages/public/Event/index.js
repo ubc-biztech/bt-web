@@ -9,7 +9,7 @@ import NotFound from "pages/NotFound";
 import { fetchEvents } from "store/event/eventActions";
 import FormRegister from "pages/admin/DynamicForm/FormRegister";
 import FormRegisterPartner from "pages/admin/DynamicForm/FormRegisterPartner";
-import EventRegisterSuccess from 'pages/admin/DynamicForm/EventRegisterSuccess'
+import EventRegisterSuccess from "pages/admin/DynamicForm/EventRegisterSuccess";
 
 const MemberRoutes = (props) => {
   const { user, events, eventsFetched, eventsLoading } = props;
@@ -90,7 +90,7 @@ const MemberRoutes = (props) => {
           />
         )}
       />
-      <Route 
+      <Route
         exact
         path='/event/:id/:year/register/success/:type?'
         render={() => (

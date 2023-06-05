@@ -8,6 +8,7 @@ export default class HorizontalBarChart extends React.Component {
       chartData: props.chartData,
     };
   }
+
   render() {
     return (
       <div>
@@ -18,12 +19,12 @@ export default class HorizontalBarChart extends React.Component {
               datalabels: {
                 formatter: (value, ctx) => {
                   let sum = 0;
-                  let dataArr = ctx.chart.data.datasets[0].data;
+                  const dataArr = ctx.chart.data.datasets[0].data;
                   // eslint-disable-next-line
                   dataArr.map((data) => {
                     sum += data;
                   });
-                  let percentage =
+                  const percentage =
                     value + " (" + ((value * 100) / sum).toFixed(0) + "%)";
                   return percentage;
                 },

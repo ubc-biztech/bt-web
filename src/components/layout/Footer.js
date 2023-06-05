@@ -42,17 +42,17 @@ const useStyles = makeStyles((theme) => ({
 function Footer() {
   const classes = useStyles();
 
-  const ignoreFooterPaths = ["/redeem", "/redemption", "/companion"]
+  const ignoreFooterPaths = ["/redeem", "/redemption", "/companion"];
 
-  const location = useLocation()
-  const [path, setPath] = useState(location.pathname)
+  const location = useLocation();
+  const [path, setPath] = useState(location.pathname);
 
   useEffect(() => {
-    setPath(location.pathname)
-  }, [location.pathname])
+    setPath(location.pathname);
+  }, [location.pathname]);
 
   if (ignoreFooterPaths.find((p) => path.includes(p))) {
-    return <></>
+    return <></>;
   }
 
   return (

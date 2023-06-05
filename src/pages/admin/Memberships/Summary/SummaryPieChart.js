@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
-import PieChart from './PieChart';
+import PieChart from "./PieChart";
 import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({

@@ -13,9 +13,9 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import CloudUpload from '@material-ui/icons/CloudUpload';
+import CloudUpload from "@material-ui/icons/CloudUpload";
 import React, { useEffect, useState, useCallback, Fragment } from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { fetchBackend } from "utils";
@@ -102,8 +102,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#E38424",
     color: "white",
     maxWidth: 552,
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   registerButton: {
     textTransform: "none",
@@ -124,7 +124,7 @@ const FormRegisterPartner = (props) => {
   const { event } = props;
   const history = useHistory();
   const [currEvent, setCurrEvent] = useState(event);
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const basicQuestions = [
     {
       questionType: "TEXT",
@@ -162,17 +162,17 @@ const FormRegisterPartner = (props) => {
       choices: "",
       required: true,
     },
-  ]
+  ];
 
-  const parsedRegistrationQuestions = currEvent.partnerRegistrationQuestions?.map(({type,label,choices,required,questionId,questionImageUrl,charLimit}) => ({
-        questionType: type,
-        question: label,
-        choices: choices,
-        required: required,
-        questionId: questionId,
-        questionImageUrl: questionImageUrl,
-        charLimit: charLimit,
-    }))
+  const parsedRegistrationQuestions = currEvent.partnerRegistrationQuestions?.map(({ type,label,choices,required,questionId,questionImageUrl,charLimit }) => ({
+    questionType: type,
+    question: label,
+    choices,
+    required,
+    questionId,
+    questionImageUrl,
+    charLimit,
+  }));
 
   const formData = {
     image_url: currEvent.imageUrl || "",
@@ -185,14 +185,14 @@ const FormRegisterPartner = (props) => {
     location: currEvent.elocation || "",
     deadline: currEvent.deadline ? new Date(currEvent.deadline) : new Date(),
     questions: basicQuestions.concat(parsedRegistrationQuestions || [])
-  }
+  };
 
   const classes = useStyles();
 
   const [refresh, setRefresh] = useState(false);
 
   const { id: eventId, year: eventYear } = useParams();
-  
+
   const [responseData, setResponseData] = useState(
     Array.from(Array(formData.questions.length))
   ); // index of answers correspond to questions array index
@@ -206,9 +206,9 @@ const FormRegisterPartner = (props) => {
         const eventData = await fetchBackend(`/events/${eventId}/${eventYear}`, "GET", undefined, false);
         setCurrEvent(eventData);
       }
-    }
-    fetchEvent()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    };
+    fetchEvent();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateField = useCallback(
     (index, value) => {
@@ -250,22 +250,22 @@ const FormRegisterPartner = (props) => {
 
   const uploadFile = useCallback (
     (i, e) => {
-      if (e.target.files.length === 0) return
-      const file = e.target.files[0] // the file
-      const reader = new FileReader() // this for convert to Base64 
-      reader.readAsDataURL(e.target.files[0]) // start conversion...
+      if (e.target.files.length === 0) return;
+      const file = e.target.files[0]; // the file
+      const reader = new FileReader(); // this for convert to Base64 
+      reader.readAsDataURL(e.target.files[0]); // start conversion...
       reader.onload = function (e) { // .. once finished..
-        const rawLog = reader.result.split(',')[1]; // extract only the file data part
+        const rawLog = reader.result.split(",")[1]; // extract only the file data part
         const dataSend = { dataReq: { data: rawLog, name: file.name, type: file.type }, fname: "uploadFilesToGoogleDrive" }; // preapre info to send to API
-        fetch('https://script.google.com/macros/s/AKfycbyX8joJ5WeyqZxrUh-iS-Cay17N3ygO-YMuoNVaBN5o4jl6Cy0k9X0JcxRrwiWy1OEoiQ/exec', // your AppsScript URL
+        fetch("https://script.google.com/macros/s/AKfycbyX8joJ5WeyqZxrUh-iS-Cay17N3ygO-YMuoNVaBN5o4jl6Cy0k9X0JcxRrwiWy1OEoiQ/exec", // your AppsScript URL
           { method: "POST", body: JSON.stringify(dataSend) }) // send to Api
           .then(res => res.json()).then((e) => {
-            updateField(i, e.url)
-          }).catch(e => alert('An error occurred while trying to upload the file. Please try again.'))
-      }
+            updateField(i, e.url);
+          }).catch(e => alert("An error occurred while trying to upload the file. Please try again."));
+      };
     },
     [updateField]
-  )
+  );
 
   const loadQuestions = () => {
     const returnArr = [];
@@ -345,8 +345,8 @@ const FormRegisterPartner = (props) => {
                 labelId="q-type"
                 variant="outlined"
                 margin="dense"
-                defaultValue={responseData[i] || ''}
-                value={responseData[i] || ''}
+                defaultValue={responseData[i] || ""}
+                value={responseData[i] || ""}
                 onChange={(e) => updateField(i, e.target.value)}
               >
                 {choicesArr.map((item) => {
@@ -379,7 +379,7 @@ const FormRegisterPartner = (props) => {
                 />
               </div>
             )}
-            {question === 'Email Address' ? (
+            {question === "Email Address" ? (
               <>
                 <TextField
                   error={!!responseError[i]}
@@ -400,7 +400,7 @@ const FormRegisterPartner = (props) => {
                 fullWidth
                 multiline
                 inputProps={{
-                  maxLength: charLimit 
+                  maxLength: charLimit
                 }}
                 margin="dense"
                 variant="outlined"
@@ -411,13 +411,13 @@ const FormRegisterPartner = (props) => {
           </div>
         );
       } else if (questionType === "UPLOAD") {
-          returnArr.push(
-            <div style={{ paddingBottom: "1.5rem" }}>
-              <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
-                {question}
-                {question && required && "*"}
-              </p>
-              {questionImageUrl && (
+        returnArr.push(
+          <div style={{ paddingBottom: "1.5rem" }}>
+            <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+              {question}
+              {question && required && "*"}
+            </p>
+            {questionImageUrl && (
               <div style={styles.imageContainer}>
                 <img
                   style={styles.image}
@@ -426,39 +426,39 @@ const FormRegisterPartner = (props) => {
                 />
               </div>
             )}
-              <FormControl
-                error={!!responseError[i]}
-                helperText={!!responseError[i] && responseError[i]}
-              >
-                <Typography className={classes.uploadedFile}>
-                  {responseData[i] ? (
-                    <a
-                      href={responseData[i]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ width: '100%', wordWrap: 'break-word' }}
-                    >
-                      {responseData[i]}
-                    </a>
-                  ) : (
-                    "No file uploaded yet!"
-                  )}
-                </Typography>
-                <Button variant="contained" color="primary" component="label" style={{ width: '150px' }}>
-                  {responseData[i] ? "Reupload" : "Upload"}
-                  <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
-                  <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
-                </Button>
-                {!!responseError[i] && (
-                  <FormHelperText>{responseError[i]}</FormHelperText>
+            <FormControl
+              error={!!responseError[i]}
+              helperText={!!responseError[i] && responseError[i]}
+            >
+              <Typography className={classes.uploadedFile}>
+                {responseData[i] ? (
+                  <a
+                    href={responseData[i]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ width: "100%", wordWrap: "break-word" }}
+                  >
+                    {responseData[i]}
+                  </a>
+                ) : (
+                  "No file uploaded yet!"
                 )}
-              </FormControl>
-            </div>
-          )
+              </Typography>
+              <Button variant="contained" color="primary" component="label" style={{ width: "150px" }}>
+                {responseData[i] ? "Reupload" : "Upload"}
+                <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
+                <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
+              </Button>
+              {!!responseError[i] && (
+                <FormHelperText>{responseError[i]}</FormHelperText>
+              )}
+            </FormControl>
+          </div>
+        );
       }
     }
-    return returnArr
-  }
+    return returnArr;
+  };
 
   const validifyForm = () => {
     // currently only checks "required" field of question object in questions array
@@ -506,14 +506,14 @@ const FormRegisterPartner = (props) => {
   };
 
   const handleSubmit = () => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     if (isValidSubmission()) {
-      const dynamicResponses = {}
+      const dynamicResponses = {};
       for (let i = basicQuestions.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
-          dynamicResponses[formData.questions[i].questionId] = responseData[i]?.join(', ')
+          dynamicResponses[formData.questions[i].questionId] = responseData[i]?.join(", ");
         } else {
-          dynamicResponses[formData.questions[i].questionId] = responseData[i]
+          dynamicResponses[formData.questions[i].questionId] = responseData[i];
         }
       }
       const registrationBody = {
@@ -531,34 +531,34 @@ const FormRegisterPartner = (props) => {
           role: responseData[5],
         },
         dynamicResponses,
-      }
-      fetchBackend('/registrations', 'POST', registrationBody, false)
+      };
+      fetchBackend("/registrations", "POST", registrationBody, false)
         .then(() => {
-          history.push(`/event/${currEvent.id}/${currEvent.year}/register/success/partner`)
+          history.push(`/event/${currEvent.id}/${currEvent.year}/register/success/partner`);
         })
         .catch((err) => {
           alert(
             `An error has occured: ${err} Please contact an exec for support.`
-          )
-          setIsSubmitting(false)
-        })
+          );
+          setIsSubmitting(false);
+        });
     } else {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
       console.error("Form errors");
     }
   };
 
   const isDeadlinePassed = () => {
-    const deadline = new Date(event.deadline).getTime()
-    return deadline < new Date().getTime()
-  }
+    const deadline = new Date(event.deadline).getTime();
+    return deadline < new Date().getTime();
+  };
 
   if (!currEvent) {
     return (
       <Loading
         message='Loading event...'
       />
-    )
+    );
   }
 
   const renderFormQuestions = () => {
@@ -570,47 +570,47 @@ const FormRegisterPartner = (props) => {
               Deadline Passed
             </Typography>
             <Typography>
-              The registration deadline for {currEvent.ename || 'this event'} has already passed on {formData.deadline.toLocaleString(navigator.language, {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute:'2-digit'
-            })}.
+              The registration deadline for {currEvent.ename || "this event"} has already passed on {formData.deadline.toLocaleString(navigator.language, {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute:"2-digit"
+              })}.
             </Typography>
           </div>
         </Fragment>
-      )
+      );
     }
     return (
       <Fragment>
-          <div style={styles.section}>
-            <Typography style={{ fontWeight: 'bold' }}>
+        <div style={styles.section}>
+          <Typography style={{ fontWeight: "bold" }}>
               Registration open now until {formData.deadline.toLocaleString(navigator.language, {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute:'2-digit'
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute:"2-digit"
             })}
-            </Typography>
-          </div>
+          </Typography>
+        </div>
         <div style={styles.section}>{loadQuestions()}</div>
         <div style={styles.divider}></div>
         <div style={styles.submitSection}>
-            <Button 
-              variant="contained" 
-              color="primary" 
-              onClick={handleSubmit}
-              className={classes.registerButton}
-              disabled={isSubmitting}
-            >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            className={classes.registerButton}
+            disabled={isSubmitting}
+          >
               Submit
-            </Button>
+          </Button>
         </div>
       </Fragment>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -646,7 +646,7 @@ const FormRegisterPartner = (props) => {
 const mapStateToProps = (state) => {
   return {
     userRegisteredEvents: state.userState.userRegisteredEvents.data,
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(FormRegisterPartner);

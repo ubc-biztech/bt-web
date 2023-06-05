@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@material-ui/core";
 
 
 const activities = [
@@ -18,27 +18,27 @@ const activities = [
 function GamificationActivityTable() {
   return (
     <>
-    <div style={{width: "100%"}}>
-      <TableContainer component={Paper} style={{ backgroundColor: 'transparent', marginTop: '10px', marginBottom: '10px'}}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ color: "white", fontWeight: "bold" }}>Activity</TableCell>
-              <TableCell align="right" style={{ color: "white", fontWeight: "bold" }}>Points</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {activities.map((activity, index) => (
-              <TableRow key={index}>
-                <TableCell component="th" scope="row" style={{ color: "white" }}>
-                  {activity.name}
-                </TableCell>
-                <TableCell align="right" style={{ color: "white" }}><b>{activity.points}</b></TableCell>
+      <div style={{ width: "100%" }}>
+        <TableContainer component={Paper} style={{ backgroundColor: "transparent", marginTop: "10px", marginBottom: "10px" }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell style={{ color: "white", fontWeight: "bold" }}>Activity</TableCell>
+                <TableCell align="right" style={{ color: "white", fontWeight: "bold" }}>Points</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {activities.map((activity, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row" style={{ color: "white" }}>
+                    {activity.name}
+                  </TableCell>
+                  <TableCell align="right" style={{ color: "white" }}><b>{activity.points}</b></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
       <div style={{ fontSize: "14px" }}>
         * Visit the Biztech booth and show your post to redeem!

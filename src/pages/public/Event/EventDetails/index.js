@@ -112,8 +112,8 @@ const EventDetails = (props) => {
       registrationStatus = REGISTRATION_STATUS.CANCELLED;
     }
     const body = {
-      eventID: eventID,
-      registrationStatus: registrationStatus,
+      eventID,
+      registrationStatus,
     };
     if (isFirstTime) {
       body.id = id;

@@ -36,7 +36,7 @@ import {
   POINTSLABEL
 } from "./utils";
 import { getDefaultColumns, getDefaultPartnerColumns, getDynamicQuestionColumns } from "./TableColumns";
-import {Field, Form, Formik} from "formik";
+import { Field, Form, Formik } from "formik";
 
 const styles = {
   stats: {
@@ -126,12 +126,12 @@ export class EventStatsTable extends Component {
     };
   }
 
-  refreshTable = () => {
+  refreshTable() {
     this.getEventTableData(this.props.event.id, this.props.event.year);
   };
 
   async initializeTableColumns() {
-    const { id: eventID, year: eventYear} = this.props.event;
+    const { id: eventID, year: eventYear } = this.props.event;
     await fetchBackend(
       `/events/${eventID}/${eventYear.toString()}`,
       "GET"
@@ -140,19 +140,17 @@ export class EventStatsTable extends Component {
       const dynamicQuestionColumns = getDynamicQuestionColumns(event.registrationQuestions);
 
       const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.refreshTable);
-      // dynamic Partner questions not implemented yet.
+      const dynamicPartnerQuestionColumns = getDynamicQuestionColumns(event.partnerRegistrationQuestions);
 
       const presentedColumns = defaultColumns.concat(dynamicQuestionColumns);
+      const presentedPartnerColumns = defaultPartnerColumns.concat(dynamicPartnerQuestionColumns);
+
       this.setState({
         presentedColumns,
-        presentedPartnerColumns: defaultPartnerColumns
+        presentedPartnerColumns
       });
     });
   }
-
-  refreshTable = () => {
-    this.getEventTableData(this.props.event.id, this.props.event.year);
-  };
 
   /* updates stats and the rows in the table
      faculty, gender, dietary, and year stats are only computed on the initial render of the component
@@ -160,7 +158,7 @@ export class EventStatsTable extends Component {
   */
   async getEventTableData(eventID, eventYear) {
     const params = new URLSearchParams({
-      eventID: eventID,
+      eventID,
       year: eventYear
     });
 
@@ -188,7 +186,7 @@ export class EventStatsTable extends Component {
           teamID
         });
       })
-      .catch((err) => {
+      .catch(() => {
         console.log("No registrations for this event");
       });
   }
@@ -291,13 +289,13 @@ export class EventStatsTable extends Component {
     );
   }
 
-  showWaitlist = () => {
+  showWaitlist() {
     this.setState({
       isWaitlistShown: !this.state.isWaitlistShown
     });
   };
 
-  showAdminTeamFormation = () => {
+  showAdminTeamFormation() {
     this.setState({
       isAdminTeamFormationShown: !this.state.isAdminTeamFormationShown
     });
@@ -318,8 +316,8 @@ export class EventStatsTable extends Component {
   }
 
   render() {
-    let registrationColumns = this.state.presentedColumns;
-    let registrationPartnerColumns = this.state.presentedPartnerColumns;
+    const registrationColumns = this.state.presentedColumns;
+    const registrationPartnerColumns = this.state.presentedPartnerColumns;
 
     function handleColumnDrag(sourceIndex, destinationIndex) {
       const sourceColumn = registrationColumns[sourceIndex];
@@ -345,9 +343,9 @@ export class EventStatsTable extends Component {
       if (rows) {
         return rows.filter((row) => (
           Boolean(row.isPartner) === isPartner
-        ))
+        ));
       } else {
-        return []
+        return [];
       }
     }
     /**
@@ -396,11 +394,11 @@ export class EventStatsTable extends Component {
           </Button>
 
           <Button
-              variant="contained"
-              color="primary"
-              onClick={() =>
-                  this.showAdminTeamFormation()
-              }
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              this.showAdminTeamFormation()
+            }
           >
             Make Team
           </Button>
@@ -416,100 +414,100 @@ export class EventStatsTable extends Component {
             </div>
         }
         {
-            this.state.isAdminTeamFormationShown &&
+          this.state.isAdminTeamFormationShown &&
             <div>
               <div style={{ padding: "10px" }} />
-            {/*  Formik form for team formation, up to 4 members */}
-                <Formik
-                    initialValues={{
-                        teamName: "",
-                        teamMember: "",
-                        teamMember2: "",
-                        teamMember3: "",
-                        teamMember4: "",
-                    }}
-                    onSubmit={async (values, { setSubmitting }) => {
-                        setSubmitting(true);
+              {/*  Formik form for team formation, up to 4 members */}
+              <Formik
+                initialValues={{
+                  teamName: "",
+                  teamMember: "",
+                  teamMember2: "",
+                  teamMember3: "",
+                  teamMember4: "",
+                }}
+                onSubmit={async (values, { setSubmitting }) => {
+                  setSubmitting(true);
 
-                        const teamMembersArrayAppend = [];
+                  const teamMembersArrayAppend = [];
 
-                        if (values.teamMember)  teamMembersArrayAppend.push(values.teamMember);
-                        if (values.teamMember2) teamMembersArrayAppend.push(values.teamMember2);
-                        if (values.teamMember3) teamMembersArrayAppend.push(values.teamMember3);
-                        if (values.teamMember4) teamMembersArrayAppend.push(values.teamMember4);
+                  if (values.teamMember)  teamMembersArrayAppend.push(values.teamMember);
+                  if (values.teamMember2) teamMembersArrayAppend.push(values.teamMember2);
+                  if (values.teamMember3) teamMembersArrayAppend.push(values.teamMember3);
+                  if (values.teamMember4) teamMembersArrayAppend.push(values.teamMember4);
 
-                        const response = {
-                            team_name: values.teamName ? values.teamName : "Placeholder",
-                            eventID: this.props.event.id,
-                            year: parseInt(this.props.event.year),
-                            memberIDs: teamMembersArrayAppend,
-                        }
+                  const response = {
+                    team_name: values.teamName ? values.teamName : "Placeholder",
+                    eventID: this.props.event.id,
+                    year: parseInt(this.props.event.year),
+                    memberIDs: teamMembersArrayAppend,
+                  };
 
-                        await fetchBackend(`/team/make`, "POST", response, true);
-                        // alert the user that the team has been made
-                        alert("Team has been made: " + values.teamName + " with members: " + teamMembersArrayAppend);
+                  await fetchBackend("/team/make", "POST", response, true);
+                  // alert the user that the team has been made
+                  alert("Team has been made: " + values.teamName + " with members: " + teamMembersArrayAppend);
 
-                        setSubmitting(false);
-                        this.refreshTable();
-                    }}
-                >
-                    {({ isSubmitting, values }) => (
-                        <Form>
-                            <Field
-                                name="teamName"
-                                type="text"
-                                placeholder="Team Name"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Field
-                                name="teamMember"
-                                type="text"
-                                placeholder="Team Member Email 1"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Field
-                                name="teamMember2"
-                                type="text"
-                                placeholder="Team Member Email 2"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Field
-                                name="teamMember3"
-                                type="text"
-                                placeholder="Team Member Email 3"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Field
-                                name="teamMember4"
-                                type="text"
-                                placeholder="Team Member Email 4"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
+                  setSubmitting(false);
+                  this.refreshTable();
+                }}
+              >
+                {({ isSubmitting, values }) => (
+                  <Form>
+                    <Field
+                      name="teamName"
+                      type="text"
+                      placeholder="Team Name"
+                      as={TextField}
+                      variant="filled"
+                      style={{ margin: "10px" }}
+                    />
+                    <Field
+                      name="teamMember"
+                      type="text"
+                      placeholder="Team Member Email 1"
+                      as={TextField}
+                      variant="filled"
+                      style={{ margin: "10px" }}
+                    />
+                    <Field
+                      name="teamMember2"
+                      type="text"
+                      placeholder="Team Member Email 2"
+                      as={TextField}
+                      variant="filled"
+                      style={{ margin: "10px" }}
+                    />
+                    <Field
+                      name="teamMember3"
+                      type="text"
+                      placeholder="Team Member Email 3"
+                      as={TextField}
+                      variant="filled"
+                      style={{ margin: "10px" }}
+                    />
+                    <Field
+                      name="teamMember4"
+                      type="text"
+                      placeholder="Team Member Email 4"
+                      as={TextField}
+                      variant="filled"
+                      style={{ margin: "10px" }}
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
                                 Submit New Team
-                            </Button>
-                        </Form>
-                    )}
-                </Formik>
+                    </Button>
+                  </Form>
+                )}
+              </Formik>
 
-                <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
+              <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
                     To view the teams or to make Team point changes, contact a member of the dev team
-                </Typography>
+              </Typography>
             </div>
         }
 
@@ -809,7 +807,7 @@ const QrCheckIn = (props) => {
 
   const emailCheck = (email) => {
     return /(.+)@(.+){2,}\.(.+){2,}/.test(email);
-  }
+  };
 
   // checks if the QR code is valid whenever the QR code is changed
   useEffect(() => {
@@ -840,7 +838,7 @@ const QrCheckIn = (props) => {
     const id = qrCode.data.split(";");
     const userID = id[0];
     const eventIDAndYear = id[1] + ";" + id[2];
-    const userFName = id[3]
+    const userFName = id[3];
 
     // validate event ID and year as the current event
     if (eventIDAndYear !== props.event.id + ";" + props.event.year) {
@@ -882,15 +880,15 @@ const QrCheckIn = (props) => {
     // If the user is already checked in, show an error
     if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
-      setError(`Person is already checked in.`);
+      setError("Person is already checked in.");
       return;
     } else if (user.registrationStatus === REGISTRATION_STATUS.CANCELLED) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
-      setError(`Person had their registration cancelled. Cannot check-in.`);
+      setError("Person had their registration cancelled. Cannot check-in.");
       return;
     } else if (user.registrationStatus === REGISTRATION_STATUS.WAITLISTED) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
-      setError(`Person is on the waitlist. Cannot check-in.`);
+      setError("Person is on the waitlist. Cannot check-in.");
       return;
     }
 
@@ -922,15 +920,15 @@ const QrCheckIn = (props) => {
               qrScanStage === QR_SCAN_STAGE.SUCCESS
                 ? "success"
                 : qrScanStage === QR_SCAN_STAGE.SCANNING
-                ? "info"
-                : "error"
+                  ? "info"
+                  : "error"
             }
           >
             {qrScanStage === QR_SCAN_STAGE.SUCCESS
               ? `Checked-in successfully for ${checkInName}! Your attendance table will be updated shortly.`
               : qrScanStage === QR_SCAN_STAGE.SCANNING
-              ? "Ready to scan a QR code to check-in. 😎"
-              : `🚨 ERROR: ${error}`}
+                ? "Ready to scan a QR code to check-in. 😎"
+                : `🚨 ERROR: ${error}`}
           </Alert>
 
           <div

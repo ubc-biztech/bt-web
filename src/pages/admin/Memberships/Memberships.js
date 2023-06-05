@@ -109,7 +109,7 @@ function Memberships() {
   useEffect(() => {
     let isSubscribed = true;
     const getMemberships = async () => {
-      const res = await fetchBackend(`/members`, "GET");
+      const res = await fetchBackend("/members", "GET");
       if (isSubscribed) {
         setMembershipData(res);
       }
@@ -186,7 +186,7 @@ function Memberships() {
           )}
 
           {React.cloneElement(personalizationState.component, {
-            membershipData: membershipData,
+            membershipData,
           })}
         </div>
       </div>

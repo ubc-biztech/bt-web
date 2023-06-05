@@ -1,9 +1,8 @@
-import React from 'react';
-import DraggableTitle from "./DraggableTitle";
+import React from "react";
 
 // Constants
-const REGISTRATIONSTATUSLABEL = "registrationStatus"
-const POINTSLABEL = "points"
+const REGISTRATIONSTATUSLABEL = "registrationStatus";
+const POINTSLABEL = "points";
 
 
 /**
@@ -66,7 +65,7 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
   registrationQuestions.forEach((question) => {
     const column = {};
 
-    column.title = <DraggableTitle title={question.label} />;
+    column.title = question.label;
     column.field = question.questionId;
     column.type = question.type;
     column.sorting = true;
@@ -75,8 +74,8 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
         <>
           {rowData[question.questionId]}
         </>
-      )
-    }
+      );
+    };
 
     columns.push(column);
   });

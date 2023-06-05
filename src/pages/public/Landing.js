@@ -100,9 +100,9 @@ function Landing(props){
         <hr className={classes.divider} />
         <IconContainer />
         <Button
-        variant="contained"
-        color="primary"
-        onClick={() =>  history.push('/')}
+          variant="contained"
+          color="primary"
+          onClick={() =>  history.push("/")}
         >
         Home
         </Button>
