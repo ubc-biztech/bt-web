@@ -24,6 +24,8 @@ jobs:
           REACT_APP_SHEET_ID: ${{ secrets.REACT_APP_SHEET_ID }}
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
+        with:
+          node-version: '16'
 
       - if: github.ref == 'refs/heads/dev'
         uses: FirebaseExtended/action-hosting-deploy@v0
@@ -32,6 +34,7 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_DEV_EBF17 }}'
           channelId: live
           projectId: bt-web-dev-ebf17
+          node-version: '16'
 
       - name: Prod Firebase Hosting Deploy
         if: github.ref == 'refs/heads/master'
@@ -46,6 +49,8 @@ jobs:
           REACT_APP_SHEET_ID: ${{ secrets.REACT_APP_SHEET_ID }}
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
+        with:
+          node-version: '16'
 
       - if: github.ref == 'refs/heads/master'
         uses: FirebaseExtended/action-hosting-deploy@v0
@@ -54,3 +59,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_19A7B }}'
           channelId: live
           projectId: bt-web-19a7b
+          node-version: '16'
