@@ -22,7 +22,8 @@ jobs:
           REACT_APP_SHEET_ID: ${{ secrets.REACT_APP_SHEET_ID }}
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
-        uses: FirebaseExtended/action-hosting-deploy@v0
+
+      - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_DEV_EBF17 }}'
@@ -40,7 +41,8 @@ jobs:
           REACT_APP_SHEET_ID: ${{ secrets.REACT_APP_SHEET_ID }}
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
-        uses: FirebaseExtended/action-hosting-deploy@v0
+
+      - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_19A7B }}'
