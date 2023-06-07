@@ -15,7 +15,7 @@ jobs:
           node-version: '16'
 
       - name: Dev Firebase Hosting Preview
-        run: npm ci && npm run build
+        run: npm ci --force && npm run build
         env:
           SASS_PATH: './node_modules'
           REACT_APP_DEV_API: '${{ secrets.REACT_APP_DEV_API }}'
@@ -34,7 +34,7 @@ jobs:
           projectId: bt-web-dev-ebf17
 
       - name: Prod Firebase Hosting Preview
-        run: npm ci && npm run build
+        run: npm ci --force && npm run build
         env:
           SASS_PATH: './node_modules'
           REACT_APP_DEV_API: '${{ secrets.REACT_APP_DEV_API }}'

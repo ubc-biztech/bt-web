@@ -17,7 +17,7 @@ jobs:
 
       - name: Dev Firebase Hosting Deploy
         if: github.ref == 'refs/heads/dev'
-        run: npm ci && npm run build
+        run: npm ci --force && npm run build
         env: 
           SASS_PATH: './node_modules'
           REACT_APP_DEV_API: '${{ secrets.REACT_APP_DEV_API }}'
@@ -39,7 +39,7 @@ jobs:
 
       - name: Prod Firebase Hosting Deploy
         if: github.ref == 'refs/heads/master'
-        run: npm ci && npm run build
+        run: npm ci --force && npm run build
         env: 
           SASS_PATH: './node_modules'
           REACT_APP_DEV_API: '${{ secrets.REACT_APP_DEV_API }}'
