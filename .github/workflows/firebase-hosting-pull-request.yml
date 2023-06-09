@@ -15,7 +15,7 @@ jobs:
           node-version: '16'
 
       - name: Dev Firebase Build
-        if: github.ref == 'refs/heads/dev'
+        if: github.event.pull_request.base.ref == 'dev'
         run: npm install && npm run build
         env:
           SASS_PATH: './node_modules'
@@ -29,7 +29,7 @@ jobs:
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
 
       - name: Dev Firebase Preview
-        if: github.ref == 'refs/heads/dev'
+        if: github.event.pull_request.base.ref == 'dev'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
@@ -37,7 +37,7 @@ jobs:
           projectId: bt-web-dev-ebf17
 
       - name: Prod Firebase Build
-        if: github.ref == 'refs/heads/master'
+        if: github.event.pull_request.base.ref == 'master'
         run: npm install && npm run build
         env:
           SASS_PATH: './node_modules'
@@ -51,7 +51,7 @@ jobs:
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
 
       - name: Prod Firebase Preview
-        if: github.ref == 'refs/heads/master'
+        if: github.event.pull_request.base.ref == 'master'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
