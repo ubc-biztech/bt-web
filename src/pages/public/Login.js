@@ -65,6 +65,7 @@ const styles = {
   },
   googleButton: {
     marginTop: "15px",
+    marginBottom: "15px",
     textTransform: "none",
     textAlign: "left",
     fontWeight: "bold",
@@ -247,9 +248,6 @@ function Login() {
               </div>
               Sign In with Facebook
             </Button> */}
-            <Typography variant="h2" style={styles.loginMember}>
-              Email Password Sign In
-            </Typography>
             <form>
               <Typography style={styles.emailLogin}>Email:</Typography>
               <input
