@@ -2,7 +2,7 @@ import React, {
   createContext, useState
 } from "react";
 import {
-  createMuiTheme,
+  createTheme,
   ThemeProvider as MuiThemeProvider
 } from "@material-ui/core/styles";
 import {
@@ -17,7 +17,7 @@ export const fontFamily = [
   "sans-serif"
 ].join(",");
 
-const darkTheme = createMuiTheme({
+const darkTheme = createTheme({
   overrides: {
     MuiPickersCalendarHeader: {
       iconButton: {
