@@ -12,7 +12,7 @@ jobs:
       
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '16.13.2'
 
       - name: Dev Firebase Build
         if: github.event.pull_request.base.ref == 'dev'
