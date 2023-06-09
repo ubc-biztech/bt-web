@@ -17,7 +17,7 @@ jobs:
 
       - name: Dev Firebase Build
         if: github.ref == 'refs/heads/dev'
-        run: npm install && npm run build
+        run: npm ci && npm run build
         env: 
           SASS_PATH: './node_modules'
           REACT_APP_DEV_API: '${{ secrets.REACT_APP_DEV_API }}'
@@ -40,7 +40,7 @@ jobs:
 
       - name: Prod Firebase Build
         if: github.ref == 'refs/heads/master'
-        run: npm install && npm run build
+        run: npm ci && npm run build
         env: 
           SASS_PATH: './node_modules'
           REACT_APP_DEV_API: '${{ secrets.REACT_APP_DEV_API }}'
