@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Dev Firebase Hosting Deploy
+      - name: Dev Firebase Build
         if: github.ref == 'refs/heads/dev'
         run: npm install && npm run build
         env: 
@@ -29,7 +29,8 @@ jobs:
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
 
-      - if: github.ref == 'refs/heads/dev'
+      - name: Dev Firebase Deploy
+        if: github.ref == 'refs/heads/dev'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
@@ -37,7 +38,7 @@ jobs:
           channelId: live
           projectId: bt-web-dev-ebf17
 
-      - name: Prod Firebase Hosting Deploy
+      - name: Prod Firebase Build
         if: github.ref == 'refs/heads/master'
         run: npm install && npm run build
         env: 
@@ -51,7 +52,8 @@ jobs:
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
 
-      - if: github.ref == 'refs/heads/master'
+      - name: Prod Firebase Deploy
+        if: github.ref == 'refs/heads/master'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

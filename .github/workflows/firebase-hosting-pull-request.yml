@@ -14,7 +14,8 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Dev Firebase Hosting Preview
+      - name: Dev Firebase Build
+        if: github.ref == 'refs/heads/dev'
         run: npm install && npm run build
         env:
           SASS_PATH: './node_modules'
@@ -27,13 +28,16 @@ jobs:
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Dev Firebase Preview
+        if: github.ref == 'refs/heads/dev'
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_DEV_EBF17 }}'
           projectId: bt-web-dev-ebf17
 
-      - name: Prod Firebase Hosting Preview
+      - name: Prod Firebase Build
+        if: github.ref == 'refs/heads/master'
         run: npm install && npm run build
         env:
           SASS_PATH: './node_modules'
@@ -46,7 +50,9 @@ jobs:
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Prod Firebase Preview
+        if: github.ref == 'refs/heads/master'
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_19A7B }}'
