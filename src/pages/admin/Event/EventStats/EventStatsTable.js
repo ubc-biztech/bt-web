@@ -797,6 +797,7 @@ const QrCheckIn = (props) => {
     // when wanting to re-scan (requires a manual reset)
     // if (data.data !== qrCode.data) setQrCode(data);
 
+    // sets the Qrcode to the data prop from the QRReader component
     setQrCode(data);
   };
 
@@ -813,8 +814,9 @@ const QrCheckIn = (props) => {
     return /(.+)@(.+){2,}\.(.+){2,}/.test(email);
   }
 
-  // checks if the QR code is valid whenever the QR code is changed
+  // checks if the QR code is valid whenever the QR code is changed (qr code is a dependancy of this useEffect)
   useEffect(() => {
+    // function that sets the user's registration status to checked in and resets ths QRcode reader after 10s
     const checkInUser = (id, fname) => {
       const body = {
         eventID: props.event.id,
@@ -857,8 +859,10 @@ const QrCheckIn = (props) => {
       return;
     }
 
+    // retrieves user that matches the userID from the QrCode
     const user = props.rows?.filter((row) => row.id === userID)[0];
 
+    // if user doesn't exist then fail QR scan
     if (!user) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 6000);
       setError("Person is not registered for this event.");
@@ -896,6 +900,7 @@ const QrCheckIn = (props) => {
       return;
     }
 
+    // if non of the previous checks failed, checkin user and reset qr scanner
     checkInUser(userID, userFName);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -942,6 +947,7 @@ const QrCheckIn = (props) => {
               alignItems: "center"
             }}
           >
+            {/* Uses public react package qr-reader */}
             <QrReader
               style={styles.qrCodeVideo}
               onScan={handleScanQR}
