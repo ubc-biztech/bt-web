@@ -4,6 +4,8 @@ import { Auth } from "aws-amplify";
 import { Helmet } from "react-helmet";
 import { Link, useHistory } from "react-router-dom";
 
+// new-pull request by Kavya to get fimiliar with Git
+
 import {
   Button,
   Card,
