@@ -28,7 +28,9 @@ import {
 import {
   Alert
 } from "@material-ui/lab";
-import QrReader from "react-web-qr-reader";
+import {
+  QrReader
+}  from "react-qr-reader";
 
 import {
   REGISTRATION_STATUS,
@@ -1049,10 +1051,12 @@ const QrCheckIn = (props) => {
             }}
           >
             <QrReader
-              style={styles.qrCodeVideo}
-              onScan={handleScanQR}
-              facingMode={cameraFacingMode}
-              delay={250}
+              containerStyle={styles.qrCodeVideo}
+              onResult={handleScanQR}
+              constraints={{
+                facingMode: cameraFacingMode
+              }}
+              scanDelay={250}
             />
           </div>
 
