@@ -272,7 +272,6 @@ const CompanionLayout = (params) => {
       setIsModalOpen(false);
     }
   }, [regData]);
-  console.log(isLoading);
 
   return (
     <div style={styles.container}>
