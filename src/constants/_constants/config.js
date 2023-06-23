@@ -6,7 +6,7 @@
 export const API_URL =
 process.env.REACT_APP_STAGE === "production"
   ? "https://api.ubcbiztech.com"
-  : process.env.REACT_APP_STAGE === "development"
+  : process.env.REACT_APP_STAGE === "local"
     ? "http://localhost:4000"
     : "https://api-dev.ubcbiztech.com";
 
