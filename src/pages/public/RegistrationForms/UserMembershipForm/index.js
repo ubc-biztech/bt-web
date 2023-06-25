@@ -347,15 +347,15 @@ const UserMembershipFormContainer = (props) => {
   return (
     <div className={classes.layout}>
       <Helmet>
-        <title>UBC BizTech User Registration &amp; 2022/23 Membership</title>
+        <title>UBC BizTech User Registration &amp; 2023/24 Membership</title>
       </Helmet>
       <Fragment>
         <Typography className={classes.registrationText}>
-        UBC BizTech User Registration &amp; 2022/23 Membership
+          UBC BizTech User Registration &amp; 2023/24 Membership
         </Typography>
         <div className={classes.registrationHeader}>
           <Typography className={classes.description}>
-            Thank you for signing up to be a BizTech Application user and 2022/23 member! By signing up for
+            Thank you for signing up to be a BizTech Application user and 2023/24 member! By signing up for
             membership, you will also be a part of our mailing list!
           </Typography>
           <Typography className={classes.description}>
