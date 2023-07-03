@@ -834,7 +834,13 @@ const FormCreate = (props) => {
     capacity: Yup.number("Valid number required")
       .min(0, "Valid capacity required")
       .required(),
-    start: Yup.date().required(),
+    start: Yup.date().test("is-same-year", "Start date's year must be the same as eventYear", function (value) {
+      if (!eventYear || !value) {
+        return true; // Skip the test if eventYear or start date is not provided
+      }
+      const startYear = value.getFullYear();
+      return startYear === parseInt(eventYear);
+    }).required(),
     end: Yup.date()
       .min(Yup.ref("start"), "End must be later than Start")
       .required(),
