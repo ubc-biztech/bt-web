@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 const UserMembershipFormContainer = (props) => {
   const classes = useStyles();
   const history = useHistory();
-  const [memberType, setMemberType] = useState();
+  const [memberType, setMemberType] = useState("");
   const [topics, setTopics] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
