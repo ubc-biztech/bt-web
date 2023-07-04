@@ -86,8 +86,15 @@ export default function CustomTextField (props) {
   } = props;
 
   const change = (name, e) => {
+    if (handleChange(name, e)) {
+      console.log(handleChange);
+    } else {
+      console.log("poo");
+    }
     e.persist();
-    handleChange(e);
+    console.log(e);
+    // handleChange(e);
+
     setFieldTouched(name, true, false);
   };
 
@@ -111,11 +118,10 @@ export default function CustomTextField (props) {
           shrink: true
         }}
         InputProps={{
-          classes,
-          inputProps: {
-            classes: renderMobileOnly ? classes.mobileInput : classes.input
-          },
-          readOnly
+          classes: {
+            root: classes.input, // replace 'input' with the class you want to apply to the root of OutlinedInput
+            input: renderMobileOnly ? classes.mobileInput : classes.input // apply a class to the input
+          }
         }}
         rows={rows}
         defaultValue={initialValues ? initialValues[groupName] : ""}
