@@ -160,6 +160,7 @@ export default function MembershipForm(props) {
         <Grid item xs={12}>
           <CustomSelect
             {...props}
+            initialValues=""
             label="Preferred Pronouns"
             listOfOptions={[
               "He/Him/His",
@@ -198,6 +199,7 @@ export default function MembershipForm(props) {
           <Grid item xs={12}>
             <CustomSelect
               {...props}
+              initialValues=""
               label="Level of study *"
               listOfOptions={[
                 "1st Year",
@@ -217,6 +219,7 @@ export default function MembershipForm(props) {
           <Grid item xs={12}>
             <CustomSelect
               {...props}
+              initialValues=""
               label="Level of study *"
               listOfOptions={[
                 "Grade 9",
@@ -236,6 +239,7 @@ export default function MembershipForm(props) {
           <Grid item xs={12}>
             <CustomSelect
               {...props}
+              initialValues=""
               label="Faculty *"
               listOfOptions={[
                 "Arts",
@@ -269,6 +273,7 @@ export default function MembershipForm(props) {
           <Grid item xs={12}>
             <CustomSelect
               {...props}
+              initialValues=""
               label="Are you an international student? *"
               listOfOptions={["Yes", "No"]}
               groupName="international"
@@ -279,6 +284,7 @@ export default function MembershipForm(props) {
         <Grid item xs={12}>
           <CustomSelect
             {...props}
+            initialValues=""
             label="Any dietary restrictions?"
             listOfOptions={[
               "None",
@@ -296,6 +302,7 @@ export default function MembershipForm(props) {
         <Grid item xs={12}>
           <CustomSelect
             {...props}
+            initialValues=""
             label="Were you a BizTech member last year? *"
             listOfOptions={["Yes", "No"]}
             groupName="prev_member"
@@ -355,6 +362,7 @@ export default function MembershipForm(props) {
         <Grid item xs={12}>
           <CustomSelect
             {...props}
+            initialValues=""
             label="How did you hear about us?"
             listOfOptions={[
               "Facebook",

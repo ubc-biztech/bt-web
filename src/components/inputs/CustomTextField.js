@@ -87,9 +87,7 @@ export default function CustomTextField (props) {
 
   const change = (name, e) => {
     e.persist();
-    console.log(e);
     handleChange(e);
-
     setFieldTouched(name, true, false);
   };
 

@@ -58,12 +58,6 @@ export default function CustomSelect (props) {
     initialValues
   } = props;
 
-  // const [val, setVal] = React.useState("");
-
-  // const handleChange = (e) => {
-  //   setVal(e.target.value);
-  // };
-
   const handleSelectChange = (e, groupName) => {
     e.preventDefault();
     const value = e.target.value;
