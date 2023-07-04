@@ -174,6 +174,23 @@ const UserMembershipFormContainer = (props) => {
     }),
   });
 
+  // const initialValues = {
+  //   email: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   first_name: "",
+  //   last_name: "",
+  //   student_number: "",
+  //   year: "",
+  //   faculty: "",
+  //   major: "",
+  //   international: "",
+  //   prev_member: "",
+  //   university: "",
+  //   high_school: "",
+  //   heardFromSpecify: "",
+  // };
+
   const initialValues = {
     email: "",
     password: "",
@@ -181,15 +198,19 @@ const UserMembershipFormContainer = (props) => {
     first_name: "",
     last_name: "",
     student_number: "",
+    pronouns: "",
+    university: "",
+    high_school: "",
     year: "",
     faculty: "",
     major: "",
     international: "",
+    diet: "",
     prev_member: "",
-    university: "",
-    high_school: "",
-    heardFromSpecify: "",
+    heard_from: "",
+    heardFromSpecify: ""
   };
+
 
   async function adminSkipPayment (values) {
     const {
