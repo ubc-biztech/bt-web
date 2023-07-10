@@ -20,7 +20,7 @@ import {
 
 import "react-step-progress-bar/styles.css";
 import Loading from "pages/Loading";
-
+import FeedbackForm from "./FeedbackForm";
 import Schedule from "./Schedule";
 
 import {
@@ -411,9 +411,12 @@ const CompanionLayout = (params) => {
                   }}>{paragraph}</div>;
                 })}
               </FadeInWhenVisible>
+              <FadeInWhenVisible >
+                <FeedbackForm renderMobileOnly={renderMobileOnly} styles={styles} />
+              </FadeInWhenVisible>
               {scheduleData.length > 0 &&
                 <FadeInWhenVisible id="Timeline">
-                  <Schedule data={scheduleData} date={date} location={location} styles={styles} renderMobileOnly={renderMobileOnly}/>
+                  <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles}/>
                 </FadeInWhenVisible>}
               <ChildComponent regData={regData} email={email} eventID={eventID} year={year} styles={styles} renderMobileOnly={renderMobileOnly} theme={theme} classes={classes} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
               <div style={{
