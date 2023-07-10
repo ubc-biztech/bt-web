@@ -17,7 +17,7 @@ import {
 
 import "react-step-progress-bar/styles.css";
 import Loading from "pages/Loading";
-
+import FeedbackForm from "./FeedbackForm";
 import Schedule from "./Schedule";
 
 import {
@@ -381,21 +381,22 @@ const CompanionLayout = (params) => {
                 </FadeInWhenVisible>
               </div>
               <FadeInWhenVisible id="welcome" style={styles.column}>
-                <FadeInWhenVisible id="welcome" style={styles.column}>
-                  <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {regData.fname}!</h1>
-                  {welcomeData.map((paragraph, i) => {
-                    return <div key={i} style={{
-                      ...styles.text,
-                      ...(renderMobileOnly && {
-                        fontSize: constantStyles.mobileFontSize
-                      })
-                    }}>{paragraph}</div>;
-                  })}
-                </FadeInWhenVisible>
+                <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {regData.fname}!</h1>
+                {welcomeData.map((paragraph, i) => {
+                  return <div key={i} style={{
+                    ...styles.text,
+                    ...(renderMobileOnly && {
+                      fontSize: constantStyles.mobileFontSize
+                    })
+                  }}>{paragraph}</div>;
+                })}
+              </FadeInWhenVisible>
+              <FadeInWhenVisible >
+                <FeedbackForm renderMobileOnly={renderMobileOnly} styles={styles} />
               </FadeInWhenVisible>
               {scheduleData.length > 0 &&
                 <FadeInWhenVisible id="Timeline">
-                  <Schedule data={scheduleData} date={date} location={location} styles={styles}/>
+                  <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles}/>
                 </FadeInWhenVisible>}
               <ChildComponent regData={regData} email={email} eventID={eventID} year={year} styles={styles} renderMobileOnly={renderMobileOnly} theme={theme} classes={classes} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
               <div style={{
