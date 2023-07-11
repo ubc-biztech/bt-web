@@ -395,7 +395,7 @@ const CompanionLayout = (params) => {
               </FadeInWhenVisible>
               {scheduleData.length > 0 &&
                 <FadeInWhenVisible id="Timeline">
-                  <Schedule data={scheduleData} date={date} location={location} styles={styles}/>
+                  <Schedule data={scheduleData} date={date} location={location} styles={styles} renderMobileOnly={renderMobileOnly}/>
                 </FadeInWhenVisible>}
               <ChildComponent regData={regData} email={email} eventID={eventID} year={year} styles={styles} renderMobileOnly={renderMobileOnly} theme={theme} classes={classes} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
               <div style={{
