@@ -9,7 +9,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@material-ui/pickers": "^3.3.10",
     "@material-ui/styles": "^4.10.0",
-    "aws-amplify": "^2.1.0",
+    "aws-amplify": "^5.3.3",
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.7.0",
     "formik": "^2.4.0",
