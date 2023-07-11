@@ -69,22 +69,15 @@ const useStyles = makeStyles((theme) => ({
 const UserMembershipFormContainer = (props) => {
   const classes = useStyles();
   const history = useHistory();
-  const [memberType, setMemberType] = useState();
+  const [memberType, setMemberType] = useState("");
   const [topics, setTopics] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required(),
-    password: Yup.string()
-      .required("Password is required")
-      .min(8, "Please make your password a minimum of 8 characters"),
-    confirmPassword: Yup.string().required("Password is required").when("password", {
-      is: val => (val && val.length > 0),
-      then: Yup.string().oneOf(
-        [Yup.ref("password")],
-        "Password does not match"
-      )
-    }),
+    password: Yup.string().required("Password is required").min(8, "Please make your password a minimum of 8 characters"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
     education: Yup.string().required("Education is required"),
@@ -100,13 +93,8 @@ const UserMembershipFormContainer = (props) => {
     password: Yup.string()
       .required("Password is required")
       .min(8, "Please make your password a minimum of 8 characters"),
-    confirmPassword: Yup.string().required("Password is required").when("password", {
-      is: val => (val && val.length > 0),
-      then: Yup.string().oneOf(
-        [Yup.ref("password")],
-        "Password does not match"
-      )
-    }),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
     student_number: Yup.number("Valid Student ID required")
       .min(9999999, "Valid Student ID required")
       .max(100000000, "Valid Student ID required")
@@ -120,6 +108,8 @@ const UserMembershipFormContainer = (props) => {
       "International or domestic student indication is required"
     ),
     prev_member: Yup.string().required("Please select Yes/No"),
+    pronouns: Yup.string(),
+    diet: Yup.string(),
     heardFromSpecify: Yup.string().when("heard_from", {
       is: val => (val && (val === "Events" || val === "Boothing" || val === "Other")),
       then: Yup.string().required("Please fill in this field")
@@ -131,13 +121,8 @@ const UserMembershipFormContainer = (props) => {
     password: Yup.string()
       .required("Password is required")
       .min(8, "Please make your password a minimum of 8 characters"),
-    confirmPassword: Yup.string().required("Password is required").when("password", {
-      is: val => (val && val.length > 0),
-      then: Yup.string().oneOf(
-        [Yup.ref("password")],
-        "Password does not match"
-      )
-    }),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
     university: Yup.string().required("University name is required"),
@@ -156,13 +141,8 @@ const UserMembershipFormContainer = (props) => {
     password: Yup.string()
       .required("Password is required")
       .min(8, "Please make your password a minimum of 8 characters"),
-    confirmPassword: Yup.string().required("Password is required").when("password", {
-      is: val => (val && val.length > 0),
-      then: Yup.string().oneOf(
-        [Yup.ref("password")],
-        "Password does not match"
-      )
-    }),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
     year: Yup.string().required("Level of study is required"),
@@ -174,6 +154,23 @@ const UserMembershipFormContainer = (props) => {
     }),
   });
 
+  // const initialValues = {
+  //   email: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   first_name: "",
+  //   last_name: "",
+  //   student_number: "",
+  //   year: "",
+  //   faculty: "",
+  //   major: "",
+  //   international: "",
+  //   prev_member: "",
+  //   university: "",
+  //   high_school: "",
+  //   heardFromSpecify: "",
+  // };
+
   const initialValues = {
     email: "",
     password: "",
@@ -181,15 +178,19 @@ const UserMembershipFormContainer = (props) => {
     first_name: "",
     last_name: "",
     student_number: "",
+    pronouns: "",
+    university: "",
+    high_school: "",
     year: "",
     faculty: "",
     major: "",
     international: "",
+    diet: "",
     prev_member: "",
-    university: "",
-    high_school: "",
-    heardFromSpecify: "",
+    heard_from: "",
+    heardFromSpecify: ""
   };
+
 
   async function adminSkipPayment (values) {
     const {
