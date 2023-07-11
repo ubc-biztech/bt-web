@@ -81,8 +81,7 @@ export default function CustomTextField (props) {
     multiline,
     rows,
     type,
-    initialValues,
-    readOnly
+    initialValues
   } = props;
 
   const change = (name, e) => {
@@ -111,12 +110,12 @@ export default function CustomTextField (props) {
           shrink: true
         }}
         InputProps={{
-          classes,
-          inputProps: {
-            classes: renderMobileOnly ? classes.mobileInput : classes.input
-          },
-          readOnly
+          classes: {
+            root: classes.input, // replace 'input' with the class you want to apply to the root of OutlinedInput
+            input: renderMobileOnly ? classes.mobileInput : classes.input // apply a class to the input
+          }
         }}
+        readOnly
         rows={rows}
         defaultValue={initialValues ? initialValues[groupName] : ""}
         type={type || ""}
