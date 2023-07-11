@@ -381,17 +381,15 @@ const CompanionLayout = (params) => {
                 </FadeInWhenVisible>
               </div>
               <FadeInWhenVisible id="welcome" style={styles.column}>
-                <FadeInWhenVisible id="welcome" style={styles.column}>
-                  <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {regData.fname}!</h1>
-                  {welcomeData.map((paragraph, i) => {
-                    return <div key={i} style={{
-                      ...styles.text,
-                      ...(renderMobileOnly && {
-                        fontSize: constantStyles.mobileFontSize
-                      })
-                    }}>{paragraph}</div>;
-                  })}
-                </FadeInWhenVisible>
+                <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {regData.fname}!</h1>
+                {welcomeData.map((paragraph, i) => {
+                  return <div key={i} style={{
+                    ...styles.text,
+                    ...(renderMobileOnly && {
+                      fontSize: constantStyles.mobileFontSize
+                    })
+                  }}>{paragraph}</div>;
+                })}
               </FadeInWhenVisible>
               {scheduleData.length > 0 &&
                 <FadeInWhenVisible id="Timeline">
