@@ -81,8 +81,7 @@ export default function CustomTextField (props) {
     multiline,
     rows,
     type,
-    initialValues,
-    readOnly
+    initialValues
   } = props;
 
   const change = (name, e) => {
@@ -116,6 +115,7 @@ export default function CustomTextField (props) {
             input: renderMobileOnly ? classes.mobileInput : classes.input // apply a class to the input
           }
         }}
+        readOnly
         rows={rows}
         defaultValue={initialValues ? initialValues[groupName] : ""}
         type={type || ""}
