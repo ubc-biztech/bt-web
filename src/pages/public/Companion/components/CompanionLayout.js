@@ -262,6 +262,7 @@ const CompanionLayout = (params) => {
 
   const [input, setInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [eventStatus, setEventStatus] = useState("over");
 
   const classes = useStyles();
   const theme = useTheme();
@@ -392,7 +393,8 @@ const CompanionLayout = (params) => {
                 })}
               </FadeInWhenVisible>
               <FadeInWhenVisible >
-                <FeedbackForm renderMobileOnly={renderMobileOnly} styles={styles} />
+                <FeedbackForm renderMobileOnly={renderMobileOnly} styles={styles} eventStatus={eventStatus} />
+                {/* // added a prop called eventStatus */}
               </FadeInWhenVisible>
               {scheduleData.length > 0 &&
                 <FadeInWhenVisible id="Timeline">

@@ -96,7 +96,7 @@ const RegistrationFormContainer = (props) => {
         {!user && (
           <div className={classes.layout}>
             <Helmet>
-              <title>UBC BizTech Registration 2022/23</title>
+              <title>UBC BizTech Registration 2023/24</title>
             </Helmet>
             {formType === "" && (
               <Fragment>
@@ -114,7 +114,7 @@ const RegistrationFormContainer = (props) => {
                         flexDirection: "column"
                       }}>
                         <Typography>
-                          User + Membership 2022/23 Registration
+                          User + Membership 2023/24 Registration
                         </Typography>
                         <img src={House} alt="not-found" />
                         <Typography>
@@ -132,7 +132,7 @@ const RegistrationFormContainer = (props) => {
                     <div style={{
                       flexDirection: "column"
                     }}>
-                      <Typography>Membership 2022/23 Registration</Typography>
+                      <Typography>Membership 2023/24 Registration</Typography>
                       <img
                         src={Login}
                         alt="not-found"
