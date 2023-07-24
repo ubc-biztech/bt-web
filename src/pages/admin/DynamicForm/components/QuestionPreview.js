@@ -54,8 +54,9 @@ const QuestionPreview = (props) => {
   } = props;
 
   const choicesArr = choices ? choices.split(",") : [];
+  // const participantCapArr = participantCap ? choices.split(",") : [];
 
-  // types: CHECKBOX, SELECT, TEXT
+  // types: CHECKBOX, SELECT, TEXT, UPLOAD, WORKSHOP SELECTION
   if (type === "CHECKBOX") {
     return (
       label && (
@@ -199,6 +200,46 @@ const QuestionPreview = (props) => {
               marginLeft: 6
             }}/>
           </Button>
+        </div>
+      )
+    );
+  } else if (type === "WORKSHOP SELECTION") {
+    return (
+      label && (
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
+            {label}
+            {label && required && "*"}
+          </p>
+          {questionImageUrl && (
+            <div style={styles.imageContainer}>
+              <img
+                style={styles.image}
+                src={questionImageUrl || ImagePlaceholder}
+                alt="Registration Form"
+              />
+            </div>
+          )}
+          <Select
+            className={classes.select}
+            labelId="q-type"
+            variant="outlined"
+            margin="dense"
+          >
+            {choicesArr.map((item) => {
+              return (
+                <MenuItem key={item} value={item}>
+                  {item}
+                </MenuItem>
+              );
+            })}
+          </Select>
         </div>
       )
     );

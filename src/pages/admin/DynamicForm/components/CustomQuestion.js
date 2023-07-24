@@ -57,7 +57,7 @@ const CustomQuestion = (props) => {
   } = props;
 
   const {
-    type, label, choices, questionImageUrl, charLimit, required
+    type, label, choices, questionImageUrl, charLimit, required, participantCap
   } = props.data;
   const questionStyles = {
     // -------- QUESTION COMPONENT STYLES ----------
@@ -138,6 +138,7 @@ const CustomQuestion = (props) => {
           <MenuItem value="CHECKBOX">Checkbox</MenuItem>
           <MenuItem value="SELECT">Selection</MenuItem>
           <MenuItem value="UPLOAD">Upload</MenuItem>
+          <MenuItem value="WORKSHOP SELECTION">Workshop Selection</MenuItem>
         </Select>
         <div style={questionStyles.iconsContainer}>
           <div style={questionStyles.move}>
@@ -239,6 +240,47 @@ const CustomQuestion = (props) => {
             }
             value={choices}
           />
+        )}
+
+        {type === "WORKSHOP SELECTION" && (
+          <div>
+            <TextField
+              id={`${id}.choices`}
+              name={`${name}.choices`}
+              label="Workshops"
+              fullWidth
+              required
+              margin="normal"
+              variant="filled"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={showError("choices")}
+              helperText={
+                showError("choices") &&
+                errors.registrationQuestions[index].choices
+              }
+              value={choices}
+            />
+            <Tooltip title="Items must match number of workshops." arrow>
+              <TextField
+                id={`${id}.participantCap`}
+                name={`${name}.participantCap`}
+                label="Maximum Participants for each Workshop"
+                fullWidth
+                required
+                margin="normal"
+                variant="filled"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={showError("participantCap")}
+                helperText={
+                  showError("participantCap") &&
+                  errors.registrationQuestions[index].participantCap
+                }
+                value={participantCap}
+              />
+            </Tooltip>
+          </div>
         )}
 
         <div style={questionStyles.requiredContainer}>

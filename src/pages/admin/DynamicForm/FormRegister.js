@@ -643,6 +643,55 @@ const FormRegister = (props) => {
             </FormControl>
           </div>
         );
+      } else if (questionType === "WORKSHOP SELECTION") {
+        returnArr.push(
+          <div style={{
+            paddingBottom: "1.5rem"
+          }}>
+            <p style={{
+              opacity: "0.7",
+              fontSize: "1rem",
+              margin: "0.5rem 0"
+            }}>
+              {question}
+              {question && required && "*"}
+            </p>
+            {questionImageUrl && (
+              <div style={styles.imageContainer}>
+                <img
+                  style={styles.image}
+                  src={questionImageUrl || ImagePlaceholder}
+                  alt="Registration Form"
+                />
+              </div>
+            )}
+            <FormControl
+              error={!!responseError[i]}
+              helperText={!!responseError[i] && responseError[i]}
+            >
+              <Select
+                className={classes.select}
+                labelId="q-type"
+                variant="outlined"
+                margin="dense"
+                defaultValue={responseData[i] || ""}
+                value={responseData[i] || ""}
+                onChange={(e) => updateField(i, e.target.value)}
+              >
+                {choicesArr.map((item) => {
+                  return (
+                    <MenuItem key={item} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+              {!!responseError[i] && (
+                <FormHelperText>{responseError[i]}</FormHelperText>
+              )}
+            </FormControl>
+          </div>
+        );
       }
     }
     return returnArr;
