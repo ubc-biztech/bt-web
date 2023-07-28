@@ -214,9 +214,97 @@ function Login() {
 
   return (
     <div style={styles.main}>
-      <MentorCard firstName="hello" lastName="tan" company="asdf" role="123" skills={["hello"]} profilePicture="asdf">
-
-      </MentorCard>
+      <Helmet>
+        <title>UBC BizTech - Log In or Sign Up</title>
+      </Helmet>
+      <CssBaseline />
+      {/* TODO: Maintenance message here for MinVP */}
+      <div style={styles.columns}>
+        <Card style={styles.card}>
+          <CardContent>
+            <Typography variant="h1" color="primary">
+              Sign In
+            </Typography>
+            <Button
+              onClick={() => Auth.federatedSignIn({
+                provider: "Google"
+              })}
+              style={styles.googleButton}
+            >
+              <div style={styles.left}>
+                <img
+                  style={styles.socialIcon}
+                  alt="Google"
+                  src="./google.png"
+                />
+              </div>
+              Sign In with Google
+            </Button>
+            {/* <Button
+              onClick={() => Auth.federatedSignIn({ provider: "Facebook" })}
+              style={styles.facebookButton}
+            >
+              <div style={styles.left}>
+                <img style={styles.socialIcon} alt="Facebook" src="./fb.png" />
+              </div>
+              Sign In with Facebook
+            </Button> */}
+            <form>
+              <Typography style={styles.emailLogin}>Email:</Typography>
+              <input
+                style={styles.inputText}
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyPress={handleKeyPress}
+              />
+              <div style={styles.errors}>{errors.emailError}</div>
+            </form>
+            <form>
+              <Typography style={styles.emailLogin}>Password:</Typography>
+              <input
+                style={styles.inputText}
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyPress={handleKeyPress}
+              />
+              <div style={styles.errors}>{errors.passwordError}</div>
+              <Button
+                onClick={() => handleSubmit()}
+                style={styles.submitButton}
+              >
+                Sign in
+              </Button>
+            </form>
+            {/* alert to let users know that login is being attempted while Auth processes info */}
+            {isLoading && (
+              <Alert severity="info" style={styles.submitButton}>
+                Signing in...
+              </Alert>
+            )}
+            <Typography style={styles.notAMember}>
+              Forgot your password?
+              <Link to="/forgot-password" style={styles.signUpLink}>
+                Reset password
+              </Link>
+            </Typography>
+            <Typography style={styles.notAMember}>
+              Not a BizTech user yet?
+              <Link to="/signup" style={styles.signUpLink}>
+                Sign up here!
+              </Link>
+            </Typography>
+            <Typography style={styles.continueAsGuest}>
+              Or
+              <Link to="/events" style={styles.signUpLink}>
+                Continue as Guest
+              </Link>
+            </Typography>
+          </CardContent>
+        </Card>
+        <img src={LoginImage} alt="Computer" style={styles.loginImage} />
+      </div>
     </div>
   );
 }

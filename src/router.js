@@ -27,6 +27,7 @@ import RegistrationForm from "pages/public/RegistrationForms";
 import Companion from "pages/public/Companion";
 import CompanionReset from "./pages/public/Companion/ResetPage";
 import Leaderboard from "pages/public/Companion/Leaderboard";
+import Mentors from "pages/admin/Mentors/Mentors";
 
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
@@ -49,6 +50,8 @@ import {
 import {
   log
 } from "utils";
+
+import MentorCard from "components/mentor/MentorCard";
 
 class Router extends Component {
   constructor() {
@@ -212,6 +215,7 @@ class Router extends Component {
       path='/signup'
       featureFlag={'REACT_APP_SHOW_MAXVP'}
       render={() => <Signup />} /> */}
+        <Route path="/mentors" render={() => <Mentors eventDetails="test" />} />
         <Route exact path="/login-redirect" render={() => <LoginRedirect />} />
         <Route
           exact
@@ -267,7 +271,7 @@ class Router extends Component {
       return (
         // eslint-disable-line curly
         <BrowserRouter>
-          <ScrollToTop />
+          {/* <ScrollToTop />
           {!companionPaths.find((p) => pathname.includes(p)) ? (
             <>
               {user && <Nav admin={user.admin} />}
@@ -281,7 +285,8 @@ class Router extends Component {
             </>
           ) : (
             <>{routes}</>
-          )}
+          )} */}
+          <Route path="/mentors" render={() => <Mentors eventDetails="test" />} />
         </BrowserRouter>
       );
     }
