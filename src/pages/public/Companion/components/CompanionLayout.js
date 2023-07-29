@@ -137,6 +137,7 @@ const CompanionLayout = (params) => {
     isLoading,
     error,
     regData,
+    event,
     scheduleData,
     ChildComponent,
     props
@@ -400,6 +401,11 @@ const CompanionLayout = (params) => {
                   </nav>
                 </FadeInWhenVisible>
               </div>
+              {/* TODO: Add a isCompleted field onto events */}
+              {event.isCompleted && event.feedback ?
+                <FadeInWhenVisible>
+                  <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
+                </FadeInWhenVisible> : <></>}
               <FadeInWhenVisible id="welcome" style={styles.column}>
                 <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {regData.fname}!</h1>
                 {welcomeData.map((paragraph, i) => {
@@ -410,9 +416,6 @@ const CompanionLayout = (params) => {
                     })
                   }}>{paragraph}</div>;
                 })}
-              </FadeInWhenVisible>
-              <FadeInWhenVisible >
-                <FeedbackForm renderMobileOnly={renderMobileOnly} styles={styles} />
               </FadeInWhenVisible>
               {scheduleData.length > 0 &&
                 <FadeInWhenVisible id="Timeline">
