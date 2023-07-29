@@ -28,6 +28,7 @@ const Companion = () => {
   const [pageError, setPageError] = useState("");
   const [error, setError] = useState("");
   const [registrations, setRegistrations] = useState([]);
+  const [event, setEvent] = useState(null);
   const [regData, setRegData] = useState(null);
   const [scheduleData, setScheduleData] = useState([]);
 
@@ -57,7 +58,6 @@ const Companion = () => {
   };
 
   const fetchRegistrations = async () => {
-    setIsLoading(true);
     const params = new URLSearchParams({
       eventID,
       year
@@ -65,19 +65,30 @@ const Companion = () => {
     await fetchBackend(`/registrations?${params}`, "GET", undefined, false)
       .then((response) => {
         setRegistrations(response.data);
-        setIsLoading(false);
       }).catch((err) => {
         setPageError(err);
-        setIsLoading(false);
+      });
+  };
+
+  const fetchEvent = async () => {
+    await fetchBackend(`/events/${eventID}/${year}`, "GET", undefined)
+      .then((response) => {
+        setEvent(response.data);
+      }).catch((err) => {
+        setPageError(err);
       });
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchRegistrations();
+    fetchEvent();
+
     const email = localStorage.getItem("companionEmail");
     if (email) {
       setEmail(email);
     }
+    setIsLoading(false);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -102,7 +113,7 @@ const Companion = () => {
   }
 
   return (
-    <CompanionLayout options={options} email={email} setEmail={setEmail} regData={regData} isLoading={isLoading} error={error}
+    <CompanionLayout options={options} email={email} setEmail={setEmail} regData={regData} event={event} isLoading={isLoading} error={error}
       scheduleData={scheduleData}
       ChildComponent={ChildComponent}
     />
