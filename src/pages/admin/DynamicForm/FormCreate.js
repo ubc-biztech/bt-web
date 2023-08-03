@@ -820,7 +820,8 @@ const FormCreate = (props) => {
     type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD"]).required(),
     label: Yup.string().required("Question is a required field"),
     choices: Yup.string(),
-    required: Yup.boolean().required()
+    required: Yup.boolean().required(),
+    isSkillsQuestion: Yup.boolean()
   });
 
   const validationSchema = Yup.object({
