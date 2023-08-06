@@ -57,7 +57,7 @@ const CustomQuestion = (props) => {
   } = props;
 
   const {
-    type, label, choices, questionImageUrl, charLimit, required
+    type, label, choices, questionImageUrl, charLimit, required, isSkillsQuestion
   } = props.data;
   const questionStyles = {
     // -------- QUESTION COMPONENT STYLES ----------
@@ -100,11 +100,16 @@ const CustomQuestion = (props) => {
       flexDirection: "column",
       justifyContent: "center"
     },
-    requiredContainer: {
+    checkboxContainer: {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
       color: "rgba(255,255,255,0.8)"
+    },
+    checkboxWrapper: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "flex-end"
     }
   };
 
@@ -240,18 +245,31 @@ const CustomQuestion = (props) => {
             value={choices}
           />
         )}
-
-        <div style={questionStyles.requiredContainer}>
+        <div style={questionStyles.checkboxWrapper}>
+          <div style={questionStyles.checkboxContainer}>
+          Skills Question?
+            <Checkbox
+              id={`${id}.isSkillsQuestion`}
+              name={`${name}.isSkillsQuestion`}
+              color="primary"
+              aria-label="Skills question?"
+              checked={isSkillsQuestion}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </div>
+          <div style={questionStyles.checkboxContainer}>
           Required?
-          <Checkbox
-            id={`${id}.required`}
-            name={`${name}.required`}
-            color="primary"
-            aria-label="Required question?"
-            checked={required}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
+            <Checkbox
+              id={`${id}.required`}
+              name={`${name}.required`}
+              color="primary"
+              aria-label="Required question?"
+              checked={required}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+          </div>
         </div>
       </div>
     </div>
