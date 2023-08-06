@@ -271,7 +271,7 @@ class Router extends Component {
       return (
         // eslint-disable-line curly
         <BrowserRouter>
-          {/* <ScrollToTop />
+          <ScrollToTop />
           {!companionPaths.find((p) => pathname.includes(p)) ? (
             <>
               {user && <Nav admin={user.admin} />}
@@ -285,7 +285,7 @@ class Router extends Component {
             </>
           ) : (
             <>{routes}</>
-          )} */}
+          )}
           <Route path="/mentors" render={() => <Mentors eventDetails="test" />} />
         </BrowserRouter>
       );

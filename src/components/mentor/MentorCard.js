@@ -13,13 +13,12 @@ import {
 
 const useStyles = makeStyles({
     profileContainer: {
-        marginBottom: "15%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         backgroundColor: COLORS.WHITE,
         borderRadius: "10px",
-        padding: "6%"
+        padding: "6%",
     },
     name: {
         marginTop: "2%",
@@ -43,7 +42,11 @@ const useStyles = makeStyles({
         backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR
     },
     container: {
-        width: "350px"
+        height: "100%",
+        // minWidth: "350px",
+        flex: "0 3 350px",
+        display: "flex",
+        // border: "solid red 2px"
     },
     skillsContainer: {
         display: "flex",
@@ -53,10 +56,10 @@ const useStyles = makeStyles({
         gap: "0.3vw 0.3vh"
     },
     mobileContainer: {
-        width: "350px"
+        width: "350px",
     },
     mobileProfileContainer: {
-        marginBottom: "6%",
+        // marginBottom: "2%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -70,28 +73,28 @@ function MentorCard(props) {
     const classes = useStyles();
     const theme = useTheme();
     const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-    const { firstName, lastName, company, role, skills, profilePicture } = props.mentor;
+    const { fname, lname, role, gender, companyName, skills } = props.mentor;
 
     return (
         <>
             <Box className={renderMobileOnly ? classes.mobileContainer : classes.container }>
-                <div className={renderMobileOnly ? classes.mobileProfileContainer : classes.profileContainer}>
+                <Box className={renderMobileOnly ? classes.mobileProfileContainer : classes.profileContainer}>
                     <Avatar 
-                        alt={`${firstName}-profile-picture`}
-                        src={profilePicture}
+                        alt={`${fname}-profile-picture`}
+                        src={""}
                         className={classes.profilePicture} />
                     <Typography className={classes.name}>
-                        {firstName + ", " + lastName}asdfad
+                        {fname + ", " + lname}
                     </Typography>
                     <Typography className={classes.position}>
-                        {role + " at " + company}
+                        {role + " at " + companyName}
                     </Typography>
                     <div className={classes.skillsContainer}>
                         {
                             skills.map((skill, idx) => <Chip key={idx} label={skill} variant="outlined"/>)
                         }
                     </div>
-                </div>
+                </Box>
             </Box>
         </>
     )

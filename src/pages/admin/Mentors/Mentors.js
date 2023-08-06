@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { fetchBackend } from "../../../utils";
 import {
     Helmet
 } from "react-helmet";
 import MentorCard from "components/mentor/MentorCard";
-import { Avatar, Container, Typography, Box, Chip } from "@material-ui/core";
+import { Avatar, Container, Typography, Box, Chip, Grid, Item } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
     useTheme
@@ -13,14 +13,14 @@ import {
     makeStyles
 } from "@material-ui/core/styles";
 import SearchBar from "components/inputs/SearchBar";
-import { DriveEtaSharp } from "@material-ui/icons";
-
+import {
+    COLORS
+} from "constants/index";
 
 const useStyles = makeStyles({
     mainContainer: {
         display: "flex",
         flexDirection: "column",
-        border: "solid red 2px",
         justifyContent: "center",
         alignItems: "center",
     },
@@ -30,137 +30,112 @@ const useStyles = makeStyles({
         gap: "5%",
         justifyContent: "center",
         alignItems: "center",
-        border: "solid green 2px",
-        width: "90%"
+        width: "90%",
+        "&:after": {    
+            content: "",
+            flex: "auto"
+        }
     },
     mobileMentorsContainer: {
         display: "flex",
         gap: "5%",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        width: "90%",
     },
     filterContainer: {
-        width: "90%",
-        border: "solid blue 2px"
+        margin: "5% 2% 0% 2%",
+        border: "solid white 2px",
+        borderRadius: "10px",
+        background: COLORS.WHITE,
+        padding: "1%",
+        width: "100%",
+        minWidth: "100%"
     },
     mobileFilterContainer: {
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
+        margin: "5% 2% 0% 2%",
+        border: "solid white 2px",
+        borderRadius: "10px",
+        background: COLORS.WHITE,
+        padding: "1%",
     },
     chip: {
         borderRadius: "10px"
     },
     skillChip: {
-        marginRight: "10px",
-        marginTop: "20px",
-        marginBottom: "20px"
+        marginTop: "10px",
+        marginLeft: "10px"
     },
     skillContainer: {
         display: "flex",
         alignItems: "center",
-        height: "50px",
+        flexWrap: "wrap",
+        minHeight: "50px",
         marginTop: "1%",
         marginBottom: "1%"
+    },
+    gridContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden"
+    },
+    gridItem: {
+        // border: "solid yellow 2px",
+        overflow: "hidden"
     }
 });
 
 function Mentors({ eventDetails }) {
     const theme = useTheme();
-    const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-
     const classes = useStyles();
-    // probably just pass in the event name as a prop
-    const [mentors, setMentors] = useState([{
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["react", "full stack", "nodejs", "flask", "python", "react", "full stack", "nodejs", "flask", "python"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    }, {
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["react", "full stack", "nodejs", "flask", "python", "react", "full stack", "nodejs", "flask", "python"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    }, {
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["react", "full stack", "nodejs", "flask", "python", "react", "full stack", "nodejs", "flask", "python"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    }, {
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["react", "full stack", "nodejs", "flask", "python", "react", "full stack", "nodejs", "flask", "python"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    }, {
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["react", "full stack", "nodejs", "flask", "python", "react", "full stack", "nodejs", "flask", "python"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    }, {
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["react", "full stack", "nodejs", "flask", "python", "react", "full stack", "nodejs", "flask", "python"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    }, {
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["react", "full stack", "nodejs", "flask", "python", "react", "full stack", "nodejs", "flask", "python"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    }, {
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["c#", "full stack", "nodejs", "flask", "python", "react", "full stack", "nodejs", "flask", "python"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    }, 
-    {
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["c++"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    },
-    {
-        firstName: "Longassname",
-        lastName: "longasslastname", company: "PlsGiveMeJob",
-        role: "Software Engineer",
-        skills: ["c++"],
-        profilePicture: "https://example.com/profile-picture.jpg"
-    }]);
+    const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
+    const { eventName, eventYear } = eventDetails;
+
     const [searchQuery, setSearchQuery] = useState([]);
     const [filteredMentors, setFilteredMentors] = useState([]); // TODO: set this to all mentors initially
-    
-    const possibleSkills = ["react", "full stack", "nodejs", "flask", "python", "react", "full stack", "nodejs", "flask", "python"]
-    
-    // useEffect(() => {
-        
-    //     // fetch mentors from backend for given event
-    //     const getMentors = async () => {
-    //         const eventName = eventDetails.eventName;
-    //         const params = new URLSearchParams({
-    //             eventName
-    //         })
-    //         return await fetchBackend(`/registrations?${params}`, "GET");
-    //     }
+    const [possibleSkills, setPossibleSkills] = useState([]);
+    const [skillsQuestionId, setSkillsQuestionId] = useState("");
 
-    //     // save mentors into state
-    //     setMentors(getMentors());
+    const eventData = useMemo(async () => {
+        const res = await fetchBackend(`/events/${eventName}/${eventYear}}`, "GET", undefined, false);
+        res.partnerRegistrationQuestions.forEach(question => {
+            if (question?.isSkillsQuestion) {
+                setPossibleSkills(question.choices.split(", "));
+                setSkillsQuestionId(question.questionId);
+            }
+        })
+        return res;
+    }, [eventDetails])
 
-    // }, [])
+    const mentors = useMemo(async () => {
+        const params = new URLSearchParams({
+            eventID: eventName,
+            year: eventYear,
+            isPartner: true
+        });
+        const res = await fetchBackend(`/registrations?${params}`, "GET", undefined, false);
+        setFilteredMentors(res.data.map(mentor => {
+            return {
+                ...mentor.basicInformation,
+                skills: skillsQuestionId === "" ? [] : 
+                    mentor.dynamicResponses[skillsQuestionId]
+                    .split(" ")
+                    .filter((skill) => skill !== "")
+                    .map((skill) => skill.replace(',', ''))
+            }
+        }));
+        return res;
+    }, [eventDetails, skillsQuestionId])
 
     useEffect(() => {
         if (searchQuery.length <= 0) setFilteredMentors([...mentors]);
         else filterMentors();
-    }, [searchQuery])
 
+        return () => {
+            setFilteredMentors([]);
+        };
+    }, [searchQuery])
 
     // TODO: Add data cleaning to ensure taht all partner skills are lowercase
     const filterMentors = () => {
@@ -182,38 +157,48 @@ function Mentors({ eventDetails }) {
     return (
         <>
             <Helmet>
-                <title>{eventDetails} Mentors</title>
+                <title>{eventName} Mentors</title>
             </Helmet>
             <div className={classes.mainContainer}>
-                <Box className={renderMobileOnly ? classes.mobileFilterContainer : classes.filterContainer}>
-                    <SearchBar setSearchQuery={setSearchQuery} searchQuery={searchQuery}/>
-                    <Box className={classes.skillContainer}>
-                        {
-                            searchQuery.map((skill, idx) => {
-                                return (
-                                    <Chip
-                                    key={idx}
-                                    label={skill}
-                                    classes={{
-                                    root: classes.chip
-                                    }}
-                                    value={skill}
-                                    onDelete={(e) => handleDeleteSkill(e, skill)}
-                                    className={classes.skillChip}
-                                />
-                                )
-                            })
-                        }
-                    </Box>
-                </Box>
                 <div className={renderMobileOnly ? classes.mobileMentorsContainer : classes.mentorsContainer}>
-                    {
-                        filteredMentors.map((mentor, idx) => {
-                            return (
-                                <MentorCard key={idx} mentor={mentor} />
-                            )
-                        })
-                    }
+                    <Grid container spacing={6}>
+                        <Grid item xs={12} sm={12} md={12} className={classes.gridItem}>
+                            <Box className={renderMobileOnly ? classes.mobileFilterContainer : classes.filterContainer}>
+                                <SearchBar setSearchQuery={setSearchQuery} searchQuery={searchQuery}/>
+                                <Box className={classes.skillContainer}>
+                                    {
+                                        searchQuery.map((skill, idx) => {
+                                            return (
+                                                <Chip
+                                                key={idx}
+                                                label={skill}
+                                                classes={{
+                                                    root: classes.chip
+                                                }}
+                                                value={skill}
+                                                onDelete={(e) => handleDeleteSkill(e, skill)}
+                                                className={classes.skillChip}
+                                            />
+                                            )
+                                        })
+                                    }
+                                </Box>
+                            </Box>
+                        </Grid>
+                        {filteredMentors.map((mentor, idx) => (
+                            <Grid key={idx} item xs={12} sm={6} md={4} className={classes.gridItem}>
+                                <Box
+                                    height="100%"
+                                    width="100%"
+                                    display="flex"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <MentorCard key={idx} mentor={mentor} />
+                                </Box>
+                            </Grid>
+                        ))}
+                    </Grid>
                 </div>
             </div>
         </>

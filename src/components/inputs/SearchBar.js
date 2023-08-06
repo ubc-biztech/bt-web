@@ -10,11 +10,30 @@ import {
 import {
     useTheme
   } from "@material-ui/styles";
+import {
+    COLORS
+} from "constants/index";
 
 const useStyles = makeStyles({
     textfield: {
-        border: "solid blue 2px",
+        border: "solid white 2px",
         borderRadius: "10px",
+        "& label.Mui-focused": {
+            color: "white"
+          },
+          "& .MuiOutlinedInput-root": {
+            backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR,
+            borderRadius: "10px",
+            "& fieldset": {
+              borderColor: COLORS.LIGHT_BACKGROUND_COLOR
+            },
+            "&:hover fieldset": {
+              borderColor: COLORS.LIGHT_BACKGROUND_COLOR
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: COLORS.LIGHT_BACKGROUND_COLOR
+            }
+          },
     },
     searchIcon: {
         cursor: "pointer"
@@ -54,12 +73,14 @@ function SearchBar ({setSearchQuery, searchQuery}) {
                     id="search-bar"
                     className={classes.textfield}
                     onKeyDown={handleEnterKeyPress}
-                    style={{ backgroundColor: "black", color: "black" }}
-                    label="Enter a skill"
+                    style={{ backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR, color: "black" }}
                     variant="outlined"
-                    placeholder="Search..."
+                    placeholder="Enter a skill..."
                     size="small"
                     inputRef={searchRef}
+                    InputLabelProps={{
+                        shrink: false,
+                    }}
                 />
                 <div style={{ transform: "translateX(-50px)", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <SearchIcon onClick={handleSearchClick} className={classes.searchIcon}/>
