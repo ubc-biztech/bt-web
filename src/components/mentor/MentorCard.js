@@ -19,6 +19,8 @@ const useStyles = makeStyles({
         backgroundColor: COLORS.WHITE,
         borderRadius: "10px",
         padding: "6%",
+        height: "100%",
+        width: "100%",
     },
     name: {
         marginTop: "2%",
@@ -43,7 +45,6 @@ const useStyles = makeStyles({
     },
     container: {
         height: "100%",
-        // minWidth: "350px",
         flex: "0 3 350px",
         display: "flex",
         // border: "solid red 2px"
@@ -56,7 +57,8 @@ const useStyles = makeStyles({
         gap: "0.3vw 0.3vh"
     },
     mobileContainer: {
-        width: "350px",
+        width: "100%",
+        height: "100%",
     },
     mobileProfileContainer: {
         // marginBottom: "2%",
@@ -65,7 +67,8 @@ const useStyles = makeStyles({
         alignItems: "center",
         backgroundColor: COLORS.WHITE,
         borderRadius: "10px",
-        padding: "6%"
+        padding: "6%",
+        height: "100%"
     },
 });
 

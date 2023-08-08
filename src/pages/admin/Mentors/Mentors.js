@@ -45,13 +45,11 @@ const useStyles = makeStyles({
         width: "90%",
     },
     filterContainer: {
-        margin: "5% 2% 0% 2%",
+        margin: "2% 2% 0% 2%",
         border: "solid white 2px",
         borderRadius: "10px",
         background: COLORS.WHITE,
         padding: "1%",
-        width: "100%",
-        minWidth: "100%"
     },
     mobileFilterContainer: {
         margin: "5% 2% 0% 2%",
