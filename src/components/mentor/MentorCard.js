@@ -73,7 +73,7 @@ function MentorCard(props) {
     const classes = useStyles();
     const theme = useTheme();
     const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-    const { fname, lname, role, gender, companyName, skills } = props.mentor;
+    const { fname, lname, role, gender, companyName, profilePhoto, skills } = props.mentor;
 
     return (
         <>
@@ -81,10 +81,10 @@ function MentorCard(props) {
                 <Box className={renderMobileOnly ? classes.mobileProfileContainer : classes.profileContainer}>
                     <Avatar 
                         alt={`${fname}-profile-picture`}
-                        src={""}
+                        src={profilePhoto}
                         className={classes.profilePicture} />
                     <Typography className={classes.name}>
-                        {fname + ", " + lname}
+                        {fname + ", " + lname + " " + `(${gender})`}
                     </Typography>
                     <Typography className={classes.position}>
                         {role + " at " + companyName}

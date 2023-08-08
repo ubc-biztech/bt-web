@@ -93,40 +93,48 @@ function Mentors({ eventDetails }) {
     const { eventName, eventYear } = eventDetails;
 
     const [searchQuery, setSearchQuery] = useState([]);
-    const [filteredMentors, setFilteredMentors] = useState([]); // TODO: set this to all mentors initially
+    const [mentors, setMentors] = useState([]); 
+    const [filteredMentors, setFilteredMentors] = useState([]);
     const [possibleSkills, setPossibleSkills] = useState([]);
     const [skillsQuestionId, setSkillsQuestionId] = useState("");
 
-    const eventData = useMemo(async () => {
-        const res = await fetchBackend(`/events/${eventName}/${eventYear}}`, "GET", undefined, false);
-        res.partnerRegistrationQuestions.forEach(question => {
-            if (question?.isSkillsQuestion) {
-                setPossibleSkills(question.choices.split(", "));
-                setSkillsQuestionId(question.questionId);
-            }
-        })
-        return res;
-    }, [eventDetails])
+    useEffect(() => {
+        const fetchEventData = async () => {
+            const res = await fetchBackend(`/events/${eventName}/${eventYear}}`, "GET", undefined, false);
+            res.partnerRegistrationQuestions.forEach(question => {
+                if (question?.isSkillsQuestion) {
+                    setPossibleSkills(question.choices.split(", "));
+                    setSkillsQuestionId(question.questionId);
+                }
+            })
+            return res;
+        }
+        fetchEventData();
+    }, [])
 
-    const mentors = useMemo(async () => {
-        const params = new URLSearchParams({
-            eventID: eventName,
-            year: eventYear,
-            isPartner: true
-        });
-        const res = await fetchBackend(`/registrations?${params}`, "GET", undefined, false);
-        setFilteredMentors(res.data.map(mentor => {
-            return {
-                ...mentor.basicInformation,
-                skills: skillsQuestionId === "" ? [] : 
-                    mentor.dynamicResponses[skillsQuestionId]
-                    .split(" ")
-                    .filter((skill) => skill !== "")
-                    .map((skill) => skill.replace(',', ''))
-            }
-        }));
-        return res;
-    }, [eventDetails, skillsQuestionId])
+    useEffect(() => {
+        const fetchMentors = async () => {
+            const params = new URLSearchParams({
+                eventID: eventName,
+                year: eventYear,
+                isPartner: true
+            });
+            const res = await fetchBackend(`/registrations?${params}`, "GET", undefined, false);
+            const mentorsList = res.data.map(mentor => {
+                return {
+                    ...mentor.basicInformation,
+                    skills: skillsQuestionId === "" ? [] : 
+                        mentor.dynamicResponses[skillsQuestionId]
+                        .split(" ")
+                        .filter((skill) => skill !== "")
+                        .map((skill) => skill.replace(',', ''))
+                }
+            });
+            setFilteredMentors(mentorsList);
+            setMentors(mentorsList);
+        }
+        fetchMentors();
+    }, [skillsQuestionId])
 
     useEffect(() => {
         if (searchQuery.length <= 0) setFilteredMentors([...mentors]);
