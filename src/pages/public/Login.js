@@ -32,7 +32,6 @@ import {
 import {
   setUser
 } from "store/user/userActions";
-import Mentors from "../admin/Mentors/Mentors.js"
 
 
 const styles = {
