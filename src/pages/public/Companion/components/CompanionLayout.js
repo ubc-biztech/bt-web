@@ -257,6 +257,22 @@ const CompanionLayout = (params) => {
       height: 60,
       width: 60,
     },
+    feedbackIFrameContainer: {
+      backgroundColor: "transparent",
+      marginTop: "10px",
+      marginBottom: "10px",
+      border: "solid",
+      borderColor: "rgba(1, 1, 1, 0.1)",
+      borderWidth: "3px",
+      borderRadius: 10,
+      width: "90%"
+    },
+    feedbackIFrame: {
+      width: "100%",
+      height: "60vh",
+      border: "none",
+      fontSize: "14px"
+    },
     tableBorder: {
       backgroundColor: "white",
       marginTop: "10px",
@@ -401,8 +417,7 @@ const CompanionLayout = (params) => {
                   </nav>
                 </FadeInWhenVisible>
               </div>
-              {/* TODO: Add a isCompleted field onto events */}
-              {event.isCompleted && event.feedback ?
+              {event && event.isCompleted && event.feedback ?
                 <FadeInWhenVisible>
                   <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
                 </FadeInWhenVisible> : <></>}

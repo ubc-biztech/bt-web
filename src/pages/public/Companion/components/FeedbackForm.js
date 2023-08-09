@@ -9,15 +9,21 @@ const FeedbackForm = (props) => {
 
   return (
     <div id="FeedbackForm" style={{
-      ...styles.column
+      ... styles.column
     }}>
-      {/* TODO: add styling */}
-      {/* TODO: When this feedback form shows, we can hide all the other things on the companion */}
       <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Thanks for attending!</h1>
-      {feedbackLink && <iframe src={feedbackLink}>Loading…</iframe> }
+      <div id="FeedbackIFrameContainer" style={styles.feedbackIFrameContainer }>
+        {feedbackLink && (
+          <iframe
+            src={feedbackLink}
+            style={styles.feedbackIFrame}
+          >
+          Loading…
+          </iframe>
+        )}
+      </div>
     </div>
   );
 };
 
 export default FeedbackForm;
-
