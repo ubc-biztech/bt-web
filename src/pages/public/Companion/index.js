@@ -73,8 +73,9 @@ const Companion = () => {
   const fetchEvent = async () => {
     await fetchBackend(`/events/${eventID}/${year}`, "GET", undefined)
       .then((response) => {
-        setEvent(response.data);
+        setEvent(response);
       }).catch((err) => {
+        console.log("Error while fetching event info : ", err);
         setPageError(err);
       });
   };
