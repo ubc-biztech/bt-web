@@ -274,9 +274,9 @@ class Router extends Component {
               <div className="content">
                 {!user && <UserAlert />}
                 {userNotMember && <MemberAlert />}
-                {pathname === "/" || pathname === "" ? null : <Header />}
+                <Header />
                 {routes}
-                {pathname === "/" || pathname === "" ? null : <Footer />}
+                <Footer />
               </div>
             </>
           ) : (
