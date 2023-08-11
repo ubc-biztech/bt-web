@@ -4,5 +4,4 @@ export const constantStyles = {
   fontSize: 16,
   mobileFontSize: 12,
   textColor: "#172442",
-  backgroundGradient: "linear-gradient(180deg, #e3edf7, #e3edf7)",
 };

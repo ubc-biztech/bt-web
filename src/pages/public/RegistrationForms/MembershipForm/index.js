@@ -250,7 +250,7 @@ const MembershipFormContainer = (props) => {
     ) : (
       <Fragment>
         <Typography className={classes.registrationText}>
-          UBC BizTech Membership 2022/23
+          UBC BizTech Membership 2023/24
         </Typography>
         <div className={classes.registrationHeader}>
           <Typography className={classes.description}>
@@ -311,7 +311,7 @@ const MembershipFormContainer = (props) => {
       ) : (
         <div className={classes.layout}>
           <Helmet>
-            <title>UBC BizTech Membership 2022/23</title>
+            <title>UBC BizTech Membership 2023/24</title>
           </Helmet>
           {renderMemberForm(user.isMember, user.admin)}
         </div>
