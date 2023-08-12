@@ -13,9 +13,13 @@ import {
     makeStyles
 } from "@material-ui/core/styles";
 import SearchBar from "components/inputs/SearchBar";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import {
     COLORS
 } from "constants/index";
+import {
+    Link
+  } from "react-router-dom";
 
 const useStyles = makeStyles({
     mainContainer: {
@@ -45,14 +49,14 @@ const useStyles = makeStyles({
         width: "90%",
     },
     filterContainer: {
-        margin: "2% 2% 0% 2%",
+        margin: "0% 2% 0% 2%",
         border: "solid white 2px",
         borderRadius: "10px",
         background: COLORS.WHITE,
         padding: "1%",
     },
     mobileFilterContainer: {
-        margin: "5% 2% 0% 2%",
+        margin: "0% 2% 0% 2%",
         border: "solid white 2px",
         borderRadius: "10px",
         background: COLORS.WHITE,
@@ -81,6 +85,18 @@ const useStyles = makeStyles({
     gridItem: {
         // border: "solid yellow 2px",
         overflow: "hidden"
+    },
+    backButton: {
+        display: "flex",
+        fontSize: "1.1rem",
+        padding: "1% 0 1% 2%",
+        color: "white"
+    },
+    mobileBackButton: {
+        display: "flex",
+        fontSize: "1.1rem",
+        padding: "1% 0 2% 2%",
+        color: "white"
     }
 });
 
@@ -121,6 +137,7 @@ function Mentors({ eventDetails }) {
             const mentorsList = res.data.map(mentor => {
                 return {
                     ...mentor.basicInformation,
+                    profilePhoto: mentor.profilePhoto,
                     skills: skillsQuestionId === "" ? [] : 
                         mentor.dynamicResponses[skillsQuestionId]
                         .split(" ")
@@ -165,6 +182,11 @@ function Mentors({ eventDetails }) {
             <Helmet>
                 <title>{eventName} Mentors</title>
             </Helmet>
+            <div className={ renderMobileOnly ? classes.mobileBackButton : classes.backButton}>
+                <Link to="/companion">
+                    <ArrowBackIcon onClick={() => console.log('hi')} style={{ cursor: "pointer" }}></ArrowBackIcon>
+                </Link>
+            </div>
             <div className={classes.mainContainer}>
                 <div className={renderMobileOnly ? classes.mobileMentorsContainer : classes.mentorsContainer}>
                     <Grid container spacing={6}>
