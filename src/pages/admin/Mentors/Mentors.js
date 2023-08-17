@@ -9,7 +9,7 @@ import {
 } from "react-helmet";
 import MentorCard from "components/mentor/MentorCard";
 import {
-  Box, Chip, Grid
+  Box, Chip, Grid, CircularProgress
 } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
@@ -18,6 +18,7 @@ import {
 import {
   makeStyles
 } from "@material-ui/core/styles";
+import events from "pages/public/Companion/events";
 import SearchBar from "components/inputs/SearchBar";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import {
@@ -106,15 +107,20 @@ const useStyles = makeStyles({
   }
 });
 
-function Mentors({
-  eventDetails
-}) {
+function Mentors() {
   const theme = useTheme();
   const classes = useStyles();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const sortedEvents = events.sort((a, b) => {
+    return  a.activeUntil - b.activeUntil;
+  });
   const {
-    eventName, eventYear
-  } = eventDetails;
+    eventID: eventName, year: eventYear
+  } = sortedEvents.find(event => {
+    const today = new Date();
+    return event.activeUntil > today;
+  }) || sortedEvents[0];
 
   const [searchQuery, setSearchQuery] = useState([]);
   const [mentors, setMentors] = useState([]);
@@ -131,8 +137,10 @@ function Mentors({
       });
       return res;
     };
-    fetchEventData();
-  }, []);
+    if (eventName && eventYear) {
+      fetchEventData();
+    }
+  }, [eventName]);
 
   useEffect(() => {
     const fetchMentors = async () => {
@@ -187,58 +195,60 @@ function Mentors({
 
   return (
     <>
-      <Helmet>
-        <title>{eventName} Mentors</title>
-      </Helmet>
-      <div className={ renderMobileOnly ? classes.mobileBackButton : classes.backButton}>
-        <Link to="/companion">
-          <ArrowBackIcon onClick={() => console.log("hi")} style={{
-            cursor: "pointer"
-          }}></ArrowBackIcon>
-        </Link>
-      </div>
-      <div className={classes.mainContainer}>
-        <div className={renderMobileOnly ? classes.mobileMentorsContainer : classes.mentorsContainer}>
-          <Grid container spacing={6}>
-            <Grid item xs={12} sm={12} md={12} className={classes.gridItem}>
-              <Box className={renderMobileOnly ? classes.mobileFilterContainer : classes.filterContainer}>
-                <SearchBar setSearchQuery={setSearchQuery} searchQuery={searchQuery}/>
-                <Box className={classes.skillContainer}>
-                  {
-                    searchQuery.map((skill, idx) => {
-                      return (
-                        <Chip
-                          key={idx}
-                          label={skill}
-                          classes={{
-                            root: classes.chip
-                          }}
-                          value={skill}
-                          onDelete={(e) => handleDeleteSkill(e, skill)}
-                          className={classes.skillChip}
-                        />
-                      );
-                    })
-                  }
-                </Box>
-              </Box>
-            </Grid>
-            {filteredMentors.map((mentor, idx) => (
-              <Grid key={idx} item xs={12} sm={6} md={4} className={classes.gridItem}>
-                <Box
-                  height="100%"
-                  width="100%"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <MentorCard key={idx} mentor={mentor} />
-                </Box>
+      {eventName && eventYear ?
+        <>
+          <Helmet>
+            <title>{eventName} Mentors</title>
+          </Helmet>
+          <div className={ renderMobileOnly ? classes.mobileBackButton : classes.backButton}>
+            <Link to="/companion">
+              <ArrowBackIcon onClick={() => console.log("hi")} style={{
+                cursor: "pointer"
+              }}></ArrowBackIcon>
+            </Link>
+          </div>
+          <div className={classes.mainContainer}>
+            <div className={renderMobileOnly ? classes.mobileMentorsContainer : classes.mentorsContainer}>
+              <Grid container spacing={6}>
+                <Grid item xs={12} sm={12} md={12} className={classes.gridItem}>
+                  <Box className={renderMobileOnly ? classes.mobileFilterContainer : classes.filterContainer}>
+                    <SearchBar setSearchQuery={setSearchQuery} searchQuery={searchQuery}/>
+                    <Box className={classes.skillContainer}>
+                      {
+                        searchQuery.map((skill, idx) => {
+                          return (
+                            <Chip
+                              key={idx}
+                              label={skill}
+                              classes={{
+                                root: classes.chip
+                              }}
+                              value={skill}
+                              onDelete={(e) => handleDeleteSkill(e, skill)}
+                              className={classes.skillChip}
+                            />
+                          );
+                        })
+                      }
+                    </Box>
+                  </Box>
+                </Grid>
+                {filteredMentors.map((mentor, idx) => (
+                  <Grid key={idx} item xs={12} sm={6} md={4} className={classes.gridItem}>
+                    <Box
+                      height="100%"
+                      width="100%"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <MentorCard key={idx} mentor={mentor} />
+                    </Box>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-        </div>
-      </div>
+            </div>
+          </div> </>: <CircularProgress />}
     </>
   );
 }
