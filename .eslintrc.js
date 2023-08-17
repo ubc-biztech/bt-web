@@ -12,7 +12,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true
     },
-  ecmaVersion: 2020,
+    ecmaVersion: 2020,
     sourceType: "module"
   },
   plugins: ["react", "react-hooks", "prettier"],
