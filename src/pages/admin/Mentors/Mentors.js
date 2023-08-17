@@ -119,7 +119,6 @@ function Mentors({
   const [searchQuery, setSearchQuery] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [filteredMentors, setFilteredMentors] = useState([]);
-  const [possibleSkills, setPossibleSkills] = useState([]);
   const [skillsQuestionId, setSkillsQuestionId] = useState("");
 
   useEffect(() => {

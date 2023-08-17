@@ -1,8 +1,7 @@
 import React, {
-  useState, useRef
+  useRef
 } from "react";
 import SearchIcon from "@material-ui/icons/Search";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   TextField
 } from "@material-ui/core";
@@ -48,7 +47,6 @@ function SearchBar ({
   const classes = useStyles();
   const theme = useTheme();
   const searchRef = useRef(null);
-  const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleEnterKeyPress = (e) => {
     if (e.keyCode === 13 && e.target.value !== "") {
@@ -64,12 +62,6 @@ function SearchBar ({
       setSearchQuery([...searchQuery, searchRef.current.value]);
       searchRef.current.value = "";
     }
-  };
-
-  const handleQueryChange = (e) => {
-    this.setState({
-      value: e.target.value
-    });
   };
 
   return (
