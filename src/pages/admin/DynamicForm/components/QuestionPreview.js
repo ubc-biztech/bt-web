@@ -30,6 +30,10 @@ const styles = {
     height: 300,
     objectFit: "cover",
   },
+  disabled: {
+    pointerEvents: "none",
+    color: "grey",
+  }
 };
 
 // LIVE PREVIEW QUESTION component
@@ -54,7 +58,14 @@ const QuestionPreview = (props) => {
   } = props;
 
   const choicesArr = choices ? choices.split(",") : [];
-  // const participantCapArr = participantCap ? choices.split(",") : [];
+
+  const workshopChoicesArr = choices
+    ? choices.split(",").map((choice) => ({
+      value: choice,
+      label: choice,
+      isDisabled: false, // Set to true for items you want to be unselectable
+    }))
+    : [];
 
   // types: CHECKBOX, SELECT, TEXT, UPLOAD, WORKSHOP SELECTION
   if (type === "CHECKBOX") {
@@ -232,10 +243,12 @@ const QuestionPreview = (props) => {
             variant="outlined"
             margin="dense"
           >
-            {choicesArr.map((item) => {
+
+            {workshopChoicesArr.map((item) => {
               return (
-                <MenuItem key={item} value={item}>
-                  {item}
+                <MenuItem key={item.value} value={item.value} style={item.isDisabled ? styles.disabled : null}>
+                  {item.label}
+                  {item.isDisabled ? " (- workshop is full)" : ""}
                 </MenuItem>
               );
             })}

@@ -49,7 +49,7 @@ const CustomQuestion = (props) => {
     handleBlur,
     errors,
     touched,
-    submitCount
+    submitCount,
   } = useFormikContext();
 
   const {
@@ -247,17 +247,16 @@ const CustomQuestion = (props) => {
             <TextField
               id={`${id}.choices`}
               name={`${name}.choices`}
-              label="Workshops"
+              label="Workshop Choices"
               fullWidth
               required
               margin="normal"
               variant="filled"
               onChange={handleChange}
               onBlur={handleBlur}
-              error={showError("choices")}
+              error={showError("choices)")}
               helperText={
-                showError("choices") &&
-                errors.registrationQuestions[index].choices
+                showError("choices")
               }
               value={choices}
             />
