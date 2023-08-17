@@ -14,6 +14,9 @@ import {
 import {
   useTheme
 } from "@material-ui/styles";
+import {
+  Link
+} from "react-router-dom/cjs/react-router-dom";
 
 import "react-step-progress-bar/styles.css";
 import Loading from "pages/Loading";
@@ -60,6 +63,18 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: COLORS.FONT_GRAY,
       color: COLORS.WHITE,
     },
+  },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+    borderRight: `1px solid ${constantStyles.textColor}`,
+    flexGrow: 1,
+    width: "100%",
+    alignItems: "center",
+    textAlign: "center",
+    "&:hover": {
+      color: COLORS.WHITE,
+    }
   },
 }));
 
@@ -202,7 +217,7 @@ const CompanionLayout = (params) => {
       alignItems: "center",
       justifyContent: "space-between",
       marginTop: "25px",
-      width: "75%",
+      width: "100%",
     },
     title: {
       fontFamily: "Proximanova",
@@ -227,10 +242,6 @@ const CompanionLayout = (params) => {
       fontWeight: 700,
       marginBottom: "10px",
       width: "100%",
-    },
-    link: {
-      textDecoration: "none",
-      color: "#9598FE",
     },
     text: {
       width: "80%",
@@ -363,19 +374,28 @@ const CompanionLayout = (params) => {
                       width: "100%"
                     })
                   }}>
-                    {welcomeData && <a href="#Welcome" style={{
-                      ...styles.link,
+                    {welcomeData && <a href="#Welcome" className={classes.link} style={{
                       fontSize: constantStyles.fontSize
                     }}>Welcome</a>}
-                    {scheduleData?.length && <a href="#Schedule" style={{
-                      ...styles.link,
+                    {scheduleData?.length && <a href="#Schedule" className={classes.link} style={{
                       fontSize: constantStyles.fontSize
                     }}>Schedule</a>}
                     {headers.map((header, i) => {
-                      return (<a href={`#${header.id}`} key={i} style={{
-                        ...styles.link,
-                        fontSize: constantStyles.fontSize
-                      }}>{header.text}</a>);
+                      const lastTabItem = i === headers.length - 1 ? {
+                        borderRight: "none"
+                      } : {
+                      };
+                      if (header.id) {
+                        return (<a href={`#${header.id}`} key={i} className={classes.link} style={{
+                          fontSize: constantStyles.fontSize,
+                          ...lastTabItem
+                        }}>{header.text}</a>);
+                      } else if (header.route) {
+                        return <Link to={header.route} className={classes.link} key={i} style={{
+                          fontSize: constantStyles.fontSize,
+                          ...lastTabItem
+                        }}>{header.text}</Link>;
+                      }
                     })}
                   </nav>
                 </FadeInWhenVisible>
