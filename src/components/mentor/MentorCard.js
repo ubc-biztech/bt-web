@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar, Typography, Box, Chip
 } from "@material-ui/core";

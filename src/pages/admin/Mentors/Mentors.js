@@ -126,7 +126,6 @@ function Mentors({
       const res = await fetchBackend(`/events/${eventName}/${eventYear}}`, "GET", undefined, false);
       res.partnerRegistrationQuestions.forEach(question => {
         if (question?.isSkillsQuestion) {
-          setPossibleSkills(question.choices.split(", "));
           setSkillsQuestionId(question.questionId);
         }
       });
