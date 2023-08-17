@@ -45,7 +45,6 @@ function SearchBar ({
   setSearchQuery, searchQuery
 }) {
   const classes = useStyles();
-  const theme = useTheme();
   const searchRef = useRef(null);
 
   const handleEnterKeyPress = (e) => {
