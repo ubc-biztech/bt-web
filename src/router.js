@@ -160,11 +160,11 @@ class Router extends Component {
           path="/companion/reset"
           render={() => <CompanionReset />}
         />
-        <Route path="/companion" render={() => <Companion />} />
         <Route path="/companion/mentors" render={() => <Mentors eventDetails={{
           eventName: "hello",
           eventYear: 2023
         }}/>} />
+        <Route path="/companion" render={() => <Companion />} />
         <Route path="/leaderboard" render={() => <Leaderboard />} />
         {/* ADMIN ROUTES */}
         {user && <Route path="/admin" component={AdminRoutes} />}
