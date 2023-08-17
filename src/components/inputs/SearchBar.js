@@ -9,9 +9,6 @@ import {
   makeStyles
 } from "@material-ui/core/styles";
 import {
-  useTheme
-} from "@material-ui/styles";
-import {
   COLORS
 } from "constants/index";
 
