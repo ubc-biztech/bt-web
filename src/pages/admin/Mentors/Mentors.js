@@ -115,6 +115,7 @@ function Mentors() {
   const sortedEvents = events.sort((a, b) => {
     return  a.activeUntil - b.activeUntil;
   });
+  // find the event that is most revent, or just return the first event
   const {
     eventID: eventName, year: eventYear
   } = sortedEvents.find(event => {
