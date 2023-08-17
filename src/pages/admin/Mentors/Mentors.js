@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useState, useMemo
+  useEffect, useState
 } from "react";
 import {
   fetchBackend
@@ -9,7 +9,7 @@ import {
 } from "react-helmet";
 import MentorCard from "components/mentor/MentorCard";
 import {
-  Avatar, Container, Typography, Box, Chip, Grid, Item
+  Box, Chip, Grid
 } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {

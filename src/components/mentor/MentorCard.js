@@ -1,8 +1,5 @@
-import React, {
-  useState, useEffect, useCallback
-} from "react";
 import {
-  Avatar, Container, Typography, Box, Chip
+  Avatar, Typography, Box, Chip
 } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
