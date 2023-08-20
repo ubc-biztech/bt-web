@@ -199,9 +199,9 @@ export default [
       ],
       // @TODO change this
       welcomeData: [
-        "This will be your friend throughout the event! Check back regularly to see the event schedule, and your team's current point total during the Data Challenge!",
-        "Data & Beyond is a half-day conference hosted in collaboration between UBC BizTech and BOLT UBC. The theme is \"Launching Careers in Data\" - as data becomes ever-present in our lives, there are endless opportunities offered in numerous industries and we want to guide you through the journey of discovering the prospects of data science-related careers.",
-        "We hope you have an amazing time with us at Data & Beyond 2023!"
+        "Welcome to MIS Night 2023! This will be your friend throughout the event. Feel free to check back here to see tonight’s schedule and browse through who’s in attendance.",
+        "MIS Night is BizTech’s annual networking event which gives students the opportunity to connect with MIS faculty, our Tri-Mentorship Program mentors, and more.",
+        "Thank you for coming and we hope you enjoy your night!"
       ],
       /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
       headers: [{
