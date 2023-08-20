@@ -29,7 +29,7 @@ const Companion = () => {
   const [error, setError] = useState("");
   const [registrations, setRegistrations] = useState([]);
   const [event, setEvent] = useState(null);
-  const [regData, setRegData] = useState(null);
+  const [userRegistration, setUserRegistration] = useState(null);
   const [scheduleData, setScheduleData] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +49,7 @@ const Companion = () => {
     const reg = registrations.find((entry) => entry.id === email);
     if (reg) {
       setError("");
-      setRegData(reg);
+      setUserRegistration(reg);
       localStorage.setItem("companionEmail", email);
     } else {
       setError("This email does not match an existing entry our records. Please check that your input is valid and is the same email you used to register for the event. Note that emails are case-sensitive.");
@@ -100,10 +100,10 @@ const Companion = () => {
   }, [email, registrations]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (regData) {
-      setScheduleData(options.getScheduleData(regData));
+    if (userRegistration) {
+      setScheduleData(options.getScheduleData(userRegistration));
     }
-  },[regData]);
+  },[userRegistration]);
 
   if (pageError) {
     return (
@@ -114,7 +114,7 @@ const Companion = () => {
   }
 
   return (
-    <CompanionLayout options={options} email={email} setEmail={setEmail} regData={regData} event={event} isLoading={isLoading} error={error}
+    <CompanionLayout options={options} email={email} setEmail={setEmail} registrations={registrations} userRegistration={userRegistration} event={event} isLoading={isLoading} error={error}
       scheduleData={scheduleData}
       ChildComponent={ChildComponent}
     />

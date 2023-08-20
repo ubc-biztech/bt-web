@@ -30,6 +30,7 @@ import {
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
+import Mentors from "pages/admin/Mentors/Mentors";
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
@@ -136,7 +137,8 @@ const CompanionLayout = (params) => {
     setEmail,
     isLoading,
     error,
-    regData,
+    userRegistration,
+    registrations,
     event,
     scheduleData,
     ChildComponent,
@@ -296,10 +298,10 @@ const CompanionLayout = (params) => {
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
-    if (regData) {
+    if (userRegistration) {
       setIsModalOpen(false);
     }
-  }, [regData]);
+  }, [userRegistration]);
 
   return (
     <div style={styles.container}>
@@ -333,7 +335,7 @@ const CompanionLayout = (params) => {
       </Modal>
       {isLoading ? <Loading/> : (
         <div>
-          {!email || !regData ? (
+          {!email || !userRegistration ? (
             <motion.div
               initial={{
                 opacity: 0,
@@ -422,7 +424,7 @@ const CompanionLayout = (params) => {
                   <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
                 </FadeInWhenVisible> : <></>}
               <FadeInWhenVisible id="welcome" style={styles.column}>
-                <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {regData.fname}!</h1>
+                <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {userRegistration.fname}!</h1>
                 {welcomeData.map((paragraph, i) => {
                   return <div key={i} style={{
                     ...styles.text,
@@ -436,7 +438,8 @@ const CompanionLayout = (params) => {
                 <FadeInWhenVisible id="Timeline">
                   <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles}/>
                 </FadeInWhenVisible>}
-              <ChildComponent regData={regData} email={email} eventID={eventID} year={year} styles={styles} renderMobileOnly={renderMobileOnly} theme={theme} classes={classes} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
+              <ChildComponent userRegistration={userRegistration} email={email} eventID={eventID} year={year} styles={styles} renderMobileOnly={renderMobileOnly} theme={theme} classes={classes} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
+              <Mentors event={event} registrations={registrations} />
               <div style={{
                 ...styles.text,
                 width: "100%",
