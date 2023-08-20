@@ -257,7 +257,7 @@ const CompanionLayout = (params) => {
       width: 60,
     },
     tableBorder: {
-      backgroundColor: "transparent",
+      backgroundColor: "white",
       marginTop: "10px",
       marginBottom: "10px",
       border: "solid",
