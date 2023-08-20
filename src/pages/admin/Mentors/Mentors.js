@@ -2,9 +2,6 @@ import React, {
   useEffect, useState
 } from "react";
 import {
-  fetchBackend
-} from "../../../utils";
-import {
   Helmet
 } from "react-helmet";
 import MentorCard from "components/mentor/MentorCard";
@@ -18,15 +15,10 @@ import {
 import {
   makeStyles
 } from "@material-ui/core/styles";
-import events from "pages/public/Companion/events";
 import SearchBar from "components/inputs/SearchBar";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import {
   COLORS
 } from "constants/index";
-import {
-  Link
-} from "react-router-dom";
 
 const useStyles = makeStyles({
   mainContainer: {
@@ -107,21 +99,13 @@ const useStyles = makeStyles({
   }
 });
 
-function Mentors() {
+function Mentors(props) {
+  const {
+    event, regData
+  } = props;
   const theme = useTheme();
   const classes = useStyles();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const sortedEvents = events.sort((a, b) => {
-    return  a.activeUntil - b.activeUntil;
-  });
-  // find the event that is most revent, or just return the first event
-  const {
-    eventID: eventName, year: eventYear
-  } = sortedEvents.find(event => {
-    const today = new Date();
-    return event.activeUntil > today;
-  }) || sortedEvents[0];
 
   const [searchQuery, setSearchQuery] = useState([]);
   const [mentors, setMentors] = useState([]);
@@ -129,29 +113,22 @@ function Mentors() {
   const [skillsQuestionId, setSkillsQuestionId] = useState("");
 
   useEffect(() => {
-    const fetchEventData = async () => {
-      const res = await fetchBackend(`/events/${eventName}/${eventYear}}`, "GET", undefined, false);
-      res.partnerRegistrationQuestions.forEach(question => {
+    if (event) {
+      event.partnerRegistrationQuestions.forEach(question => {
         if (question?.isSkillsQuestion) {
           setSkillsQuestionId(question.questionId);
         }
       });
-      return res;
-    };
-    if (eventName && eventYear) {
-      fetchEventData();
     }
-  }, [eventName]);
+  }, [event]);
 
   useEffect(() => {
     const fetchMentors = async () => {
-      const params = new URLSearchParams({
-        eventID: eventName,
-        year: eventYear,
-        isPartner: true
+      const mentorsList = regData.filter(response => {
+        return response.isPartner === true;
       });
-      const res = await fetchBackend(`/registrations?${params}`, "GET", undefined, false);
-      const mentorsList = res.data.map(mentor => {
+
+      const mentorsParsed = mentorsList.map(mentor => {
         return {
           ...mentor.basicInformation,
           profilePhoto: mentor.profilePhoto,
@@ -162,8 +139,8 @@ function Mentors() {
               .map((skill) => skill.replace(",", ""))
         };
       });
-      setFilteredMentors(mentorsList);
-      setMentors(mentorsList);
+      setFilteredMentors(mentorsParsed);
+      setMentors(mentorsParsed);
     };
     fetchMentors();
   }, [skillsQuestionId]);
@@ -196,18 +173,11 @@ function Mentors() {
 
   return (
     <>
-      {eventName && eventYear ?
+      { event ?
         <>
           <Helmet>
-            <title>{eventName} Mentors</title>
+            <title>{event.ename} Mentors</title>
           </Helmet>
-          <div className={ renderMobileOnly ? classes.mobileBackButton : classes.backButton}>
-            <Link to="/companion">
-              <ArrowBackIcon onClick={() => console.log("hi")} style={{
-                cursor: "pointer"
-              }}></ArrowBackIcon>
-            </Link>
-          </div>
           <div className={classes.mainContainer}>
             <div className={renderMobileOnly ? classes.mobileMentorsContainer : classes.mentorsContainer}>
               <Grid container spacing={6}>
