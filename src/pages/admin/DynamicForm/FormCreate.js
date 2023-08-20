@@ -186,8 +186,10 @@ const FormCreateForm = (props) => {
     setFieldTouched,
     submitCount,
     handlePublish,
+    handleComplete,
     isSaved,
-    isPublished
+    isPublished,
+    isCompleted
   } = props;
 
   const defaultQuestion = {
@@ -383,6 +385,23 @@ const FormCreateForm = (props) => {
                       </Button>
                     ))
                   }
+                  {isSaved && (isCompleted ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleComplete(false)}
+                    >
+                      Mark as uncomplete
+                    </Button>
+                  ) : (
+                    <Button variant="contained"
+                      color="primary"
+                      onClick = {() => handleComplete(true)}
+                    >
+                      Mark as Complete
+                    </Button>
+                  )
+                  )}
                   <Button
                     variant="contained"
                     color="primary"
@@ -915,6 +934,7 @@ const FormCreate = (props) => {
       deadline: values.deadline,
       pricing,
       isPublished: false,
+      isCompleted: false,
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback,
       partnerRegistrationQuestions: values.partnerRegistrationQuestions
@@ -935,6 +955,7 @@ const FormCreate = (props) => {
   }
 
   const isPublished = (event && event.isPublished) || false;
+  const isCompleted = (event && event.isCompleted) || false;
   const isSaved = !!(eventId && eventYear);
 
   async function handlePublish(publish = false) {
@@ -956,10 +977,30 @@ const FormCreate = (props) => {
       });
   }
 
+  async function handleComplete (complete = false) {
+    const body = {
+      isCompleted: complete
+    };
+
+    fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
+      .then((response) => {
+        alert(response.message);
+        fetchEvents ();
+        history.replace(`/admin/event/${eventId}/${eventYear}/edit`);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message + " Please contact a dev");
+      });
+  }
+
   const formProps = {
     handlePublish,
+    handleComplete,
     isSaved,
-    isPublished
+    isPublished,
+    isCompleted
   };
 
   return (
