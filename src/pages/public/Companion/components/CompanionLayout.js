@@ -17,7 +17,7 @@ import {
 
 import "react-step-progress-bar/styles.css";
 import Loading from "pages/Loading";
-
+import FeedbackForm from "./FeedbackForm";
 import Schedule from "./Schedule";
 
 import {
@@ -122,6 +122,7 @@ const CompanionLayout = (params) => {
     isLoading,
     error,
     regData,
+    event,
     scheduleData,
     ChildComponent,
     props
@@ -244,6 +245,22 @@ const CompanionLayout = (params) => {
     progressButton: {
       height: 60,
       width: 60,
+    },
+    feedbackIFrameContainer: {
+      backgroundColor: "transparent",
+      marginTop: "10px",
+      marginBottom: "10px",
+      border: "solid",
+      borderColor: "rgba(1, 1, 1, 0.1)",
+      borderWidth: "3px",
+      borderRadius: 10,
+      width: "90%"
+    },
+    feedbackIFrame: {
+      width: "100%",
+      height: "60vh",
+      border: "none",
+      fontSize: "14px"
     },
     tableBorder: {
       backgroundColor: "transparent",
@@ -380,22 +397,24 @@ const CompanionLayout = (params) => {
                   </nav>
                 </FadeInWhenVisible>
               </div>
+              {event && event.isCompleted && event.feedback ?
+                <FadeInWhenVisible>
+                  <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
+                </FadeInWhenVisible> : <></>}
               <FadeInWhenVisible id="welcome" style={styles.column}>
-                <FadeInWhenVisible id="welcome" style={styles.column}>
-                  <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {regData.fname}!</h1>
-                  {welcomeData.map((paragraph, i) => {
-                    return <div key={i} style={{
-                      ...styles.text,
-                      ...(renderMobileOnly && {
-                        fontSize: constantStyles.mobileFontSize
-                      })
-                    }}>{paragraph}</div>;
-                  })}
-                </FadeInWhenVisible>
+                <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {regData.fname}!</h1>
+                {welcomeData.map((paragraph, i) => {
+                  return <div key={i} style={{
+                    ...styles.text,
+                    ...(renderMobileOnly && {
+                      fontSize: constantStyles.mobileFontSize
+                    })
+                  }}>{paragraph}</div>;
+                })}
               </FadeInWhenVisible>
               {scheduleData.length > 0 &&
                 <FadeInWhenVisible id="Timeline">
-                  <Schedule data={scheduleData} date={date} location={location} styles={styles}/>
+                  <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles}/>
                 </FadeInWhenVisible>}
               <ChildComponent regData={regData} email={email} eventID={eventID} year={year} styles={styles} renderMobileOnly={renderMobileOnly} theme={theme} classes={classes} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
               <div style={{
