@@ -288,30 +288,31 @@ const CustomQuestion = (props) => {
         )}
 
         <div style={questionStyles.requiredContainer}>
-        <div style={questionStyles.checkboxWrapper}>
-          <div style={questionStyles.checkboxContainer}>
+          <div style={questionStyles.checkboxWrapper}>
+            <div style={questionStyles.checkboxContainer}>
           Skills Question?
-            <Checkbox
-              id={`${id}.isSkillsQuestion`}
-              name={`${name}.isSkillsQuestion`}
-              color="primary"
-              aria-label="Skills question?"
-              checked={isSkillsQuestion}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-          </div>
-          <div style={questionStyles.checkboxContainer}>
+              <Checkbox
+                id={`${id}.isSkillsQuestion`}
+                name={`${name}.isSkillsQuestion`}
+                color="primary"
+                aria-label="Skills question?"
+                checked={isSkillsQuestion}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+            <div style={questionStyles.checkboxContainer}>
           Required?
-            <Checkbox
-              id={`${id}.required`}
-              name={`${name}.required`}
-              color="primary"
-              aria-label="Required question?"
-              checked={required}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+              <Checkbox
+                id={`${id}.required`}
+                name={`${name}.required`}
+                color="primary"
+                aria-label="Required question?"
+                checked={required}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
           </div>
         </div>
       </div>
