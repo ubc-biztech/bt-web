@@ -82,9 +82,11 @@ const UserMembershipFormContainer = (props) => {
     last_name: Yup.string().required("Last name is required"),
     education: Yup.string().required("Education is required"),
     prev_member: Yup.string().required("Please select Yes/No"),
-    heardFromSpecify: Yup.string().when("heard_from", {
-      is: val => (val && (val === "Events" || val === "Boothing" || val === "Other")),
-      then: Yup.string().required("Please fill in this field")
+    heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
+      if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {
+        return schema.required("Please fill in this field");
+      }
+      return schema;
     }),
   });
 
@@ -110,9 +112,11 @@ const UserMembershipFormContainer = (props) => {
     prev_member: Yup.string().required("Please select Yes/No"),
     pronouns: Yup.string(),
     diet: Yup.string(),
-    heardFromSpecify: Yup.string().when("heard_from", {
-      is: val => (val && (val === "Events" || val === "Boothing" || val === "Other")),
-      then: Yup.string().required("Please fill in this field")
+    heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
+      if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {
+        return schema.required("Please fill in this field");
+      }
+      return schema;
     }),
   });
 
@@ -130,9 +134,11 @@ const UserMembershipFormContainer = (props) => {
     year: Yup.string().required("Level of study is required"),
     major: Yup.string().required("Major is required"),
     prev_member: Yup.string().required("Please select Yes/No"),
-    heardFromSpecify: Yup.string().when("heard_from", {
-      is: val => (val && (val === "Events" || val === "Boothing" || val === "Other")),
-      then: Yup.string().required("Please fill in this field")
+    heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
+      if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {
+        return schema.required("Please fill in this field");
+      }
+      return schema;
     }),
   });
 
@@ -148,9 +154,11 @@ const UserMembershipFormContainer = (props) => {
     year: Yup.string().required("Level of study is required"),
     high_school: Yup.string().required("High School is required"),
     prev_member: Yup.string().required("Please select Yes/No"),
-    heardFromSpecify: Yup.string().when("heard_from", {
-      is: val => (val && (val === "Events" || val === "Boothing" || val === "Other")),
-      then: Yup.string().required("Please fill in this field")
+    heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
+      if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {
+        return schema.required("Please fill in this field");
+      }
+      return schema;
     }),
   });
 
