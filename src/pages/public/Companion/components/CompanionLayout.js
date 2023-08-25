@@ -27,7 +27,7 @@ import {
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
-import Mentors from "pages/admin/Mentors/Mentors";
+import Mentors from "pages/public/Companion/components/mentor/Mentors";
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
@@ -396,6 +396,11 @@ const CompanionLayout = (params) => {
                         fontSize: constantStyles.fontSize
                       }}>{header.text}</a>);
                     })}
+                    {event && <a href="#Mentors" style={{
+                      ...styles.link,
+                      fontSize: constantStyles.fontSize
+                    }}>Mentors</a>
+                    }
                   </nav>
                 </FadeInWhenVisible>
               </div>
@@ -419,7 +424,7 @@ const CompanionLayout = (params) => {
                   <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles}/>
                 </FadeInWhenVisible>}
               <ChildComponent userRegistration={userRegistration} email={email} eventID={eventID} year={year} styles={styles} renderMobileOnly={renderMobileOnly} theme={theme} classes={classes} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
-              <Mentors event={event} registrations={registrations} />
+              <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
               <div style={{
                 ...styles.text,
                 width: "100%",

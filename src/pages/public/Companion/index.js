@@ -32,7 +32,7 @@ const Companion = () => {
   const [userRegistration, setUserRegistration] = useState(null);
   const [scheduleData, setScheduleData] = useState([]);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const events = Events.sort((a, b) => {
     return  a.activeUntil - b.activeUntil;

@@ -40,7 +40,7 @@ import PublicEventRoutes from "pages/public/Event";
 
 import Redeem from "pages/public/Gamification/Redeem";
 import Redemption from "pages/public/Gamification/Redemption";
-import Mentors from "pages/admin/Mentors/Mentors.js";
+import Mentors from "pages/public/Companion/components/mentor/Mentors.js";
 
 import {
   setUser,
