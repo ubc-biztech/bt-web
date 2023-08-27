@@ -148,11 +148,11 @@ export default [
     /* year of event in dynamodb, used for queries */
     year: 2023,
     /* component for event body */
-    ChildComponent: DataAndBeyond2023,
+    ChildComponent: MISNight2023,
     /* options defining params for the companionLayout */
     options: {
       // @TODO change this
-      BiztechLogo: BizTechDBLogo,
+      BiztechLogo: BiztechMISNightLogo,
       // @TODO change this
       Logo: MISLogo,
       /* Displayed title of event */
@@ -164,7 +164,7 @@ export default [
       // @TODO change this
       colors: {
         primary: "linear-gradient(180deg, #FFFFFF, #FFFFFF)",
-        background: "linear-gradient(180deg, #7ABAE9, #3886BF)",
+        background: "linear-gradient(180deg, #0062A9, #7ABAE9)",
       },
       /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
       getScheduleData: (regData) => [
@@ -205,12 +205,8 @@ export default [
       ],
       /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
       headers: [{
-        text: "Partners",
-        id: "Partners"
-      },
-      {
         text: "Mentors",
-        route: "/companion/mentors"
+        id: "Mentors"
       }]
     }
   },
@@ -218,7 +214,7 @@ export default [
     /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("2023-03-17").getTime() + (7 * 24 * 60 * 60 * 1000)),
     /* id of event in dynamodb, used for queries */
-    eventID: "hello-hacks",
+    eventID: "data-and-beyond",
     /* year of event in dynamodb, used for queries */
     year: 2023,
     /* component for event body */

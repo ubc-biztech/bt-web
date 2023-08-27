@@ -30,7 +30,6 @@ import {
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
-import Mentors from "pages/public/Companion/components/mentor/Mentors";
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
@@ -67,8 +66,8 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     textDecoration: "none",
-    color: "inherit",
-    borderRight: `1px solid ${constantStyles.textColor}`,
+    color: "white",
+    textShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
     flexGrow: 1,
     width: "100%",
     alignItems: "center",
@@ -124,8 +123,6 @@ const CompanionLayout = (params) => {
       BiztechLogo,
       Logo,
       title,
-      eventID,
-      year,
       date,
       location,
       extraStyles,
@@ -159,6 +156,7 @@ const CompanionLayout = (params) => {
     introLogo: {
       width: "35%",
       height: "auto",
+      marginBottom: "25px",
     },
     homeLogo: {
       marginTop: "24px",
@@ -177,8 +175,7 @@ const CompanionLayout = (params) => {
       justifyContent: "center",
       width: "100%",
       height: "100%",
-      backgroundColor: "#172037",
-      borderColor: "#172037",
+      background: "linear-gradient(180deg, #7ABAE9, #0062A9)",
       margin: "auto",
       borderRadius: 5,
       padding: 10,
@@ -228,7 +225,7 @@ const CompanionLayout = (params) => {
       backgroundImage: colors.primary,
       WebkitBackgroundClip: "text",
       height: "60px",
-      color: "transparent",
+      color: "white",
       fontSize: constantStyles.titleFontSize,
       fontWeight: 700,
       marginBottom: "10px",
@@ -276,7 +273,7 @@ const CompanionLayout = (params) => {
       fontSize: "14px"
     },
     tableBorder: {
-      backgroundColor: "white",
+      backgroundColor: "transparent",
       marginTop: "10px",
       marginBottom: "10px",
       border: "solid",
@@ -348,7 +345,11 @@ const CompanionLayout = (params) => {
               transition={{
                 duration: 1
               }}>
-              <div style={styles.column}>
+              <div style={{
+                ...styles.column,
+                alignItems:"center",
+                minHeight:"100vh",
+              }}>
                 <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo}/>
                 <Typography variant="h1" className={classes.boldText} style={{
                   color: constantStyles.textColor
@@ -416,11 +417,6 @@ const CompanionLayout = (params) => {
                         }}>{header.text}</Link>;
                       }
                     })}
-                    {event && <a href="#Mentors" style={{
-                      ...styles.link,
-                      fontSize: constantStyles.fontSize
-                    }}>Mentors</a>
-                    }
                   </nav>
                 </FadeInWhenVisible>
               </div>
@@ -443,8 +439,7 @@ const CompanionLayout = (params) => {
                 <FadeInWhenVisible id="Timeline">
                   <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles}/>
                 </FadeInWhenVisible>}
-              <ChildComponent userRegistration={userRegistration} email={email} eventID={eventID} year={year} styles={styles} renderMobileOnly={renderMobileOnly} theme={theme} classes={classes} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
-              <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
+              <ChildComponent event={event} registrations={registrations}styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
               <div style={{
                 ...styles.text,
                 width: "100%",
