@@ -711,6 +711,8 @@ const FormCreateForm = (props) => {
    - TEXT
    - SELECT
    - CHECKBOX
+   - UPLOAD
+   - WORKSHOP SELECTION
 
   Below is the data struct for registrationQuestions
 
@@ -738,13 +740,15 @@ const dummyData = [
     questionImageUrl: "",
   },
   {
-    type: "SELECT",
-    label: "How interested are you in this event?",
-    choices: "1,2,3,4,5",
+    type: "WORKSHOP SELECTION",
+    label: "Select your workshop for this event",
+    choices: "Workshop 1,Workshop 2,Workshop 3,Workshop 4",
+    participantCap: "50,30,30,30",
     required: true,
     questionImageUrl: "",
   }
 ];
+
 
 const partnerDummyData = [
   {
@@ -817,7 +821,7 @@ const FormCreate = (props) => {
     };
 
   const regQuestionSchema = Yup.object({
-    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD"]).required(),
+    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD", "WORKSHOP SELECTION"]).required(),
     label: Yup.string().required("Question is a required field"),
     choices: Yup.string(),
     required: Yup.boolean().required(),

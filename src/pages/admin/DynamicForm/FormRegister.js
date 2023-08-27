@@ -77,6 +77,10 @@ const styles = {
   },
   submitSection: {
     padding: "2rem"
+  },
+  disabled: {
+    pointerEvents: "none",
+    color: "grey",
   }
 };
 
@@ -173,6 +177,8 @@ const FormRegister = (props) => {
   const [questionDomain, setQuestionDomain] = useState("");
   const [isNonMemberModalOpen, setisNonMemberModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [workshopChoicesArr, setWorkshopChoicesArr] = useState([]);
+  // const [workshopCounts, setWorkShopCounts] = useState([]);
 
   const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(
     ({
@@ -257,10 +263,24 @@ const FormRegister = (props) => {
         );
         eventData.counts = regData;
         setCurrEvent(eventData);
+
+        // Populate the dynamicCounts array with data
+        eventData.counts.dynamicCounts.forEach((dynamicCount) => {
+          dynamicCount.counts.forEach((workshop) => {
+            if (workshop.count >= workshop.cap) {
+              workshop.isDisabled = true;
+            } else {
+              workshop.isDisabled = false;
+            }
+          });
+
+          // Push the modified dynamicCount into the dynamicCounts array
+          setWorkshopChoicesArr(eventData.counts.dynamicCounts);
+        });
       }
     };
     fetchEvent();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user, eventId, eventYear, registeredEvents, currEvent]);
 
   useEffect(() => {
     if (user) {
@@ -277,6 +297,41 @@ const FormRegister = (props) => {
     }
   }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (currEvent) {
+      const remaining =
+        currEvent.capac -
+        (currEvent.counts.registeredCount + currEvent.counts.checkedInCount);
+      if (remaining > 0 && remaining <= 20) {
+        setRegAlert(
+          <Alert severity="error" className={classes.regAlert}>
+            Warning: {currEvent.ename || "this event"} only has {remaining} spot
+            {remaining > 1 ? "s" : ""} left!
+          </Alert>
+        );
+      } else if (remaining <= 0 && !user) {
+        setRegAlert(
+          <Alert severity="error" className={classes.regAlert}>
+            Warning: {currEvent.ename || "this event"} is full!
+          </Alert>
+        );
+      } else {
+        setRegAlert(null);
+      }
+      if (
+        !(
+          user?.isMember ||
+          user?.admin ||
+          currEvent.pricing?.nonMembers === undefined ||
+          samePricing()
+        )
+      ) {
+        setisNonMemberModalOpen(true);
+      }
+    }
+  }, [currEvent]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // disable workshops which are full from selection and mark them as such
   useEffect(() => {
     if (currEvent) {
       const remaining =
@@ -388,6 +443,7 @@ const FormRegister = (props) => {
   );
 
   const loadQuestions = () => {
+    let workshopQuestionCount = 0;
     const returnArr = [];
     for (let i = 0; i < formData.questions.length; i++) {
       const {
@@ -643,6 +699,54 @@ const FormRegister = (props) => {
             </FormControl>
           </div>
         );
+      } else if (questionType === "WORKSHOP SELECTION") {
+        returnArr.push(
+          <div style={{
+            paddingBottom: "1.5rem"
+          }}>
+            <p style={{
+              opacity: "0.7",
+              fontSize: "1rem",
+              margin: "0.5rem 0"
+            }}>
+              {question}
+              {question && required && "*"}
+            </p>
+            {questionImageUrl && (
+              <div style={styles.imageContainer}>
+                <img
+                  style={styles.image}
+                  src={questionImageUrl || ImagePlaceholder}
+                  alt="Registration Form"
+                />
+              </div>
+            )}
+            <FormControl
+              error={!!responseError[i]}
+              helperText={!!responseError[i] && responseError[i]}
+            >
+              <Select
+                className={classes.select}
+                labelId="q-type"
+                variant="outlined"
+                margin="dense"
+                value={responseData[i] || ""}
+                onChange={(e) => updateField(i, e.target.value)}
+              >
+                {workshopChoicesArr.length && workshopChoicesArr[workshopQuestionCount].counts.map((countItem, index) => (
+                  <MenuItem key={index} value={countItem.label} disabled={countItem.isDisabled}>
+                    {countItem.label}
+                    {countItem.isDisabled ? " (Workshop is full)" : ""}
+                  </MenuItem>
+                ))}
+              </Select>
+              {!!responseError[i] && (
+                <FormHelperText>{responseError[i]}</FormHelperText>
+              )}
+            </FormControl>
+          </div>
+        );
+        workshopQuestionCount += 1;
       }
     }
     return returnArr;
@@ -703,7 +807,7 @@ const FormRegister = (props) => {
       const dynamicResponses = {
       };
       for (let i = BASIC_QUESTIONS.length; i < formData.questions.length; i++) {
-        if (formData.questions[i].questionType === "CHECKBOX") {
+        if (formData.questions[i].questionType === "CHECKBOX" || formData.questions[i].questionType === "WORKSHOP SELECTION") {
           dynamicResponses[formData.questions[i].questionId] = responseData[
             i
           ]?.join(", ");
@@ -797,6 +901,8 @@ const FormRegister = (props) => {
           dynamicResponses[formData.questions[i].questionId] = responseData[
             i
           ]?.join(", ");
+        } else if (formData.questions[i].questionType === "WORKSHOP SELECTION") {
+          dynamicResponses[formData.questions[i].questionId] = responseData[i];
         } else {
           dynamicResponses[formData.questions[i].questionId] = responseData[i];
         }
@@ -830,7 +936,7 @@ const FormRegister = (props) => {
         })
         .catch((err) => {
           alert(
-            `An error has occured: ${err} Please contact an exec for support.`
+            `An error has occured: ${err} Please contact an exec for support. 4`
           );
           setIsSubmitting(false);
         });

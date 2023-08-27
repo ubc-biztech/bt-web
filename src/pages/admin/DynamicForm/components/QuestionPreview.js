@@ -30,6 +30,10 @@ const styles = {
     height: 300,
     objectFit: "cover",
   },
+  disabled: {
+    pointerEvents: "none",
+    color: "grey",
+  }
 };
 
 // LIVE PREVIEW QUESTION component
@@ -55,7 +59,15 @@ const QuestionPreview = (props) => {
 
   const choicesArr = choices ? choices.split(",") : [];
 
-  // types: CHECKBOX, SELECT, TEXT
+  const workshopChoicesArr = choices
+    ? choices.split(",").map((choice) => ({
+      value: choice,
+      label: choice,
+      isDisabled: false, // Set to true for items you want to be unselectable
+    }))
+    : [];
+
+  // types: CHECKBOX, SELECT, TEXT, UPLOAD, WORKSHOP SELECTION
   if (type === "CHECKBOX") {
     return (
       label && (
@@ -199,6 +211,48 @@ const QuestionPreview = (props) => {
               marginLeft: 6
             }}/>
           </Button>
+        </div>
+      )
+    );
+  } else if (type === "WORKSHOP SELECTION") {
+    return (
+      label && (
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
+            {label}
+            {label && required && "*"}
+          </p>
+          {questionImageUrl && (
+            <div style={styles.imageContainer}>
+              <img
+                style={styles.image}
+                src={questionImageUrl || ImagePlaceholder}
+                alt="Registration Form"
+              />
+            </div>
+          )}
+          <Select
+            className={classes.select}
+            labelId="q-type"
+            variant="outlined"
+            margin="dense"
+          >
+
+            {workshopChoicesArr.map((item) => {
+              return (
+                <MenuItem key={item.value} value={item.value} style={item.isDisabled ? styles.disabled : null}>
+                  {item.label}
+                  {item.isDisabled ? " (- workshop is full)" : ""}
+                </MenuItem>
+              );
+            })}
+          </Select>
         </div>
       )
     );

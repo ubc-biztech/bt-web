@@ -49,7 +49,7 @@ const CustomQuestion = (props) => {
     handleBlur,
     errors,
     touched,
-    submitCount
+    submitCount,
   } = useFormikContext();
 
   const {
@@ -57,7 +57,7 @@ const CustomQuestion = (props) => {
   } = props;
 
   const {
-    type, label, choices, questionImageUrl, charLimit, required, isSkillsQuestion
+    type, label, choices, questionImageUrl, charLimit, required, participantCap, isSkillsQuestion
   } = props.data;
   const questionStyles = {
     // -------- QUESTION COMPONENT STYLES ----------
@@ -143,6 +143,7 @@ const CustomQuestion = (props) => {
           <MenuItem value="CHECKBOX">Checkbox</MenuItem>
           <MenuItem value="SELECT">Selection</MenuItem>
           <MenuItem value="UPLOAD">Upload</MenuItem>
+          <MenuItem value="WORKSHOP SELECTION">Workshop Selection</MenuItem>
         </Select>
         <div style={questionStyles.iconsContainer}>
           <div style={questionStyles.move}>
@@ -245,30 +246,73 @@ const CustomQuestion = (props) => {
             value={choices}
           />
         )}
-        <div style={questionStyles.checkboxWrapper}>
-          <div style={questionStyles.checkboxContainer}>
-          Skills Question?
-            <Checkbox
-              id={`${id}.isSkillsQuestion`}
-              name={`${name}.isSkillsQuestion`}
-              color="primary"
-              aria-label="Skills question?"
-              checked={isSkillsQuestion}
+
+        {type === "WORKSHOP SELECTION" && (
+          <div>
+            <TextField
+              id={`${id}.choices`}
+              name={`${name}.choices`}
+              label="Workshop Choices"
+              fullWidth
+              required
+              margin="normal"
+              variant="filled"
               onChange={handleChange}
               onBlur={handleBlur}
+              error={showError("choices)")}
+              helperText={
+                showError("choices")
+              }
+              value={choices}
             />
+            <Tooltip title="Items must match number of workshops." arrow>
+              <TextField
+                id={`${id}.participantCap`}
+                name={`${name}.participantCap`}
+                label="Maximum Participants for each Workshop"
+                fullWidth
+                required
+                margin="normal"
+                variant="filled"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={showError("participantCap")}
+                helperText={
+                  showError("participantCap") &&
+                  errors.registrationQuestions[index].participantCap
+                }
+                value={participantCap}
+              />
+            </Tooltip>
           </div>
-          <div style={questionStyles.checkboxContainer}>
+        )}
+
+        <div style={questionStyles.requiredContainer}>
+          <div style={questionStyles.checkboxWrapper}>
+            <div style={questionStyles.checkboxContainer}>
+          Skills Question?
+              <Checkbox
+                id={`${id}.isSkillsQuestion`}
+                name={`${name}.isSkillsQuestion`}
+                color="primary"
+                aria-label="Skills question?"
+                checked={isSkillsQuestion}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+            <div style={questionStyles.checkboxContainer}>
           Required?
-            <Checkbox
-              id={`${id}.required`}
-              name={`${name}.required`}
-              color="primary"
-              aria-label="Required question?"
-              checked={required}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+              <Checkbox
+                id={`${id}.required`}
+                name={`${name}.required`}
+                color="primary"
+                aria-label="Required question?"
+                checked={required}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
           </div>
         </div>
       </div>
