@@ -149,6 +149,7 @@ const MembershipFormContainer = (props) => {
         return schema.required("Please fill in this field");
       }
       return schema;
+      
     })
   });
 
