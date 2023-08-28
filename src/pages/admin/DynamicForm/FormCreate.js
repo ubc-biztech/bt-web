@@ -855,9 +855,12 @@ const FormCreate = (props) => {
       .required(),
     price: Yup.number("Valid number required")
       .min(0, "Valid pricing required"),
-    nonMembersPrice: Yup.number("Valid number required").when("nonMembersAllowed", {
-      is: true,
-      then: Yup.number().min(Yup.ref("price"), "Non-members price must be greater or equal to members price")
+    nonMembersAllowed: Yup.bool(),
+    nonMembersPrice: Yup.number("Valid number required").when("nonMembersAllowed", (nonMembersAllowed, schema) => {
+      if (nonMembersAllowed) {
+        return schema.min(Yup.ref("price"), "Non-members price must be greater or equal to members price");
+      }
+      return schema;
     }),
     registrationQuestions: Yup.array().of(regQuestionSchema),
     partnerRegistrationQuestions: Yup.array().of(regQuestionSchema)
