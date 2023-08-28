@@ -6,7 +6,7 @@ import {
   Checkbox, MenuItem, Select, TextField, Tooltip
 } from "@material-ui/core";
 import {
-  Delete, KeyboardArrowDown, KeyboardArrowUp
+  Delete, KeyboardArrowDown, KeyboardArrowUp, Label
 } from "@material-ui/icons";
 import {
   useFormikContext
@@ -227,23 +227,29 @@ const CustomQuestion = (props) => {
         )}
 
         {(type === "SELECT" || type === "CHECKBOX") && (
-          <TextField
-            id={`${id}.choices`}
-            name={`${name}.choices`}
-            label="Options"
-            fullWidth
-            required
-            margin="normal"
-            variant="filled"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={showError("choices")}
-            helperText={
-              showError("choices") &&
+          <>
+            <TextField
+              id={`${id}.choices`}
+              name={`${name}.choices`}
+              label="Options"
+              fullWidth
+              required
+              margin="normal"
+              variant="filled"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={showError("choices")}
+              helperText={
+                showError("choices") &&
               errors.registrationQuestions[index].choices
-            }
-            value={choices}
-          />
+              }
+              value={choices}
+            />
+            <p style={{
+              color: "#FFFFFF",
+              opacity: "0.7"
+            }}>{"Separate options by comma, no spaces (Option 1,Option 2)"} <br/> {"To use the 'Other' option, add an ellipsis (Option 1,Option 2,...)"}</p>
+          </>
         )}
         <div style={questionStyles.checkboxWrapper}>
           <div style={questionStyles.checkboxContainer}>
