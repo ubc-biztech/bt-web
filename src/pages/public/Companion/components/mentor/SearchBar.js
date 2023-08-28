@@ -3,39 +3,30 @@ import React, {
 } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import {
+  InputAdornment,
   TextField
 } from "@material-ui/core";
 import {
   makeStyles
 } from "@material-ui/core/styles";
 import {
-  COLORS
-} from "constants/index";
+  constantStyles
+} from "../../../../../constants/_constants/companion";
 
 const useStyles = makeStyles({
   textfield: {
-    border: "solid white 2px",
-    borderRadius: "10px",
-    "& label.Mui-focused": {
-      color: "white"
+    flexGrow: "1",
+    "& .MuiInput-underline:before": {
+      borderBottom: "none",
     },
-    "& .MuiOutlinedInput-root": {
-      backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR,
-      borderRadius: "10px",
-      "& fieldset": {
-        borderColor: COLORS.LIGHT_BACKGROUND_COLOR
-      },
-      "&:hover fieldset": {
-        borderColor: COLORS.LIGHT_BACKGROUND_COLOR
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: COLORS.LIGHT_BACKGROUND_COLOR
-      }
+    "& .MuiInput-underline:after": {
+      borderBottom: "none",
     },
   },
   searchIcon: {
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+    flex: "none",
+  },
 });
 
 function SearchBar ({
@@ -63,34 +54,36 @@ function SearchBar ({
   return (
     <>
       <div style={{
+        width: "100%",
         display: "flex",
         alignItems: "center",
-        gap: "1%"
       }}>
         <TextField
           id="search-bar"
           className={classes.textfield}
           onKeyDown={handleEnterKeyPress}
-          style={{
-            backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR,
-            color: "black"
-          }}
           variant="outlined"
-          placeholder="Enter a skill..."
+          placeholder="Filter by skills..."
           size="small"
+          color="primary"
+          fullWidth
+          flex="1"
           inputRef={searchRef}
+          InputProps={{
+            style: {
+              color: constantStyles.textColor,
+            },
+            endAdornment:
+            <InputAdornment position="end">
+              <SearchIcon style={{
+                color:constantStyles.textColor,
+              }} onClick={handleSearchClick} className={classes.searchIcon}/>
+            </InputAdornment>
+          }}
           InputLabelProps={{
             shrink: false,
           }}
         />
-        <div style={{
-          transform: "translateX(-50px)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-          <SearchIcon onClick={handleSearchClick} className={classes.searchIcon}/>
-        </div>
       </div>
     </>
   );

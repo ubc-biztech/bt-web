@@ -12,6 +12,9 @@ import {
 import {
   COLORS
 } from "constants/index";
+import {
+  constantStyles
+} from "constants/_constants/companion";
 
 const useStyles = makeStyles({
   profileContainer: {
@@ -24,6 +27,16 @@ const useStyles = makeStyles({
     height: "100%",
     width: "100%",
   },
+  mobileProfileContainer: {
+    // marginBottom: "2%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: COLORS.WHITE,
+    borderRadius: "10px",
+    padding: "6%",
+    height: "100%",
+  },
   name: {
     marginTop: "2%",
     color: COLORS.LIGHT_BACKGROUND_COLOR,
@@ -31,10 +44,23 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     textAlign: "center"
   },
+  mobileName: {
+    marginTop: "2%",
+    color: COLORS.LIGHT_BACKGROUND_COLOR,
+    fontSize: "16px",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
   position: {
     marginTop: "2%",
     color: COLORS.LIGHT_BACKGROUND_COLOR,
-    fontSize: "1.2rem",
+    fontSize: constantStyles.fontSize,
+    textAlign: "center"
+  },
+  mobilePosition: {
+    marginTop: "2%",
+    color: COLORS.LIGHT_BACKGROUND_COLOR,
+    fontSize: constantStyles.mobileFontSize,
     textAlign: "center"
   },
   skill: {
@@ -43,6 +69,11 @@ const useStyles = makeStyles({
   profilePicture: {
     width: "150px",
     height: "150px",
+    backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR
+  },
+  mobileProfilePicture: {
+    width: "100px",
+    height: "100px",
     backgroundColor: COLORS.LIGHT_BACKGROUND_COLOR
   },
   container: {
@@ -62,16 +93,7 @@ const useStyles = makeStyles({
     width: "100%",
     height: "100%",
   },
-  mobileProfileContainer: {
-    // marginBottom: "2%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: COLORS.WHITE,
-    borderRadius: "10px",
-    padding: "6%",
-    height: "100%"
-  },
+
 });
 
 function MentorCard(props) {
@@ -89,11 +111,11 @@ function MentorCard(props) {
           <Avatar
             alt={`${fname}-profile-picture`}
             src={profilePhoto}
-            className={classes.profilePicture} />
-          <Typography className={classes.name}>
+            className={renderMobileOnly ?  classes.mobileProfilePicture : classes.profilePicture} />
+          <Typography className={renderMobileOnly ? classes.mobileName : classes.name }>
             {fname + ", " + lname + " " + `(${gender})`}
           </Typography>
-          <Typography className={classes.position}>
+          <Typography className={renderMobileOnly ? classes.mobilePosition : classes.position}>
             {role + " at " + companyName}
           </Typography>
           <div className={classes.skillsContainer}>
