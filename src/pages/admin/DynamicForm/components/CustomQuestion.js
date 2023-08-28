@@ -6,7 +6,7 @@ import {
   Checkbox, MenuItem, Select, TextField, Tooltip
 } from "@material-ui/core";
 import {
-  Delete, KeyboardArrowDown, KeyboardArrowUp, Label
+  Delete, KeyboardArrowDown, KeyboardArrowUp
 } from "@material-ui/icons";
 import {
   useFormikContext
