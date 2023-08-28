@@ -417,11 +417,6 @@ const CompanionLayout = (params) => {
                         }}>{header.text}</Link>;
                       }
                     })}
-                    {event && <a href="#Mentors" style={{
-                      ...styles.link,
-                      fontSize: constantStyles.fontSize
-                    }}>Mentors</a>
-                    }
                   </nav>
                 </FadeInWhenVisible>
               </div>
