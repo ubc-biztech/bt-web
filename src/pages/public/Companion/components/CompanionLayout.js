@@ -14,6 +14,9 @@ import {
 import {
   useTheme
 } from "@material-ui/styles";
+import {
+  Link
+} from "react-router-dom/cjs/react-router-dom";
 
 import "react-step-progress-bar/styles.css";
 import Loading from "pages/Loading";
@@ -27,7 +30,6 @@ import {
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
-import Mentors from "pages/public/Companion/components/mentor/Mentors";
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
@@ -61,6 +63,18 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: COLORS.FONT_GRAY,
       color: COLORS.WHITE,
     },
+  },
+  link: {
+    textDecoration: "none",
+    color: "white",
+    textShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+    flexGrow: 1,
+    width: "100%",
+    alignItems: "center",
+    textAlign: "center",
+    "&:hover": {
+      color: COLORS.WHITE,
+    }
   },
 }));
 
@@ -109,8 +123,6 @@ const CompanionLayout = (params) => {
       BiztechLogo,
       Logo,
       title,
-      eventID,
-      year,
       date,
       location,
       extraStyles,
@@ -144,6 +156,7 @@ const CompanionLayout = (params) => {
     introLogo: {
       width: "35%",
       height: "auto",
+      marginBottom: "25px",
     },
     homeLogo: {
       marginTop: "24px",
@@ -162,8 +175,7 @@ const CompanionLayout = (params) => {
       justifyContent: "center",
       width: "100%",
       height: "100%",
-      backgroundColor: "#172037",
-      borderColor: "#172037",
+      background: "linear-gradient(180deg, #7ABAE9, #0062A9)",
       margin: "auto",
       borderRadius: 5,
       padding: 10,
@@ -205,7 +217,7 @@ const CompanionLayout = (params) => {
       alignItems: "center",
       justifyContent: "space-between",
       marginTop: "25px",
-      width: "75%",
+      width: "100%",
     },
     title: {
       fontFamily: "Proximanova",
@@ -213,7 +225,7 @@ const CompanionLayout = (params) => {
       backgroundImage: colors.primary,
       WebkitBackgroundClip: "text",
       height: "60px",
-      color: "transparent",
+      color: "white",
       fontSize: constantStyles.titleFontSize,
       fontWeight: 700,
       marginBottom: "10px",
@@ -230,10 +242,6 @@ const CompanionLayout = (params) => {
       fontWeight: 700,
       marginBottom: "10px",
       width: "100%",
-    },
-    link: {
-      textDecoration: "none",
-      color: "#9598FE",
     },
     text: {
       width: "80%",
@@ -337,7 +345,11 @@ const CompanionLayout = (params) => {
               transition={{
                 duration: 1
               }}>
-              <div style={styles.column}>
+              <div style={{
+                ...styles.column,
+                alignItems:"center",
+                minHeight:"100vh",
+              }}>
                 <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo}/>
                 <Typography variant="h1" className={classes.boldText} style={{
                   color: constantStyles.textColor
@@ -382,19 +394,28 @@ const CompanionLayout = (params) => {
                       width: "100%"
                     })
                   }}>
-                    {welcomeData && <a href="#Welcome" style={{
-                      ...styles.link,
+                    {welcomeData && <a href="#Welcome" className={classes.link} style={{
                       fontSize: constantStyles.fontSize
                     }}>Welcome</a>}
-                    {scheduleData?.length && <a href="#Schedule" style={{
-                      ...styles.link,
+                    {scheduleData?.length && <a href="#Schedule" className={classes.link} style={{
                       fontSize: constantStyles.fontSize
                     }}>Schedule</a>}
                     {headers.map((header, i) => {
-                      return (<a href={`#${header.id}`} key={i} style={{
-                        ...styles.link,
-                        fontSize: constantStyles.fontSize
-                      }}>{header.text}</a>);
+                      const lastTabItem = i === headers.length - 1 ? {
+                        borderRight: "none"
+                      } : {
+                      };
+                      if (header.id) {
+                        return (<a href={`#${header.id}`} key={i} className={classes.link} style={{
+                          fontSize: constantStyles.fontSize,
+                          ...lastTabItem
+                        }}>{header.text}</a>);
+                      } else if (header.route) {
+                        return <Link to={header.route} className={classes.link} key={i} style={{
+                          fontSize: constantStyles.fontSize,
+                          ...lastTabItem
+                        }}>{header.text}</Link>;
+                      }
                     })}
                     {event && <a href="#Mentors" style={{
                       ...styles.link,
@@ -423,8 +444,7 @@ const CompanionLayout = (params) => {
                 <FadeInWhenVisible id="Timeline">
                   <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles}/>
                 </FadeInWhenVisible>}
-              <ChildComponent userRegistration={userRegistration} email={email} eventID={eventID} year={year} styles={styles} renderMobileOnly={renderMobileOnly} theme={theme} classes={classes} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
-              <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
+              <ChildComponent event={event} registrations={registrations}styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
               <div style={{
                 ...styles.text,
                 width: "100%",

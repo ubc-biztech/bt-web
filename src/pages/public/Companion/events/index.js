@@ -1,6 +1,9 @@
 import DataAndBeyond2023 from "./DataAndBeyond2023";
 import BizTechDBLogo from "../../../../assets/2023/data&beyond/BizTechD&BLogo.png";
+import BiztechMISNightLogo from "../../../../assets/2024/misnight/BiztechMISNightLogo.png";
 import DBLogo from "../../../../assets/2023/data&beyond/D&BLogo.png";
+import MISLogo from "../../../../assets/2024/misnight/logo.svg";
+import MISNight2023 from "./MISNight2023";
 
 export default [
   { /* TODO: This hello hacks component is incomplete and exists only for the sake of testing out how mentors list looks */
@@ -64,6 +67,76 @@ export default [
       headers: [{
         text: "Partners",
         id: "Partners"
+      }]
+    }
+  },
+  {
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    activeUntil: new Date(new Date("2023-09-17").getTime() + (7 * 24 * 60 * 60 * 1000)),
+    /* id of event in dynamodb, used for queries */
+    eventID: "mis-night",
+    /* year of event in dynamodb, used for queries */
+    year: 2023,
+    /* component for event body */
+    ChildComponent: MISNight2023,
+    /* options defining params for the companionLayout */
+    options: {
+      // @TODO change this
+      BiztechLogo: BiztechMISNightLogo,
+      // @TODO change this
+      Logo: MISLogo,
+      /* Displayed title of event */
+      title: "MIS Night 2023",
+      /* Displayed date of event */
+      date: "Friday, September 15th",
+      // @TODO change this
+      location: "TBD",
+      // @TODO change this
+      colors: {
+        primary: "linear-gradient(180deg, #FFFFFF, #FFFFFF)",
+        background: "linear-gradient(180deg, #0062A9, #7ABAE9)",
+      },
+      /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
+      getScheduleData: (regData) => [
+        {
+          date: "5:45 pm - 6:00 pm",
+          title: "Registration & Check in",
+        },
+        {
+          date: "6:00 pm - 6:20 pm",
+          title: "Opening Ceremony",
+        },
+        {
+          date: "6:20 pm - 6:50 pm",
+          title: "Panel Discussion",
+        },
+        {
+          date: "6:50 pm - 7:20 pm",
+          title: "Dinner",
+        },
+        {
+          date: "7:20 pm - 7:30 pm",
+          title: "Networking Activity",
+        },
+        {
+          date: "7:30 pm - 8:20 pm",
+          title: "Open Networking",
+        },
+        {
+          date: "8:20 pm - 8:30 pm",
+          title: "Closing Remarks",
+        }
+      ],
+      // @TODO change this
+      welcomeData: [
+        "Welcome to MIS Night 2023! This will be your friend throughout the event. Feel free to check back here to see tonight’s schedule and browse through who’s in attendance.",
+        "MIS Night is BizTech’s annual networking event which gives students the opportunity to connect with MIS faculty, our Tri-Mentorship Program mentors, and more.",
+        "Thank you for coming and we hope you enjoy your night!"
+      ],
+      /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
+      headers: [{
+        text: "Mentors",
+        id: "Mentors"
       }]
     }
   },

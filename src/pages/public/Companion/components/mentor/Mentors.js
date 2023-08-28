@@ -3,7 +3,7 @@ import React, {
 } from "react";
 import MentorCard from "pages/public/Companion/components/mentor/MentorCard";
 import {
-  Box, Chip, Grid, CircularProgress, Typography
+  Box, Chip, Grid, Typography
 } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
@@ -12,6 +12,7 @@ import {
 import {
   makeStyles
 } from "@material-ui/core/styles";
+import Loading from "pages/Loading";
 import SearchBar from "pages/public/Companion/components/mentor/SearchBar";
 
 const useStyles = makeStyles({
@@ -153,7 +154,7 @@ function Mentors(props) {
     <>
       { event ?
         <>
-          <div id="Mentors" className={classes.mainContainer}>
+          <div id="Mentors" className={classes.mainContainer} style={styles.column}>
             <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Mentors</h1>
             <div className={renderMobileOnly ? classes.mobileMentorsContainer : classes.mentorsContainer}>
               <Grid container spacing={1}>
@@ -212,7 +213,7 @@ function Mentors(props) {
                 )}
               </Grid>
             </div>
-          </div> </>: <CircularProgress />}
+          </div> </>: <Loading />}
     </>
   );
 }
