@@ -230,7 +230,7 @@ const FormRegister = (props) => {
   const [responseError, setResponseError] = useState(
     Array.from(Array(formData.questions.length))
   ); // index of errors correspond to responses array (right above)
-  const [otherData, setOtherData] = useState({
+  const [otherData] = useState({
   });
 
   useEffect(() => {
