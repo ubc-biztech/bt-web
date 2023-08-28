@@ -230,6 +230,8 @@ const FormRegister = (props) => {
   const [responseError, setResponseError] = useState(
     Array.from(Array(formData.questions.length))
   ); // index of errors correspond to responses array (right above)
+  
+  // data from "Other" checkboxes
   const [otherData] = useState({
   });
 

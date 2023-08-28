@@ -44,26 +44,33 @@ const OtherCheckbox = ({
   };
 
   return (
-    <div className={classes.otherContainer}>
-      <FormControlLabel
-        className={checked ? classes.otherCheckbox : ""}
-        control={
-          <Checkbox
-            checked={checked}
-            onChange={handleCheckboxChange}
-            color="primary"
-          />
-        }
-        label={checked ? "" : "Other"}
-      />
-      {checked && (
-        <TextField
-          placeholder='Specify'
-          value={otherValue}
-          onChange={handleInputChange}
+    <>
+      <div className={classes.otherContainer}>
+        <FormControlLabel
+          className={checked ? classes.otherCheckbox : ""}
+          control={
+            <Checkbox
+              checked={checked}
+              onChange={handleCheckboxChange}
+              color="primary"
+            />
+          }
+          label={checked ? "" : "Other"}
         />
-      )}
-    </div>
+        {checked && (
+          <TextField
+            placeholder='Specify'
+            value={otherValue}
+            onChange={handleInputChange}
+          />
+        )}
+      </div>
+      <p style={{
+        color: "#FFFFFF",
+        opacity: "0.7",
+        margin: 0
+      }}>To add multiple options, separate by comma, no spaces (Opion 1,Option 2)</p>
+    </>
   );
 };
 
