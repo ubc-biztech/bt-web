@@ -83,7 +83,8 @@ const QuestionPreview = (props) => {
           <FormGroup>
             {choicesArr.map((item) => {
               if (item === "...") {
-                return <OtherCheckbox key={item}/>;
+                return <OtherCheckbox key={item} otherData={{
+                }} onChange={() => {}}/>;
               }
               return (
                 <FormControlLabel
