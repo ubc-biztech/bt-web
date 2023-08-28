@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import CloudUpload from "@material-ui/icons/CloudUpload";
 import ImagePlaceholder from "../../../../assets/placeholder.jpg";
+import OtherCheckbox from "./OtherCheckbox";
 
 const styles = {
   imageContainer: {
@@ -93,6 +94,10 @@ const QuestionPreview = (props) => {
           )}
           <FormGroup>
             {choicesArr.map((item) => {
+              if (item === "...") {
+                return <OtherCheckbox key={item} otherData={{
+                }} onChange={() => {}}/>;
+              }
               return (
                 <FormControlLabel
                   key={item}
