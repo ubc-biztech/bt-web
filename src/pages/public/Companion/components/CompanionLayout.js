@@ -30,6 +30,7 @@ import {
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
+import Mentors from "pages/public/Companion/components/mentor/Mentors";
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
@@ -417,6 +418,11 @@ const CompanionLayout = (params) => {
                         }}>{header.text}</Link>;
                       }
                     })}
+                    {event && <a href="#Mentors" style={{
+                      ...styles.link,
+                      fontSize: constantStyles.fontSize
+                    }}>Mentors</a>
+                    }
                   </nav>
                 </FadeInWhenVisible>
               </div>
