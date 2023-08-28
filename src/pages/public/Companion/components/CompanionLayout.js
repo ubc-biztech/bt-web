@@ -30,7 +30,6 @@ import {
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
-import Mentors from "pages/public/Companion/components/mentor/Mentors";
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
