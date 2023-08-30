@@ -351,9 +351,6 @@ const UserMembershipFormContainer = (props) => {
       setIsSubmitting(false);
     });
   }
-  console.log(memberType);
-  console.log(validationSchema);
-
   return (
     <div className={classes.layout}>
       <Helmet>
