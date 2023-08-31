@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 const UserMembershipFormContainer = (props) => {
   const classes = useStyles();
   const history = useHistory();
-  const [memberType, setMemberType] = useState("");
+  const [memberType, setMemberType] = useState(MEMBER_TYPES.UBC);
   const [topics, setTopics] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -80,7 +80,6 @@ const UserMembershipFormContainer = (props) => {
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
-    education: Yup.string().required("Education is required"),
     prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
       if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {
@@ -352,7 +351,6 @@ const UserMembershipFormContainer = (props) => {
       setIsSubmitting(false);
     });
   }
-
   return (
     <div className={classes.layout}>
       <Helmet>
