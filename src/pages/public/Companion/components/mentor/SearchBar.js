@@ -7,6 +7,9 @@ import {
   TextField
 } from "@material-ui/core";
 import {
+  Autocomplete
+} from "@material-ui/lab";
+import {
   makeStyles
 } from "@material-ui/core/styles";
 import {
@@ -27,10 +30,14 @@ const useStyles = makeStyles({
     cursor: "pointer",
     flex: "none",
   },
+  autocomplete: {
+    width: "100%",
+    flexGrow: "1"
+  }
 });
 
 function SearchBar ({
-  setSearchQuery, searchQuery
+  setSearchQuery, searchQuery, options
 }) {
   const classes = useStyles();
   const searchRef = useRef(null);
@@ -58,31 +65,47 @@ function SearchBar ({
         display: "flex",
         alignItems: "center",
       }}>
-        <TextField
+        <Autocomplete
           id="search-bar"
-          className={classes.textfield}
-          onKeyDown={handleEnterKeyPress}
-          variant="outlined"
-          placeholder="Filter by skills..."
+          options={options}
+          freeSolo
           size="small"
-          color="primary"
-          fullWidth
-          flex="1"
-          inputRef={searchRef}
-          InputProps={{
-            style: {
-              color: constantStyles.textColor,
-            },
-            endAdornment:
-            <InputAdornment position="end">
-              <SearchIcon style={{
-                color:constantStyles.textColor,
-              }} onClick={handleSearchClick} className={classes.searchIcon}/>
-            </InputAdornment>
-          }}
-          InputLabelProps={{
-            shrink: false,
-          }}
+          onKeyDown={(e) => handleEnterKeyPress(e, e.target.value)}
+          className={classes.autocomplete}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              className={classes.textfield}
+              variant="outlined"
+              placeholder="Filter by skills..."
+              color="primary"
+              fullWidth
+              inputRef={searchRef}
+              InputProps={{
+                ...params.InputProps,
+                style: {
+                  color: constantStyles.textColor,
+                },
+                endAdornment: (
+                  <>
+                    {params.InputProps.endAdornment}
+                    <InputAdornment position="end">
+                      <SearchIcon
+                        style={{
+                          color: constantStyles.textColor,
+                        }}
+                        onClick={handleSearchClick}
+                        className={classes.searchIcon}
+                      />
+                    </InputAdornment>
+                  </>
+                ),
+              }}
+              InputLabelProps={{
+                shrink: false,
+              }}
+            />
+          )}
         />
       </div>
     </>
