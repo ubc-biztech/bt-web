@@ -22,7 +22,7 @@ import {
 
 const DataAndBeyond2023 = (params) => {
   const {
-    regData, email, styles, renderMobileOnly, FadeInWhenVisible
+    userRegistration, email, styles, renderMobileOnly, FadeInWhenVisible
   } = params;
   const [teamData, setTeamData] = useState(null);
   const [teamPoints, setTeamPoints] = useState({
@@ -117,10 +117,10 @@ const DataAndBeyond2023 = (params) => {
   };
 
   useEffect(() => {
-    if (email && regData) {
+    if (email && userRegistration) {
       fetchTeamData();
     }
-  }, [email, regData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [email, userRegistration]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (teamData) {

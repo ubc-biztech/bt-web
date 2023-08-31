@@ -50,6 +50,7 @@ import {
   BASIC_QUESTIONS,
   QUESTION_DOMAINS
 } from "constants/index";
+import OtherCheckbox from "./components/OtherCheckbox";
 
 const styles = {
   // Container for custom form image
@@ -77,6 +78,10 @@ const styles = {
   },
   submitSection: {
     padding: "2rem"
+  },
+  disabled: {
+    pointerEvents: "none",
+    color: "grey",
   }
 };
 
@@ -173,6 +178,8 @@ const FormRegister = (props) => {
   const [questionDomain, setQuestionDomain] = useState("");
   const [isNonMemberModalOpen, setisNonMemberModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [workshopChoicesArr, setWorkshopChoicesArr] = useState([]);
+  // const [workshopCounts, setWorkShopCounts] = useState([]);
 
   const parsedRegistrationQuestions = currEvent.registrationQuestions?.map(
     ({
@@ -230,6 +237,10 @@ const FormRegister = (props) => {
     Array.from(Array(formData.questions.length))
   ); // index of errors correspond to responses array (right above)
 
+  // data from "Other" checkboxes
+  const [otherData] = useState({
+  });
+
   useEffect(() => {
     const fetchEvent = async () => {
       if (!registeredEvents && user) {
@@ -257,10 +268,24 @@ const FormRegister = (props) => {
         );
         eventData.counts = regData;
         setCurrEvent(eventData);
+
+        // Populate the dynamicCounts array with data
+        eventData.counts.dynamicCounts.forEach((dynamicCount) => {
+          dynamicCount.counts.forEach((workshop) => {
+            if (workshop.count >= workshop.cap) {
+              workshop.isDisabled = true;
+            } else {
+              workshop.isDisabled = false;
+            }
+          });
+
+          // Push the modified dynamicCount into the dynamicCounts array
+          setWorkshopChoicesArr(eventData.counts.dynamicCounts);
+        });
       }
     };
     fetchEvent();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user, eventId, eventYear, registeredEvents, currEvent]);
 
   useEffect(() => {
     if (user) {
@@ -277,6 +302,41 @@ const FormRegister = (props) => {
     }
   }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (currEvent) {
+      const remaining =
+        currEvent.capac -
+        (currEvent.counts.registeredCount + currEvent.counts.checkedInCount);
+      if (remaining > 0 && remaining <= 20) {
+        setRegAlert(
+          <Alert severity="error" className={classes.regAlert}>
+            Warning: {currEvent.ename || "this event"} only has {remaining} spot
+            {remaining > 1 ? "s" : ""} left!
+          </Alert>
+        );
+      } else if (remaining <= 0 && !user) {
+        setRegAlert(
+          <Alert severity="error" className={classes.regAlert}>
+            Warning: {currEvent.ename || "this event"} is full!
+          </Alert>
+        );
+      } else {
+        setRegAlert(null);
+      }
+      if (
+        !(
+          user?.isMember ||
+          user?.admin ||
+          currEvent.pricing?.nonMembers === undefined ||
+          samePricing()
+        )
+      ) {
+        setisNonMemberModalOpen(true);
+      }
+    }
+  }, [currEvent]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // disable workshops which are full from selection and mark them as such
   useEffect(() => {
     if (currEvent) {
       const remaining =
@@ -330,8 +390,10 @@ const FormRegister = (props) => {
         // todo; check if response already exists (shouldn't happen, but to be safe)
 
         if (checked) {
-          // add
-          responses[index].push(value);
+          if (value) {
+            // add
+            responses[index].push(value);
+          }
         } else {
           // remove
           const newArr = responses[index].filter((choice) => choice !== value);
@@ -340,7 +402,9 @@ const FormRegister = (props) => {
       } else {
         // no items in yet
         const initialArr = [];
-        initialArr.push(value);
+        if (value) {
+          initialArr.push(value);
+        }
         responses[index] = initialArr;
       }
       setResponseData(responses);
@@ -388,6 +452,7 @@ const FormRegister = (props) => {
   );
 
   const loadQuestions = () => {
+    let workshopQuestionCount = 0;
     const returnArr = [];
     for (let i = 0; i < formData.questions.length; i++) {
       const {
@@ -424,6 +489,9 @@ const FormRegister = (props) => {
             <FormControl error={!!responseError[i]}>
               <FormGroup>
                 {choicesArr.map((item) => {
+                  if (item === "...") {
+                    return <OtherCheckbox key={item} onChange={(e) => updateCheckbox(i, e.target.checked, null)} otherData={otherData} index={i}/>;
+                  }
                   return (
                     <FormControlLabel
                       key={item}
@@ -643,6 +711,54 @@ const FormRegister = (props) => {
             </FormControl>
           </div>
         );
+      } else if (questionType === "WORKSHOP SELECTION") {
+        returnArr.push(
+          <div style={{
+            paddingBottom: "1.5rem"
+          }}>
+            <p style={{
+              opacity: "0.7",
+              fontSize: "1rem",
+              margin: "0.5rem 0"
+            }}>
+              {question}
+              {question && required && "*"}
+            </p>
+            {questionImageUrl && (
+              <div style={styles.imageContainer}>
+                <img
+                  style={styles.image}
+                  src={questionImageUrl || ImagePlaceholder}
+                  alt="Registration Form"
+                />
+              </div>
+            )}
+            <FormControl
+              error={!!responseError[i]}
+              helperText={!!responseError[i] && responseError[i]}
+            >
+              <Select
+                className={classes.select}
+                labelId="q-type"
+                variant="outlined"
+                margin="dense"
+                value={responseData[i] || ""}
+                onChange={(e) => updateField(i, e.target.value)}
+              >
+                {workshopChoicesArr.length && workshopChoicesArr[workshopQuestionCount].counts.map((countItem, index) => (
+                  <MenuItem key={index} value={countItem.label} disabled={countItem.isDisabled}>
+                    {countItem.label}
+                    {countItem.isDisabled ? " (Workshop is full)" : ""}
+                  </MenuItem>
+                ))}
+              </Select>
+              {!!responseError[i] && (
+                <FormHelperText>{responseError[i]}</FormHelperText>
+              )}
+            </FormControl>
+          </div>
+        );
+        workshopQuestionCount += 1;
       }
     }
     return returnArr;
@@ -664,7 +780,7 @@ const FormRegister = (props) => {
       if (question.questionType === "CHECKBOX") {
         // check if empty
         if (question.required) {
-          if (!responseData[i] || responseData[i].length <= 0) {
+          if (!otherData[i] && (!responseData[i] || responseData[i].length <= 0)) {
             newErrors[i] = "A selection is required";
             valid = false;
           }
@@ -703,7 +819,7 @@ const FormRegister = (props) => {
       const dynamicResponses = {
       };
       for (let i = BASIC_QUESTIONS.length; i < formData.questions.length; i++) {
-        if (formData.questions[i].questionType === "CHECKBOX") {
+        if (formData.questions[i].questionType === "CHECKBOX" || formData.questions[i].questionType === "WORKSHOP SELECTION") {
           dynamicResponses[formData.questions[i].questionId] = responseData[
             i
           ]?.join(", ");
@@ -794,9 +910,16 @@ const FormRegister = (props) => {
       };
       for (let i = BASIC_QUESTIONS.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
+          if (otherData[i]) {
+            dynamicResponses[formData.questions[i].questionId] = responseData[
+              i
+            ].push(otherData[i]);
+          }
           dynamicResponses[formData.questions[i].questionId] = responseData[
             i
           ]?.join(", ");
+        } else if (formData.questions[i].questionType === "WORKSHOP SELECTION") {
+          dynamicResponses[formData.questions[i].questionId] = responseData[i];
         } else {
           dynamicResponses[formData.questions[i].questionId] = responseData[i];
         }
@@ -830,7 +953,7 @@ const FormRegister = (props) => {
         })
         .catch((err) => {
           alert(
-            `An error has occured: ${err} Please contact an exec for support.`
+            `An error has occured: ${err} Please contact an exec for support. 4`
           );
           setIsSubmitting(false);
         });

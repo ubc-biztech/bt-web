@@ -28,10 +28,11 @@ const Companion = () => {
   const [pageError, setPageError] = useState("");
   const [error, setError] = useState("");
   const [registrations, setRegistrations] = useState([]);
-  const [regData, setRegData] = useState(null);
+  const [event, setEvent] = useState(null);
+  const [userRegistration, setUserRegistration] = useState(null);
   const [scheduleData, setScheduleData] = useState([]);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const events = Events.sort((a, b) => {
     return  a.activeUntil - b.activeUntil;
@@ -48,7 +49,7 @@ const Companion = () => {
     const reg = registrations.find((entry) => entry.id === email);
     if (reg) {
       setError("");
-      setRegData(reg);
+      setUserRegistration(reg);
       localStorage.setItem("companionEmail", email);
     } else {
       setError("This email does not match an existing entry our records. Please check that your input is valid and is the same email you used to register for the event. Note that emails are case-sensitive.");
@@ -57,7 +58,6 @@ const Companion = () => {
   };
 
   const fetchRegistrations = async () => {
-    setIsLoading(true);
     const params = new URLSearchParams({
       eventID,
       year
@@ -65,19 +65,31 @@ const Companion = () => {
     await fetchBackend(`/registrations?${params}`, "GET", undefined, false)
       .then((response) => {
         setRegistrations(response.data);
-        setIsLoading(false);
       }).catch((err) => {
         setPageError(err);
-        setIsLoading(false);
+      });
+  };
+
+  const fetchEvent = async () => {
+    await fetchBackend(`/events/${eventID}/${year}`, "GET", undefined)
+      .then((response) => {
+        setEvent(response);
+      }).catch((err) => {
+        console.log("Error while fetching event info : ", err);
+        setPageError(err);
       });
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchRegistrations();
+    fetchEvent();
+
     const email = localStorage.getItem("companionEmail");
     if (email) {
       setEmail(email);
     }
+    setIsLoading(false);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -88,10 +100,10 @@ const Companion = () => {
   }, [email, registrations]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (regData) {
-      setScheduleData(options.getScheduleData(regData));
+    if (userRegistration) {
+      setScheduleData(options.getScheduleData(userRegistration));
     }
-  },[regData]);
+  },[userRegistration]);
 
   if (pageError) {
     return (
@@ -102,7 +114,7 @@ const Companion = () => {
   }
 
   return (
-    <CompanionLayout options={options} email={email} setEmail={setEmail} regData={regData} isLoading={isLoading} error={error}
+    <CompanionLayout options={options} email={email} setEmail={setEmail} registrations={registrations} userRegistration={userRegistration} event={event} isLoading={isLoading} error={error}
       scheduleData={scheduleData}
       ChildComponent={ChildComponent}
     />

@@ -3,5 +3,5 @@ export const constantStyles = {
   titleMobileFontSize: 25,
   fontSize: 16,
   mobileFontSize: 12,
-  textColor: "#172442",
+  textColor: "white",
 };
