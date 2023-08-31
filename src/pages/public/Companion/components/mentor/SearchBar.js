@@ -1,5 +1,6 @@
 import React, {
-  useRef
+  useRef,
+  useState,
 } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import {
@@ -39,22 +40,23 @@ const useStyles = makeStyles({
 function SearchBar ({
   setSearchQuery, searchQuery, options
 }) {
+  const [inputValue, setInputValue] = useState("");
   const classes = useStyles();
   const searchRef = useRef(null);
 
   const handleEnterKeyPress = (e) => {
-    if (e.keyCode === 13 && e.target.value !== "") {
+    if (e.keyCode === 13 && inputValue) {
       e.preventDefault();
-      setSearchQuery([...searchQuery, e.target.value]);
-      e.target.value = "";
+      setSearchQuery([...searchQuery, inputValue]);
+      setInputValue("");
     }
   };
 
   const handleSearchClick = (e) => {
-    if (searchRef.current.value !== "") {
+    if (inputValue !== "") {
       e.preventDefault();
-      setSearchQuery([...searchQuery, searchRef.current.value]);
-      searchRef.current.value = "";
+      setSearchQuery([...searchQuery, inputValue]);
+      setInputValue("");
     }
   };
 
@@ -71,6 +73,10 @@ function SearchBar ({
           freeSolo
           size="small"
           onKeyDown={(e) => handleEnterKeyPress(e, e.target.value)}
+          inputValue={inputValue}
+          onInputChange={(event, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
           className={classes.autocomplete}
           renderInput={(params) => (
             <TextField
