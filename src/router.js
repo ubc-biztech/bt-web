@@ -40,7 +40,6 @@ import PublicEventRoutes from "pages/public/Event";
 
 import Redeem from "pages/public/Gamification/Redeem";
 import Redemption from "pages/public/Gamification/Redemption";
-import Mentors from "pages/admin/Mentors/Mentors.js";
 
 import {
   setUser,
@@ -160,7 +159,6 @@ class Router extends Component {
           path="/companion/reset"
           render={() => <CompanionReset />}
         />
-        <Route path="/companion/mentors" render={() => <Mentors />} />
         <Route path="/companion" render={() => <Companion />} />
         <Route path="/leaderboard" render={() => <Leaderboard />} />
         {/* ADMIN ROUTES */}

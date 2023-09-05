@@ -1,15 +1,9 @@
 import React, {
   useEffect, useState
 } from "react";
+import MentorCard from "pages/public/Companion/components/mentor/MentorCard";
 import {
-  fetchBackend
-} from "../../../utils";
-import {
-  Helmet
-} from "react-helmet";
-import MentorCard from "components/mentor/MentorCard";
-import {
-  Box, Chip, Grid, CircularProgress
+  Box, Chip, Grid, Typography
 } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
@@ -18,15 +12,8 @@ import {
 import {
   makeStyles
 } from "@material-ui/core/styles";
-import events from "pages/public/Companion/events";
-import SearchBar from "components/inputs/SearchBar";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import {
-  COLORS
-} from "constants/index";
-import {
-  Link
-} from "react-router-dom";
+import Loading from "pages/Loading";
+import SearchBar from "pages/public/Companion/components/mentor/SearchBar";
 
 const useStyles = makeStyles({
   mainContainer: {
@@ -44,7 +31,7 @@ const useStyles = makeStyles({
     width: "90%",
     "&:after": {
       content: "",
-      flex: "auto"
+      flex: "auto",
     }
   },
   mobileMentorsContainer: {
@@ -55,26 +42,24 @@ const useStyles = makeStyles({
     alignItems: "center",
     width: "90%",
   },
+  mentorsGridItem: {
+    flex: "0 0 calc(33.33% - 15px)",
+    marginBottom: "15px",
+  },
   filterContainer: {
     margin: "0% 2% 0% 2%",
-    border: "solid white 2px",
-    borderRadius: "10px",
-    background: COLORS.WHITE,
     padding: "1%",
   },
   mobileFilterContainer: {
-    margin: "0% 2% 0% 2%",
-    border: "solid white 2px",
-    borderRadius: "10px",
-    background: COLORS.WHITE,
     padding: "1%",
   },
   chip: {
-    borderRadius: "10px"
+    borderRadius: "10px",
+    backgroundColor:"transparent",
   },
   skillChip: {
     marginTop: "10px",
-    marginLeft: "10px"
+    marginLeft: "10px",
   },
   skillContainer: {
     display: "flex",
@@ -82,46 +67,25 @@ const useStyles = makeStyles({
     flexWrap: "wrap",
     minHeight: "50px",
     marginTop: "1%",
-    marginBottom: "1%"
+    marginBottom: "1%",
   },
   gridContainer: {
     alignItems: "center",
     justifyContent: "center",
-    overflow: "hidden"
+    overflow: "hidden",
   },
   gridItem: {
-    // border: "solid yellow 2px",
-    overflow: "hidden"
+    overflow: "hidden",
   },
-  backButton: {
-    display: "flex",
-    fontSize: "1.1rem",
-    padding: "1% 0 1% 2%",
-    color: "white"
-  },
-  mobileBackButton: {
-    display: "flex",
-    fontSize: "1.1rem",
-    padding: "1% 0 2% 2%",
-    color: "white"
-  }
 });
 
-function Mentors() {
+function Mentors(props) {
+  const {
+    event, registrations, styles
+  } = props;
   const theme = useTheme();
   const classes = useStyles();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const sortedEvents = events.sort((a, b) => {
-    return  a.activeUntil - b.activeUntil;
-  });
-  // find the event that is most revent, or just return the first event
-  const {
-    eventID: eventName, year: eventYear
-  } = sortedEvents.find(event => {
-    const today = new Date();
-    return event.activeUntil > today;
-  }) || sortedEvents[0];
 
   const [searchQuery, setSearchQuery] = useState([]);
   const [mentors, setMentors] = useState([]);
@@ -129,29 +93,22 @@ function Mentors() {
   const [skillsQuestionId, setSkillsQuestionId] = useState("");
 
   useEffect(() => {
-    const fetchEventData = async () => {
-      const res = await fetchBackend(`/events/${eventName}/${eventYear}}`, "GET", undefined, false);
-      res.partnerRegistrationQuestions.forEach(question => {
+    if (event) {
+      event.partnerRegistrationQuestions.forEach(question => {
         if (question?.isSkillsQuestion) {
           setSkillsQuestionId(question.questionId);
         }
       });
-      return res;
-    };
-    if (eventName && eventYear) {
-      fetchEventData();
     }
-  }, [eventName]);
+  }, [event]);
 
   useEffect(() => {
     const fetchMentors = async () => {
-      const params = new URLSearchParams({
-        eventID: eventName,
-        year: eventYear,
-        isPartner: true
+      const mentorsList = registrations.filter(response => {
+        return response.isPartner === true;
       });
-      const res = await fetchBackend(`/registrations?${params}`, "GET", undefined, false);
-      const mentorsList = res.data.map(mentor => {
+
+      const mentorsParsed = mentorsList.map(mentor => {
         return {
           ...mentor.basicInformation,
           profilePhoto: mentor.profilePhoto,
@@ -162,8 +119,8 @@ function Mentors() {
               .map((skill) => skill.replace(",", ""))
         };
       });
-      setFilteredMentors(mentorsList);
-      setMentors(mentorsList);
+      setFilteredMentors(mentorsParsed);
+      setMentors(mentorsParsed);
     };
     fetchMentors();
   }, [skillsQuestionId]);
@@ -177,12 +134,11 @@ function Mentors() {
     };
   }, [searchQuery]);
 
-  // TODO: Add data cleaning to ensure taht all partner skills are lowercase
   const filterMentors = () => {
     const newFilteredMentors = mentors.filter(mentor => {
       let skillMatch = false;
       searchQuery.forEach((skill) => {
-        if (mentor.skills.includes(skill.toLowerCase())) skillMatch = true;
+        if (mentor.skills.map(mentorSkill => mentorSkill.toLowerCase()).includes(skill.toLowerCase())) skillMatch = true;
       });
       return skillMatch;
     });
@@ -196,24 +152,16 @@ function Mentors() {
 
   return (
     <>
-      {eventName && eventYear ?
+      { event ?
         <>
-          <Helmet>
-            <title>{eventName} Mentors</title>
-          </Helmet>
-          <div className={ renderMobileOnly ? classes.mobileBackButton : classes.backButton}>
-            <Link to="/companion">
-              <ArrowBackIcon onClick={() => console.log("hi")} style={{
-                cursor: "pointer"
-              }}></ArrowBackIcon>
-            </Link>
-          </div>
-          <div className={classes.mainContainer}>
+          <div id="Mentors" className={classes.mainContainer} style={styles.column}>
+            <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Mentors</h1>
             <div className={renderMobileOnly ? classes.mobileMentorsContainer : classes.mentorsContainer}>
-              <Grid container spacing={6}>
+              <Grid container spacing={1}>
                 <Grid item xs={12} sm={12} md={12} className={classes.gridItem}>
                   <Box className={renderMobileOnly ? classes.mobileFilterContainer : classes.filterContainer}>
-                    <SearchBar setSearchQuery={setSearchQuery} searchQuery={searchQuery}/>
+                    <SearchBar setSearchQuery={setSearchQuery} searchQuery={searchQuery} />
+                    {searchQuery.length !== 0 &&
                     <Box className={classes.skillContainer}>
                       {
                         searchQuery.map((skill, idx) => {
@@ -221,6 +169,7 @@ function Mentors() {
                             <Chip
                               key={idx}
                               label={skill}
+                              variant="outlined"
                               classes={{
                                 root: classes.chip
                               }}
@@ -231,11 +180,25 @@ function Mentors() {
                           );
                         })
                       }
-                    </Box>
+                    </Box>}
                   </Box>
                 </Grid>
-                {filteredMentors.map((mentor, idx) => (
-                  <Grid key={idx} item xs={12} sm={6} md={4} className={classes.gridItem}>
+                {filteredMentors.length === 0 ? (
+                  <Grid item xs={12} className={classes.gridItem}>
+                    <Box
+                      height="100%"
+                      width="100%"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Typography variant="body1" color="textSecondary">
+                        No mentors found. Please try another filter.
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ) : (filteredMentors.map((mentor, idx) => (
+                  <Grid key={idx} item xs={6} sm={6} md={3} className={classes.gridItem}>
                     <Box
                       height="100%"
                       width="100%"
@@ -246,10 +209,11 @@ function Mentors() {
                       <MentorCard key={idx} mentor={mentor} />
                     </Box>
                   </Grid>
-                ))}
+                ))
+                )}
               </Grid>
             </div>
-          </div> </>: <CircularProgress />}
+          </div> </>: <Loading />}
     </>
   );
 }

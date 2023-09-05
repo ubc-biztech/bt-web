@@ -50,6 +50,7 @@ import {
   BASIC_QUESTIONS,
   QUESTION_DOMAINS
 } from "constants/index";
+import OtherCheckbox from "./components/OtherCheckbox";
 
 const styles = {
   // Container for custom form image
@@ -236,6 +237,10 @@ const FormRegister = (props) => {
     Array.from(Array(formData.questions.length))
   ); // index of errors correspond to responses array (right above)
 
+  // data from "Other" checkboxes
+  const [otherData] = useState({
+  });
+
   useEffect(() => {
     const fetchEvent = async () => {
       if (!registeredEvents && user) {
@@ -385,8 +390,10 @@ const FormRegister = (props) => {
         // todo; check if response already exists (shouldn't happen, but to be safe)
 
         if (checked) {
-          // add
-          responses[index].push(value);
+          if (value) {
+            // add
+            responses[index].push(value);
+          }
         } else {
           // remove
           const newArr = responses[index].filter((choice) => choice !== value);
@@ -395,7 +402,9 @@ const FormRegister = (props) => {
       } else {
         // no items in yet
         const initialArr = [];
-        initialArr.push(value);
+        if (value) {
+          initialArr.push(value);
+        }
         responses[index] = initialArr;
       }
       setResponseData(responses);
@@ -480,6 +489,9 @@ const FormRegister = (props) => {
             <FormControl error={!!responseError[i]}>
               <FormGroup>
                 {choicesArr.map((item) => {
+                  if (item === "...") {
+                    return <OtherCheckbox key={item} onChange={(e) => updateCheckbox(i, e.target.checked, null)} otherData={otherData} index={i}/>;
+                  }
                   return (
                     <FormControlLabel
                       key={item}
@@ -807,7 +819,7 @@ const FormRegister = (props) => {
       if (question.questionType === "CHECKBOX") {
         // check if empty
         if (question.required) {
-          if (!responseData[i] || responseData[i].length <= 0) {
+          if (!otherData[i] && (!responseData[i] || responseData[i].length <= 0)) {
             newErrors[i] = "A selection is required";
             valid = false;
           }
@@ -937,6 +949,11 @@ const FormRegister = (props) => {
       };
       for (let i = BASIC_QUESTIONS.length; i < formData.questions.length; i++) {
         if (formData.questions[i].questionType === "CHECKBOX") {
+          if (otherData[i]) {
+            dynamicResponses[formData.questions[i].questionId] = responseData[
+              i
+            ].push(otherData[i]);
+          }
           dynamicResponses[formData.questions[i].questionId] = responseData[
             i
           ]?.join(", ");
