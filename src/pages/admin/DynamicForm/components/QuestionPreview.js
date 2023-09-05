@@ -145,7 +145,7 @@ const QuestionPreview = (props) => {
         </div>
       )
     );
-  } else if (type === "TEXT") {
+  } else if (type === "TEXT" || type === "SKILLS") {
     return (
       label && (
         <div style={{

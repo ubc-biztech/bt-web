@@ -407,7 +407,7 @@ const FormRegisterPartner = (props) => {
             </FormControl>
           </div>
         );
-      } else if (questionType === "TEXT") {
+      } else if (questionType === "TEXT" || questionType === "SKILLS") {
         returnArr.push(
           <div style={{
             paddingBottom: "1.5rem"
