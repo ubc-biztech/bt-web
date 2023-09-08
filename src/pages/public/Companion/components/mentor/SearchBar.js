@@ -1,11 +1,15 @@
 import React, {
-  useRef
+  useRef,
+  useState,
 } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import {
   InputAdornment,
   TextField
 } from "@material-ui/core";
+import {
+  Autocomplete
+} from "@material-ui/lab";
 import {
   makeStyles
 } from "@material-ui/core/styles";
@@ -27,27 +31,32 @@ const useStyles = makeStyles({
     cursor: "pointer",
     flex: "none",
   },
+  autocomplete: {
+    width: "100%",
+    flexGrow: "1"
+  }
 });
 
 function SearchBar ({
-  setSearchQuery, searchQuery
+  setSearchQuery, searchQuery, options
 }) {
+  const [inputValue, setInputValue] = useState("");
   const classes = useStyles();
   const searchRef = useRef(null);
 
   const handleEnterKeyPress = (e) => {
-    if (e.keyCode === 13 && e.target.value !== "") {
+    if (e.keyCode === 13 && inputValue) {
       e.preventDefault();
-      setSearchQuery([...searchQuery, e.target.value]);
-      e.target.value = "";
+      setSearchQuery([...searchQuery, inputValue]);
+      setInputValue("");
     }
   };
 
   const handleSearchClick = (e) => {
-    if (searchRef.current.value !== "") {
+    if (inputValue !== "") {
       e.preventDefault();
-      setSearchQuery([...searchQuery, searchRef.current.value]);
-      searchRef.current.value = "";
+      setSearchQuery([...searchQuery, inputValue]);
+      setInputValue("");
     }
   };
 
@@ -58,31 +67,51 @@ function SearchBar ({
         display: "flex",
         alignItems: "center",
       }}>
-        <TextField
+        <Autocomplete
           id="search-bar"
-          className={classes.textfield}
-          onKeyDown={handleEnterKeyPress}
-          variant="outlined"
-          placeholder="Filter by skills..."
+          options={options}
+          freeSolo
           size="small"
-          color="primary"
-          fullWidth
-          flex="1"
-          inputRef={searchRef}
-          InputProps={{
-            style: {
-              color: constantStyles.textColor,
-            },
-            endAdornment:
-            <InputAdornment position="end">
-              <SearchIcon style={{
-                color:constantStyles.textColor,
-              }} onClick={handleSearchClick} className={classes.searchIcon}/>
-            </InputAdornment>
+          onKeyDown={(e) => handleEnterKeyPress(e, e.target.value)}
+          inputValue={inputValue}
+          onInputChange={(event, newInputValue) => {
+            setInputValue(newInputValue);
           }}
-          InputLabelProps={{
-            shrink: false,
-          }}
+          className={classes.autocomplete}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              className={classes.textfield}
+              variant="outlined"
+              placeholder="Filter by skills..."
+              color="primary"
+              fullWidth
+              inputRef={searchRef}
+              InputProps={{
+                ...params.InputProps,
+                style: {
+                  color: constantStyles.textColor,
+                },
+                endAdornment: (
+                  <>
+                    {params.InputProps.endAdornment}
+                    <InputAdornment position="end">
+                      <SearchIcon
+                        style={{
+                          color: constantStyles.textColor,
+                        }}
+                        onClick={handleSearchClick}
+                        className={classes.searchIcon}
+                      />
+                    </InputAdornment>
+                  </>
+                ),
+              }}
+              InputLabelProps={{
+                shrink: false,
+              }}
+            />
+          )}
         />
       </div>
     </>
