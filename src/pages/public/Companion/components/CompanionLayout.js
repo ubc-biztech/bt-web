@@ -363,7 +363,6 @@ const CompanionLayout = (params) => {
                   value={input}
                   variant="outlined"
                   label="Email"
-                  autoCapitalize={false}
                   inputProps={{
                     autoCapitalize: "none",
                     style: {
