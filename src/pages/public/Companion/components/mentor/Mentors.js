@@ -116,6 +116,7 @@ function Mentors(props) {
           skills: skillsQuestionId === "" ? [] :
             mentor.dynamicResponses[skillsQuestionId]
               .split(",")
+              .map((skill) => skill.trim())
               .filter((skill) => skill !== "")
               .map((skill) => {
                 optionsSet.add(skill);
