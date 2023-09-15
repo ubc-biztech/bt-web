@@ -109,6 +109,7 @@ function Mentors(props) {
       });
 
       const optionsSet = new Set();
+      const optionSetLowerCase = new Set();
       const mentorsParsed = mentorsList.map(mentor => {
         return {
           ...mentor.basicInformation,
@@ -116,9 +117,10 @@ function Mentors(props) {
           skills: skillsQuestionId === "" ? [] :
             mentor.dynamicResponses[skillsQuestionId]
               .split(",")
-              .filter((skill) => skill !== "")
+              .filter((skill) => skill !== "" && !optionSetLowerCase.contains(skill.toLowerCase().trim()))
               .map((skill) => {
-                optionsSet.add(skill);
+                optionsSet.add(skill.trim());
+                optionSetLowerCase.add(skill.toLowerCase().trim());
                 return skill.replace(",", "");
               })
         };
