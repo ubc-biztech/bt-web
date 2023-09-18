@@ -162,10 +162,10 @@ const FormRegisterPartner = (props) => {
       required: true
     },
     {
-      questionType: "TEXT",
-      question: "Pronouns",
-      choices: "",
-      required: true
+      questionType: "SELECT",
+      question: "Preferred Pronouns",
+      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+      required: true,
     },
     {
       questionType: "TEXT",
