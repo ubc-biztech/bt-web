@@ -55,7 +55,7 @@ const CustomQuestion = (props) => {
   } = useFormikContext();
 
   const {
-    id, name, index, length
+    id, name, index, length, formType
   } = props;
 
   const {
@@ -159,7 +159,9 @@ const CustomQuestion = (props) => {
           <MenuItem value="SELECT">Selection</MenuItem>
           <MenuItem value="UPLOAD">Upload</MenuItem>
           <MenuItem value="WORKSHOP SELECTION">Workshop Selection</MenuItem>
-          <MenuItem value="SKILLS">Skills</MenuItem>
+          { formType === "PARTNER" &&
+            <MenuItem value="SKILLS">Skills</MenuItem>
+          }
         </Select>
         <div style={questionStyles.iconsContainer}>
           <div style={questionStyles.move}>

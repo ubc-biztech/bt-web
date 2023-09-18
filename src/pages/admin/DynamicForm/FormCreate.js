@@ -233,6 +233,7 @@ const FormCreateForm = (props) => {
                   key={index}
                   index={index}
                   length={registrationQuestions.length}
+                  formType={"ATTENDEE"}
                   data={question}
                   fnMove={swap}
                   fnDelete={remove}
@@ -274,6 +275,7 @@ const FormCreateForm = (props) => {
                   key={index}
                   index={index}
                   length={partnerRegistrationQuestions.length}
+                  formType={"PARTNER"}
                   data={question}
                   fnMove={swap}
                   fnDelete={remove}
