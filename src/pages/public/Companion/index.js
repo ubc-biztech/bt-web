@@ -71,7 +71,7 @@ const Companion = () => {
   };
 
   const fetchEvent = async () => {
-    await fetchBackend(`/events/${eventID}/${year}`, "GET", undefined)
+    await fetchBackend(`/events/${eventID}/${year}`, "GET", undefined, false)
       .then((response) => {
         setEvent(response);
       }).catch((err) => {

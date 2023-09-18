@@ -90,7 +90,7 @@ export default [
       /* Displayed date of event */
       date: "Friday, September 15th",
       // @TODO change this
-      location: "TBD",
+      location: "UBC Asian Centre Auditorium",
       // @TODO change this
       colors: {
         primary: "linear-gradient(180deg, #FFFFFF, #FFFFFF)",

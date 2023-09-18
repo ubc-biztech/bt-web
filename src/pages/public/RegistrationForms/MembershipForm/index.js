@@ -87,7 +87,6 @@ const MembershipFormContainer = (props) => {
     email: Yup.string().email().required(),
     first_name: Yup.string().required("First name is required"),
     last_name: Yup.string().required("Last name is required"),
-    education: Yup.string().required("Education is required"),
     prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
       if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {

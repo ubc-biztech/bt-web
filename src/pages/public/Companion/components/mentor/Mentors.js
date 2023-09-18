@@ -47,8 +47,7 @@ const useStyles = makeStyles({
     marginBottom: "15px",
   },
   filterContainer: {
-    margin: "0% 2% 0% 2%",
-    padding: "1%",
+    margin: "1rem 0",
   },
   mobileFilterContainer: {
     padding: "1%",
@@ -91,6 +90,7 @@ function Mentors(props) {
   const [mentors, setMentors] = useState([]);
   const [filteredMentors, setFilteredMentors] = useState([]);
   const [skillsQuestionId, setSkillsQuestionId] = useState("");
+  const [options, setOptions] = useState([]);
 
   useEffect(() => {
     if (event) {
@@ -108,22 +108,30 @@ function Mentors(props) {
         return response.isPartner === true;
       });
 
+      const optionsSet = new Set();
+      const optionSetLowerCase = new Set();
       const mentorsParsed = mentorsList.map(mentor => {
         return {
           ...mentor.basicInformation,
           profilePhoto: mentor.profilePhoto,
           skills: skillsQuestionId === "" ? [] :
             mentor.dynamicResponses[skillsQuestionId]
-              .split(" ")
-              .filter((skill) => skill !== "")
-              .map((skill) => skill.replace(",", ""))
+              .split(",")
+              .filter((skill) => skill !== "" && !optionSetLowerCase.contains(skill.toLowerCase().trim()))
+              .map((skill) => {
+                optionsSet.add(skill.trim());
+                optionSetLowerCase.add(skill.toLowerCase().trim());
+                return skill.replace(",", "");
+              })
         };
       });
+      setOptions(Array.from(optionsSet));
       setFilteredMentors(mentorsParsed);
       setMentors(mentorsParsed);
     };
     fetchMentors();
   }, [skillsQuestionId]);
+
 
   useEffect(() => {
     if (searchQuery.length <= 0) setFilteredMentors([...mentors]);
@@ -160,7 +168,7 @@ function Mentors(props) {
               <Grid container spacing={1}>
                 <Grid item xs={12} sm={12} md={12} className={classes.gridItem}>
                   <Box className={renderMobileOnly ? classes.mobileFilterContainer : classes.filterContainer}>
-                    <SearchBar setSearchQuery={setSearchQuery} searchQuery={searchQuery} />
+                    <SearchBar setSearchQuery={setSearchQuery} searchQuery={searchQuery} options={options} />
                     {searchQuery.length !== 0 &&
                     <Box className={classes.skillContainer}>
                       {
