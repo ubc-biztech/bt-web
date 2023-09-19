@@ -158,6 +158,8 @@ const FormCreateForm = (props) => {
   } = useParams();
   const [viewUserForm, setViewUserForm] = useState(true);
 
+  const isEditMode = !!eventId; // Check if in edit mode or not
+
   const {
     values: {
       imageUrl,
@@ -333,7 +335,7 @@ const FormCreateForm = (props) => {
               (
                 <FormCreatePreview
                   imageUrl={imageUrl}
-                  type={"partner"}check
+                  type={"partner"} check
                   eventName={eventName}
                   description={partnerDescription}
                   questionsData={partnerRegistrationQuestions}
@@ -396,7 +398,7 @@ const FormCreateForm = (props) => {
                   ) : (
                     <Button variant="contained"
                       color="primary"
-                      onClick = {() => handleComplete(true)}
+                      onClick={() => handleComplete(true)}
                     >
                       Mark as Complete
                     </Button>
@@ -496,6 +498,7 @@ const FormCreateForm = (props) => {
                 value={slug}
                 error={showError("slug")}
                 helperText={showError("slug") && errors.slug}
+                disabled={isEditMode} // Disable textbox if in edit mode
               />
               {slug && (
                 <div style={{
@@ -984,7 +987,7 @@ const FormCreate = (props) => {
       });
   }
 
-  async function handleComplete (complete = false) {
+  async function handleComplete(complete = false) {
     const body = {
       isCompleted: complete
     };
@@ -992,7 +995,7 @@ const FormCreate = (props) => {
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
       .then((response) => {
         alert(response.message);
-        fetchEvents ();
+        fetchEvents();
         history.replace(`/admin/event/${eventId}/${eventYear}/edit`);
         window.location.reload();
       })
