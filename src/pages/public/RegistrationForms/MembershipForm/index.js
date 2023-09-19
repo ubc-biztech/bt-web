@@ -267,6 +267,10 @@ const MembershipFormContainer = (props) => {
             like to continue being part of the BizTech Network, kindly renew
             your membership by filling out this form and completing the payment.
           </Typography>
+          <Typography className={classes.description}>
+            Please note that being a member does <b>not</b> guarantee you a spot in our
+            events. Some events may require an application process.
+          </Typography>
           <Typography>
             The form below has been automatically filled with your current user
             information. You can change these fields which will also
