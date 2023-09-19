@@ -468,7 +468,7 @@ const FormRegister = (props) => {
         returnArr.push(
           <div style={{
             paddingBottom: "1.5rem"
-          }}> 
+          }}>
             <p style={{
               opacity: "0.7",
               fontSize: "1rem",

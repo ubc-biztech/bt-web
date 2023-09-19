@@ -1,4 +1,6 @@
-import React, {useEffect} from "react";
+import React, {
+  useEffect
+} from "react";
 import {
   makeStyles
 } from "@material-ui/core/styles";
@@ -134,9 +136,9 @@ const CustomQuestion = (props) => {
       switch (type) {
       case "SKILLS":
         setFieldValue(`partnerRegistrationQuestions[${index}].isSkillsQuestion`, true);
-      }
+      };
     });
-  }, [values.partnerRegistrationQuestions])
+  }, [values.partnerRegistrationQuestions]);
 
   return (
     <div style={questionStyles.card}>
