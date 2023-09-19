@@ -464,11 +464,11 @@ const FormRegister = (props) => {
         charLimit
       } = formData.questions[i];
       const choicesArr = choices ? choices.split(",") : [];
-      if (questionType === "CHECKBOX") {
+      if (questionType === "CHECKBOX" || questionType === "SKILLS") {
         returnArr.push(
           <div style={{
             paddingBottom: "1.5rem"
-          }}>
+          }}> 
             <p style={{
               opacity: "0.7",
               fontSize: "1rem",
@@ -733,45 +733,6 @@ const FormRegister = (props) => {
                 />
               </div>
             )}
-            <FormControl
-              error={!!responseError[i]}
-              helperText={!!responseError[i] && responseError[i]}
-            >
-              <Select
-                className={classes.select}
-                labelId="q-type"
-                variant="outlined"
-                margin="dense"
-                value={responseData[i] || ""}
-                onChange={(e) => updateField(i, e.target.value)}
-              >
-                {workshopChoicesArr.length && workshopChoicesArr[workshopQuestionCount].counts.map((countItem, index) => (
-                  <MenuItem key={index} value={countItem.label} disabled={countItem.isDisabled}>
-                    {countItem.label}
-                    {countItem.isDisabled ? " (Workshop is full)" : ""}
-                  </MenuItem>
-                ))}
-              </Select>
-              {!!responseError[i] && (
-                <FormHelperText>{responseError[i]}</FormHelperText>
-              )}
-            </FormControl>
-          </div>
-        );
-        workshopQuestionCount += 1;
-      } else if (questionType === "SKILLS") {
-        returnArr.push(
-          <div style={{
-            paddingBottom: "1.5rem"
-          }}>
-            <p style={{
-              opacity: "0.7",
-              fontSize: "1rem",
-              margin: "0.5rem 0"
-            }}>
-              {question}
-              {question && required && "*"}
-            </p>
             <FormControl
               error={!!responseError[i]}
               helperText={!!responseError[i] && responseError[i]}

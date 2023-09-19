@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   makeStyles
 } from "@material-ui/core/styles";
@@ -127,7 +127,8 @@ const CustomQuestion = (props) => {
     );
   };
 
-  const handleCustomQuestionDefaultFieldsChange = () => {
+  // handle new fields for changing custom questions per type
+  useEffect(() => {
     values.partnerRegistrationQuestions.forEach((question, index) => {
       const type = question.type;
       switch (type) {
@@ -135,7 +136,7 @@ const CustomQuestion = (props) => {
         setFieldValue(`partnerRegistrationQuestions[${index}].isSkillsQuestion`, true);
       }
     });
-  };
+  }, [values.partnerRegistrationQuestions])
 
   return (
     <div style={questionStyles.card}>
@@ -148,10 +149,7 @@ const CustomQuestion = (props) => {
           variant="outlined"
           margin="dense"
           value={type}
-          onChange={(e) => {
-            handleCustomQuestionDefaultFieldsChange();
-            handleChange(e);
-          }}
+          onChange={(e) => handleChange(e)}
           onBlur={handleBlur}
         >
           <MenuItem value="TEXT">Text</MenuItem>
@@ -245,7 +243,7 @@ const CustomQuestion = (props) => {
           </Tooltip>
         )}
 
-        {(type === "SELECT" || type === "CHECKBOX") && (
+        {(type === "SELECT" || type === "CHECKBOX" || type === "SKILLS") && (
           <>
             <TextField
               id={`${id}.choices`}

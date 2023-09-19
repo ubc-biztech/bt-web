@@ -313,7 +313,7 @@ const FormRegisterPartner = (props) => {
         i
       ];
       const choicesArr = choices ? choices.split(",") : [];
-      if (questionType === "CHECKBOX") {
+      if (questionType === "CHECKBOX" || questionType === "SKILLS") {
         returnArr.push(
           <div style={{
             paddingBottom: "1.5rem"
@@ -417,7 +417,7 @@ const FormRegisterPartner = (props) => {
             </FormControl>
           </div>
         );
-      } else if (questionType === "TEXT" || questionType === "SKILLS") {
+      } else if (questionType === "TEXT") {
         returnArr.push(
           <div style={{
             paddingBottom: "1.5rem"

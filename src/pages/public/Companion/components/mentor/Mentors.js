@@ -107,20 +107,17 @@ function Mentors(props) {
       const mentorsList = registrations.filter(response => {
         return response.isPartner === true;
       });
-
       const optionsSet = new Set();
       const mentorsParsed = mentorsList.map(mentor => {
         return {
           ...mentor.basicInformation,
           profilePhoto: mentor.profilePhoto,
-          skills: skillsQuestionId === "" ? [] :
+          skills: skillsQuestionId === "" || !mentor.dynamicResponses[skillsQuestionId] ? [] :
             mentor.dynamicResponses[skillsQuestionId]
-              .split(",")
-              .map((skill) => skill.trim())
-              .filter((skill) => skill !== "")
+              .filter((skill) => skill !== "" || skill.trim() !== "")
               .map((skill) => {
-                optionsSet.add(skill);
-                return skill.replace(",", "");
+                optionsSet.add(skill.trim());
+                return skill;
               })
         };
       });
