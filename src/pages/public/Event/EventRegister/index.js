@@ -308,7 +308,7 @@ const EventFormContainer = (props) => {
       eventID,
       year: eventYear,
       heardFrom,
-      registrationStatus: "registered",
+      registrationStatus: eventID === "hello-hacks" ? "waitlist" : "registered",
       // Careers in Tech specific fields
       biztechMemberStatus,
       hopinStatus

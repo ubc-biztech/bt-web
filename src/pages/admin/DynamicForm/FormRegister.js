@@ -933,7 +933,7 @@ const FormRegister = (props) => {
         studentId: user?.id,
         eventID: currEvent.id,
         year: currEvent.year,
-        registrationStatus: "registered",
+        registrationStatus: currEvent.id === "hello-hacks" ? "waitlist" : "registered",
         isPartner: false,
         points: 0,
         basicInformation: {
