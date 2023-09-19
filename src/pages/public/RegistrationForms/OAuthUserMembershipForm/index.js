@@ -151,6 +151,10 @@ const OAuthUserMembershipFormContainer = (props) => {
               renew your membership by filling out this form and completing the
               payment.
             </Typography>
+            <Typography className={classes.description}>
+            Please be aware that membership does not guarantee your admission to all of our events.
+            Some events may specify competitive application processes where not all applicants are accepted.
+            </Typography>
             <Typography>
               Submitting this form will automatically create your new account
               for our application, where you can login using an OAuth partner.
