@@ -117,7 +117,7 @@ function Mentors(props) {
               .filter((skill) => skill !== "" || skill.trim() !== "")
               .map((skill) => {
                 optionsSet.add(skill.trim());
-                return skill;
+                return skill.trim();
               })
         };
       });
