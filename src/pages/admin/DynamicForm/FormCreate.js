@@ -867,6 +867,7 @@ const FormCreate = (props) => {
   });
 
   async function submitValues(values) {
+    console.log("helloe world")
     if (eventId && eventYear) {
       // Save edited event
       await editExistingEvent(values);

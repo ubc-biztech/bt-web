@@ -51,6 +51,7 @@ import {
 import {
   Field, Form, Formik
 } from "formik";
+import JsPDF from "jspdf";
 
 const styles = {
   stats: {
@@ -362,6 +363,44 @@ export class EventStatsTable extends Component {
     });
   };
 
+  generatePdf(data) {
+    if (data && data.length > 0) {
+      // Create a new jsPDF instance
+      const doc = new JsPDF("l");
+
+      // Define columns for the table
+      const columns = Object.keys(data[0])
+
+      // Define an empty array for the rows
+      const rows = [];
+
+      // Iterate through the data and push it into the rows array
+      data.forEach(row => {
+        const rowData = Object.values(row);
+        rows.push(rowData);
+      });
+
+      // Set the table position (x, y) and the column widths
+      const tableX = 10;
+      const tableY = 10;
+
+      // Add the table using autoTable plugin
+      doc.autoTable({
+        head: [columns],
+        body: rows,
+        startY: tableY,
+        tableWidth: 'wrap',
+        styles: { overflow: 'linebreak', cellWidth: 'wrap',fontSize: 5 },
+        // Override the default above for the text column
+        columnStyles: { text: { cellWidth: 'auto' } },
+        horizontalPageBreak: true,
+      });
+
+      // Save the PDF with a name
+      doc.save("table.pdf");
+      }
+  }
+
   componentDidMount() {
     this.initializeTableColumns();
     this.refreshTable();
@@ -608,6 +647,9 @@ export class EventStatsTable extends Component {
           // Configure options for the table
           style={styles.table}
           options={{
+            exportPdf: (cols, data) => {
+              this.generatePdf(data)
+            },
             search: true,
             draggable: true,
             filtering: true,
