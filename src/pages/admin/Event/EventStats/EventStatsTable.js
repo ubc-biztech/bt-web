@@ -269,9 +269,13 @@ export class EventStatsTable extends Component {
     return heardFrom;
   }
 
+  // registration status stat
   registrationNumbers(users) {
     const registrationNumbers = {
     };
+    for (let i = 0; i < users.length; i++) {
+      users = users.filter(user => user.isPartner === false);
+    }
     users.forEach((user) => {
       if (user.registrationStatus) {
         registrationNumbers[user.registrationStatus] = registrationNumbers[
@@ -308,11 +312,18 @@ export class EventStatsTable extends Component {
           ? faculties[user.basicInformation?.faculty] + 1
           : 1;
       }
+      // the above code checks if the faculty that user entred is in the database, if 
+      // yes the it increments faculties by 1
+      // else, it sets it to 1.
+
       if (user.basicInformation?.year) {
         const yearInt = parseInt(user.basicInformation?.year);
         if (yearInt) {
           years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1;
         }
+        // to calcutate how many people for each year, 
+        // we check if the year entred exist, if yes then increment it by 1
+        // else set it to 1
       }
       if (user.basicInformation?.diet) {
         dietary[user.basicInformation?.diet] = dietary[
