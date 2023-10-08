@@ -116,10 +116,13 @@ function Memberships() {
 
   const [membershipData, setMembershipData] = useState([]);
 
+  const [selectedYear, setSelectedYear] = useState("2024"); // default year is 2024
+
   useEffect(() => {
     let isSubscribed = true;
     const getMemberships = async () => {
-      const res = await fetchBackend("/members", "GET");
+      const res = await fetchBackend(`/members?year=${selectedYear}`, "GET");
+      // const res = await fetchBackend("/members", "GET");
       if (isSubscribed) {
         setMembershipData(res);
       }
@@ -127,13 +130,20 @@ function Memberships() {
     getMemberships();
 
     return () => (isSubscribed = false);
-  }, []);
+  }, [selectedYear]);
 
   return (
     <div>
       <Helmet>
         <title>BizTech Memberships</title>
       </Helmet>
+
+      <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2024">2024</option>
+      </select>
+
       <div className={classes.container}>
         {/* Left panel for additional event filters (only on desktop view) */}
         {!isMobile && (
