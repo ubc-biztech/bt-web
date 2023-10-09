@@ -363,36 +363,50 @@ export class EventStatsTable extends Component {
     });
   };
 
-  generatePdf(data) {
+  generatePdf(data, cols) {
     if (data && data.length > 0) {
       // Create a new jsPDF instance
       const doc = new JsPDF("l");
 
       // Define columns for the table
-      const columns = Object.keys(data[0])
+      // use columns for human readable column titles
+      const columns = cols.map(item => item.title);
+      const columnFields = cols.map(item => item.field);
+      const templateObject = {};
+
+      // use columnfields to access the actual data object 
+      for(const col of columnFields) {
+        templateObject[col] = ""
+      }
+
 
       // Define an empty array for the rows
       const rows = [];
 
       // Iterate through the data and push it into the rows array
       data.forEach(row => {
-        const rowData = Object.values(row);
-        rows.push(rowData);
+        const rowData = JSON.parse(JSON.stringify(templateObject));
+        Object.entries(row).forEach(([key, value]) => {
+          rowData[key] = value;
+        })
+        rows.push(Object.values(rowData));
       });
+
+      console.log(rows);
 
       // Set the table position (x, y) and the column widths
       const tableX = 10;
       const tableY = 10;
 
       // Add the table using autoTable plugin
+      console.log(data)
       doc.autoTable({
         head: [columns],
         body: rows,
         startY: tableY,
-        tableWidth: 'wrap',
-        styles: { overflow: 'linebreak', cellWidth: 'wrap',fontSize: 5 },
+        styles: { fontSize: 5, cellWidth: 'auto'},
         // Override the default above for the text column
-        columnStyles: { text: { cellWidth: 'auto' } },
+        // columnStyles: { text: { cellWidth: 'auto' } },
         horizontalPageBreak: true,
       });
 
@@ -648,7 +662,7 @@ export class EventStatsTable extends Component {
           style={styles.table}
           options={{
             exportPdf: (cols, data) => {
-              this.generatePdf(data)
+              this.generatePdf(data, this.state.tableType === "attendee" ? this.state.presentedColumns : this.state.presentedPartnerColumns)
             },
             search: true,
             draggable: true,
