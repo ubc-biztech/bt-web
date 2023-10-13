@@ -13,6 +13,14 @@ import {
 import {
   makeStyles, useTheme
 } from "@material-ui/core/styles";
+import {
+  FormControl, InputLabel, Select, MenuItem,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  Chip,
+} from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import ListIcon from "@material-ui/icons/List";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
@@ -21,13 +29,6 @@ import Questions from "./Questions/Questions";
 import Summary from "./Summary/Summary";
 // import Individual from "./Individual/Individual";
 
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  Chip,
-} from "@material-ui/core";
 
 const PERSONALIZATION_STATES = {
   SUMMARY: {
@@ -49,6 +50,16 @@ const PERSONALIZATION_STATES = {
 };
 
 const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    "& .MuiOutlinedInput-root, & .MuiOutlinedInput-root fieldset": {
+      borderColor: `${COLORS.BIZTECH_GREEN}`,
+    },
+    "& .MuiInputLabel-outlined, & .MuiSelect-outlined, & .MuiSelect-icon": {
+      color: `${COLORS.BIZTECH_GREEN}`,
+    }
+  },
   container: {
     display: "flex",
     flexDirection: "row",
@@ -138,11 +149,20 @@ function Memberships() {
         <title>BizTech Memberships</title>
       </Helmet>
 
-      <select value={selectedYear} onChange={e => setSelectedYear(e.target.value)}>
-        <option value="2021">2021</option>
-        <option value="2022">2022</option>
-        <option value="2024">2024</option>
-      </select>
+      <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel id="year-label">Year</InputLabel>
+        <Select
+          labelId="year-label"
+          value={selectedYear}
+          onChange={e => setSelectedYear(e.target.value)}
+          label="Year"
+        >
+          <MenuItem value="2021">2021</MenuItem>
+          <MenuItem value="2022">2022</MenuItem>
+          <MenuItem value="2023">2023</MenuItem>
+          <MenuItem value="2024">2024</MenuItem>
+        </Select>
+      </FormControl>
 
       <div className={classes.container}>
         {/* Left panel for additional event filters (only on desktop view) */}
