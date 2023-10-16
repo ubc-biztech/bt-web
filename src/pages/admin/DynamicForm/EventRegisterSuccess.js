@@ -160,6 +160,7 @@ const EventRegisterSuccess = ({
               <Typography>
                 You've successfully registered to the event. Our directors will review the information and coordinate with you further.
               </Typography>
+              <Typography>We've sent you two emails, one with a calendar invite and one with a QR code to check-in to our event! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
             </div>
           ) : (
             <div>
@@ -167,11 +168,12 @@ const EventRegisterSuccess = ({
                   See you soon!
               </Typography>
               <Typography>
-                  You've successfully registered to the event.
+                {/* You've successfully registered to the event. */}
+                  Thanks for applying! We'll be reviewing your application soon and will email you soon about your application status!
               </Typography>
+              {/* <Typography>We've sent you two emails, one with a calendar invite and one with a QR code to check-in to our event! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography> */}
             </div>
           )}
-          <Typography>We've sent you two emails, one with a calendar invite and one with a QR code to check-in to our event! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
         </div>
         {type !== "partner" && (
           <div>

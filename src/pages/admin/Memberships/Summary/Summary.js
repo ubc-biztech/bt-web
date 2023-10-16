@@ -143,10 +143,13 @@ const Summary = (props) => {
           data={[
             props.membershipData?.filter(
               (x) =>
-                x.major.toLowerCase()?.includes("computer science") ||
+              {
+                console.log(x);
+                return x.major.toLowerCase()?.includes("computer science") ||
                 x.major.toLowerCase()?.includes("compsci") ||
                 x.major.toLowerCase() === "cs" ||
-                x.major.toLowerCase() === "cpsc"
+                x.major.toLowerCase() === "cpsc";
+              }
             ).length,
             props.membershipData?.filter(
               (x) =>
