@@ -1,3 +1,9 @@
+export const ATTENDEE_TABLE_TYPE = "attendee";
+export const PARTNER_TABLE_TYPE = "parter";
+export const APPLICATION_TABLE_TYPE = "applicationView";
+export const REGISTRATION_STATUS_KEY = "registrationStatus";
+export const APPLICATION_STATUS_KEY = "applicationStatus";
+
 export const REGISTRATION_STATUS = {
   REGISTERED: "registered",
   CHECKED_IN: "checkedIn",

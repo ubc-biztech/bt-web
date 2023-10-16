@@ -148,6 +148,10 @@ const styles = {
   },
   previewButton: {
     marginBottom: 24,
+  },
+  applicationBasedCheckbox: {
+    padding: "1rem",
+    color: "white",
   }
 };
 
@@ -173,6 +177,7 @@ const FormCreateForm = (props) => {
       price,
       nonMembersPrice,
       nonMembersAllowed,
+      isApplicationBased,
       feedback,
       registrationQuestions,
       partnerRegistrationQuestions,
@@ -444,6 +449,20 @@ const FormCreateForm = (props) => {
               </div>
             </div>
             <div style={styles.editorDivider}></div>
+            
+            <div style={styles.applicationBasedCheckbox}>
+              Is this an application based event (ie. will you accept/reject applicants)?
+                <Checkbox
+                  id='isApplicationBased'
+                  name='isApplicationBased'
+                  color="primary"
+                  aria-label="application based?"
+                  checked={isApplicationBased}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  required
+                />
+              </div>
 
             <div style={styles.editorSection}>
               <h3 style={styles.editorSectionTitle}>Event Cover Photo</h3>
@@ -800,6 +819,7 @@ const FormCreate = (props) => {
       registrationQuestions: event.registrationQuestions || dummyData,
       feedback: event.feedback || "",
       partnerRegistrationQuestions: event.partnerRegistrationQuestions || partnerDummyData,
+      isApplicationBased: event?.isApplicationBased
     }
     : {
       imageUrl: "",
@@ -818,6 +838,7 @@ const FormCreate = (props) => {
       registrationQuestions: dummyData,
       feedback: "",
       partnerRegistrationQuestions: partnerDummyData,
+      isApplicationBased: false
     };
 
   const regQuestionSchema = Yup.object({
@@ -863,10 +884,12 @@ const FormCreate = (props) => {
       return schema;
     }),
     registrationQuestions: Yup.array().of(regQuestionSchema),
-    partnerRegistrationQuestions: Yup.array().of(regQuestionSchema)
+    partnerRegistrationQuestions: Yup.array().of(regQuestionSchema),
+    isApplicationBase: Yup.bool(),
   });
 
   async function submitValues(values) {
+    console.log(values)
     if (eventId && eventYear) {
       // Save edited event
       await editExistingEvent(values);
@@ -899,7 +922,8 @@ const FormCreate = (props) => {
       pricing,
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback,
-      partnerRegistrationQuestions: values.partnerRegistrationQuestions
+      partnerRegistrationQuestions: values.partnerRegistrationQuestions,
+      isApplicationBased: values.isApplicationBased
     };
 
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
@@ -944,7 +968,8 @@ const FormCreate = (props) => {
       isCompleted: false,
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback,
-      partnerRegistrationQuestions: values.partnerRegistrationQuestions
+      partnerRegistrationQuestions: values.partnerRegistrationQuestions,
+      isApplicationBased: values.isApplicationBased
     };
 
     fetchBackend("/events", "POST", body)

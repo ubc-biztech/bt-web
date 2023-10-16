@@ -38,6 +38,7 @@ import {
   fetchBackend
 } from "utils";
 import LoginAccess from "components/LoginAccess/LoginAccess";
+import { APPLICATION_STATUS, REGISTRATION_STATUS } from "constants/_constants/eventStatsStatusFields";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -290,6 +291,7 @@ const EventFormContainer = (props) => {
     } = values;
     const eventID = event.id;
     const eventYear = event.year;
+    const isApplicationBased = event.isApplicationBased;
 
     const body = {
       // studentId: parseInt(id),
@@ -308,7 +310,8 @@ const EventFormContainer = (props) => {
       eventID,
       year: eventYear,
       heardFrom,
-      registrationStatus: eventID === "hello-hacks" ? "waitlist" : "registered",
+      registrationStatus: isApplicationBased ? REGISTRATION_STATUS.waitlist.dbValue : REGISTRATION_STATUS.registered.dbValue,
+      applicationStatus: APPLICATION_STATUS.reviewing.dbValue,
       // Careers in Tech specific fields
       biztechMemberStatus,
       hopinStatus
