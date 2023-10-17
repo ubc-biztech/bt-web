@@ -184,7 +184,7 @@ export class EventStatsTable extends Component {
   }
 
   refreshTable() {
-    if (this.props !== null && this.props.event !== null) {
+    if (this.props.event !== null) {
       this.getEventTableData(this.props.event.id, this.props.event.year);
     }
   };
