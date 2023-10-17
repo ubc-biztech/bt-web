@@ -600,7 +600,6 @@ const FormRegisterPartner = (props) => {
               i
             ].concat(otherData[i].split(",").map(d => d.trim()));
           }
-          console.log(dynamicResponses);
         } else {
           dynamicResponses[formData.questions[i].questionId] = responseData[i];
         }
