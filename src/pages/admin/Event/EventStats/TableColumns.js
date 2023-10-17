@@ -1,4 +1,5 @@
 import React from "react";
+import RegistrationField from "./RegistrationField";
 import PointsField from "./PointsField";
 import {
   REGISTRATIONSTATUSLABEL, POINTSLABEL
@@ -9,23 +10,25 @@ import { APPLICATION_TABLE_TYPE, APPLICATION_STATUS_KEY, REGISTRATION_STATUS_KEY
 
 const getDefaultColumns = (eventID, eventYear, refreshTable, tableType) => [
   {
-    title: "Status",
-    field: "Status",
+    title: "Registration Status",
+    field: REGISTRATIONSTATUSLABEL,
     cellStyle: {
       whiteSpace: "nowrap"
     },
     render: (rowData) => (
-      <UserStatusDropdownField 
-        id={rowData.id}
-        fname={rowData.fname}
-        lname={rowData.lname}
-        currentStatus={tableType === APPLICATION_TABLE_TYPE ? rowData.applicationStatus : rowData.registrationStatus}
-        eventID={eventID}
-        eventYear={eventYear}
-        refreshTable={refreshTable}
-        statusOptions={tableType === APPLICATION_TABLE_TYPE ? APPLICATION_STATUS : REGISTRATION_STATUS}
-        statusTypeKey={tableType === APPLICATION_TABLE_TYPE ? APPLICATION_STATUS_KEY : REGISTRATION_STATUS_KEY}
-      />
+      <div>
+         <UserStatusDropdownField 
+          id={rowData.id}
+          fname={rowData.fname}
+          lname={rowData.lname}
+          currentStatus={tableType === APPLICATION_TABLE_TYPE ? rowData.applicationStatus : rowData.registrationStatus}
+          eventID={eventID}
+          eventYear={eventYear}
+          refreshTable={refreshTable}
+          statusOptions={tableType === APPLICATION_TABLE_TYPE ? APPLICATION_STATUS : REGISTRATION_STATUS}
+          statusTypeKey={tableType === APPLICATION_TABLE_TYPE ? APPLICATION_STATUS_KEY : REGISTRATION_STATUS_KEY}
+        />
+      </div>
     )
   },
   {
@@ -190,17 +193,19 @@ const getDefaultPartnerColumns = (eventID, eventYear, refreshTable) => [
       whiteSpace: "nowrap"
     },
     render: (rowData) => (
-      <UserStatusDropdownField 
-        id={rowData.id}
-        fname={rowData.fname}
-        lname={rowData.lname}
-        currentStatus={rowData.registrationStatus}
-        eventID={eventID}
-        eventYear={eventYear}
-        refreshTable={refreshTable}
-        statusOptions={REGISTRATION_STATUS}
-        statusTypeKey={REGISTRATION_STATUS_KEY}
-      />
+      <div>
+        <UserStatusDropdownField 
+          id={rowData.id}
+          fname={rowData.fname}
+          lname={rowData.lname}
+          currentStatus={rowData.registrationStatus}
+          eventID={eventID}
+          eventYear={eventYear}
+          refreshTable={refreshTable}
+          statusOptions={REGISTRATION_STATUS}
+          statusTypeKey={REGISTRATION_STATUS_KEY}
+        />
+      </div>
     )
   },
   {

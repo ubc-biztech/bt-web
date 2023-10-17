@@ -42,8 +42,7 @@ const UserStatusDropdownField = (props) => {
   return (
     <Select
       value={currentStatus}
-      onClick={(event) => {
-        console.log('changin')
+      onChange={(event) => {
         changeStatus(event)
       }}
       style={{

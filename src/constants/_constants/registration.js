@@ -1,5 +1,5 @@
 export const ATTENDEE_TABLE_TYPE = "attendee";
-export const PARTNER_TABLE_TYPE = "parter";
+export const PARTNER_TABLE_TYPE = "partner";
 export const APPLICATION_TABLE_TYPE = "applicationView";
 export const REGISTRATION_STATUS_KEY = "registrationStatus";
 export const APPLICATION_STATUS_KEY = "applicationStatus";

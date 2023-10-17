@@ -197,10 +197,10 @@ export class EventStatsTable extends Component {
       `/events/${eventID}/${eventYear.toString()}`,
       "GET"
     ).then(async (event) => {
-      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable, this.props.tableType);
+      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable, ATTENDEE_TABLE_TYPE);
       const dynamicQuestionColumns = getDynamicQuestionColumns(event.registrationQuestions);
 
-      const defaultApplicationViewColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable, "applicationView");
+      const defaultApplicationViewColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable, APPLICATION_TABLE_TYPE);
 
       const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.refreshTable);
       const dynamicPartnerQuestionColumns = getDynamicQuestionColumns(event.partnerRegistrationQuestions);
