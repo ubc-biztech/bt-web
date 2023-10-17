@@ -179,10 +179,10 @@ const FormCreatePreview = (props) => {
         required: true
       },
       {
-        type: "TEXT",
-        label: "Pronouns",
-        choices: "",
-        required: true
+        type: "SELECT",
+        label: "Preferred Pronouns",
+        choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+        required: true,
       },
       {
         type: "TEXT",

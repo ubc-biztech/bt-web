@@ -162,10 +162,10 @@ const FormRegisterPartner = (props) => {
       required: true
     },
     {
-      questionType: "TEXT",
-      question: "Pronouns",
-      choices: "",
-      required: true
+      questionType: "SELECT",
+      question: "Preferred Pronouns",
+      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+      required: true,
     },
     {
       questionType: "TEXT",
@@ -313,7 +313,7 @@ const FormRegisterPartner = (props) => {
         i
       ];
       const choicesArr = choices ? choices.split(",") : [];
-      if (questionType === "CHECKBOX") {
+      if (questionType === "CHECKBOX" || questionType === "SKILLS") {
         returnArr.push(
           <div style={{
             paddingBottom: "1.5rem"

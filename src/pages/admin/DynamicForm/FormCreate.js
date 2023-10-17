@@ -233,6 +233,7 @@ const FormCreateForm = (props) => {
                   key={index}
                   index={index}
                   length={registrationQuestions.length}
+                  formType={"ATTENDEE"}
                   data={question}
                   fnMove={swap}
                   fnDelete={remove}
@@ -243,6 +244,7 @@ const FormCreateForm = (props) => {
             <div style={styles.addQuestion}>
               <Fab
                 onClick={() => push({
+
                   ...defaultQuestion
                 })}
                 className={classes.fab}
@@ -273,6 +275,7 @@ const FormCreateForm = (props) => {
                   key={index}
                   index={index}
                   length={partnerRegistrationQuestions.length}
+                  formType={"PARTNER"}
                   data={question}
                   fnMove={swap}
                   fnDelete={remove}
@@ -713,6 +716,7 @@ const FormCreateForm = (props) => {
    - CHECKBOX
    - UPLOAD
    - WORKSHOP SELECTION
+   - Skills question
 
   Below is the data struct for registrationQuestions
 
@@ -757,6 +761,15 @@ const partnerDummyData = [
     choices: "Keynote Speaker,Workshop Lead,Boothing,Networking Delegate",
     required: true,
     questionImageUrl: "",
+  },
+  {
+    type: "SKILLS",
+    label: "What skills are you familiar with?",
+    choices: "",
+    required: true,
+    charLimit: 200,
+    questionImageUrl: "",
+    isSkillsQuestion: true
   }
 ];
 
@@ -821,7 +834,7 @@ const FormCreate = (props) => {
     };
 
   const regQuestionSchema = Yup.object({
-    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD", "WORKSHOP SELECTION"]).required(),
+    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD", "WORKSHOP SELECTION", "SKILLS"]).required(),
     label: Yup.string().required("Question is a required field"),
     choices: Yup.string(),
     required: Yup.boolean().required(),

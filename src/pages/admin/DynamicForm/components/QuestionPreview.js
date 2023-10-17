@@ -68,8 +68,8 @@ const QuestionPreview = (props) => {
     }))
     : [];
 
-  // types: CHECKBOX, SELECT, TEXT, UPLOAD, WORKSHOP SELECTION
-  if (type === "CHECKBOX") {
+  // types: CHECKBOX, SELECT, TEXT, UPLOAD, WORKSHOP SELECTION, SKILLS
+  if (type === "CHECKBOX" || type === "SKILLS") {
     return (
       label && (
         <div style={{

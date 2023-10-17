@@ -1,4 +1,6 @@
-import React from "react";
+import React, {
+  useEffect
+} from "react";
 import {
   makeStyles
 } from "@material-ui/core/styles";
@@ -50,14 +52,16 @@ const CustomQuestion = (props) => {
     errors,
     touched,
     submitCount,
+    setFieldValue,
+    values
   } = useFormikContext();
 
   const {
-    id, name, index, length
+    id, name, index, length, formType
   } = props;
 
   const {
-    type, label, choices, questionImageUrl, charLimit, required, participantCap, isSkillsQuestion
+    type, label, choices, questionImageUrl, charLimit, required, participantCap
   } = props.data;
   const questionStyles = {
     // -------- QUESTION COMPONENT STYLES ----------
@@ -125,6 +129,17 @@ const CustomQuestion = (props) => {
     );
   };
 
+  // handle new fields for changing custom questions per type
+  useEffect(() => {
+    values.partnerRegistrationQuestions.forEach((question, index) => {
+      const type = question.type;
+      switch (type) {
+      case "SKILLS":
+        setFieldValue(`partnerRegistrationQuestions[${index}].isSkillsQuestion`, true);
+      };
+    });
+  }, [values.partnerRegistrationQuestions]);
+
   return (
     <div style={questionStyles.card}>
       <div style={questionStyles.cardActions}>
@@ -136,7 +151,7 @@ const CustomQuestion = (props) => {
           variant="outlined"
           margin="dense"
           value={type}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e)}
           onBlur={handleBlur}
         >
           <MenuItem value="TEXT">Text</MenuItem>
@@ -144,6 +159,9 @@ const CustomQuestion = (props) => {
           <MenuItem value="SELECT">Selection</MenuItem>
           <MenuItem value="UPLOAD">Upload</MenuItem>
           <MenuItem value="WORKSHOP SELECTION">Workshop Selection</MenuItem>
+          { formType === "PARTNER" &&
+            <MenuItem value="SKILLS">Skills</MenuItem>
+          }
         </Select>
         <div style={questionStyles.iconsContainer}>
           <div style={questionStyles.move}>
@@ -227,7 +245,7 @@ const CustomQuestion = (props) => {
           </Tooltip>
         )}
 
-        {(type === "SELECT" || type === "CHECKBOX") && (
+        {(type === "SELECT" || type === "CHECKBOX" || type === "SKILLS") && (
           <>
             <TextField
               id={`${id}.choices`}
@@ -295,18 +313,6 @@ const CustomQuestion = (props) => {
 
         <div style={questionStyles.requiredContainer}>
           <div style={questionStyles.checkboxWrapper}>
-            <div style={questionStyles.checkboxContainer}>
-          Skills Question?
-              <Checkbox
-                id={`${id}.isSkillsQuestion`}
-                name={`${name}.isSkillsQuestion`}
-                color="primary"
-                aria-label="Skills question?"
-                checked={isSkillsQuestion}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-            </div>
             <div style={questionStyles.checkboxContainer}>
           Required?
               <Checkbox
