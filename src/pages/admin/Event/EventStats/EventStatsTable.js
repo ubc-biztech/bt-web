@@ -184,7 +184,7 @@ export class EventStatsTable extends Component {
   }
 
   refreshTable() {
-    if (this.props.event !== null) {
+    if (this.props !== null && this.props.event !== null) {
       this.getEventTableData(this.props.event.id, this.props.event.year);
     }
   };
@@ -455,18 +455,11 @@ export class EventStatsTable extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => {
-                if (this.props.tableType === APPLICATION_TABLE_TYPE) {
-                  this.setState({
-                    tableType: ATTENDEE_TABLE_TYPE
-                  })
-                } else {
-                  this.setState({
-                    tableType: APPLICATION_TABLE_TYPE
-                  })
-                }
+              onClick={() =>
+                this.setState({
+                  tableType: this.state.tableType === APPLICATION_TABLE_TYPE ? ATTENDEE_TABLE_TYPE: APPLICATION_TABLE_TYPE
+                })
               }
-            }
             >
               Toggle Application View
             </Button>
