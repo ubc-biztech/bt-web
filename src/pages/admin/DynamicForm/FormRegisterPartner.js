@@ -547,7 +547,7 @@ const FormRegisterPartner = (props) => {
     for (let i = 0; i < formData.questions.length; i++) {
       // indices should correspond between formData.questions, responseData, and responseError arrays
       const question = formData.questions[i];
-      if (question.questionType === "CHECKBOX") {
+      if (question.questionType === "CHECKBOX" || question.questionType === "SKILLS") {
         // check if empty
         if (question.required) {
           if (!otherData[i] && (!responseData[i] || responseData[i].length <= 0)) {
@@ -594,6 +594,12 @@ const FormRegisterPartner = (props) => {
           dynamicResponses[formData.questions[i].questionId] = responseData[
             i
           ]?.join(", ");
+        } else if (formData.questions[i].questionType === "SKILLS") {
+          if (otherData[i]) {
+            dynamicResponses[formData.questions[i].questionId] = responseData[
+              i
+            ].concat(otherData[i].split(",").map(d => d.trim()));
+          }
         } else {
           dynamicResponses[formData.questions[i].questionId] = responseData[i];
         }
