@@ -1,12 +1,15 @@
 import React from "react";
-import RegistrationField from "./RegistrationField";
 import PointsField from "./PointsField";
 import {
   REGISTRATIONSTATUSLABEL, POINTSLABEL
 } from "./utils";
 import UserStatusDropdownField from "./UserStatusDropdownField";
-import { REGISTRATION_STATUS, APPLICATION_STATUS } from "constants/_constants/eventStatsStatusFields";
-import { APPLICATION_TABLE_TYPE, APPLICATION_STATUS_KEY, REGISTRATION_STATUS_KEY } from "constants/_constants/registration";
+import {
+  REGISTRATION_STATUS, APPLICATION_STATUS
+} from "constants/_constants/eventStatsStatusFields";
+import {
+  APPLICATION_TABLE_TYPE, APPLICATION_STATUS_KEY, REGISTRATION_STATUS_KEY
+} from "constants/_constants/registration";
 
 const getDefaultColumns = (eventID, eventYear, refreshTable, tableType) => [
   {
@@ -17,7 +20,7 @@ const getDefaultColumns = (eventID, eventYear, refreshTable, tableType) => [
     },
     render: (rowData) => (
       <div>
-         <UserStatusDropdownField 
+        <UserStatusDropdownField
           id={rowData.id}
           fname={rowData.fname}
           lname={rowData.lname}
@@ -194,7 +197,7 @@ const getDefaultPartnerColumns = (eventID, eventYear, refreshTable) => [
     },
     render: (rowData) => (
       <div>
-        <UserStatusDropdownField 
+        <UserStatusDropdownField
           id={rowData.id}
           fname={rowData.fname}
           lname={rowData.lname}

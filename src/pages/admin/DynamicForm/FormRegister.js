@@ -51,7 +51,9 @@ import {
   QUESTION_DOMAINS
 } from "constants/index";
 import OtherCheckbox from "./components/OtherCheckbox";
-import { APPLICATION_STATUS } from "constants/_constants/eventStatsStatusFields";
+import {
+  APPLICATION_STATUS
+} from "constants/_constants/eventStatsStatusFields";
 
 const styles = {
   // Container for custom form image
@@ -848,7 +850,7 @@ const FormRegister = (props) => {
           heardFrom: responseData[8]
         },
         dynamicResponses,
-        applicationStatus: APPLICATION_STATUS.reviewing.dbValue
+        applicationStatus: currEvent.isApplicationBased ? APPLICATION_STATUS.reviewing.dbValue : ""
       };
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then((response) => {
@@ -946,7 +948,7 @@ const FormRegister = (props) => {
           heardFrom: responseData[8]
         },
         dynamicResponses,
-        applicationStatus: APPLICATION_STATUS.reviewing.dbValue
+        applicationStatus: currEvent.isApplicationBased ? APPLICATION_STATUS.reviewing.dbValue : ""
       };
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then(() => {

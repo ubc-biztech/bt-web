@@ -449,20 +449,20 @@ const FormCreateForm = (props) => {
               </div>
             </div>
             <div style={styles.editorDivider}></div>
-            
+
             <div style={styles.applicationBasedCheckbox}>
               Is this an application based event (ie. will you accept/reject applicants)?
-                <Checkbox
-                  id='isApplicationBased'
-                  name='isApplicationBased'
-                  color="primary"
-                  aria-label="application based?"
-                  checked={isApplicationBased}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  required
-                />
-              </div>
+              <Checkbox
+                id='isApplicationBased'
+                name='isApplicationBased'
+                color="primary"
+                aria-label="application based?"
+                checked={isApplicationBased}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                required
+              />
+            </div>
 
             <div style={styles.editorSection}>
               <h3 style={styles.editorSectionTitle}>Event Cover Photo</h3>
@@ -889,7 +889,7 @@ const FormCreate = (props) => {
   });
 
   async function submitValues(values) {
-    console.log(values)
+    console.log(values);
     if (eventId && eventYear) {
       // Save edited event
       await editExistingEvent(values);

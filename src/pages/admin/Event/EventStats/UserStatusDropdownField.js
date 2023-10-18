@@ -4,15 +4,14 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {
   fetchBackend
 } from "../../../../utils";
-import {
-  COLORS, REGISTRATION_STATUS
-} from "../../../../constants";
 
 // props that will be passed in will be one of eventStatsStatusFields
 // props: {statusOptions: {ACCEPTED: {dbValue: "", label: "", color: "", getWindowMessage: (fname, lname) => string}}}
 
 const UserStatusDropdownField = (props) => {
-  const { id, fname, lname, currentStatus, eventID, eventYear, refreshTable, statusOptions, statusTypeKey } = props;
+  const {
+    id, fname, lname, currentStatus, eventID, eventYear, refreshTable, statusOptions, statusTypeKey
+  } = props;
   const updateUserStatus = async (status) => {
     const body = {
       eventID: eventID,
@@ -43,7 +42,7 @@ const UserStatusDropdownField = (props) => {
     <Select
       value={currentStatus}
       onChange={(event) => {
-        changeStatus(event)
+        changeStatus(event);
       }}
       style={{
         backgroundColor: statusOptions[currentStatus].color,

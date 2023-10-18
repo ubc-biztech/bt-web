@@ -38,7 +38,9 @@ import {
   fetchBackend
 } from "utils";
 import LoginAccess from "components/LoginAccess/LoginAccess";
-import { APPLICATION_STATUS, REGISTRATION_STATUS } from "constants/_constants/eventStatsStatusFields";
+import {
+  APPLICATION_STATUS, REGISTRATION_STATUS
+} from "constants/_constants/eventStatsStatusFields";
 
 const useStyles = makeStyles((theme) => ({
   layout: {

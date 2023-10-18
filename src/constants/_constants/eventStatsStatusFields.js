@@ -1,4 +1,6 @@
-import { COLORS } from "./theme";
+import {
+  COLORS
+} from "./theme";
 
 export const APPLICATION_STATUS = {
   "accepted": {
@@ -25,7 +27,7 @@ export const APPLICATION_STATUS = {
     color: COLORS.LIGHT_BACKGROUND_COLOR,
     getWindowMessage: (fname, lname) => `Do you want to set ${fname} ${lname} to be reviewing again?\nThis will send an email to the user.`
   }
-}
+};
 
 export const REGISTRATION_STATUS = {
   "registered": {
@@ -58,4 +60,4 @@ export const REGISTRATION_STATUS = {
     color: COLORS.LIGHT_BACKGROUND_COLOR,
     getWindowMessage: (fname, lname) => `This status is only used when the registrant has not paid. Are you sure ${fname} ${lname} has not paid?`
   }
-}
+};
