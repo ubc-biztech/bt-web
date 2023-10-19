@@ -51,6 +51,7 @@ import {
 import {
   Field, Form, Formik
 } from "formik";
+import { array } from "yup";
 
 const styles = {
   stats: {
@@ -123,6 +124,8 @@ export class EventStatsTable extends Component {
       partnerColumns: {
       },
       presentedPartnerColumns: [],
+      registrationNumbersWithPartners: {
+      },
       registrationNumbers: {
       },
       faculties: {
@@ -271,9 +274,26 @@ export class EventStatsTable extends Component {
     return heardFrom;
   }
 
+  registrationNumbersWithPartners(users) {
+    // const partners = [];
+
+    // for (let i = 0; i < users.length; i++) {
+    //   if (users[i].isPartner) {
+    //     partners.push(users[i]);
+    //   }
+    // }
+
+    // let numberOfPartners = partners.length;
+    
+    // will add implementation to calculate the ratio of number of participants and partners
+    // add a new stay showing this ratio
+  }
+
   registrationNumbers(users) {
+    // console.log(users);
     const registrationNumbers = {
     };
+    users = users.filter(user => user.isPartner === false);
     users.forEach((user) => {
       if (user.registrationStatus) {
         registrationNumbers[user.registrationStatus] = registrationNumbers[
@@ -310,6 +330,7 @@ export class EventStatsTable extends Component {
           ? faculties[user.basicInformation?.faculty] + 1
           : 1;
       }
+
       if (user.basicInformation?.year) {
         const yearInt = parseInt(user.basicInformation?.year);
         if (yearInt) {
@@ -656,6 +677,11 @@ export class EventStatsTable extends Component {
         <div style={{
           padding: "10px"
         }} />
+
+        <Statistic
+          statName="Registered partners and students: "
+          statObj={this.state.registrationNumbers}
+        />
 
         <Statistic
           statName="Registration status: "
