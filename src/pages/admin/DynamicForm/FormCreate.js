@@ -449,8 +449,8 @@ const FormCreateForm = (props) => {
               </div>
             </div>
             <div style={styles.editorDivider}></div>
-            
-            {!eventId && 
+
+            {!eventId &&
               <div style={styles.applicationBasedCheckbox}>
                 Is this an application based event (ie. will you accept/reject applicants)?
                 <Checkbox
