@@ -29,7 +29,7 @@ const UserStatusDropdownField = (props) => {
     if (newStatus === "accepted" || newStatus === "rejected") {
       updateUserStatus(
         statusOptions[newStatus].dbValue
-      )
+      );
       return;
     }
 
