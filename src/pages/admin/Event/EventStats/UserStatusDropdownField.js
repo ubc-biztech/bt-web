@@ -36,7 +36,6 @@ const UserStatusDropdownField = (props) => {
       refreshTable();
     }
   };
-  console.log(statusDisplayed, currentStatus);
 
   const changeStatus = (event) => {
     const newStatus = event.target.value;
@@ -59,12 +58,12 @@ const UserStatusDropdownField = (props) => {
 
   return (
     <Select
-      value={currentStatus}
+      value={statusDisplayed}
       onChange={(event) => {
         changeStatus(event);
       }}
       style={{
-        backgroundColor: statusOptions[currentStatus]?.color,
+        backgroundColor: statusOptions[statusDisplayed]?.color,
         paddingLeft: "10px"
       }}
     >
