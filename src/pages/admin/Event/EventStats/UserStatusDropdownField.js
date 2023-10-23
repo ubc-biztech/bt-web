@@ -1,5 +1,5 @@
 import React, {
-  useState
+  useState, useEffect
 } from "react";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -15,6 +15,11 @@ const UserStatusDropdownField = (props) => {
     id, fname, lname, currentStatus, eventID, eventYear, refreshTable, statusOptions, statusTypeKey
   } = props;
   const [statusDisplayed, setStatusDisplayed] = useState(currentStatus);
+  useEffect(() => {
+    if (currentStatus) {
+      setStatusDisplayed(currentStatus);
+    }
+  }, [currentStatus, statusOptions]);
   const updateUserStatus = async (status) => {
     const body = {
       eventID: eventID,
@@ -31,6 +36,7 @@ const UserStatusDropdownField = (props) => {
       refreshTable();
     }
   };
+  console.log(statusDisplayed, currentStatus);
 
   const changeStatus = (event) => {
     const newStatus = event.target.value;
@@ -53,12 +59,12 @@ const UserStatusDropdownField = (props) => {
 
   return (
     <Select
-      value={statusDisplayed}
+      value={currentStatus}
       onChange={(event) => {
         changeStatus(event);
       }}
       style={{
-        backgroundColor: statusOptions[statusDisplayed].color,
+        backgroundColor: statusOptions[currentStatus]?.color,
         paddingLeft: "10px"
       }}
     >
