@@ -46,6 +46,7 @@ const prepareRowData = (users) => {
       studentId: user.studentId,
       id: user.id,
       registrationStatus: user.registrationStatus,
+      applicationStatus: user.applicationStatus,
       // convert the date to something more readable
       updatedAt: new Date(user.updatedAt).toLocaleString(),
       isPartner: user.isPartner,
