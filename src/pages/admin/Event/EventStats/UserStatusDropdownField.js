@@ -32,12 +32,16 @@ const UserStatusDropdownField = (props) => {
     }
   };
 
-  /**
-     * Helper function to determine whether to display action for check-in or undo check-in
-     * @param {*} props data about the current row
-     */
   const changeStatus = (event) => {
     const newStatus = event.target.value;
+
+    if (newStatus === "accepted" || newStatus === "rejected") {
+      updateUserStatus(
+        statusOptions[newStatus].dbValue
+      );
+      return;
+    }
+
     if (window.confirm(
       statusOptions[newStatus].getWindowMessage(fname, lname)
     )) {
