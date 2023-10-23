@@ -122,6 +122,7 @@ export class EventStatsTable extends Component {
     this.state = {
       columns: {
       },
+      rows: [],
       presentedColumns: [],
       partnerColumns: {
       },
@@ -180,11 +181,24 @@ export class EventStatsTable extends Component {
         }
       },
       tableType: "attendee",
+      refreshTable: () => {
+        if (this.props.event !== null) {
+          this.forceUpdate();
+          this.setState({
+            rows: []
+          });
+          this.getEventTableData(this.props.event.id, this.props.event.year);
+        }
+      }
     };
   }
 
   refreshTable() {
     if (this.props.event !== null) {
+      this.forceUpdate();
+      this.setState({
+        rows: []
+      });
       this.getEventTableData(this.props.event.id, this.props.event.year);
     }
   };
@@ -197,12 +211,12 @@ export class EventStatsTable extends Component {
       `/events/${eventID}/${eventYear.toString()}`,
       "GET"
     ).then(async (event) => {
-      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable, ATTENDEE_TABLE_TYPE);
+      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.state.refreshTable, ATTENDEE_TABLE_TYPE);
       const dynamicQuestionColumns = getDynamicQuestionColumns(event.registrationQuestions);
 
-      const defaultApplicationViewColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable, APPLICATION_TABLE_TYPE);
+      const defaultApplicationViewColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.state.refreshTable, APPLICATION_TABLE_TYPE);
 
-      const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.refreshTable);
+      const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.state.refreshTable);
       const dynamicPartnerQuestionColumns = getDynamicQuestionColumns(event.partnerRegistrationQuestions);
 
       const presentedColumns = defaultColumns.concat(dynamicQuestionColumns);
@@ -457,7 +471,7 @@ export class EventStatsTable extends Component {
               color="primary"
               onClick={() =>
                 this.setState({
-                  tableType: this.state.tableType === APPLICATION_TABLE_TYPE ? ATTENDEE_TABLE_TYPE: APPLICATION_TABLE_TYPE
+                  tableType: this.state.tableType === APPLICATION_TABLE_TYPE ? ATTENDEE_TABLE_TYPE : APPLICATION_TABLE_TYPE
                 })
               }
             >
@@ -720,7 +734,7 @@ export class EventStatsTable extends Component {
           statName="Heard about event from: "
           statObj={this.state.heardFrom}
         />
-      </div>
+      </div >
     );
   }
 }

@@ -1,4 +1,6 @@
-import React from "react";
+import React, {
+  useState
+} from "react";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import {
@@ -12,15 +14,22 @@ const UserStatusDropdownField = (props) => {
   const {
     id, fname, lname, currentStatus, eventID, eventYear, refreshTable, statusOptions, statusTypeKey
   } = props;
+  const [statusDisplayed, setStatusDisplayed] = useState(currentStatus);
   const updateUserStatus = async (status) => {
     const body = {
       eventID: eventID,
       year: eventYear,
       [statusTypeKey]: status
     };
-    await fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
-
-    refreshTable();
+    try {
+      const result = await fetchBackend(`/registrations/${id}/${fname}`, "PUT", body);
+      if (result) {
+        setStatusDisplayed(status);
+      }
+    } catch {
+      alert("An error as occured! Please try again or contact a dev");
+      refreshTable();
+    }
   };
 
   /**
@@ -40,12 +49,12 @@ const UserStatusDropdownField = (props) => {
 
   return (
     <Select
-      value={currentStatus}
+      value={statusDisplayed}
       onChange={(event) => {
         changeStatus(event);
       }}
       style={{
-        backgroundColor: statusOptions[currentStatus].color,
+        backgroundColor: statusOptions[statusDisplayed].color,
         paddingLeft: "10px"
       }}
     >
