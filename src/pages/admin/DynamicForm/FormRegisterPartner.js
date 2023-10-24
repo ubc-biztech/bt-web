@@ -162,10 +162,10 @@ const FormRegisterPartner = (props) => {
       required: true
     },
     {
-      questionType: "TEXT",
-      question: "Pronouns",
-      choices: "",
-      required: true
+      questionType: "SELECT",
+      question: "Preferred Pronouns",
+      choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+      required: true,
     },
     {
       questionType: "TEXT",
@@ -313,7 +313,7 @@ const FormRegisterPartner = (props) => {
         i
       ];
       const choicesArr = choices ? choices.split(",") : [];
-      if (questionType === "CHECKBOX") {
+      if (questionType === "CHECKBOX" || questionType === "SKILLS") {
         returnArr.push(
           <div style={{
             paddingBottom: "1.5rem"
@@ -547,7 +547,7 @@ const FormRegisterPartner = (props) => {
     for (let i = 0; i < formData.questions.length; i++) {
       // indices should correspond between formData.questions, responseData, and responseError arrays
       const question = formData.questions[i];
-      if (question.questionType === "CHECKBOX") {
+      if (question.questionType === "CHECKBOX" || question.questionType === "SKILLS") {
         // check if empty
         if (question.required) {
           if (!otherData[i] && (!responseData[i] || responseData[i].length <= 0)) {
@@ -594,6 +594,12 @@ const FormRegisterPartner = (props) => {
           dynamicResponses[formData.questions[i].questionId] = responseData[
             i
           ]?.join(", ");
+        } else if (formData.questions[i].questionType === "SKILLS") {
+          if (otherData[i]) {
+            dynamicResponses[formData.questions[i].questionId] = responseData[
+              i
+            ].concat(otherData[i].split(",").map(d => d.trim()));
+          }
         } else {
           dynamicResponses[formData.questions[i].questionId] = responseData[i];
         }

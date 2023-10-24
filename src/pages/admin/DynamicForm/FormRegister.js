@@ -54,6 +54,9 @@ import {
   QUESTION_DOMAINS
 } from "constants/index";
 import OtherCheckbox from "./components/OtherCheckbox";
+import {
+  APPLICATION_STATUS
+} from "constants/_constants/eventStatsStatusFields";
 
 const styles = {
   // Container for custom form image
@@ -467,7 +470,7 @@ const FormRegister = (props) => {
         charLimit
       } = formData.questions[i];
       const choicesArr = choices ? choices.split(",") : [];
-      if (questionType === "CHECKBOX") {
+      if (questionType === "CHECKBOX" || questionType === "SKILLS") {
         returnArr.push(
           <div style={{
             paddingBottom: "1.5rem"
@@ -849,7 +852,8 @@ const FormRegister = (props) => {
           diet: responseData[7],
           heardFrom: responseData[8]
         },
-        dynamicResponses
+        dynamicResponses,
+        applicationStatus: currEvent.isApplicationBased ? APPLICATION_STATUS.reviewing.dbValue : ""
       };
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then((response) => {
@@ -946,7 +950,8 @@ const FormRegister = (props) => {
           diet: responseData[7],
           heardFrom: responseData[8]
         },
-        dynamicResponses
+        dynamicResponses,
+        applicationStatus: currEvent.isApplicationBased ? APPLICATION_STATUS.reviewing.dbValue : ""
       };
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then(() => {

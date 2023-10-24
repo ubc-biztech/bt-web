@@ -35,7 +35,10 @@ import {
 import {
   REGISTRATION_STATUS,
   REGISTRATION_LABELS,
-  COLORS
+  COLORS,
+  APPLICATION_TABLE_TYPE,
+  ATTENDEE_TABLE_TYPE,
+  PARTNER_TABLE_TYPE
 } from "constants/index";
 import {
   fetchBackend
@@ -119,10 +122,12 @@ export class EventStatsTable extends Component {
     this.state = {
       columns: {
       },
+      rows: [],
       presentedColumns: [],
       partnerColumns: {
       },
       presentedPartnerColumns: [],
+      presentedApplicationViewColumns: [],
       registrationNumbers: {
       },
       faculties: {
@@ -176,11 +181,24 @@ export class EventStatsTable extends Component {
         }
       },
       tableType: "attendee",
+      refreshTable: () => {
+        if (this.props.event !== null) {
+          this.forceUpdate();
+          this.setState({
+            rows: []
+          });
+          this.getEventTableData(this.props.event.id, this.props.event.year);
+        }
+      }
     };
   }
 
   refreshTable() {
     if (this.props.event !== null) {
+      this.forceUpdate();
+      this.setState({
+        rows: []
+      });
       this.getEventTableData(this.props.event.id, this.props.event.year);
     }
   };
@@ -193,18 +211,22 @@ export class EventStatsTable extends Component {
       `/events/${eventID}/${eventYear.toString()}`,
       "GET"
     ).then(async (event) => {
-      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable);
+      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.state.refreshTable, ATTENDEE_TABLE_TYPE);
       const dynamicQuestionColumns = getDynamicQuestionColumns(event.registrationQuestions);
 
-      const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.refreshTable);
+      const defaultApplicationViewColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.state.refreshTable, APPLICATION_TABLE_TYPE);
+
+      const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.state.refreshTable);
       const dynamicPartnerQuestionColumns = getDynamicQuestionColumns(event.partnerRegistrationQuestions);
 
       const presentedColumns = defaultColumns.concat(dynamicQuestionColumns);
       const presentedPartnerColumns = defaultPartnerColumns.concat(dynamicPartnerQuestionColumns);
+      const presentedApplicationViewColumns = defaultApplicationViewColumns.concat(dynamicQuestionColumns);
 
       this.setState({
         presentedColumns,
-        presentedPartnerColumns
+        presentedPartnerColumns,
+        presentedApplicationViewColumns
       });
     });
   }
@@ -381,6 +403,7 @@ export class EventStatsTable extends Component {
   render() {
     const registrationColumns = this.state.presentedColumns;
     const registrationPartnerColumns = this.state.presentedPartnerColumns;
+    const registrationApplicationViewColumns = this.state.presentedApplicationViewColumns;
 
     function handleColumnDrag(sourceIndex, destinationIndex) {
       const sourceColumn = registrationColumns[sourceIndex];
@@ -391,6 +414,18 @@ export class EventStatsTable extends Component {
       registrationColumns[destinationIndex] = sourceColumn;
       this.setState({
         presentedColumns: registrationColumns
+      });
+    }
+
+    function handleApplicationViewColumnDrag(sourceIndex, destinationIndex) {
+      const sourceColumn = registrationApplicationViewColumns[sourceIndex];
+      const destinationColumn = registrationApplicationViewColumns[destinationIndex];
+
+      // Swapping the column order
+      registrationApplicationViewColumns[sourceIndex] = destinationColumn;
+      registrationApplicationViewColumns[destinationIndex] = sourceColumn;
+      this.setState({
+        presentedApplicationViewColumns: registrationApplicationViewColumns
       });
     }
 
@@ -428,6 +463,22 @@ export class EventStatsTable extends Component {
         <div style={{
           padding: "10px"
         }}>
+          {/* Toggle Competitions Acceptance View button */}
+          {
+            this.props.event?.isApplicationBased &&
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                this.setState({
+                  tableType: this.state.tableType === APPLICATION_TABLE_TYPE ? ATTENDEE_TABLE_TYPE : APPLICATION_TABLE_TYPE
+                })
+              }
+            >
+              Toggle Application View
+            </Button>
+          }
+
           {/* refresh button */}
           <Button
             variant="contained"
@@ -603,10 +654,23 @@ export class EventStatsTable extends Component {
         }
 
         <MaterialTable
-          title={`${this.props.event.ename} Attendance`}
-          columns={this.state.tableType === "attendee" ? this.state.presentedColumns : this.state.presentedPartnerColumns}
-          data={filterRows(this.state.rows, this.state.tableType === "partner")}
-          handleColumnDrag={this.state.tableType === "attendee" ? handleColumnDrag : handlePartnerColumnDrag}
+          title={this.state.tableType === APPLICATION_TABLE_TYPE ? `${this.props.event.ename} Application View` : `${this.props.event.ename} Attendance`}
+          columns={
+            this.state.tableType === ATTENDEE_TABLE_TYPE
+              ? this.state.presentedColumns
+              : this.state.tableType === APPLICATION_TABLE_TYPE
+                ? this.state.presentedApplicationViewColumns
+                : this.state.presentedPartnerColumns
+          }
+          data={filterRows(this.state.rows, this.state.tableType === PARTNER_TABLE_TYPE)}
+          handleColumnDrag={
+            this.state.tableType === ATTENDEE_TABLE_TYPE
+              ? handleColumnDrag
+              : this.state.tableType
+                === APPLICATION_TABLE_TYPE
+                ? handleApplicationViewColumnDrag
+                : handlePartnerColumnDrag
+          }
           // Configure options for the table
           style={styles.table}
           options={{
@@ -670,7 +734,7 @@ export class EventStatsTable extends Component {
           statName="Heard about event from: "
           statObj={this.state.heardFrom}
         />
-      </div>
+      </div >
     );
   }
 }

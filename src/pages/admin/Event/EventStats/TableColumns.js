@@ -1,11 +1,17 @@
 import React from "react";
-import RegistrationField from "./RegistrationField";
 import PointsField from "./PointsField";
 import {
   REGISTRATIONSTATUSLABEL, POINTSLABEL
 } from "./utils";
+import UserStatusDropdownField from "./UserStatusDropdownField";
+import {
+  REGISTRATION_STATUS, APPLICATION_STATUS
+} from "constants/_constants/eventStatsStatusFields";
+import {
+  APPLICATION_TABLE_TYPE, APPLICATION_STATUS_KEY, REGISTRATION_STATUS_KEY
+} from "constants/_constants/registration";
 
-const getDefaultColumns = (eventID, eventYear, refreshTable) => [
+const getDefaultColumns = (eventID, eventYear, refreshTable, tableType) => [
   {
     title: "Registration Status",
     field: REGISTRATIONSTATUSLABEL,
@@ -14,14 +20,17 @@ const getDefaultColumns = (eventID, eventYear, refreshTable) => [
     },
     render: (rowData) => (
       <div>
-        <RegistrationField
+        <UserStatusDropdownField
           id={rowData.id}
           fname={rowData.fname}
           lname={rowData.lname}
-          registrationStatus={rowData.registrationStatus}
+          currentStatus={tableType === APPLICATION_TABLE_TYPE ? rowData.applicationStatus : rowData.registrationStatus}
           eventID={eventID}
           eventYear={eventYear}
-          refreshTable={refreshTable}/>
+          refreshTable={refreshTable}
+          statusOptions={tableType === APPLICATION_TABLE_TYPE ? APPLICATION_STATUS : REGISTRATION_STATUS}
+          statusTypeKey={tableType === APPLICATION_TABLE_TYPE ? APPLICATION_STATUS_KEY : REGISTRATION_STATUS_KEY}
+        />
       </div>
     )
   },
@@ -188,14 +197,17 @@ const getDefaultPartnerColumns = (eventID, eventYear, refreshTable) => [
     },
     render: (rowData) => (
       <div>
-        <RegistrationField
+        <UserStatusDropdownField
           id={rowData.id}
           fname={rowData.fname}
           lname={rowData.lname}
-          registrationStatus={rowData.registrationStatus}
+          currentStatus={rowData.registrationStatus}
           eventID={eventID}
           eventYear={eventYear}
-          refreshTable={refreshTable}/>
+          refreshTable={refreshTable}
+          statusOptions={REGISTRATION_STATUS}
+          statusTypeKey={REGISTRATION_STATUS_KEY}
+        />
       </div>
     )
   },
