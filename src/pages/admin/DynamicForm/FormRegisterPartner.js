@@ -521,7 +521,7 @@ const FormRegisterPartner = (props) => {
                   color: "black",
                   marginLeft: 6
                 }}/>
-                <input hidden type="file" accept="application/pdf" onChange={(e) => uploadFile(i, e)}/>
+                <input hidden type="file" accept="application/pdf, image/jpg, image/png, image/jpeg" onChange={(e) => uploadFile(i, e)}/>
               </Button>
               {!!responseError[i] && (
                 <FormHelperText>{responseError[i]}</FormHelperText>
