@@ -141,7 +141,7 @@ const FormCreatePreview = (props) => {
         required: true,
       },
       {
-        type: "SELECT",
+        type: "CHECKBOX",
         label: "Preferred Pronouns",
         choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
         required: true,
@@ -179,7 +179,7 @@ const FormCreatePreview = (props) => {
         required: true
       },
       {
-        type: "SELECT",
+        type: "CHECKBOX",
         label: "Preferred Pronouns",
         choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
         required: true,
