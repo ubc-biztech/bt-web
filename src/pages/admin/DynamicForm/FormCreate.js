@@ -158,8 +158,6 @@ const FormCreateForm = (props) => {
   } = useParams();
   const [viewUserForm, setViewUserForm] = useState(true);
 
-  const isEditMode = !!eventId; // Check if in edit mode or not
-
   const {
     values: {
       imageUrl,
@@ -498,7 +496,7 @@ const FormCreateForm = (props) => {
                 value={slug}
                 error={showError("slug")}
                 helperText={showError("slug") && errors.slug}
-                disabled={isEditMode} // Disable textbox if in edit mode
+                disabled={isSaved} // Don't allow changes if slug has been saved
               />
               {slug && (
                 <div style={{
