@@ -707,7 +707,7 @@ const FormRegister = (props) => {
                 <input
                   hidden
                   type="file"
-                  accept="application/pdf"
+                  accept="application/pdf, image/jpg, image/png, image/jpeg"
                   onChange={(e) => uploadFile(i, e)}
                 />
               </Button>
