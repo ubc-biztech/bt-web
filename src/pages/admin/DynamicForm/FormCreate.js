@@ -765,10 +765,8 @@ const dummyData = [
     questionImageUrl: "",
   },
   {
-    type: "WORKSHOP SELECTION",
-    label: "Select your workshop for this event",
-    choices: "Workshop 1,Workshop 2,Workshop 3,Workshop 4",
-    participantCap: "50,30,30,30",
+    type: "UPLOAD",
+    label: "Upload a profile picture",
     required: true,
     questionImageUrl: "",
   }
