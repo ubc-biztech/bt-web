@@ -36,7 +36,7 @@ export const BASIC_QUESTIONS = [
     required: true,
   },
   {
-    questionType: "CHECKBOX",
+    questionType: "SELECT",
     question: "Preferred Pronouns",
     choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
     required: true,
