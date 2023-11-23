@@ -172,7 +172,7 @@ function AdminHome(props) {
           <Typography variant="h1" style={{
             color: COLORS.BIZTECH_GREEN
           }}>
-            BizTech Admins
+            BizTech FART
           </Typography>
         </div>
       </div>
