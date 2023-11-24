@@ -193,24 +193,24 @@ export default function MembershipForm(props) {
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                initialValues=""
-                label="Level of study *"
-                listOfOptions={[
-                  "1st Year",
-                  "2nd Year",
-                  "3rd Year",
-                  "4th Year",
-                  "5+ Year",
-                  "Other",
-                  "Not Applicable"
-                ]}
-                groupName="year"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              initialValues=""
+              label="Level of study *"
+              listOfOptions={[
+                "1st Year",
+                "2nd Year",
+                "3rd Year",
+                "4th Year",
+                "5+ Year",
+                "Other",
+                "Not Applicable"
+              ]}
+              groupName="year"
+            />
+          </Grid>
+        )}
 
         {memberType === MEMBER_TYPES.HIGH_SCHOOL && (
           <Grid item xs={12}>
@@ -233,38 +233,38 @@ export default function MembershipForm(props) {
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12}>
-              <CustomSelect
-                {...props}
-                initialValues=""
-                label="Faculty *"
-                listOfOptions={[
-                  "Arts",
-                  "Commerce",
-                  "Science",
-                  "Engineering",
-                  "Kinesiology",
-                  "Land and Food Systems",
-                  "Forestry",
-                  "Other",
-                  "Not Applicable"
-                ]}
-                groupName="faculty"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <CustomSelect
+              {...props}
+              initialValues=""
+              label="Faculty *"
+              listOfOptions={[
+                "Arts",
+                "Commerce",
+                "Science",
+                "Engineering",
+                "Kinesiology",
+                "Land and Food Systems",
+                "Forestry",
+                "Other",
+                "Not Applicable"
+              ]}
+              groupName="faculty"
+            />
+          </Grid>
+        )}
 
         {(memberType === MEMBER_TYPES.UBC ||
           memberType === MEMBER_TYPES.UNIVERSITY) && (
-            <Grid item xs={12} className={classes.major}>
-              <CustomTextField
-                {...props}
-                label="Major *"
-                groupName="major"
-                autoComplete="major"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12} className={classes.major}>
+            <CustomTextField
+              {...props}
+              label="Major *"
+              groupName="major"
+              autoComplete="major"
+            />
+          </Grid>
+        )}
 
         {memberType === MEMBER_TYPES.UBC && (
           <Grid item xs={12}>
@@ -380,15 +380,15 @@ export default function MembershipForm(props) {
         {(values.heard_from === "Events" ||
           values.heard_from === "Boothing" ||
           values.heard_from === "Other") && (
-            <Grid item xs={12}>
-              <CustomTextField
-                {...props}
-                label="Please provide some more details of how you heard of BizTech (e.g. which event, boothing day, etc..) *"
-                groupName="heardFromSpecify"
-                autoComplete="heardFromSpecify"
-              />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <CustomTextField
+              {...props}
+              label="Please provide some more details of how you heard of BizTech (e.g. which event, boothing day, etc..) *"
+              groupName="heardFromSpecify"
+              autoComplete="heardFromSpecify"
+            />
+          </Grid>
+        )}
       </Grid>
       <br />
       {/* {memberType === MEMBER_TYPES.UBC && (
