@@ -341,7 +341,7 @@ const FormCreateForm = (props) => {
               (
                 <FormCreatePreview
                   imageUrl={imageUrl}
-                  type={"partner"}check
+                  type={"partner"} check
                   eventName={eventName}
                   description={partnerDescription}
                   questionsData={partnerRegistrationQuestions}
@@ -404,7 +404,7 @@ const FormCreateForm = (props) => {
                   ) : (
                     <Button variant="contained"
                       color="primary"
-                      onClick = {() => handleComplete(true)}
+                      onClick={() => handleComplete(true)}
                     >
                       Mark as Complete
                     </Button>
@@ -520,6 +520,7 @@ const FormCreateForm = (props) => {
                 value={slug}
                 error={showError("slug")}
                 helperText={showError("slug") && errors.slug}
+                disabled={isSaved} // Don't allow changes if slug has been saved
               />
               {slug && (
                 <div style={{
@@ -1021,7 +1022,7 @@ const FormCreate = (props) => {
       });
   }
 
-  async function handleComplete (complete = false) {
+  async function handleComplete(complete = false) {
     const body = {
       isCompleted: complete
     };
@@ -1029,7 +1030,7 @@ const FormCreate = (props) => {
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
       .then((response) => {
         alert(response.message);
-        fetchEvents ();
+        fetchEvents();
         history.replace(`/admin/event/${eventId}/${eventYear}/edit`);
         window.location.reload();
       })
