@@ -158,17 +158,15 @@ export default function MembershipForm(props) {
         )}
 
         <Grid item xs={12}>
-          <CustomSelect
-            {...props}
-            label="Preferred Pronouns"
-            listOfOptions={[
-              "He/Him/His",
-              "She/Her/Hers",
-              "They/Them/Their",
-              "Other/Prefer not to say"
-            ]}
-            groupName="pronouns"
-          />
+          <FormControl>
+            <FormLabel>Preferred Pronouns</FormLabel>
+            <FormGroup>
+              <FormControlLabel control={<Checkbox name="He/Him/His" />} label="He/Him/His" />
+              <FormControlLabel control={<Checkbox name="She/Her/Hers" />} label="She/Her/Hers" />
+              <FormControlLabel control={<Checkbox name="They/Them/Theirs" />} label="They/Them/Theirs" />
+              <FormControlLabel control={<Checkbox name="Other/Prefer not to say" />} label="Other/Prefer not to say" />
+            </FormGroup>
+          </FormControl>
         </Grid>
 
         {memberType === MEMBER_TYPES.UNIVERSITY && (
@@ -414,6 +412,6 @@ export default function MembershipForm(props) {
         <CardMembershipIcon className={classes.registerIcon} />
         Proceed to Payment
       </Button>
-    </form>
+    </form >
   );
 }

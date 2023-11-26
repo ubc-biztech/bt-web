@@ -54,6 +54,9 @@ import {
   QUESTION_DOMAINS
 } from "constants/index";
 import OtherCheckbox from "./components/OtherCheckbox";
+import {
+  APPLICATION_STATUS
+} from "constants/_constants/eventStatsStatusFields";
 
 const styles = {
   // Container for custom form image
@@ -429,12 +432,14 @@ const FormRegister = (props) => {
           dataReq: {
             data: rawLog,
             name: file.name,
-            type: file.type
+            type: file.type,
+            folderId: currEvent.id
+
           },
-          fname: "uploadFilesToGoogleDrive"
+          fname: "uploadFilesToGoogleDrive",
         }; // preapre info to send to API
         fetch(
-          "https://script.google.com/macros/s/AKfycbyX8joJ5WeyqZxrUh-iS-Cay17N3ygO-YMuoNVaBN5o4jl6Cy0k9X0JcxRrwiWy1OEoiQ/exec", // your AppsScript URL
+          "https://script.google.com/macros/s/AKfycbzLif9Uypau-R54Ob-g3bs9jqWujIzfXFvZEMKx7k5m3KfZZNlPUwj-dIdKh7dMaxTotA/exec", // your AppsScript URL
           {
             method: "POST",
             body: JSON.stringify(dataSend)
@@ -446,12 +451,13 @@ const FormRegister = (props) => {
           })
           .catch((e) =>
             alert(
-              "An error occurred while trying to upload the file. Please try again."
+              e
+              // "An error occurred while trying to upload the file. Please try again."
             )
           );
       };
     },
-    [updateField]
+    [updateField, currEvent.ename]
   );
 
   const loadQuestions = () => {
@@ -467,7 +473,7 @@ const FormRegister = (props) => {
         charLimit
       } = formData.questions[i];
       const choicesArr = choices ? choices.split(",") : [];
-      if (questionType === "CHECKBOX") {
+      if (questionType === "CHECKBOX" || questionType === "SKILLS") {
         returnArr.push(
           <div style={{
             paddingBottom: "1.5rem"
@@ -704,7 +710,7 @@ const FormRegister = (props) => {
                 <input
                   hidden
                   type="file"
-                  accept="application/pdf"
+                  accept="application/pdf, image/jpg, image/png, image/jpeg"
                   onChange={(e) => uploadFile(i, e)}
                 />
               </Button>
@@ -849,7 +855,8 @@ const FormRegister = (props) => {
           diet: responseData[7],
           heardFrom: responseData[8]
         },
-        dynamicResponses
+        dynamicResponses,
+        applicationStatus: currEvent.isApplicationBased ? APPLICATION_STATUS.reviewing.dbValue : ""
       };
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then((response) => {
@@ -946,7 +953,8 @@ const FormRegister = (props) => {
           diet: responseData[7],
           heardFrom: responseData[8]
         },
-        dynamicResponses
+        dynamicResponses,
+        applicationStatus: currEvent.isApplicationBased ? APPLICATION_STATUS.reviewing.dbValue : ""
       };
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then(() => {

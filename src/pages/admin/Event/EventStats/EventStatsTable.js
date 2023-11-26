@@ -30,12 +30,15 @@ import {
 } from "@material-ui/lab";
 import {
   QrReader
-}  from "react-qr-reader";
+} from "react-qr-reader";
 
 import {
   REGISTRATION_STATUS,
   REGISTRATION_LABELS,
-  COLORS
+  COLORS,
+  APPLICATION_TABLE_TYPE,
+  ATTENDEE_TABLE_TYPE,
+  PARTNER_TABLE_TYPE
 } from "constants/index";
 import {
   fetchBackend
@@ -119,10 +122,12 @@ export class EventStatsTable extends Component {
     this.state = {
       columns: {
       },
+      rows: [],
       presentedColumns: [],
       partnerColumns: {
       },
       presentedPartnerColumns: [],
+      presentedApplicationViewColumns: [],
       registrationNumbers: {
       },
       faculties: {
@@ -176,11 +181,26 @@ export class EventStatsTable extends Component {
         }
       },
       tableType: "attendee",
+      refreshTable: () => {
+        if (this.props.event !== null) {
+          this.forceUpdate();
+          this.setState({
+            rows: []
+          });
+          this.getEventTableData(this.props.event.id, this.props.event.year);
+        }
+      }
     };
   }
 
   refreshTable() {
-    this.getEventTableData(this.props.event.id, this.props.event.year);
+    if (this.props.event !== null) {
+      this.forceUpdate();
+      this.setState({
+        rows: []
+      });
+      this.getEventTableData(this.props.event.id, this.props.event.year);
+    }
   };
 
   async initializeTableColumns() {
@@ -191,18 +211,22 @@ export class EventStatsTable extends Component {
       `/events/${eventID}/${eventYear.toString()}`,
       "GET"
     ).then(async (event) => {
-      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable);
+      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.state.refreshTable, ATTENDEE_TABLE_TYPE);
       const dynamicQuestionColumns = getDynamicQuestionColumns(event.registrationQuestions);
 
-      const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.refreshTable);
+      const defaultApplicationViewColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.state.refreshTable, APPLICATION_TABLE_TYPE);
+
+      const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.state.refreshTable);
       const dynamicPartnerQuestionColumns = getDynamicQuestionColumns(event.partnerRegistrationQuestions);
 
       const presentedColumns = defaultColumns.concat(dynamicQuestionColumns);
       const presentedPartnerColumns = defaultPartnerColumns.concat(dynamicPartnerQuestionColumns);
+      const presentedApplicationViewColumns = defaultApplicationViewColumns.concat(dynamicQuestionColumns);
 
       this.setState({
         presentedColumns,
-        presentedPartnerColumns
+        presentedPartnerColumns,
+        presentedApplicationViewColumns
       });
     });
   }
@@ -379,6 +403,7 @@ export class EventStatsTable extends Component {
   render() {
     const registrationColumns = this.state.presentedColumns;
     const registrationPartnerColumns = this.state.presentedPartnerColumns;
+    const registrationApplicationViewColumns = this.state.presentedApplicationViewColumns;
 
     function handleColumnDrag(sourceIndex, destinationIndex) {
       const sourceColumn = registrationColumns[sourceIndex];
@@ -389,6 +414,18 @@ export class EventStatsTable extends Component {
       registrationColumns[destinationIndex] = sourceColumn;
       this.setState({
         presentedColumns: registrationColumns
+      });
+    }
+
+    function handleApplicationViewColumnDrag(sourceIndex, destinationIndex) {
+      const sourceColumn = registrationApplicationViewColumns[sourceIndex];
+      const destinationColumn = registrationApplicationViewColumns[destinationIndex];
+
+      // Swapping the column order
+      registrationApplicationViewColumns[sourceIndex] = destinationColumn;
+      registrationApplicationViewColumns[destinationIndex] = sourceColumn;
+      this.setState({
+        presentedApplicationViewColumns: registrationApplicationViewColumns
       });
     }
 
@@ -420,12 +457,28 @@ export class EventStatsTable extends Component {
     return (
       <div style={styles.container}>
         {/* QR code scanner */}
-        <QrCheckIn event={this.props.event} refresh={this.refreshTable} rows={this.state.rows}/>
+        <QrCheckIn event={this.props.event} refresh={this.refreshTable} rows={this.state.rows} />
 
         {/* padding for visual separation */}
         <div style={{
           padding: "10px"
         }}>
+          {/* Toggle Competitions Acceptance View button */}
+          {
+            this.props.event?.isApplicationBased &&
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                this.setState({
+                  tableType: this.state.tableType === APPLICATION_TABLE_TYPE ? ATTENDEE_TABLE_TYPE : APPLICATION_TABLE_TYPE
+                })
+              }
+            >
+              Toggle Application View
+            </Button>
+          }
+
           {/* refresh button */}
           <Button
             variant="contained"
@@ -472,139 +525,152 @@ export class EventStatsTable extends Component {
         </div>
         {
           this.state.isWaitlistShown &&
-            <div>
-              <div style={{
-                padding: "10px"
-              }} />
-              {/* text to say hello */}
-              <Typography variant="h5" style={{
-                color: COLORS.FONT_COLOR
-              }}>
-                To view the waitlist: 1) apply a Filter on the Registration Status column for "Waitlist". 2) Sort the table by Last Updated.
-              </Typography>
-            </div>
+          <div>
+            <div style={{
+              padding: "10px"
+            }} />
+            {/* text to say hello */}
+            <Typography variant="h5" style={{
+              color: COLORS.FONT_COLOR
+            }}>
+              To view the waitlist: 1) apply a Filter on the Registration Status column for "Waitlist". 2) Sort the table by Last Updated.
+            </Typography>
+          </div>
         }
         {
           this.state.isAdminTeamFormationShown &&
-            <div>
-              <div style={{
-                padding: "10px"
-              }} />
-              {/*  Formik form for team formation, up to 4 members */}
-              <Formik
-                initialValues={{
-                  teamName: "",
-                  teamMember: "",
-                  teamMember2: "",
-                  teamMember3: "",
-                  teamMember4: "",
-                }}
-                onSubmit={async (values, {
-                  setSubmitting
-                }) => {
-                  setSubmitting(true);
+          <div>
+            <div style={{
+              padding: "10px"
+            }} />
+            {/*  Formik form for team formation, up to 4 members */}
+            <Formik
+              initialValues={{
+                teamName: "",
+                teamMember: "",
+                teamMember2: "",
+                teamMember3: "",
+                teamMember4: "",
+              }}
+              onSubmit={async (values, {
+                setSubmitting
+              }) => {
+                setSubmitting(true);
 
-                  const teamMembersArrayAppend = [];
+                const teamMembersArrayAppend = [];
 
-                  if (values.teamMember)  teamMembersArrayAppend.push(values.teamMember);
-                  if (values.teamMember2) teamMembersArrayAppend.push(values.teamMember2);
-                  if (values.teamMember3) teamMembersArrayAppend.push(values.teamMember3);
-                  if (values.teamMember4) teamMembersArrayAppend.push(values.teamMember4);
+                if (values.teamMember) teamMembersArrayAppend.push(values.teamMember);
+                if (values.teamMember2) teamMembersArrayAppend.push(values.teamMember2);
+                if (values.teamMember3) teamMembersArrayAppend.push(values.teamMember3);
+                if (values.teamMember4) teamMembersArrayAppend.push(values.teamMember4);
 
-                  const response = {
-                    team_name: values.teamName ? values.teamName : "Placeholder",
-                    eventID: this.props.event.id,
-                    year: parseInt(this.props.event.year),
-                    memberIDs: teamMembersArrayAppend,
-                  };
+                const response = {
+                  team_name: values.teamName ? values.teamName : "Placeholder",
+                  eventID: this.props.event.id,
+                  year: parseInt(this.props.event.year),
+                  memberIDs: teamMembersArrayAppend,
+                };
 
-                  await fetchBackend("/team/make", "POST", response, true);
-                  // alert the user that the team has been made
-                  alert("Team has been made: " + values.teamName + " with members: " + teamMembersArrayAppend);
+                await fetchBackend("/team/make", "POST", response, true);
+                // alert the user that the team has been made
+                alert("Team has been made: " + values.teamName + " with members: " + teamMembersArrayAppend);
 
-                  setSubmitting(false);
-                  this.refreshTable();
-                }}
-              >
-                {({
-                  isSubmitting, values
-                }) => (
-                  <Form>
-                    <Field
-                      name="teamName"
-                      type="text"
-                      placeholder="Team Name"
-                      as={TextField}
-                      variant="filled"
-                      style={{
-                        margin: "10px"
-                      }}
-                    />
-                    <Field
-                      name="teamMember"
-                      type="text"
-                      placeholder="Team Member Email 1"
-                      as={TextField}
-                      variant="filled"
-                      style={{
-                        margin: "10px"
-                      }}
-                    />
-                    <Field
-                      name="teamMember2"
-                      type="text"
-                      placeholder="Team Member Email 2"
-                      as={TextField}
-                      variant="filled"
-                      style={{
-                        margin: "10px"
-                      }}
-                    />
-                    <Field
-                      name="teamMember3"
-                      type="text"
-                      placeholder="Team Member Email 3"
-                      as={TextField}
-                      variant="filled"
-                      style={{
-                        margin: "10px"
-                      }}
-                    />
-                    <Field
-                      name="teamMember4"
-                      type="text"
-                      placeholder="Team Member Email 4"
-                      as={TextField}
-                      variant="filled"
-                      style={{
-                        margin: "10px"
-                      }}
-                    />
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      type="submit"
-                      disabled={isSubmitting}
-                    >
-                                Submit New Team
-                    </Button>
-                  </Form>
-                )}
-              </Formik>
+                setSubmitting(false);
+                this.refreshTable();
+              }}
+            >
+              {({
+                isSubmitting, values
+              }) => (
+                <Form>
+                  <Field
+                    name="teamName"
+                    type="text"
+                    placeholder="Team Name"
+                    as={TextField}
+                    variant="filled"
+                    style={{
+                      margin: "10px"
+                    }}
+                  />
+                  <Field
+                    name="teamMember"
+                    type="text"
+                    placeholder="Team Member Email 1"
+                    as={TextField}
+                    variant="filled"
+                    style={{
+                      margin: "10px"
+                    }}
+                  />
+                  <Field
+                    name="teamMember2"
+                    type="text"
+                    placeholder="Team Member Email 2"
+                    as={TextField}
+                    variant="filled"
+                    style={{
+                      margin: "10px"
+                    }}
+                  />
+                  <Field
+                    name="teamMember3"
+                    type="text"
+                    placeholder="Team Member Email 3"
+                    as={TextField}
+                    variant="filled"
+                    style={{
+                      margin: "10px"
+                    }}
+                  />
+                  <Field
+                    name="teamMember4"
+                    type="text"
+                    placeholder="Team Member Email 4"
+                    as={TextField}
+                    variant="filled"
+                    style={{
+                      margin: "10px"
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
+                    Submit New Team
+                  </Button>
+                </Form>
+              )}
+            </Formik>
 
-              <Typography variant="h5" style={{
-                color: COLORS.FONT_COLOR
-              }}>
-                    To view the teams or to make Team point changes, contact a member of the dev team
-              </Typography>
-            </div>
+            <Typography variant="h5" style={{
+              color: COLORS.FONT_COLOR
+            }}>
+              To view the teams or to make Team point changes, contact a member of the dev team
+            </Typography>
+          </div>
         }
 
         <MaterialTable
-          title={`${this.props.event.ename} Attendance`}
-          columns = {this.state.tableType === "attendee" ? this.state.presentedColumns : this.state.presentedPartnerColumns}
-          data={filterRows(this.state.rows, this.state.tableType === "partner")}
-          handleColumnDrag={this.state.tableType === "attendee" ? handleColumnDrag : handlePartnerColumnDrag}
+          title={this.state.tableType === APPLICATION_TABLE_TYPE ? `${this.props.event.ename} Application View` : `${this.props.event.ename} Attendance`}
+          columns={
+            this.state.tableType === ATTENDEE_TABLE_TYPE
+              ? this.state.presentedColumns
+              : this.state.tableType === APPLICATION_TABLE_TYPE
+                ? this.state.presentedApplicationViewColumns
+                : this.state.presentedPartnerColumns
+          }
+          data={filterRows(this.state.rows, this.state.tableType === PARTNER_TABLE_TYPE)}
+          handleColumnDrag={
+            this.state.tableType === ATTENDEE_TABLE_TYPE
+              ? handleColumnDrag
+              : this.state.tableType
+                === APPLICATION_TABLE_TYPE
+                ? handleApplicationViewColumnDrag
+                : handlePartnerColumnDrag
+          }
           // Configure options for the table
           style={styles.table}
           options={{
@@ -668,7 +734,7 @@ export class EventStatsTable extends Component {
           statName="Heard about event from: "
           statObj={this.state.heardFrom}
         />
-      </div>
+      </div >
     );
   }
 }
@@ -899,13 +965,22 @@ const QrCheckIn = (props) => {
       setCameraFacingMode(CAMERA_FACING_MODE.FRONT);
     }
   };
-
+  const [qrCodeText, setQrCodeText] = useState("");
   const handleScanQR = (data) => {
     // conditional check may be necessary to prevent re-scans of the same QR code, but this implementation is unintuitive
     // when wanting to re-scan (requires a manual reset)
     // if (data.data !== qrCode.data) setQrCode(data);
-
-    setQrCode(data);
+    if (data) {
+      console.log("Scanned QR Code Data: ", data);
+      if ("text" in data) {
+        console.log("Scanned QR Code Text: ", data.text);
+        setQrCodeText(data.text); // Update qrCodeText state
+      } else {
+        console.log("Scanned QR Code does not contain text property");
+      }
+    } else {
+      console.log("No QR Code Scanned Data");
+    }
   };
 
   // puts the QR code scanner in a scanning state after a grace period, like tapping your Compass Card
@@ -939,15 +1014,15 @@ const QrCheckIn = (props) => {
       cycleQrScanStage(QR_SCAN_STAGE.SUCCESS, 8000);
 
       // refresh the entire table to reflect change
-      props.refresh();
+      // props.refresh();
     };
 
-    if (!qrCode || qrCode.data === "" || qrScanStage !== QR_SCAN_STAGE.SCANNING)
+    if (!qrCode || qrCodeText === "" || typeof qrCodeText !== "string" || qrScanStage !== QR_SCAN_STAGE.SCANNING)
       return;
 
     // data is arranged: email;event_id;year
     // id is the array of the data split by ";"
-    const id = qrCode.data.split(";");
+    const id = qrCodeText.split(";");
     const userID = id[0];
     const eventIDAndYear = id[1] + ";" + id[2];
     const userFName = id[3];
@@ -1007,7 +1082,7 @@ const QrCheckIn = (props) => {
     checkInUser(userID, userFName);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qrCode]);
+  }, [qrCodeText]);
 
   return (
     <Paper className={[classes.qrRoot]}>

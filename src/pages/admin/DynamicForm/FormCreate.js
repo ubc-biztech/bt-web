@@ -148,6 +148,10 @@ const styles = {
   },
   previewButton: {
     marginBottom: 24,
+  },
+  applicationBasedCheckbox: {
+    padding: "1rem",
+    color: "white",
   }
 };
 
@@ -173,6 +177,7 @@ const FormCreateForm = (props) => {
       price,
       nonMembersPrice,
       nonMembersAllowed,
+      isApplicationBased,
       feedback,
       registrationQuestions,
       partnerRegistrationQuestions,
@@ -233,6 +238,7 @@ const FormCreateForm = (props) => {
                   key={index}
                   index={index}
                   length={registrationQuestions.length}
+                  formType={"ATTENDEE"}
                   data={question}
                   fnMove={swap}
                   fnDelete={remove}
@@ -243,6 +249,7 @@ const FormCreateForm = (props) => {
             <div style={styles.addQuestion}>
               <Fab
                 onClick={() => push({
+
                   ...defaultQuestion
                 })}
                 className={classes.fab}
@@ -273,6 +280,7 @@ const FormCreateForm = (props) => {
                   key={index}
                   index={index}
                   length={partnerRegistrationQuestions.length}
+                  formType={"PARTNER"}
                   data={question}
                   fnMove={swap}
                   fnDelete={remove}
@@ -333,7 +341,7 @@ const FormCreateForm = (props) => {
               (
                 <FormCreatePreview
                   imageUrl={imageUrl}
-                  type={"partner"}check
+                  type={"partner"} check
                   eventName={eventName}
                   description={partnerDescription}
                   questionsData={partnerRegistrationQuestions}
@@ -396,7 +404,7 @@ const FormCreateForm = (props) => {
                   ) : (
                     <Button variant="contained"
                       color="primary"
-                      onClick = {() => handleComplete(true)}
+                      onClick={() => handleComplete(true)}
                     >
                       Mark as Complete
                     </Button>
@@ -444,6 +452,22 @@ const FormCreateForm = (props) => {
               </div>
             </div>
             <div style={styles.editorDivider}></div>
+
+            {!eventId &&
+              <div style={styles.applicationBasedCheckbox}>
+                Is this an application based event (ie. will you accept/reject applicants)?
+                <Checkbox
+                  id='isApplicationBased'
+                  name='isApplicationBased'
+                  color="primary"
+                  aria-label="application based?"
+                  checked={isApplicationBased}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  required
+                />
+              </div>
+            }
 
             <div style={styles.editorSection}>
               <h3 style={styles.editorSectionTitle}>Event Cover Photo</h3>
@@ -496,6 +520,7 @@ const FormCreateForm = (props) => {
                 value={slug}
                 error={showError("slug")}
                 helperText={showError("slug") && errors.slug}
+                disabled={isSaved} // Don't allow changes if slug has been saved
               />
               {slug && (
                 <div style={{
@@ -713,6 +738,7 @@ const FormCreateForm = (props) => {
    - CHECKBOX
    - UPLOAD
    - WORKSHOP SELECTION
+   - Skills question
 
   Below is the data struct for registrationQuestions
 
@@ -740,10 +766,8 @@ const dummyData = [
     questionImageUrl: "",
   },
   {
-    type: "WORKSHOP SELECTION",
-    label: "Select your workshop for this event",
-    choices: "Workshop 1,Workshop 2,Workshop 3,Workshop 4",
-    participantCap: "50,30,30,30",
+    type: "UPLOAD",
+    label: "Upload a profile picture",
     required: true,
     questionImageUrl: "",
   }
@@ -757,6 +781,15 @@ const partnerDummyData = [
     choices: "Keynote Speaker,Workshop Lead,Boothing,Networking Delegate",
     required: true,
     questionImageUrl: "",
+  },
+  {
+    type: "SKILLS",
+    label: "What skills are you familiar with?",
+    choices: "",
+    required: true,
+    charLimit: 200,
+    questionImageUrl: "",
+    isSkillsQuestion: true
   }
 ];
 
@@ -800,6 +833,7 @@ const FormCreate = (props) => {
       registrationQuestions: event.registrationQuestions || dummyData,
       feedback: event.feedback || "",
       partnerRegistrationQuestions: event.partnerRegistrationQuestions || partnerDummyData,
+      isApplicationBased: event?.isApplicationBased
     }
     : {
       imageUrl: "",
@@ -818,10 +852,11 @@ const FormCreate = (props) => {
       registrationQuestions: dummyData,
       feedback: "",
       partnerRegistrationQuestions: partnerDummyData,
+      isApplicationBased: false
     };
 
   const regQuestionSchema = Yup.object({
-    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD", "WORKSHOP SELECTION"]).required(),
+    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD", "WORKSHOP SELECTION", "SKILLS"]).required(),
     label: Yup.string().required("Question is a required field"),
     choices: Yup.string(),
     required: Yup.boolean().required(),
@@ -863,7 +898,8 @@ const FormCreate = (props) => {
       return schema;
     }),
     registrationQuestions: Yup.array().of(regQuestionSchema),
-    partnerRegistrationQuestions: Yup.array().of(regQuestionSchema)
+    partnerRegistrationQuestions: Yup.array().of(regQuestionSchema),
+    isApplicationBase: Yup.bool(),
   });
 
   async function submitValues(values) {
@@ -899,7 +935,8 @@ const FormCreate = (props) => {
       pricing,
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback,
-      partnerRegistrationQuestions: values.partnerRegistrationQuestions
+      partnerRegistrationQuestions: values.partnerRegistrationQuestions,
+      isApplicationBased: values.isApplicationBased
     };
 
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
@@ -944,7 +981,8 @@ const FormCreate = (props) => {
       isCompleted: false,
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback,
-      partnerRegistrationQuestions: values.partnerRegistrationQuestions
+      partnerRegistrationQuestions: values.partnerRegistrationQuestions,
+      isApplicationBased: values.isApplicationBased
     };
 
     fetchBackend("/events", "POST", body)
@@ -984,7 +1022,7 @@ const FormCreate = (props) => {
       });
   }
 
-  async function handleComplete (complete = false) {
+  async function handleComplete(complete = false) {
     const body = {
       isCompleted: complete
     };
@@ -992,7 +1030,7 @@ const FormCreate = (props) => {
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
       .then((response) => {
         alert(response.message);
-        fetchEvents ();
+        fetchEvents();
         history.replace(`/admin/event/${eventId}/${eventYear}/edit`);
         window.location.reload();
       })
