@@ -247,16 +247,11 @@ const FormRegister = (props) => {
   useEffect(() => {
     const fetchEvent = async () => {
       if (!registeredEvents && user) {
-        let registered;
-        try {
-          registered = await fetchBackend(
-            `/registrations?email=${user?.email}`,
-            "GET"
-          );
-          setRegisteredEvents(registered);
-        } catch(err) {
-          console.error(err);
-        }
+        const registered = await fetchBackend(
+          `/registrations?email=${user?.email}`,
+          "GET"
+        );
+        setRegisteredEvents(registered);
       }
       if (!currEvent) {
         const params = new URLSearchParams({
