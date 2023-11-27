@@ -247,11 +247,16 @@ const FormRegister = (props) => {
   useEffect(() => {
     const fetchEvent = async () => {
       if (!registeredEvents && user) {
-        const registered = await fetchBackend(
-          `/registrations?email=${user?.email}`,
-          "GET"
-        );
-        setRegisteredEvents(registered);
+        let registered;
+        try {
+          registered = await fetchBackend(
+            `/registrations?email=${user?.email}`,
+            "GET"
+          );
+          setRegisteredEvents(registered);
+        } catch(err) {
+          console.error(err);
+        }
       }
       if (!currEvent) {
         const params = new URLSearchParams({
@@ -271,7 +276,9 @@ const FormRegister = (props) => {
         );
         eventData.counts = regData;
         setCurrEvent(eventData);
-
+        console.log(registeredEvents);
+        console.log(eventData);
+        console.log(regData);
         // Populate the dynamicCounts array with data
         eventData.counts.dynamicCounts.forEach((dynamicCount) => {
           dynamicCount.counts.forEach((workshop) => {
