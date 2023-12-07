@@ -4,8 +4,104 @@ import BiztechMISNightLogo from "../../../../assets/2024/misnight/BiztechMISNigh
 import DBLogo from "../../../../assets/2023/data&beyond/D&BLogo.png";
 import MISLogo from "../../../../assets/2024/misnight/logo.svg";
 import MISNight2023 from "./MISNight2023";
+import Blueprint2024 from "./Blueprint2024";
 
 export default [
+  { /* TODO: This hello hacks component is incomplete and exists only for the sake of testing out how mentors list looks */
+  /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    activeUntil: new Date(new Date("01-30-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
+    /* id of event in dynamodb, used for queries */
+    eventID: "blueprint",
+    /* year of event in dynamodb, used for queries */
+    year: 2024,
+    /* component for event body */ // keep the same
+    ChildComponent: Blueprint2024,
+    /* options defining params for the companionLayout */
+    options: {
+    /* Biztech logo for event */
+      BiztechLogo: BizTechDBLogo,
+      /* Logo for event */
+      Logo: DBLogo,
+      /* Displayed title of event */
+      title: "Blueprint",
+      /* Displayed date of event */
+      date: "Saturday, January 27th",
+      /* Displayed location of event */
+      location: "The Great Hall, AMS Student Nest (2nd Floor)",
+      /* color theme of event */
+      colors: {
+        primary: "linear-gradient(180deg, #FFFFFF, #FFFFFF)",
+        background: "black",
+        // background: "linear-gradient(180deg, #e3edf7, #e3edf7)",
+      },
+      /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
+      getScheduleData: (regData) => [
+        {
+          date: "10:30 am - 11:00 am",
+          title: "Registration",
+        },
+        {
+          date: "11:00 am - 11:10 am",
+          title: "Opening Remarks",
+        },
+        {
+          date: "11:10 am - 11:25 am",
+          title: "Keynote",
+        },
+        {
+          date: "11:30 am - 11:40 am",
+          title: "Icebreaker",
+        },
+        {
+          date: "11:45 am - 12:15 pm",
+          title: "Panel",
+        },
+        {
+          date: "12:20 pm - 12:50 pm",
+          title: "Lunch",
+        },
+        {
+          date: "1:00 pm - 1:40 pm",
+          title: "Workshop 1 in Great Hall North OR Boothing & Networking in Great Hall South",
+        },
+        {
+          date: "1:55 pm - 2:35 pm",
+          title: "Workshop 2 in Great Hall North OR Boothing & Networking in Great Hall South",
+        },
+        {
+          date: "2:50pm - 3:30 pm",
+          title: "Workshop 3 in Great Hall North OR Boothing & Networking in Great Hall South",
+        },
+        {
+          date: "3:45 pm - 4:25 pm",
+          title: "Workshop 4 in Great Hall North OR Boothing & Networking in Great Hall South",
+        },
+        {
+          date: "4:30 pm - 5:00 pm",
+          title: "Closing Remarks/Prize Raffle",
+        },
+      ],
+      /* Array of welcome paragraphs for event, each new index is a new paragraph */
+      welcomeData: [
+        "Welcome to Blueprint 2024! This will be your friend throughout the event. Feel free to check back here to see tonight’s schedule and browse through who’s in attendance."
+      ],
+      /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
+      headers: [
+        {
+          text: "Floorplan",
+          id: "Floorplan"
+        },
+        {
+          text: "Mentors",
+          id: "Mentors"
+        },
+        {
+          text: "Partners",
+          id: "Partners"
+        },
+      ]
+    }
+  },
   { /* TODO: This hello hacks component is incomplete and exists only for the sake of testing out how mentors list looks */
   /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("10-01-2023").getTime() + (7 * 24 * 60 * 60 * 1000)),
