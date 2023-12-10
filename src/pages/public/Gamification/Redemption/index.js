@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  motion
+} from "framer-motion";
 import Lottie from "lottie-react";
 
-import { withRouter } from "react-router-dom";
+import {
+  withRouter
+} from "react-router-dom";
 import {
   Button,
   TextField,
@@ -10,14 +16,20 @@ import {
   makeStyles,
   Modal
 } from "@material-ui/core";
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 import Loading from "pages/Loading";
 
 import BizTechDBLogo from "assets/2023/data&beyond/BizTechD&BLogo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
-import { COLORS } from "../../../../constants/_constants/theme";
-import { constantStyles } from "../../../../constants/_constants/companion";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
+import {
+  constantStyles
+} from "../../../../constants/_constants/companion";
 
 const styles = {
   container: {
@@ -207,7 +219,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Redemption = ({ history, location }) => {
+const Redemption = ({
+  history, location
+}) => {
   const [input, setInput] = useState("");
   const [email, setEmail] = useState("");
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
@@ -230,7 +244,10 @@ const Redemption = ({ history, location }) => {
 
   const classes = useStyles();
 
-  const { eventID, year, qrID } = location?.state || {};
+  const {
+    eventID, year, qrID
+  } = location?.state || {
+  };
 
   // Temp for Data and Beyond
   const id = qrID.slice(6);
@@ -380,28 +397,28 @@ const Redemption = ({ history, location }) => {
 
   const handleQrScanError = (err) => {
     switch (err.status) {
-      case 405:
-        determinePointsAwardedText(err.message.qr_points);
-        setNegativeQRModalOpen(true);
-        break;
-      case 406:
-        setError("You do not have sufficient funds to make this purchase.");
-        break;
-      default:
-        if (
-          err.message.message &&
+    case 405:
+      determinePointsAwardedText(err.message.qr_points);
+      setNegativeQRModalOpen(true);
+      break;
+    case 406:
+      setError("You do not have sufficient funds to make this purchase.");
+      break;
+    default:
+      if (
+        err.message.message &&
           err.message.message.includes("already scanned")
-        ) {
-          // TEMPORARY for Data and Beyond: remove this conditional branch once we have a better way to handle this
-          // this is neccessary because the backend error message for already scanned QRs is not
-          // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
-          setError(
-            "This code is already scanned and can only be redeemed once."
-          );
-        } else {
-          setError(err.message.message);
-        }
-        break;
+      ) {
+        // TEMPORARY for Data and Beyond: remove this conditional branch once we have a better way to handle this
+        // this is neccessary because the backend error message for already scanned QRs is not
+        // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
+        setError(
+          "This code is already scanned and can only be redeemed once."
+        );
+      } else {
+        setError(err.message.message);
+      }
+      break;
     }
     console.log(err);
   };
@@ -531,143 +548,143 @@ const Redemption = ({ history, location }) => {
               {!isSuccessAnimationFinished &&
               !isErrorAnimationFinished &&
               !isEmailModalOpen ? (
-                <div style={styles.successContainer}>
-                  {error ? (
-                    <Lottie
-                      animationData={ErrorAnimation}
-                      onLoopComplete={finishError}
-                    />
-                  ) : (
-                    <Lottie
-                      animationData={SuccessAnimation}
-                      onLoopComplete={finishSuccess}
-                    />
-                  )}
-                  ;
-                </div>
-              ) : (
-                <>
-                  <motion.div
-                    style={styles.successContainer}
-                    initial={{
-                      opacity: 0,
-                      scale: 0.5
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      ease: "easeOut"
-                    }}
-                  >
-                    <img
-                      src={BizTechDBLogo}
-                      alt="Data and Beyond Logo"
-                      style={{
-                        width: "50%",
-                        height: "auto",
-                        marginBottom: 20
-                      }}
-                    />
-                  </motion.div>
-
-                  <motion.div
-                    style={styles.successContainer}
-                    initial={{
-                      opacity: 0,
-                      scale: 0.5
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      ease: "easeOut"
-                    }}
-                  >
+                  <div style={styles.successContainer}>
                     {error ? (
+                      <Lottie
+                        animationData={ErrorAnimation}
+                        onLoopComplete={finishError}
+                      />
+                    ) : (
+                      <Lottie
+                        animationData={SuccessAnimation}
+                        onLoopComplete={finishSuccess}
+                      />
+                    )}
+                  ;
+                  </div>
+                ) : (
+                  <>
+                    <motion.div
+                      style={styles.successContainer}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <img
+                        src={BizTechDBLogo}
+                        alt="Data and Beyond Logo"
+                        style={{
+                          width: "50%",
+                          height: "auto",
+                          marginBottom: 20
+                        }}
+                      />
+                    </motion.div>
+
+                    <motion.div
+                      style={styles.successContainer}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {error ? (
+                        <Typography
+                          className={classes.themeText}
+                          style={{
+                            margin: "20px 0"
+                          }}
+                        >
+                          {error}
+                        </Typography>
+                      ) : (
+                        <>
+                          <Typography className={classes.welcome}>
+                            {congratNameText}
+                          </Typography>
+
+                          <Typography className={classes.themeText}>
+                            {congratSuffixText}
+                          </Typography>
+
+                          <Typography
+                            className={classes.pointsText}
+                            style={{
+                              margin: "20px 0"
+                            }}
+                          >
+                            {pointsAwardedText}
+                          </Typography>
+                        </>
+                      )}
+                    </motion.div>
+
+                    <motion.div
+                      style={styles.successContainer}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {links[id] && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="large"
+                          className={classes.DBButton}
+                          onClick={() => {
+                            window.open(links[id]);
+                          }}
+                        >
+                        Proceed to Challenge
+                        </Button>
+                      )}
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        onClick={() => {
+                          history.push("/companion");
+                        }}
+                      >
+                      Return to Companion
+                      </Button>
                       <Typography
                         className={classes.themeText}
                         style={{
                           margin: "20px 0"
                         }}
                       >
-                        {error}
+                        {timestampText}
                       </Typography>
-                    ) : (
-                      <>
-                        <Typography className={classes.welcome}>
-                          {congratNameText}
-                        </Typography>
-
-                        <Typography className={classes.themeText}>
-                          {congratSuffixText}
-                        </Typography>
-
-                        <Typography
-                          className={classes.pointsText}
-                          style={{
-                            margin: "20px 0"
-                          }}
-                        >
-                          {pointsAwardedText}
-                        </Typography>
-                      </>
-                    )}
-                  </motion.div>
-
-                  <motion.div
-                    style={styles.successContainer}
-                    initial={{
-                      opacity: 0,
-                      scale: 0.5
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1
-                    }}
-                    transition={{
-                      duration: 0.6,
-                      ease: "easeOut"
-                    }}
-                  >
-                    {links[id] && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        className={classes.DBButton}
-                        onClick={() => {
-                          window.open(links[id]);
-                        }}
-                      >
-                        Proceed to Challenge
-                      </Button>
-                    )}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      onClick={() => {
-                        history.push("/companion");
-                      }}
-                    >
-                      Return to Companion
-                    </Button>
-                    <Typography
-                      className={classes.themeText}
-                      style={{
-                        margin: "20px 0"
-                      }}
-                    >
-                      {timestampText}
-                    </Typography>
-                  </motion.div>
-                </>
-              )}
+                    </motion.div>
+                  </>
+                )}
             </>
           ) : (
             <>
