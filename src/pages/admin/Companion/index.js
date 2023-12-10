@@ -365,11 +365,17 @@ const Companion = () => {
                     <Box>Type: {QR.type}</Box>
                   </Box>
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://${
-                      process.env.REACT_APP_STAGE === "production" ? "" : "dev."
-                    }app.ubcbiztech.com/redeem/${
-                      QR["eventID;year"].split(";")[0]
-                    }/${QR["eventID;year"].split(";")[1]}/${QR.id}`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${
+                      process.env.REACT_APP_STAGE === "local"
+                        ? "http://localhost:3000"
+                        : `https://${
+                            process.env.REACT_APP_STAGE === "production"
+                              ? ""
+                              : "dev."
+                          }app.ubcbiztech.com`
+                    }/redeem/${QR["eventID;year"].split(";")[0]}/${
+                      QR["eventID;year"].split(";")[1]
+                    }/${QR.id}`}
                     alt="QR"
                   />
                 </Box>
