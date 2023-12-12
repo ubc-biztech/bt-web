@@ -408,6 +408,9 @@ const Companion = () => {
                         : "One-time Scan"}
                     </Box>
                     <Box>Type: {QR.type}</Box>
+                    {QR.type === "Partner" &&
+                      <Box>Partner Email: {QR.data.partnerID}</Box>
+                    }
                   </Box>
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${
