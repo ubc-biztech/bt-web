@@ -1031,7 +1031,7 @@ const QrCheckIn = (props) => {
     if (eventIDAndYear !== props.event.id + ";" + props.event.year) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 8000);
 
-      // if there are not 3 items and first item is not an email, then the QR code is invalid
+      // if there are not 4 and first item is not an email, then the QR code is invalid
       if (id.length !== 4 && !emailCheck(userID)) {
         setError("Invalid BizTech QR code.");
       } else {
