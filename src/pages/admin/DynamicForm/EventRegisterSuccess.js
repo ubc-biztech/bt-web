@@ -160,7 +160,10 @@ const EventRegisterSuccess = ({
               <Typography>
                 You've successfully registered to the event. Our directors will review the information and coordinate with you further.
               </Typography>
-              <Typography>We've sent you an email with a calendar invite and a QR code to check-in to our event! <br/><b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
+              {/* <Typography>We've sent you an email with a confirmation and a QR code to check-in to our event! <br/><b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography> */}
+              <Typography>
+                Thank you for your registration and support in BizTech's events! We'll be in touch with you soon.
+              </Typography>
             </div>
           ) : (
             <div>
