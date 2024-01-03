@@ -17,6 +17,9 @@ import {
 } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
 import {
+  Redirect
+} from "react-router-dom/cjs/react-router-dom.min";
+import {
   Alert
 } from "@material-ui/lab";
 import CloudUpload from "@material-ui/icons/CloudUpload";
@@ -1299,6 +1302,10 @@ const FormRegister = (props) => {
       </Fragment>
     );
   };
+
+  if (user && (event?.pricing?.nonMembers === undefined && !user?.isMember && !user?.admin)) {
+    return <Redirect to={"/signup"}/>;
+  }
 
   return (
     <>

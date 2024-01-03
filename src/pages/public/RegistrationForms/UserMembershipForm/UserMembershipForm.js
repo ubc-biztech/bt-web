@@ -202,7 +202,6 @@ export default function UserMembershipForm(props) {
             <CustomSelect
               {...props}
               label="Level of study *"
-              initialValues=""
               listOfOptions={[
                 "1st Year",
                 "2nd Year",
@@ -222,7 +221,6 @@ export default function UserMembershipForm(props) {
             <CustomSelect
               {...props}
               label="Level of study *"
-              initialValues=""
               listOfOptions={[
                 "Grade 9",
                 "Grade 10",
@@ -242,7 +240,6 @@ export default function UserMembershipForm(props) {
             <CustomSelect
               {...props}
               label="Faculty *"
-              initialValues=""
               listOfOptions={[
                 "Arts",
                 "Commerce",
@@ -274,7 +271,6 @@ export default function UserMembershipForm(props) {
         {memberType === MEMBER_TYPES.UBC && (
           <Grid item xs={12}>
             <CustomSelect
-              initialValues=""
               {...props}
               label="Are you an international student? *"
               listOfOptions={["Yes", "No"]}
@@ -286,7 +282,6 @@ export default function UserMembershipForm(props) {
         <Grid item xs={12}>
           <CustomSelect
             {...props}
-            initialValues=""
             label="Any dietary restrictions?"
             listOfOptions={["None", "Vegetarian", "Vegan", "Gluten Free", "Pescetarian", "Kosher", "Halal"]}
             groupName="diet"
@@ -296,7 +291,6 @@ export default function UserMembershipForm(props) {
         <Grid item xs={12}>
           <CustomSelect
             {...props}
-            initialValues=""
             label="Were you a BizTech member last year? *"
             listOfOptions={["Yes", "No"]}
             groupName="prev_member"
@@ -350,7 +344,6 @@ export default function UserMembershipForm(props) {
         <Grid item xs={12}>
           <CustomSelect
             {...props}
-            initialValues=""
             label="How did you hear about us?"
             listOfOptions={[
               "Facebook",
