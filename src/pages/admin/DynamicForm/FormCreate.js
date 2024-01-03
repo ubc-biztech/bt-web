@@ -341,7 +341,7 @@ const FormCreateForm = (props) => {
               (
                 <FormCreatePreview
                   imageUrl={imageUrl}
-                  type={"partner"}check
+                  type={"partner"} check
                   eventName={eventName}
                   description={partnerDescription}
                   questionsData={partnerRegistrationQuestions}
@@ -404,7 +404,7 @@ const FormCreateForm = (props) => {
                   ) : (
                     <Button variant="contained"
                       color="primary"
-                      onClick = {() => handleComplete(true)}
+                      onClick={() => handleComplete(true)}
                     >
                       Mark as Complete
                     </Button>
@@ -520,6 +520,7 @@ const FormCreateForm = (props) => {
                 value={slug}
                 error={showError("slug")}
                 helperText={showError("slug") && errors.slug}
+                disabled={isSaved} // Don't allow changes if slug has been saved
               />
               {slug && (
                 <div style={{
@@ -765,10 +766,8 @@ const dummyData = [
     questionImageUrl: "",
   },
   {
-    type: "WORKSHOP SELECTION",
-    label: "Select your workshop for this event",
-    choices: "Workshop 1,Workshop 2,Workshop 3,Workshop 4",
-    participantCap: "50,30,30,30",
+    type: "UPLOAD",
+    label: "Upload a profile picture",
     required: true,
     questionImageUrl: "",
   }
@@ -1023,7 +1022,7 @@ const FormCreate = (props) => {
       });
   }
 
-  async function handleComplete (complete = false) {
+  async function handleComplete(complete = false) {
     const body = {
       isCompleted: complete
     };
@@ -1031,7 +1030,7 @@ const FormCreate = (props) => {
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
       .then((response) => {
         alert(response.message);
-        fetchEvents ();
+        fetchEvents();
         history.replace(`/admin/event/${eventId}/${eventYear}/edit`);
         window.location.reload();
       })
