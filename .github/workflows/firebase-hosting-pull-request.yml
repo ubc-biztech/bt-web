@@ -14,6 +14,9 @@ jobs:
         with:
           node-version: '16.13.2'
 
+      - name: Install Firebase CLI
+        run: npm install -g firebase@12.9.1
+
       - name: Dev Firebase Build
         if: github.event.pull_request.base.ref == 'dev'
         run: npm ci && npm run build
