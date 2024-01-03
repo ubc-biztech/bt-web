@@ -35,6 +35,7 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_DEV_EBF17 }}'
           projectId: bt-web-dev-ebf17
+          firebaseToolsVersion: '12.9.1'
 
       - name: Prod Firebase Build
         if: github.event.pull_request.base.ref == 'master'
@@ -57,3 +58,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_19A7B }}'
           projectId: bt-web-19a7b
+          firebaseToolsVersion: '12.9.1'
