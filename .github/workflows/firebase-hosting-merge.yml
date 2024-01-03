@@ -41,6 +41,7 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_DEV_EBF17 }}'
           channelId: live
           projectId: bt-web-dev-ebf17
+          firebaseToolsVersion: '12.9.1'
 
       - name: Prod Firebase Build
         if: github.ref == 'refs/heads/master'
@@ -64,3 +65,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_19A7B }}'
           channelId: live
           projectId: bt-web-19a7b
+          firebaseToolsVersion: '12.9.1'
