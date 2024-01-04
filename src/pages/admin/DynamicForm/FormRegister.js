@@ -274,7 +274,6 @@ const FormRegister = (props) => {
         );
         eventData.counts = regData;
         setCurrEvent(eventData);
-
         // Populate the dynamicCounts array with data
         eventData.counts.dynamicCounts.forEach((dynamicCount) => {
           dynamicCount.counts.forEach((workshop) => {
