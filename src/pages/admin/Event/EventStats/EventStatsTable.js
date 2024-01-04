@@ -1031,8 +1031,8 @@ const QrCheckIn = (props) => {
     if (eventIDAndYear !== props.event.id + ";" + props.event.year) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 8000);
 
-      // if there are not 3 items and first item is not an email, then the QR code is invalid
-      if (id.length !== 3 && !emailCheck(userID)) {
+      // if there are not 4 and first item is not an email, then the QR code is invalid
+      if (id.length !== 4 && !emailCheck(userID)) {
         setError("Invalid BizTech QR code.");
       } else {
         setError("Please check that your QR code is for this event.");
@@ -1078,7 +1078,6 @@ const QrCheckIn = (props) => {
       setError("Person is on the waitlist. Cannot check-in.");
       return;
     }
-
     checkInUser(userID, userFName);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
