@@ -166,6 +166,12 @@ function Login() {
     return error;
   };
 
+  const resendVerificationEmail = async () => {
+    await Auth.resendSignUp(email).then(() => {
+      alert("Verification Email Resent!");
+    });
+  };
+
   const handleSubmit = async () => {
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
@@ -191,6 +197,21 @@ function Login() {
           setErrors({
             emailError: "",
             passwordError: "Incorrect username or password."
+          });
+        } else if (error.code === "UserNotConfirmedException") {
+          setErrors({
+            emailError: "",
+            passwordError: (<>User is not verified.
+              <br /><span style={{
+                textDecoration: "underline",
+                color: "white",
+                cursor: "pointer"
+              }}
+              onClick={() => resendVerificationEmail()}>Click here</span>
+              <span style={{
+                color: "white"
+              }}> to resend the verification code.</span></>),
+            verificationCodeError: ""
           });
         } else {
           setErrors({
