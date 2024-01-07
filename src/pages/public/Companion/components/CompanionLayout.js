@@ -284,6 +284,12 @@ const CompanionLayout = (params) => {
       marginTop: -30,
       width: "100%"
     },
+    floorplan: {
+      width: "60%",
+    },
+    floorplanMobile: {
+      width: "100%",
+    },
     ...extraStyles
   };
 

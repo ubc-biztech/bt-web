@@ -1,9 +1,11 @@
 import DataAndBeyond2023 from "./DataAndBeyond2023";
 import BizTechDBLogo from "../../../../assets/2023/data&beyond/BizTechD&BLogo.png";
 import BiztechMISNightLogo from "../../../../assets/2024/misnight/BiztechMISNightLogo.png";
+import BiztechBPLogo from "../../../../assets/2024/blueprint/BluePrint_2024_logo.png";
 import DBLogo from "../../../../assets/2023/data&beyond/D&BLogo.png";
 import MISLogo from "../../../../assets/2024/misnight/logo.svg";
 import MISNight2023 from "./MISNight2023";
+import BlueprintLogo from "../../../../assets/2024/blueprint/logo.png";
 import Blueprint2024 from "./Blueprint2024";
 
 export default [
@@ -21,11 +23,11 @@ export default [
     /* Biztech logo for event */
       BiztechLogo: BizTechDBLogo,
       /* Logo for event */
-      Logo: DBLogo,
+      Logo: BlueprintLogo,
       /* Displayed title of event */
       title: "Blueprint",
       /* Displayed date of event */
-      date: "Saturday, January 27th",
+      date: "Saturday, January 27th, 2024",
       /* Displayed location of event */
       location: "The Great Hall, AMS Student Nest (2nd Floor)",
       /* color theme of event */
@@ -41,23 +43,15 @@ export default [
           title: "Registration",
         },
         {
-          date: "11:00 am - 11:10 am",
-          title: "Opening Remarks",
+          date: "11:00 am - 11:25 am",
+          title: "Opening Remarks & Keynote",
         },
         {
-          date: "11:10 am - 11:25 am",
-          title: "Keynote",
-        },
-        {
-          date: "11:30 am - 11:40 am",
-          title: "Icebreaker",
-        },
-        {
-          date: "11:45 am - 12:15 pm",
+          date: "11:30 am - 12:00 pm",
           title: "Panel",
         },
         {
-          date: "12:20 pm - 12:50 pm",
+          date: "12:10 pm - 12:50 pm",
           title: "Lunch",
         },
         {
@@ -83,7 +77,7 @@ export default [
       ],
       /* Array of welcome paragraphs for event, each new index is a new paragraph */
       welcomeData: [
-        "Welcome to Blueprint 2024! This will be your friend throughout the event. Feel free to check back here to see tonight’s schedule and browse through who’s in attendance."
+        "Welcome to Blueprint 2024! This will be your friend throughout the event. Feel free to check back here to see today's schedule and browse through who’s in attendance."
       ],
       /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
       headers: [
