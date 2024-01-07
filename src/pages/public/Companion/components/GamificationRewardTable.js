@@ -5,28 +5,24 @@ import {
 
 const rewards = [
   {
-    name: "iPad",
+    name: "TBD1",
+    points: "200 points"
+  },
+  {
+    name: "TBD2",
     points: "150 points"
   },
   {
-    name: "Sony WH-1000XM5 Headphones",
+    name: "TBD3",
     points: "120 points"
   },
   {
-    name: "Fujifilm Mini Instax",
-    points: "90 points"
-  },
-  {
-    name: "Fujifilm Mini Instax",
+    name: "Blueprint hoodie",
     points: "70 points"
-  },
-  {
-    name: "Rocketbook Pro Letter Sized",
-    points: "50 points"
   },
 ];
 
-function GamificationRewardTable() {
+function GamificationRewardTable({ rewards }) {
   return (
     <>
       <div style={{
