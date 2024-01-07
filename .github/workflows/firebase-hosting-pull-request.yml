@@ -14,6 +14,12 @@ jobs:
         with:
           node-version: '16.13.2'
 
+      - name: Remove Firebase CLI
+        run: npm remove -g firebase-tools
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools@12.9.1
+
       - name: Dev Firebase Build
         if: github.event.pull_request.base.ref == 'dev'
         run: npm ci && npm run build
@@ -35,6 +41,7 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_DEV_EBF17 }}'
           projectId: bt-web-dev-ebf17
+          firebaseToolsVersion: '12.9.1'
 
       - name: Prod Firebase Build
         if: github.event.pull_request.base.ref == 'master'
@@ -57,3 +64,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BT_WEB_19A7B }}'
           projectId: bt-web-19a7b
+          firebaseToolsVersion: '12.9.1'

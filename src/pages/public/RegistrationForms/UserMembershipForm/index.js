@@ -161,23 +161,6 @@ const UserMembershipFormContainer = (props) => {
     }),
   });
 
-  // const initialValues = {
-  //   email: "",
-  //   password: "",
-  //   confirmPassword: "",
-  //   first_name: "",
-  //   last_name: "",
-  //   student_number: "",
-  //   year: "",
-  //   faculty: "",
-  //   major: "",
-  //   international: "",
-  //   prev_member: "",
-  //   university: "",
-  //   high_school: "",
-  //   heardFromSpecify: "",
-  // };
-
   const initialValues = {
     email: "",
     password: "",
