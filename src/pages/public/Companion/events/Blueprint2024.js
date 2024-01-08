@@ -64,23 +64,36 @@ const activities = [
     name: "Get a Blueprint souvenir 3D printed at Rapid x BizTech’s booth",
     points: "25 points each"
   },
+  {
+    name: "Get your photo taken at out headshot station",
+    points: "20 points"
+  },
+  {
+    name: "Partiticipate in our attendee showcase",
+    points: "25 points"
+  },
 ];
 
 const rewards = [
   {
-    name: "TBD1",
+    name: "Meta Quest",
     points: "200 points",
     value: 200
   },
   {
-    name: "TBD2",
+    name: "FitBit 6",
     points: "150 points",
     value: 150
   },
   {
-    name: "TBD3",
+    name: "Kindle",
     points: "120 points",
     value: 120
+  },
+  {
+    name: "Amazon Echo Speaker",
+    points: "100 points",
+    value: 100
   },
   {
     name: "Blueprint hoodie",
