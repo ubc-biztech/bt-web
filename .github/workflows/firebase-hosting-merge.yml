@@ -26,6 +26,7 @@ jobs:
           SASS_PATH: './node_modules'
           REACT_APP_DEV_API: '${{ secrets.REACT_APP_DEV_API }}'
           REACT_APP_STAGING_API: '${{ secrets.REACT_APP_STAGING_API }}'
+          REACT_APP_WEBSOCKET_API: '${{ secrets.REACT_APP_WEBSOCKET_API }}'
           REACT_APP_SHOW_MAXVP: true
           REACT_APP_STAGE: 'development'
           REACT_APP_SPREADSHEET_ID: '${{ secrets.REACT_APP_SPREADSHEET_ID }}'
@@ -50,6 +51,7 @@ jobs:
           SASS_PATH: './node_modules'
           REACT_APP_DEV_API: '${{ secrets.REACT_APP_DEV_API }}'
           REACT_APP_STAGING_API: '${{ secrets.REACT_APP_STAGING_API }}'
+          REACT_APP_WEBSOCKET_API: '${{ secrets.REACT_APP_WEBSOCKET_API }}'
           REACT_APP_SHOW_MAXVP: true
           REACT_APP_STAGE: 'production'
           REACT_APP_SPREADSHEET_ID: '${{ secrets.REACT_APP_SPREADSHEET_ID }}'
