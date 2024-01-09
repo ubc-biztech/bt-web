@@ -3,7 +3,7 @@ import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 } from "@material-ui/core";
 
-const rewards = [
+const rewardsDefault = [
   {
     name: "TBD1",
     points: "200 points"
@@ -22,7 +22,10 @@ const rewards = [
   },
 ];
 
-function GamificationRewardTable({ rewards }) {
+function GamificationRewardTable({
+  rewardsProp
+}) {
+  const rewards = rewardsProp || rewardsDefault;
   return (
     <>
       <div style={{

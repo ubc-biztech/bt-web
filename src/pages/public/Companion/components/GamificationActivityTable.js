@@ -4,7 +4,7 @@ import {
 } from "@material-ui/core";
 
 
-const activities = [
+const activitiesDefault = [
   {
     name: "Early check-in",
     points: "25 points"
@@ -47,7 +47,10 @@ const activities = [
   },
 ];
 
-function GamificationActivityTable({ activities }) {
+function GamificationActivityTable({
+  activitiesProp
+}) {
+  const activities = activitiesProp || activitiesDefault;
   return (
     <>
       <div style={{
