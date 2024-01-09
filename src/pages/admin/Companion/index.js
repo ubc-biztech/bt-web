@@ -17,6 +17,11 @@ import {
   Button,
   Tooltip,
   Divider,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  FormHelperText
 } from "@material-ui/core";
 import {
   fetchBackend
@@ -28,18 +33,18 @@ import {
 const useStyles = makeStyles({
   card: {
     width: "45%",
-    margin: "15px 30px 15px 0",
+    margin: "15px 30px 15px 0"
   },
   media: {
-    height: 250,
+    height: 250
   },
   row: {
     display: "flex",
-    paddingLeft: "15px",
+    paddingLeft: "15px"
   },
   columnLeft: {
     flex: "50%",
-    textAlign: "left",
+    textAlign: "left"
   },
   passedCard: {
     width: "45%",
@@ -60,15 +65,15 @@ const useStyles = makeStyles({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 8,
-    marginBottom: 8,
+    marginBottom: 8
   },
   columnFlex: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   divider: {
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: "rgba(255, 255, 255, 0.5)"
   }
 });
 
@@ -80,13 +85,15 @@ const Companion = () => {
     year: new Date().getFullYear().toString(),
     points: "0",
     isUnlimitedScans: false,
+    type: ""
   });
 
   const [errors, setErrors] = useState({
     id: false,
     eventID: false,
     year: false,
-    points: false
+    points: false,
+    type: false
   });
 
   const classes = useStyles();
@@ -104,7 +111,8 @@ const Companion = () => {
     fetchQRs();
   }, []);
 
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   const generateIDString = (length) => {
     let result = "";
@@ -134,7 +142,8 @@ const Companion = () => {
           id: generateIDString(5) + newQR.id,
           year: Number(newQR.year),
           points: Number(newQR.points),
-          isActive: true
+          isActive: true,
+          type: newQR.type
         };
         const res = await fetchBackend("/qr", "POST", data);
         setNewQR({
@@ -143,6 +152,7 @@ const Companion = () => {
           year: new Date().getFullYear(),
           points: 0,
           isUnlimitedScans: false,
+          type: ""
         });
         alert(res.message);
         fetchQRs();
@@ -162,9 +172,12 @@ const Companion = () => {
 
       <div className={classes.row}>
         <div className={classes.columnLeft}>
-          <Typography variant="h1" style={{
-            color: COLORS.BIZTECH_GREEN
-          }}>
+          <Typography
+            variant="h1"
+            style={{
+              color: COLORS.BIZTECH_GREEN
+            }}
+          >
             Companion QRs
           </Typography>
           <Paper className={classes.section}>
@@ -178,7 +191,10 @@ const Companion = () => {
               Create New QR
             </Box>
             <Box className={classes.grid}>
-              <Tooltip title="To prevent cheating, a random 5-character string will be attached to the front of the name upon creation." arrow>
+              <Tooltip
+                title="To prevent cheating, a random 5-character string will be attached to the front of the name upon creation."
+                arrow
+              >
                 <TextField
                   id="name"
                   name="name"
@@ -194,8 +210,8 @@ const Companion = () => {
                     setNewQR({
                       ...newQR,
                       id: e.target.value
-                    });}
-                  }
+                    });
+                  }}
                   value={newQR.id}
                   error={errors.id}
                   helperText={errors.id && "Missing value is required"}
@@ -217,8 +233,8 @@ const Companion = () => {
                     setNewQR({
                       ...newQR,
                       eventID: e.target.value
-                    });}
-                  }
+                    });
+                  }}
                   value={newQR.eventID}
                   error={errors.eventID}
                   helperText={errors.eventID && "Missing value is required"}
@@ -240,13 +256,16 @@ const Companion = () => {
                   setNewQR({
                     ...newQR,
                     year: e.target.value
-                  });}
-                }
+                  });
+                }}
                 value={newQR.year}
                 error={errors.year}
                 helperText={errors.year && "Missing value is required"}
               />
-              <Tooltip title="Negative values are allowed, which will deduct points (e.g. making a shop)." arrow>
+              <Tooltip
+                title="Negative values are allowed, which will deduct points (e.g. making a shop)."
+                arrow
+              >
                 <TextField
                   id="points"
                   name="points"
@@ -263,12 +282,45 @@ const Companion = () => {
                     setNewQR({
                       ...newQR,
                       points: e.target.value
-                    });}
-                  }
+                    });
+                  }}
                   value={newQR.points}
                   error={errors.points}
                   helperText={errors.points && "Missing value is required"}
                 />
+              </Tooltip>
+              <Tooltip title="Select the type of QR code." arrow>
+                <FormControl
+                  variant="filled"
+                  margin="normal"
+                  required
+                  fullWidth
+                >
+                  <InputLabel id="type-label">Type</InputLabel>
+                  <Select
+                    labelId="type-label"
+                    id="type"
+                    value={newQR.type}
+                    onChange={(e) => {
+                      setErrors({
+                        ...errors,
+                        type: false
+                      });
+                      setNewQR({
+                        ...newQR,
+                        type: e.target.value
+                      });
+                    }}
+                    error={errors.type}
+                  >
+                    <MenuItem value="Workshop">Workshop</MenuItem>
+                    <MenuItem value="Partner">Partner</MenuItem>
+                    <MenuItem value="Booth">Booth</MenuItem>
+                  </Select>
+                  {errors.type && (
+                    <FormHelperText error>Type is required</FormHelperText>
+                  )}
+                </FormControl>
               </Tooltip>
             </Box>
             <Box className={classes.rowFlex}>
@@ -280,10 +332,12 @@ const Companion = () => {
                   color="primary"
                   aria-label="Unlimited Scans?"
                   checked={newQR.isUnlimitedScans}
-                  onChange={() => setNewQR({
-                    ...newQR,
-                    isUnlimitedScans: !newQR.isUnlimitedScans
-                  })}
+                  onChange={() =>
+                    setNewQR({
+                      ...newQR,
+                      isUnlimitedScans: !newQR.isUnlimitedScans
+                    })
+                  }
                 />
               </Box>
               <Button
@@ -305,7 +359,7 @@ const Companion = () => {
             >
               Existing QRs
             </Box>
-            {QRs.map((QR) =>
+            {QRs.map((QR) => (
               <>
                 <Box key={QR.id} className={classes.rowFlex}>
                   <Box className={classes.columnFlex}>
@@ -313,13 +367,31 @@ const Companion = () => {
                     <Box>Event: {QR["eventID;year"]}</Box>
                     <Box>Points: {QR.points}</Box>
                     <Box>{QR.isActive ? "Active" : "Inactive"}</Box>
-                    <Box>{QR.isUnlimitedScans ? "Unlimited Scans" : "One-time Scan"}</Box>
+                    <Box>
+                      {QR.isUnlimitedScans
+                        ? "Unlimited Scans"
+                        : "One-time Scan"}
+                    </Box>
+                    <Box>Type: {QR.type}</Box>
                   </Box>
-                  <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://${process.env.REACT_APP_STAGE === "production" ? "" : "dev."}app.ubcbiztech.com/redeem/${QR["eventID;year"].split(";")[0]}/${QR["eventID;year"].split(";")[1]}/${QR.id}`} alt="QR"/>
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${
+                      process.env.REACT_APP_STAGE === "local"
+                        ? "http://localhost:3000"
+                        : `https://${
+                          process.env.REACT_APP_STAGE === "production"
+                            ? ""
+                            : "dev."
+                        }app.ubcbiztech.com`
+                    }/redeem/${QR["eventID;year"].split(";")[0]}/${
+                      QR["eventID;year"].split(";")[1]
+                    }/${QR.id}`}
+                    alt="QR"
+                  />
                 </Box>
-                <Divider className={classes.divider}/>
+                <Divider className={classes.divider} />
               </>
-            )}
+            ))}
           </Paper>
         </div>
       </div>
