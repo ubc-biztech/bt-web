@@ -2,6 +2,8 @@ import DataAndBeyond2023 from "./DataAndBeyond2023";
 import BizTechDBLogo from "../../../../assets/2023/data&beyond/BizTechD&BLogo.png";
 import BiztechMISNightLogo from "../../../../assets/2024/misnight/BiztechMISNightLogo.png";
 import BiztechBPLogo from "../../../../assets/2024/blueprint/BluePrint_2024_logo.png";
+import BiztechLogo from "../../../../assets/2024/blueprint/BiztechLogo.svg";
+
 import DBLogo from "../../../../assets/2023/data&beyond/D&BLogo.png";
 import MISLogo from "../../../../assets/2024/misnight/logo.svg";
 import MISNight2023 from "./MISNight2023";
@@ -10,7 +12,7 @@ import Blueprint2024 from "./Blueprint2024";
 
 export default [
   { /* TODO: This hello hacks component is incomplete and exists only for the sake of testing out how mentors list looks */
-  /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("01-30-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
     /* id of event in dynamodb, used for queries */
     eventID: "blueprint",
@@ -20,8 +22,8 @@ export default [
     ChildComponent: Blueprint2024,
     /* options defining params for the companionLayout */
     options: {
-    /* Biztech logo for event */
-      BiztechLogo: BizTechDBLogo,
+      /* Biztech logo for event */
+      BiztechLogo: BiztechLogo,
       /* Logo for event */
       Logo: BlueprintLogo,
       /* Displayed title of event */
@@ -32,9 +34,9 @@ export default [
       location: "The Great Hall, AMS Student Nest (2nd Floor)",
       /* color theme of event */
       colors: {
-        primary: "linear-gradient(180deg, #FFFFFF, #FFFFFF)",
-        background: "black",
-        // background: "linear-gradient(180deg, #e3edf7, #e3edf7)",
+        primary: "linear-gradient(180deg, #FFE0F9, #FFFCFE)",
+        // background: "",
+        background: "linear-gradient(0.5turn, #060818,  #0A0B25, #060818)",
       },
       /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
       getScheduleData: (regData) => [
@@ -97,7 +99,7 @@ export default [
     }
   },
   { /* TODO: This hello hacks component is incomplete and exists only for the sake of testing out how mentors list looks */
-  /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("10-01-2023").getTime() + (7 * 24 * 60 * 60 * 1000)),
     /* id of event in dynamodb, used for queries */
     eventID: "hello-hacks",
@@ -107,7 +109,7 @@ export default [
     ChildComponent: DataAndBeyond2023,
     /* options defining params for the companionLayout */
     options: {
-    /* Biztech logo for event */
+      /* Biztech logo for event */
       BiztechLogo: BizTechDBLogo,
       /* Logo for event */
       Logo: DBLogo,
@@ -231,7 +233,7 @@ export default [
     }
   },
   {
-  /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("2023-03-17").getTime() + (7 * 24 * 60 * 60 * 1000)),
     /* id of event in dynamodb, used for queries */
     eventID: "data-and-beyond",
@@ -241,7 +243,7 @@ export default [
     ChildComponent: DataAndBeyond2023,
     /* options defining params for the companionLayout */
     options: {
-    /* Biztech logo for event */
+      /* Biztech logo for event */
       BiztechLogo: BizTechDBLogo,
       /* Logo for event */
       Logo: DBLogo,

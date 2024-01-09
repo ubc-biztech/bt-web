@@ -21,7 +21,7 @@ import {
 } from "utils";
 import Loading from "pages/Loading";
 
-import BizTechDBLogo from "assets/2023/data&beyond/BizTechD&BLogo.png";
+import BizTechDBLogo from "assets/2024/blueprint/BiztechLogo.svg";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
 import {
@@ -81,7 +81,6 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundImage: constantStyles.backgroundGradient,
   }
 };
 
@@ -118,24 +117,24 @@ const suffixNameText = [
   "Keep it up and you'll be on your way to some awesome prizes!",
   "You are doing great! Keep it up!",
   "Taking a step closer to some awesome tech prizes!",
-  "May your skills soar to new heights at Data and Beyond!",
-  "Cheers to your amazing experience at Data and Beyond!",
+  "May your skills soar to new heights at Blueprint!",
+  "Cheers to your amazing experience at Blueprint!",
   "The BizTech Team is cheering you on!",
-  "Loving the progress you're making at Data and Beyond!",
+  "Loving the progress you're making at Blueprint!",
   "Showing the world what you're made of!",
   "Really making a run for those prizes, aren't you?!",
   "Taking initiative and shaping the future - keep it up!",
   "Way to go, BizTech superstar!",
-  "You're making waves at Data and Beyond 🌊",
+  "You're making waves at Blueprint 🌊",
   "Making a name for yourself and unlocking awesome rewards, I see?",
   "Your tech savvy is paving the way to rewards and recognition!",
   "You're unlocking amazing opportunities - keep it up!",
   "Onward and upward with those prizes!",
   "Go get 'em! Those prizes aren't gonna win themselves!",
-  "Data and Beyond is the perfect place to show off your skills!",
-  "You are making a difference at Data and Beyond!",
+  "Blueprint is the perfect place to show off your skills!",
+  "You are making a difference at Blueprint!",
   "Impressive work - you're making a name for yourself!",
-  "You're really setting the tone for success at Data and Beyond!",
+  "You're really setting the tone for success at Blueprint!",
   "You've got the whole world talking!",
   "The BizTech world is lucky to have you!",
   "Enjoy your spoils and keep up the good work!",
@@ -143,24 +142,24 @@ const suffixNameText = [
   "Keep it up and you'll be on your way to some awesome prizes!",
   "You are doing great! Keep it up!",
   "Taking a step closer to some awesome tech prizes!",
-  "May your skills soar to new heights at Data and Beyond!",
-  "Cheers to your amazing experience at Data and Beyond!",
+  "May your skills soar to new heights at Blueprint!",
+  "Cheers to your amazing experience at Blueprint!",
   "The BizTech Team is cheering you on!",
-  "Loving the progress you're making at Data and Beyond!",
+  "Loving the progress you're making at Blueprint!",
   "Showing the world what you're made of!",
   "Really making a run for those prizes, aren't you?!",
   "Taking initiative and shaping the future - keep it up!",
   "Way to go, BizTech superstar!",
-  "You're making waves at Data and Beyond 🌊",
+  "You're making waves at Blueprint 🌊",
   "Making a name for yourself and unlocking awesome rewards, I see?",
   "Your tech savvy is paving the way to rewards and recognition!",
   "You're unlocking amazing opportunities - keep it up!",
   "Onward and upward with those prizes!",
   "Go get 'em! Those prizes aren't gonna win themselves!",
-  "Data and Beyond is the perfect place to show off your skills!",
-  "You are making a difference at Data and Beyond!",
+  "Blueprint is the perfect place to show off your skills!",
+  "You are making a difference at Blueprint!",
   "Impressive work - you're making a name for yourself!",
-  "You're really setting the tone for success at Data and Beyond!",
+  "You're really setting the tone for success at Blueprint!",
   "You've got the whole world talking!",
   "The BizTech world is lucky to have you!"
 ];
@@ -253,7 +252,7 @@ const Redemption = ({
   } = location?.state || {
   };
 
-  // Temp for Data and Beyond
+  // Temp for Blueprint
   const id = qrID.slice(6);
   const links = {
     "data-challenge-1": "https://docs.google.com/forms/d/e/1FAIpQLScdJC-w2ypk9109ud-77VfgK4srdaujYeE8LBFXkbHf8fhY0w/viewform",
@@ -357,8 +356,7 @@ const Redemption = ({
   const determineCongratText = (firstName) => {
     if (firstName) {
       setCongratNameText(
-        `${
-          prefixNameText[Math.floor(Math.random() * prefixNameText.length)]
+        `${prefixNameText[Math.floor(Math.random() * prefixNameText.length)]
         }, ${firstName}!`
       );
     } else {
@@ -398,28 +396,28 @@ const Redemption = ({
 
   const handleQrScanError = (err) => {
     switch (err.status) {
-    case 405:
-      determinePointsAwardedText(err.message.qr_points);
-      setNegativeQRModalOpen(true);
-      break;
-    case 406:
-      setError("You do not have sufficient funds to make this purchase.");
-      break;
-    default:
-      if (
-        err.message.message &&
+      case 405:
+        determinePointsAwardedText(err.message.qr_points);
+        setNegativeQRModalOpen(true);
+        break;
+      case 406:
+        setError("You do not have sufficient funds to make this purchase.");
+        break;
+      default:
+        if (
+          err.message.message &&
           err.message.message.includes("already scanned")
-      ) {
-        // TEMPORARY for Data and Beyond: remove this conditional branch once we have a better way to handle this
-        // this is neccessary because the backend error message for already scanned QRs is not
-        // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
-        setError(
-          "This code is already scanned and can only be redeemed once."
-        );
-      } else {
-        setError(err.message.message);
-      }
-      break;
+        ) {
+          // TEMPORARY for Blueprint: remove this conditional branch once we have a better way to handle this
+          // this is neccessary because the backend error message for already scanned QRs is not
+          // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
+          setError(
+            "This code is already scanned and can only be redeemed once."
+          );
+        } else {
+          setError(err.message.message);
+        }
+        break;
     }
     console.log(err);
   };
@@ -482,7 +480,7 @@ const Redemption = ({
         >
           <img
             src={BizTechDBLogo}
-            alt="Data and Beyond Logo"
+            alt="Blueprint Logo"
             style={{
               width: "20%",
               height: "auto"
@@ -547,110 +545,110 @@ const Redemption = ({
           {email ? (
             <>
               {!isSuccessAnimationFinished &&
-              !isErrorAnimationFinished &&
-              !isEmailModalOpen ? (
-                  <div style={styles.successContainer}>
-                    {error ? (
-                      <Lottie
-                        animationData={ErrorAnimation}
-                        onLoopComplete={finishError}
-                      />
-                    ) : (
-                      <Lottie
-                        animationData={SuccessAnimation}
-                        onLoopComplete={finishSuccess}
-                      />
-                    )}
+                !isErrorAnimationFinished &&
+                !isEmailModalOpen ? (
+                <div style={styles.successContainer}>
+                  {error ? (
+                    <Lottie
+                      animationData={ErrorAnimation}
+                      onLoopComplete={finishError}
+                    />
+                  ) : (
+                    <Lottie
+                      animationData={SuccessAnimation}
+                      onLoopComplete={finishSuccess}
+                    />
+                  )}
                   ;
-                  </div>
-                ) : (
-                  <>
-                    <motion.div
-                      style={styles.successContainer}
-                      initial={{
-                        opacity: 0,
-                        scale: 0.5
+                </div>
+              ) : (
+                <>
+                  <motion.div
+                    style={styles.successContainer}
+                    initial={{
+                      opacity: 0,
+                      scale: 0.5
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <img
+                      src={BizTechDBLogo}
+                      alt="Blueprint Logo"
+                      style={{
+                        width: "200%",
+                        height: "auto",
+                        marginBottom: 20
                       }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        ease: "easeOut"
-                      }}
-                    >
-                      <img
-                        src={BizTechDBLogo}
-                        alt="Data and Beyond Logo"
-                        style={{
-                          width: "50%",
-                          height: "auto",
-                          marginBottom: 20
-                        }}
-                      />
-                    </motion.div>
+                    />
+                  </motion.div>
 
-                    <motion.div
-                      style={styles.successContainer}
-                      initial={{
-                        opacity: 0,
-                        scale: 0.5
-                      }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        ease: "easeOut"
-                      }}
-                    >
-                      {error ? (
+                  <motion.div
+                    style={styles.successContainer}
+                    initial={{
+                      opacity: 0,
+                      scale: 0.5
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeOut"
+                    }}
+                  >
+                    {error ? (
+                      <Typography
+                        className={classes.themeText}
+                        style={{
+                          margin: "20px 0"
+                        }}
+                      >
+                        {error}
+                      </Typography>
+                    ) : (
+                      <>
+                        <Typography className={classes.welcome}>{congratNameText}</Typography>
+
+                        <Typography className={classes.themeText}>
+                          {congratSuffixText}
+                        </Typography>
+
                         <Typography
-                          className={classes.themeText}
+                          className={classes.pointsText}
                           style={{
                             margin: "20px 0"
                           }}
                         >
-                          {error}
+                          {pointsAwardedText}
                         </Typography>
-                      ) : (
-                        <>
-                          <Typography className={classes.welcome}>{congratNameText}</Typography>
+                      </>
+                    )}
+                  </motion.div>
 
-                          <Typography className={classes.themeText}>
-                            {congratSuffixText}
-                          </Typography>
-
-                          <Typography
-                            className={classes.pointsText}
-                            style={{
-                              margin: "20px 0"
-                            }}
-                          >
-                            {pointsAwardedText}
-                          </Typography>
-                        </>
-                      )}
-                    </motion.div>
-
-                    <motion.div
-                      style={styles.successContainer}
-                      initial={{
-                        opacity: 0,
-                        scale: 0.5
-                      }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1
-                      }}
-                      transition={{
-                        duration: 0.6,
-                        ease: "easeOut"
-                      }}
-                    >
-                      {links[id] &&
+                  <motion.div
+                    style={styles.successContainer}
+                    initial={{
+                      opacity: 0,
+                      scale: 0.5
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      ease: "easeOut"
+                    }}
+                  >
+                    {links[id] &&
                       <Button
                         variant="contained"
                         color="primary"
@@ -662,34 +660,34 @@ const Redemption = ({
                       >
                         Proceed to Challenge
                       </Button>
-                      }
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        onClick={() => {
-                          history.push("/companion");
-                        }}
-                      >
+                    }
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      onClick={() => {
+                        history.push("/companion");
+                      }}
+                    >
                       Return to Companion
-                      </Button>
-                      <Typography
-                        className={classes.themeText}
-                        style={{
-                          margin: "20px 0"
-                        }}
-                      >
-                        {timestampText}
-                      </Typography>
-                    </motion.div>
-                  </>
-                )}
+                    </Button>
+                    <Typography
+                      className={classes.themeText}
+                      style={{
+                        margin: "20px 0"
+                      }}
+                    >
+                      {timestampText}
+                    </Typography>
+                  </motion.div>
+                </>
+              )}
             </>
           ) : (
             <>
               <img
                 src={BizTechDBLogo}
-                alt="Data and Beyond Logo"
+                alt="Blueprint Logo"
                 style={{
                   width: "35%",
                   height: "auto"
@@ -699,7 +697,7 @@ const Redemption = ({
                 <Typography className={classes.welcome}>Welcome!</Typography>
                 <Typography className={classes.themeText}>
                   To redeem points, please enter the email you used to register
-                  for Data and Beyond.
+                  for Blueprint.
                 </Typography>
                 <TextField
                   className={classes.textfield}

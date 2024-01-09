@@ -8,7 +8,8 @@ import {
   fetchBackend
 } from "utils";
 import {
-  CircularProgressbar
+  CircularProgressbar,
+  buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import {
@@ -78,7 +79,7 @@ const rewards = [
   {
     name: "Meta Quest",
     points: "200 points",
-    value: 200
+    value: 2000
   },
   {
     name: "FitBit 6",
@@ -160,6 +161,7 @@ const Blueprint2024 = (params) => {
       }
     };
   }, []); // Only runs on component mount and unmount
+  console.log(leaderboard);
   return (<>
     {event && registrations &&
       <FadeInWhenVisible>
@@ -203,12 +205,15 @@ const Blueprint2024 = (params) => {
             })
           }}>{nextGoal ? `Only ${nextGoal?.value - userRegistration?.points} points away from a ${nextGoal?.name} entry!` : "You're eligble for all entries! See if you can top the leaderboards 👀"}</span>
           <div>
-            <CircularProgressbar styles={{  // Customize the text
-              text: {
-                // Text size
-                fontSize: "16px",
-              }
-            }} value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
+            <CircularProgressbar styles={
+              buildStyles({
+                textSize: "12px",
+                textColor: "#FFC3F4",
+                pathColor: "#FFC3F4",
+                trailColor: "transparent",
+                strokeLinecap: "butt"
+              })
+            } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
           </div>
           {leaderboard && <Podium winners={leaderboard} />}
         </div>

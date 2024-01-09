@@ -47,7 +47,7 @@ export default function PodiumStep({
       <motion.div
         style={{
           backgroundColor: "white",
-          borderImage: "linear-gradient(270deg, #ABADF7, #8FEEE7, #FFFFFF) 30",
+          borderImage: "linear-gradient(270deg, #FFFFFF, #FFEAFB, #FFE0F9) 30",
           borderWidth: "6px 6px 0 6px",
           borderStyle: "solid",
           boxShadow: "1.58637px 1.58637px 3.17274px rgba(114, 142, 171, 0.1), -5.75912px -5.75912px 20.8637px #FFFFFF, 3.17274px 3.17274px 20.8637px rgba(111, 140, 176, 0.41)",
