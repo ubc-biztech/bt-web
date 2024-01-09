@@ -396,28 +396,28 @@ const Redemption = ({
 
   const handleQrScanError = (err) => {
     switch (err.status) {
-      case 405:
-        determinePointsAwardedText(err.message.qr_points);
-        setNegativeQRModalOpen(true);
-        break;
-      case 406:
-        setError("You do not have sufficient funds to make this purchase.");
-        break;
-      default:
-        if (
-          err.message.message &&
+    case 405:
+      determinePointsAwardedText(err.message.qr_points);
+      setNegativeQRModalOpen(true);
+      break;
+    case 406:
+      setError("You do not have sufficient funds to make this purchase.");
+      break;
+    default:
+      if (
+        err.message.message &&
           err.message.message.includes("already scanned")
-        ) {
-          // TEMPORARY for Blueprint: remove this conditional branch once we have a better way to handle this
-          // this is neccessary because the backend error message for already scanned QRs is not
-          // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
-          setError(
-            "This code is already scanned and can only be redeemed once."
-          );
-        } else {
-          setError(err.message.message);
-        }
-        break;
+      ) {
+        // TEMPORARY for Blueprint: remove this conditional branch once we have a better way to handle this
+        // this is neccessary because the backend error message for already scanned QRs is not
+        // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
+        setError(
+          "This code is already scanned and can only be redeemed once."
+        );
+      } else {
+        setError(err.message.message);
+      }
+      break;
     }
     console.log(err);
   };
@@ -547,108 +547,108 @@ const Redemption = ({
               {!isSuccessAnimationFinished &&
                 !isErrorAnimationFinished &&
                 !isEmailModalOpen ? (
-                <div style={styles.successContainer}>
-                  {error ? (
-                    <Lottie
-                      animationData={ErrorAnimation}
-                      onLoopComplete={finishError}
-                    />
-                  ) : (
-                    <Lottie
-                      animationData={SuccessAnimation}
-                      onLoopComplete={finishSuccess}
-                    />
-                  )}
-                  ;
-                </div>
-              ) : (
-                <>
-                  <motion.div
-                    style={styles.successContainer}
-                    initial={{
-                      opacity: 0,
-                      scale: 0.5
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      ease: "easeOut"
-                    }}
-                  >
-                    <img
-                      src={BizTechDBLogo}
-                      alt="Blueprint Logo"
-                      style={{
-                        width: "200%",
-                        height: "auto",
-                        marginBottom: 20
-                      }}
-                    />
-                  </motion.div>
-
-                  <motion.div
-                    style={styles.successContainer}
-                    initial={{
-                      opacity: 0,
-                      scale: 0.5
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      ease: "easeOut"
-                    }}
-                  >
+                  <div style={styles.successContainer}>
                     {error ? (
-                      <Typography
-                        className={classes.themeText}
-                        style={{
-                          margin: "20px 0"
-                        }}
-                      >
-                        {error}
-                      </Typography>
+                      <Lottie
+                        animationData={ErrorAnimation}
+                        onLoopComplete={finishError}
+                      />
                     ) : (
-                      <>
-                        <Typography className={classes.welcome}>{congratNameText}</Typography>
+                      <Lottie
+                        animationData={SuccessAnimation}
+                        onLoopComplete={finishSuccess}
+                      />
+                    )}
+                  ;
+                  </div>
+                ) : (
+                  <>
+                    <motion.div
+                      style={styles.successContainer}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <img
+                        src={BizTechDBLogo}
+                        alt="Blueprint Logo"
+                        style={{
+                          width: "200%",
+                          height: "auto",
+                          marginBottom: 20
+                        }}
+                      />
+                    </motion.div>
 
-                        <Typography className={classes.themeText}>
-                          {congratSuffixText}
-                        </Typography>
-
+                    <motion.div
+                      style={styles.successContainer}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {error ? (
                         <Typography
-                          className={classes.pointsText}
+                          className={classes.themeText}
                           style={{
                             margin: "20px 0"
                           }}
                         >
-                          {pointsAwardedText}
+                          {error}
                         </Typography>
-                      </>
-                    )}
-                  </motion.div>
+                      ) : (
+                        <>
+                          <Typography className={classes.welcome}>{congratNameText}</Typography>
 
-                  <motion.div
-                    style={styles.successContainer}
-                    initial={{
-                      opacity: 0,
-                      scale: 0.5
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1
-                    }}
-                    transition={{
-                      duration: 0.6,
-                      ease: "easeOut"
-                    }}
-                  >
-                    {links[id] &&
+                          <Typography className={classes.themeText}>
+                            {congratSuffixText}
+                          </Typography>
+
+                          <Typography
+                            className={classes.pointsText}
+                            style={{
+                              margin: "20px 0"
+                            }}
+                          >
+                            {pointsAwardedText}
+                          </Typography>
+                        </>
+                      )}
+                    </motion.div>
+
+                    <motion.div
+                      style={styles.successContainer}
+                      initial={{
+                        opacity: 0,
+                        scale: 0.5
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {links[id] &&
                       <Button
                         variant="contained"
                         color="primary"
@@ -660,28 +660,28 @@ const Redemption = ({
                       >
                         Proceed to Challenge
                       </Button>
-                    }
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      onClick={() => {
-                        history.push("/companion");
-                      }}
-                    >
+                      }
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        onClick={() => {
+                          history.push("/companion");
+                        }}
+                      >
                       Return to Companion
-                    </Button>
-                    <Typography
-                      className={classes.themeText}
-                      style={{
-                        margin: "20px 0"
-                      }}
-                    >
-                      {timestampText}
-                    </Typography>
-                  </motion.div>
-                </>
-              )}
+                      </Button>
+                      <Typography
+                        className={classes.themeText}
+                        style={{
+                          margin: "20px 0"
+                        }}
+                      >
+                        {timestampText}
+                      </Typography>
+                    </motion.div>
+                  </>
+                )}
             </>
           ) : (
             <>

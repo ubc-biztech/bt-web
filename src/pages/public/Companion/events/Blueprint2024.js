@@ -18,7 +18,6 @@ import {
 
 
 import Floorplan from "../../../../assets/2024/blueprint/floorplan.svg";
-
 import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
@@ -231,7 +230,7 @@ const Blueprint2024 = (params) => {
         </div>
         <div id="Floorplan" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Floorplan</h1>
-          {/* <img src={MISNightPartners} alt="MISNight Partners" style={styles.partners}/> */}
+          {/* <Floorplan></Floorplan> */}
         </div>
         <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
         <div id="Partners" style={styles.column}>
