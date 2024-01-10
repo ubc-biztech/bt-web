@@ -1,7 +1,6 @@
 import DataAndBeyond2023 from "./DataAndBeyond2023";
 import BizTechDBLogo from "../../../../assets/2023/data&beyond/BizTechD&BLogo.png";
 import BiztechMISNightLogo from "../../../../assets/2024/misnight/BiztechMISNightLogo.png";
-import BiztechBPLogo from "../../../../assets/2024/blueprint/BluePrint_2024_logo.png";
 import DBLogo from "../../../../assets/2023/data&beyond/D&BLogo.png";
 import MISLogo from "../../../../assets/2024/misnight/logo.svg";
 import MISNight2023 from "./MISNight2023";
@@ -10,7 +9,7 @@ import Blueprint2024 from "./Blueprint2024";
 
 export default [
   { /* TODO: This hello hacks component is incomplete and exists only for the sake of testing out how mentors list looks */
-  /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("01-30-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
     /* id of event in dynamodb, used for queries */
     eventID: "blueprint",
@@ -20,7 +19,7 @@ export default [
     ChildComponent: Blueprint2024,
     /* options defining params for the companionLayout */
     options: {
-    /* Biztech logo for event */
+      /* Biztech logo for event */
       BiztechLogo: BizTechDBLogo,
       /* Logo for event */
       Logo: BlueprintLogo,
@@ -97,7 +96,7 @@ export default [
     }
   },
   { /* TODO: This hello hacks component is incomplete and exists only for the sake of testing out how mentors list looks */
-  /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("10-01-2023").getTime() + (7 * 24 * 60 * 60 * 1000)),
     /* id of event in dynamodb, used for queries */
     eventID: "hello-hacks",
@@ -107,7 +106,7 @@ export default [
     ChildComponent: DataAndBeyond2023,
     /* options defining params for the companionLayout */
     options: {
-    /* Biztech logo for event */
+      /* Biztech logo for event */
       BiztechLogo: BizTechDBLogo,
       /* Logo for event */
       Logo: DBLogo,
@@ -231,7 +230,7 @@ export default [
     }
   },
   {
-  /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("2023-03-17").getTime() + (7 * 24 * 60 * 60 * 1000)),
     /* id of event in dynamodb, used for queries */
     eventID: "data-and-beyond",
@@ -241,7 +240,7 @@ export default [
     ChildComponent: DataAndBeyond2023,
     /* options defining params for the companionLayout */
     options: {
-    /* Biztech logo for event */
+      /* Biztech logo for event */
       BiztechLogo: BizTechDBLogo,
       /* Logo for event */
       Logo: DBLogo,
