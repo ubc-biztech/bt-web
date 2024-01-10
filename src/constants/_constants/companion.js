@@ -5,3 +5,9 @@ export const constantStyles = {
   mobileFontSize: 12,
   textColor: "white",
 };
+
+export const QRCodeTypes = {
+  PARTNER: "Partner",
+  WORKSHOP: "Workshop",
+  BOOTH: "Booth",
+};
