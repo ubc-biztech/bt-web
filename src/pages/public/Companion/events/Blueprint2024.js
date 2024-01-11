@@ -5,6 +5,10 @@ import {
   QrScanner
 } from "@yudiel/react-qr-scanner";
 import {
+  Accordion, AccordionDetails, AccordionSummary
+} from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import {
   fetchBackend
 } from "utils";
 import {
@@ -15,6 +19,9 @@ import "react-circular-progressbar/dist/styles.css";
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
+import {
+  styled
+} from "@material-ui/styles";
 
 
 import Floorplan from "../../../../assets/2024/blueprint/floorplan.svg";
@@ -22,6 +29,23 @@ import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
 import GamificationRewardTable from "../components/GamificationRewardTable";
+
+
+const CustomAccordion = styled(Accordion)(({
+  theme
+}) => {
+  return {
+    background: "transparent"
+  };
+});
+
+const StyledAccordionSummary = styled(AccordionSummary)(() => {
+  return {
+    display: "flex",
+    alignContent: "center",
+    marginLeft: "48px !important",
+  };
+});
 
 const activities = [
   {
@@ -41,7 +65,7 @@ const activities = [
     points: "25 points each"
   },
   {
-    name: "Post an Instagram story using the Blueprint event filter",
+    name: "Post an Instagram story using the Blueprint event filter (Visit the Biztech booth and show your post to redeem)",
     points: "30 points"
   },
   {
@@ -121,14 +145,18 @@ const Blueprint2024 = (params) => {
   };
 
   const refetchLeaderboard = async () => {
+    console.log("fethcing");
     const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET");
+    console.log(res);
     setLeaderboard(res);
   };
 
   useEffect(() => {
+    console.log("ping");
+    console.log(event);
     refetchLeaderboard();
   }, [event]);
-
+  console.log(userRegistration);
 
   useEffect(() => {
     // Establish WebSocket connection
@@ -152,7 +180,7 @@ const Blueprint2024 = (params) => {
       console.log("WebSocket disconnected");
     };
     setWebsocket(ws);
-
+    refetchLeaderboard();
     return () => {
       // Close WebSocket connection on component unmount
       if (websocket) {
@@ -220,17 +248,34 @@ const Blueprint2024 = (params) => {
           ...styles.column,
           width: "90%"
         }}>
-          <GamificationActivityTable activities={activities} />
+          <CustomAccordion>
+            <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
+              expandIcon={<ExpandMoreIcon />}>
+              <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Points Activities</h1>
+            </StyledAccordionSummary>
+            <AccordionDetails>
+              <GamificationActivityTable activitiesProp={activities} />
+            </AccordionDetails>
+          </CustomAccordion>
+
         </div>
         <div id="Rewards" style={{
           ...styles.column,
           width: "90%"
         }}>
-          <GamificationRewardTable rewards={rewards} />
+          <CustomAccordion>
+            <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
+              expandIcon={<ExpandMoreIcon />}>
+              <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Raffles</h1>
+            </StyledAccordionSummary>
+            <AccordionDetails>
+              <GamificationRewardTable rewardsProp={rewards} />
+            </AccordionDetails>
+          </CustomAccordion>
         </div>
         <div id="Floorplan" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Floorplan</h1>
-          {/* <Floorplan></Floorplan> */}
+          <Floorplan></Floorplan>
         </div>
         <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
         <div id="Partners" style={styles.column}>
