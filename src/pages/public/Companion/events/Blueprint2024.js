@@ -121,7 +121,7 @@ const Blueprint2024 = (params) => {
   };
 
   const refetchLeaderboard = async () => {
-    const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET");
+    const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET", undefined, false);
     setLeaderboard(res);
   };
 
