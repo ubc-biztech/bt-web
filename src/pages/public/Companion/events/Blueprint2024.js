@@ -14,8 +14,6 @@ import "react-circular-progressbar/dist/styles.css";
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
-
-
 import Floorplan from "../../../../assets/2024/blueprint/floorplan.svg";
 
 import Mentors from "../components/mentor/Mentors";
