@@ -24,7 +24,7 @@ import {
 } from "@material-ui/styles";
 
 
-import Floorplan from "../../../../assets/2024/blueprint/floorplan.svg";
+import Floorplan from "../../../../assets/2024/blueprint/floorplan.png";
 import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
@@ -275,7 +275,7 @@ const Blueprint2024 = (params) => {
         </div>
         <div id="Floorplan" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Floorplan</h1>
-          <Floorplan></Floorplan>
+          <img src={Floorplan} alt="Blueprint Partners" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
         </div>
         <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
         <div id="Partners" style={styles.column}>

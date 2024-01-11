@@ -40,8 +40,7 @@ export default function PodiumStep({
       >
         <div style={{
           fontWeight: "bold",
-          color: "white",
-          fontSize: "24px"
+          color: "white"
         }}>{winner.fname} {winner.lname}</div>
       </motion.div>
       <motion.div
