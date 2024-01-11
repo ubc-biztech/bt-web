@@ -41,7 +41,7 @@ const styles = {
     alignItems: "center", // mobile-centric padding
     padding: "0 10px", // adding spacing between children
     // bring up the height of the container
-    backgroundImage: constantStyles.backgroundGradient,
+    backgroundImage: constantStyles.backgroundGradient
   },
   inputContainer: {
     display: "flex",
@@ -81,7 +81,7 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundImage: constantStyles.backgroundGradient,
+    backgroundImage: constantStyles.backgroundGradient
   }
 };
 
@@ -177,23 +177,23 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center", // readable font size for mobile
     fontSize: "1.8rem",
     fontWeight: "bold",
-    color: constantStyles.textColor,
+    color: constantStyles.textColor
   },
   centerText: {
     textAlign: "center", // readable font size for mobile
-    fontSize: "1.3rem",
+    fontSize: "1.3rem"
   },
   themeText: {
     textAlign: "center", // readable font size for mobile
     fontSize: "1.3rem",
-    color: constantStyles.textColor,
+    color: constantStyles.textColor
   },
   pointsText: {
     // bold italicize
     fontWeight: "bold",
     fontStyle: "italic",
     fontSize: "1.5rem",
-    color: constantStyles.textColor,
+    color: constantStyles.textColor
   },
   boldText: {
     fontWeight: "bold",
@@ -215,7 +215,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   DBButton: {
-    marginBottom: 16,
+    marginBottom: 16
   }
 }));
 
@@ -227,16 +227,12 @@ const Redemption = ({
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [isNegativeQRModalOpen, setNegativeQRModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSuccessAnimationFinished, setIsSuccessAnimationFinished] = useState(
-    false
-  );
-  const [isErrorAnimationFinished, setIsErrorAnimationFinished] = useState(
-    false
-  );
-  const [
-    isNegativeQRPointsConfirmed,
-    setIsNegativeQRPointsConfirmed
-  ] = useState(false);
+  const [isSuccessAnimationFinished, setIsSuccessAnimationFinished] =
+    useState(false);
+  const [isErrorAnimationFinished, setIsErrorAnimationFinished] =
+    useState(false);
+  const [isNegativeQRPointsConfirmed, setIsNegativeQRPointsConfirmed] =
+    useState(false);
   const [registrations, setRegistrations] = useState([]);
   const [error, setError] = useState("");
 
@@ -256,11 +252,16 @@ const Redemption = ({
   // Temp for Data and Beyond
   const id = qrID.slice(6);
   const links = {
-    "data-challenge-1": "https://docs.google.com/forms/d/e/1FAIpQLScdJC-w2ypk9109ud-77VfgK4srdaujYeE8LBFXkbHf8fhY0w/viewform",
-    "data-challenge-2": "https://docs.google.com/forms/d/e/1FAIpQLSdAmNcw4iwlsIej01iOOte7QVpTC3gBUU99zTrP88STCMtetQ/viewform",
-    "data-challenge-3": "https://docs.google.com/forms/d/e/1FAIpQLSdpbfthDx27LrMzyvMkK_W9jFytG5D4805qNNDY26VCQKmnKQ/viewform",
-    "data-challenge-4": "https://docs.google.com/forms/d/e/1FAIpQLSedwv5fsVU99OJrgIu5HozWoMM06C0xkULP3vT4u_quv5HVWw/viewform",
-    "data-challenge-5": "https://docs.google.com/forms/d/e/1FAIpQLSf3tESUF_w_4JK7H9ngtg9oqcl7ld4hGssIcr6dl1zGtedAgA/viewform",
+    "data-challenge-1":
+      "https://docs.google.com/forms/d/e/1FAIpQLScdJC-w2ypk9109ud-77VfgK4srdaujYeE8LBFXkbHf8fhY0w/viewform",
+    "data-challenge-2":
+      "https://docs.google.com/forms/d/e/1FAIpQLSdAmNcw4iwlsIej01iOOte7QVpTC3gBUU99zTrP88STCMtetQ/viewform",
+    "data-challenge-3":
+      "https://docs.google.com/forms/d/e/1FAIpQLSdpbfthDx27LrMzyvMkK_W9jFytG5D4805qNNDY26VCQKmnKQ/viewform",
+    "data-challenge-4":
+      "https://docs.google.com/forms/d/e/1FAIpQLSedwv5fsVU99OJrgIu5HozWoMM06C0xkULP3vT4u_quv5HVWw/viewform",
+    "data-challenge-5":
+      "https://docs.google.com/forms/d/e/1FAIpQLSf3tESUF_w_4JK7H9ngtg9oqcl7ld4hGssIcr6dl1zGtedAgA/viewform"
   };
 
   const fetchRegistrations = async () => {
@@ -384,9 +385,7 @@ const Redemption = ({
     } else {
       const pts = `${points} Points`;
       setPointsAwardedText(`${points} Points`);
-      setNegativePointsAwardedText(
-        pts.substring(1, `${points} Points`.length)
-      );
+      setNegativePointsAwardedText(pts.substring(1, `${points} Points`.length));
     }
   };
   const determineTimestampText = () => {
@@ -617,7 +616,9 @@ const Redemption = ({
                         </Typography>
                       ) : (
                         <>
-                          <Typography className={classes.welcome}>{congratNameText}</Typography>
+                          <Typography className={classes.welcome}>
+                            {congratNameText}
+                          </Typography>
 
                           <Typography className={classes.themeText}>
                             {congratSuffixText}
@@ -650,19 +651,19 @@ const Redemption = ({
                         ease: "easeOut"
                       }}
                     >
-                      {links[id] &&
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        className={classes.DBButton}
-                        onClick={() => {
-                          window.open(links[id]);
-                        }}
-                      >
+                      {links[id] && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="large"
+                          className={classes.DBButton}
+                          onClick={() => {
+                            window.open(links[id]);
+                          }}
+                        >
                         Proceed to Challenge
-                      </Button>
-                      }
+                        </Button>
+                      )}
                       <Button
                         variant="contained"
                         color="primary"
