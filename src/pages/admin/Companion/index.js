@@ -87,6 +87,7 @@ const Companion = () => {
     isUnlimitedScans: false,
     type: "",
     partnerID: "",
+    linkedin: "",
   });
 
   const [errors, setErrors] = useState({
@@ -95,7 +96,8 @@ const Companion = () => {
     year: false,
     points: false,
     type: false,
-    partnerID: false
+    partnerID: false,
+    linkedin: false
   });
 
   const classes = useStyles();
@@ -147,7 +149,8 @@ const Companion = () => {
           isActive: true,
           type: newQR.type,
           data: newQR.type === "Partner" ? {
-            partnerID: newQR.partnerID
+            partnerID: newQR?.partnerID,
+            linkedin: newQR?.linkedin
           } : {
           }
         };
@@ -159,7 +162,8 @@ const Companion = () => {
           points: 0,
           isUnlimitedScans: false,
           type: "",
-          partnerID: ""
+          partnerID: "",
+          linkedin: ""
         });
         alert(res.message);
         fetchQRs();
@@ -330,6 +334,7 @@ const Companion = () => {
                 </FormControl>
               </Tooltip>
               {newQR.type === "Partner" &&
+              <>
                 <Tooltip
                   title="Specify the partner's email."
                   arrow
@@ -351,11 +356,38 @@ const Companion = () => {
                         partnerID: e.target.value
                       });
                     }}
-                    value={newQR.partnerID}
+                    value={newQR?.partnerID}
                     error={errors.partnerID}
                     helperText={errors.partnerID && "Missing value is required"}
                   />
                 </Tooltip>
+                <Tooltip
+                  title="Specify the partner's linkedin url."
+                  arrow
+                >
+                  <TextField
+                    id="linkedin"
+                    name="linkedin"
+                    label="Partner LinkedIn"
+                    required
+                    margin="normal"
+                    variant="filled"
+                    onChange={(e) => {
+                      setErrors({
+                        ...errors,
+                        id: false
+                      });
+                      setNewQR({
+                        ...newQR,
+                        linkedin: e.target.value
+                      });
+                    }}
+                    value={newQR?.linkedin}
+                    error={errors.linkedin}
+                    helperText={errors.linkedin && "Missing value is required"}
+                  />
+                </Tooltip>
+              </>
               }
             </Box>
             <Box className={classes.rowFlex}>
@@ -409,7 +441,10 @@ const Companion = () => {
                     </Box>
                     <Box>Type: {QR.type}</Box>
                     {QR.type === "Partner" &&
-                      <Box>Partner Email: {QR.data.partnerID}</Box>
+                      <>
+                        <Box>Partner LinkedIn: {QR.data?.linkedin} </Box>
+                        <Box>Partner Email: {QR.data?.partnerID}</Box>
+                      </>
                     }
                   </Box>
                   <img
