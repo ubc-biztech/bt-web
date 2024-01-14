@@ -128,10 +128,9 @@ function Mentors(props) {
     fetchMentors();
   }, [skillsQuestionId]);
 
-
   useEffect(() => {
-    if (searchQuery.length <= 0) setFilteredMentors([...mentors]);
-    else filterMentors();
+    if (searchQuery.length <= 0 && mentors.length > 0) setFilteredMentors([...mentors]);
+    else if (searchQuery.length > 0) filterMentors();
 
     return () => {
       setFilteredMentors([]);
