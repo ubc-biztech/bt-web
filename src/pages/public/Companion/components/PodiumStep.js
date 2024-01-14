@@ -3,20 +3,10 @@ import {
   motion
 } from "framer-motion";
 
-import First from "../../../../assets/2023/data&beyond/1st.png";
-import Second from "../../../../assets/2023/data&beyond/2nd.png";
-import Third from "../../../../assets/2023/data&beyond/3rd.png";
-import Star from "../../../../assets/2023/data&beyond/star.png";
-
 export default function PodiumStep({
-  podium, winner
+  podium, winner, position
 }) {
-  const offset = podium.length - winner.position;
-  const placements = {
-    0: First,
-    1: Second,
-    2: Third
-  };
+  const offset = podium.length - position;
 
   return (
     <div
@@ -25,7 +15,7 @@ export default function PodiumStep({
         flexDirection: "column",
         placeContent: "end",
         width: "100%",
-        height: "100%",
+        height: `${((4 - position) / 4) * 100}%`,
       }}
     >
       <motion.div
@@ -42,8 +32,8 @@ export default function PodiumStep({
           visible: {
             opacity: 1,
             transition: {
-              delay: 1 + (offset + 2),
-              duration: 0.75,
+              delay: 0.5 + (offset),
+              duration: 0.5,
             },
           },
         }}
@@ -51,8 +41,8 @@ export default function PodiumStep({
         <div style={{
           fontWeight: "bold",
           color: "white",
-          fontSize: "36px"
-        }}>{winner.name}</div>
+          fontSize: "24px"
+        }}>{winner.fname} {winner.lname}</div>
       </motion.div>
       <motion.div
         style={{
@@ -66,6 +56,7 @@ export default function PodiumStep({
           display: "flex",
           marginBottom: -1,
           placeContent: "center",
+          height: "100%",
           width: "100%",
         }}
         initial="hidden"
@@ -76,56 +67,22 @@ export default function PodiumStep({
             opacity: 0
           },
           visible: {
-            height: `${(70 * (offset / podium.length)) + 30}%`,
+            height: "100%",
             opacity: 1,
             transition: {
-              delay: 1 + offset,
+              delay: offset - 1,
               duration: 2,
               ease: "backInOut",
             },
           },
         }}
       >
-        <img src={placements[winner.position]} alt="Placement" style={{
-          width: "15%",
-          height: "auto",
-          alignSelf: "center",
-          ...(winner.position === 0 && {
-            marginRight: "7%"
-          })
-        }}></img>
-        {winner.position === 0 && (
-          <motion.div
-            style={{
-              position: "absolute",
-              left: "52%",
-              top: "40%",
-              width: "15%",
-              height: "auto"
-            }}
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {
-                opacity: 0
-              },
-              visible: {
-                opacity: 1,
-                transition: {
-                  delay: 1 + (offset + 2),
-                  duration: 0.75,
-                },
-              },
-            }}
-          >
-            <img src={Star} alt="Star"></img>
-          </motion.div>
-        )}
+        {winner.points}
         <span style={{
           alignSelf: "flex-end",
           color: "white"
         }}>
-          {winner.position + 1}
+          {position + 1}
         </span>
       </motion.div>
     </div>
