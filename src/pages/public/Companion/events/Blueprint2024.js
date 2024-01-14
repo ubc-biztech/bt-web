@@ -23,7 +23,6 @@ import {
   styled
 } from "@material-ui/styles";
 
-
 import Floorplan from "../../../../assets/2024/blueprint/floorplan.png";
 import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
@@ -145,7 +144,7 @@ const Blueprint2024 = (params) => {
   };
 
   const refetchLeaderboard = async () => {
-    const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET");
+    const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET", undefined, false);
     setLeaderboard(res);
   };
 
