@@ -2,6 +2,7 @@ import DataAndBeyond2023 from "./DataAndBeyond2023";
 import BizTechDBLogo from "../../../../assets/2023/data&beyond/BizTechD&BLogo.png";
 import BiztechMISNightLogo from "../../../../assets/2024/misnight/BiztechMISNightLogo.png";
 import BiztechLogo from "../../../../assets/2024/blueprint/BiztechLogo.svg";
+import BlueprintLogo from "../../../../assets/2024/blueprint/logo.png";
 import DBLogo from "../../../../assets/2023/data&beyond/D&BLogo.png";
 import MISLogo from "../../../../assets/2024/misnight/logo.svg";
 import MISNight2023 from "./MISNight2023";
