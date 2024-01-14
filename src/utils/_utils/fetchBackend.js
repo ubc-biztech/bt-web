@@ -19,7 +19,6 @@ export async function fetchBackend(
       "Content-Type": "application/json",
     };
   }
-  console.timeLog("b");
   if (authenticatedCall) {
     headers.Authorization = `Bearer ${(await Auth.currentSession())
       .getIdToken()
