@@ -11,8 +11,6 @@ export async function fetchBackend(
   data,
   authenticatedCall = true
 ) {
-  console.log("a");
-  console.log(endpoint);
   let headers = {
   };
   if (method === "POST") {
@@ -27,11 +25,8 @@ export async function fetchBackend(
       .getIdToken()
       .getJwtToken()}`;
   }
-  console.log("c");
   const body = JSON.stringify(data);
   let status;
-  console.log(endpoint);
-  console.log(body);
   return fetch(API_URL + endpoint, {
     method,
     headers,

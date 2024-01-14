@@ -145,19 +145,13 @@ const Blueprint2024 = (params) => {
   };
 
   const refetchLeaderboard = async () => {
-    console.log("fethcing");
     const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET");
-    console.log(res);
     setLeaderboard(res);
   };
 
   useEffect(() => {
-    console.log("ping");
-    console.log(event);
     refetchLeaderboard();
   }, [event]);
-  console.log(userRegistration);
-
   useEffect(() => {
     // Establish WebSocket connection
     const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_API);
@@ -188,7 +182,6 @@ const Blueprint2024 = (params) => {
       }
     };
   }, []); // Only runs on component mount and unmount
-  console.log(leaderboard);
   return (<>
     {event && registrations &&
       <FadeInWhenVisible>
