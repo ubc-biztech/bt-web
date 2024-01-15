@@ -6,8 +6,8 @@ import {
   fetchBackend
 } from "utils";
 
+import CAPITALIZED_EMAILS from "../../../constants/_constants/emails.js";
 import CompanionLayout from "./components/CompanionLayout";
-
 import Events from "./events";
 
 const styles = {
@@ -23,8 +23,15 @@ const styles = {
   },
 };
 
+const getRealEmail = (email) => {
+  const res = CAPITALIZED_EMAILS.find(emailObj => emailObj.lowercaseEmail === email);
+  if (res) {
+    return res.email;
+  }
+};
+
 const Companion = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmailFunc] = useState("");
   const [pageError, setPageError] = useState("");
   const [error, setError] = useState("");
   const [registrations, setRegistrations] = useState([]);
@@ -35,7 +42,7 @@ const Companion = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const events = Events.sort((a, b) => {
-    return  a.activeUntil - b.activeUntil;
+    return a.activeUntil - b.activeUntil;
   });
 
   const {
@@ -44,6 +51,15 @@ const Companion = () => {
     const today = new Date();
     return event.activeUntil > today;
   }) || events[0];
+
+  const setEmail = (email) => {
+    const realEmail = getRealEmail(email);
+    if (realEmail) {
+      setEmailFunc(realEmail);
+    } else {
+      setEmailFunc(email);
+    }
+  };
 
   const fetchUserData = async () => {
     const reg = registrations.find((entry) => entry.id === email);
@@ -103,7 +119,7 @@ const Companion = () => {
     if (userRegistration) {
       setScheduleData(options.getScheduleData(userRegistration));
     }
-  },[userRegistration]);
+  }, [userRegistration]);
 
   if (pageError) {
     return (
