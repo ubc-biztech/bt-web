@@ -323,7 +323,7 @@ const CompanionLayout = (params) => {
           <div style={styles.modalButtons}>
             <Button variant="contained" color="primary" disabled={isLoading} className={classes.button}
               onClick={() => {
-                setEmail(input);
+                setEmail(input.toLowerCase());
               }}
             >
               Yes
