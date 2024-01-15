@@ -500,8 +500,8 @@ const Companion = () => {
                         ? ""
                         : "dev."
                       }app.ubcbiztech.com`
-                      }/redeem/${QR["eventID;year"].split(";")[0]}/${QR["eventID;year"].split(";")[1]
-                      }/${QR.id}`}
+                    }/redeem/${QR["eventID;year"].split(";")[0]}/${QR["eventID;year"].split(";")[1]
+                    }/${QR.id}`}
                     alt="QR"
                   />
                 </Box>
