@@ -128,7 +128,8 @@ const CompanionLayout = (params) => {
       extraStyles,
       colors,
       welcomeData,
-      headers
+      headers,
+      disableWelcomeHeader
     },
     email,
     setEmail,
@@ -175,7 +176,7 @@ const CompanionLayout = (params) => {
       justifyContent: "center",
       width: "100%",
       height: "100%",
-      background: "linear-gradient(180deg, #7ABAE9, #0062A9)",
+      background: colors.background,
       margin: "auto",
       borderRadius: 5,
       padding: 10,
@@ -210,6 +211,7 @@ const CompanionLayout = (params) => {
       width: "100%",
       marginLeft: "auto",
       marginRight: "auto",
+      scrollMarginTop: "110px"
     },
     nav: {
       display: "flex",
@@ -225,7 +227,7 @@ const CompanionLayout = (params) => {
       backgroundImage: colors.primary,
       WebkitBackgroundClip: "text",
       height: "60px",
-      color: "white",
+      color: "transparent",
       fontSize: constantStyles.titleFontSize,
       fontWeight: 700,
       marginBottom: "10px",
@@ -391,7 +393,17 @@ const CompanionLayout = (params) => {
           ) : (
             <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner">
               <div>
-                <FadeInWhenVisible style={styles.column}>
+                <FadeInWhenVisible style={{
+                  ...styles.column,
+                  position: "fixed",
+                  top: "0",
+                  left: "0",
+                  right: "0",
+                  width: "100%",
+                  background: "#060818",
+                  zIndex: "9999",
+                  paddingBottom: "0.75rem"
+                }}>
                   <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo} />
                   <nav role="navigation" style={{
                     ...styles.nav,
@@ -399,7 +411,7 @@ const CompanionLayout = (params) => {
                       width: "100%"
                     })
                   }}>
-                    {welcomeData && <a href="#Welcome" className={classes.link} style={{
+                    {welcomeData && !disableWelcomeHeader && <a href="#Welcome" className={classes.link} style={{
                       fontSize: constantStyles.fontSize
                     }}>Welcome</a>}
                     {scheduleData?.length && <a href="#Schedule" className={classes.link} style={{
@@ -425,6 +437,10 @@ const CompanionLayout = (params) => {
                   </nav>
                 </FadeInWhenVisible>
               </div>
+              <div style={{
+                background: "transparent",
+                height: "110px"
+              }}> </div>
               {event && event.isCompleted && event.feedback ?
                 <FadeInWhenVisible>
                   <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />

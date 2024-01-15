@@ -22,7 +22,7 @@ const activitiesDefault = [
     points: "25 points each"
   },
   {
-    name: "Post an Instagram story using the Blueprint event filter",
+    name: "Post an Instagram story using the Blueprint event filter (Visit the Biztech booth and show your post to redeem!)",
     points: "30 points"
   },
   {
@@ -90,11 +90,6 @@ function GamificationActivityTable({
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
-      <div style={{
-        fontSize: "14px"
-      }}>
-        * Visit the Biztech booth and show your post to redeem!
       </div>
     </>
   );

@@ -54,7 +54,7 @@ const useStyles = makeStyles({
   },
   chip: {
     borderRadius: "10px",
-    backgroundColor:"transparent",
+    backgroundColor: "transparent",
   },
   skillChip: {
     marginTop: "10px",
@@ -155,7 +155,7 @@ function Mentors(props) {
 
   return (
     <>
-      { event ?
+      {event ?
         <>
           <div id="Mentors" className={classes.mainContainer} style={styles.column}>
             <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Mentors</h1>
@@ -165,25 +165,25 @@ function Mentors(props) {
                   <Box className={renderMobileOnly ? classes.mobileFilterContainer : classes.filterContainer}>
                     <SearchBar setSearchQuery={setSearchQuery} searchQuery={searchQuery} options={options} />
                     {searchQuery.length !== 0 &&
-                    <Box className={classes.skillContainer}>
-                      {
-                        searchQuery.map((skill, idx) => {
-                          return (
-                            <Chip
-                              key={idx}
-                              label={skill}
-                              variant="outlined"
-                              classes={{
-                                root: classes.chip
-                              }}
-                              value={skill}
-                              onDelete={(e) => handleDeleteSkill(e, skill)}
-                              className={classes.skillChip}
-                            />
-                          );
-                        })
-                      }
-                    </Box>}
+                      <Box className={classes.skillContainer}>
+                        {
+                          searchQuery.map((skill, idx) => {
+                            return (
+                              <Chip
+                                key={idx}
+                                label={skill}
+                                variant="outlined"
+                                classes={{
+                                  root: classes.chip
+                                }}
+                                value={skill}
+                                onDelete={(e) => handleDeleteSkill(e, skill)}
+                                className={classes.skillChip}
+                              />
+                            );
+                          })
+                        }
+                      </Box>}
                   </Box>
                 </Grid>
                 {filteredMentors.length === 0 ? (
@@ -216,7 +216,7 @@ function Mentors(props) {
                 )}
               </Grid>
             </div>
-          </div> </>: <Loading />}
+          </div> </> : <Loading />}
     </>
   );
 }

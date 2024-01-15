@@ -5,20 +5,47 @@ import {
   QrScanner
 } from "@yudiel/react-qr-scanner";
 import {
+  Accordion, AccordionDetails, AccordionSummary
+} from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import {
   fetchBackend
 } from "utils";
 import {
-  CircularProgressbar
+  CircularProgressbar,
+  buildStyles
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
+import {
+  styled
+} from "@material-ui/styles";
 
+import Floorplan from "../../../../assets/2024/blueprint/floorplan.png";
+import Sched from "../../../../assets/2024/blueprint/sched.png";
 import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
 import GamificationRewardTable from "../components/GamificationRewardTable";
+
+
+const CustomAccordion = styled(Accordion)(({
+  theme
+}) => {
+  return {
+    background: "transparent"
+  };
+});
+
+const StyledAccordionSummary = styled(AccordionSummary)(() => {
+  return {
+    display: "flex",
+    alignContent: "center",
+    marginLeft: "48px !important",
+  };
+});
 
 const activities = [
   {
@@ -38,7 +65,7 @@ const activities = [
     points: "25 points each"
   },
   {
-    name: "Post an Instagram story using the Blueprint event filter",
+    name: "Post an Instagram story using the Blueprint event filter (Visit the Biztech booth and show your post to redeem)",
     points: "30 points"
   },
   {
@@ -75,7 +102,7 @@ const rewards = [
   {
     name: "Meta Quest",
     points: "200 points",
-    value: 200
+    value: 2000
   },
   {
     name: "FitBit 6",
@@ -101,7 +128,7 @@ const rewards = [
 
 const Blueprint2024 = (params) => {
   const {
-    event, registrations, FadeInWhenVisible, styles, renderMobileOnly, userRegistration
+    event, registrations, styles, renderMobileOnly, userRegistration
   } = params;
   const [websocket, setWebsocket] = useState(null);
   const [leaderboard, setLeaderboard] = useState();
@@ -125,8 +152,6 @@ const Blueprint2024 = (params) => {
   useEffect(() => {
     refetchLeaderboard();
   }, [event]);
-
-
   useEffect(() => {
     // Establish WebSocket connection
     const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_API);
@@ -149,7 +174,7 @@ const Blueprint2024 = (params) => {
       console.log("WebSocket disconnected");
     };
     setWebsocket(ws);
-
+    refetchLeaderboard();
     return () => {
       // Close WebSocket connection on component unmount
       if (websocket) {
@@ -159,7 +184,11 @@ const Blueprint2024 = (params) => {
   }, []); // Only runs on component mount and unmount
   return (<>
     {event && registrations &&
-      <FadeInWhenVisible>
+      <div>
+        <div id="Schedule" style={styles.column}>
+          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Schedule</h1>
+          <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
+        </div>
         <div id="Scanner" style={{
           ...styles.column,
           height: "35rem"
@@ -200,12 +229,15 @@ const Blueprint2024 = (params) => {
             })
           }}>{nextGoal ? `Only ${nextGoal?.value - userRegistration?.points} points away from a ${nextGoal?.name} entry!` : "You're eligble for all entries! See if you can top the leaderboards 👀"}</span>
           <div>
-            <CircularProgressbar styles={{  // Customize the text
-              text: {
-                // Text size
-                fontSize: "16px",
-              }
-            }} value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
+            <CircularProgressbar styles={
+              buildStyles({
+                textSize: "12px",
+                textColor: "#FFC3F4",
+                pathColor: "#FFC3F4",
+                trailColor: "transparent",
+                strokeLinecap: "butt"
+              })
+            } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
           </div>
           {leaderboard && <Podium winners={leaderboard} />}
         </div>
@@ -213,24 +245,41 @@ const Blueprint2024 = (params) => {
           ...styles.column,
           width: "90%"
         }}>
-          <GamificationActivityTable activities={activities} />
+          <CustomAccordion>
+            <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
+              expandIcon={<ExpandMoreIcon />}>
+              <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Points Activities</h1>
+            </StyledAccordionSummary>
+            <AccordionDetails>
+              <GamificationActivityTable activitiesProp={activities} />
+            </AccordionDetails>
+          </CustomAccordion>
+
         </div>
         <div id="Rewards" style={{
           ...styles.column,
           width: "90%"
         }}>
-          <GamificationRewardTable rewards={rewards} />
+          <CustomAccordion>
+            <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
+              expandIcon={<ExpandMoreIcon />}>
+              <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Raffles</h1>
+            </StyledAccordionSummary>
+            <AccordionDetails>
+              <GamificationRewardTable rewardsProp={rewards} />
+            </AccordionDetails>
+          </CustomAccordion>
         </div>
         <div id="Floorplan" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Floorplan</h1>
-          {/* <img src={MISNightPartners} alt="MISNight Partners" style={styles.partners}/> */}
+          <img src={Floorplan} alt="Blueprint Partners" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
         </div>
         <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
         <div id="Partners" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attending Partners</h1>
           {/* <img src={MISNightPartners} alt="MISNight Partners" style={styles.partners}/> */}
         </div>
-      </FadeInWhenVisible>
+      </div>
     }
   </>
   );
