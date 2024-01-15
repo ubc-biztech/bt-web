@@ -240,6 +240,8 @@ const Redemption = ({
   const [congratSuffixText, setCongratSuffixText] = useState("");
   const [timestampText, setTimestampText] = useState("");
   const [negativePointsAwardedText, setNegativePointsAwardedText] = useState(0);
+  const [qrMetaData, setQRMetaData] = useState({
+  });
 
   const classes = useStyles();
 
@@ -305,6 +307,7 @@ const Redemption = ({
       )
         .then((res) => {
           localStorage.setItem("D&B2023EMAIL", email);
+          setQRMetaData(res.response.qr_data);
           determinePointsAwardedText(res.response.redeemed_points);
           determineCongratText(res.response.first_name);
           determineCongratSuffixText(res.response.redeemed_points);
@@ -348,6 +351,9 @@ const Redemption = ({
 
   const finishSuccess = () => {
     setIsSuccessAnimationFinished(true);
+    if (qrMetaData?.linkedin) {
+      window.location.href = qrMetaData?.linkedin;
+    }
   };
 
   const finishError = () => {
