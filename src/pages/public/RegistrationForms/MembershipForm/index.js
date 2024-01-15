@@ -190,28 +190,25 @@ const MembershipFormContainer = (props) => {
 
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     const paymentBody = {
-      paymentName: `BizTech Membership ${
-        memberType !== "UBC" ? "(Non-UBC Student)" : ""
+      paymentName: `BizTech Membership ${memberType !== "UBC" ? "(Non-UBC Student)" : ""
       }`,
       paymentImages: ["https://imgur.com/TRiZYtG.png"],
       paymentPrice: memberType === "UBC" ? 1000 : 1500,
       paymentType: "Member",
-      success_url: `${
-        process.env.REACT_APP_STAGE === "local"
-          ? "http://localhost:3000/"
-          : CLIENT_URL
+      success_url: `${process.env.REACT_APP_STAGE === "local"
+        ? "http://localhost:3000/"
+        : CLIENT_URL
       }signup/success/Member/${email}`,
-      cancel_url: `${
-        process.env.REACT_APP_STAGE === "local"
-          ? "http://localhost:3000/"
-          : CLIENT_URL
+      cancel_url: `${process.env.REACT_APP_STAGE === "local"
+        ? "http://localhost:3000/"
+        : CLIENT_URL
       }signup`,
       education: memberType,
       student_number: memberType === "UBC" ? student_number : "",
       fname: first_name,
       lname: last_name,
       major: memberType === "UBC" || memberType === "UNI" ? major : "",
-      email,
+      email: email.toLowerCase(),
       year: memberType !== "NA" ? year : "",
       faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
       pronouns: pronouns || "Other/Prefer not to say",
@@ -222,8 +219,8 @@ const MembershipFormContainer = (props) => {
       heard_from,
       heardFromSpecify:
         heard_from === "Events" ||
-        heard_from === "Boothing" ||
-        heard_from === "Other"
+          heard_from === "Boothing" ||
+          heard_from === "Other"
           ? heardFromSpecify
           : "",
       university: memberType === "UNI" ? university : "",
