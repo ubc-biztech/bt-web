@@ -22,6 +22,9 @@ import {
 import {
   styled
 } from "@material-ui/styles";
+import {
+  ScrollingCarousel
+} from "@trendyol-js/react-carousel";
 
 import Floorplan from "../../../../assets/2024/blueprint/floorplan.png";
 import Sched from "../../../../assets/2024/blueprint/sched.png";
@@ -29,6 +32,7 @@ import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
 import GamificationRewardTable from "../components/GamificationRewardTable";
+import ShowcaseCard from "../components/ShowcaseCard";
 
 
 const CustomAccordion = styled(Accordion)(({
@@ -38,6 +42,31 @@ const CustomAccordion = styled(Accordion)(({
     background: "transparent"
   };
 });
+
+const projects = [
+  {
+    title: "Computer Lounge Tracker",
+    desc: "Created a Lounge Tracker Application for a club which made the process of checking and tracking members into the lounge more efficient by having a visual aid based on the orientation of the room.",
+    members: "Jason Kuo, Marcus Kam",
+    link: "https://github.com/ubcesports/computertracker",
+    image: "card1.png"
+  },
+  {
+    title: "Glide- A ride sharing App",
+    desc: "Glide is a ride-sharing app that enables users to seamlessly transition between being a rider or a glider (driver). It is a twist on the typical ride-sharing app experience. It encompasses a number of functionalities such as finding a ride, editing a ride, live communication with the driver through a chat feature, booking & confirming a ride, etc.",
+    members: "Omar Ankit, Ammaar Khan, Raghav Bhagria, Raphael Mwachiti",
+    link: "https://github.com/oankit/Glide-A-Ride-Sharing-App",
+    image: "card2.jpeg"
+  },
+  {
+    title: "Gruwup",
+    desc: "Our project enables travelers, like those flying solo to Toronto, to connect with new people sharing similar interests and plans. Unlike typical social media, which focuses on existing connections, our platform offers destination-based matching.",
+    members: "Sijan Poudel, Kaleb Hui, Jerry Shao, Grant Li",
+    link: "https://github.com/gruwup/gruwup",
+    image: "card3.png"
+  }
+];
+
 
 const StyledAccordionSummary = styled(AccordionSummary)(() => {
   return {
@@ -273,6 +302,18 @@ const Blueprint2024 = (params) => {
         <div id="Floorplan" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Floorplan</h1>
           <img src={Floorplan} alt="Blueprint Partners" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
+        </div>
+        <div id="Showcase" style={styles.column}>
+          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attendee Showcase</h1>
+          <ScrollingCarousel style={{
+            columnGap: "5px"
+          }}>
+            {
+              projects.map((project, i) => {
+                return <ShowcaseCard pos={i} key={i} title={project.title} image={project.image} members={project.members} link={project.link} desc={project.desc} />;
+              })
+            }
+          </ScrollingCarousel>
         </div>
         <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
         <div id="Partners" style={styles.column}>
