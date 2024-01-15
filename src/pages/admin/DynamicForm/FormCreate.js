@@ -720,7 +720,7 @@ const FormCreateForm = (props) => {
                 error={showError("partnerDescription")}
                 helperText={showError("partnerDescription") && errors.partnerDescription}
               />
-              <h3 style={styles.editorSectionTitle}>Partner Form Custom Questions</h3>
+              <h3 style={styles.editorSectionTitle}>Partner Form Custom Questions x</h3>
               {/* custom questions for partner */}
               {partnerCustomQuestions}
             </div>
