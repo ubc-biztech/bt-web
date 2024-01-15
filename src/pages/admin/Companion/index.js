@@ -130,17 +130,18 @@ const Companion = () => {
   };
 
   const createQR = async () => {
-    const keys = Object.keys(errors);
     const newErrors = {
       ...errors
     };
-    let validation = true;
-    keys.forEach((key) => {
-      if (newQR[key] === "") {
-        validation = false;
-        newErrors[key] = true;
-      }
-    });
+    const validation = true;
+    // @TODO readd validation
+    // const keys = Object.keys(errors);
+    // keys.forEach((key) => {
+    //   if (newQR[key] === "") {
+    //     validation = false;
+    //     newErrors[key] = true;
+    //   }
+    // });
     if (validation) {
       try {
         const data = {
@@ -155,7 +156,7 @@ const Companion = () => {
               return {
                 partnerID: newQR?.partnerID,
                 linkedin: newQR?.linkedin
-              } ;
+              };
             } else if (newQR.type === "Workshop") {
               return {
                 workshopID: newQR?.workshopID
@@ -348,60 +349,60 @@ const Companion = () => {
                 </FormControl>
               </Tooltip>
               {newQR.type === "Partner" &&
-              <>
-                <Tooltip
-                  title="Specify the partner's email."
-                  arrow
-                >
-                  <TextField
-                    id="partnerID"
-                    name="partnerID"
-                    label="Partner Email"
-                    required
-                    margin="normal"
-                    variant="filled"
-                    onChange={(e) => {
-                      setErrors({
-                        ...errors,
-                        id: false
-                      });
-                      setNewQR({
-                        ...newQR,
-                        partnerID: e.target.value
-                      });
-                    }}
-                    value={newQR?.partnerID}
-                    error={errors.partnerID}
-                    helperText={errors.partnerID && "Missing value is required"}
-                  />
-                </Tooltip>
-                <Tooltip
-                  title="Specify the partner's linkedin url."
-                  arrow
-                >
-                  <TextField
-                    id="linkedin"
-                    name="linkedin"
-                    label="Partner LinkedIn"
-                    required
-                    margin="normal"
-                    variant="filled"
-                    onChange={(e) => {
-                      setErrors({
-                        ...errors,
-                        id: false
-                      });
-                      setNewQR({
-                        ...newQR,
-                        linkedin: e.target.value
-                      });
-                    }}
-                    value={newQR?.linkedin}
-                    error={errors.linkedin}
-                    helperText={errors.linkedin && "Missing value is required"}
-                  />
-                </Tooltip>
-              </>
+                <>
+                  <Tooltip
+                    title="Specify the partner's email."
+                    arrow
+                  >
+                    <TextField
+                      id="partnerID"
+                      name="partnerID"
+                      label="Partner Email"
+                      required
+                      margin="normal"
+                      variant="filled"
+                      onChange={(e) => {
+                        setErrors({
+                          ...errors,
+                          id: false
+                        });
+                        setNewQR({
+                          ...newQR,
+                          partnerID: e.target.value
+                        });
+                      }}
+                      value={newQR?.partnerID}
+                      error={errors.partnerID}
+                      helperText={errors.partnerID && "Missing value is required"}
+                    />
+                  </Tooltip>
+                  <Tooltip
+                    title="Specify the partner's linkedin url."
+                    arrow
+                  >
+                    <TextField
+                      id="linkedin"
+                      name="linkedin"
+                      label="Partner LinkedIn"
+                      required
+                      margin="normal"
+                      variant="filled"
+                      onChange={(e) => {
+                        setErrors({
+                          ...errors,
+                          id: false
+                        });
+                        setNewQR({
+                          ...newQR,
+                          linkedin: e.target.value
+                        });
+                      }}
+                      value={newQR?.linkedin}
+                      error={errors.linkedin}
+                      helperText={errors.linkedin && "Missing value is required"}
+                    />
+                  </Tooltip>
+                </>
               }
               {newQR.type === "Workshop" &&
                 <Tooltip
@@ -493,17 +494,14 @@ const Companion = () => {
                     }
                   </Box>
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${
-                      process.env.REACT_APP_STAGE === "local"
-                        ? "http://localhost:3000"
-                        : `https://${
-                          process.env.REACT_APP_STAGE === "production"
-                            ? ""
-                            : "dev."
-                        }app.ubcbiztech.com`
-                    }/redeem/${QR["eventID;year"].split(";")[0]}/${
-                      QR["eventID;year"].split(";")[1]
-                    }/${QR.id}`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${process.env.REACT_APP_STAGE === "local"
+                      ? "http://localhost:3000"
+                      : `https://${process.env.REACT_APP_STAGE === "production"
+                        ? ""
+                        : "dev."
+                      }app.ubcbiztech.com`
+                      }/redeem/${QR["eventID;year"].split(";")[0]}/${QR["eventID;year"].split(";")[1]
+                      }/${QR.id}`}
                     alt="QR"
                   />
                 </Box>
