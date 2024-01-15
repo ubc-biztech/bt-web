@@ -442,8 +442,8 @@ const Companion = () => {
                     <Box>Type: {QR.type}</Box>
                     {QR.type === "Partner" &&
                       <>
-                        <Box>Partner LinkedIn: {QR.data?.linkedin} </Box>
-                        <Box>Partner Email: {QR.data?.partnerID}</Box>
+                        <Box>Partner LinkedIn: {QR.data ? QR.data.linkedin : ""} </Box>
+                        <Box>Partner Email: {QR.data ? QR.data.partnerID : ""}</Box>
                       </>
                     }
                   </Box>

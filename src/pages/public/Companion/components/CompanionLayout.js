@@ -324,19 +324,19 @@ const CompanionLayout = (params) => {
                 setEmail(input);
               }}
             >
-                Yes
+              Yes
             </Button>
             <Button variant="contained" color="secondary" disabled={isLoading} className={classes.button}
               onClick={() => {
                 setEmail("");
                 setIsModalOpen(false);
               }}>
-                No
+              No
             </Button>
           </div>
         </div>
       </Modal>
-      {isLoading ? <Loading/> : (
+      {isLoading ? <Loading /> : (
         <div>
           {!email || !userRegistration ? (
             <motion.div
@@ -353,10 +353,10 @@ const CompanionLayout = (params) => {
               }}>
               <div style={{
                 ...styles.column,
-                alignItems:"center",
-                minHeight:"100vh",
+                alignItems: "center",
+                minHeight: "100vh",
               }}>
-                <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo}/>
+                <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo} />
                 <Typography variant="h1" className={classes.boldText} style={{
                   color: constantStyles.textColor
                 }}>Welcome!</Typography>
@@ -392,7 +392,7 @@ const CompanionLayout = (params) => {
             <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner">
               <div>
                 <FadeInWhenVisible style={styles.column}>
-                  <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo}/>
+                  <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo} />
                   <nav role="navigation" style={{
                     ...styles.nav,
                     ...(renderMobileOnly && {
@@ -442,9 +442,9 @@ const CompanionLayout = (params) => {
               </FadeInWhenVisible>
               {scheduleData.length > 0 &&
                 <FadeInWhenVisible id="Timeline">
-                  <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles}/>
+                  <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles} />
                 </FadeInWhenVisible>}
-              <ChildComponent event={event} registrations={registrations}styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
+              <ChildComponent event={event} registrations={registrations} styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} userRegistration={userRegistration} {...props} />
               <div style={{
                 ...styles.text,
                 width: "100%",
@@ -453,7 +453,7 @@ const CompanionLayout = (params) => {
                   fontSize: constantStyles.mobileFontSize
                 })
               }}>
-                  Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
+                Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
               </div>
             </div>
           )}

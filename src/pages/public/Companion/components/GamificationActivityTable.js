@@ -4,50 +4,53 @@ import {
 } from "@material-ui/core";
 
 
-const activities = [
-  {
-    name: "Submit a question for panelists prior to the event",
-    points: "10 points"
-  },
+const activitiesDefault = [
   {
     name: "Early check-in",
-    points: "20 points"
+    points: "25 points"
   },
   {
-    name: "Win the kickoff event *",
-    points: "10 points"
-  },
-  {
-    name: "Attend a workshop",
-    points: "15 points each"
-  },
-  {
-    name: "Win in your workshop-specific game",
-    points: "50 points"
-  },
-  {
-    name: "Take a photo at the photobooth with people from your table",
+    name: "Scan another attendee’s LinkedIn QR on their name tag",
     points: "15 points"
   },
   {
-    name: "Visit a company booth",
-    points: "5 points each"
+    name: "Ask a question during the panel discussion",
+    points: "20 points"
   },
   {
-    name: "Lunch activities",
-    points: "10 points each"
+    name: "Attend a workshop",
+    points: "25 points each"
   },
   {
-    name: "Participate in a Biztech Interview",
-    points: "10 points"
+    name: "Post an Instagram story using the Blueprint event filter",
+    points: "30 points"
   },
   {
-    name: "Post on social media and tag @ubcbiztech *",
-    points: "10 points"
+    name: "Take a photo at the photo booth",
+    points: "20 points"
+  },
+  {
+    name: "Take a photo with a professional at the photo booth",
+    points: "35 points"
+  },
+  {
+    name: "Get interviewed by BizTech’s marketing team for Instagram reels",
+    points: "20 points"
+  },
+  {
+    name: "View the attendee showcase & vote for a personal project!",
+    points: "35 points"
+  },
+  {
+    name: "Get a Blueprint souvenir 3D printed at Rapid x BizTech’s booth",
+    points: "25 points each"
   },
 ];
 
-function GamificationActivityTable() {
+function GamificationActivityTable({
+  activitiesProp
+}) {
+  const activities = activitiesProp || activitiesDefault;
   return (
     <>
       <div style={{
