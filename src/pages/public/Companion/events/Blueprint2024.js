@@ -24,6 +24,7 @@ import {
 } from "@material-ui/styles";
 
 import Floorplan from "../../../../assets/2024/blueprint/floorplan.png";
+import Sched from "../../../../assets/2024/blueprint/sched.png";
 import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
@@ -127,7 +128,7 @@ const rewards = [
 
 const Blueprint2024 = (params) => {
   const {
-    event, registrations, FadeInWhenVisible, styles, renderMobileOnly, userRegistration
+    event, registrations, styles, renderMobileOnly, userRegistration
   } = params;
   const [websocket, setWebsocket] = useState(null);
   const [leaderboard, setLeaderboard] = useState();
@@ -183,7 +184,11 @@ const Blueprint2024 = (params) => {
   }, []); // Only runs on component mount and unmount
   return (<>
     {event && registrations &&
-      <FadeInWhenVisible>
+      <div>
+        <div id="Schedule" style={styles.column}>
+          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Schedule</h1>
+          <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
+        </div>
         <div id="Scanner" style={{
           ...styles.column,
           height: "35rem"
@@ -274,7 +279,7 @@ const Blueprint2024 = (params) => {
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attending Partners</h1>
           {/* <img src={MISNightPartners} alt="MISNight Partners" style={styles.partners}/> */}
         </div>
-      </FadeInWhenVisible>
+      </div>
     }
   </>
   );

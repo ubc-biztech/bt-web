@@ -20,6 +20,7 @@ export default [
     ChildComponent: Blueprint2024,
     /* options defining params for the companionLayout */
     options: {
+      disableWelcomeHeader: true,
       /* Biztech logo for event */
       BiztechLogo: BiztechLogo,
       /* Logo for event */
@@ -37,44 +38,45 @@ export default [
         background: "linear-gradient(0.5turn, #060818,  #0A0B25, #060818)",
       },
       /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
-      getScheduleData: (regData) => [
-        {
-          date: "10:30 am - 11:00 am",
-          title: "Registration",
-        },
-        {
-          date: "11:00 am - 11:25 am",
-          title: "Opening Remarks & Keynote",
-        },
-        {
-          date: "11:30 am - 12:00 pm",
-          title: "Panel",
-        },
-        {
-          date: "12:10 pm - 12:50 pm",
-          title: "Lunch",
-        },
-        {
-          date: "1:00 pm - 1:40 pm",
-          title: "Workshop 1 in Great Hall North OR Boothing & Networking in Great Hall South",
-        },
-        {
-          date: "1:55 pm - 2:35 pm",
-          title: "Workshop 2 in Great Hall North OR Boothing & Networking in Great Hall South",
-        },
-        {
-          date: "2:50pm - 3:30 pm",
-          title: "Workshop 3 in Great Hall North OR Boothing & Networking in Great Hall South",
-        },
-        {
-          date: "3:45 pm - 4:25 pm",
-          title: "Workshop 4 in Great Hall North OR Boothing & Networking in Great Hall South",
-        },
-        {
-          date: "4:30 pm - 5:00 pm",
-          title: "Closing Remarks/Prize Raffle",
-        },
-      ],
+      getScheduleData: () => [],
+      // getScheduleData: (regData) => [
+      //   {
+      //     date: "10:30 am - 11:00 am",
+      //     title: "Registration",
+      //   },
+      //   {
+      //     date: "11:00 am - 11:25 am",
+      //     title: "Opening Remarks & Keynote",
+      //   },
+      //   {
+      //     date: "11:30 am - 12:00 pm",
+      //     title: "Panel",
+      //   },
+      //   {
+      //     date: "12:10 pm - 12:50 pm",
+      //     title: "Lunch",
+      //   },
+      //   {
+      //     date: "1:00 pm - 1:40 pm",
+      //     title: "Workshop 1 in Great Hall North OR Boothing & Networking in Great Hall South",
+      //   },
+      //   {
+      //     date: "1:55 pm - 2:35 pm",
+      //     title: "Workshop 2 in Great Hall North OR Boothing & Networking in Great Hall South",
+      //   },
+      //   {
+      //     date: "2:50pm - 3:30 pm",
+      //     title: "Workshop 3 in Great Hall North OR Boothing & Networking in Great Hall South",
+      //   },
+      //   {
+      //     date: "3:45 pm - 4:25 pm",
+      //     title: "Workshop 4 in Great Hall North OR Boothing & Networking in Great Hall South",
+      //   },
+      //   {
+      //     date: "4:30 pm - 5:00 pm",
+      //     title: "Closing Remarks/Prize Raffle",
+      //   },
+      // ],
       /* Array of welcome paragraphs for event, each new index is a new paragraph */
       welcomeData: [
         "Welcome to Blueprint 2024! This will be your friend throughout the event. Feel free to check back here to see today's schedule and browse through who’s in attendance."
@@ -82,17 +84,21 @@ export default [
       /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
       headers: [
         {
+          text: "Scanner",
+          id: "Scanner"
+        },
+        {
+          text: "Points",
+          id: "Leaderboard"
+        },
+        {
           text: "Floorplan",
           id: "Floorplan"
         },
         {
           text: "Mentors",
           id: "Mentors"
-        },
-        {
-          text: "Partners",
-          id: "Partners"
-        },
+        }
       ]
     }
   },
