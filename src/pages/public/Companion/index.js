@@ -53,11 +53,11 @@ const Companion = () => {
   }) || events[0];
 
   const setEmail = (email) => {
-    const realEmail = getRealEmail(email);
+    const realEmail = getRealEmail(email.toLowerCase());
     if (realEmail) {
       setEmailFunc(realEmail);
     } else {
-      setEmailFunc(email);
+      setEmailFunc(email.toLowerCase());
     }
   };
 
