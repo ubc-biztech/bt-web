@@ -102,7 +102,7 @@ const rewards = [
   {
     name: "Meta Quest",
     points: "200 points",
-    value: 2000
+    value: 200
   },
   {
     name: "FitBit 6",
