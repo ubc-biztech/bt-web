@@ -285,7 +285,7 @@ const Blueprint2024 = (params) => {
                 textSize: "12px",
                 textColor: "#FFC3F4",
                 pathColor: "#FFC3F4",
-                trailColor: "transparent",
+                trailColor: "#301631",
                 strokeLinecap: "butt"
               })
             } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
