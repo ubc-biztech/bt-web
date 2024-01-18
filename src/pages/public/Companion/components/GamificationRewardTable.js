@@ -17,7 +17,7 @@ const rewardsDefault = [
     points: "120 points"
   },
   {
-    name: "Blueprint hoodie",
+    name: "Blueprint Hoodie",
     points: "70 points"
   },
 ];

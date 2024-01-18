@@ -306,7 +306,7 @@ const Redemption = ({
         false
       )
         .then((res) => {
-          localStorage.setItem("D&B2023EMAIL", email);
+          localStorage.setItem("companionEmail", email);
           setQRMetaData(res.response.qr_data);
           determinePointsAwardedText(res.response.redeemed_points);
           determineCongratText(res.response.first_name);
@@ -328,7 +328,7 @@ const Redemption = ({
   };
 
   useEffect(() => {
-    const email = localStorage.getItem("D&B2023EMAIL");
+    const email = localStorage.getItem("companionEmail");
     if (email) {
       setEmail(email);
     }
@@ -339,7 +339,7 @@ const Redemption = ({
       setIsLoading(false);
     } else {
       fetchRegistrations();
-      determinePointsAwardedText(-1);
+      // determinePointsAwardedText(-1);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
