@@ -339,7 +339,6 @@ const Redemption = ({
       setIsLoading(false);
     } else {
       fetchRegistrations();
-      // determinePointsAwardedText(-1);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
