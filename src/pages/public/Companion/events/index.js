@@ -84,10 +84,6 @@ export default [
       /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
       headers: [
         {
-          text: "Scanner",
-          id: "Scanner"
-        },
-        {
           text: "Points",
           id: "Leaderboard"
         },

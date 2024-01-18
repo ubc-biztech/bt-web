@@ -27,7 +27,8 @@ import {
 } from "@trendyol-js/react-carousel";
 
 import Floorplan from "../../../../assets/2024/blueprint/floorplan.png";
-import Sched from "../../../../assets/2024/blueprint/sched.png";
+import Companies from "../../../../assets/2024/blueprint/companies.svg";
+import Sched from "../../../../assets/2024/blueprint/schedule_glow.svg";
 import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
@@ -45,25 +46,46 @@ const CustomAccordion = styled(Accordion)(({
 
 const projects = [
   {
-    title: "Computer Lounge Tracker",
-    desc: "Created a Lounge Tracker Application for a club which made the process of checking and tracking members into the lounge more efficient by having a visual aid based on the orientation of the room.",
-    members: "Jason Kuo, Marcus Kam",
-    link: "https://github.com/ubcesports/computertracker",
+    title: "ShipAI",
+    desc: "AI project management tool helping you do less PMing",
+    members: "James Shi, Serena Ge, Charley Lee",
+    link: "https://unclegpt.app",
     image: "card1.png"
+  },
+  {
+    title: "Gruwup",
+    desc: "Our project enables travelers, like those flying solo to Toronto, to connect with new people sharing similar interests and plans. Unlike typical social media, which focuses on existing connections, our platform offers destination-based matching.",
+    members: "Sijan Poudel, Kaleb Hui, Jerry Shao, Grant Li",
+    link: "https://drive.google.com/drive/u/1/folders/1C2Ap7VbVOHJYZxZ1hF5239o_adyMEDHf",
+    image: "card2.png"
+  },
+  {
+    title: "Marketing Job Portal",
+    desc: "This is a full-stack web application that serves as a job portal for marketing students to apply for internships and new-grad jobs, created for the UBC Marketing Association.",
+    members: "Eric Lu, James Shi",
+    link: "https://devpost.com/software/marketing-job-portal",
+    image: "card3.png"
   },
   {
     title: "Glide- A ride sharing App",
     desc: "Glide is a ride-sharing app that enables users to seamlessly transition between being a rider or a glider (driver). It is a twist on the typical ride-sharing app experience. It encompasses a number of functionalities such as finding a ride, editing a ride, live communication with the driver through a chat feature, booking & confirming a ride, etc.",
     members: "Omar Ankit, Ammaar Khan, Raghav Bhagria, Raphael Mwachiti",
     link: "https://github.com/oankit/Glide-A-Ride-Sharing-App",
-    image: "card2.jpeg"
+    image: "card4.jpeg"
   },
   {
-    title: "Gruwup",
-    desc: "Our project enables travelers, like those flying solo to Toronto, to connect with new people sharing similar interests and plans. Unlike typical social media, which focuses on existing connections, our platform offers destination-based matching.",
-    members: "Sijan Poudel, Kaleb Hui, Jerry Shao, Grant Li",
-    link: "https://github.com/gruwup/gruwup",
-    image: "card3.png"
+    title: "Computer Lounge Tracker",
+    desc: "Created a Lounge Tracker Application for a club which made the process of checking and tracking members into the lounge more efficient by having a visual aid based on the orientation of the room.",
+    members: "Jason Kuo, Marcus Kam",
+    link: "https://github.com/ubcesports/computertracker",
+    image: "card5.png"
+  },
+  {
+    title: "Yudo Fitness Trainer",
+    desc: "Uses a custom-developed exercise detection algorithm, self-created datasets, TensorFlow AI, and Chat-GPT3 to help users improve their form and state relative accuracy score, feedback, and compliments/criticisms while doing various exercises.",
+    members: "Michelle Wang, Joshua Chan, Theresa Xiao",
+    link: "https://devpost.com/software/yudo",
+    image: "card6.png"
   }
 ];
 
@@ -122,7 +144,7 @@ const activities = [
     points: "20 points"
   },
   {
-    name: "Partiticipate in our attendee showcase",
+    name: "Participate in our attendee showcase",
     points: "25 points"
   },
 ];
@@ -131,7 +153,7 @@ const rewards = [
   {
     name: "Meta Quest",
     points: "200 points",
-    value: 2000
+    value: 200
   },
   {
     name: "FitBit 6",
@@ -149,7 +171,7 @@ const rewards = [
     value: 100
   },
   {
-    name: "Blueprint hoodie",
+    name: "Blueprint Hoodie",
     points: "70 points",
     value: 70
   },
@@ -218,7 +240,7 @@ const Blueprint2024 = (params) => {
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Schedule</h1>
           <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
         </div>
-        <div id="Scanner" style={{
+        {false && <div id="Scanner" style={{
           ...styles.column,
           height: "35rem"
         }}>
@@ -248,7 +270,7 @@ const Blueprint2024 = (params) => {
               }
             }
           />
-        </div>
+        </div>}
         <div id="Leaderboard" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Leaderboard</h1>
           <span style={{
@@ -263,7 +285,7 @@ const Blueprint2024 = (params) => {
                 textSize: "12px",
                 textColor: "#FFC3F4",
                 pathColor: "#FFC3F4",
-                trailColor: "transparent",
+                trailColor: "#301631",
                 strokeLinecap: "butt"
               })
             } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
@@ -318,7 +340,7 @@ const Blueprint2024 = (params) => {
         <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
         <div id="Partners" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attending Partners</h1>
-          {/* <img src={MISNightPartners} alt="MISNight Partners" style={styles.partners}/> */}
+          <img src={Companies} alt="Blueprint Partners" style={styles.partners} />
         </div>
       </div>
     }
