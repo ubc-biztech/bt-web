@@ -4,4 +4,11 @@ export const constantStyles = {
   fontSize: 16,
   mobileFontSize: 12,
   textColor: "white",
+  backgroundGradient: "linear-gradient(0.5turn, #060818,  #0A0B25, #060818)"
+};
+
+export const QRCodeTypes = {
+  PARTNER: "Partner",
+  WORKSHOP: "Workshop",
+  BOOTH: "Booth",
 };

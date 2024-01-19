@@ -27,7 +27,7 @@ import {
   fetchBackend
 } from "utils";
 import {
-  COLORS
+  COLORS, QRCodeTypes
 } from "constants/index";
 
 const useStyles = makeStyles({
@@ -85,7 +85,10 @@ const Companion = () => {
     year: new Date().getFullYear().toString(),
     points: "0",
     isUnlimitedScans: false,
-    type: ""
+    type: "",
+    partnerID: "",
+    linkedin: "",
+    workshopID: "",
   });
 
   const [errors, setErrors] = useState({
@@ -93,7 +96,10 @@ const Companion = () => {
     eventID: false,
     year: false,
     points: false,
-    type: false
+    type: false,
+    partnerID: false,
+    linkedin: false,
+    workshopID: false
   });
 
   const classes = useStyles();
@@ -124,17 +130,18 @@ const Companion = () => {
   };
 
   const createQR = async () => {
-    const keys = Object.keys(errors);
     const newErrors = {
       ...errors
     };
-    let validation = true;
-    keys.forEach((key) => {
-      if (newQR[key] === "") {
-        validation = false;
-        newErrors[key] = true;
-      }
-    });
+    const validation = true;
+    // @TODO readd validation
+    // const keys = Object.keys(errors);
+    // keys.forEach((key) => {
+    //   if (newQR[key] === "") {
+    //     validation = false;
+    //     newErrors[key] = true;
+    //   }
+    // });
     if (validation) {
       try {
         const data = {
@@ -143,7 +150,23 @@ const Companion = () => {
           year: Number(newQR.year),
           points: Number(newQR.points),
           isActive: true,
-          type: newQR.type
+          type: newQR.type,
+          data: (() => {
+            if (newQR.type === "Partner") {
+              return {
+                partnerID: newQR?.partnerID,
+                linkedin: newQR?.linkedin
+              };
+            } else if (newQR.type === "Workshop") {
+              return {
+                workshopID: newQR?.workshopID
+              };
+            } else {
+              return {
+
+              };
+            }
+          })()
         };
         const res = await fetchBackend("/qr", "POST", data);
         setNewQR({
@@ -152,7 +175,10 @@ const Companion = () => {
           year: new Date().getFullYear(),
           points: 0,
           isUnlimitedScans: false,
-          type: ""
+          type: "",
+          partnerID: "",
+          linkedin: "",
+          workshopID: ""
         });
         alert(res.message);
         fetchQRs();
@@ -313,15 +339,99 @@ const Companion = () => {
                     }}
                     error={errors.type}
                   >
-                    <MenuItem value="Workshop">Workshop</MenuItem>
-                    <MenuItem value="Partner">Partner</MenuItem>
-                    <MenuItem value="Booth">Booth</MenuItem>
+                    {Object.entries(QRCodeTypes).map(([key, value]) => (
+                      <MenuItem key={key} value={value}>{value}</MenuItem>
+                    ))}
                   </Select>
                   {errors.type && (
                     <FormHelperText error>Type is required</FormHelperText>
                   )}
                 </FormControl>
               </Tooltip>
+              {newQR.type === "Partner" &&
+                <>
+                  <Tooltip
+                    title="Specify the partner's email."
+                    arrow
+                  >
+                    <TextField
+                      id="partnerID"
+                      name="partnerID"
+                      label="Partner Email"
+                      required
+                      margin="normal"
+                      variant="filled"
+                      onChange={(e) => {
+                        setErrors({
+                          ...errors,
+                          id: false
+                        });
+                        setNewQR({
+                          ...newQR,
+                          partnerID: e.target.value
+                        });
+                      }}
+                      value={newQR?.partnerID}
+                      error={errors.partnerID}
+                      helperText={errors.partnerID && "Missing value is required"}
+                    />
+                  </Tooltip>
+                  <Tooltip
+                    title="Specify the partner's linkedin url."
+                    arrow
+                  >
+                    <TextField
+                      id="linkedin"
+                      name="linkedin"
+                      label="Partner LinkedIn"
+                      required
+                      margin="normal"
+                      variant="filled"
+                      onChange={(e) => {
+                        setErrors({
+                          ...errors,
+                          id: false
+                        });
+                        setNewQR({
+                          ...newQR,
+                          linkedin: e.target.value
+                        });
+                      }}
+                      value={newQR?.linkedin}
+                      error={errors.linkedin}
+                      helperText={errors.linkedin && "Missing value is required"}
+                    />
+                  </Tooltip>
+                </>
+              }
+              {newQR.type === "Workshop" &&
+                <Tooltip
+                  title="Specify the workshop name."
+                  arrow
+                >
+                  <TextField
+                    id="workshopID"
+                    name="workshopID"
+                    label="Workshop Name"
+                    required
+                    margin="normal"
+                    variant="filled"
+                    onChange={(e) => {
+                      setErrors({
+                        ...errors,
+                        id: false
+                      });
+                      setNewQR({
+                        ...newQR,
+                        workshopID: e.target.value
+                      });
+                    }}
+                    value={newQR.workshopID}
+                    error={errors.workshopID}
+                    helperText={errors.workshopID && "Missing value is required"}
+                  />
+                </Tooltip>
+              }
             </Box>
             <Box className={classes.rowFlex}>
               <Box>
@@ -373,18 +483,24 @@ const Companion = () => {
                         : "One-time Scan"}
                     </Box>
                     <Box>Type: {QR.type}</Box>
+                    {QR.type === "Partner" &&
+                      <>
+                        <Box>Partner LinkedIn: {QR.data ? QR.data.linkedin : ""} </Box>
+                        <Box>Partner Email: {QR.data ? QR.data.partnerID : ""}</Box>
+                      </>
+                    }
+                    {QR.type === "Workshop" &&
+                      <Box>Workshop Name: {QR.data ? QR.data.workshopID : ""}</Box>
+                    }
                   </Box>
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${
-                      process.env.REACT_APP_STAGE === "local"
-                        ? "http://localhost:3000"
-                        : `https://${
-                          process.env.REACT_APP_STAGE === "production"
-                            ? ""
-                            : "dev."
-                        }app.ubcbiztech.com`
-                    }/redeem/${QR["eventID;year"].split(";")[0]}/${
-                      QR["eventID;year"].split(";")[1]
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${process.env.REACT_APP_STAGE === "local"
+                      ? "http://localhost:3000"
+                      : `https://${process.env.REACT_APP_STAGE === "production"
+                        ? ""
+                        : "dev."
+                      }app.ubcbiztech.com`
+                    }/redeem/${QR["eventID;year"].split(";")[0]}/${QR["eventID;year"].split(";")[1]
                     }/${QR.id}`}
                     alt="QR"
                   />

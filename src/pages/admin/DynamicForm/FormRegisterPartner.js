@@ -38,6 +38,9 @@ import {
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 import Loading from "pages/Loading";
 import OtherCheckbox from "./components/OtherCheckbox";
+import {
+  QRCodeTypes
+} from "constants/index";
 
 const styles = {
   // Container for custom form image
@@ -579,6 +582,21 @@ const FormRegisterPartner = (props) => {
     return res;
   };
 
+  const createPartnerQR = (registrationBody) => {
+    const id = `${registrationBody.eventID};${registrationBody.year};${registrationBody.email}`;
+    const data = {
+      "partnerID": registrationBody.email,
+    };
+
+    return {
+      id,
+      eventID: registrationBody.eventID,
+      year: registrationBody.year,
+      type: QRCodeTypes.PARTNER,
+      data: data
+    };
+  };
+
   const handleSubmit = () => {
     setIsSubmitting(true);
     if (isValidSubmission()) {
@@ -629,6 +647,13 @@ const FormRegisterPartner = (props) => {
             `An error has occured: ${err} Please contact an exec for support.`
           );
           setIsSubmitting(false);
+        });
+
+      const partnerQR = createPartnerQR(registrationBody);
+
+      fetchBackend("/qr", "POST", partnerQR, false)
+        .catch((err) => {
+          console.log("QR code could not be created for the partner: ", err);
         });
     } else {
       setIsSubmitting(false);

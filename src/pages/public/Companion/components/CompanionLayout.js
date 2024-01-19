@@ -128,7 +128,8 @@ const CompanionLayout = (params) => {
       extraStyles,
       colors,
       welcomeData,
-      headers
+      headers,
+      disableWelcomeHeader
     },
     email,
     setEmail,
@@ -175,7 +176,7 @@ const CompanionLayout = (params) => {
       justifyContent: "center",
       width: "100%",
       height: "100%",
-      background: "linear-gradient(180deg, #7ABAE9, #0062A9)",
+      background: colors.background,
       margin: "auto",
       borderRadius: 5,
       padding: 10,
@@ -210,6 +211,7 @@ const CompanionLayout = (params) => {
       width: "100%",
       marginLeft: "auto",
       marginRight: "auto",
+      scrollMarginTop: "110px"
     },
     nav: {
       display: "flex",
@@ -225,7 +227,7 @@ const CompanionLayout = (params) => {
       backgroundImage: colors.primary,
       WebkitBackgroundClip: "text",
       height: "60px",
-      color: "white",
+      color: "transparent",
       fontSize: constantStyles.titleFontSize,
       fontWeight: 700,
       marginBottom: "10px",
@@ -284,6 +286,12 @@ const CompanionLayout = (params) => {
       marginTop: -30,
       width: "100%"
     },
+    floorplan: {
+      width: "60%",
+    },
+    floorplanMobile: {
+      width: "100%",
+    },
     ...extraStyles
   };
 
@@ -318,19 +326,19 @@ const CompanionLayout = (params) => {
                 setEmail(input);
               }}
             >
-                Yes
+              Yes
             </Button>
             <Button variant="contained" color="secondary" disabled={isLoading} className={classes.button}
               onClick={() => {
                 setEmail("");
                 setIsModalOpen(false);
               }}>
-                No
+              No
             </Button>
           </div>
         </div>
       </Modal>
-      {isLoading ? <Loading/> : (
+      {isLoading ? <Loading /> : (
         <div>
           {!email || !userRegistration ? (
             <motion.div
@@ -347,10 +355,10 @@ const CompanionLayout = (params) => {
               }}>
               <div style={{
                 ...styles.column,
-                alignItems:"center",
-                minHeight:"100vh",
+                alignItems: "center",
+                minHeight: "100vh",
               }}>
-                <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo}/>
+                <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo} />
                 <Typography variant="h1" className={classes.boldText} style={{
                   color: constantStyles.textColor
                 }}>Welcome!</Typography>
@@ -385,15 +393,25 @@ const CompanionLayout = (params) => {
           ) : (
             <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner">
               <div>
-                <FadeInWhenVisible style={styles.column}>
-                  <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo}/>
+                <FadeInWhenVisible style={{
+                  ...styles.column,
+                  position: "fixed",
+                  top: "0",
+                  left: "0",
+                  right: "0",
+                  width: "100%",
+                  background: "#060818",
+                  zIndex: "9999",
+                  paddingBottom: "0.75rem"
+                }}>
+                  <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo} />
                   <nav role="navigation" style={{
                     ...styles.nav,
                     ...(renderMobileOnly && {
                       width: "100%"
                     })
                   }}>
-                    {welcomeData && <a href="#Welcome" className={classes.link} style={{
+                    {welcomeData && !disableWelcomeHeader && <a href="#Welcome" className={classes.link} style={{
                       fontSize: constantStyles.fontSize
                     }}>Welcome</a>}
                     {scheduleData?.length && <a href="#Schedule" className={classes.link} style={{
@@ -419,6 +437,10 @@ const CompanionLayout = (params) => {
                   </nav>
                 </FadeInWhenVisible>
               </div>
+              <div style={{
+                background: "transparent",
+                height: "110px"
+              }}> </div>
               {event && event.isCompleted && event.feedback ?
                 <FadeInWhenVisible>
                   <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
@@ -436,9 +458,9 @@ const CompanionLayout = (params) => {
               </FadeInWhenVisible>
               {scheduleData.length > 0 &&
                 <FadeInWhenVisible id="Timeline">
-                  <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles}/>
+                  <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles} />
                 </FadeInWhenVisible>}
-              <ChildComponent event={event} registrations={registrations}styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} {...props}/>
+              <ChildComponent event={event} registrations={registrations} styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} userRegistration={userRegistration} {...props} />
               <div style={{
                 ...styles.text,
                 width: "100%",
@@ -447,7 +469,7 @@ const CompanionLayout = (params) => {
                   fontSize: constantStyles.mobileFontSize
                 })
               }}>
-                  Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
+                Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
               </div>
             </div>
           )}

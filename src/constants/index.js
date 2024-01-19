@@ -7,3 +7,5 @@ export * from "./_constants/registration";
 export * from "./_constants/theme";
 
 export * from "./_constants/eventRegisterForm";
+
+export * from "./_constants/companion";

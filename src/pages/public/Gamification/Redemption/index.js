@@ -21,7 +21,7 @@ import {
 } from "utils";
 import Loading from "pages/Loading";
 
-import BizTechDBLogo from "assets/2023/data&beyond/BizTechD&BLogo.png";
+import BizTechDBLogo from "assets/2024/blueprint/BiztechLogo.svg";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
 import {
@@ -81,7 +81,6 @@ const styles = {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundImage: constantStyles.backgroundGradient
   }
 };
 
@@ -118,24 +117,24 @@ const suffixNameText = [
   "Keep it up and you'll be on your way to some awesome prizes!",
   "You are doing great! Keep it up!",
   "Taking a step closer to some awesome tech prizes!",
-  "May your skills soar to new heights at Data and Beyond!",
-  "Cheers to your amazing experience at Data and Beyond!",
+  "May your skills soar to new heights at Blueprint!",
+  "Cheers to your amazing experience at Blueprint!",
   "The BizTech Team is cheering you on!",
-  "Loving the progress you're making at Data and Beyond!",
+  "Loving the progress you're making at Blueprint!",
   "Showing the world what you're made of!",
   "Really making a run for those prizes, aren't you?!",
   "Taking initiative and shaping the future - keep it up!",
   "Way to go, BizTech superstar!",
-  "You're making waves at Data and Beyond 🌊",
+  "You're making waves at Blueprint 🌊",
   "Making a name for yourself and unlocking awesome rewards, I see?",
   "Your tech savvy is paving the way to rewards and recognition!",
   "You're unlocking amazing opportunities - keep it up!",
   "Onward and upward with those prizes!",
   "Go get 'em! Those prizes aren't gonna win themselves!",
-  "Data and Beyond is the perfect place to show off your skills!",
-  "You are making a difference at Data and Beyond!",
+  "Blueprint is the perfect place to show off your skills!",
+  "You are making a difference at Blueprint!",
   "Impressive work - you're making a name for yourself!",
-  "You're really setting the tone for success at Data and Beyond!",
+  "You're really setting the tone for success at Blueprint!",
   "You've got the whole world talking!",
   "The BizTech world is lucky to have you!",
   "Enjoy your spoils and keep up the good work!",
@@ -143,24 +142,24 @@ const suffixNameText = [
   "Keep it up and you'll be on your way to some awesome prizes!",
   "You are doing great! Keep it up!",
   "Taking a step closer to some awesome tech prizes!",
-  "May your skills soar to new heights at Data and Beyond!",
-  "Cheers to your amazing experience at Data and Beyond!",
+  "May your skills soar to new heights at Blueprint!",
+  "Cheers to your amazing experience at Blueprint!",
   "The BizTech Team is cheering you on!",
-  "Loving the progress you're making at Data and Beyond!",
+  "Loving the progress you're making at Blueprint!",
   "Showing the world what you're made of!",
   "Really making a run for those prizes, aren't you?!",
   "Taking initiative and shaping the future - keep it up!",
   "Way to go, BizTech superstar!",
-  "You're making waves at Data and Beyond 🌊",
+  "You're making waves at Blueprint 🌊",
   "Making a name for yourself and unlocking awesome rewards, I see?",
   "Your tech savvy is paving the way to rewards and recognition!",
   "You're unlocking amazing opportunities - keep it up!",
   "Onward and upward with those prizes!",
   "Go get 'em! Those prizes aren't gonna win themselves!",
-  "Data and Beyond is the perfect place to show off your skills!",
-  "You are making a difference at Data and Beyond!",
+  "Blueprint is the perfect place to show off your skills!",
+  "You are making a difference at Blueprint!",
   "Impressive work - you're making a name for yourself!",
-  "You're really setting the tone for success at Data and Beyond!",
+  "You're really setting the tone for success at Blueprint!",
   "You've got the whole world talking!",
   "The BizTech world is lucky to have you!"
 ];
@@ -241,6 +240,8 @@ const Redemption = ({
   const [congratSuffixText, setCongratSuffixText] = useState("");
   const [timestampText, setTimestampText] = useState("");
   const [negativePointsAwardedText, setNegativePointsAwardedText] = useState(0);
+  const [qrMetaData, setQRMetaData] = useState({
+  });
 
   const classes = useStyles();
 
@@ -249,7 +250,7 @@ const Redemption = ({
   } = location?.state || {
   };
 
-  // Temp for Data and Beyond
+  // Temp for Blueprint
   const id = qrID.slice(6);
   const links = {
     "data-challenge-1":
@@ -305,7 +306,8 @@ const Redemption = ({
         false
       )
         .then((res) => {
-          localStorage.setItem("D&B2023EMAIL", email);
+          localStorage.setItem("companionEmail", email);
+          setQRMetaData(res.response.qr_data);
           determinePointsAwardedText(res.response.redeemed_points);
           determineCongratText(res.response.first_name);
           determineCongratSuffixText(res.response.redeemed_points);
@@ -326,7 +328,7 @@ const Redemption = ({
   };
 
   useEffect(() => {
-    const email = localStorage.getItem("D&B2023EMAIL");
+    const email = localStorage.getItem("companionEmail");
     if (email) {
       setEmail(email);
     }
@@ -337,7 +339,6 @@ const Redemption = ({
       setIsLoading(false);
     } else {
       fetchRegistrations();
-      determinePointsAwardedText(-1);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -349,6 +350,9 @@ const Redemption = ({
 
   const finishSuccess = () => {
     setIsSuccessAnimationFinished(true);
+    if (qrMetaData?.linkedin) {
+      window.location.href = qrMetaData?.linkedin;
+    }
   };
 
   const finishError = () => {
@@ -358,8 +362,7 @@ const Redemption = ({
   const determineCongratText = (firstName) => {
     if (firstName) {
       setCongratNameText(
-        `${
-          prefixNameText[Math.floor(Math.random() * prefixNameText.length)]
+        `${prefixNameText[Math.floor(Math.random() * prefixNameText.length)]
         }, ${firstName}!`
       );
     } else {
@@ -409,7 +412,7 @@ const Redemption = ({
         err.message.message &&
           err.message.message.includes("already scanned")
       ) {
-        // TEMPORARY for Data and Beyond: remove this conditional branch once we have a better way to handle this
+        // TEMPORARY for Blueprint: remove this conditional branch once we have a better way to handle this
         // this is neccessary because the backend error message for already scanned QRs is not
         // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
         setError(
@@ -481,7 +484,7 @@ const Redemption = ({
         >
           <img
             src={BizTechDBLogo}
-            alt="Data and Beyond Logo"
+            alt="Blueprint Logo"
             style={{
               width: "20%",
               height: "auto"
@@ -546,8 +549,8 @@ const Redemption = ({
           {email ? (
             <>
               {!isSuccessAnimationFinished &&
-              !isErrorAnimationFinished &&
-              !isEmailModalOpen ? (
+                !isErrorAnimationFinished &&
+                !isEmailModalOpen ? (
                   <div style={styles.successContainer}>
                     {error ? (
                       <Lottie
@@ -581,9 +584,9 @@ const Redemption = ({
                     >
                       <img
                         src={BizTechDBLogo}
-                        alt="Data and Beyond Logo"
+                        alt="Blueprint Logo"
                         style={{
-                          width: "50%",
+                          width: "200%",
                           height: "auto",
                           marginBottom: 20
                         }}
@@ -690,7 +693,7 @@ const Redemption = ({
             <>
               <img
                 src={BizTechDBLogo}
-                alt="Data and Beyond Logo"
+                alt="Blueprint Logo"
                 style={{
                   width: "35%",
                   height: "auto"
@@ -700,7 +703,7 @@ const Redemption = ({
                 <Typography className={classes.welcome}>Welcome!</Typography>
                 <Typography className={classes.themeText}>
                   To redeem points, please enter the email you used to register
-                  for Data and Beyond.
+                  for Blueprint.
                 </Typography>
                 <TextField
                   className={classes.textfield}
