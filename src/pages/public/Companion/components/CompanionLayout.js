@@ -303,7 +303,7 @@ const CompanionLayout = (params) => {
       overflow: "hidden",
       display: "block",
       userSelect: "none",
-      WebkitMediaControlsPanel: 'none !important'
+      WebkitMediaControlsPanel: "none !important"
     },
     ...extraStyles
   };
