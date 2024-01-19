@@ -345,7 +345,7 @@ const CompanionLayout = (params) => {
 
     return () => {
       clearTimeout(timeoutId);
-      clearTimeout(backgroundId)
+      clearTimeout(backgroundId);
     };
   }, []);
 
@@ -395,12 +395,12 @@ const CompanionLayout = (params) => {
                   maxWidth: "100vh",
                   overflow: "hidden",
                 }}
-                  loop={true}>
+                loop={true}>
                   <source src="intro.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>}</>
-                <>{showBackground &&
+              <>{showBackground &&
                   <div className="video-container" >
                     <video autoPlay muted style={{
                       position: "fixed",
@@ -410,7 +410,7 @@ const CompanionLayout = (params) => {
                       maxWidth: "100vh",
                       overflow: "hidden",
                     }}
-                      loop={true}>
+                    loop={true}>
                       <source src="gif.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
