@@ -329,7 +329,8 @@ const CompanionLayout = (params) => {
 
   useEffect(() => {
     videoRef.current?.load();
-  }, [transition]);
+    handlePlay();
+  }, [showBackground]);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -353,12 +354,23 @@ const CompanionLayout = (params) => {
       setShowTransition(false);
       setShowVideo(false);
     }
+    handlePlay();
 
     return () => {
       clearTimeout(timeoutId);
       clearTimeout(backgroundId);
     };
   }, []);
+
+  const handlePlay = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.play()
+        .catch(error => {
+          console.error("Autoplay prevented:", error);
+        });
+    }
+  };
 
   return (
     <div style={styles.container}>
@@ -397,21 +409,16 @@ const CompanionLayout = (params) => {
               display: "flex",
               justifyContent: "center"
             }}>
-              {showVideo && (<><>{!showBackground && <div className="video-container" >
+              {showVideo && (<div className="video-container" >
                 <video autoPlay muted playsInline style={styles.video}
-                  loop={true}>
-                  <source src="intro.mp4" type="video/mp4" />
+                  loop={true} ref={videoRef}>
+                  {!showBackground ?
+                    <source src="intro.mp4" type="video/mp4" /> :
+                    <source src="gif.mp4" type="video/mp4" />}
                   Your browser does not support the video tag.
                 </video>
-              </div>}</>
-              <>{showBackground &&
-                  <div className="video-container" >
-                    <video autoPlay muted playsInline style={styles.video}
-                      loop={true}>
-                      <source src="gif.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>}</></>)}
+              </div>
+              )}
               {!transition &&
                 (<motion.div
                   initial={{
@@ -529,14 +536,21 @@ const CompanionLayout = (params) => {
                       marginTop: renderMobileOnly ? "auto" : "50px",
                     }}/>}
                   <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {userRegistration.fname}!</h1>
-                  {welcomeData.map((paragraph, i) => {
-                    return <div key={i} style={{
-                      ...styles.text,
-                      ...(renderMobileOnly && {
-                        fontSize: constantStyles.mobileFontSize
-                      })
-                    }}>{paragraph}</div>;
-                  })}
+                  {event.isCompleted ? <div style={{
+                    ...styles.text,
+                    ...(renderMobileOnly && {
+                      fontSize: constantStyles.mobileFontSize
+                    })
+                  }}>The event is now over, please head back to the main room, we hope you enjoyed your time 😊!</div> :
+                    welcomeData.map((paragraph, i) => {
+                      return <div key={i} style={{
+                        ...styles.text,
+                        ...(renderMobileOnly && {
+                          fontSize: constantStyles.mobileFontSize
+                        })
+                      }}>{paragraph}</div>;
+                    }
+                    )}
                 </FadeInWhenVisible>
                 {scheduleData.length > 0 &&
                   <FadeInWhenVisible id="Timeline">
