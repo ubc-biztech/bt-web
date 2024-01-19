@@ -523,7 +523,7 @@ const CompanionLayout = (params) => {
                   </FadeInWhenVisible> : <></>}
                 <FadeInWhenVisible id="welcome" style={styles.column}>
                   <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {userRegistration.fname}!</h1>
-                  {event.isCompleted ? <div style={{
+                  {event && event.isCompleted ? <div style={{
                     ...styles.text,
                     ...(renderMobileOnly && {
                       fontSize: constantStyles.mobileFontSize
