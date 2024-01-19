@@ -404,7 +404,7 @@ const CompanionLayout = (params) => {
                   Your browser does not support the video tag.
                 </video>
               </div>}</>
-                <>{showBackground &&
+              <>{showBackground &&
                   <div className="video-container" >
                     <video autoPlay muted playsInline style={styles.video}
                       loop={true}>
