@@ -352,7 +352,7 @@ const CompanionLayout = (params) => {
   const handlePlay = () => {
     const video = videoRef.current;
     if (video) {
-      video.click()
+      video.click();
       video.play()
         .catch(error => {
           console.error("Autoplay prevented:", error);
