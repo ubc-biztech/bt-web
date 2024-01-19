@@ -294,8 +294,9 @@ const CompanionLayout = (params) => {
     },
     video: {
       position: "fixed",
-      top: "0",
-      right: "-10px",
+      top: "0px",
+      right: "-25px",
+      left: "0px",
       height: "110%",
       width: "auto",
       minWidth: "120vw",
@@ -395,7 +396,8 @@ const CompanionLayout = (params) => {
           {(!email || !userRegistration) ?
             <div style={{
               display: "flex",
-              justifyContent: "center"
+              justifyContent: "center",
+              overflow: "hidden"
             }}>
               {showVideo && (<div className="video-container" >
                 <video autoPlay muted playsInline style={styles.video}
