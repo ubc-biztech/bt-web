@@ -316,7 +316,8 @@ const CompanionLayout = (params) => {
       minHeight: "100vh",
       overflow: "hidden",
       display: "block",
-      userSelect: "none"
+      userSelect: "none",
+      WebkitMediaControlsPanel: 'none !important'
     },
     ...extraStyles
   };
