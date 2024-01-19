@@ -316,7 +316,6 @@ const CompanionLayout = (params) => {
       minHeight: "100vh",
       overflow: "hidden",
       display: "block",
-      pointerEvents: "none",
       userSelect: "none"
     },
     ...extraStyles
@@ -367,6 +366,7 @@ const CompanionLayout = (params) => {
   const handlePlay = () => {
     const video = videoRef.current;
     if (video) {
+      video.click()
       video.play()
         .catch(error => {
           console.error("Autoplay prevented:", error);
