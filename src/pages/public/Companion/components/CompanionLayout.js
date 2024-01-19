@@ -309,7 +309,7 @@ const CompanionLayout = (params) => {
     video: {
       position: "fixed",
       top: "0px",
-      right: "-25px",
+      right: "-18px",
       left: "0px",
       height: "110%",
       width: "auto",
@@ -376,7 +376,10 @@ const CompanionLayout = (params) => {
   };
 
   return (
-    <div style={styles.container}>
+    <div style={(!email || !userRegistration) ? {
+      ...styles.container,
+      padding: "0"
+    } : styles.container}>
       <Modal
         open={isModalOpen}
       >
