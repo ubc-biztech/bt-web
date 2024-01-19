@@ -180,17 +180,9 @@ const Blueprint2024 = (params) => {
   } = params;
   const [websocket, setWebsocket] = useState(null);
   const [leaderboard, setLeaderboard] = useState();
-  const [showQRerror, setShowQRerror] = useState(false);
 
   const rewardsAscending = [...rewards].sort((a, b) => a?.value - b?.value);
   const nextGoal = rewardsAscending.find(reward => userRegistration?.points ? userRegistration?.points < reward?.value : true);
-
-  const invalidQR = () => {
-    setShowQRerror(true);
-    setTimeout(() => {
-      setShowQRerror(false);
-    }, 10000);
-  };
 
   const refetchLeaderboard = async () => {
     const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET", undefined, false);
@@ -237,19 +229,6 @@ const Blueprint2024 = (params) => {
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Schedule</h1>
           <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
         </div>
-        {false && <div id="Scanner" style={{
-          ...styles.column,
-          height: "35rem"
-        }}>
-          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Scan Points</h1>
-          <span style={{
-            ...styles.text,
-            color: "red",
-            ...(renderMobileOnly && {
-              fontSize: constantStyles.mobileFontSize
-            })
-          }}>{showQRerror ? "invalid Blueprint QR Code" : "            "}</span>
-        </div>}
         <div id="Leaderboard" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Leaderboard</h1>
           <span style={{
