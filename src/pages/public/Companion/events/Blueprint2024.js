@@ -2,9 +2,6 @@ import React, {
   useState, useEffect
 } from "react";
 import {
-  QrScanner
-} from "@yudiel/react-qr-scanner";
-import {
   Accordion, AccordionDetails, AccordionSummary
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -252,24 +249,6 @@ const Blueprint2024 = (params) => {
               fontSize: constantStyles.mobileFontSize
             })
           }}>{showQRerror ? "invalid Blueprint QR Code" : "            "}</span>
-          <QrScanner
-            onDecode={(link) => {
-              if (!link.includes("redeem/blueprint/2024")) {
-                invalidQR();
-              }
-              else {
-                window.location.href = link;
-              }
-            }}
-            onError={(error) => console.log(error?.message)}
-            containerStyle={
-              {
-                width: "100%",
-                height: "100%",
-                paddingTop: "0"
-              }
-            }
-          />
         </div>}
         <div id="Leaderboard" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Leaderboard</h1>
