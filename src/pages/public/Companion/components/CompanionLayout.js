@@ -295,7 +295,7 @@ const CompanionLayout = (params) => {
     video: {
       position: "fixed",
       top: "0",
-      right: "0",
+      right: "-10px",
       height: "110%",
       width: "auto",
       minWidth: "120vw",
