@@ -310,7 +310,7 @@ const CompanionLayout = (params) => {
       position: "fixed",
       top: "0",
       right: "0",
-      height: "100%",
+      height: "110%",
       width: "auto",
       minWidth: "120vw",
       minHeight: "100vh",
