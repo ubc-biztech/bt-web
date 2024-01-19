@@ -292,6 +292,17 @@ const CompanionLayout = (params) => {
     floorplanMobile: {
       width: "100%",
     },
+    video: {
+      position: "fixed",
+      top: "0",
+      right: "0",
+      height: "100%",
+      minWidth: "100vw",
+      overflow: "hidden",
+      display: "block",
+      pointerEvents: "none",
+      userSelect: "none"
+    },
     ...extraStyles
   };
 
@@ -373,30 +384,16 @@ const CompanionLayout = (params) => {
               justifyContent: "center"
             }}>
               {showVideo && (<><>{!showBackground && <div className="video-container" >
-                <video autoPlay muted style={{
-                  position: "fixed",
-                  top: "0",
-                  right: "0",
-                  height: "100%",
-                  maxWidth: "100vh",
-                  overflow: "hidden",
-                }}
-                loop={true}>
+                <video autoPlay muted playsInline style={styles.video}
+                  loop={true}>
                   <source src="intro.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               </div>}</>
-              <>{showBackground &&
+                <>{showBackground &&
                   <div className="video-container" >
-                    <video autoPlay muted style={{
-                      position: "fixed",
-                      top: "0",
-                      right: "0",
-                      height: "100%",
-                      maxWidth: "100vh",
-                      overflow: "hidden",
-                    }}
-                    loop={true}>
+                    <video autoPlay muted playsInline style={styles.video}
+                      loop={true}>
                       <source src="gif.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
@@ -539,8 +536,9 @@ const CompanionLayout = (params) => {
               </div>
             )}
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 
