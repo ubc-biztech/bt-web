@@ -101,6 +101,10 @@ const activities = [
     points: "25 points"
   },
   {
+    name: "Scan a professional's Linkedin QR Code (can only redeem once)",
+    points: "15 points"
+  },
+  {
     name: "Ask a question during the panel discussion",
     points: "20 points"
   },
