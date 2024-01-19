@@ -155,9 +155,9 @@ const CompanionLayout = (params) => {
       width: "100%",
     },
     introLogo: {
-      width: "100%",
+      width: "60%",
       height: "auto",
-      marginBottom: "25px",
+      marginBottom: "20px",
     },
     homeLogo: {
       marginTop: "24px",
