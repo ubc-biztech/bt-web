@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect
+  useState, useEffect, useRef
 } from "react";
 // import Lottie from "lottie-react"
 import {
@@ -311,6 +311,14 @@ const CompanionLayout = (params) => {
 
   const [input, setInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transition, setShowTransition] = useState(true);
+  const [showVideo, setShowVideo] = useState(true);
+  const [showBackground, setShowBackground] = useState(false);
+  const videoRef = useRef();
+
+  useEffect(() => {
+    videoRef.current?.load();
+  }, [transition]);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -321,6 +329,25 @@ const CompanionLayout = (params) => {
       setIsModalOpen(false);
     }
   }, [userRegistration]);
+
+  useEffect(() => {
+    // Pause the video after 2 seconds
+    const timeoutId = setTimeout(() => {
+      setShowTransition(false);
+    }, 2200);
+    const backgroundId = setTimeout(() => {
+      setShowBackground(true);
+    }, 4000);
+    if (window.screen.width > 500) {
+      setShowTransition(false);
+      setShowVideo(false);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(backgroundId)
+    };
+  }, []);
 
   return (
     <div style={styles.container}>
@@ -354,145 +381,183 @@ const CompanionLayout = (params) => {
       </Modal>
       {isLoading ? <Loading /> : (
         <div>
-          {!email || !userRegistration ? (
-            <motion.div
-              initial={{
-                opacity: 0,
-                scale: 0.5
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1
-              }}
-              transition={{
-                duration: 1
-              }}>
-              <div style={{
-                ...styles.column,
-                alignItems: "center",
-                minHeight: "100vh",
-              }}>
-                <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo} />
-                <Typography variant="h1" className={classes.boldText} style={{
-                  color: constantStyles.textColor
-                }}>Welcome!</Typography>
-                <Typography className={classes.centerText} style={{
-                  color: constantStyles.textColor
-                }}>Please enter the email you used to register for {title}</Typography>
-                <TextField
-                  className={classes.textfield}
-                  onChange={(e) => setInput(e.target.value)}
-                  value={input}
-                  variant="outlined"
-                  label="Email"
-                  inputProps={{
-                    autoCapitalize: "none",
-                    style: {
-                      color: constantStyles.textColor,
-                      fontFamily: "Proximanova",
-                    },
-                  }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    setIsModalOpen(true);
-                  }}
-                >
-                  Confirm
-                </Button>
-              </div>
-            </motion.div>
-          ) : (
-            <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner">
-              <div>
-                <FadeInWhenVisible style={{
-                  ...styles.column,
+          {(!email || !userRegistration) ?
+            <div style={{
+              display: "flex",
+              justifyContent: "center"
+            }}>
+              {showVideo && (<><>{!showBackground && <div className="video-container" >
+                <video autoPlay muted style={{
                   position: "fixed",
                   top: "0",
-                  left: "0",
                   right: "0",
-                  width: "100%",
-                  background: "#060818",
-                  zIndex: "9999",
-                  paddingBottom: "0.75rem"
-                }}>
-                  <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo} />
-                  <nav role="navigation" style={{
-                    ...styles.nav,
-                    ...(renderMobileOnly && {
-                      width: "100%"
-                    })
-                  }}>
-                    {welcomeData && !disableWelcomeHeader && <a href="#Welcome" className={classes.link} style={{
-                      fontSize: constantStyles.fontSize
-                    }}>Welcome</a>}
-                    {scheduleData?.length && <a href="#Schedule" className={classes.link} style={{
-                      fontSize: constantStyles.fontSize
-                    }}>Schedule</a>}
-                    {headers.map((header, i) => {
-                      const lastTabItem = i === headers.length - 1 ? {
-                        borderRight: "none"
-                      } : {
-                      };
-                      if (header.id) {
-                        return (<a href={`#${header.id}`} key={i} className={classes.link} style={{
-                          fontSize: constantStyles.fontSize,
-                          ...lastTabItem
-                        }}>{header.text}</a>);
-                      } else if (header.route) {
-                        return <Link to={header.route} className={classes.link} key={i} style={{
-                          fontSize: constantStyles.fontSize,
-                          ...lastTabItem
-                        }}>{header.text}</Link>;
-                      }
-                    })}
-                  </nav>
-                </FadeInWhenVisible>
-              </div>
-              <div style={{
-                background: "transparent",
-                height: "110px"
-              }}> </div>
-              {event && event.isCompleted && event.feedback ?
-                <FadeInWhenVisible>
-                  <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
-                </FadeInWhenVisible> : <></>}
-              <FadeInWhenVisible id="welcome" style={styles.column}>
-                {landing && <img src={landing}
+                  height: "100%",
+                  maxWidth: "100vh",
+                  overflow: "hidden",
+                }}
+                  loop={true}>
+                  <source src="intro.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>}</>
+                <>{showBackground &&
+                  <div className="video-container" >
+                    <video autoPlay muted style={{
+                      position: "fixed",
+                      top: "0",
+                      right: "0",
+                      height: "100%",
+                      maxWidth: "100vh",
+                      overflow: "hidden",
+                    }}
+                      loop={true}>
+                      <source src="gif.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>}</></>)}
+              {!transition &&
+                (<motion.div
+                  initial={{
+                    opacity: 0,
+                    scale: 0.5
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1
+                  }}
+                  transition={{
+                    duration: 1
+                  }}
                   style={{
-                    ...styles.landing,
-                    width: renderMobileOnly ? "90%" : "40%",
-                    marginTop: renderMobileOnly ? "auto" : "50px",
-                  }}/>}
-                <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {userRegistration.fname}!</h1>
-                {welcomeData.map((paragraph, i) => {
-                  return <div key={i} style={{
-                    ...styles.text,
-                    ...(renderMobileOnly && {
-                      fontSize: constantStyles.mobileFontSize
-                    })
-                  }}>{paragraph}</div>;
-                })}
-              </FadeInWhenVisible>
-              {scheduleData.length > 0 &&
-                <FadeInWhenVisible id="Timeline">
-                  <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles} />
-                </FadeInWhenVisible>}
-              <ChildComponent event={event} registrations={registrations} styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} userRegistration={userRegistration} {...props} />
-              {/* <div style={{
-                ...styles.text,
-                width: "100%",
-                marginBottom: "0px",
-                ...(renderMobileOnly && {
-                  fontSize: constantStyles.mobileFontSize
-                })
-              }}>
-                Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
-              </div> */}
-            </div>
-          )}
+                    position: "fixed",
+                    zIndex: "1"
+                  }}>
+                  <div style={{
+                    ...styles.column,
+                    alignItems: "center",
+                    minHeight: "100vh",
+                  }}>
+                    <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo} />
+                    <Typography variant="h1" className={classes.boldText} style={{
+                      color: constantStyles.textColor
+                    }}>Welcome!</Typography>
+                    <Typography className={classes.centerText} style={{
+                      color: constantStyles.textColor
+                    }}>Please enter the email you used to register for {title}</Typography>
+                    <TextField
+                      className={classes.textfield}
+                      onChange={(e) => setInput(e.target.value)}
+                      value={input}
+                      variant="outlined"
+                      label="Email"
+                      inputProps={{
+                        autoCapitalize: "none",
+                        style: {
+                          color: constantStyles.textColor,
+                          fontFamily: "Proximanova",
+                        },
+                      }}
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        setIsModalOpen(true);
+                      }}
+                    >
+                      Confirm
+                    </Button>
+                  </div>
+                </motion.div>)
+              }</div> : (
+              <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner">
+                <div>
+                  <FadeInWhenVisible style={{
+                    ...styles.column,
+                    position: "fixed",
+                    top: "0",
+                    left: "0",
+                    right: "0",
+                    width: "100%",
+                    background: "#060818",
+                    zIndex: "9999",
+                    paddingBottom: "0.75rem"
+                  }}>
+                    <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo} />
+                    <nav role="navigation" style={{
+                      ...styles.nav,
+                      ...(renderMobileOnly && {
+                        width: "100%"
+                      })
+                    }}>
+                      {welcomeData && !disableWelcomeHeader && <a href="#Welcome" className={classes.link} style={{
+                        fontSize: constantStyles.fontSize
+                      }}>Welcome</a>}
+                      {scheduleData?.length && <a href="#Schedule" className={classes.link} style={{
+                        fontSize: constantStyles.fontSize
+                      }}>Schedule</a>}
+                      {headers.map((header, i) => {
+                        const lastTabItem = i === headers.length - 1 ? {
+                          borderRight: "none"
+                        } : {
+                        };
+                        if (header.id) {
+                          return (<a href={`#${header.id}`} key={i} className={classes.link} style={{
+                            fontSize: constantStyles.fontSize,
+                            ...lastTabItem
+                          }}>{header.text}</a>);
+                        } else if (header.route) {
+                          return <Link to={header.route} className={classes.link} key={i} style={{
+                            fontSize: constantStyles.fontSize,
+                            ...lastTabItem
+                          }}>{header.text}</Link>;
+                        }
+                      })}
+                    </nav>
+                  </FadeInWhenVisible>
+                </div>
+                <div style={{
+                  background: "transparent",
+                  height: "110px"
+                }}> </div>
+                {event && event.isCompleted && event.feedback ?
+                  <FadeInWhenVisible>
+                    <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
+                  </FadeInWhenVisible> : <></>}
+                <FadeInWhenVisible id="welcome" style={styles.column}>
+                  {landing && <img src={landing}
+                    style={{
+                      ...styles.landing,
+                      width: renderMobileOnly ? "90%" : "40%",
+                      marginTop: renderMobileOnly ? "auto" : "50px",
+                    }}/>}
+                  <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {userRegistration.fname}!</h1>
+                  {welcomeData.map((paragraph, i) => {
+                    return <div key={i} style={{
+                      ...styles.text,
+                      ...(renderMobileOnly && {
+                        fontSize: constantStyles.mobileFontSize
+                      })
+                    }}>{paragraph}</div>;
+                  })}
+                </FadeInWhenVisible>
+                {scheduleData.length > 0 &&
+                  <FadeInWhenVisible id="Timeline">
+                    <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles} />
+                  </FadeInWhenVisible>}
+                <ChildComponent event={event} registrations={registrations} styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} userRegistration={userRegistration} {...props} />
+                {/* <div style={{
+                  ...styles.text,
+                  width: "100%",
+                  marginBottom: "0px",
+                  ...(renderMobileOnly && {
+                    fontSize: constantStyles.mobileFontSize
+                  })
+                }}>
+                  Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
+                </div> */}
+              </div>
+            )}
         </div>
       )}
     </div>
