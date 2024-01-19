@@ -227,11 +227,11 @@ const Redemption = ({
   const [isNegativeQRModalOpen, setNegativeQRModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccessAnimationFinished, setIsSuccessAnimationFinished] =
-    useState(false);
+		useState(false);
   const [isErrorAnimationFinished, setIsErrorAnimationFinished] =
-    useState(false);
+		useState(false);
   const [isNegativeQRPointsConfirmed, setIsNegativeQRPointsConfirmed] =
-    useState(false);
+		useState(false);
   const [registrations, setRegistrations] = useState([]);
   const [error, setError] = useState("");
 
@@ -254,15 +254,15 @@ const Redemption = ({
   const id = qrID.slice(6);
   const links = {
     "data-challenge-1":
-      "https://docs.google.com/forms/d/e/1FAIpQLScdJC-w2ypk9109ud-77VfgK4srdaujYeE8LBFXkbHf8fhY0w/viewform",
+			"https://docs.google.com/forms/d/e/1FAIpQLScdJC-w2ypk9109ud-77VfgK4srdaujYeE8LBFXkbHf8fhY0w/viewform",
     "data-challenge-2":
-      "https://docs.google.com/forms/d/e/1FAIpQLSdAmNcw4iwlsIej01iOOte7QVpTC3gBUU99zTrP88STCMtetQ/viewform",
+			"https://docs.google.com/forms/d/e/1FAIpQLSdAmNcw4iwlsIej01iOOte7QVpTC3gBUU99zTrP88STCMtetQ/viewform",
     "data-challenge-3":
-      "https://docs.google.com/forms/d/e/1FAIpQLSdpbfthDx27LrMzyvMkK_W9jFytG5D4805qNNDY26VCQKmnKQ/viewform",
+			"https://docs.google.com/forms/d/e/1FAIpQLSdpbfthDx27LrMzyvMkK_W9jFytG5D4805qNNDY26VCQKmnKQ/viewform",
     "data-challenge-4":
-      "https://docs.google.com/forms/d/e/1FAIpQLSedwv5fsVU99OJrgIu5HozWoMM06C0xkULP3vT4u_quv5HVWw/viewform",
+			"https://docs.google.com/forms/d/e/1FAIpQLSedwv5fsVU99OJrgIu5HozWoMM06C0xkULP3vT4u_quv5HVWw/viewform",
     "data-challenge-5":
-      "https://docs.google.com/forms/d/e/1FAIpQLSf3tESUF_w_4JK7H9ngtg9oqcl7ld4hGssIcr6dl1zGtedAgA/viewform"
+			"https://docs.google.com/forms/d/e/1FAIpQLSf3tESUF_w_4JK7H9ngtg9oqcl7ld4hGssIcr6dl1zGtedAgA/viewform"
   };
 
   const fetchRegistrations = async () => {
@@ -339,6 +339,7 @@ const Redemption = ({
       setIsLoading(false);
     } else {
       fetchRegistrations();
+      determinePointsAwardedText(-1);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -410,7 +411,7 @@ const Redemption = ({
     default:
       if (
         err.message.message &&
-          err.message.message.includes("already scanned")
+					err.message.message.includes("already scanned")
       ) {
         // TEMPORARY for Blueprint: remove this conditional branch once we have a better way to handle this
         // this is neccessary because the backend error message for already scanned QRs is not
@@ -439,11 +440,11 @@ const Redemption = ({
           <Typography className={classes.errorText}>{error}</Typography>
           <div style={styles.modalText}>
             <Typography className={classes.centerText}>
-              Are you sure you want to use this email?
+							Are you sure you want to use this email?
             </Typography>
             <Typography className={classes.centerText}>
-              Once you confirm, you will not be able to change this, and all
-              future points at the event will be redeemed to this email.
+							Once you confirm, you will not be able to change this, and all
+							future points at the event will be redeemed to this email.
             </Typography>
           </div>
           <div style={styles.modalButtons}>
@@ -456,7 +457,7 @@ const Redemption = ({
                 setEmail(input);
               }}
             >
-              Yes
+							Yes
             </Button>
             <Button
               variant="contained"
@@ -469,7 +470,7 @@ const Redemption = ({
                 setIsEmailModalOpen(false);
               }}
             >
-              No
+							No
             </Button>
           </div>
         </motion.div>
@@ -491,11 +492,11 @@ const Redemption = ({
             }}
           />
           <Typography className={classes.boldText}>
-            You are about to spend {negativePointsAwardedText}
+						You are about to spend {negativePointsAwardedText}
           </Typography>
           <div style={styles.modalText}>
             <Typography className={classes.centerText}>
-              Confirm this purchase
+							Confirm this purchase
             </Typography>
           </div>
           <div>
@@ -509,7 +510,7 @@ const Redemption = ({
                 setIsNegativeQRPointsConfirmed(true);
               }}
             >
-              Yes
+							Yes
             </Button>
             <Button
               variant="contained"
@@ -521,7 +522,7 @@ const Redemption = ({
                 setNegativeQRModalOpen(false);
               }}
             >
-              No
+							No
             </Button>
           </div>
         </motion.div>
@@ -549,8 +550,8 @@ const Redemption = ({
           {email ? (
             <>
               {!isSuccessAnimationFinished &&
-                !isErrorAnimationFinished &&
-                !isEmailModalOpen ? (
+								!isErrorAnimationFinished &&
+								!isEmailModalOpen ? (
                   <div style={styles.successContainer}>
                     {error ? (
                       <Lottie
@@ -563,7 +564,7 @@ const Redemption = ({
                         onLoopComplete={finishSuccess}
                       />
                     )}
-                  ;
+									;
                   </div>
                 ) : (
                   <>
@@ -664,7 +665,7 @@ const Redemption = ({
                             window.open(links[id]);
                           }}
                         >
-                        Proceed to Challenge
+												Proceed to Challenge
                         </Button>
                       )}
                       <Button
@@ -675,7 +676,7 @@ const Redemption = ({
                           history.push("/companion");
                         }}
                       >
-                      Return to Companion
+											Return to Companion
                       </Button>
                       <Typography
                         className={classes.themeText}
@@ -702,8 +703,8 @@ const Redemption = ({
               <div style={styles.inputContainer}>
                 <Typography className={classes.welcome}>Welcome!</Typography>
                 <Typography className={classes.themeText}>
-                  To redeem points, please enter the email you used to register
-                  for Blueprint.
+									To redeem points, please enter the email you used to register
+									for Blueprint.
                 </Typography>
                 <TextField
                   className={classes.textfield}
@@ -722,7 +723,7 @@ const Redemption = ({
                     setIsEmailModalOpen(true);
                   }}
                 >
-                  Confirm
+									Confirm
                 </Button>
               </div>
             </>
