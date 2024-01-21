@@ -474,7 +474,7 @@ const Companion = () => {
               Existing QRs
             </Box>
             <TextField
-              label="Filter by Event ID"
+              label="Filter by EventID;Year"
               variant="filled"
               value={filterEventID}
               onChange={handleFilterChange}
