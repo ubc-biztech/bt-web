@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  Helmet
+} from "react-helmet";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import {
   Typography,
   Box,
@@ -17,8 +23,12 @@ import {
   InputLabel,
   FormHelperText
 } from "@material-ui/core";
-import { fetchBackend } from "utils";
-import { COLORS, QRCodeTypes } from "constants/index";
+import {
+  fetchBackend
+} from "utils";
+import {
+  COLORS, QRCodeTypes
+} from "constants/index";
 
 const useStyles = makeStyles({
   card: {
@@ -158,7 +168,8 @@ const Companion = () => {
                 workshopID: newQR?.workshopID
               };
             } else {
-              return {};
+              return {
+              };
             }
           })()
         };
@@ -511,10 +522,10 @@ const Companion = () => {
                       process.env.REACT_APP_STAGE === "local"
                         ? "http://localhost:3000"
                         : `https://${
-                            process.env.REACT_APP_STAGE === "production"
-                              ? ""
-                              : "dev."
-                          }app.ubcbiztech.com`
+                          process.env.REACT_APP_STAGE === "production"
+                            ? ""
+                            : "dev."
+                        }app.ubcbiztech.com`
                     }/redeem/${QR["eventID;year"].split(";")[0]}/${
                       QR["eventID;year"].split(";")[1]
                     }/${QR.id}`}
