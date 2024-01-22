@@ -14,7 +14,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16.13.2'
-
+      - name: Remove Firebase CLI
+        run: npm remove -g firebase-tools
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools@12.9.1
+      
       - name: Dev Firebase Build
         if: github.ref == 'refs/heads/dev'
         run: npm ci && npm run build
