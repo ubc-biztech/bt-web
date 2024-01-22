@@ -88,7 +88,7 @@ const Companion = () => {
     type: "",
     partnerID: "",
     linkedin: "",
-    workshopID: "",
+    workshopID: ""
   });
 
   const [errors, setErrors] = useState({
@@ -103,6 +103,12 @@ const Companion = () => {
   });
 
   const classes = useStyles();
+
+  const [filterEventID, setFilterEventID] = useState("");
+
+  const handleFilterChange = (event) => {
+    setFilterEventID(event.target.value);
+  };
 
   const fetchQRs = async () => {
     try {
@@ -163,7 +169,6 @@ const Companion = () => {
               };
             } else {
               return {
-
               };
             }
           })()
@@ -340,7 +345,9 @@ const Companion = () => {
                     error={errors.type}
                   >
                     {Object.entries(QRCodeTypes).map(([key, value]) => (
-                      <MenuItem key={key} value={value}>{value}</MenuItem>
+                      <MenuItem key={key} value={value}>
+                        {value}
+                      </MenuItem>
                     ))}
                   </Select>
                   {errors.type && (
@@ -348,12 +355,9 @@ const Companion = () => {
                   )}
                 </FormControl>
               </Tooltip>
-              {newQR.type === "Partner" &&
+              {newQR.type === "Partner" && (
                 <>
-                  <Tooltip
-                    title="Specify the partner's email."
-                    arrow
-                  >
+                  <Tooltip title="Specify the partner's email." arrow>
                     <TextField
                       id="partnerID"
                       name="partnerID"
@@ -373,13 +377,12 @@ const Companion = () => {
                       }}
                       value={newQR?.partnerID}
                       error={errors.partnerID}
-                      helperText={errors.partnerID && "Missing value is required"}
+                      helperText={
+                        errors.partnerID && "Missing value is required"
+                      }
                     />
                   </Tooltip>
-                  <Tooltip
-                    title="Specify the partner's linkedin url."
-                    arrow
-                  >
+                  <Tooltip title="Specify the partner's linkedin url." arrow>
                     <TextField
                       id="linkedin"
                       name="linkedin"
@@ -399,16 +402,15 @@ const Companion = () => {
                       }}
                       value={newQR?.linkedin}
                       error={errors.linkedin}
-                      helperText={errors.linkedin && "Missing value is required"}
+                      helperText={
+                        errors.linkedin && "Missing value is required"
+                      }
                     />
                   </Tooltip>
                 </>
-              }
-              {newQR.type === "Workshop" &&
-                <Tooltip
-                  title="Specify the workshop name."
-                  arrow
-                >
+              )}
+              {newQR.type === "Workshop" && (
+                <Tooltip title="Specify the workshop name." arrow>
                   <TextField
                     id="workshopID"
                     name="workshopID"
@@ -428,10 +430,12 @@ const Companion = () => {
                     }}
                     value={newQR.workshopID}
                     error={errors.workshopID}
-                    helperText={errors.workshopID && "Missing value is required"}
+                    helperText={
+                      errors.workshopID && "Missing value is required"
+                    }
                   />
                 </Tooltip>
-              }
+              )}
             </Box>
             <Box className={classes.rowFlex}>
               <Box>
@@ -469,7 +473,21 @@ const Companion = () => {
             >
               Existing QRs
             </Box>
-            {QRs.map((QR) => (
+            <TextField
+              label="Filter by EventID;Year"
+              variant="filled"
+              value={filterEventID}
+              onChange={handleFilterChange}
+              style={{
+                marginBottom: "20px"
+              }}
+            />
+
+            {QRs.filter(
+              (QR) =>
+                filterEventID === "" ||
+                QR["eventID;year"].startsWith(filterEventID)
+            ).map((QR) => (
               <>
                 <Box key={QR.id} className={classes.rowFlex}>
                   <Box className={classes.columnFlex}>
@@ -483,24 +501,33 @@ const Companion = () => {
                         : "One-time Scan"}
                     </Box>
                     <Box>Type: {QR.type}</Box>
-                    {QR.type === "Partner" &&
+                    {QR.type === "Partner" && (
                       <>
-                        <Box>Partner LinkedIn: {QR.data ? QR.data.linkedin : ""} </Box>
-                        <Box>Partner Email: {QR.data ? QR.data.partnerID : ""}</Box>
+                        <Box>
+                          Partner LinkedIn: {QR.data ? QR.data.linkedin : ""}{" "}
+                        </Box>
+                        <Box>
+                          Partner Email: {QR.data ? QR.data.partnerID : ""}
+                        </Box>
                       </>
-                    }
-                    {QR.type === "Workshop" &&
-                      <Box>Workshop Name: {QR.data ? QR.data.workshopID : ""}</Box>
-                    }
+                    )}
+                    {QR.type === "Workshop" && (
+                      <Box>
+                        Workshop Name: {QR.data ? QR.data.workshopID : ""}
+                      </Box>
+                    )}
                   </Box>
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${process.env.REACT_APP_STAGE === "local"
-                      ? "http://localhost:3000"
-                      : `https://${process.env.REACT_APP_STAGE === "production"
-                        ? ""
-                        : "dev."
-                      }app.ubcbiztech.com`
-                    }/redeem/${QR["eventID;year"].split(";")[0]}/${QR["eventID;year"].split(";")[1]
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${
+                      process.env.REACT_APP_STAGE === "local"
+                        ? "http://localhost:3000"
+                        : `https://${
+                          process.env.REACT_APP_STAGE === "production"
+                            ? ""
+                            : "dev."
+                        }app.ubcbiztech.com`
+                    }/redeem/${QR["eventID;year"].split(";")[0]}/${
+                      QR["eventID;year"].split(";")[1]
                     }/${QR.id}`}
                     alt="QR"
                   />

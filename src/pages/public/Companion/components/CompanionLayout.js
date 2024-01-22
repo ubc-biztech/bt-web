@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect
+  useState, useEffect, useRef
 } from "react";
 // import Lottie from "lottie-react"
 import {
@@ -155,9 +155,8 @@ const CompanionLayout = (params) => {
       width: "100%",
     },
     introLogo: {
-      width: "35%",
+      width: "60%",
       height: "auto",
-      marginBottom: "25px",
     },
     homeLogo: {
       marginTop: "24px",
@@ -292,11 +291,34 @@ const CompanionLayout = (params) => {
     floorplanMobile: {
       width: "100%",
     },
+    video: {
+      position: "fixed",
+      top: "0px",
+      right: "-18px",
+      left: "-15px",
+      height: "120%",
+      width: "auto",
+      minWidth: "120vw",
+      minHeight: "100vh",
+      overflow: "hidden",
+      display: "block",
+      userSelect: "none",
+      WebkitMediaControlsPanel: "none !important"
+    },
     ...extraStyles
   };
 
   const [input, setInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [transition, setShowTransition] = useState(true);
+  const [showVideo, setShowVideo] = useState(true);
+  const [showBackground, setShowBackground] = useState(false);
+  const videoRef = useRef();
+
+  useEffect(() => {
+    videoRef.current?.load();
+    handlePlay();
+  }, [showBackground]);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -308,8 +330,42 @@ const CompanionLayout = (params) => {
     }
   }, [userRegistration]);
 
+  useEffect(() => {
+    // Pause the video after 2 seconds
+    const timeoutId = setTimeout(() => {
+      setShowTransition(false);
+    }, 2200);
+    const backgroundId = setTimeout(() => {
+      setShowBackground(true);
+    }, 4000);
+    if (window.screen.width > 500) {
+      setShowTransition(false);
+      setShowVideo(false);
+    }
+    handlePlay();
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(backgroundId);
+    };
+  }, []);
+
+  const handlePlay = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.click();
+      video.play()
+        .catch(error => {
+          console.error("Autoplay prevented:", error);
+        });
+    }
+  };
+
   return (
-    <div style={styles.container}>
+    <div style={(!email || !userRegistration) ? {
+      ...styles.container,
+      padding: "0"
+    } : styles.container}>
       <Modal
         open={isModalOpen}
       >
@@ -340,142 +396,170 @@ const CompanionLayout = (params) => {
       </Modal>
       {isLoading ? <Loading /> : (
         <div>
-          {!email || !userRegistration ? (
-            <motion.div
-              initial={{
-                opacity: 0,
-                scale: 0.5
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1
-              }}
-              transition={{
-                duration: 1
-              }}>
-              <div style={{
-                ...styles.column,
-                alignItems: "center",
-                minHeight: "100vh",
-              }}>
-                <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo} />
-                <Typography variant="h1" className={classes.boldText} style={{
-                  color: constantStyles.textColor
-                }}>Welcome!</Typography>
-                <Typography className={classes.centerText} style={{
-                  color: constantStyles.textColor
-                }}>Please enter the email you used to register for {title}</Typography>
-                <TextField
-                  className={classes.textfield}
-                  onChange={(e) => setInput(e.target.value)}
-                  value={input}
-                  variant="outlined"
-                  label="Email"
-                  inputProps={{
-                    autoCapitalize: "none",
-                    style: {
-                      color: constantStyles.textColor,
-                      fontFamily: "Proximanova",
-                    },
-                  }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    setIsModalOpen(true);
-                  }}
-                >
-                  Confirm
-                </Button>
+          {(!email || !userRegistration) ?
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              overflow: "hidden"
+            }}>
+              {showVideo && (<div className="video-container" >
+                <video autoPlay muted playsInline style={styles.video}
+                  loop={true} ref={videoRef}>
+                  {!showBackground ?
+                    <source src="intro.mp4" type="video/mp4" /> :
+                    <source src="gif.mp4" type="video/mp4" />}
+                  Your browser does not support the video tag.
+                </video>
               </div>
-            </motion.div>
-          ) : (
-            <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner">
-              <div>
-                <FadeInWhenVisible style={{
-                  ...styles.column,
-                  position: "fixed",
-                  top: "0",
-                  left: "0",
-                  right: "0",
-                  width: "100%",
-                  background: "#060818",
-                  zIndex: "9999",
-                  paddingBottom: "0.75rem"
-                }}>
-                  <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo} />
-                  <nav role="navigation" style={{
-                    ...styles.nav,
-                    ...(renderMobileOnly && {
-                      width: "100%"
-                    })
+              )}
+              {!transition &&
+                (<motion.div
+                  initial={{
+                    opacity: 0,
+                    scale: 0.5
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1
+                  }}
+                  transition={{
+                    duration: 1
+                  }}
+                  style={{
+                    position: "fixed",
+                    zIndex: "1"
                   }}>
-                    {welcomeData && !disableWelcomeHeader && <a href="#Welcome" className={classes.link} style={{
-                      fontSize: constantStyles.fontSize
-                    }}>Welcome</a>}
-                    {scheduleData?.length && <a href="#Schedule" className={classes.link} style={{
-                      fontSize: constantStyles.fontSize
-                    }}>Schedule</a>}
-                    {headers.map((header, i) => {
-                      const lastTabItem = i === headers.length - 1 ? {
-                        borderRight: "none"
-                      } : {
-                      };
-                      if (header.id) {
-                        return (<a href={`#${header.id}`} key={i} className={classes.link} style={{
-                          fontSize: constantStyles.fontSize,
-                          ...lastTabItem
-                        }}>{header.text}</a>);
-                      } else if (header.route) {
-                        return <Link to={header.route} className={classes.link} key={i} style={{
-                          fontSize: constantStyles.fontSize,
-                          ...lastTabItem
-                        }}>{header.text}</Link>;
-                      }
-                    })}
-                  </nav>
-                </FadeInWhenVisible>
-              </div>
-              <div style={{
-                background: "transparent",
-                height: "110px"
-              }}> </div>
-              {event && event.isCompleted && event.feedback ?
-                <FadeInWhenVisible>
-                  <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
-                </FadeInWhenVisible> : <></>}
-              <FadeInWhenVisible id="welcome" style={styles.column}>
-                <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {userRegistration.fname}!</h1>
-                {welcomeData.map((paragraph, i) => {
-                  return <div key={i} style={{
+                  <div style={{
+                    ...styles.column,
+                    alignItems: "center",
+                    minHeight: "100vh",
+                  }}>
+                    <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo} />
+                    <Typography variant="h1" className={classes.boldText} style={{
+                      color: constantStyles.textColor
+                    }}>Welcome!</Typography>
+                    <Typography className={classes.centerText} style={{
+                      color: constantStyles.textColor
+                    }}>Please enter the email you used to register for {title}</Typography>
+                    <TextField
+                      className={classes.textfield}
+                      onChange={(e) => setInput(e.target.value)}
+                      value={input}
+                      variant="outlined"
+                      label="Email"
+                      inputProps={{
+                        autoCapitalize: "none",
+                        style: {
+                          color: constantStyles.textColor,
+                          fontFamily: "Proximanova",
+                        },
+                      }}
+                    />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => {
+                        setIsModalOpen(true);
+                      }}
+                    >
+                      Confirm
+                    </Button>
+                  </div>
+                </motion.div>)
+              }</div> : (
+              <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner">
+                <div>
+                  <FadeInWhenVisible style={{
+                    ...styles.column,
+                    position: "fixed",
+                    top: "0",
+                    left: "0",
+                    right: "0",
+                    width: "100%",
+                    background: "#060818",
+                    zIndex: "9999",
+                    paddingBottom: "0.75rem"
+                  }}>
+                    <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo} />
+                    <nav role="navigation" style={{
+                      ...styles.nav,
+                      ...(renderMobileOnly && {
+                        width: "100%"
+                      })
+                    }}>
+                      {welcomeData && !disableWelcomeHeader && <a href="#Welcome" className={classes.link} style={{
+                        fontSize: constantStyles.fontSize
+                      }}>Welcome</a>}
+                      {scheduleData?.length && <a href="#Schedule" className={classes.link} style={{
+                        fontSize: constantStyles.fontSize
+                      }}>Schedule</a>}
+                      {headers.map((header, i) => {
+                        const lastTabItem = i === headers.length - 1 ? {
+                          borderRight: "none"
+                        } : {
+                        };
+                        if (header.id) {
+                          return (<a href={`#${header.id}`} key={i} className={classes.link} style={{
+                            fontSize: constantStyles.fontSize,
+                            ...lastTabItem
+                          }}>{header.text}</a>);
+                        } else if (header.route) {
+                          return <Link to={header.route} className={classes.link} key={i} style={{
+                            fontSize: constantStyles.fontSize,
+                            ...lastTabItem
+                          }}>{header.text}</Link>;
+                        }
+                      })}
+                    </nav>
+                  </FadeInWhenVisible>
+                </div>
+                <div style={{
+                  background: "transparent",
+                  height: "110px"
+                }}> </div>
+                {event && event.isCompleted && event.feedback ?
+                  <FadeInWhenVisible>
+                    <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
+                  </FadeInWhenVisible> : <></>}
+                <FadeInWhenVisible id="welcome" style={styles.column}>
+                  <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {userRegistration.fname}!</h1>
+                  {event && event.isCompleted ? <div style={{
                     ...styles.text,
                     ...(renderMobileOnly && {
                       fontSize: constantStyles.mobileFontSize
                     })
-                  }}>{paragraph}</div>;
-                })}
-              </FadeInWhenVisible>
-              {scheduleData.length > 0 &&
-                <FadeInWhenVisible id="Timeline">
-                  <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles} />
-                </FadeInWhenVisible>}
-              <ChildComponent event={event} registrations={registrations} styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} userRegistration={userRegistration} {...props} />
-              <div style={{
-                ...styles.text,
-                width: "100%",
-                marginBottom: "0px",
-                ...(renderMobileOnly && {
-                  fontSize: constantStyles.mobileFontSize
-                })
-              }}>
-                Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
+                  }}>The event is now over, please head back to the main room, we hope you enjoyed your time 😊!</div> :
+                    welcomeData.map((paragraph, i) => {
+                      return <div key={i} style={{
+                        ...styles.text,
+                        ...(renderMobileOnly && {
+                          fontSize: constantStyles.mobileFontSize
+                        })
+                      }}>{paragraph}</div>;
+                    }
+                    )}
+                </FadeInWhenVisible>
+                {scheduleData.length > 0 &&
+                  <FadeInWhenVisible id="Timeline">
+                    <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles} />
+                  </FadeInWhenVisible>}
+                <ChildComponent event={event} registrations={registrations} styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} userRegistration={userRegistration} {...props} />
+                <div style={{
+                  ...styles.text,
+                  width: "100%",
+                  marginBottom: "0px",
+                  ...(renderMobileOnly && {
+                    fontSize: constantStyles.mobileFontSize
+                  })
+                }}>
+                  Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 

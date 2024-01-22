@@ -10,10 +10,6 @@ const activitiesDefault = [
     points: "25 points"
   },
   {
-    name: "Scan another attendee’s LinkedIn QR on their name tag",
-    points: "15 points"
-  },
-  {
     name: "Ask a question during the panel discussion",
     points: "20 points"
   },
