@@ -241,7 +241,9 @@ const Blueprint2024 = (params) => {
         </div>
         <div id="Leaderboard" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Your Points</h1>
-          <div style={{width: renderMobileOnly ? "60%" : "20%"}}>
+          <div style={{
+            width: renderMobileOnly ? "60%" : "20%"
+          }}>
             <CircularProgressbar styles={
               buildStyles({
                 textSize: "12px",
@@ -291,13 +293,17 @@ const Blueprint2024 = (params) => {
         </div>
         <div id="Floorplan" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Floorplan</h1>
-          <div style={{ textAlign: "center"}}>
+          <div style={{
+            textAlign: "center"
+          }}>
             <Tabs
               value={tabValue}
               onChange={handleTabChange}
               centered
-              style={{ color: "white",
-                paddingBottom: "20px"}}
+              style={{
+                color: "white",
+                paddingBottom: "20px"
+              }}
               TabIndicatorProps={{
                 style: {
                   backgroundColor: "#FFC3F4",
