@@ -149,7 +149,6 @@ export default function MembershipForm(props) {
           <Grid item xs={12}>
             <CustomTextField
               {...props}
-              readOnly={true}
               label="Student Number *"
               groupName="student_number"
               autoComplete="student_number"
