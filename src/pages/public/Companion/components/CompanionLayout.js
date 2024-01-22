@@ -156,8 +156,9 @@ const CompanionLayout = (params) => {
       width: "100%",
     },
     introLogo: {
-      width: "60%",
+      width: "35%",
       height: "auto",
+      marginBottom: "25px",
     },
     homeLogo: {
       marginTop: "24px",
@@ -331,8 +332,7 @@ const CompanionLayout = (params) => {
 
   useEffect(() => {
     videoRef.current?.load();
-    handlePlay();
-  }, [showBackground]);
+  }, [transition]);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -356,7 +356,6 @@ const CompanionLayout = (params) => {
       setShowTransition(false);
       setShowVideo(false);
     }
-    handlePlay();
 
     return () => {
       clearTimeout(timeoutId);
@@ -364,22 +363,8 @@ const CompanionLayout = (params) => {
     };
   }, []);
 
-  const handlePlay = () => {
-    const video = videoRef.current;
-    if (video) {
-      video.click();
-      video.play()
-        .catch(error => {
-          console.error("Autoplay prevented:", error);
-        });
-    }
-  };
-
   return (
-    <div style={(!email || !userRegistration) ? {
-      ...styles.container,
-      padding: "0"
-    } : styles.container}>
+    <div style={styles.container}>
       <Modal
         open={isModalOpen}
       >
@@ -577,9 +562,8 @@ const CompanionLayout = (params) => {
               </div>
             )}
         </div>
-      )
-      }
-    </div >
+      )}
+    </div>
   );
 };
 
