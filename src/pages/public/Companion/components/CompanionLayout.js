@@ -156,9 +156,8 @@ const CompanionLayout = (params) => {
       width: "100%",
     },
     introLogo: {
-      width: "35%",
+      width: "60%",
       height: "auto",
-      marginBottom: "25px",
     },
     homeLogo: {
       marginTop: "24px",
@@ -332,7 +331,8 @@ const CompanionLayout = (params) => {
 
   useEffect(() => {
     videoRef.current?.load();
-  }, [transition]);
+    handlePlay();
+  }, [showBackground]);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -356,6 +356,7 @@ const CompanionLayout = (params) => {
       setShowTransition(false);
       setShowVideo(false);
     }
+    handlePlay();
 
     return () => {
       clearTimeout(timeoutId);
@@ -363,8 +364,22 @@ const CompanionLayout = (params) => {
     };
   }, []);
 
+  const handlePlay = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.click();
+      video.play()
+        .catch(error => {
+          console.error("Autoplay prevented:", error);
+        });
+    }
+  };
+
   return (
-    <div style={styles.container}>
+    <div style={(!email || !userRegistration) ? {
+      ...styles.container,
+      padding: "0"
+    } : styles.container}>
       <Modal
         open={isModalOpen}
       >
@@ -526,7 +541,7 @@ const CompanionLayout = (params) => {
                       ...styles.landing,
                       width: renderMobileOnly ? "90%" : "40%",
                       marginTop: renderMobileOnly ? "auto" : "50px",
-                    }}/>}
+                    }} />}
                   <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {userRegistration.fname}!</h1>
                   {event && event.isCompleted ? <div style={{
                     ...styles.text,
@@ -562,8 +577,9 @@ const CompanionLayout = (params) => {
               </div>
             )}
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 
