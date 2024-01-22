@@ -129,7 +129,8 @@ const CompanionLayout = (params) => {
       colors,
       welcomeData,
       headers,
-      disableWelcomeHeader
+      disableWelcomeHeader,
+      landing
     },
     email,
     setEmail,
@@ -283,14 +284,27 @@ const CompanionLayout = (params) => {
       borderWidth: "3px"
     },
     partners: {
-      marginTop: -30,
       width: "100%"
     },
-    floorplan: {
+    schedule: {
       width: "60%",
     },
-    floorplanMobile: {
-      width: "100%",
+    scheduleMobile: {
+      width: "90%",
+    },
+    landing: {
+      paddingBottom: "20px",
+    },
+    subheading: {
+      color: constantStyles.textColor,
+      textAlign: "center",
+    },
+    listItem: {
+      color: constantStyles.textColor,
+      textAlign: "left",
+    },
+    tabImage: {
+      height: "300px",
     },
     ...extraStyles
   };
@@ -446,6 +460,12 @@ const CompanionLayout = (params) => {
                   <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
                 </FadeInWhenVisible> : <></>}
               <FadeInWhenVisible id="welcome" style={styles.column}>
+                {landing && <img src={landing}
+                  style={{
+                    ...styles.landing,
+                    width: renderMobileOnly ? "90%" : "40%",
+                    marginTop: renderMobileOnly ? "auto" : "50px",
+                  }}/>}
                 <h1 id="Welcome" style={renderMobileOnly ? styles.mobileTitle : styles.title}>Hello, {userRegistration.fname}!</h1>
                 {welcomeData.map((paragraph, i) => {
                   return <div key={i} style={{
@@ -461,7 +481,7 @@ const CompanionLayout = (params) => {
                   <Schedule data={scheduleData} renderMobileOnly={renderMobileOnly} date={date} location={location} styles={styles} />
                 </FadeInWhenVisible>}
               <ChildComponent event={event} registrations={registrations} styles={styles} renderMobileOnly={renderMobileOnly} FadeInWhenVisible={FadeInWhenVisible} userRegistration={userRegistration} {...props} />
-              <div style={{
+              {/* <div style={{
                 ...styles.text,
                 width: "100%",
                 marginBottom: "0px",
@@ -470,7 +490,7 @@ const CompanionLayout = (params) => {
                 })
               }}>
                 Contact <a href="mailto:karena@ubcbiztech.com" style={styles.link}>karena@ubcbiztech.com</a> for any questions or concerns.
-              </div>
+              </div> */}
             </div>
           )}
         </div>

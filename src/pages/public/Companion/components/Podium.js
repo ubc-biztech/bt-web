@@ -26,7 +26,8 @@ export default function Podium({
         justifyItems: "center",
         height: "10rem",
         margin: "0 auto",
-        width: "80%"
+        width: "80%",
+        paddingTop: "2rem",
       }}
     >
       {podium.map((winner, i) => (

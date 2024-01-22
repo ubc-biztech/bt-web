@@ -2,7 +2,7 @@ import React, {
   useState, useEffect
 } from "react";
 import {
-  Accordion, AccordionDetails, AccordionSummary
+  Accordion, AccordionDetails, AccordionSummary, Tab, Tabs,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {
@@ -22,15 +22,19 @@ import {
 import {
   ScrollingCarousel
 } from "@trendyol-js/react-carousel";
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Pagination, Navigation } from 'swiper/modules';
 
-import Floorplan from "../../../../assets/2024/blueprint/floorplan.png";
 import Companies from "../../../../assets/2024/blueprint/companies.svg";
 import Sched from "../../../../assets/2024/blueprint/schedule_glow.svg";
+import SchedMobile from "../../../../assets/2024/blueprint/schedule_mobile.svg";
 import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
 import GamificationRewardTable from "../components/GamificationRewardTable";
 import ShowcaseCard from "../components/ShowcaseCard";
+import GreatHallNorth from "../../../../assets/2024/blueprint/GreatHallN.svg";
+import GreatHallSouth from "../../../../assets/2024/blueprint/GreatHallS.svg";
 
 
 const CustomAccordion = styled(Accordion)(({
@@ -137,7 +141,7 @@ const activities = [
     points: "25 points each"
   },
   {
-    name: "Get your photo taken at out headshot station",
+    name: "Get your photo taken at our headshot station",
     points: "20 points"
   },
   {
@@ -184,6 +188,11 @@ const Blueprint2024 = (params) => {
   const rewardsAscending = [...rewards].sort((a, b) => a?.value - b?.value);
   const nextGoal = rewardsAscending.find(reward => userRegistration?.points ? userRegistration?.points < reward?.value : true);
 
+  const [tabValue, setTabValue] = useState(0);
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
   const refetchLeaderboard = async () => {
     const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET", undefined, false);
     setLeaderboard(res);
@@ -227,27 +236,28 @@ const Blueprint2024 = (params) => {
       <div>
         <div id="Schedule" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Schedule</h1>
-          <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
+          {renderMobileOnly ? <img src={SchedMobile} alt="Schedule" style={renderMobileOnly ? styles.scheduleMobile : styles.schedule}/>
+            : <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.scheduleMobile : styles.schedule} />}
         </div>
         <div id="Leaderboard" style={styles.column}>
-          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Leaderboard</h1>
-          <span style={{
-            ...styles.text,
-            ...(renderMobileOnly && {
-              fontSize: constantStyles.mobileFontSize
-            })
-          }}>{nextGoal ? `Only ${nextGoal?.value - userRegistration?.points} points away from a ${nextGoal?.name} entry!` : "You're eligble for all entries! See if you can top the leaderboards 👀"}</span>
-          <div>
+          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Your Points</h1>
+          <div style={{width: renderMobileOnly ? "60%" : "20%"}}>
             <CircularProgressbar styles={
               buildStyles({
                 textSize: "12px",
                 textColor: "#FFC3F4",
                 pathColor: "#FFC3F4",
-                trailColor: "#301631",
+                trailColor: "#261946",
                 strokeLinecap: "butt"
               })
             } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
           </div>
+          <span style={{
+            ...styles.text,
+            ...(renderMobileOnly && {
+              fontSize: constantStyles.mobileFontSize
+            })
+          }}>{nextGoal ? `Only ${nextGoal?.value - userRegistration?.points} points away from a ${nextGoal?.name} entry!` : "You're eligible for all entries! See if you can top the leaderboards 👀"}</span>
           {leaderboard && <Podium winners={leaderboard} />}
         </div>
         <div id="Activities" style={{
@@ -281,7 +291,44 @@ const Blueprint2024 = (params) => {
         </div>
         <div id="Floorplan" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Floorplan</h1>
-          <img src={Floorplan} alt="Blueprint Partners" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
+          <div style={{ textAlign: "center"}}>
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              centered
+              style={{ color: "white",
+                paddingBottom: "20px"}}
+              TabIndicatorProps={{
+                style: {
+                  backgroundColor: "#FFC3F4",
+                }
+              }}
+            >
+              <Tab label="Great Hall North" id="tab-0" />
+              <Tab label="Great Hall South" id="tab-1" />
+            </Tabs>
+            {tabValue === 0 && (
+              <img src={GreatHallNorth} alt="Great Hall North" style={styles.tabImage} />
+            )}
+            {tabValue === 1 && (
+              <img src={GreatHallSouth} alt="Great Hall South" style={styles.tabImage} />
+            )}
+            <h3 style={styles.subheading}>Activities happening here:</h3>
+            {tabValue === 0 && (
+              <ul style={styles.listItem}>
+                <li>Opening Ceremony</li>
+                <li>Keynote and Panel</li>
+                <li>Workshops</li>
+                <li>Closing Ceremony</li>
+              </ul>
+            )}
+            {tabValue === 1 && (
+              <ul style={styles.listItem}>
+                <li>Boothing & Networking</li>
+                <li>Lunch</li>
+              </ul>
+            )}
+          </div>
         </div>
         <div id="Showcase" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attendee Showcase</h1>
@@ -294,6 +341,19 @@ const Blueprint2024 = (params) => {
               })
             }
           </ScrollingCarousel>
+          {/* <Swiper
+          spaceBetween={5}
+          navigation={true} modules={[Navigation]} 
+          pagination={{dynamicBullets: true,}} modules={[Pagination]}
+          >
+          {
+              projects.map((project, i) => {
+              return <SwiperSlide key={i}>
+                <ShowcaseCard pos={i} key={i} title={project.title} image={project.image} members={project.members} link={project.link} desc={project.desc}/>
+                </SwiperSlide>;
+              })
+            }
+        </Swiper> */}
         </div>
         <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
         <div id="Partners" style={styles.column}>
