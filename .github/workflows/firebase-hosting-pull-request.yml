@@ -16,7 +16,6 @@ jobs:
 
       - name: Remove Firebase CLI
         run: npm remove -g firebase-tools
-  
       - name: Install Firebase CLI
         run: npm install -g firebase-tools@12.9.1
 
