@@ -83,7 +83,7 @@ function SearchBar ({
               {...params}
               className={classes.textfield}
               variant="outlined"
-              placeholder="Filter by skills..."
+              placeholder="Filter by company..."
               color="primary"
               fullWidth
               inputRef={searchRef}

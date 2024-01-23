@@ -54,11 +54,12 @@ const useStyles = makeStyles({
   },
   chip: {
     borderRadius: "10px",
-    backgroundColor: "transparent",
+    backgroundColor: "white",
   },
   skillChip: {
     marginTop: "10px",
     marginLeft: "10px",
+    backgroundColor: "white"
   },
   skillContainer: {
     display: "flex",
@@ -90,6 +91,7 @@ function Mentors(props) {
   const [mentors, setMentors] = useState([]);
   const [filteredMentors, setFilteredMentors] = useState([]);
   const [skillsQuestionId, setSkillsQuestionId] = useState("");
+  const [profilePhotoId, setProfilePhotoId] = useState("");
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
@@ -97,6 +99,10 @@ function Mentors(props) {
       event.partnerRegistrationQuestions.forEach(question => {
         if (question?.isSkillsQuestion) {
           setSkillsQuestionId(question.questionId);
+        }
+        // this is dynamic, depending on what event director labels as the photo
+        if (question?.label === "Headshot") {
+          setProfilePhotoId(question.questionId);
         }
       });
     }
@@ -111,9 +117,10 @@ function Mentors(props) {
       const mentorsParsed = mentorsList.map(mentor => {
         return {
           ...mentor.basicInformation,
-          profilePhoto: mentor.profilePhoto,
+          profilePhoto: mentor.dynamicResponses[profilePhotoId],
           skills: skillsQuestionId === "" || !mentor.dynamicResponses[skillsQuestionId] ? [] :
-            mentor.dynamicResponses[skillsQuestionId]
+          // TODO: for blueprint;2024, the skills is just company name, so need to make it an array. Usually it will just be the skills array
+            [mentor.dynamicResponses[skillsQuestionId]]
               .filter((skill) => skill !== "" || skill.trim() !== "")
               .map((skill) => {
                 optionsSet.add(skill.trim());
