@@ -246,7 +246,7 @@ const Redemption = ({
   const classes = useStyles();
 
   const {
-  eventID, year, qrID
+    eventID, year, qrID
   } = location?.state || {
   };
 
