@@ -21,7 +21,7 @@ import {
 } from "utils";
 import Loading from "pages/Loading";
 
-import BizTechDBLogo from "assets/2024/blueprint/BiztechLogo.svg";
+import BizTechDBLogo from "assets/2024/blueprint/BiztechLogo.png";
 import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
 import {
@@ -246,7 +246,7 @@ const Redemption = ({
   const classes = useStyles();
 
   const {
-    eventID, year, qrID
+  eventID, year, qrID
   } = location?.state || {
   };
 
@@ -486,7 +486,7 @@ const Redemption = ({
             src={BizTechDBLogo}
             alt="Blueprint Logo"
             style={{
-              width: "20%",
+              width: "60%",
               height: "auto"
             }}
           />
@@ -586,7 +586,7 @@ const Redemption = ({
                         src={BizTechDBLogo}
                         alt="Blueprint Logo"
                         style={{
-                          width: "200%",
+                          width: "60%",
                           height: "auto",
                           marginBottom: 20
                         }}

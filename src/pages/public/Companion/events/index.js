@@ -7,7 +7,7 @@ import DBLogo from "../../../../assets/2023/data&beyond/D&BLogo.png";
 import MISLogo from "../../../../assets/2024/misnight/logo.svg";
 import MISNight2023 from "./MISNight2023";
 import Blueprint2024 from "./Blueprint2024";
-import BlueprintLanding from "../../../../assets/2024/blueprint/landing.svg";
+import BlueprintLanding from "../../../../assets/2024/blueprint/landing.png";
 
 export default [
   { /* TODO: This hello hacks component is incomplete and exists only for the sake of testing out how mentors list looks */
