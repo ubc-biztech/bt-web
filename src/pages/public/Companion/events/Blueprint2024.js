@@ -134,7 +134,7 @@ const activities = [
   },
   {
     name: "Scan a professional's Linkedin QR Code (can only redeem once)",
-    points: "15 points"
+    points: "25 points"
   },
   {
     name: "Ask a question during the panel discussion",
@@ -151,10 +151,6 @@ const activities = [
   {
     name: "Take a photo at the photo booth",
     points: "20 points"
-  },
-  {
-    name: "Take a photo with a professional at the photo booth",
-    points: "35 points"
   },
   {
     name: "Get interviewed by BizTech’s marketing team for Instagram reels",
@@ -177,28 +173,28 @@ const activities = [
 const rewards = [
   {
     name: "Meta Quest",
-    points: "200 points",
-    value: 200
+    points: "180 points",
+    value: 180
   },
   {
     name: "FitBit 6",
-    points: "150 points",
-    value: 150
+    points: "130 points",
+    value: 130
   },
   {
     name: "Kindle",
-    points: "120 points",
-    value: 120
-  },
-  {
-    name: "Amazon Echo Speaker",
     points: "100 points",
     value: 100
   },
   {
+    name: "Amazon Echo Speaker",
+    points: "80 points",
+    value: 80
+  },
+  {
     name: "Blueprint Hoodie",
-    points: "70 points",
-    value: 70
+    points: "50 points",
+    value: 50
   },
 ];
 
