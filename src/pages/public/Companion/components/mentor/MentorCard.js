@@ -106,21 +106,21 @@ function MentorCard(props) {
 
   return (
     <>
-      <Box className={renderMobileOnly ? classes.mobileContainer : classes.container }>
+      <Box className={renderMobileOnly ? classes.mobileContainer : classes.container}>
         <Box className={renderMobileOnly ? classes.mobileProfileContainer : classes.profileContainer}>
           <Avatar
             alt={`${fname}-profile-picture`}
             src={profilePhoto}
-            className={renderMobileOnly ?  classes.mobileProfilePicture : classes.profilePicture} />
-          <Typography className={renderMobileOnly ? classes.mobileName : classes.name }>
-            {fname + " " + lname + " " + gender === "" ? "" : `(${gender})`}
+            className={renderMobileOnly ? classes.mobileProfilePicture : classes.profilePicture} />
+          <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
+            {fname + " " + lname + gender === "" ? "" : ` (${gender})`}
           </Typography>
           <Typography className={renderMobileOnly ? classes.mobilePosition : classes.position}>
             {role + " at " + companyName}
           </Typography>
           <div className={classes.skillsContainer}>
             {
-              skills.map((skill, idx) => <Chip key={idx} label={skill} variant="outlined"/>)
+              skills.map((skill, idx) => <Chip key={idx} label={skill} variant="outlined" />)
             }
           </div>
         </Box>
