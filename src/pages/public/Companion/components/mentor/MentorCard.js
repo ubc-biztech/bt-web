@@ -113,7 +113,7 @@ function MentorCard(props) {
             src={profilePhoto}
             className={renderMobileOnly ? classes.mobileProfilePicture : classes.profilePicture} />
           <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
-            {fname + " " + lname + gender === "" ? "" : ` (${gender})`}
+            {fname + " " + lname + `${gender === "" ? "" : ` (${gender})`}`}
           </Typography>
           <Typography className={renderMobileOnly ? classes.mobilePosition : classes.position}>
             {role + " at " + companyName}
