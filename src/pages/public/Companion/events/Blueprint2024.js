@@ -2,7 +2,7 @@ import React, {
   useState, useEffect
 } from "react";
 import {
-  Accordion, AccordionDetails, AccordionSummary
+  Accordion, AccordionDetails, AccordionSummary, Tab, Tabs,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {
@@ -22,15 +22,19 @@ import {
 import {
   ScrollingCarousel
 } from "@trendyol-js/react-carousel";
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Pagination, Navigation } from 'swiper/modules';
 
-import Floorplan from "../../../../assets/2024/blueprint/floorplan.png";
 import Companies from "../../../../assets/2024/blueprint/companies.svg";
 import Sched from "../../../../assets/2024/blueprint/schedule_glow.svg";
+import SchedMobile from "../../../../assets/2024/blueprint/schedule_mobile.svg";
 import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
 import GamificationRewardTable from "../components/GamificationRewardTable";
 import ShowcaseCard from "../components/ShowcaseCard";
+import GreatHallNorth from "../../../../assets/2024/blueprint/GreatHallN.svg";
+import GreatHallSouth from "../../../../assets/2024/blueprint/GreatHallS.svg";
 
 
 const CustomAccordion = styled(Accordion)(({
@@ -59,7 +63,7 @@ const projects = [
   {
     title: "Marketing Job Portal",
     desc: "This is a full-stack web application that serves as a job portal for marketing students to apply for internships and new-grad jobs, created for the UBC Marketing Association.",
-    members: "Eric Lu, James Shi",
+    members: "Indira Sowy, Eric Lu, James Shi",
     link: "https://devpost.com/software/marketing-job-portal",
     image: "card3.png"
   },
@@ -71,19 +75,47 @@ const projects = [
     image: "card4.jpeg"
   },
   {
-    title: "Computer Lounge Tracker",
-    desc: "Created a Lounge Tracker Application for a club which made the process of checking and tracking members into the lounge more efficient by having a visual aid based on the orientation of the room.",
-    members: "Jason Kuo, Marcus Kam",
-    link: "https://github.com/ubcesports/computertracker",
-    image: "card5.png"
+    title: "TimeCapsules",
+    desc: "TimeCapsules uses Computer Vision, AI, and SMS to innovate how we use medication. Our application will leverage OpenCV to take a picture of your pill bottle, parse the text, and then utilize OpenAI to interpret, and create a custom SMS reminder to your phone. Twilio will then send text reminders to take your pills depending on the instructions listed on the bottle.",
+    members: "Jason Kuo, Marcus Kam, Jaden Lai, Jasper Mao",
+    link: "https://devpost.com/software/timecapsules?ref_content=my-projects-tab&ref_feature=my_projects",
+    image: "card11.png"
   },
   {
     title: "Yudo Fitness Trainer",
     desc: "Uses a custom-developed exercise detection algorithm, self-created datasets, TensorFlow AI, and Chat-GPT3 to help users improve their form and state relative accuracy score, feedback, and compliments/criticisms while doing various exercises.",
-    members: "Michelle Wang, Joshua Chan, Theresa Xiao",
+    members: "Darryl Tanzil, Michelle Wang, Joshua Chan, Theresa Xiao",
     link: "https://devpost.com/software/yudo",
     image: "card6.png"
-  }
+  },
+  {
+    title: "Expense Buddy",
+    desc: "A user-friendly web app designed to simplify the task of recording and managing business-related travel and vehicle expenses for self-employed individuals and business owners.",
+    members: "Ryan Ngai, Connie Nguy, Krishna Patel, Gian Carlo Torres",
+    link: "https://colab-expense-buddy.netlify.app/",
+    image: "card8.PNG"
+  },
+  {
+    title: "Small Molecular Analysis Reporting Tool (SMART)",
+    desc: "SMART’s solution to accelerate the process of drug discovery, is to create a machine learning technological platform utilizing artificial intelligence for drug toxicity identification. Through this platform, scientists can leverage mapped relationships to help them find otherwise hidden drug-target insights, design better experiments.",
+    members: "Caleb Lo, Henry Zhou, Carter Tsang, Muhammed Mughal",
+    link: "https://m-tameem.github.io/SMART/index.html",
+    image: "card7.png"
+  },
+  {
+    title: "ReStyle",
+    desc: "Developed an image-based matching service allowing users to upload clothing photos and connect with buyers.",
+    members: "Steven Son, Eric Tao, Rachel Wang, Eric Zhou",
+    link: "https://devpost.com/software/restyle-5owdxa",
+    image: "card9.png"
+  },
+  {
+    title: "ZenZone 3D - Reframe your Mind",
+    desc: "The ZenZone is a place where we reframe your thoughts for you and let you explore our calming space. It's a 3D web app made for cmd-f in 24 hours that uses AI technology to reframe users’ worries or stressors into positive and constructive affirmations and has a 3D \"hub world\" with various interactive elements to play with.",
+    members: "Tiffany Leong, Floria Gu, Yirui Li, Zelalem Araya",
+    link: "https://devpost.com/software/zenzone-3d",
+    image: "card10.png"
+  },
 ];
 
 
@@ -102,7 +134,7 @@ const activities = [
   },
   {
     name: "Scan a professional's Linkedin QR Code (can only redeem once)",
-    points: "15 points"
+    points: "25 points"
   },
   {
     name: "Ask a question during the panel discussion",
@@ -121,10 +153,6 @@ const activities = [
     points: "20 points"
   },
   {
-    name: "Take a photo with a professional at the photo booth",
-    points: "35 points"
-  },
-  {
     name: "Get interviewed by BizTech’s marketing team for Instagram reels",
     points: "20 points"
   },
@@ -133,11 +161,7 @@ const activities = [
     points: "35 points"
   },
   {
-    name: "Get a Blueprint souvenir 3D printed at Rapid x BizTech’s booth",
-    points: "25 points each"
-  },
-  {
-    name: "Get your photo taken at out headshot station",
+    name: "Get your photo taken at our headshot station",
     points: "20 points"
   },
   {
@@ -149,28 +173,28 @@ const activities = [
 const rewards = [
   {
     name: "Meta Quest",
-    points: "200 points",
-    value: 200
+    points: "180 points",
+    value: 180
   },
   {
     name: "FitBit 6",
-    points: "150 points",
-    value: 150
+    points: "130 points",
+    value: 130
   },
   {
     name: "Kindle",
-    points: "120 points",
-    value: 120
-  },
-  {
-    name: "Amazon Echo Speaker",
     points: "100 points",
     value: 100
   },
   {
+    name: "Amazon Echo Speaker",
+    points: "80 points",
+    value: 80
+  },
+  {
     name: "Blueprint Hoodie",
-    points: "70 points",
-    value: 70
+    points: "50 points",
+    value: 50
   },
 ];
 
@@ -183,6 +207,11 @@ const Blueprint2024 = (params) => {
 
   const rewardsAscending = [...rewards].sort((a, b) => a?.value - b?.value);
   const nextGoal = rewardsAscending.find(reward => userRegistration?.points ? userRegistration?.points < reward?.value : true);
+
+  const [tabValue, setTabValue] = useState(0);
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
 
   const refetchLeaderboard = async () => {
     const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET", undefined, false);
@@ -227,27 +256,30 @@ const Blueprint2024 = (params) => {
       <div>
         <div id="Schedule" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Schedule</h1>
-          <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
+          {renderMobileOnly ? <img src={SchedMobile} alt="Schedule" style={renderMobileOnly ? styles.scheduleMobile : styles.schedule} />
+            : <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.scheduleMobile : styles.schedule} />}
         </div>
         <div id="Leaderboard" style={styles.column}>
-          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Leaderboard</h1>
-          <span style={{
-            ...styles.text,
-            ...(renderMobileOnly && {
-              fontSize: constantStyles.mobileFontSize
-            })
-          }}>{nextGoal ? `Only ${nextGoal?.value - userRegistration?.points} points away from a ${nextGoal?.name} entry!` : "You're eligble for all entries! See if you can top the leaderboards 👀"}</span>
-          <div>
+          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Your Points</h1>
+          <div style={{
+            width: renderMobileOnly ? "60%" : "20%"
+          }}>
             <CircularProgressbar styles={
               buildStyles({
                 textSize: "12px",
                 textColor: "#FFC3F4",
                 pathColor: "#FFC3F4",
-                trailColor: "#301631",
+                trailColor: "#261946",
                 strokeLinecap: "butt"
               })
             } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
           </div>
+          <span style={{
+            ...styles.text,
+            ...(renderMobileOnly && {
+              fontSize: constantStyles.mobileFontSize
+            })
+          }}>{nextGoal ? `Only ${nextGoal?.value - userRegistration?.points} points away from a ${nextGoal?.name} entry!` : "You're eligible for all entries! See if you can top the leaderboards 👀"}</span>
           {leaderboard && <Podium winners={leaderboard} />}
         </div>
         <div id="Activities" style={{
@@ -281,7 +313,48 @@ const Blueprint2024 = (params) => {
         </div>
         <div id="Floorplan" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Floorplan</h1>
-          <img src={Floorplan} alt="Blueprint Partners" style={renderMobileOnly ? styles.floorplanMobile : styles.floorplan} />
+          <div style={{
+            textAlign: "center"
+          }}>
+            <Tabs
+              value={tabValue}
+              onChange={handleTabChange}
+              centered
+              style={{
+                color: "white",
+                paddingBottom: "20px"
+              }}
+              TabIndicatorProps={{
+                style: {
+                  backgroundColor: "#FFC3F4",
+                }
+              }}
+            >
+              <Tab label="Great Hall North" id="tab-0" />
+              <Tab label="Great Hall South" id="tab-1" />
+            </Tabs>
+            {tabValue === 0 && (
+              <img src={GreatHallNorth} alt="Great Hall North" style={styles.tabImage} />
+            )}
+            {tabValue === 1 && (
+              <img src={GreatHallSouth} alt="Great Hall South" style={styles.tabImage} />
+            )}
+            <h3 style={styles.subheading}>Activities happening here:</h3>
+            {tabValue === 0 && (
+              <ul style={styles.listItem}>
+                <li>Opening Ceremony</li>
+                <li>Keynote and Panel</li>
+                <li>Workshops</li>
+                <li>Closing Ceremony</li>
+              </ul>
+            )}
+            {tabValue === 1 && (
+              <ul style={styles.listItem}>
+                <li>Boothing & Networking</li>
+                <li>Lunch</li>
+              </ul>
+            )}
+          </div>
         </div>
         <div id="Showcase" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attendee Showcase</h1>
@@ -294,6 +367,19 @@ const Blueprint2024 = (params) => {
               })
             }
           </ScrollingCarousel>
+          {/* <Swiper
+          spaceBetween={5}
+          navigation={true} modules={[Navigation]} 
+          pagination={{dynamicBullets: true,}} modules={[Pagination]}
+          >
+          {
+              projects.map((project, i) => {
+              return <SwiperSlide key={i}>
+                <ShowcaseCard pos={i} key={i} title={project.title} image={project.image} members={project.members} link={project.link} desc={project.desc}/>
+                </SwiperSlide>;
+              })
+            }
+        </Swiper> */}
         </div>
         <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
         <div id="Partners" style={styles.column}>
