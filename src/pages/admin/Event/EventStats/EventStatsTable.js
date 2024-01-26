@@ -45,7 +45,7 @@ import {
 } from "utils";
 import {
   REGISTRATIONSTATUSLABEL,
-  prepareRowData,
+  flattenRowData,
   POINTSLABEL
 } from "./utils";
 import {
@@ -180,7 +180,7 @@ export class EventStatsTable extends Component {
           display: "none"
         }
       },
-      tableType: "attendee",
+      tableType: ATTENDEE_TABLE_TYPE,
       refreshTable: () => {
         if (this.props.event !== null) {
           this.forceUpdate();
@@ -243,16 +243,16 @@ export class EventStatsTable extends Component {
 
     await fetchBackend(`/registrations?${params}`, "GET")
       .then((response) => {
-        const heardFrom = this.heardFromNumbers(response.data);
-        const registrationNumbers = this.registrationNumbers(response.data);
+        const rows = flattenRowData(response.data);
+        const heardFrom = this.heardFromNumbers(rows);
+        const registrationNumbers = this.registrationNumbers(rows);
         const {
           faculties,
           years,
           genders,
           dietary,
           teamID
-        } = this.notRegistrationNumbers(response.data);
-        const rows = prepareRowData(response.data);
+        } = this.notRegistrationNumbers(rows);
 
         this.setState({
           rows,
@@ -281,11 +281,11 @@ export class EventStatsTable extends Component {
     const heardFrom = {
     };
     users.forEach((user) => {
-      if (user.basicInformation?.heardFrom) {
-        heardFrom[user.basicInformation?.heardFrom] = heardFrom[
-          user.basicInformation?.heardFrom
+      if (user.heardFrom) {
+        heardFrom[user.heardFrom] = heardFrom[
+          user.heardFrom
         ]
-          ? heardFrom[user.basicInformation?.heardFrom] + 1
+          ? heardFrom[user.heardFrom] + 1
           : 1;
       }
     });
@@ -293,18 +293,27 @@ export class EventStatsTable extends Component {
     return heardFrom;
   }
 
+  filterUserByTableType  (user)  {
+    if (this.state.tableType === ATTENDEE_TABLE_TYPE) {
+      return user.isPartner === false;
+    } else {
+      return user.isPartner === true;
+    }
+  };
+
   registrationNumbers(users) {
     const registrationNumbers = {
     };
-    users.forEach((user) => {
-      if (user.registrationStatus) {
-        registrationNumbers[user.registrationStatus] = registrationNumbers[
-          user.registrationStatus
-        ]
-          ? registrationNumbers[user.registrationStatus] + 1
-          : 1;
-      }
-    });
+    users.filter((user) => this.filterUserByTableType(user))
+      .forEach((user) => {
+        if (user.registrationStatus) {
+          registrationNumbers[user.registrationStatus] = registrationNumbers[
+            user.registrationStatus
+          ]
+            ? registrationNumbers[user.registrationStatus] + 1
+            : 1;
+        }
+      });
 
     return registrationNumbers;
   }
@@ -324,35 +333,36 @@ export class EventStatsTable extends Component {
     };
     const genders = {
     };
-    users.forEach((user) => {
-      if (user.basicInformation?.faculty) {
-        faculties[user.basicInformation?.faculty] = faculties[
-          user.basicInformation?.faculty
-        ]
-          ? faculties[user.basicInformation?.faculty] + 1
-          : 1;
-      }
-      if (user.basicInformation?.year) {
-        const yearInt = parseInt(user.basicInformation?.year);
-        if (yearInt) {
-          years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1;
+    users.filter((user) => this.filterUserByTableType(user))
+      .forEach((user) => {
+        if (user.faculty) {
+          faculties[user.faculty] = faculties[
+            user.faculty
+          ]
+            ? faculties[user.faculty] + 1
+            : 1;
         }
-      }
-      if (user.basicInformation?.diet) {
-        dietary[user.basicInformation?.diet] = dietary[
-          user.basicInformation?.diet
-        ]
-          ? dietary[user.basicInformation?.diet] + 1
-          : 1;
-      }
-      if (user.basicInformation?.gender) {
-        genders[user.basicInformation?.gender] = genders[
-          user.basicInformation?.gender
-        ]
-          ? genders[user.basicInformation?.gender] + 1
-          : 1;
-      }
-    });
+        if (user.year) {
+          const yearInt = parseInt(user.year);
+          if (yearInt) {
+            years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1;
+          }
+        }
+        if (user.diet) {
+          dietary[user.diet] = dietary[
+            user.diet
+          ]
+            ? dietary[user.diet] + 1
+            : 1;
+        }
+        if (user.gender) {
+          genders[user.gender] = genders[
+            user.gender
+          ]
+            ? genders[user.gender] + 1
+            : 1;
+        }
+      });
 
     return {
       faculties,
@@ -360,18 +370,6 @@ export class EventStatsTable extends Component {
       genders,
       dietary
     };
-  }
-
-  async updateEventTableData(eventID) {
-    const params = new URLSearchParams({
-      users: true
-    });
-
-    await fetchBackend(`/events/${eventID}?${params}`, "GET").then(
-      async (users) => {
-        this.registrationNumbers(users);
-      }
-    );
   }
 
   showWaitlist() {
@@ -391,12 +389,16 @@ export class EventStatsTable extends Component {
     this.refreshTable();
   }
 
-  /*
-    the if statement is only used if an exec goes from one event directly to another event (not implemented right now)
-  */
-  componentDidUpdate(prevProps) {
-    if (prevProps.event.id !== this.props.event.id) {
-      this.updateEventTableData(this.props.event.id);
+
+  componentDidUpdate(_prevProps, prevState) {
+    if (prevState.tableType !== this.state.tableType) {
+      const registrationNumbers = this.registrationNumbers(this.state.rows);
+      const nonRegistrationStats = this.notRegistrationNumbers(this.state.rows);
+
+      this.setState({
+        registrationNumbers,
+        ...nonRegistrationStats
+      });
     }
   }
 
@@ -506,11 +508,11 @@ export class EventStatsTable extends Component {
             color="primary"
             onClick={() =>
               this.setState({
-                tableType: this.state.tableType === "attendee" ? "partner" : "attendee"
+                tableType: this.state.tableType === ATTENDEE_TABLE_TYPE ? PARTNER_TABLE_TYPE : ATTENDEE_TABLE_TYPE
               })
             }
           >
-            {this.state.tableType === "attendee" ? "Show Partners Table" : "Show Attendees Table"}
+            {this.state.tableType === ATTENDEE_TABLE_TYPE ? "Show Partners Table" : "Show Attendees Table"}
           </Button>
 
           <Button
