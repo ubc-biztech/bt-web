@@ -36,7 +36,7 @@ const parseDynamicResponses = (registrations) => {
  * Helper function to flatten the registration data into a format suitable for the MaterialTable
  * @param {*} users the response from the registration backend
  */
-const prepareRowData = (users) => {
+const flattenRowData = (users) => {
   const idToUserMap = new Map();
 
   users.forEach((user) => {
@@ -92,6 +92,6 @@ export {
   REGISTRATIONSTATUSLABEL,
   POINTSLABEL,
   parseDynamicResponses,
-  prepareRowData,
+  flattenRowData,
   appendRegistrationQuestions,
 };
