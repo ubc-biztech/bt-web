@@ -191,10 +191,6 @@ const activities = [
     points: "20 points"
   },
   {
-    name: "Get interviewed by BizTech’s marketing team for Instagram reels",
-    points: "20 points"
-  },
-  {
     name: "View the attendee showcase & vote for a personal project!",
     points: "35 points"
   },
