@@ -292,12 +292,13 @@ const Redemption = ({
 
   const submitEmail = async () => {
     setIsLoading(true);
+
     if (checkEmail()) {
       await fetchBackend(
         "/qrscan",
         "POST",
         {
-          qrCodeID: qrID === "pTbLt-View the attendee showcase" ? "pTbLt-View the attendee showcase & vote for a personal project!" : qrID,
+          qrCodeID: qrID.includes("pTbLt-V") ? "eVEBP-vote-showcase" : qrID,
           eventID,
           year: Number(year),
           email,
