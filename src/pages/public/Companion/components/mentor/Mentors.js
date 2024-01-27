@@ -92,6 +92,7 @@ function Mentors(props) {
   const [filteredMentors, setFilteredMentors] = useState([]);
   const [skillsQuestionId, setSkillsQuestionId] = useState("");
   const [profilePhotoId, setProfilePhotoId] = useState("");
+  const [linkedinQuestionId, setLinkedinQuestionId] = useState("");
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
@@ -103,6 +104,9 @@ function Mentors(props) {
         // this is dynamic, depending on what event director labels as the photo
         if (question?.label === "Headshot") {
           setProfilePhotoId(question.questionId);
+        }
+        if (question?.label === "LinkedIn URL") {
+          setLinkedinQuestionId(question.questionId);
         }
       });
     }
@@ -118,6 +122,7 @@ function Mentors(props) {
         return {
           ...mentor.basicInformation,
           profilePhoto: mentor.dynamicResponses[profilePhotoId],
+          linkedin: mentor.dynamicResponses[linkedinQuestionId],
           skills: skillsQuestionId === "" || !mentor.dynamicResponses[skillsQuestionId] ? [] :
           // TODO: for blueprint;2024, the skills is just company name, so need to make it an array. Usually it will just be the skills array
             [mentor.dynamicResponses[skillsQuestionId]]
