@@ -116,6 +116,44 @@ const projects = [
     link: "https://devpost.com/software/zenzone-3d",
     image: "card10.png"
   },
+  {
+    title: "Planes + Electronics + Computer Vision",
+    members: "UBC AeroDesign, Engineering Design Team",
+    desc: "We are a group of 70+ students working on several projects to compete internationally in the SAE AeroDesign competition. Our active work include a high-performance package delivery aircraft, a drone-deploying mothership aircraft, a wireless distributed computing system, and more.",
+    link: "https://www.instagram.com/ubcaerodesign/?hl=en",
+    image: "card12.png"
+  },
+  {
+    title: "ASL Translate",
+    members: "Anthony Ji, Jack Yao, Sammy Kuang, Ernie Han",
+    desc: "A web app that takes in text and generates the corresponding American Sign Language video of the sentence. It also has a quiz section that generates random flashcards with the videos included.",
+    link: "https://devpost.com/software/asltranslate",
+    image: "ASL.jpeg"
+  },
+  {
+    title: "Planda",
+    members: "Christina Yang, Annie Geng, Keshav Gopinath, Edward Zou",
+    desc: "Planda is a calendar and task-management system designed by and for students. It aims to streamline time and energy for task and time management. It offers course syllabus parsing, external calendar integrations, productivity tracking, and more.",
+    link: "https://planda.ca/about",
+    image: "Planda.png"
+  },
+  {
+    title: "Kadirov Shop",
+    members: "Gyunay Kadirov",
+    desc: "Your fashion-forward marketplace. Discover curated clothing and unique makeup accessories. Filter, search, and add favorites with ease. Checkout securely with Stripe. Sign up for personalized shopping and order tracking.",
+    link: "https://my-commerce-kadirov.vercel.app/",
+    image: "Kadirov.png"
+  },
+  {
+    title: "Weave",
+    members: "Alex Ma, Kai Koyama-Wong, Andrew Fan, Alessandra Liu",
+    desc: `Scheduling a group meeting? Planning a road trip? Got an event coming up? The hardest part of getting together is finding time for it. And finding time for it can be frustrating. We get you.  
+
+
+    With Weave, you’ll be able to schedule group events with ease, and enjoy doing so.Create.Add.Share.We make things fun and simple.`,
+    link: "https://www.linkedin.com/company/try-weave/about/",
+    image: "Weave.jpeg"
+  }
 ];
 
 
@@ -221,29 +259,35 @@ const Blueprint2024 = (params) => {
   useEffect(() => {
     refetchLeaderboard();
   }, [event]);
+
   useEffect(() => {
-    // Establish WebSocket connection
-    const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_API);
+    try {
+      // Establish WebSocket connection
+      const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_API);
 
-    // WebSocket on open
-    ws.onopen = () => {
-      console.log("WebSocket connected");
-    };
+      // WebSocket on open
+      ws.onopen = () => {
+        console.log("WebSocket connected");
+      };
 
-    // WebSocket on message
-    ws.onmessage = (event) => {
-      // Handle WebSocket messages
-      const data = event.data;
-      console.log("WebSocket message received:", data);
+      // WebSocket on message
+      ws.onmessage = (event) => {
+        // Handle WebSocket messages
+        const data = event.data;
+        console.log("WebSocket message received:", data);
+        refetchLeaderboard();
+      };
+
+      // WebSocket on close
+      ws.onclose = () => {
+        console.log("WebSocket disconnected");
+      };
+      setWebsocket(ws);
+    } catch {
+      console.error("Error connecting to websocket");
+    } finally {
       refetchLeaderboard();
-    };
-
-    // WebSocket on close
-    ws.onclose = () => {
-      console.log("WebSocket disconnected");
-    };
-    setWebsocket(ws);
-    refetchLeaderboard();
+    }
     return () => {
       // Close WebSocket connection on component unmount
       if (websocket) {
