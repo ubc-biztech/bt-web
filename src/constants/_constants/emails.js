@@ -179,10 +179,6 @@ const CAPITALIZED_EMAILS = process.env.REACT_APP_STAGE === "production" ? [
     "lowercaseEmail": "weenawibowo@hotmail.com"
   },
   {
-    "email": "Dhruvs4747@gmail.com",
-    "lowercaseEmail": "dhruvs4747@gmail.com"
-  },
-  {
     "email": "Simrandaya.4@gmail.com",
     "lowercaseEmail": "simrandaya.4@gmail.com"
   },
@@ -399,10 +395,6 @@ const CAPITALIZED_EMAILS = process.env.REACT_APP_STAGE === "production" ? [
   {
     "email": "Ryandouglascarr@gmail.com",
     "lowercaseEmail": "ryandouglascarr@gmail.com"
-  },
-  {
-    "email": "Dhruvs4747@gmail.com",
-    "lowercaseEmail": "dhruvs4747@gmail.com"
   },
   {
     "email": "Simrandaya.4@gmail.com",
