@@ -93,7 +93,13 @@ const useStyles = makeStyles({
     width: "100%",
     height: "100%",
   },
-
+  linkedinImage: {
+    width: "20%",
+    height: "auto"
+  },
+  linkedNoUnderline: {
+    textDecoration: "none"
+  }
 });
 
 function MentorCard(props) {
@@ -101,22 +107,41 @@ function MentorCard(props) {
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
   const {
-    fname, lname, role, gender, companyName, profilePhoto, skills
+    fname, lname, role, gender, profilePhoto, linkedin, skills
   } = props.mentor;
 
   return (
     <>
       <Box className={renderMobileOnly ? classes.mobileContainer : classes.container}>
         <Box className={renderMobileOnly ? classes.mobileProfileContainer : classes.profileContainer}>
-          <Avatar
-            alt={`${fname}-profile-picture`}
-            src={profilePhoto}
-            className={renderMobileOnly ? classes.mobileProfilePicture : classes.profilePicture} />
-          <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
-            {fname + " " + lname + `${gender === "" ? "" : ` (${gender})`}`}
-          </Typography>
+          {
+            linkedin ?
+              <a href={linkedin} className={classes.linkedNoUnderline} target="_blank" rel="noreferrer">
+                <Avatar
+                  alt={`${fname}-profile-picture`}
+                  src={profilePhoto}
+                  className={renderMobileOnly ? classes.mobileProfilePicture : classes.profilePicture} />
+              </a>
+              :
+              <Avatar
+                alt={`${fname}-profile-picture`}
+                src={profilePhoto}
+                className={renderMobileOnly ? classes.mobileProfilePicture : classes.profilePicture} />
+          }
+          {
+            linkedin ?
+              <a href={linkedin} className={classes.linkedNoUnderline} target="_blank" rel="noreferrer">
+                <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
+                  {fname + " " + lname + `${gender === "" ? "" : ` (${gender})`}`}
+                </Typography>
+              </a>
+              :
+              <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
+                {fname + " " + lname + `${gender === "" ? "" : ` (${gender})`}`}
+              </Typography>
+          }
           <Typography className={renderMobileOnly ? classes.mobilePosition : classes.position}>
-            {role + " at " + companyName}
+            {role}
           </Typography>
           <div className={classes.skillsContainer}>
             {
