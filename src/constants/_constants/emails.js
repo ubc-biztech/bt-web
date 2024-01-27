@@ -390,6 +390,63 @@ const CAPITALIZED_EMAILS = process.env.REACT_APP_STAGE === "production" ? [
   {
     "email": "Dantanwork23@gmail.com",
     "lowercaseEmail": "dantanwork23@gmail.com"
+  },
+  {
+    "email": "Ashleykchan@gmail.com",
+    "lowercaseEmail": "ashleykchan@gmail.com"
+  },
+
+  {
+    "email": "Billyxwn@gmail.com",
+    "lowercaseEmail": "billyxwn@gmail.com"
+  },
+
+  {
+    "email": "Bogosi@gmail.com",
+    "lowercaseEmail": "bogosi@gmail.com"
+  },
+
+  {
+    "email": "Bxa25@sfu.ca",
+    "lowercaseEmail": "bxa25@sfu.ca"
+  },
+
+  {
+    "email": "Erpingsun@gmail.com",
+    "lowercaseEmail": "erpingsun@gmail.com"
+  },
+
+  {
+    "email": "Jaskirat880singh@gmail.com",
+    "lowercaseEmail": "jaskirat880singh@gmail.com"
+  },
+
+  {
+    "email": "Lara.kardouh@gmail.com",
+    "lowercaseEmail": "lara.kardouh@gmail.com"
+  },
+
+  {
+    "email": "Nathanr8@student.ubc.ca",
+    "lowercaseEmail": "nathanr8@student.ubc.ca"
+  },
+
+  {
+    "email": "Nhashemzadeh2003@gmail.com",
+    "lowercaseEmail": "nhashemzadeh2003@gmail.com"
+  },
+
+  {
+    "email": "Omar.ankit2001@gmail.com",
+    "lowercaseEmail": "omar.ankit2001@gmail.com"
+  },
+  {
+    "email": "Romanechose@gmail.com",
+    "lowercaseEmail": "romanechose@gmail.com"
+  },
+  {
+    "email": "Suryanshh111@gmail.com",
+    "lowercaseEmail": "suryanshh111@gmail.com"
   }
 ];
 
