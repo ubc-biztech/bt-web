@@ -386,6 +386,10 @@ const CAPITALIZED_EMAILS = process.env.REACT_APP_STAGE === "production" ? [
   {
     "email": "Barakahmedd@gmail.com",
     "lowercaseEmail": "barakahmedd@gmail.com"
+  },
+  {
+    "email": "Dantanwork23@gmail.com",
+    "lowercaseEmail": "dantanwork23@gmail.com"
   }
 ];
 
