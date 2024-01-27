@@ -407,7 +407,7 @@ const Blueprint2024 = (params) => {
             ...(renderMobileOnly && {
               fontSize: constantStyles.mobileFontSize
             })
-          }}>{"Vote for your favourite at the attendee showcase booth and earn points!"}</span>
+          }}>{"Vote for your favourite project at the attendee showcase booth and earn points!"}</span>
           <ScrollingCarousel style={{
             columnGap: "5px"
           }}>
