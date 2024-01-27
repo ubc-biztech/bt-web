@@ -107,7 +107,7 @@ function MentorCard(props) {
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
   const {
-    fname, lname, role, gender, companyName, profilePhoto, linkedin, skills
+    fname, lname, role, gender, profilePhoto, linkedin, skills
   } = props.mentor;
 
   return (
