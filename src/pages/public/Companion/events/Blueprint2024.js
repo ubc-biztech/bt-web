@@ -402,6 +402,12 @@ const Blueprint2024 = (params) => {
         </div>
         <div id="Showcase" style={styles.column}>
           <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attendee Showcase</h1>
+          <span style={{
+            ...styles.text,
+            ...(renderMobileOnly && {
+              fontSize: constantStyles.mobileFontSize
+            })
+          }}>{"Vote for your favourite project at the attendee showcase booth and earn points!"}</span>
           <ScrollingCarousel style={{
             columnGap: "5px"
           }}>

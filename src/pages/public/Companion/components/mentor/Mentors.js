@@ -14,6 +14,9 @@ import {
 } from "@material-ui/core/styles";
 import Loading from "pages/Loading";
 import SearchBar from "pages/public/Companion/components/mentor/SearchBar";
+import {
+  constantStyles
+} from "../../../../../constants/_constants/companion";
 
 const useStyles = makeStyles({
   mainContainer: {
@@ -124,7 +127,7 @@ function Mentors(props) {
           profilePhoto: mentor.dynamicResponses[profilePhotoId],
           linkedin: mentor.dynamicResponses[linkedinQuestionId],
           skills: skillsQuestionId === "" || !mentor.dynamicResponses[skillsQuestionId] ? [] :
-          // TODO: for blueprint;2024, the skills is just company name, so need to make it an array. Usually it will just be the skills array
+            // TODO: for blueprint;2024, the skills is just company name, so need to make it an array. Usually it will just be the skills array
             [mentor.dynamicResponses[skillsQuestionId]]
               .filter((skill) => skill !== "" || skill.trim() !== "")
               .map((skill) => {
@@ -171,6 +174,12 @@ function Mentors(props) {
         <>
           <div id="Mentors" className={classes.mainContainer} style={styles.column}>
             <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Mentors</h1>
+            <span style={{
+              ...styles.text,
+              ...(renderMobileOnly && {
+                fontSize: constantStyles.mobileFontSize
+              })
+            }}>{"Tap on a mentor's picture to visit their Linkedin"}</span>
             <div className={renderMobileOnly ? classes.mobileMentorsContainer : classes.mentorsContainer}>
               <Grid container spacing={1}>
                 <Grid item xs={12} sm={12} md={12} className={classes.gridItem}>
