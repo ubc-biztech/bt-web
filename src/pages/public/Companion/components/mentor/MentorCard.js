@@ -114,17 +114,32 @@ function MentorCard(props) {
     <>
       <Box className={renderMobileOnly ? classes.mobileContainer : classes.container}>
         <Box className={renderMobileOnly ? classes.mobileProfileContainer : classes.profileContainer}>
-          <a href={linkedin} className={classes.linkedNoUnderline} target="_blank" rel="noreferrer">
-            <Avatar
-              alt={`${fname}-profile-picture`}
-              src={profilePhoto}
-              className={renderMobileOnly ? classes.mobileProfilePicture : classes.profilePicture} />
-          </a>
-          <a href={linkedin} className={classes.linkedNoUnderline} target="_blank" rel="noreferrer">
-            <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
-              {fname + " " + lname + `${gender === "" ? "" : ` (${gender})`}`}
-            </Typography>
-          </a>
+          {
+            linkedin ?
+              <a href={linkedin} className={classes.linkedNoUnderline} target="_blank" rel="noreferrer">
+                <Avatar
+                  alt={`${fname}-profile-picture`}
+                  src={profilePhoto}
+                  className={renderMobileOnly ? classes.mobileProfilePicture : classes.profilePicture} />
+              </a>
+              :
+              <Avatar
+                alt={`${fname}-profile-picture`}
+                src={profilePhoto}
+                className={renderMobileOnly ? classes.mobileProfilePicture : classes.profilePicture} />
+          }
+          {
+            linkedin ?
+              <a href={linkedin} className={classes.linkedNoUnderline} target="_blank" rel="noreferrer">
+                <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
+                  {fname + " " + lname + `${gender === "" ? "" : ` (${gender})`}`}
+                </Typography>
+              </a>
+              :
+              <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
+                {fname + " " + lname + `${gender === "" ? "" : ` (${gender})`}`}
+              </Typography>
+          }
           <Typography className={renderMobileOnly ? classes.mobilePosition : classes.position}>
             {role}
           </Typography>
