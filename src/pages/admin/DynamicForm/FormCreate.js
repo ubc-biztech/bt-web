@@ -152,6 +152,15 @@ const styles = {
   applicationBasedCheckbox: {
     padding: "1rem",
     color: "white",
+  },
+  errorText: {
+    "color": "#f44336", // Material-UI default error color
+    "marginTop": "8px",
+    "fontSize": "0.75rem", // Typical size for Material-UI helper text
+    "textAlign": "left",
+    "fontWeight": "400",
+    "lineHeight": "1.66",
+    "letterSpacing": "0.03333em"
   }
 };
 
@@ -178,6 +187,8 @@ const FormCreateForm = (props) => {
       nonMembersPrice,
       nonMembersAllowed,
       isApplicationBased,
+      isPartnerFormUsed,
+      partnershipsConfirmation,
       feedback,
       registrationQuestions,
       partnerRegistrationQuestions,
@@ -703,27 +714,66 @@ const FormCreateForm = (props) => {
               <h3 style={styles.editorSectionTitle}>Attendee Form Custom Questions</h3>
               {CustomQuestions}
             </div>
-            <div style={styles.editorSection}>
-              <TextField
-                id="partnerDescription"
-                name="partnerDescription"
-                label="Partner Form Description"
-                fullWidth
-                required
-                multiline
-                rows={4}
-                margin="normal"
-                variant="filled"
+
+            <div style={styles.applicationBasedCheckbox}>
+              Partnerships wants to use this web app form for partner outreach?
+              <Checkbox
+                id='isPartnerFormUsed'
+                name='isPartnerFormUsed'
+                color="primary"
+                aria-label="application based?"
+                checked={isPartnerFormUsed}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={partnerDescription}
-                error={showError("partnerDescription")}
-                helperText={showError("partnerDescription") && errors.partnerDescription}
               />
-              <h3 style={styles.editorSectionTitle}>Partner Form Custom Questions x</h3>
-              {/* custom questions for partner */}
-              {partnerCustomQuestions}
             </div>
+
+            {isPartnerFormUsed && (
+              <div>
+                <div style={styles.editorSection}>
+                  <TextField
+                    id="partnerDescription"
+                    name="partnerDescription"
+                    label="Partner Form Description"
+                    fullWidth
+                    required
+                    multiline
+                    rows={4}
+                    margin="normal"
+                    variant="filled"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={partnerDescription}
+                    error={isPartnerFormUsed && showError("partnerDescription")}
+                    helperText={isPartnerFormUsed && showError("partnerDescription") && errors.partnerDescription}
+                  />
+
+                  <div style={styles.applicationBasedCheckbox}>
+                    I have confirmed with Partnerships that they want to use this form
+                    <Checkbox
+                      id='partnershipsConfirmation'
+                      name='partnershipsConfirmation'
+                      color="primary"
+                      aria-label="Partnerships Confirmation"
+                      checked={partnershipsConfirmation}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required={isPartnerFormUsed}
+                    />
+                    {showError("partnershipsConfirmation") && (
+                      <div style={styles.errorText}>
+                        {errors.partnershipsConfirmation}
+                      </div>
+                    )}
+                  </div>
+
+
+                  <h3 style={styles.editorSectionTitle}>Partner Form Custom Questions</h3>
+                  {/* custom questions for partner */}
+                  {partnerCustomQuestions}
+                </div>
+              </div>
+            )};
           </div>
         </Grid>
       </Grid>
@@ -833,7 +883,9 @@ const FormCreate = (props) => {
       registrationQuestions: event.registrationQuestions || dummyData,
       feedback: event.feedback || "",
       partnerRegistrationQuestions: event.partnerRegistrationQuestions || partnerDummyData,
-      isApplicationBased: event?.isApplicationBased
+      isApplicationBased: event?.isApplicationBased,
+      isPartnerFormUsed: event?.isPartnerFormUsed,
+      partnershipsConfirmation: event?.partnershipsConfirmation,
     }
     : {
       imageUrl: "",
@@ -852,10 +904,20 @@ const FormCreate = (props) => {
       registrationQuestions: dummyData,
       feedback: "",
       partnerRegistrationQuestions: partnerDummyData,
-      isApplicationBased: false
+      isApplicationBased: false,
+      isPartnerFormUsed: false,
+      partnershipsConfirmation: false,
     };
 
   const regQuestionSchema = Yup.object({
+    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD", "WORKSHOP SELECTION", "SKILLS"]).required(),
+    label: Yup.string().required("Question is a required field"),
+    choices: Yup.string(),
+    required: Yup.boolean().required(),
+    isSkillsQuestion: Yup.boolean()
+  });
+
+  const partnerQuestionSchema = Yup.object({
     type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD", "WORKSHOP SELECTION", "SKILLS"]).required(),
     label: Yup.string().required("Question is a required field"),
     choices: Yup.string(),
@@ -870,7 +932,18 @@ const FormCreate = (props) => {
       .matches(/^[a-z\-0-9]*$/, "Slug must be lowercase and have no whitespace")
       .required(),
     description: Yup.string().required(),
-    partnerDescription: Yup.string().required(),
+    partnerDescription: Yup.string().when("isPartnerFormUsed", (isPartnerFormUsed, schema) => {
+      if (isPartnerFormUsed && isPartnerFormUsed.some(el => el)) {
+        return schema.required();
+      }
+      return schema;
+    }),
+    partnershipsConfirmation: Yup.boolean().when("isPartnerFormUsed", (isPartnerFormUsed, schema) => {
+      if (isPartnerFormUsed && isPartnerFormUsed.some(el => el)) {
+        return schema.oneOf([true], "You must confirm with Partnerships to use this form");
+      }
+      return schema;
+    }),
     capacity: Yup.number("Valid number required")
       .min(0, "Valid capacity required")
       .required(),
@@ -894,8 +967,14 @@ const FormCreate = (props) => {
     nonMembersPrice: Yup.number("Valid number required")
       .min(0, "Valid pricing required"),
     registrationQuestions: Yup.array().of(regQuestionSchema),
-    partnerRegistrationQuestions: Yup.array().of(regQuestionSchema),
+    partnerRegistrationQuestions: Yup.array().when("isPartnerFormUsed", (isPartnerFormUsed, schema) => {
+      if (isPartnerFormUsed && isPartnerFormUsed.some(el => el)) {
+        return Yup.array().of(partnerQuestionSchema).required();
+      }
+      return schema;
+    }),
     isApplicationBase: Yup.bool(),
+    isPartnerFormUsed: Yup.bool(),
   });
 
   async function submitValues(values) {
@@ -932,7 +1011,9 @@ const FormCreate = (props) => {
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback,
       partnerRegistrationQuestions: values.partnerRegistrationQuestions,
-      isApplicationBased: values.isApplicationBased
+      isApplicationBased: values.isApplicationBased,
+      isPartnerFormUsed: values.isPartnerFormUsed,
+      partnershipsConfirmation: values.partnershipsConfirmation,
     };
 
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
@@ -978,7 +1059,9 @@ const FormCreate = (props) => {
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback,
       partnerRegistrationQuestions: values.partnerRegistrationQuestions,
-      isApplicationBased: values.isApplicationBased
+      isApplicationBased: values.isApplicationBased,
+      isPartnerFormUsed: values.isPartnerFormUsed,
+      partnershipsConfirmation: values.partnershipsConfirmation
     };
 
     fetchBackend("/events", "POST", body)
