@@ -22,7 +22,8 @@ import {
   makeStyles,
   Link,
   Button,
-  Popover, TextField
+  Popover,
+  TextField
 } from "@material-ui/core";
 
 import {
@@ -44,16 +45,17 @@ import {
   fetchBackend
 } from "utils";
 import {
-  REGISTRATIONSTATUSLABEL,
-  flattenRowData,
-  POINTSLABEL
+  REGISTRATIONSTATUSLABEL, flattenRowData, POINTSLABEL
 } from "./utils";
 import {
-  getDefaultColumns, getDefaultPartnerColumns, getDynamicQuestionColumns
+  getDefaultColumns,
+  getDefaultPartnerColumns,
+  getDynamicQuestionColumns
 } from "./TableColumns";
 import {
   Field, Form, Formik
 } from "formik";
+import MassUpdateModal from "./MassUpdateUserStatus";
 
 const styles = {
   stats: {
@@ -181,6 +183,7 @@ export class EventStatsTable extends Component {
         }
       },
       tableType: ATTENDEE_TABLE_TYPE,
+      isMassUpdateModalOpen: false,
       refreshTable: () => {
         if (this.props.event !== null) {
           this.forceUpdate();
@@ -191,6 +194,13 @@ export class EventStatsTable extends Component {
         }
       }
     };
+    this.toggleMassUpdateModal = this.toggleMassUpdateModal.bind(this);
+  }
+
+  toggleMassUpdateModal() {
+    this.setState((prevState) => ({
+      isMassUpdateModalOpen: !prevState.isMassUpdateModalOpen
+    }));
   }
 
   refreshTable() {
@@ -201,7 +211,7 @@ export class EventStatsTable extends Component {
       });
       this.getEventTableData(this.props.event.id, this.props.event.year);
     }
-  };
+  }
 
   async initializeTableColumns() {
     const {
@@ -211,17 +221,38 @@ export class EventStatsTable extends Component {
       `/events/${eventID}/${eventYear.toString()}`,
       "GET"
     ).then(async (event) => {
-      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.state.refreshTable, ATTENDEE_TABLE_TYPE);
-      const dynamicQuestionColumns = getDynamicQuestionColumns(event.registrationQuestions);
+      const defaultColumns = getDefaultColumns(
+        this.props.event.id,
+        this.props.event.year,
+        this.state.refreshTable,
+        ATTENDEE_TABLE_TYPE
+      );
+      const dynamicQuestionColumns = getDynamicQuestionColumns(
+        event.registrationQuestions
+      );
 
-      const defaultApplicationViewColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.state.refreshTable, APPLICATION_TABLE_TYPE);
+      const defaultApplicationViewColumns = getDefaultColumns(
+        this.props.event.id,
+        this.props.event.year,
+        this.state.refreshTable,
+        APPLICATION_TABLE_TYPE
+      );
 
-      const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.state.refreshTable);
-      const dynamicPartnerQuestionColumns = getDynamicQuestionColumns(event.partnerRegistrationQuestions);
+      const defaultPartnerColumns = getDefaultPartnerColumns(
+        this.props.event.id,
+        this.props.event.year,
+        this.state.refreshTable
+      );
+      const dynamicPartnerQuestionColumns = getDynamicQuestionColumns(
+        event.partnerRegistrationQuestions
+      );
 
       const presentedColumns = defaultColumns.concat(dynamicQuestionColumns);
-      const presentedPartnerColumns = defaultPartnerColumns.concat(dynamicPartnerQuestionColumns);
-      const presentedApplicationViewColumns = defaultApplicationViewColumns.concat(dynamicQuestionColumns);
+      const presentedPartnerColumns = defaultPartnerColumns.concat(
+        dynamicPartnerQuestionColumns
+      );
+      const presentedApplicationViewColumns =
+        defaultApplicationViewColumns.concat(dynamicQuestionColumns);
 
       this.setState({
         presentedColumns,
@@ -247,12 +278,9 @@ export class EventStatsTable extends Component {
         const heardFrom = this.heardFromNumbers(rows);
         const registrationNumbers = this.registrationNumbers(rows);
         const {
-          faculties,
-          years,
-          genders,
-          dietary,
-          teamID
-        } = this.notRegistrationNumbers(rows);
+          faculties, years, genders, dietary, teamID
+        } =
+          this.notRegistrationNumbers(rows);
 
         this.setState({
           rows,
@@ -282,9 +310,7 @@ export class EventStatsTable extends Component {
     };
     users.forEach((user) => {
       if (user.heardFrom) {
-        heardFrom[user.heardFrom] = heardFrom[
-          user.heardFrom
-        ]
+        heardFrom[user.heardFrom] = heardFrom[user.heardFrom]
           ? heardFrom[user.heardFrom] + 1
           : 1;
       }
@@ -293,18 +319,19 @@ export class EventStatsTable extends Component {
     return heardFrom;
   }
 
-  filterUserByTableType  (user)  {
+  filterUserByTableType(user) {
     if (this.state.tableType === ATTENDEE_TABLE_TYPE) {
       return user.isPartner === false;
     } else {
       return user.isPartner === true;
     }
-  };
+  }
 
   registrationNumbers(users) {
     const registrationNumbers = {
     };
-    users.filter((user) => this.filterUserByTableType(user))
+    users
+      .filter((user) => this.filterUserByTableType(user))
       .forEach((user) => {
         if (user.registrationStatus) {
           registrationNumbers[user.registrationStatus] = registrationNumbers[
@@ -333,12 +360,11 @@ export class EventStatsTable extends Component {
     };
     const genders = {
     };
-    users.filter((user) => this.filterUserByTableType(user))
+    users
+      .filter((user) => this.filterUserByTableType(user))
       .forEach((user) => {
         if (user.faculty) {
-          faculties[user.faculty] = faculties[
-            user.faculty
-          ]
+          faculties[user.faculty] = faculties[user.faculty]
             ? faculties[user.faculty] + 1
             : 1;
         }
@@ -349,16 +375,10 @@ export class EventStatsTable extends Component {
           }
         }
         if (user.diet) {
-          dietary[user.diet] = dietary[
-            user.diet
-          ]
-            ? dietary[user.diet] + 1
-            : 1;
+          dietary[user.diet] = dietary[user.diet] ? dietary[user.diet] + 1 : 1;
         }
         if (user.gender) {
-          genders[user.gender] = genders[
-            user.gender
-          ]
+          genders[user.gender] = genders[user.gender]
             ? genders[user.gender] + 1
             : 1;
         }
@@ -376,19 +396,18 @@ export class EventStatsTable extends Component {
     this.setState({
       isWaitlistShown: !this.state.isWaitlistShown
     });
-  };
+  }
 
   showAdminTeamFormation() {
     this.setState({
       isAdminTeamFormationShown: !this.state.isAdminTeamFormationShown
     });
-  };
+  }
 
   componentDidMount() {
     this.initializeTableColumns();
     this.refreshTable();
   }
-
 
   componentDidUpdate(_prevProps, prevState) {
     if (prevState.tableType !== this.state.tableType) {
@@ -405,7 +424,8 @@ export class EventStatsTable extends Component {
   render() {
     const registrationColumns = this.state.presentedColumns;
     const registrationPartnerColumns = this.state.presentedPartnerColumns;
-    const registrationApplicationViewColumns = this.state.presentedApplicationViewColumns;
+    const registrationApplicationViewColumns =
+      this.state.presentedApplicationViewColumns;
 
     function handleColumnDrag(sourceIndex, destinationIndex) {
       const sourceColumn = registrationColumns[sourceIndex];
@@ -421,7 +441,8 @@ export class EventStatsTable extends Component {
 
     function handleApplicationViewColumnDrag(sourceIndex, destinationIndex) {
       const sourceColumn = registrationApplicationViewColumns[sourceIndex];
-      const destinationColumn = registrationApplicationViewColumns[destinationIndex];
+      const destinationColumn =
+        registrationApplicationViewColumns[destinationIndex];
 
       // Swapping the column order
       registrationApplicationViewColumns[sourceIndex] = destinationColumn;
@@ -445,9 +466,7 @@ export class EventStatsTable extends Component {
 
     function filterRows(rows, isPartner) {
       if (rows) {
-        return rows.filter((row) => (
-          Boolean(row.isPartner) === isPartner
-        ));
+        return rows.filter((row) => Boolean(row.isPartner) === isPartner);
       } else {
         return [];
       }
@@ -459,46 +478,68 @@ export class EventStatsTable extends Component {
     return (
       <div style={styles.container}>
         {/* QR code scanner */}
-        <QrCheckIn event={this.props.event} refresh={this.refreshTable} rows={this.state.rows} />
+        <QrCheckIn
+          event={this.props.event}
+          refresh={this.refreshTable}
+          rows={this.state.rows}
+        />
 
         {/* padding for visual separation */}
-        <div style={{
-          padding: "10px"
-        }}>
+        <div
+          style={{
+            padding: "10px"
+          }}
+        >
           {/* Toggle Competitions Acceptance View button */}
-          {
-            this.props.event?.isApplicationBased &&
+          {this.props.event?.isApplicationBased && (
             <Button
               variant="contained"
               color="primary"
               onClick={() =>
                 this.setState({
-                  tableType: this.state.tableType === APPLICATION_TABLE_TYPE ? ATTENDEE_TABLE_TYPE : APPLICATION_TABLE_TYPE
+                  tableType:
+                    this.state.tableType === APPLICATION_TABLE_TYPE
+                      ? ATTENDEE_TABLE_TYPE
+                      : APPLICATION_TABLE_TYPE
                 })
               }
             >
               Toggle Application View
             </Button>
-          }
+          )}
 
           {/* refresh button */}
           <Button
             variant="contained"
             color="primary"
-            onClick={() =>
-              this.refreshTable()
-            }
+            onClick={() => this.refreshTable()}
           >
             Refresh Table Data
           </Button>
+
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.toggleMassUpdateModal}
+          >
+            Mass Update Status
+          </Button>
+
+          {this.state.isMassUpdateModalOpen && (
+            <MassUpdateModal
+              open={this.state.isMassUpdateModalOpen}
+              onClose={this.toggleMassUpdateModal}
+              eventID={this.props.event.id}
+              eventYear={this.props.event.year}
+              refreshTable={this.refreshTable}
+            />
+          )}
 
           {/* waitlist button */}
           <Button
             variant="contained"
             color="primary"
-            onClick={() =>
-              this.showWaitlist()
-            }
+            onClick={() => this.showWaitlist()}
           >
             Show Waitlist
           </Button>
@@ -508,43 +549,52 @@ export class EventStatsTable extends Component {
             color="primary"
             onClick={() =>
               this.setState({
-                tableType: this.state.tableType === ATTENDEE_TABLE_TYPE ? PARTNER_TABLE_TYPE : ATTENDEE_TABLE_TYPE
+                tableType:
+                  this.state.tableType === ATTENDEE_TABLE_TYPE
+                    ? PARTNER_TABLE_TYPE
+                    : ATTENDEE_TABLE_TYPE
               })
             }
           >
-            {this.state.tableType === ATTENDEE_TABLE_TYPE ? "Show Partners Table" : "Show Attendees Table"}
+            {this.state.tableType === ATTENDEE_TABLE_TYPE
+              ? "Show Partners Table"
+              : "Show Attendees Table"}
           </Button>
 
           <Button
             variant="contained"
             color="primary"
-            onClick={() =>
-              this.showAdminTeamFormation()
-            }
+            onClick={() => this.showAdminTeamFormation()}
           >
             Make Team
           </Button>
         </div>
-        {
-          this.state.isWaitlistShown &&
+        {this.state.isWaitlistShown && (
           <div>
-            <div style={{
-              padding: "10px"
-            }} />
+            <div
+              style={{
+                padding: "10px"
+              }}
+            />
             {/* text to say hello */}
-            <Typography variant="h5" style={{
-              color: COLORS.FONT_COLOR
-            }}>
-              To view the waitlist: 1) apply a Filter on the Registration Status column for "Waitlist". 2) Sort the table by Last Updated.
+            <Typography
+              variant="h5"
+              style={{
+                color: COLORS.FONT_COLOR
+              }}
+            >
+              To view the waitlist: 1) apply a Filter on the Registration Status
+              column for "Waitlist". 2) Sort the table by Last Updated.
             </Typography>
           </div>
-        }
-        {
-          this.state.isAdminTeamFormationShown &&
+        )}
+        {this.state.isAdminTeamFormationShown && (
           <div>
-            <div style={{
-              padding: "10px"
-            }} />
+            <div
+              style={{
+                padding: "10px"
+              }}
+            />
             {/*  Formik form for team formation, up to 4 members */}
             <Formik
               initialValues={{
@@ -552,7 +602,7 @@ export class EventStatsTable extends Component {
                 teamMember: "",
                 teamMember2: "",
                 teamMember3: "",
-                teamMember4: "",
+                teamMember4: ""
               }}
               onSubmit={async (values, {
                 setSubmitting
@@ -561,21 +611,30 @@ export class EventStatsTable extends Component {
 
                 const teamMembersArrayAppend = [];
 
-                if (values.teamMember) teamMembersArrayAppend.push(values.teamMember);
-                if (values.teamMember2) teamMembersArrayAppend.push(values.teamMember2);
-                if (values.teamMember3) teamMembersArrayAppend.push(values.teamMember3);
-                if (values.teamMember4) teamMembersArrayAppend.push(values.teamMember4);
+                if (values.teamMember)
+                  teamMembersArrayAppend.push(values.teamMember);
+                if (values.teamMember2)
+                  teamMembersArrayAppend.push(values.teamMember2);
+                if (values.teamMember3)
+                  teamMembersArrayAppend.push(values.teamMember3);
+                if (values.teamMember4)
+                  teamMembersArrayAppend.push(values.teamMember4);
 
                 const response = {
                   team_name: values.teamName ? values.teamName : "Placeholder",
                   eventID: this.props.event.id,
                   year: parseInt(this.props.event.year),
-                  memberIDs: teamMembersArrayAppend,
+                  memberIDs: teamMembersArrayAppend
                 };
 
                 await fetchBackend("/team/make", "POST", response, true);
                 // alert the user that the team has been made
-                alert("Team has been made: " + values.teamName + " with members: " + teamMembersArrayAppend);
+                alert(
+                  "Team has been made: " +
+                    values.teamName +
+                    " with members: " +
+                    teamMembersArrayAppend
+                );
 
                 setSubmitting(false);
                 this.refreshTable();
@@ -647,16 +706,24 @@ export class EventStatsTable extends Component {
               )}
             </Formik>
 
-            <Typography variant="h5" style={{
-              color: COLORS.FONT_COLOR
-            }}>
-              To view the teams or to make Team point changes, contact a member of the dev team
+            <Typography
+              variant="h5"
+              style={{
+                color: COLORS.FONT_COLOR
+              }}
+            >
+              To view the teams or to make Team point changes, contact a member
+              of the dev team
             </Typography>
           </div>
-        }
+        )}
 
         <MaterialTable
-          title={this.state.tableType === APPLICATION_TABLE_TYPE ? `${this.props.event.ename} Application View` : `${this.props.event.ename} Attendance`}
+          title={
+            this.state.tableType === APPLICATION_TABLE_TYPE
+              ? `${this.props.event.ename} Application View`
+              : `${this.props.event.ename} Attendance`
+          }
           columns={
             this.state.tableType === ATTENDEE_TABLE_TYPE
               ? this.state.presentedColumns
@@ -664,12 +731,14 @@ export class EventStatsTable extends Component {
                 ? this.state.presentedApplicationViewColumns
                 : this.state.presentedPartnerColumns
           }
-          data={filterRows(this.state.rows, this.state.tableType === PARTNER_TABLE_TYPE)}
+          data={filterRows(
+            this.state.rows,
+            this.state.tableType === PARTNER_TABLE_TYPE
+          )}
           handleColumnDrag={
             this.state.tableType === ATTENDEE_TABLE_TYPE
               ? handleColumnDrag
-              : this.state.tableType
-                === APPLICATION_TABLE_TYPE
+              : this.state.tableType === APPLICATION_TABLE_TYPE
                 ? handleApplicationViewColumnDrag
                 : handlePartnerColumnDrag
           }
@@ -719,9 +788,11 @@ export class EventStatsTable extends Component {
         />
 
         {/* padding for visual separation */}
-        <div style={{
-          padding: "10px"
-        }} />
+        <div
+          style={{
+            padding: "10px"
+          }}
+        />
 
         <Statistic
           statName="Registration status: "
@@ -736,7 +807,7 @@ export class EventStatsTable extends Component {
           statName="Heard about event from: "
           statObj={this.state.heardFrom}
         />
-      </div >
+      </div>
     );
   }
 }
@@ -790,7 +861,10 @@ const PopoverCell = (props) => {
 
   const open = Boolean(anchorPosition);
 
-  const excludeFromOnclickPopoverColumns = [REGISTRATIONSTATUSLABEL, POINTSLABEL];
+  const excludeFromOnclickPopoverColumns = [
+    REGISTRATIONSTATUSLABEL,
+    POINTSLABEL
+  ];
 
   return (
     <>
@@ -836,9 +910,13 @@ const PopoverCell = (props) => {
               {popoverText}
             </Link>
           ) : (
-            <Typography sx={{
-              p: 1
-            }}>{popoverText?.split("<br/>").join("\n")}</Typography>
+            <Typography
+              sx={{
+                p: 1
+              }}
+            >
+              {popoverText?.split("<br/>").join("\n")}
+            </Typography>
           )}
         </Popover>
       )}
@@ -1019,7 +1097,12 @@ const QrCheckIn = (props) => {
       // props.refresh();
     };
 
-    if (!qrCode || qrCodeText === "" || typeof qrCodeText !== "string" || qrScanStage !== QR_SCAN_STAGE.SCANNING)
+    if (
+      !qrCode ||
+      qrCodeText === "" ||
+      typeof qrCodeText !== "string" ||
+      qrScanStage !== QR_SCAN_STAGE.SCANNING
+    )
       return;
 
     // data is arranged: email;event_id;year
@@ -1064,7 +1147,11 @@ const QrCheckIn = (props) => {
     //     }
 
     // get the person's name
-    setCheckInName(`${user.firstName ? user.firstName : user.fname} ${user.lastName ? user.lastName : user.lname} (${userID})`);
+    setCheckInName(
+      `${user.firstName ? user.firstName : user.fname} ${
+        user.lastName ? user.lastName : user.lname
+      } (${userID})`
+    );
 
     // If the user is already checked in, show an error
     if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
@@ -1088,9 +1175,7 @@ const QrCheckIn = (props) => {
   return (
     <Paper className={[classes.qrRoot]}>
       {/* Toggle QR Scanner */}
-      <div
-        style={styles.toggleContainer}
-      >
+      <div style={styles.toggleContainer}>
         <Link
           onClick={() => setVisible(!visible)}
           style={styles.toggleQrScanner}
@@ -1164,6 +1249,5 @@ const QrCheckIn = (props) => {
     </Paper>
   );
 };
-
 
 export default EventStatsTable;
