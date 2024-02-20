@@ -241,7 +241,6 @@ const CompanionLayout = (params) => {
       textAlign: "center",
       backgroundImage: colors.primary,
       WebkitBackgroundClip: "text",
-      height: "50px",
       color: "transparent",
       fontSize: constantStyles.titleMobileFontSize,
       fontWeight: 700,
@@ -536,7 +535,7 @@ const CompanionLayout = (params) => {
                 }}> </div>
                 {event && event.isCompleted && event.feedback ?
                   <FadeInWhenVisible>
-                    <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} />
+                    <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} headerText={"Thanks for attending!"}/>
                   </FadeInWhenVisible> : <></>}
                 <FadeInWhenVisible id="welcome" style={styles.column}>
                   {landing && <img src={landing}

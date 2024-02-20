@@ -28,8 +28,9 @@ import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
 import GamificationRewardTable from "../components/GamificationRewardTable";
 import ShowcaseCard from "../components/ShowcaseCard";
-  
-  
+import FeedbackForm from "../components/FeedbackForm";
+
+const VotingLink = "https://docs.google.com/forms/d/e/1FAIpQLSeLmzRHnr48NHsY_rgXlvJOsbxu-X1ehAWuSFrDyOw7WwKqPg/viewform?usp=sf_link";
 const CustomAccordion = styled(Accordion)(({
   theme
 }) => {
@@ -141,7 +142,6 @@ const TechStyle2024 = (params) => {
   const {
     event, registrations, styles, renderMobileOnly, userRegistration
   } = params;
-  console.log(params);
   const [websocket, setWebsocket] = useState(null);
   const [leaderboard, setLeaderboard] = useState();
   
@@ -274,6 +274,7 @@ const TechStyle2024 = (params) => {
                 })
               }
             </ScrollingCarousel>
+            <FeedbackForm feedbackLink={VotingLink} renderMobileOnly={renderMobileOnly} styles={styles}/>
             {/* <Swiper
             spaceBetween={5}
             navigation={true} modules={[Navigation]} 
