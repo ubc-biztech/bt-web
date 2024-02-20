@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Typography, Box
 } from "@material-ui/core";
@@ -9,11 +9,13 @@ import {
 import {
   useTheme
 } from "@material-ui/styles";
+import Test from "./../../../../assets/2024/techstyle/techstyle_test.jpg";
+import CloseIcon from "@material-ui/icons/Close"
 
 const useStyles = makeStyles({
   image: {
     maxWidth: "200px",
-    maxHeight: "120px"
+    maxHeight: "80%"
   },
   container: {
     width: "350px",
@@ -31,29 +33,39 @@ const useStyles = makeStyles({
   },
   name: {
     marginTop: "2%",
-    color: "#fff",
+    color: "black",
     fontSize: "1rem",
     fontWeight: "bold",
     textAlign: "center"
   },
   mobileName: {
     marginTop: "2%",
-    color: "#fff",
+    color: "black",
     fontSize: "16px",
     fontWeight: "bold",
     textAlign: "center"
   },
   position: {
     marginTop: "2%",
-    color: "#fff",
+    color: "black",
     fontSize: "0.5rem",
     textAlign: "center"
   },
   mobilePosition: {
     marginTop: "2%",
-    color: "#fff",
-    fontSize: "0.5rem",
+    color: "black",
+    fontSize: "0.75rem",
     textAlign: "center"
+  },
+  closeButton: {
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    backgroundColor: "transparent",
+    border: "none",
+    color: "black",
+    fontSize: "1.5rem",
+    cursor: "pointer",
   }
 
 });
@@ -64,33 +76,51 @@ function ShowcaseCard({
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const toggleFullScreen = () => {
+    setIsFullScreen(!isFullScreen);
+  };
 
   return (
     <>
-      <Box className={classes.container} style={{
-        backgroundImage: `url(card${(pos % 2) + 1}.svg)`
-      }}>
-        <img
-          alt={"project-picture"}
-          src={image}
-          className={classes.image} />
-        <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
-          {title}
-        </Typography>
-        <Typography className={renderMobileOnly ? classes.mobilePosition : classes.position}>
-          {members}
-        </Typography>
-        <Typography className={renderMobileOnly ? classes.mobilePosition : classes.position}>
-          {desc}
-        </Typography>
-        <a className={renderMobileOnly ? classes.mobilePosition : classes.position} href={link}>
+      {isFullScreen ?
+        <>
+          <img alt={"project-picture"}
+            style={{width: "100%"}} src={Test}/>
+          <button
+            className={classes.closeButton}
+            onClick={toggleFullScreen}
+          ><CloseIcon style={{color: "black"}}/></button>
+        </>
+        :
+        <Box className={classes.container} style={{
+          backgroundColor: "white",
+        // backgroundImage: `url(card${(pos % 2) + 1}.svg)`
+        }}
+        onClick={toggleFullScreen}>
+          <img
+            alt={"project-picture"}
+            src={Test}
+            // src={image}
+            className={classes.image}/>
+          <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
+            {title}
+          </Typography>
+          <Typography className={renderMobileOnly ? classes.mobilePosition : classes.position}>
+            {members}
+          </Typography>
+          <Typography className={renderMobileOnly ? classes.mobilePosition : classes.position}>
+            {desc}
+          </Typography>
+          {/* <a className={renderMobileOnly ? classes.mobilePosition : classes.position} href={link}>
           <p style={{
             textAlign: "center"
           }}>
                         learn more
           </p>
-        </a>
-      </Box>
+        </a> */}
+        </Box>
+      }
     </>
   );
 }
