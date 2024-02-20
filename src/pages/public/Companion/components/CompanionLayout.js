@@ -122,6 +122,7 @@ const CompanionLayout = (params) => {
     options: {
       BiztechLogo,
       Logo,
+      BackgroundImage,
       title,
       date,
       location,
@@ -146,8 +147,9 @@ const CompanionLayout = (params) => {
 
   const styles = {
     container: {
-      backgroundColor: "transparent",
-      backgroundImage: colors.background,
+      backgroundColor: BackgroundImage ? "#E2E2E2" : "transparent",
+      backgroundImage: BackgroundImage ? `url(${BackgroundImage})` : colors.background,
+      backgroundRepeat: "repeat",
       overflow: "hidden",
       minHeight: "100vh",
       display: "flex",
@@ -158,6 +160,7 @@ const CompanionLayout = (params) => {
     introLogo: {
       width: "60%",
       height: "auto",
+      marginBottom: "20px",
     },
     homeLogo: {
       marginTop: "24px",
@@ -325,7 +328,7 @@ const CompanionLayout = (params) => {
   const [input, setInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [transition, setShowTransition] = useState(true);
-  const [showVideo, setShowVideo] = useState(true);
+  const [showVideo, setShowVideo] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
   const videoRef = useRef();
 
@@ -490,7 +493,7 @@ const CompanionLayout = (params) => {
                     left: "0",
                     right: "0",
                     width: "100%",
-                    background: "#060818",
+                    background: colors.background,
                     zIndex: "9999",
                     paddingBottom: "0.75rem"
                   }}>
@@ -504,9 +507,7 @@ const CompanionLayout = (params) => {
                       {welcomeData && !disableWelcomeHeader && <a href="#Welcome" className={classes.link} style={{
                         fontSize: constantStyles.fontSize
                       }}>Welcome</a>}
-                      {scheduleData?.length && <a href="#Schedule" className={classes.link} style={{
-                        fontSize: constantStyles.fontSize
-                      }}>Schedule</a>}
+                      {scheduleData && scheduleData.length > 0 && <a href="#Schedule" className={classes.link} style={{ fontSize: constantStyles.fontSize }}>Schedule</a>}
                       {headers.map((header, i) => {
                         const lastTabItem = i === headers.length - 1 ? {
                           borderRight: "none"
@@ -515,11 +516,13 @@ const CompanionLayout = (params) => {
                         if (header.id) {
                           return (<a href={`#${header.id}`} key={i} className={classes.link} style={{
                             fontSize: constantStyles.fontSize,
-                            ...lastTabItem
+                            color: "black",
+                            ...lastTabItem,
                           }}>{header.text}</a>);
                         } else if (header.route) {
                           return <Link to={header.route} className={classes.link} key={i} style={{
                             fontSize: constantStyles.fontSize,
+                            color: "black",
                             ...lastTabItem
                           }}>{header.text}</Link>;
                         }
