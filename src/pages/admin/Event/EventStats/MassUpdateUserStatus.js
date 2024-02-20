@@ -1,6 +1,4 @@
-import React, {
-  useState
-} from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -11,9 +9,8 @@ import {
   DialogActions,
   Button
 } from "@material-ui/core";
-import {
-  APPLICATION_STATUS
-} from "constants/_constants/eventStatsStatusFields";
+import { APPLICATION_STATUS } from "constants/_constants/eventStatsStatusFields";
+import { fetchBackend } from "utils";
 
 const MassUpdateModal = ({
   open,
@@ -27,32 +24,25 @@ const MassUpdateModal = ({
 
   const handleSubmit = async () => {
     const emails = emailList.split(",").map((email) => email.trim());
-    try {
-      const response = await fetch("/api/registrations/massUpdate", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          eventID,
-          eventYear,
-          status: selectedStatus, // Assuming this is the dbValue from the dropdown
-          emails
-        })
-      });
-      const result = await response.json();
+    const updates = emails.map((email) => ({
+      email: email,
+      fname: "User", // TODO !!! Figure out how to get fname using email
+      status: selectedStatus
+    }));
 
-      if (response.ok) {
-        alert("Update successful");
-        refreshTable(); // Make sure to implement this function in the parent component
-        onClose(); // Close the modal after successful update
-      } else {
-        // Handle any errors returned from the server
-        alert(`Failed: ${result.message}`);
-      }
+    const data = {
+      eventID,
+      eventYear,
+      updates
+    };
+    try {
+      await fetchBackend("/registrations/massUpdate", "PUT", data);
+      alert("Update successful");
+      refreshTable();
+      onClose();
     } catch (error) {
       console.error("Update failed:", error);
-      alert("Update failed. Please try again.");
+      alert(`Failed: ${error.message}`);
     }
   };
 
@@ -84,9 +74,7 @@ const MassUpdateModal = ({
             Select Status
           </MenuItem>
           {Object.entries(APPLICATION_STATUS).map(
-            ([key, {
-              dbValue, label
-            }]) => (
+            ([key, { dbValue, label }]) => (
               <MenuItem key={key} value={dbValue}>
                 {label}
               </MenuItem>
