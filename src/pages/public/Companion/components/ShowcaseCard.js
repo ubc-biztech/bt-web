@@ -96,13 +96,13 @@ function ShowcaseCard({
         <Box className={classes.container} style={{
           backgroundColor: "white",
         // backgroundImage: `url(card${(pos % 2) + 1}.svg)`
-        }}
-        onClick={toggleFullScreen}>
+        }}>
           <img
             alt={"project-picture"}
             src={Test}
             // src={image}
-            className={classes.image}/>
+            className={classes.image}
+            onClick={toggleFullScreen}/>
           <Typography className={renderMobileOnly ? classes.mobileName : classes.name}>
             {title}
           </Typography>

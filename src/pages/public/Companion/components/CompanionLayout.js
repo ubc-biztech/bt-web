@@ -386,11 +386,15 @@ const CompanionLayout = (params) => {
         open={isModalOpen}
       >
         <div style={styles.modal}>
-          <Typography className={classes.boldText}>{input}</Typography>
-          <Typography className={classes.errorText}>{error}</Typography>
+          <Typography className={classes.boldText} style={{
+            color: constantStyles.textColor}}>{input}</Typography>
+          <Typography className={classes.errorText} style={{
+            color: constantStyles.textColor}}>{error}</Typography>
           <div style={styles.modalText}>
-            <Typography className={classes.centerText}>Are you sure you want to use this email?</Typography>
-            <Typography className={classes.centerText}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
+            <Typography className={classes.centerText} style={{
+              color: constantStyles.textColor}}>Are you sure you want to use this email....?</Typography>
+            <Typography className={classes.centerText} style={{
+              color: constantStyles.textColor}}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
           </div>
           <div style={styles.modalButtons}>
             <Button variant="contained" color="primary" disabled={isLoading} className={classes.button}
@@ -450,7 +454,7 @@ const CompanionLayout = (params) => {
                     alignItems: "center",
                     minHeight: "100vh",
                   }}>
-                    <img src={BiztechLogo} alt={`${title} Logo`} style={styles.introLogo} />
+                    <img src={BiztechLogo} alt={`${title} Logo`} style={{ ...styles.introLogo, width: renderMobileOnly ? "60%" : "20%" }} />
                     <Typography variant="h1" className={classes.boldText} style={{
                       color: constantStyles.textColor
                     }}>Welcome!</Typography>
