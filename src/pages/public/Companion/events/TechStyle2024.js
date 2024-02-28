@@ -90,7 +90,7 @@ const activities = [
   },
   {
     name: "Take a photo at the red carpet",
-    points: "30 points"
+    points: "20 points"
   },
   {
     name: "Take a photo with a professional at the red carpet",
@@ -112,29 +112,19 @@ const activities = [
 
 const rewards = [
   {
-    name: "Meta Quest",
-    points: "180 points",
-    value: 180
+    name: "Lululemon Giftcard",
+    points: "310 points",
+    value: 310
   },
   {
-    name: "FitBit 6",
-    points: "130 points",
-    value: 130
+    name: "Leah Alexandra's Love Token Square Necklace",
+    points: "230 points",
+    value: 230
   },
   {
-    name: "Kindle",
-    points: "100 points",
-    value: 100
-  },
-  {
-    name: "Amazon Echo Speaker",
-    points: "80 points",
-    value: 80
-  },
-  {
-    name: "Blueprint Hoodie",
-    points: "50 points",
-    value: 50
+    name: "TechStyle Sweater + TechStyle Totebag",
+    points: "200 points",
+    value: 200
   },
 ];
 
