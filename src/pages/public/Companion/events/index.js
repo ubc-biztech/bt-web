@@ -8,7 +8,7 @@ import MISLogo from "../../../../assets/2024/misnight/logo.svg";
 import MISNight2023 from "./MISNight2023";
 import Blueprint2024 from "./Blueprint2024";
 import BlueprintLanding from "../../../../assets/2024/blueprint/landing.png";
-import TechStyle2024 from "./TechStyle2024"
+import TechStyle2024 from "./TechStyle2024";
 import TechStyleLogo from "../../../../assets/2024/techstyle/techstyle_logo.png";
 import TechStyleTexture from "../../../../assets/2024/techstyle/techstyle_grid.png";
 import TSLogo from "../../../../assets/2024/techstyle/techstyle_biztech_logo.png";
@@ -18,7 +18,7 @@ export default [
     /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("03-06-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
     /* id of event in dynamodb, used for queries */
-    eventID: "blueprint",
+    eventID: "techstyle",
     /* year of event in dynamodb, used for queries */
     year: 2024,
     /* component for event body */ // keep the same

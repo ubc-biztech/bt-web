@@ -62,7 +62,7 @@ export default function PodiumStep({
       <motion.div
         style={{
           backgroundColor: "#8994a3",
-          boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.5)", 
+          boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.5)",
           borderTopLeftRadius: "3px",
           borderTopRightRadius: "3px",
           display: "flex",

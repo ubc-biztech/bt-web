@@ -387,14 +387,18 @@ const CompanionLayout = (params) => {
       >
         <div style={styles.modal}>
           <Typography className={classes.boldText} style={{
-            color: constantStyles.textColor}}>{input}</Typography>
+            color: constantStyles.textColor
+          }}>{input}</Typography>
           <Typography className={classes.errorText} style={{
-            color: constantStyles.textColor}}>{error}</Typography>
+            color: constantStyles.textColor
+          }}>{error}</Typography>
           <div style={styles.modalText}>
             <Typography className={classes.centerText} style={{
-              color: constantStyles.textColor}}>Are you sure you want to use this email....?</Typography>
+              color: constantStyles.textColor
+            }}>Are you sure you want to use this email?</Typography>
             <Typography className={classes.centerText} style={{
-              color: constantStyles.textColor}}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
+              color: constantStyles.textColor
+            }}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
           </div>
           <div style={styles.modalButtons}>
             <Button variant="contained" color="primary" disabled={isLoading} className={classes.button}
@@ -454,7 +458,10 @@ const CompanionLayout = (params) => {
                     alignItems: "center",
                     minHeight: "100vh",
                   }}>
-                    <img src={BiztechLogo} alt={`${title} Logo`} style={{ ...styles.introLogo, width: renderMobileOnly ? "60%" : "20%" }} />
+                    <img src={BiztechLogo} alt={`${title} Logo`} style={{
+                      ...styles.introLogo,
+                      width: renderMobileOnly ? "60%" : "20%"
+                    }} />
                     <Typography variant="h1" className={classes.boldText} style={{
                       color: constantStyles.textColor
                     }}>Welcome!</Typography>
@@ -510,7 +517,9 @@ const CompanionLayout = (params) => {
                       {welcomeData && !disableWelcomeHeader && <a href="#Welcome" className={classes.link} style={{
                         fontSize: constantStyles.fontSize
                       }}>Welcome</a>}
-                      {scheduleData && scheduleData.length > 0 && <a href="#Schedule" className={classes.link} style={{ fontSize: constantStyles.fontSize }}>Schedule</a>}
+                      {scheduleData && scheduleData.length > 0 && <a href="#Schedule" className={classes.link} style={{
+                        fontSize: constantStyles.fontSize
+                      }}>Schedule</a>}
                       {headers.map((header, i) => {
                         const lastTabItem = i === headers.length - 1 ? {
                           borderRight: "none"

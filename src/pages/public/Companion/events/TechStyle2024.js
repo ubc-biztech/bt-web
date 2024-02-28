@@ -39,7 +39,7 @@ const CustomAccordion = styled(Accordion)(({
     boxShadow: "none",
   };
 });
-  
+
 const projects = [
   {
     title: "ShipAI",
@@ -62,7 +62,7 @@ const projects = [
     image: "card3.png"
   }
 ];
-  
+
 const StyledAccordionSummary = styled(AccordionSummary)(() => {
   return {
     display: "flex",
@@ -70,7 +70,7 @@ const StyledAccordionSummary = styled(AccordionSummary)(() => {
     marginLeft: "48px !important",
   };
 });
-  
+
 const activities = [
   {
     name: "Early check-in",
@@ -109,7 +109,7 @@ const activities = [
     points: "20 points"
   },
 ];
-  
+
 const rewards = [
   {
     name: "Meta Quest",
@@ -137,41 +137,41 @@ const rewards = [
     value: 50
   },
 ];
-  
+
 const TechStyle2024 = (params) => {
   const {
     event, registrations, styles, renderMobileOnly, userRegistration
   } = params;
   const [websocket, setWebsocket] = useState(null);
   const [leaderboard, setLeaderboard] = useState();
-  
+
   const rewardsAscending = [...rewards].sort((a, b) => a?.value - b?.value);
   const nextGoal = rewardsAscending.find(reward => userRegistration?.points ? userRegistration?.points < reward?.value : true);
-  
+
   const [tabValue, setTabValue] = useState(0);
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-  
+
   const refetchLeaderboard = async () => {
     const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET", undefined, false);
     setLeaderboard(res);
   };
-  
+
   useEffect(() => {
     refetchLeaderboard();
   }, [event]);
-  
+
   useEffect(() => {
     try {
       // Establish WebSocket connection
       const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_API);
-  
+
       // WebSocket on open
       ws.onopen = () => {
         console.log("WebSocket connected");
       };
-  
+
       // WebSocket on message
       ws.onmessage = (event) => {
         // Handle WebSocket messages
@@ -179,7 +179,7 @@ const TechStyle2024 = (params) => {
         console.log("WebSocket message received:", data);
         refetchLeaderboard();
       };
-  
+
       // WebSocket on close
       ws.onclose = () => {
         console.log("WebSocket disconnected");
@@ -214,8 +214,8 @@ const TechStyle2024 = (params) => {
                 buildStyles({
                   textSize: "12px",
                   textColor: "black",
-                  pathColor: "#8994a3",
-                  trailColor: "#261946",
+                  pathColor: "black",
+                  trailColor: "#8994a3",
                   strokeLinecap: "butt"
                 })
               } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
@@ -234,14 +234,16 @@ const TechStyle2024 = (params) => {
           }}>
             <CustomAccordion>
               <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
-                expandIcon={<ExpandMoreIcon style={{color: "black"}}/>}>
+                expandIcon={<ExpandMoreIcon style={{
+                  color: "black"
+                }}/>}>
                 <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Points Activities</h1>
               </StyledAccordionSummary>
               <AccordionDetails>
                 <GamificationActivityTable activitiesProp={activities} textColor={"black"} backgroundColor={"rgba(255, 255, 255, 0.6)"}/>
               </AccordionDetails>
             </CustomAccordion>
-  
+
           </div>
           <div id="Rewards" style={{
             ...styles.column,
@@ -249,7 +251,9 @@ const TechStyle2024 = (params) => {
           }}>
             <CustomAccordion>
               <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
-                expandIcon={<ExpandMoreIcon style={{color: "black"}}/>}>
+                expandIcon={<ExpandMoreIcon style={{
+                  color: "black"
+                }}/>}>
                 <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Raffles</h1>
               </StyledAccordionSummary>
               <AccordionDetails>
@@ -257,49 +261,16 @@ const TechStyle2024 = (params) => {
               </AccordionDetails>
             </CustomAccordion>
           </div>
-          <div id="Showcase" style={styles.column}>
-            <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attendee Showcase</h1>
-            <span style={{
-              ...styles.text,
-              ...(renderMobileOnly && {
-                fontSize: constantStyles.mobileFontSize
-              })
-            }}>{"Vote for your favourite fashion design to earn points!"}</span>
-            <ScrollingCarousel style={{
-              columnGap: "5px"
-            }}>
-              {
-                projects.map((project, i) => {
-                  return <ShowcaseCard pos={i} key={i} title={project.title} image={project.image} members={project.members} link={project.link} desc={project.desc} />;
-                })
-              }
-            </ScrollingCarousel>
-            <FeedbackForm feedbackLink={VotingLink} renderMobileOnly={renderMobileOnly} styles={styles}/>
-            {/* <Swiper
-            spaceBetween={5}
-            navigation={true} modules={[Navigation]} 
-            pagination={{dynamicBullets: true,}} modules={[Pagination]}
-            >
-            {
-                projects.map((project, i) => {
-                return <SwiperSlide key={i}>
-                  <ShowcaseCard pos={i} key={i} title={project.title} image={project.image} members={project.members} link={project.link} desc={project.desc}/>
-                  </SwiperSlide>;
-                })
-              }
-          </Swiper> */}
-          </div>
           <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
-          <div id="Partners" style={styles.column}>
+          {/* <div id="Partners" style={styles.column}>
             <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attending Partners</h1>
-            {/* <img src={Companies} alt="Blueprint Partners" style={styles.partners} /> */}
-          </div>
+            <img src={Companies} alt="Blueprint Partners" style={styles.partners} />
+          </div> */}
         </div>
     }
   </>
   );
 };
-  
+
 export default TechStyle2024;
-  
-  
+
