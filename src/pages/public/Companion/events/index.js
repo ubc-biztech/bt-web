@@ -56,10 +56,6 @@ export default [
           id: "Leaderboard"
         },
         {
-          text: "Showcase",
-          id: "Showcase"
-        },
-        {
           text: "Mentors",
           id: "Mentors"
         }

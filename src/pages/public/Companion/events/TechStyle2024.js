@@ -19,18 +19,12 @@ import {
 import {
   styled
 } from "@material-ui/styles";
-import {
-  ScrollingCarousel
-} from "@trendyol-js/react-carousel";
 import Sched from "../../../../assets/2024/techstyle/techstyle_schedule.png";
 import Mentors from "../components/mentor/Mentors";
 import Podium from "../components/Podium";
 import GamificationActivityTable from "../components/GamificationActivityTable";
 import GamificationRewardTable from "../components/GamificationRewardTable";
-import ShowcaseCard from "../components/ShowcaseCard";
-import FeedbackForm from "../components/FeedbackForm";
 
-const VotingLink = "https://docs.google.com/forms/d/e/1FAIpQLSeLmzRHnr48NHsY_rgXlvJOsbxu-X1ehAWuSFrDyOw7WwKqPg/viewform?usp=sf_link";
 const CustomAccordion = styled(Accordion)(({
   theme
 }) => {
@@ -39,29 +33,6 @@ const CustomAccordion = styled(Accordion)(({
     boxShadow: "none",
   };
 });
-
-const projects = [
-  {
-    title: "ShipAI",
-    desc: "3 words to describe",
-    members: "James Shi, Serena Ge, Charley Lee",
-    link: "https://unclegpt.app",
-    image: "card1.png"
-  },
-  {
-    title: "Gruwup",
-    desc: "3 words to describe",
-    members: "Sijan Poudel, Kaleb Hui, Jerry Shao, Grant Li",
-    link: "https://drive.google.com/drive/u/1/folders/1C2Ap7VbVOHJYZxZ1hF5239o_adyMEDHf",
-    image: "card2.png"
-  },
-  {
-    title: "Marketing Job Portal",
-    desc: "3 words to describe",
-    members: "Indira Sowy, Eric Lu, James Shi",
-    image: "card3.png"
-  }
-];
 
 const StyledAccordionSummary = styled(AccordionSummary)(() => {
   return {
@@ -86,7 +57,7 @@ const activities = [
   },
   {
     name: "Attend a workshop",
-    points: "25 points each"
+    points: "25 points"
   },
   {
     name: "Take a photo at the red carpet",
@@ -97,15 +68,23 @@ const activities = [
     points: "25 points"
   },
   {
-    name: "Vote for \"Most Stylish Outfit\" from Digital Wardrobe Icebreaker",
-    points: "35 points"
-  },
-  {
     name: "Go shopping (can only redeem once)",
     points: "20 points"
   },
   {
-    name: "Visit a product showcase booth (can only redeem once)",
+    name: "Decorate your landyard",
+    points: "20 points"
+  },
+  {
+    name: "Scan a BizTech member's QR code during Fashion Bingo (can only redeem once)",
+    points: "15 points"
+  },
+  {
+    name: "Visit the BizTech booth",
+    points: "15 points"
+  },
+  {
+    name: "Get your drawing done at the fashion illustration booth",
     points: "20 points"
   },
 ];
@@ -113,18 +92,18 @@ const activities = [
 const rewards = [
   {
     name: "Lululemon Giftcard",
-    points: "310 points",
-    value: 310
+    points: "220 points",
+    value: 220
   },
   {
     name: "Leah Alexandra's Love Token Square Necklace",
-    points: "230 points",
-    value: 230
+    points: "150 points",
+    value: 150
   },
   {
     name: "TechStyle Sweater + TechStyle Totebag",
-    points: "200 points",
-    value: 200
+    points: "100 points",
+    value: 100
   },
 ];
 
@@ -137,11 +116,6 @@ const TechStyle2024 = (params) => {
 
   const rewardsAscending = [...rewards].sort((a, b) => a?.value - b?.value);
   const nextGoal = rewardsAscending.find(reward => userRegistration?.points ? userRegistration?.points < reward?.value : true);
-
-  const [tabValue, setTabValue] = useState(0);
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
 
   const refetchLeaderboard = async () => {
     const res = await fetchBackend(`/registrations/leaderboard/?eventID=${event?.id}&year=${event?.year}`, "GET", undefined, false);
@@ -208,7 +182,7 @@ const TechStyle2024 = (params) => {
                   trailColor: "#8994a3",
                   strokeLinecap: "butt"
                 })
-              } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />;
+              } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />
             </div>
             <span style={{
               ...styles.text,
@@ -244,7 +218,7 @@ const TechStyle2024 = (params) => {
                 expandIcon={<ExpandMoreIcon style={{
                   color: "black"
                 }}/>}>
-                <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Raffles</h1>
+                <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Prizes</h1>
               </StyledAccordionSummary>
               <AccordionDetails>
                 <GamificationRewardTable rewardsProp={rewards} textColor={"black"} backgroundColor={"rgba(255, 255, 255, 0.6)"}/>

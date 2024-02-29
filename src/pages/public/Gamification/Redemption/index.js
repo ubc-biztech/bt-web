@@ -22,7 +22,7 @@ import {
 import Loading from "pages/Loading";
 
 import BizTechDBLogo from "assets/2024/techstyle/techstyle_biztech_logo.png";
-import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
+// import SuccessAnimation from "assets/2023/blueprint/97240-success.json";
 import ErrorAnimation from "assets/2023/blueprint/97670-tomato-error.json";
 import DressAnimation from "assets/2024/techstyle/DressAnimation.json";
 import {
