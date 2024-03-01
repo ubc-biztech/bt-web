@@ -326,7 +326,7 @@ const CompanionLayout = (params) => {
 
   const [input, setInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [transition, setShowTransition] = useState(true);
+  const [transition, setShowTransition] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
   const videoRef = useRef();
@@ -548,7 +548,7 @@ const CompanionLayout = (params) => {
                 }}> </div>
                 {event && event.isCompleted && event.feedback ?
                   <FadeInWhenVisible>
-                    <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} headerText={"Thanks for attending!"}/>
+                    <FeedbackForm feedbackLink={event.feedback} renderMobileOnly={renderMobileOnly} styles={styles} headerText={"Thanks for attending!"} />
                   </FadeInWhenVisible> : <></>}
                 <FadeInWhenVisible id="welcome" style={styles.column}>
                   {landing && <img src={landing}

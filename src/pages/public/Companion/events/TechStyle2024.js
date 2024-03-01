@@ -48,7 +48,7 @@ const activities = [
     points: "25 points"
   },
   {
-    name: "Scan a Linkedin QR Code on a professional's name tag (can only redeem once)",
+    name: "Vote for best outfit",
     points: "15 points"
   },
   {
@@ -163,74 +163,74 @@ const TechStyle2024 = (params) => {
   }, []); // Only runs on component mount and unmount
   return (<>
     {event && registrations &&
-        <div>
-          <div id="Schedule" style={styles.column}>
-            <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Schedule</h1>
-            {renderMobileOnly ? <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.scheduleMobile : styles.schedule} />
-              : <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.scheduleMobile : styles.schedule} />}
-          </div>
-          <div id="Leaderboard" style={styles.column}>
-            <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Your Points</h1>
-            <div style={{
-              width: renderMobileOnly ? "60%" : "20%"
-            }}>
-              <CircularProgressbar styles={
-                buildStyles({
-                  textSize: "12px",
-                  textColor: "black",
-                  pathColor: "black",
-                  trailColor: "#8994a3",
-                  strokeLinecap: "butt"
-                })
-              } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />
-            </div>
-            <span style={{
-              ...styles.text,
-              ...(renderMobileOnly && {
-                fontSize: constantStyles.mobileFontSize
+      <div>
+        <div id="Schedule" style={styles.column}>
+          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Schedule</h1>
+          {renderMobileOnly ? <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.scheduleMobile : styles.schedule} />
+            : <img src={Sched} alt="Schedule" style={renderMobileOnly ? styles.scheduleMobile : styles.schedule} />}
+        </div>
+        <div id="Leaderboard" style={styles.column}>
+          <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Your Points</h1>
+          <div style={{
+            width: renderMobileOnly ? "60%" : "20%"
+          }}>
+            <CircularProgressbar styles={
+              buildStyles({
+                textSize: "12px",
+                textColor: "black",
+                pathColor: "black",
+                trailColor: "#8994a3",
+                strokeLinecap: "butt"
               })
-            }}>{nextGoal ? `Only ${nextGoal?.value - userRegistration?.points} points away from a ${nextGoal?.name} entry!` : "You're eligible for all entries! See if you can top the leaderboards 👀"}</span>
-            {leaderboard && <Podium winners={leaderboard} />}
+            } value={nextGoal ? (userRegistration?.points / nextGoal?.value) * 100 : 100} text={`${userRegistration?.points ? userRegistration?.points : 0} points`} />
           </div>
-          <div id="Activities" style={{
-            ...styles.column,
-            width: "90%"
-          }}>
-            <CustomAccordion>
-              <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
-                expandIcon={<ExpandMoreIcon style={{
-                  color: "black"
-                }}/>}>
-                <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Points Activities</h1>
-              </StyledAccordionSummary>
-              <AccordionDetails>
-                <GamificationActivityTable activitiesProp={activities} textColor={"black"} backgroundColor={"rgba(255, 255, 255, 0.6)"}/>
-              </AccordionDetails>
-            </CustomAccordion>
+          <span style={{
+            ...styles.text,
+            ...(renderMobileOnly && {
+              fontSize: constantStyles.mobileFontSize
+            })
+          }}>{nextGoal ? `Only ${nextGoal?.value - userRegistration?.points} points away from a ${nextGoal?.name} entry!` : "You're eligible for all entries! See if you can top the leaderboards 👀"}</span>
+          {leaderboard && <Podium winners={leaderboard} />}
+        </div>
+        <div id="Activities" style={{
+          ...styles.column,
+          width: "90%"
+        }}>
+          <CustomAccordion>
+            <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
+              expandIcon={<ExpandMoreIcon style={{
+                color: "black"
+              }} />}>
+              <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Points Activities</h1>
+            </StyledAccordionSummary>
+            <AccordionDetails>
+              <GamificationActivityTable activitiesProp={activities} textColor={"black"} backgroundColor={"rgba(255, 255, 255, 0.6)"} />
+            </AccordionDetails>
+          </CustomAccordion>
 
-          </div>
-          <div id="Rewards" style={{
-            ...styles.column,
-            width: "90%"
-          }}>
-            <CustomAccordion>
-              <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
-                expandIcon={<ExpandMoreIcon style={{
-                  color: "black"
-                }}/>}>
-                <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Prizes</h1>
-              </StyledAccordionSummary>
-              <AccordionDetails>
-                <GamificationRewardTable rewardsProp={rewards} textColor={"black"} backgroundColor={"rgba(255, 255, 255, 0.6)"}/>
-              </AccordionDetails>
-            </CustomAccordion>
-          </div>
-          <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
-          {/* <div id="Partners" style={styles.column}>
+        </div>
+        <div id="Rewards" style={{
+          ...styles.column,
+          width: "90%"
+        }}>
+          <CustomAccordion>
+            <StyledAccordionSummary id="panel-header" aria-controls="panel-content"
+              expandIcon={<ExpandMoreIcon style={{
+                color: "black"
+              }} />}>
+              <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Prizes</h1>
+            </StyledAccordionSummary>
+            <AccordionDetails>
+              <GamificationRewardTable rewardsProp={rewards} textColor={"black"} backgroundColor={"rgba(255, 255, 255, 0.6)"} />
+            </AccordionDetails>
+          </CustomAccordion>
+        </div>
+        <Mentors id="Mentors" event={event} registrations={registrations} styles={styles} />
+        {/* <div id="Partners" style={styles.column}>
             <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Attending Partners</h1>
             <img src={Companies} alt="Blueprint Partners" style={styles.partners} />
           </div> */}
-        </div>
+      </div>
     }
   </>
   );
