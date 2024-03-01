@@ -29,6 +29,8 @@ export default function PodiumStep({
         placeContent: "end",
         width: "100%",
         height: `${((4 - position) / 4) * 100}%`,
+        marginRight: "0.15em",
+        marginLeft: "0.15em",
       }}
     >
       <motion.div
@@ -54,16 +56,13 @@ export default function PodiumStep({
       >
         <div style={{
           fontWeight: "bold",
-          color: "white"
+          color: "black"
         }}>{winner.fname} {winner.lname}</div>
       </motion.div>
       <motion.div
         style={{
-          backgroundColor: "white",
-          borderImage: "linear-gradient(270deg, #FFFFFF, #FFEAFB, #FFE0F9) 30",
-          borderWidth: "6px 6px 0 6px",
-          borderStyle: "solid",
-          boxShadow: "1.58637px 1.58637px 3.17274px rgba(114, 142, 171, 0.1), -5.75912px -5.75912px 20.8637px #FFFFFF, 3.17274px 3.17274px 20.8637px rgba(111, 140, 176, 0.41)",
+          backgroundColor: "#8994a3",
+          boxShadow: "0px 0px 5px 0px rgba(0, 0, 0, 0.5)",
           borderTopLeftRadius: "3px",
           borderTopRightRadius: "3px",
           display: "flex",
@@ -92,12 +91,13 @@ export default function PodiumStep({
         }}
       >
         {winner.points}
-        <span style={{
+        {/* <span style={{
           alignSelf: "flex-end",
-          color: "white"
+          color: "white",
+          textAlign: "center",
         }}>
           {position + 1}
-        </span>
+        </span> */}
       </motion.div>
     </div>
   );

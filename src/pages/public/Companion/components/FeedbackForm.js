@@ -4,14 +4,15 @@ const FeedbackForm = (props) => {
   const {
     feedbackLink,
     renderMobileOnly,
-    styles
+    styles,
+    headerText
   } = props;
 
   return (
     <div id="FeedbackForm" style={{
       ... styles.column
     }}>
-      <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>Thanks for attending!</h1>
+      <h1 style={renderMobileOnly ? styles.mobileTitle : styles.title}>{headerText}</h1>
       <div id="FeedbackIFrameContainer" style={styles.feedbackIFrameContainer }>
         {feedbackLink && (
           <iframe

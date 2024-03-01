@@ -23,7 +23,7 @@ const rewardsDefault = [
 ];
 
 function GamificationRewardTable({
-  rewardsProp
+  rewardsProp, textColor, backgroundColor
 }) {
   const rewards = rewardsProp || rewardsDefault;
   return (
@@ -32,7 +32,7 @@ function GamificationRewardTable({
         width: "100%"
       }}>
         <TableContainer component={Paper} style={{
-          backgroundColor: "transparent",
+          backgroundColor: backgroundColor || "transparent",
           marginTop: "10px",
           marginBottom: "10px"
         }}>
@@ -40,11 +40,11 @@ function GamificationRewardTable({
             <TableHead>
               <TableRow>
                 <TableCell style={{
-                  color: "white",
+                  color: textColor || "white",
                   fontWeight: "bold"
                 }}>Reward</TableCell>
                 <TableCell align="right" style={{
-                  color: "white",
+                  color: textColor || "white",
                   fontWeight: "bold"
                 }}>Points</TableCell>
               </TableRow>
@@ -53,12 +53,12 @@ function GamificationRewardTable({
               {rewards.map((reward, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row" style={{
-                    color: "white"
+                    color: textColor || "white",
                   }}>
                     {reward.name}
                   </TableCell>
                   <TableCell align="right" style={{
-                    color: "white"
+                    color: textColor || "white",
                   }}><b>{reward.points}</b></TableCell>
                 </TableRow>
               ))}
