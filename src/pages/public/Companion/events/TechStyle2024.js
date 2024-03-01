@@ -44,7 +44,7 @@ const StyledAccordionSummary = styled(AccordionSummary)(() => {
 
 const activities = [
   {
-    name: "Early check-in",
+    name: "Early check-in (before 9:40 am)",
     points: "25 points"
   },
   {
@@ -84,7 +84,7 @@ const activities = [
     points: "15 points"
   },
   {
-    name: "Get your drawing done at the fashion illustration booth",
+    name: "Upload a photo onto your social media of TechStyle",
     points: "20 points"
   },
 ];
