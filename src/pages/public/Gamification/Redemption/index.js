@@ -32,6 +32,7 @@ import {
   constantStyles
 } from "../../../../constants/_constants/companion";
 import TechStyleTexture from "assets/2024/techstyle/techstyle_grid.png";
+import CAPITALIZED_EMAILS from "../../../../constants/_constants/emails";
 
 const styles = {
   container: {
@@ -229,7 +230,7 @@ const Redemption = ({
   history, location
 }) => {
   const [input, setInput] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmailFunc] = useState("");
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [isNegativeQRModalOpen, setNegativeQRModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -296,6 +297,22 @@ const Redemption = ({
   };
 
   const checkEmail = () => registrations.some((entry) => entry.id === email);
+
+  const setEmail = (email) => {
+    const realEmail = getRealEmail(email.toLowerCase());
+    if (realEmail) {
+      setEmailFunc(realEmail);
+    } else {
+      setEmailFunc(email.toLowerCase());
+    }
+  };
+
+  const getRealEmail = (email) => {
+    const res = CAPITALIZED_EMAILS.find(emailObj => emailObj.lowercaseEmail === email);
+    if (res) {
+      return res.email;
+    }
+  };
 
   const submitEmail = async () => {
     setIsLoading(true);
