@@ -48,7 +48,7 @@ const activities = [
     points: "25 points"
   },
   {
-    name: "Vote for best outfit",
+    name: "Vote for best outfit (Biztech Booth)",
     points: "15 points"
   },
   {
@@ -84,8 +84,12 @@ const activities = [
     points: "15 points"
   },
   {
-    name: "Upload a photo onto your social media of TechStyle",
+    name: "Upload a photo onto your social media of TechStyle (redeem at Biztech Booth)",
     points: "20 points"
+  },
+  {
+    name: "Donate to Leukemia and Lymphoma Society of Canada!",
+    points: "25 points"
   },
 ];
 
@@ -99,6 +103,11 @@ const rewards = [
     name: "Leah Alexandra's Love Token Square Necklace",
     points: "150 points",
     value: 150
+  },
+  {
+    name: "MadeByMieuon Jewlery x1, & Kng Studios Sweater & Totebag",
+    points: "125 points",
+    value: 125
   },
   {
     name: "TechStyle Sweater + TechStyle Totebag",
