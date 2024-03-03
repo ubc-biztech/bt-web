@@ -96,23 +96,23 @@ const activities = [
 const rewards = [
   {
     name: "Lululemon Giftcard",
-    points: "220 points",
-    value: 220
+    points: "160 points",
+    value: 160
   },
   {
     name: "Leah Alexandra's Love Token Square Necklace",
-    points: "150 points",
-    value: 150
+    points: "140 points",
+    value: 140
   },
   {
     name: "MadeByMieuon Jewlery x1, & Kng Studios Sweater & Totebag",
-    points: "125 points",
-    value: 125
+    points: "115 points",
+    value: 115
   },
   {
     name: "TechStyle Sweater + TechStyle Totebag",
-    points: "100 points",
-    value: 100
+    points: "80 points",
+    value: 80
   },
 ];
 
