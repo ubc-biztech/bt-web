@@ -87,6 +87,10 @@ const activities = [
     name: "Upload a photo onto your social media of TechStyle (redeem at Biztech Booth)",
     points: "20 points"
   },
+  {
+    name: "Donate to Leukemia and Lymphoma Society of Canada!",
+    points: "20 points"
+  },
 ];
 
 const rewards = [
@@ -99,6 +103,11 @@ const rewards = [
     name: "Leah Alexandra's Love Token Square Necklace",
     points: "150 points",
     value: 150
+  },
+  {
+    name: "MadeByMieuon Jewlery x1, & Kng Studios Sweater & Totebag",
+    points: "125 points",
+    value: 125
   },
   {
     name: "TechStyle Sweater + TechStyle Totebag",
