@@ -48,7 +48,7 @@ const activities = [
     points: "25 points"
   },
   {
-    name: "Vote for best outfit",
+    name: "Vote for best outfit (Biztech Booth)",
     points: "15 points"
   },
   {
@@ -84,7 +84,7 @@ const activities = [
     points: "15 points"
   },
   {
-    name: "Upload a photo onto your social media of TechStyle",
+    name: "Upload a photo onto your social media of TechStyle (Biztech Booth)",
     points: "20 points"
   },
 ];
