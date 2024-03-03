@@ -84,7 +84,7 @@ const activities = [
     points: "15 points"
   },
   {
-    name: "Upload a photo onto your social media of TechStyle (Biztech Booth)",
+    name: "Upload a photo onto your social media of TechStyle (redeem at Biztech Booth)",
     points: "20 points"
   },
 ];
