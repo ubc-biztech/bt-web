@@ -89,7 +89,7 @@ const activities = [
   },
   {
     name: "Donate to Leukemia and Lymphoma Society of Canada!",
-    points: "20 points"
+    points: "25 points"
   },
 ];
 
