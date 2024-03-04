@@ -531,7 +531,7 @@ export class EventStatsTable extends Component {
               onClose={this.toggleMassUpdateModal}
               eventID={this.props.event.id}
               eventYear={this.props.event.year}
-              refreshTable={this.refreshTable}
+              refreshTable={() => this.refreshTable()}
             />
           )}
 
