@@ -25,9 +25,10 @@ const MassUpdateModal = ({
   const handleSubmit = async () => {
     const emails = emailList.split(",").map((email) => email.trim());
     const updates = emails.map((email) => ({
-      email: email,
-      fname: "User", // TODO !!! Figure out how to get fname using email
-      status: selectedStatus
+      email,
+      // Placeholder for fname
+      fname: "s",
+      applicationStatus: selectedStatus
     }));
 
     const data = {
@@ -38,7 +39,7 @@ const MassUpdateModal = ({
     try {
       await fetchBackend("/registrations/massUpdate", "PUT", data);
       alert("Update successful");
-      refreshTable();
+      // refreshTable();
       onClose();
     } catch (error) {
       console.error("Update failed:", error);
