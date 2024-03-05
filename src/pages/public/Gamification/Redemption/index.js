@@ -32,7 +32,6 @@ import {
   constantStyles
 } from "../../../../constants/_constants/companion";
 import TechStyleTexture from "assets/2024/techstyle/techstyle_grid.png";
-import CAPITALIZED_EMAILS from "../../../../constants/_constants/emails";
 
 const styles = {
   container: {
@@ -230,16 +229,16 @@ const Redemption = ({
   history, location
 }) => {
   const [input, setInput] = useState("");
-  const [email, setEmailFunc] = useState("");
+  const [email, setEmail] = useState("");
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [isNegativeQRModalOpen, setNegativeQRModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSuccessAnimationFinished, setIsSuccessAnimationFinished] =
-		useState(false);
+    useState(false);
   const [isErrorAnimationFinished, setIsErrorAnimationFinished] =
-		useState(false);
+    useState(false);
   const [isNegativeQRPointsConfirmed, setIsNegativeQRPointsConfirmed] =
-		useState(false);
+    useState(false);
   const [registrations, setRegistrations] = useState([]);
   const [error, setError] = useState("");
 
@@ -262,15 +261,15 @@ const Redemption = ({
   const id = qrID.slice(6);
   const links = {
     "data-challenge-1":
-			"https://docs.google.com/forms/d/e/1FAIpQLScdJC-w2ypk9109ud-77VfgK4srdaujYeE8LBFXkbHf8fhY0w/viewform",
+      "https://docs.google.com/forms/d/e/1FAIpQLScdJC-w2ypk9109ud-77VfgK4srdaujYeE8LBFXkbHf8fhY0w/viewform",
     "data-challenge-2":
-			"https://docs.google.com/forms/d/e/1FAIpQLSdAmNcw4iwlsIej01iOOte7QVpTC3gBUU99zTrP88STCMtetQ/viewform",
+      "https://docs.google.com/forms/d/e/1FAIpQLSdAmNcw4iwlsIej01iOOte7QVpTC3gBUU99zTrP88STCMtetQ/viewform",
     "data-challenge-3":
-			"https://docs.google.com/forms/d/e/1FAIpQLSdpbfthDx27LrMzyvMkK_W9jFytG5D4805qNNDY26VCQKmnKQ/viewform",
+      "https://docs.google.com/forms/d/e/1FAIpQLSdpbfthDx27LrMzyvMkK_W9jFytG5D4805qNNDY26VCQKmnKQ/viewform",
     "data-challenge-4":
-			"https://docs.google.com/forms/d/e/1FAIpQLSedwv5fsVU99OJrgIu5HozWoMM06C0xkULP3vT4u_quv5HVWw/viewform",
+      "https://docs.google.com/forms/d/e/1FAIpQLSedwv5fsVU99OJrgIu5HozWoMM06C0xkULP3vT4u_quv5HVWw/viewform",
     "data-challenge-5":
-			"https://docs.google.com/forms/d/e/1FAIpQLSf3tESUF_w_4JK7H9ngtg9oqcl7ld4hGssIcr6dl1zGtedAgA/viewform"
+      "https://docs.google.com/forms/d/e/1FAIpQLSf3tESUF_w_4JK7H9ngtg9oqcl7ld4hGssIcr6dl1zGtedAgA/viewform"
   };
 
   const fetchRegistrations = async () => {
@@ -296,27 +295,11 @@ const Redemption = ({
       });
   };
 
-  const checkEmail = () => registrations.some((entry) => entry.id === email);
-
-  const setEmail = (email) => {
-    const realEmail = getRealEmail(email.toLowerCase());
-    if (realEmail) {
-      setEmailFunc(realEmail);
-    } else {
-      setEmailFunc(email.toLowerCase());
-    }
-  };
-
-  const getRealEmail = (email) => {
-    const res = CAPITALIZED_EMAILS.find(emailObj => emailObj.lowercaseEmail === email);
-    if (res) {
-      return res.email;
-    }
-  };
 
   const submitEmail = async () => {
     setIsLoading(true);
-    if (checkEmail()) {
+    const reg = registrations.find((entry) => entry.id.toLowerCase() === email.toLowerCase());
+    if (reg) {
       await fetchBackend(
         "/qrscan",
         "POST",
@@ -324,13 +307,13 @@ const Redemption = ({
           qrCodeID: qrID === "pTbLt-View the attendee showcase" ? "pTbLt-View the attendee showcase & vote for a personal project!" : qrID,
           eventID,
           year: Number(year),
-          email,
+          email: reg.id,
           negativePointsConfirmed: isNegativeQRPointsConfirmed
         },
         false
       )
         .then((res) => {
-          localStorage.setItem("companionEmail", email);
+          localStorage.setItem("companionEmail", reg.id);
           setQRMetaData(res.response.qr_data);
           determinePointsAwardedText(res.response.redeemed_points);
           determineCongratText(res.response.first_name);
@@ -424,28 +407,28 @@ const Redemption = ({
 
   const handleQrScanError = (err) => {
     switch (err.status) {
-    case 405:
-      determinePointsAwardedText(err.message.qr_points);
-      setNegativeQRModalOpen(true);
-      break;
-    case 406:
-      setError("You do not have sufficient funds to make this purchase.");
-      break;
-    default:
-      if (
-        err.message.message &&
-					err.message.message.includes("already scanned")
-      ) {
-        // TEMPORARY for Blueprint: remove this conditional branch once we have a better way to handle this
-        // this is neccessary because the backend error message for already scanned QRs is not
-        // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
-        setError(
-          "This code is already scanned and can only be redeemed once."
-        );
-      } else {
-        setError(err.message.message);
-      }
-      break;
+      case 405:
+        determinePointsAwardedText(err.message.qr_points);
+        setNegativeQRModalOpen(true);
+        break;
+      case 406:
+        setError("You do not have sufficient funds to make this purchase.");
+        break;
+      default:
+        if (
+          err.message.message &&
+          err.message.message.includes("already scanned")
+        ) {
+          // TEMPORARY for Blueprint: remove this conditional branch once we have a better way to handle this
+          // this is neccessary because the backend error message for already scanned QRs is not
+          // user friendly: "ERROR: Team QR code already scanned and is not an unlimited scan QR code"
+          setError(
+            "This code is already scanned and can only be redeemed once."
+          );
+        } else {
+          setError(err.message.message);
+        }
+        break;
     }
     console.log(err);
   };
@@ -463,11 +446,11 @@ const Redemption = ({
           <Typography className={classes.errorText}>{error}</Typography>
           <div style={styles.modalText}>
             <Typography className={classes.centerText}>
-							Are you sure you want to use this email?
+              Are you sure you want to use this email?
             </Typography>
             <Typography className={classes.centerText}>
-							Once you confirm, you will not be able to change this, and all
-							future points at the event will be redeemed to this email.
+              Once you confirm, you will not be able to change this, and all
+              future points at the event will be redeemed to this email.
             </Typography>
           </div>
           <div style={styles.modalButtons}>
@@ -480,7 +463,7 @@ const Redemption = ({
                 setEmail(input);
               }}
             >
-							Yes
+              Yes
             </Button>
             <Button
               variant="contained"
@@ -493,7 +476,7 @@ const Redemption = ({
                 setIsEmailModalOpen(false);
               }}
             >
-							No
+              No
             </Button>
           </div>
         </motion.div>
@@ -515,11 +498,11 @@ const Redemption = ({
             }}
           />
           <Typography className={classes.boldText}>
-						You are about to spend {negativePointsAwardedText}
+            You are about to spend {negativePointsAwardedText}
           </Typography>
           <div style={styles.modalText}>
             <Typography className={classes.centerText}>
-							Confirm this purchase
+              Confirm this purchase
             </Typography>
           </div>
           <div>
@@ -533,7 +516,7 @@ const Redemption = ({
                 setIsNegativeQRPointsConfirmed(true);
               }}
             >
-							Yes
+              Yes
             </Button>
             <Button
               variant="contained"
@@ -545,7 +528,7 @@ const Redemption = ({
                 setNegativeQRModalOpen(false);
               }}
             >
-							No
+              No
             </Button>
           </div>
         </motion.div>
@@ -573,145 +556,145 @@ const Redemption = ({
           {email ? (
             <>
               {!isSuccessAnimationFinished &&
-								!isErrorAnimationFinished &&
-								!isEmailModalOpen ? (
-                  <div style={styles.successContainer}>
+                !isErrorAnimationFinished &&
+                !isEmailModalOpen ? (
+                <div style={styles.successContainer}>
+                  {error ? (
+                    <Lottie
+                      animationData={ErrorAnimation}
+                      onLoopComplete={finishError}
+                    />
+                  ) : (
+                    <Lottie
+                      animationData={DressAnimation}
+                      onLoopComplete={finishSuccess}
+                    />
+                  )}
+                  ;
+                </div>
+              ) : (
+                <>
+                  <motion.div
+                    style={styles.successContainer}
+                    initial={{
+                      opacity: 0,
+                      scale: 0.5
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <img
+                      src={BizTechDBLogo}
+                      alt="Blueprint Logo"
+                      style={{
+                        width: "60%",
+                        height: "auto",
+                        marginBottom: 20
+                      }}
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    style={styles.successContainer}
+                    initial={{
+                      opacity: 0,
+                      scale: 0.5
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      ease: "easeOut"
+                    }}
+                  >
                     {error ? (
-                      <Lottie
-                        animationData={ErrorAnimation}
-                        onLoopComplete={finishError}
-                      />
-                    ) : (
-                      <Lottie
-                        animationData={DressAnimation}
-                        onLoopComplete={finishSuccess}
-                      />
-                    )}
-									;
-                  </div>
-                ) : (
-                  <>
-                    <motion.div
-                      style={styles.successContainer}
-                      initial={{
-                        opacity: 0,
-                        scale: 0.5
-                      }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        ease: "easeOut"
-                      }}
-                    >
-                      <img
-                        src={BizTechDBLogo}
-                        alt="Blueprint Logo"
-                        style={{
-                          width: "60%",
-                          height: "auto",
-                          marginBottom: 20
-                        }}
-                      />
-                    </motion.div>
-
-                    <motion.div
-                      style={styles.successContainer}
-                      initial={{
-                        opacity: 0,
-                        scale: 0.5
-                      }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        ease: "easeOut"
-                      }}
-                    >
-                      {error ? (
-                        <Typography
-                          className={classes.themeText}
-                          style={{
-                            margin: "20px 0"
-                          }}
-                        >
-                          {error}
-                        </Typography>
-                      ) : (
-                        <>
-                          <Typography className={classes.welcome}>
-                            {congratNameText}
-                          </Typography>
-
-                          <Typography className={classes.themeText}>
-                            {congratSuffixText}
-                          </Typography>
-
-                          <Typography
-                            className={classes.pointsText}
-                            style={{
-                              margin: "20px 0"
-                            }}
-                          >
-                            {pointsAwardedText}
-                          </Typography>
-                        </>
-                      )}
-                    </motion.div>
-
-                    <motion.div
-                      style={styles.successContainer}
-                      initial={{
-                        opacity: 0,
-                        scale: 0.5
-                      }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1
-                      }}
-                      transition={{
-                        duration: 0.6,
-                        ease: "easeOut"
-                      }}
-                    >
-                      {links[id] && (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="large"
-                          className={classes.DBButton}
-                          onClick={() => {
-                            window.open(links[id]);
-                          }}
-                        >
-												Proceed to Challenge
-                        </Button>
-                      )}
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        onClick={() => {
-                          history.push("/companion");
-                        }}
-                      >
-											Return to Companion
-                      </Button>
                       <Typography
                         className={classes.themeText}
                         style={{
                           margin: "20px 0"
                         }}
                       >
-                        {timestampText}
+                        {error}
                       </Typography>
-                    </motion.div>
-                  </>
-                )}
+                    ) : (
+                      <>
+                        <Typography className={classes.welcome}>
+                          {congratNameText}
+                        </Typography>
+
+                        <Typography className={classes.themeText}>
+                          {congratSuffixText}
+                        </Typography>
+
+                        <Typography
+                          className={classes.pointsText}
+                          style={{
+                            margin: "20px 0"
+                          }}
+                        >
+                          {pointsAwardedText}
+                        </Typography>
+                      </>
+                    )}
+                  </motion.div>
+
+                  <motion.div
+                    style={styles.successContainer}
+                    initial={{
+                      opacity: 0,
+                      scale: 0.5
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      ease: "easeOut"
+                    }}
+                  >
+                    {links[id] && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        className={classes.DBButton}
+                        onClick={() => {
+                          window.open(links[id]);
+                        }}
+                      >
+                        Proceed to Challenge
+                      </Button>
+                    )}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      onClick={() => {
+                        history.push("/companion");
+                      }}
+                    >
+                      Return to Companion
+                    </Button>
+                    <Typography
+                      className={classes.themeText}
+                      style={{
+                        margin: "20px 0"
+                      }}
+                    >
+                      {timestampText}
+                    </Typography>
+                  </motion.div>
+                </>
+              )}
             </>
           ) : (
             <>
@@ -726,8 +709,8 @@ const Redemption = ({
               <div style={styles.inputContainer}>
                 <Typography className={classes.welcome}>Welcome!</Typography>
                 <Typography className={classes.themeText}>
-									To redeem points, please enter the email you used to register
-									for the event.
+                  To redeem points, please enter the email you used to register
+                  for the event.
                 </Typography>
                 <TextField
                   className={classes.textfield}
@@ -746,7 +729,7 @@ const Redemption = ({
                     setIsEmailModalOpen(true);
                   }}
                 >
-									Confirm
+                  Confirm
                 </Button>
               </div>
             </>
