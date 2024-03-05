@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, {
+  useState
+} from "react";
 import {
   Dialog,
   DialogTitle,
@@ -9,8 +11,12 @@ import {
   DialogActions,
   Button
 } from "@material-ui/core";
-import { APPLICATION_STATUS } from "constants/_constants/eventStatsStatusFields";
-import { fetchBackend } from "utils";
+import {
+  APPLICATION_STATUS
+} from "constants/_constants/eventStatsStatusFields";
+import {
+  fetchBackend
+} from "utils";
 
 const MassUpdateModal = ({
   open,
@@ -22,30 +28,82 @@ const MassUpdateModal = ({
   const [emailList, setEmailList] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
 
-  const handleSubmit = async () => {
-    const emails = emailList.split(",").map((email) => email.trim());
-    const updates = emails.map((email) => ({
-      email,
-      // Placeholder for fname
-      fname: "s",
-      applicationStatus: selectedStatus
-    }));
-
-    const data = {
-      eventID,
-      eventYear,
-      updates
-    };
+  const fetchFnameByEmail = async (email) => {
     try {
-      await fetchBackend("/registrations/massUpdate", "PUT", data);
-      alert("Update successful");
-      // refreshTable();
-      onClose();
+      console.log("calling fname");
+      const response = await fetchBackend(`/members/${email}/fname`, "GET");
+      console.log("call fname complete");
+      if (response.firstName) {
+        return response.firstName;
+      } else {
+        throw new Error(`First name not found for email: ${email}`);
+      }
     } catch (error) {
-      console.error("Update failed:", error);
-      alert(`Failed: ${error.message}`);
+      console.error("Error fetching fname for email:", email, error);
+      throw new Error(`Failed to fetch fname for email: ${email}`);
     }
   };
+
+  const handleSubmit = async () => {
+    const emails = emailList.split(",").map((email) => email.trim());
+
+    try {
+      const updates = await Promise.all(emails.map(async (email) => {
+        const fname = await fetchFnameByEmail(email);
+        return {
+          email,
+          fname,
+          applicationStatus: selectedStatus
+        };
+      }));
+
+      const data = {
+        eventID,
+        eventYear,
+        updates
+      };
+
+      await fetchBackend("/registrations/massUpdate", "PUT", data);
+      alert("Update successful");
+      onClose();
+      location.reload();
+    } catch (error) {
+      console.error("Update failed:", error);
+      alert(error.message);
+    }
+  };
+
+
+  // const handleSubmit = async () => {
+  //   const emails = emailList.split(",").map((email) => email.trim());
+
+  //   const updatesPromises = emails.map(async (email) => {
+  //     const fname = await fetchFnameByEmail(email);
+  //     return {
+  //       email,
+  //       fname,
+  //       applicationStatus: selectedStatus
+  //     };
+  //   });
+
+  //   const updates = await Promise.all(updatesPromises);
+
+  //   const data = {
+  //     eventID,
+  //     eventYear,
+  //     updates
+  //   };
+  //   try {
+  //     await fetchBackend("/registrations/massUpdate", "PUT", data);
+  //     alert("Update successful");
+  //     // refreshTable();
+  //     onClose();
+  //     location.reload();
+  //   } catch (error) {
+  //     console.error("Update failed:", error);
+  //     alert(`Failed: ${error.message}`);
+  //   }
+  // };
 
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
@@ -75,7 +133,9 @@ const MassUpdateModal = ({
             Select Status
           </MenuItem>
           {Object.entries(APPLICATION_STATUS).map(
-            ([key, { dbValue, label }]) => (
+            ([key, {
+              dbValue, label
+            }]) => (
               <MenuItem key={key} value={dbValue}>
                 {label}
               </MenuItem>
