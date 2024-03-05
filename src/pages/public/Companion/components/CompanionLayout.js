@@ -147,7 +147,7 @@ const CompanionLayout = (params) => {
 
   const styles = {
     container: {
-      backgroundColor: BackgroundImage ? "#E2E2E2" : "transparent",
+      backgroundColor: BackgroundImage ? "#F5EE9E" : "transparent",
       backgroundImage: BackgroundImage ? `url(${BackgroundImage})` : colors.background,
       backgroundRepeat: "repeat",
       overflow: "hidden",
@@ -460,7 +460,7 @@ const CompanionLayout = (params) => {
                   }}>
                     <img src={BiztechLogo} alt={`${title} Logo`} style={{
                       ...styles.introLogo,
-                      width: renderMobileOnly ? "60%" : "20%"
+                      width: renderMobileOnly ? "60%" : "50%"
                     }} />
                     <Typography variant="h1" className={classes.boldText} style={{
                       color: constantStyles.textColor
