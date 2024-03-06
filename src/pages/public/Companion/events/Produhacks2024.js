@@ -1,10 +1,13 @@
-import React from "react";
+import React, {
+  useState
+} from "react";
 import {
   Button
 } from "@material-ui/core";
 import Reviewing from "../../../../assets/2024/produhacks/reviewing.png";
 import Waitlist from "../../../../assets/2024/produhacks/waitlisted.png";
 import Accepted from "../../../../assets/2024/produhacks/accepted.png";
+import Rejected from "../../../../assets/2024/produhacks/rejected.png";
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
@@ -12,6 +15,9 @@ import {
   COLORS
 } from "../../../../constants/_constants/theme";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
+import {
+  fetchBackend
+} from "utils";
 
 const customStyles = {
   container: {
@@ -66,12 +72,42 @@ const Produhacks2024 = (params) => {
   const {
     event, registrations, styles, renderMobileOnly, userRegistration
   } = params;
+  const [isWithdrawing, setIsWithdrawing] = useState(false);
+
+  const withdrawApplication = async () => {
+    try {
+      const body = {
+        eventID: event.id,
+        year: Number(event.year),
+        registrationStatus: "cancelled",
+        applicationStatus: "rejected"
+      };
+      setIsWithdrawing(true);
+      const isConfirmed = confirm("Are you sure? Once you've withdrawn you cannot resubmit your application");
+      if (isConfirmed) {
+        const result = await fetchBackend(`/registrations/${userRegistration.id}/${userRegistration.fname}`, "PUT", body, false);
+        if (result) {
+          console.log(result);
+          setIsWithdrawing(false);
+          location.reload();
+        }
+      } else {
+        setIsWithdrawing(false);
+      }
+    } catch (e) {
+      alert("an error has occured");
+      console.log(e);
+      setIsWithdrawing(false);
+    }
+  };
+
 
   const renderStatus = () => {
+    console.log(userRegistration);
     const status = userRegistration.applicationStatus;
     if (status === "reviewing") {
       return <img src={Reviewing} alt={"We are currently reviewing your application"} style={renderMobileOnly ? customStyles.backgroundMobile : customStyles.background} />;
-    } else if (status === "waitlist" || status === "rejected") {
+    } else if (status === "waitlist") {
       return <img src={Waitlist} alt={"You are currently waitlisted for Produhacks"} style={renderMobileOnly ? customStyles.backgroundMobile : customStyles.background} />;
     } else if (status === "accepted") {
       return <>{userRegistration.registrationStatus === "registered" ? <span style={{
@@ -102,6 +138,8 @@ const Produhacks2024 = (params) => {
         </Button></div>
       }
       <img src={Accepted} alt={"You are been accepted into Produhacks!"} style={renderMobileOnly ? customStyles.backgroundMobile : customStyles.background} /></>;
+    } else if (status === "rejected") {
+      return <img src={Rejected} alt={"You've withdrawn you're application"} style={renderMobileOnly ? customStyles.backgroundMobile : customStyles.background} />;
     }
   };
 
@@ -109,6 +147,24 @@ const Produhacks2024 = (params) => {
     {event && registrations &&
             <>
               {renderStatus()}
+              {userRegistration.applicationStatus !== "rejected" && <span style={{
+                ...styles.text,
+                ...(renderMobileOnly && {
+                  fontSize: constantStyles.mobileFontSize
+                })
+              }}>Want to withdraw your application?<Button
+                  style={{
+                    ...customStyles.registerButton,
+                    marginLeft: "5px"
+                  }}
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  onClick={() => withdrawApplication()}
+                  disabled={isWithdrawing}
+                >
+                        Click here
+                </Button></span>}
               <div style={{
                 ...styles.text,
                 width: "100%",
