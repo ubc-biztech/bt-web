@@ -56,7 +56,7 @@ export default [
   },
   {
     /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
-    activeUntil: new Date(new Date("03-06-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
+    activeUntil: new Date(new Date("03-03-2024").getTime()), // change 3 days after date
     /* id of event in dynamodb, used for queries */
     eventID: "techstyle",
     /* year of event in dynamodb, used for queries */
