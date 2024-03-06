@@ -20,6 +20,7 @@ import {
 
 import "react-step-progress-bar/styles.css";
 import Loading from "pages/Loading";
+import LogoutButton from "./LogoutButton";
 import FeedbackForm from "./FeedbackForm";
 import Schedule from "./Schedule";
 
@@ -507,6 +508,7 @@ const CompanionLayout = (params) => {
                     zIndex: "9999",
                     paddingBottom: "0.75rem"
                   }}>
+                    <LogoutButton />
                     <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo} />
                     <nav role="navigation" style={{
                       ...styles.nav,
