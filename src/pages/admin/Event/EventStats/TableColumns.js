@@ -93,6 +93,11 @@ const getDefaultColumns = (eventID, eventYear, refreshTable, tableType) => [
   {
     title: "Last Updated",
     field: "updatedAt",
+    customSort: (a, b) => {
+      const timestampA = Date.parse(a.updatedAt);
+      const timestampB = Date.parse(b.updatedAt);
+      return timestampA - timestampB;
+    },
     cellStyle: {
       whiteSpace: "nowrap"
     },
@@ -250,6 +255,11 @@ const getDefaultPartnerColumns = (eventID, eventYear, refreshTable) => [
   {
     title: "Last Updated",
     field: "updatedAt",
+    customSort: (a, b) => {
+      const timestampA = Date.parse(a.updatedAt);
+      const timestampB = Date.parse(b.updatedAt);
+      return timestampA - timestampB;
+    },
     cellStyle: {
       whiteSpace: "nowrap"
     },

@@ -676,6 +676,7 @@ export class EventStatsTable extends Component {
           // Configure options for the table
           style={styles.table}
           options={{
+            sorting: true,
             search: true,
             draggable: true,
             filtering: true,
