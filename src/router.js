@@ -106,8 +106,7 @@ class Router extends Component {
   // (otherwise, the login page will initially show on every refresh)
   componentDidMount() {
     log(
-      `Running biztech app in '${
-        process.env.REACT_APP_STAGE || "local"
+      `Running biztech app in '${process.env.REACT_APP_STAGE || "local"
       }' environment`
     );
 
@@ -266,7 +265,7 @@ class Router extends Component {
     else {
       return (
         // eslint-disable-line curly
-        <BrowserRouter>
+        <BrowserRouter forceRefresh={true}>
           <ScrollToTop />
           {!companionPaths.find((p) => pathname.includes(p)) ? (
             <>

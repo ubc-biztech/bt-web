@@ -888,9 +888,8 @@ const FormRegister = (props) => {
             fetchBackend("/payments", "POST", paymentBody, false)
               .then(async (response) => {
                 setIsSubmitting(false);
-
                 if (currEvent.isApplicationBased) {
-                  history.push(`/event/${currEvent.id}/${currEvent.year}/register/success`);
+                  history.push(`/event/${currEvent.id}/${currEvent.year}/register/success/application`);
                 } else {
                   window.open(response, "_self");
                 }
@@ -961,7 +960,7 @@ const FormRegister = (props) => {
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then(() => {
           history.push(
-            `/event/${currEvent.id}/${currEvent.year}/register/success/attendee`
+            `/event/${currEvent.id}/${currEvent.year}/register/success/${currEvent.isApplicationBased ? "application" : "attendee"}`
           );
         })
         .catch((err) => {
