@@ -52,6 +52,13 @@ const customStyles = {
       color: COLORS.WHITE
     }
   },
+  mailToLink: {
+    color: COLORS.WHITE,
+    textDecoration: "none",
+    "&:hover": {
+      color: COLORS.WHITE,
+    }
+  }
 
 };
 
@@ -110,7 +117,7 @@ const Produhacks2024 = (params) => {
                   fontSize: constantStyles.mobileFontSize
                 })
               }}>
-                    Contact <a href="mailto:jay@ubcbiztech.com" style={styles.link}>jay@ubcbiztech.com</a> for any questions or concerns.
+                    Contact <a href="mailto:jay@ubcbiztech.com" style={customStyles.mailToLink}>jay@ubcbiztech.com</a> for any questions or concerns.
               </div>
             </>
     }
