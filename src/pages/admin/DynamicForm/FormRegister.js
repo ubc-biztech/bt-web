@@ -498,7 +498,7 @@ const FormRegister = (props) => {
               <FormGroup>
                 {choicesArr.map((item) => {
                   if (item === "...") {
-                    return <OtherCheckbox key={item} onChange={(e) => updateCheckbox(i, e.target.checked, null)} otherData={otherData} index={i}/>;
+                    return <OtherCheckbox key={item} onChange={(e) => updateCheckbox(i, e.target.checked, null)} otherData={otherData} index={i} />;
                   }
                   return (
                     <FormControlLabel
@@ -864,8 +864,7 @@ const FormRegister = (props) => {
             window.open(response.url, "_self");
           } else {
             const paymentBody = {
-              paymentName: `${currEvent.ename} ${
-                user?.isMember || samePricing() ? "" : "(Non-member)"
+              paymentName: `${currEvent.ename} ${user?.isMember || samePricing() ? "" : "(Non-member)"
               }`,
               paymentImages: [formData.image_url],
               paymentPrice:
@@ -873,15 +872,13 @@ const FormRegister = (props) => {
                   ? currEvent.pricing?.members
                   : currEvent.pricing.nonMembers) * 100,
               paymentType: "Event",
-              success_url: `${
-                process.env.REACT_APP_STAGE === "local"
-                  ? "http://localhost:3000/"
-                  : CLIENT_URL
+              success_url: `${process.env.REACT_APP_STAGE === "local"
+                ? "http://localhost:3000/"
+                : CLIENT_URL
               }event/${currEvent.id}/${currEvent.year}/register/success`,
-              cancel_url: `${
-                process.env.REACT_APP_STAGE === "local"
-                  ? "http://localhost:3000/"
-                  : CLIENT_URL
+              cancel_url: `${process.env.REACT_APP_STAGE === "local"
+                ? "http://localhost:3000/"
+                : CLIENT_URL
               }event/${currEvent.id}/${currEvent.year}/register`,
               email: responseData[0],
               fname: responseData[1],
@@ -891,7 +888,12 @@ const FormRegister = (props) => {
             fetchBackend("/payments", "POST", paymentBody, false)
               .then(async (response) => {
                 setIsSubmitting(false);
-                window.open(response, "_self");
+
+                if (currEvent.isApplicationBased) {
+                  history.push(`/event/${currEvent.id}/${currEvent.year}/register/success`);
+                } else {
+                  window.open(response, "_self");
+                }
               })
               .catch((err) => {
                 alert(
@@ -912,6 +914,7 @@ const FormRegister = (props) => {
       console.error("Form errors");
     }
   };
+
   const handleSubmit = () => {
     setIsSubmitting(true);
     if (isValidSubmission()) {
@@ -1001,8 +1004,7 @@ const FormRegister = (props) => {
     case REGISTRATION_STATUS.REGISTERED:
       if (
         window.confirm(
-          `Do you want to re-register for ${
-            event.ename || "this event"
+          `Do you want to re-register for ${event.ename || "this event"
           }?\nYou will be sent an email confirming your registration.`
         )
       ) {
@@ -1016,8 +1018,7 @@ const FormRegister = (props) => {
     case REGISTRATION_STATUS.CANCELLED:
       if (
         window.confirm(
-          `Are you sure you would cancel your spot at ${
-            event.ename || "this event"
+          `Are you sure you would cancel your spot at ${event.ename || "this event"
           }?\nYou will be sent an email regarding your cancellation.`
         )
       ) {
@@ -1037,8 +1038,8 @@ const FormRegister = (props) => {
   const isEventFull = () => {
     return (
       currEvent.capac -
-        (currEvent.counts?.registeredCount +
-          currEvent.counts?.checkedInCount) <=
+      (currEvent.counts?.registeredCount +
+        currEvent.counts?.checkedInCount) <=
       0
     );
   };
@@ -1072,12 +1073,10 @@ const FormRegister = (props) => {
   const renderRegMessage = (status) => {
     switch (status) {
     case REGISTRATION_STATUS.CANCELLED:
-      return `You have cancelled your registration for ${
-        currEvent.ename || "this event"
+      return `You have cancelled your registration for ${currEvent.ename || "this event"
       }.`;
     case REGISTRATION_STATUS.WAITLISTED:
-      return `You are currently waitlisted for ${
-        currEvent.ename || "this event"
+      return `You are currently waitlisted for ${currEvent.ename || "this event"
       }.`;
     case REGISTRATION_STATUS.INCOMPLETE:
       return "You have not completed your payment yet!";
@@ -1274,18 +1273,29 @@ const FormRegister = (props) => {
         <div style={styles.divider}></div>
         <div style={styles.submitSection}>
           {!user?.admin &&
-          ((user?.isMember && currEvent.pricing?.members > 0) ||
-            (!user?.isMember && currEvent.pricing?.nonMembers)) ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handlePaymentSubmit}
-                className={classes.registerButton}
-                disabled={isSubmitting}
-              >
-                <CardMembershipIcon className={classes.registerIcon} />
-              Proceed to Payment
-              </Button>
+            ((user?.isMember && currEvent.pricing?.members > 0) ||
+              (!user?.isMember && currEvent.pricing?.nonMembers)) ? (
+              currEvent.isApplicationBased ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handlePaymentSubmit}
+                  disabled={isSubmitting}
+                >
+                Submit
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handlePaymentSubmit}
+                  className={classes.registerButton}
+                  disabled={isSubmitting}
+                >
+                  <CardMembershipIcon className={classes.registerIcon} />
+                Proceed to Payment
+                </Button>
+              )
             ) : (
               <Button
                 variant="contained"
@@ -1298,12 +1308,13 @@ const FormRegister = (props) => {
               </Button>
             )}
         </div>
+
       </Fragment>
     );
   };
 
   if (user && (event?.pricing?.nonMembers === undefined && !user?.isMember && !user?.admin)) {
-    return <Redirect to={"/signup"}/>;
+    return <Redirect to={"/signup"} />;
   }
 
   return (
