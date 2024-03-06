@@ -55,7 +55,7 @@ import {
 import {
   Field, Form, Formik
 } from "formik";
-import MassUpdateModal from "./MassUpdateUserStatus";
+import MassUpdateModal from "./MassUpdateModal";
 
 const styles = {
   stats: {

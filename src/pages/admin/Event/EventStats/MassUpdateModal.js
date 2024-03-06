@@ -71,38 +71,6 @@ const MassUpdateModal = ({
     }
   };
 
-
-  // const handleSubmit = async () => {
-  //   const emails = emailList.split(",").map((email) => email.trim());
-
-  //   const updatesPromises = emails.map(async (email) => {
-  //     const fname = await fetchFnameByEmail(email);
-  //     return {
-  //       email,
-  //       fname,
-  //       applicationStatus: selectedStatus
-  //     };
-  //   });
-
-  //   const updates = await Promise.all(updatesPromises);
-
-  //   const data = {
-  //     eventID,
-  //     eventYear,
-  //     updates
-  //   };
-  //   try {
-  //     await fetchBackend("/registrations/massUpdate", "PUT", data);
-  //     alert("Update successful");
-  //     // refreshTable();
-  //     onClose();
-  //     location.reload();
-  //   } catch (error) {
-  //     console.error("Update failed:", error);
-  //     alert(`Failed: ${error.message}`);
-  //   }
-  // };
-
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Mass Update User Status</DialogTitle>
