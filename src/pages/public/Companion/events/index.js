@@ -19,9 +19,9 @@ import TSLogo from "../../../../assets/2024/techstyle/techstyle_biztech_logo.png
 export default [
   {
     /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
-    activeUntil: new Date(new Date("03-07-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
+    activeUntil: new Date(new Date("03-23-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
     /* id of event in dynamodb, used for queries */
-    eventID: "produtest",
+    eventID: "produhacks",
     /* year of event in dynamodb, used for queries */
     year: 2024,
     /* component for event body */ // keep the same
@@ -36,7 +36,7 @@ export default [
       /* Displayed title of event */
       title: "Produhacks",
       /* Displayed date of event */
-      date: "Saturday, March 3rd, 2024",
+      date: "March 23-24, 2024",
       /* Displayed location of event */
       location: "The Great Hall, AMS Student Nest (2nd Floor)",
       /* color theme of event */
@@ -54,54 +54,54 @@ export default [
       ]
     }
   },
-  // {
-  //   /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
-  //   activeUntil: new Date(new Date("03-06-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
-  //   /* id of event in dynamodb, used for queries */
-  //   eventID: "techstyle",
-  //   /* year of event in dynamodb, used for queries */
-  //   year: 2024,
-  //   /* component for event body */ // keep the same
-  //   ChildComponent: TechStyle2024,
-  //   /* options defining params for the companionLayout */
-  //   options: {
-  //     disableWelcomeHeader: true,
-  //     /* Biztech logo for event */
-  //     BiztechLogo: TSLogo,
-  //     /* Logo for event */
-  //     Logo: TechStyleLogo,
-  //     /* Background image */
-  //     BackgroundImage: TechStyleTexture,
-  //     /* Displayed title of event */
-  //     title: "TechStyle",
-  //     /* Displayed date of event */
-  //     date: "Saturday, March 3rd, 2024",
-  //     /* Displayed location of event */
-  //     location: "The Great Hall, AMS Student Nest (2nd Floor)",
-  //     /* color theme of event */
-  //     colors: {
-  //       primary: "linear-gradient(180deg, black, black)",
-  //       background: "linear-gradient(0.5turn, #E2E2E2,  #E2E2E2, #E2E2E2)",
-  //     },
-  //     /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
-  //     getScheduleData: () => [],
-  //     /* Array of welcome paragraphs for event, each new index is a new paragraph */
-  //     welcomeData: [
-  //       "Welcome to TechStyle! This will be your friend throughout the event. Feel free to check back here to see today's schedule and browse through who’s in attendance."
-  //     ],
-  //     /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
-  //     headers: [
-  //       {
-  //         text: "Points",
-  //         id: "Leaderboard"
-  //       },
-  //       {
-  //         text: "Mentors",
-  //         id: "Mentors"
-  //       }
-  //     ]
-  //   }
-  // },
+  {
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    activeUntil: new Date(new Date("03-06-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
+    /* id of event in dynamodb, used for queries */
+    eventID: "techstyle",
+    /* year of event in dynamodb, used for queries */
+    year: 2024,
+    /* component for event body */ // keep the same
+    ChildComponent: TechStyle2024,
+    /* options defining params for the companionLayout */
+    options: {
+      disableWelcomeHeader: true,
+      /* Biztech logo for event */
+      BiztechLogo: TSLogo,
+      /* Logo for event */
+      Logo: TechStyleLogo,
+      /* Background image */
+      BackgroundImage: TechStyleTexture,
+      /* Displayed title of event */
+      title: "TechStyle",
+      /* Displayed date of event */
+      date: "Saturday, March 3rd, 2024",
+      /* Displayed location of event */
+      location: "The Great Hall, AMS Student Nest (2nd Floor)",
+      /* color theme of event */
+      colors: {
+        primary: "linear-gradient(180deg, black, black)",
+        background: "linear-gradient(0.5turn, #E2E2E2,  #E2E2E2, #E2E2E2)",
+      },
+      /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
+      getScheduleData: () => [],
+      /* Array of welcome paragraphs for event, each new index is a new paragraph */
+      welcomeData: [
+        "Welcome to TechStyle! This will be your friend throughout the event. Feel free to check back here to see today's schedule and browse through who’s in attendance."
+      ],
+      /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
+      headers: [
+        {
+          text: "Points",
+          id: "Leaderboard"
+        },
+        {
+          text: "Mentors",
+          id: "Mentors"
+        }
+      ]
+    }
+  },
   { /* TODO: This hello hacks component is incomplete and exists only for the sake of testing out how mentors list looks */
     /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
     activeUntil: new Date(new Date("01-30-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
