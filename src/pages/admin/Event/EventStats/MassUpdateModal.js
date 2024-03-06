@@ -30,9 +30,7 @@ const MassUpdateModal = ({
 
   const fetchFnameByEmail = async (email) => {
     try {
-      console.log("calling fname");
       const response = await fetchBackend(`/members/${email}/fname`, "GET");
-      console.log("call fname complete");
       if (response.firstName) {
         return response.firstName;
       } else {
