@@ -51,7 +51,7 @@ const Companion = () => {
       setUserRegistration(reg);
       localStorage.setItem("companionEmail", reg.id);
     } else {
-      setError("This email does not match an existing entry our records. Please check that your input is valid and is the same email you used to register for the event. Note that emails are case-sensitive.");
+      setError("This email does not match an existing entry our records. Please check that your input is valid and is the same email you used to register for the event.");
       setIsLoading(false);
     }
   };
