@@ -118,6 +118,7 @@ const styles = {
 
 const EventStatsTable = (props) => {
   const [rows, setRows] = useState([]);
+  const [fnames, setFnames] = useState([]);
   const [presentedColumns, setPresentedColumns] = useState([]);
   const [presentedPartnerColumns, setPresentedPartnerColumns] = useState([]);
   const [presentedApplicationViewColumns, setPresentedApplicationViewColumns] = useState([]);
@@ -202,6 +203,16 @@ const EventStatsTable = (props) => {
     initializeTableColumns();
   }, [props.event]);
 
+  useEffect(() => {
+    const temp = {
+    };
+    rows.forEach((row) => {
+      temp[row.id] = row.fname;
+    });
+    setFnames(temp);
+  }, [rows]);
+
+  // row changes -> fnames is a dict w/ email to fname
   const getEventTableData = async () => {
     const {
       id: eventID, year: eventYear
@@ -461,7 +472,8 @@ const EventStatsTable = (props) => {
           onClose={toggleMassUpdateModal}
           eventID={props.event.id}
           eventYear={props.event.year}
-          refreshTable={() => refreshTable()}
+          refreshTable={refreshTable}
+          fnames={fnames}
         />
 
         {/* waitlist button */}
