@@ -6,7 +6,6 @@ import {
   fetchBackend
 } from "utils";
 
-import CAPITALIZED_EMAILS from "../../../constants/_constants/emails.js";
 import CompanionLayout from "./components/CompanionLayout";
 import Events from "./events";
 
@@ -23,15 +22,8 @@ const styles = {
   },
 };
 
-const getRealEmail = (email) => {
-  const res = CAPITALIZED_EMAILS.find(emailObj => emailObj.lowercaseEmail === email);
-  if (res) {
-    return res.email;
-  }
-};
-
 const Companion = () => {
-  const [email, setEmailFunc] = useState("");
+  const [email, setEmail] = useState("");
   const [pageError, setPageError] = useState("");
   const [error, setError] = useState("");
   const [registrations, setRegistrations] = useState([]);
@@ -52,23 +44,14 @@ const Companion = () => {
     return event.activeUntil > today;
   }) || events[0];
 
-  const setEmail = (email) => {
-    const realEmail = getRealEmail(email.toLowerCase());
-    if (realEmail) {
-      setEmailFunc(realEmail);
-    } else {
-      setEmailFunc(email.toLowerCase());
-    }
-  };
-
   const fetchUserData = async () => {
-    const reg = registrations.find((entry) => entry.id === email);
+    const reg = registrations.find((entry) => entry.id.toLowerCase() === email.toLowerCase());
     if (reg) {
       setError("");
       setUserRegistration(reg);
-      localStorage.setItem("companionEmail", email);
+      localStorage.setItem("companionEmail", reg.id);
     } else {
-      setError("This email does not match an existing entry our records. Please check that your input is valid and is the same email you used to register for the event. Note that emails are case-sensitive.");
+      setError("This email does not match an existing entry our records. Please check that your input is valid and is the same email you used to register for the event.");
       setIsLoading(false);
     }
   };
