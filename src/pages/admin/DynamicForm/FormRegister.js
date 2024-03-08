@@ -1115,9 +1115,47 @@ const FormRegister = (props) => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => window.open(reg.checkoutLink, "_self")}
+                onClick={() => {
+                  const paymentBody = {
+                    paymentName: `${currEvent.ename} ${user?.isMember || samePricing() ? "" : "(Non-member)"
+                    }`,
+                    paymentImages: [formData.image_url],
+                    paymentPrice:
+                    (user?.isMember
+                      ? currEvent.pricing?.members
+                      : currEvent.pricing.nonMembers) * 100,
+                    paymentType: "Event",
+                    success_url: `${process.env.REACT_APP_STAGE === "local"
+                      ? "http://localhost:3000/"
+                      : CLIENT_URL
+                    }event/${currEvent.id}/${currEvent.year}/register/success`,
+                    cancel_url: `${process.env.REACT_APP_STAGE === "local"
+                      ? "http://localhost:3000/"
+                      : CLIENT_URL
+                    }event/${currEvent.id}/${currEvent.year}/register`,
+                    email: responseData[0],
+                    fname: responseData[1],
+                    eventID: currEvent.id,
+                    year: currEvent.year
+                  };
+                  fetchBackend("/payments", "POST", paymentBody, false)
+                    .then(async (response) => {
+                      setIsSubmitting(false);
+                      if (currEvent.isApplicationBased) {
+                        history.push(`/event/${currEvent.id}/${currEvent.year}/register/success/application`);
+                      } else {
+                        window.open(response, "_self");
+                      }
+                    })
+                    .catch((err) => {
+                      alert(
+                        `An error has occured: ${err} Please contact an exec for support.`
+                      );
+                      setIsSubmitting(false);
+                    });
+                }}
               >
-                Complete Payment
+              Complete Payment
               </Button>
             )}
           </div>
