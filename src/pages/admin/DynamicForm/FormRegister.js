@@ -1078,7 +1078,12 @@ const FormRegister = (props) => {
       return `You are currently waitlisted for ${currEvent.ename || "this event"
       }.`;
     case REGISTRATION_STATUS.INCOMPLETE:
-      return "You have not completed your payment yet!";
+      if (currEvent?.isApplicationBased) {
+        return `You have submitted your application for ${currEvent.ename || "this event"
+        }. You can check your application status for updates below!`;
+      } else {
+        return "You have not completed your payment yet!";
+      }
     default:
       return `Already registered for ${currEvent.ename || "this event"}!`;
     }
@@ -1111,15 +1116,24 @@ const FormRegister = (props) => {
                 Re-register
               </Button>
             )}
-            {reg.registrationStatus === REGISTRATION_STATUS.INCOMPLETE && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => window.open(reg.checkoutLink, "_self")}
-              >
+            {reg.registrationStatus === REGISTRATION_STATUS.INCOMPLETE &&  (
+              currEvent?.isApplicationBased ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => window.open(process.env.REACT_APP_STAGE === "production" ? "https://app.ubcbiztech.com/companion" : "https://dev.app.ubcbiztech.com/companion")}
+                >
+                    View status
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => window.open(reg.checkoutLink, "_self")}
+                >
                 Complete Payment
-              </Button>
-            )}
+                </Button>
+              ))}
           </div>
         </Fragment>
       );
