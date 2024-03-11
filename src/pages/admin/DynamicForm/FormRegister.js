@@ -888,9 +888,8 @@ const FormRegister = (props) => {
             fetchBackend("/payments", "POST", paymentBody, false)
               .then(async (response) => {
                 setIsSubmitting(false);
-
                 if (currEvent.isApplicationBased) {
-                  history.push(`/event/${currEvent.id}/${currEvent.year}/register/success`);
+                  history.push(`/event/${currEvent.id}/${currEvent.year}/register/success/application`);
                 } else {
                   window.open(response, "_self");
                 }
@@ -961,7 +960,7 @@ const FormRegister = (props) => {
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then(() => {
           history.push(
-            `/event/${currEvent.id}/${currEvent.year}/register/success/attendee`
+            `/event/${currEvent.id}/${currEvent.year}/register/success/${currEvent.isApplicationBased ? "application" : "attendee"}`
           );
         })
         .catch((err) => {
@@ -1079,7 +1078,12 @@ const FormRegister = (props) => {
       return `You are currently waitlisted for ${currEvent.ename || "this event"
       }.`;
     case REGISTRATION_STATUS.INCOMPLETE:
-      return "You have not completed your payment yet!";
+      if (currEvent?.isApplicationBased) {
+        return `You have submitted your application for ${currEvent.ename || "this event"
+        }. You can check your application status for updates below!`;
+      } else {
+        return "You have not completed your payment yet!";
+      }
     default:
       return `Already registered for ${currEvent.ename || "this event"}!`;
     }
@@ -1112,15 +1116,24 @@ const FormRegister = (props) => {
                 Re-register
               </Button>
             )}
-            {reg.registrationStatus === REGISTRATION_STATUS.INCOMPLETE && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => window.open(reg.checkoutLink, "_self")}
-              >
+            {reg.registrationStatus === REGISTRATION_STATUS.INCOMPLETE &&  (
+              currEvent?.isApplicationBased ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => window.open(process.env.REACT_APP_STAGE === "production" ? "https://app.ubcbiztech.com/companion" : "https://dev.app.ubcbiztech.com/companion")}
+                >
+                    View status
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => window.open(reg.checkoutLink, "_self")}
+                >
                 Complete Payment
-              </Button>
-            )}
+                </Button>
+              ))}
           </div>
         </Fragment>
       );

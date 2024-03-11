@@ -9,6 +9,9 @@ import MISNight2023 from "./MISNight2023";
 import Blueprint2024 from "./Blueprint2024";
 import BlueprintLanding from "../../../../assets/2024/blueprint/landing.png";
 import TechStyle2024 from "./TechStyle2024";
+import Produhacks2024 from "./Produhacks2024";
+import ProduhacksLogo from "../../../../assets/2024/produhacks/logo.png";
+import PHLogo from "../../../../assets/2024/produhacks/btlogo.png";
 import TechStyleLogo from "../../../../assets/2024/techstyle/techstyle_logo.png";
 import TechStyleTexture from "../../../../assets/2024/techstyle/techstyle_grid.png";
 import TSLogo from "../../../../assets/2024/techstyle/techstyle_biztech_logo.png";
@@ -16,7 +19,44 @@ import TSLogo from "../../../../assets/2024/techstyle/techstyle_biztech_logo.png
 export default [
   {
     /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
-    activeUntil: new Date(new Date("03-06-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
+    activeUntil: new Date(new Date("03-23-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
+    /* id of event in dynamodb, used for queries */
+    eventID: "produhacks",
+    /* year of event in dynamodb, used for queries */
+    year: 2024,
+    /* component for event body */ // keep the same
+    ChildComponent: Produhacks2024,
+    /* options defining params for the companionLayout */
+    options: {
+      disableWelcomeHeader: true,
+      /* Biztech logo for event */
+      BiztechLogo: PHLogo,
+      /* Logo for event */
+      Logo: ProduhacksLogo,
+      /* Displayed title of event */
+      title: "Produhacks",
+      /* Displayed date of event */
+      date: "March 23-24, 2024",
+      /* Displayed location of event */
+      location: "The Great Hall, AMS Student Nest (2nd Floor)",
+      /* color theme of event */
+      colors: {
+        primary: "linear-gradient(180deg, white, white)",
+        background: "linear-gradient(0.5turn, #98BEA2,  #98BEA2, #98BEA2)",
+      },
+      /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
+      getScheduleData: () => [],
+      /* Array of welcome paragraphs for event, each new index is a new paragraph */
+      welcomeData: [
+      ],
+      /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
+      headers: [
+      ]
+    }
+  },
+  {
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    activeUntil: new Date(new Date("03-03-2024").getTime()), // change 3 days after date
     /* id of event in dynamodb, used for queries */
     eventID: "techstyle",
     /* year of event in dynamodb, used for queries */

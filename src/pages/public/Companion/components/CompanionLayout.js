@@ -9,7 +9,7 @@ import {
   useInView
 } from "react-intersection-observer";
 import {
-  TextField, Button, Modal, makeStyles, Typography, useMediaQuery
+  TextField, Button, makeStyles, Typography, useMediaQuery
 } from "@material-ui/core";
 import {
   useTheme
@@ -20,6 +20,7 @@ import {
 
 import "react-step-progress-bar/styles.css";
 import Loading from "pages/Loading";
+import LogoutButton from "./LogoutButton";
 import FeedbackForm from "./FeedbackForm";
 import Schedule from "./Schedule";
 
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.3rem",
     marginBottom: "1rem",
     fontFamily: "Proximanova",
+    width: "80%",
   },
   boldText: {
     fontWeight: "bold",
@@ -55,10 +57,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
     textAlign: "center",
     fontFamily: "Proximanova",
+    width: "80%",
   },
   button: {
     marginRight: 5,
     marginLeft: 5,
+    marginBottom: 15,
     "&:disabled": {
       backgroundColor: COLORS.FONT_GRAY,
       color: COLORS.WHITE,
@@ -147,7 +151,7 @@ const CompanionLayout = (params) => {
 
   const styles = {
     container: {
-      backgroundColor: BackgroundImage ? "#E2E2E2" : "transparent",
+      backgroundColor: BackgroundImage ? "#F5EE9E" : "transparent",
       backgroundImage: BackgroundImage ? `url(${BackgroundImage})` : colors.background,
       backgroundRepeat: "repeat",
       overflow: "hidden",
@@ -171,31 +175,6 @@ const CompanionLayout = (params) => {
       marginTop: "24px",
       width: "35%",
       height: "auto",
-    },
-    modal: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      width: "100%",
-      height: "100%",
-      background: colors.background,
-      margin: "auto",
-      borderRadius: 5,
-      padding: 10,
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-    },
-    modalText: {
-      marginTop: 20,
-      marginBottom: 20,
-    },
-    modalButtons: {
-      display: "flex",
-      flexDirection: "row",
-      gap: 10,
     },
     row: {
       display: "flex",
@@ -325,7 +304,6 @@ const CompanionLayout = (params) => {
   };
 
   const [input, setInput] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [transition, setShowTransition] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
@@ -339,12 +317,6 @@ const CompanionLayout = (params) => {
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-
-  useEffect(() => {
-    if (userRegistration) {
-      setIsModalOpen(false);
-    }
-  }, [userRegistration]);
 
   useEffect(() => {
     // Pause the video after 2 seconds
@@ -382,42 +354,6 @@ const CompanionLayout = (params) => {
       ...styles.container,
       padding: "0"
     } : styles.container}>
-      <Modal
-        open={isModalOpen}
-      >
-        <div style={styles.modal}>
-          <Typography className={classes.boldText} style={{
-            color: constantStyles.textColor
-          }}>{input}</Typography>
-          <Typography className={classes.errorText} style={{
-            color: constantStyles.textColor
-          }}>{error}</Typography>
-          <div style={styles.modalText}>
-            <Typography className={classes.centerText} style={{
-              color: constantStyles.textColor
-            }}>Are you sure you want to use this email?</Typography>
-            <Typography className={classes.centerText} style={{
-              color: constantStyles.textColor
-            }}>Once you confirm, you will not be able to change this, and all future points at the event will be redeemed to this email.</Typography>
-          </div>
-          <div style={styles.modalButtons}>
-            <Button variant="contained" color="primary" disabled={isLoading} className={classes.button}
-              onClick={() => {
-                setEmail(input);
-              }}
-            >
-              Yes
-            </Button>
-            <Button variant="contained" color="secondary" disabled={isLoading} className={classes.button}
-              onClick={() => {
-                setEmail("");
-                setIsModalOpen(false);
-              }}>
-              No
-            </Button>
-          </div>
-        </div>
-      </Modal>
       {isLoading ? <Loading /> : (
         <div>
           {(!email || !userRegistration) ?
@@ -460,7 +396,7 @@ const CompanionLayout = (params) => {
                   }}>
                     <img src={BiztechLogo} alt={`${title} Logo`} style={{
                       ...styles.introLogo,
-                      width: renderMobileOnly ? "60%" : "20%"
+                      width: renderMobileOnly ? "60%" : "50%"
                     }} />
                     <Typography variant="h1" className={classes.boldText} style={{
                       color: constantStyles.textColor
@@ -485,12 +421,16 @@ const CompanionLayout = (params) => {
                     <Button
                       variant="contained"
                       color="primary"
+                      className={classes.button}
                       onClick={() => {
-                        setIsModalOpen(true);
+                        setEmail(input);
                       }}
                     >
                       Confirm
                     </Button>
+                    <Typography className={classes.errorText} style={{
+                      color: constantStyles.textColor
+                    }}>{error}</Typography>
                   </div>
                 </motion.div>)
               }</div> : (
@@ -507,6 +447,7 @@ const CompanionLayout = (params) => {
                     zIndex: "9999",
                     paddingBottom: "0.75rem"
                   }}>
+                    <LogoutButton />
                     <img src={Logo} alt={`${title} Logo`} style={renderMobileOnly ? styles.mobileHomeLogo : styles.homeLogo} />
                     <nav role="navigation" style={{
                       ...styles.nav,

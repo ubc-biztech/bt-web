@@ -19,6 +19,9 @@ import SpeechBubble from "assets/registrationpagespeech.svg";
 import {
   COLORS
 } from "../../../constants/_constants/theme";
+import {
+  Link
+} from "react-router-dom/cjs/react-router-dom.min";
 
 const ICON_SIZE = "24px";
 const FLASH_TIME = "50";
@@ -165,18 +168,27 @@ const EventRegisterSuccess = ({
                 Thank you for your registration and support in BizTech's events! We'll be in touch with you soon.
               </Typography>
             </div>
-          ) : (
+          ) : type === "application" ?
             <div>
               <Typography className={classes.successMessageHeading}>
-                  See you soon!
+                We've got your application!
               </Typography>
               <Typography>
-                You've successfully registered to the event.
-                {/* Thanks for applying! We'll be reviewing your application soon and will email you soon about your application status! */}
+                Thanks for applying! We'll be reviewing your application soon and will email you soon about your application status!
               </Typography>
-              <Typography>We've sent you two emails, one with a calendar invite and one with a QR code to check-in to our event! <br/><b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
+              <Typography><br />Click <b><Link to="/companion" reloadDocument>here</Link></b> to view your application status </Typography>
             </div>
-          )}
+            : (
+              <div>
+                <Typography className={classes.successMessageHeading}>
+                  See you soon!
+                </Typography>
+                <Typography>
+                  You've successfully registered to the event.
+                </Typography>
+                <Typography>We've sent you two emails, one with a calendar invite and one with a QR code to check-in to our event! <br /><b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
+              </div>
+            )}
         </div>
         {type !== "partner" && (
           <div>
@@ -225,24 +237,24 @@ const EventRegisterSuccess = ({
         {type !== "partner" && upcomingEvents.length > 0 && (
           <div className={classes.upcomingEventsContainer}>
             <Typography className={classes.upcomingEventsHeading}>
-                Upcoming Events:
+              Upcoming Events:
             </Typography>
 
             {upcomingEvents.map((event) => {
               const eventStart =
-                  event.startDate &&
-                  new Date(event.startDate).toLocaleDateString("en-US", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                  });
+                event.startDate &&
+                new Date(event.startDate).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+                });
               const eventEnd =
-                  event.endDate &&
-                  new Date(event.endDate).toLocaleDateString("en-US", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                  });
+                event.endDate &&
+                new Date(event.endDate).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+                });
 
               return (
                 <div
