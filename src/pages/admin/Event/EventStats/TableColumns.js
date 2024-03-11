@@ -317,7 +317,6 @@ const getDynamicQuestionColumns = (registrationQuestions) => {
     columns.push({
       title: question.label,
       field: question.questionId,
-      type: question.type,
       sorting: true,
       cellStyle: {
         whiteSpace: "nowrap"
