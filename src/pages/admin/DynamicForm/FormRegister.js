@@ -865,7 +865,7 @@ const FormRegister = (props) => {
           } else {
             const paymentBody = {
               paymentName: `${currEvent.ename} ${user?.isMember || samePricing() ? "" : "(Non-member)"
-              }`,
+                }`,
               paymentImages: [formData.image_url],
               paymentPrice:
                 (user?.isMember
@@ -875,11 +875,11 @@ const FormRegister = (props) => {
               success_url: `${process.env.REACT_APP_STAGE === "local"
                 ? "http://localhost:3000/"
                 : CLIENT_URL
-              }event/${currEvent.id}/${currEvent.year}/register/success`,
+                }event/${currEvent.id}/${currEvent.year}/register/success`,
               cancel_url: `${process.env.REACT_APP_STAGE === "local"
                 ? "http://localhost:3000/"
                 : CLIENT_URL
-              }event/${currEvent.id}/${currEvent.year}/register`,
+                }event/${currEvent.id}/${currEvent.year}/register`,
               email: responseData[0],
               fname: responseData[1],
               eventID: currEvent.id,
@@ -1000,37 +1000,37 @@ const FormRegister = (props) => {
 
   const changeRegStatus = (newStatus) => {
     switch (newStatus) {
-    case REGISTRATION_STATUS.REGISTERED:
-      if (
-        window.confirm(
-          `Do you want to re-register for ${event.ename || "this event"
-          }?\nYou will be sent an email confirming your registration.`
-        )
-      ) {
-        updateUserRegistrationStatus(
-          user?.email,
-          user?.fname,
-          REGISTRATION_STATUS.REGISTERED
-        );
-      }
-      break;
-    case REGISTRATION_STATUS.CANCELLED:
-      if (
-        window.confirm(
-          `Are you sure you would cancel your spot at ${event.ename || "this event"
-          }?\nYou will be sent an email regarding your cancellation.`
-        )
-      ) {
-        updateUserRegistrationStatus(
-          user?.email,
-          user?.fname,
-          REGISTRATION_STATUS.CANCELLED
-        );
-      }
-      break;
-    default:
-      return {
-      };
+      case REGISTRATION_STATUS.REGISTERED:
+        if (
+          window.confirm(
+            `Do you want to re-register for ${event.ename || "this event"
+            }?\nYou will be sent an email confirming your registration.`
+          )
+        ) {
+          updateUserRegistrationStatus(
+            user?.email,
+            user?.fname,
+            REGISTRATION_STATUS.REGISTERED
+          );
+        }
+        break;
+      case REGISTRATION_STATUS.CANCELLED:
+        if (
+          window.confirm(
+            `Are you sure you would cancel your spot at ${event.ename || "this event"
+            }?\nYou will be sent an email regarding your cancellation.`
+          )
+        ) {
+          updateUserRegistrationStatus(
+            user?.email,
+            user?.fname,
+            REGISTRATION_STATUS.CANCELLED
+          );
+        }
+        break;
+      default:
+        return {
+        };
     }
   };
 
@@ -1071,16 +1071,21 @@ const FormRegister = (props) => {
 
   const renderRegMessage = (status) => {
     switch (status) {
-    case REGISTRATION_STATUS.CANCELLED:
-      return `You have cancelled your registration for ${currEvent.ename || "this event"
-      }.`;
-    case REGISTRATION_STATUS.WAITLISTED:
-      return `You are currently waitlisted for ${currEvent.ename || "this event"
-      }.`;
-    case REGISTRATION_STATUS.INCOMPLETE:
-      return "You have not completed your payment yet!";
-    default:
-      return `Already registered for ${currEvent.ename || "this event"}!`;
+      case REGISTRATION_STATUS.CANCELLED:
+        return `You have cancelled your registration for ${currEvent.ename || "this event"
+          }.`;
+      case REGISTRATION_STATUS.WAITLISTED:
+        return `You are currently waitlisted for ${currEvent.ename || "this event"
+          }.`;
+      case REGISTRATION_STATUS.INCOMPLETE:
+        if (currEvent?.isApplicationBased) {
+          return `You have submitted your application for ${currEvent.ename || "this event"
+            }. You can check your application status for updates below!`;
+        } else {
+          return "You have not completed your payment yet!";
+        }
+      default:
+        return `Already registered for ${currEvent.ename || "this event"}!`;
     }
   };
 
@@ -1112,52 +1117,61 @@ const FormRegister = (props) => {
               </Button>
             )}
             {reg.registrationStatus === REGISTRATION_STATUS.INCOMPLETE && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  const paymentBody = {
-                    paymentName: `${currEvent.ename} ${user?.isMember || samePricing() ? "" : "(Non-member)"
-                    }`,
-                    paymentImages: [formData.image_url],
-                    paymentPrice:
-                    (user?.isMember
-                      ? currEvent.pricing?.members
-                      : currEvent.pricing.nonMembers) * 100,
-                    paymentType: "Event",
-                    success_url: `${process.env.REACT_APP_STAGE === "local"
-                      ? "http://localhost:3000/"
-                      : CLIENT_URL
-                    }event/${currEvent.id}/${currEvent.year}/register/success`,
-                    cancel_url: `${process.env.REACT_APP_STAGE === "local"
-                      ? "http://localhost:3000/"
-                      : CLIENT_URL
-                    }event/${currEvent.id}/${currEvent.year}/register`,
-                    email: responseData[0],
-                    fname: responseData[1],
-                    eventID: currEvent.id,
-                    year: currEvent.year
-                  };
-                  fetchBackend("/payments", "POST", paymentBody, false)
-                    .then(async (response) => {
-                      setIsSubmitting(false);
-                      if (currEvent.isApplicationBased) {
-                        history.push(`/event/${currEvent.id}/${currEvent.year}/register/success/application`);
-                      } else {
-                        window.open(response, "_self");
-                      }
-                    })
-                    .catch((err) => {
-                      alert(
-                        `An error has occured: ${err} Please contact an exec for support.`
-                      );
-                      setIsSubmitting(false);
-                    });
-                }}
-              >
-              Complete Payment
-              </Button>
-            )}
+              currEvent?.isApplicationBased ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => window.open(process.env.REACT_APP_STAGE === "production" ? "https://app.ubcbiztech.com/companion" : "https://dev.app.ubcbiztech.com/companion")}
+                >
+                  View status
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    const paymentBody = {
+                      paymentName: `${currEvent.ename} ${user?.isMember || samePricing() ? "" : "(Non-member)"
+                        }`,
+                      paymentImages: [formData.image_url],
+                      paymentPrice:
+                        (user?.isMember
+                          ? currEvent.pricing?.members
+                          : currEvent.pricing.nonMembers) * 100,
+                      paymentType: "Event",
+                      success_url: `${process.env.REACT_APP_STAGE === "local"
+                        ? "http://localhost:3000/"
+                        : CLIENT_URL
+                        }event/${currEvent.id}/${currEvent.year}/register/success`,
+                      cancel_url: `${process.env.REACT_APP_STAGE === "local"
+                        ? "http://localhost:3000/"
+                        : CLIENT_URL
+                        }event/${currEvent.id}/${currEvent.year}/register`,
+                      email: responseData[0],
+                      fname: responseData[1],
+                      eventID: currEvent.id,
+                      year: currEvent.year
+                    };
+                    fetchBackend("/payments", "POST", paymentBody, false)
+                      .then(async (response) => {
+                        setIsSubmitting(false);
+                        if (currEvent.isApplicationBased) {
+                          history.push(`/event/${currEvent.id}/${currEvent.year}/register/success/application`);
+                        } else {
+                          window.open(response, "_self");
+                        }
+                      })
+                      .catch((err) => {
+                        alert(
+                          `An error has occured: ${err} Please contact an exec for support.`
+                        );
+                        setIsSubmitting(false);
+                      });
+                  }}
+                >
+                  Complete Payment
+                </Button>
+              ))}
           </div>
         </Fragment>
       );
@@ -1312,38 +1326,38 @@ const FormRegister = (props) => {
           {!user?.admin &&
             ((user?.isMember && currEvent.pricing?.members > 0) ||
               (!user?.isMember && currEvent.pricing?.nonMembers)) ? (
-              currEvent.isApplicationBased ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handlePaymentSubmit}
-                  disabled={isSubmitting}
-                >
+            currEvent.isApplicationBased ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handlePaymentSubmit}
+                disabled={isSubmitting}
+              >
                 Submit
-                </Button>
-              ) : (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handlePaymentSubmit}
-                  className={classes.registerButton}
-                  disabled={isSubmitting}
-                >
-                  <CardMembershipIcon className={classes.registerIcon} />
-                Proceed to Payment
-                </Button>
-              )
+              </Button>
             ) : (
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleSubmit}
+                onClick={handlePaymentSubmit}
                 className={classes.registerButton}
                 disabled={isSubmitting}
               >
-              Submit
+                <CardMembershipIcon className={classes.registerIcon} />
+                Proceed to Payment
               </Button>
-            )}
+            )
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              className={classes.registerButton}
+              disabled={isSubmitting}
+            >
+              Submit
+            </Button>
+          )}
         </div>
 
       </Fragment>
