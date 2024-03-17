@@ -18,6 +18,9 @@ import CardMembershipIcon from "@material-ui/icons/CardMembership";
 import {
   fetchBackend
 } from "utils";
+import {
+  CLIENT_URL,
+} from "constants/index";
 
 const customStyles = {
   container: {
@@ -103,7 +106,6 @@ const Produhacks2024 = (params) => {
 
 
   const renderStatus = () => {
-    console.log(userRegistration);
     const status = userRegistration.applicationStatus;
     if (status === "reviewing") {
       return <img src={Reviewing} alt={"We are currently reviewing your application"} style={renderMobileOnly ? customStyles.backgroundMobile : customStyles.background} />;
@@ -126,7 +128,47 @@ const Produhacks2024 = (params) => {
           variant="contained"
           color="primary"
           type="submit"
-          onClick={() => window.open(userRegistration.checkoutLink, "_self")}
+          onClick={async () => {
+            let isMember;
+            try {
+              isMember = await fetchBackend(`/users/checkMembership/${userRegistration.id}`, "GET", undefined, false);
+            } catch (err) {
+              console.log(isMember);
+              alert(err);
+            }
+
+            const paymentBody = {
+              paymentName: `${event.ename} ${isMember || event.pricing?.members === event.pricing?.nonMembers ? "" : "(Non-member)"
+              }`,
+              paymentImages: [event.imageUrl],
+              paymentPrice:
+              (isMember
+                ? event.pricing?.members
+                : event.pricing.nonMembers) * 100,
+              paymentType: "Event",
+              success_url: `${process.env.REACT_APP_STAGE === "local"
+                ? "http://localhost:3000/"
+                : CLIENT_URL
+              }companion`,
+              cancel_url: `${process.env.REACT_APP_STAGE === "local"
+                ? "http://localhost:3000/"
+                : CLIENT_URL
+              }companion`,
+              email: userRegistration.id,
+              fname: userRegistration.fname,
+              eventID: event.id,
+              year: event.year
+            };
+            fetchBackend("/payments", "POST", paymentBody, false)
+              .then(async (response) => {
+                window.open(response, "_self");
+              })
+              .catch((err) => {
+                alert(
+                  `An error has occured: ${err} Please contact an exec for support.`
+                );
+              });
+          }}
         >
           <CardMembershipIcon
             style={{
