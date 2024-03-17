@@ -7,6 +7,9 @@ import MaterialTable, {
   MTableCell
 } from "@material-table/core";
 import {
+  ExportCsv, ExportPdf
+} from "@material-table/exporters";
+import {
   RadialChart,
   XYPlot,
   XAxis,
@@ -691,7 +694,16 @@ const EventStatsTable = (props) => {
           pageSize: 25,
           pageSizeOptions: [25, 50, 100, 200, 1000],
           actionsColumnIndex: 5,
-          exportButton: true,
+          exportMenu: [
+            {
+              label: "Export PDF",
+              exportFunc: (cols, datas) => ExportPdf(cols, datas, `${props.event.id}${props.event.year}${tableType}`),
+            },
+            {
+              label: "Export CSV",
+              exportFunc: (cols, datas) => ExportCsv(cols, datas, `${props.event.id}${props.event.year}${tableType}`),
+            }
+          ],
           exportAllData: true,
           headerStyle: {
             fontWeight: "bold",
