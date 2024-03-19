@@ -118,7 +118,7 @@ const Produhacks2024 = (params) => {
           fontSize: constantStyles.mobileFontSize
         })
       }}>You're all set! Be on the lookout in your email for more details. </span> :
-        userRegistration.checkoutLink && <div style={customStyles.options}><span style={{
+        <div style={customStyles.options}><span style={{
           ...styles.text,
           ...(renderMobileOnly && {
             fontSize: constantStyles.mobileFontSize
