@@ -35,6 +35,18 @@ const getDefaultColumns = (eventID, eventYear, refreshTable, tableType) => [
     )
   },
   {
+    title: "Application Status",
+    field: "applicationStatus",
+    cellStyle: {
+      whiteSpace: "nowrap"
+    },
+    render: (rowData) => (
+      <>
+        {rowData?.applicationStatus}
+      </>
+    )
+  },
+  {
     title: "First Name",
     field: "fname",
     cellStyle: {
