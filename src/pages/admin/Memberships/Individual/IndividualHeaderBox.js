@@ -16,4 +16,4 @@ const IndividualHeaderBox = (props) => {
   );
 };
 
-export default IndividualHeaderBox; 
+export default IndividualHeaderBox;

@@ -1,10 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  useHistory
+} from "react-router-dom";
+import {
+  connect
+} from "react-redux";
+import {
+  Auth
+} from "aws-amplify";
 
-import { makeStyles } from "@material-ui/styles";
-import { List, ListItem, Divider } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/styles";
+import {
+  List, ListItem, Divider
+} from "@material-ui/core";
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import {
@@ -19,9 +31,15 @@ import AssessmentIcon from "@material-ui/icons/Assessment";
 import PetsIcon from "@material-ui/icons/Pets";
 
 import "./Navigation.scss";
-import { COLORS } from "constants/index";
-import { logout } from "store/user/userActions";
-import { checkFeatureFlag } from "utils";
+import {
+  COLORS
+} from "constants/index";
+import {
+  logout
+} from "store/user/userActions";
+import {
+  checkFeatureFlag
+} from "utils";
 
 const ICON_SIZE = "32px";
 
@@ -45,13 +63,23 @@ function Nav(props) {
   const history = useHistory();
   const classes = useStyles();
 
-  const selected = { color: COLORS.BIZTECH_GREEN, fontSize: ICON_SIZE };
-  const unselected = { color: COLORS.WHITE, fontSize: ICON_SIZE };
-  const barSelected = { borderLeft: `6px solid ${COLORS.BIZTECH_GREEN}` };
-  const barUnselected = { borderLeft: `6px solid ${COLORS.BACKGROUND_COLOR}` };
+  const selected = {
+    color: COLORS.BIZTECH_GREEN,
+    fontSize: ICON_SIZE
+  };
+  const unselected = {
+    color: COLORS.WHITE,
+    fontSize: ICON_SIZE
+  };
+  const barSelected = {
+    borderLeft: `6px solid ${COLORS.BIZTECH_GREEN}`
+  };
+  const barUnselected = {
+    borderLeft: `6px solid ${COLORS.BACKGROUND_COLOR}`
+  };
 
   const pathname = history.location.pathname;
-  const ignoreNavPaths = ["/redeem", "/redemption", "/companion"]
+  const ignoreNavPaths = ["/redeem", "/redemption", "/companion"];
   const [selectedItem, setSelectedItem] = useState(pathname);
   useEffect(() => {
     history.listen((location) => {
@@ -63,7 +91,7 @@ function Nav(props) {
     Auth.signOut()
       .then(() => {
         props.logout();
-        history.push('/login');
+        history.push("/login");
       })
       .catch((err) => console.log(err));
   };
@@ -77,7 +105,9 @@ function Nav(props) {
   };
 
   function MenuItem(props) {
-    const { label, icon, onClick, bar, featureFlag } = props;
+    const {
+      label, icon, onClick, bar, featureFlag
+    } = props;
     const isFeatureEnabled = checkFeatureFlag(featureFlag);
     return isFeatureEnabled ? (
       <ListItem
@@ -93,7 +123,7 @@ function Nav(props) {
   }
 
   if (ignoreNavPaths.find((p) => selectedItem.includes(p))) {
-    return <></>
+    return <></>;
   }
 
   return (
@@ -205,4 +235,6 @@ function Nav(props) {
   );
 }
 
-export default connect(null, { logout })(Nav);
+export default connect(null, {
+  logout
+})(Nav);

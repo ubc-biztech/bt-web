@@ -1,10 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { useHistory, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  useHistory, withRouter
+} from "react-router-dom";
+import {
+  connect
+} from "react-redux";
+import {
+  Auth
+} from "aws-amplify";
 
-import { List, ListItem, Divider } from "@material-ui/core";
-import { useTheme, withStyles } from "@material-ui/styles";
+import {
+  List, ListItem, Divider
+} from "@material-ui/core";
+import {
+  useTheme, withStyles
+} from "@material-ui/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import AddBoxIcon from "@material-ui/icons/AddBox";
@@ -16,9 +28,15 @@ import Biztech from "./Icons/Biztech";
 import Logout from "./Icons/Logout";
 
 import "./Nav.scss";
-import { logout } from "../actions/UserActions";
-import { COLOR } from "../constants/Constants";
-import { checkFeatureFlag } from "../utils/checkFeatureFlag";
+import {
+  logout
+} from "../actions/UserActions";
+import {
+  COLOR
+} from "../constants/Constants";
+import {
+  checkFeatureFlag
+} from "../utils/checkFeatureFlag";
 
 const ICON_SIZE = "32px";
 
@@ -41,10 +59,20 @@ function Nav(props) {
   const renderDesktopOnly = useMediaQuery(theme.breakpoints.up("md"));
   const history = useHistory();
 
-  const selected = { color: COLOR.BIZTECH_GREEN, fontSize: ICON_SIZE };
-  const unselected = { color: COLOR.WHITE, fontSize: ICON_SIZE };
-  const barSelected = { borderLeft: `6px solid ${COLOR.BIZTECH_GREEN}` };
-  const barUnselected = { borderLeft: `6px solid ${COLOR.BACKGROUND_COLOR}` };
+  const selected = {
+    color: COLOR.BIZTECH_GREEN,
+    fontSize: ICON_SIZE
+  };
+  const unselected = {
+    color: COLOR.WHITE,
+    fontSize: ICON_SIZE
+  };
+  const barSelected = {
+    borderLeft: `6px solid ${COLOR.BIZTECH_GREEN}`
+  };
+  const barUnselected = {
+    borderLeft: `6px solid ${COLOR.BACKGROUND_COLOR}`
+  };
 
   const pathname = history.location.pathname;
   const [selectedItem, setSelectedItem] = useState(pathname);
@@ -69,12 +97,17 @@ function Nav(props) {
   };
 
   function MenuItem(props) {
-    const { label, icon, onClick, bar, featureFlag } = props;
+    const {
+      label, icon, onClick, bar, featureFlag
+    } = props;
     const isFeatureEnabled = checkFeatureFlag(featureFlag);
     return isFeatureEnabled ? (
       <ListItem
         className="navItem"
-        style={{ ...bar, ...styles.listItem }}
+        style={{
+          ...bar,
+          ...styles.listItem
+        }}
         onClick={onClick}
         aria-label={label}
         disableGutters={true}
@@ -171,4 +204,6 @@ function Nav(props) {
   );
 }
 
-export default withStyles(styles)(withRouter(connect(null, { logout })(Nav)));
+export default withStyles(styles)(withRouter(connect(null, {
+  logout
+})(Nav)));

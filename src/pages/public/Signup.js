@@ -1,9 +1,17 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
-import { Helmet } from "react-helmet";
+import {
+  connect
+} from "react-redux";
+import {
+  Auth
+} from "aws-amplify";
+import {
+  Helmet
+} from "react-helmet";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import {
   Avatar,
   Button,
@@ -13,9 +21,13 @@ import {
   CssBaseline,
   Typography,
 } from "@material-ui/core";
-import { Person as PersonIcon } from "@material-ui/icons";
+import {
+  Person as PersonIcon
+} from "@material-ui/icons";
 
-import { setUser } from "store/user/userActions";
+import {
+  setUser
+} from "store/user/userActions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -78,7 +90,9 @@ function Signup(props) {
           )}
           <Button
             className={classes.button}
-            onClick={() => Auth.federatedSignIn({ provider: "Google" })}
+            onClick={() => Auth.federatedSignIn({
+              provider: "Google"
+            })}
             variant="contained"
             color="primary"
           >
@@ -103,4 +117,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setUser })(Signup);
+export default connect(mapStateToProps, {
+  setUser
+})(Signup);

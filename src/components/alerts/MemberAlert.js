@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  Link, useLocation
+} from "react-router-dom";
 
-import { Alert } from "@material-ui/lab";
+import {
+  Alert
+} from "@material-ui/lab";
 import "./RegisterAlert.scss";
 
 export default function MemberAlert() {
@@ -28,7 +34,7 @@ export default function MemberAlert() {
       {!ignoreAlertPaths.find((p) => path.includes(p)) && (
         <Alert severity="warning">
           You are currently not a member!&nbsp;
-          <Link to="/login-redirect">Register here</Link>&nbsp;to become a
+          <Link to="/signup">Register here</Link>&nbsp;to become a
           member for this academic year!
         </Alert>
       )}
