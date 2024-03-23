@@ -118,14 +118,15 @@ const CustomQuestion = (props) => {
   };
 
   const showError = (field) => {
+    const errorPath = formType === "PARTNER" ? "partnerRegistrationQuestions" : "registrationQuestions";
     return Boolean(
-      errors.registrationQuestions &&
-        errors.registrationQuestions[index] &&
-        errors.registrationQuestions[index][field] &&
-        ((touched.registrationQuestions &&
-          touched.registrationQuestions[index] &&
-          touched.registrationQuestions[index][field]) ||
-          submitCount > 0)
+      errors[errorPath] &&
+      errors[errorPath][index] &&
+      errors[errorPath][index][field] &&
+      ((touched[errorPath] &&
+        touched[errorPath][index] &&
+        touched[errorPath][index][field]) ||
+        submitCount > 0)
     );
   };
 
@@ -203,7 +204,9 @@ const CustomQuestion = (props) => {
           onBlur={handleBlur}
           error={showError("label")}
           helperText={
-            showError("label") && errors.registrationQuestions[index].label
+            showError("label") && (formType === "PARTNER"
+              ? errors.partnerRegistrationQuestions[index].label
+              : errors.registrationQuestions[index].label)
           }
           value={label}
         />
@@ -218,8 +221,9 @@ const CustomQuestion = (props) => {
           onBlur={handleBlur}
           error={showError("questionImageUrl")}
           helperText={
-            showError("questionImageUrl") &&
-            errors.registrationQuestions[index].questionImageUrl
+            showError("questionImageUrl") && (formType === "PARTNER"
+              ? errors.partnerRegistrationQuestions[index].questionImageUrl
+              : errors.registrationQuestions[index].questionImageUrl)
           }
           value={questionImageUrl}
         />
@@ -237,8 +241,9 @@ const CustomQuestion = (props) => {
               onBlur={handleBlur}
               error={showError("charLimit")}
               helperText={
-                showError("charLimit") &&
-                errors.registrationQuestions[index].charLimit
+                showError("charLimit") && (formType === "PARTNER"
+                  ? errors.partnerRegistrationQuestions[index].charLimit
+                  : errors.registrationQuestions[index].charLimit)
               }
               value={charLimit}
             />
@@ -259,8 +264,9 @@ const CustomQuestion = (props) => {
               onBlur={handleBlur}
               error={showError("choices")}
               helperText={
-                showError("choices") &&
-              errors.registrationQuestions[index].choices
+                showError("choices") && (formType === "PARTNER"
+                  ? errors.partnerRegistrationQuestions[index].choices
+                  : errors.registrationQuestions[index].choices)
               }
               value={choices}
             />
@@ -283,7 +289,7 @@ const CustomQuestion = (props) => {
               variant="filled"
               onChange={handleChange}
               onBlur={handleBlur}
-              error={showError("choices)")}
+              error={showError("choices")}
               helperText={
                 showError("choices")
               }
@@ -302,8 +308,9 @@ const CustomQuestion = (props) => {
                 onBlur={handleBlur}
                 error={showError("participantCap")}
                 helperText={
-                  showError("participantCap") &&
-                  errors.registrationQuestions[index].participantCap
+                  showError("participantCap") && (formType === "PARTNER"
+                    ? errors.partnerRegistrationQuestions[index].participantCap
+                    : errors.registrationQuestions[index].participantCap)
                 }
                 value={participantCap}
               />
@@ -314,7 +321,7 @@ const CustomQuestion = (props) => {
         <div style={questionStyles.requiredContainer}>
           <div style={questionStyles.checkboxWrapper}>
             <div style={questionStyles.checkboxContainer}>
-          Required?
+              Required?
               <Checkbox
                 id={`${id}.required`}
                 name={`${name}.required`}
