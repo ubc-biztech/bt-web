@@ -47,6 +47,3 @@ awsconfiguration.json
 #vscode
 .vscode/launch.json
 
-.env
-.env.local
-

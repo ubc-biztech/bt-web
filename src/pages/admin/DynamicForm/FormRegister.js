@@ -857,7 +857,6 @@ const FormRegister = (props) => {
         dynamicResponses,
         applicationStatus: currEvent.isApplicationBased ? APPLICATION_STATUS.reviewing.dbValue : ""
       };
-      console.log(registrationBody)
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then((response) => {
           if (response.url) {
@@ -958,7 +957,6 @@ const FormRegister = (props) => {
         dynamicResponses,
         applicationStatus: currEvent.isApplicationBased ? APPLICATION_STATUS.reviewing.dbValue : ""
       };
-      console.log(registrationBody)
       fetchBackend("/registrations", "POST", registrationBody, false)
         .then(() => {
           history.push(

@@ -142,7 +142,6 @@ const FormRegisterPartner = (props) => {
   const {
     event
   } = props;
-  console.log(event)
   const history = useHistory();
   const [currEvent, setCurrEvent] = useState(event);
   const [isSubmitting, setIsSubmitting] = useState(false);

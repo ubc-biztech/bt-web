@@ -228,7 +228,6 @@ const EventStatsTable = (props) => {
 
     try {
       const response = await fetchBackend(`/registrations?${params}`, "GET");
-      console.log(response)
       const rowsData = flattenRowData(response.data);
       const heardFromData = heardFromNumbers(rowsData);
       const registrationNumbersData = getRegistrationNumbers(rowsData);
