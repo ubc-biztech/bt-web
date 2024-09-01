@@ -1,38 +1,18 @@
-import React, {
-  useState, Fragment
-} from "react";
-import {
-  CLIENT_URL
-} from "constants/index";
-import {
-  connect
-} from "react-redux";
-import {
-  Helmet
-} from "react-helmet";
-import {
-  Formik
-} from "formik";
+import React, { useState, Fragment } from "react";
+import { CLIENT_URL } from "constants/index";
+import { connect } from "react-redux";
+import { Helmet } from "react-helmet";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import MembershipForm from "./MembershipForm";
 import LoginAccess from "components/LoginAccess/LoginAccess";
-import {
-  makeStyles
-} from "@material-ui/core/styles";
-import {
-  Typography
-} from "@material-ui/core";
-import {
-  MEMBER_TYPES
-} from "constants/_constants/memberTypes";
+import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
+import { MEMBER_TYPES } from "constants/_constants/memberTypes";
 
-import {
-  COLORS
-} from "constants/_constants/theme";
+import { COLORS } from "constants/_constants/theme";
 
-import {
-  fetchBackend
-} from "utils";
+import { fetchBackend } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -76,9 +56,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MembershipFormContainer = (props) => {
   const classes = useStyles();
-  const {
-    user
-  } = props;
+  const { user } = props;
   const [memberType, setMemberType] = useState(user?.education);
   const [topics, setTopics] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,7 +67,10 @@ const MembershipFormContainer = (props) => {
     last_name: Yup.string().required("Last name is required"),
     prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
-      if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {
+      if (
+        heard_from &&
+        ["Events", "Boothing", "Other"].some((val) => heard_from?.includes(val))
+      ) {
         return schema.required("Please fill in this field");
       }
       return schema;
@@ -112,7 +93,10 @@ const MembershipFormContainer = (props) => {
     ),
     prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
-      if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {
+      if (
+        heard_from &&
+        ["Events", "Boothing", "Other"].some((val) => heard_from?.includes(val))
+      ) {
         return schema.required("Please fill in this field");
       }
       return schema;
@@ -129,7 +113,10 @@ const MembershipFormContainer = (props) => {
     major: Yup.string().required("Major is required"),
     prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
-      if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {
+      if (
+        heard_from &&
+        ["Events", "Boothing", "Other"].some((val) => heard_from?.includes(val))
+      ) {
         return schema.required("Please fill in this field");
       }
       return schema;
@@ -144,7 +131,10 @@ const MembershipFormContainer = (props) => {
     high_school: Yup.string().required("High School is required"),
     prev_member: Yup.string().required("Please select Yes/No"),
     heardFromSpecify: Yup.string().when("heard_from", (heard_from, schema) => {
-      if (heard_from && ["Events", "Boothing", "Other"].some(val => heard_from?.includes(val))) {
+      if (
+        heard_from &&
+        ["Events", "Boothing", "Other"].some((val) => heard_from?.includes(val))
+      ) {
         return schema.required("Please fill in this field");
       }
       return schema;
@@ -190,18 +180,21 @@ const MembershipFormContainer = (props) => {
 
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
     const paymentBody = {
-      paymentName: `BizTech Membership ${memberType !== "UBC" ? "(Non-UBC Student)" : ""
+      paymentName: `BizTech Membership ${
+        memberType !== "UBC" ? "(Non-UBC Student)" : ""
       }`,
       paymentImages: ["https://imgur.com/TRiZYtG.png"],
       paymentPrice: memberType === "UBC" ? 1000 : 1500,
       paymentType: "Member",
-      success_url: `${process.env.REACT_APP_STAGE === "local"
-        ? "http://localhost:3000/"
-        : CLIENT_URL
+      success_url: `${
+        process.env.REACT_APP_STAGE === "local"
+          ? "http://localhost:3000/"
+          : CLIENT_URL
       }signup/success/Member/${email}`,
-      cancel_url: `${process.env.REACT_APP_STAGE === "local"
-        ? "http://localhost:3000/"
-        : CLIENT_URL
+      cancel_url: `${
+        process.env.REACT_APP_STAGE === "local"
+          ? "http://localhost:3000/"
+          : CLIENT_URL
       }signup`,
       education: memberType,
       student_number: memberType === "UBC" ? student_number : "",
@@ -219,8 +212,8 @@ const MembershipFormContainer = (props) => {
       heard_from,
       heardFromSpecify:
         heard_from === "Events" ||
-          heard_from === "Boothing" ||
-          heard_from === "Other"
+        heard_from === "Boothing" ||
+        heard_from === "Other"
           ? heardFromSpecify
           : "",
       university: memberType === "UNI" ? university : "",
@@ -250,7 +243,7 @@ const MembershipFormContainer = (props) => {
     ) : (
       <Fragment>
         <Typography className={classes.registrationText}>
-          UBC BizTech Membership 2023/24
+          UBC BizTech Membership 2024/25
         </Typography>
         <div className={classes.registrationHeader}>
           <Typography className={classes.description}>
@@ -265,8 +258,8 @@ const MembershipFormContainer = (props) => {
             your membership by filling out this form and completing the payment.
           </Typography>
           <Typography className={classes.description}>
-            Please note that being a member does <b>not</b> guarantee you a spot in our
-            events. Some events may require an application process.
+            Please note that being a member does <b>not</b> guarantee you a spot
+            in our events. Some events may require an application process.
           </Typography>
           <Typography>
             The form below has been automatically filled with your current user
@@ -282,10 +275,10 @@ const MembershipFormContainer = (props) => {
             memberType === MEMBER_TYPES.UBC
               ? UBCValidationSchema
               : memberType === MEMBER_TYPES.UNIVERSITY
-                ? UniversityValidationSchema
-                : memberType === MEMBER_TYPES.HIGH_SCHOOL
-                  ? HighSchoolValidationSchema
-                  : validationSchema
+              ? UniversityValidationSchema
+              : memberType === MEMBER_TYPES.HIGH_SCHOOL
+              ? HighSchoolValidationSchema
+              : validationSchema
           }
           onSubmit={submitValues}
         >
@@ -315,7 +308,7 @@ const MembershipFormContainer = (props) => {
       ) : (
         <div className={classes.layout}>
           <Helmet>
-            <title>UBC BizTech Membership 2023/24</title>
+            <title>UBC BizTech Membership 2024/25</title>
           </Helmet>
           {renderMemberForm(user.isMember, user.admin)}
         </div>
@@ -330,5 +323,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {
-})(MembershipFormContainer);
+export default connect(mapStateToProps, {})(MembershipFormContainer);

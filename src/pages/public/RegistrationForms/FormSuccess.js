@@ -1,33 +1,17 @@
-import React, {
-  Fragment
-} from "react";
-import {
-  withRouter, useParams, useHistory
-} from "react-router-dom";
-import {
-  Auth
-} from "aws-amplify";
+import React, { Fragment } from "react";
+import { withRouter, useParams, useHistory } from "react-router-dom";
+import { Auth } from "aws-amplify";
 
-import {
-  makeStyles
-} from "@material-ui/core/styles";
-import {
-  Grid, Typography
-} from "@material-ui/core";
-import {
-  useTheme
-} from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Typography } from "@material-ui/core";
+import { useTheme } from "@material-ui/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {
-  ArrowBack as ArrowBackIcon
-} from "@material-ui/icons";
+import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
-import {
-  COLORS
-} from "constants/_constants/theme";
+import { COLORS } from "constants/_constants/theme";
 
 import BiztechIcon from "components/icons/BiztechIcon";
 import Discord from "components/icons/discord.svg";
@@ -40,30 +24,30 @@ const MOBILE_SIZE = "20px";
 
 const useStyles = makeStyles((theme) => ({
   main: {
-    margin: "10px 0",
+    margin: "10px 0"
   },
   rightColumn: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   successMessageContainer: {
     marginTop: "75px",
     paddingLeft: "19px",
-    marginLeft: "13px",
+    marginLeft: "13px"
   },
   successMessageHeading: {
     fontWeight: "bold",
-    fontSize: "24px",
+    fontSize: "24px"
   },
   whereToNextContainer: {
     borderLeft: `2px solid ${COLORS.BIZTECH_GREEN}`,
     marginTop: "35px",
     paddingLeft: "19px",
-    marginLeft: "11px",
+    marginLeft: "11px"
   },
   whereToNextHeading: {
     fontWeight: "bold",
-    fontSize: "24px",
+    fontSize: "24px"
   },
   icon: {
     height: ICON_SIZE,
@@ -75,39 +59,39 @@ const useStyles = makeStyles((theme) => ({
       height: MOBILE_SIZE,
       width: MOBILE_SIZE,
       maxHeight: MOBILE_SIZE,
-      maxWidth: MOBILE_SIZE,
+      maxWidth: MOBILE_SIZE
     },
-    padding: "0",
+    padding: "0"
   },
   imageContainer: {
     display: "flex",
     justifyContent: "flex-end",
-    marginTop: "15%",
+    marginTop: "15%"
   },
   houseChefImage: {
     width: "30%",
     marginLeft: "5%",
     [theme.breakpoints.between("sm", "md")]: {
-      width: "15%", // On small and medium screens, images need to be shrunk a bit
-    },
+      width: "15%" // On small and medium screens, images need to be shrunk a bit
+    }
   },
   speechBubble: {
     alignSelf: "start",
     width: "55%",
     [theme.breakpoints.between("sm", "md")]: {
-      width: "27.5%", // On small and medium screens, images need to be shrunk a bit
-    },
+      width: "27.5%" // On small and medium screens, images need to be shrunk a bit
+    }
   },
   socialMediaList: {
     marginLeft: "0",
     paddingLeft: "0",
-    listStyle: "none",
+    listStyle: "none"
   },
   socialMediaListItem: {
     display: "flex",
     alignItems: "middle",
     verticalAlign: "middle",
-    marginBottom: "10px",
+    marginBottom: "10px"
   },
   socialMediaLinks: {
     color: COLORS.BIZTECH_GREEN,
@@ -115,15 +99,15 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "18px",
     lineHeight: ICON_SIZE,
     [theme.breakpoints.down("sm")]: {
-      lineHeight: MOBILE_SIZE,
+      lineHeight: MOBILE_SIZE
     },
     fontWeight: "500",
     textDecoration: "none",
     alignSelf: "middle",
     "&:hover": {
       color: COLORS.WHITE,
-      textDecoration: "underline",
-    },
+      textDecoration: "underline"
+    }
   },
   resendVerification: {
     display: "inline",
@@ -131,22 +115,20 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: COLORS.WHITE,
       textDecoration: "underline",
-      cursor: "pointer",
-    },
+      cursor: "pointer"
+    }
   },
   arrowBackIcon: {
     color: COLORS.WHITE,
-    fontSize: "40px",
-  },
+    fontSize: "40px"
+  }
 }));
 
 const FormSuccess = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
-  const {
-    formType, email
-  } = useParams();
+  const { formType, email } = useParams();
   const history = useHistory();
 
   const resendVerificationEmail = async () => {
@@ -168,11 +150,27 @@ const FormSuccess = (props) => {
             <Typography className={classes.successMessageHeading}>
               Welcome to the BizTech community!
             </Typography>
-            <Typography>You've successfully become a {formType === "UserMember" && "BizTech Application user and "}member for the 2023/24 academic year.</Typography>
+            <Typography>
+              You've successfully become a{" "}
+              {formType === "UserMember" && "BizTech Application user and "}
+              member for the 2024/25 academic year.
+            </Typography>
             {formType === "UserMember" && (
               <Fragment>
-                <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
-                <Typography>Didn't receive the email? <div className={classes.resendVerification} onClick={() => resendVerificationEmail()}>Click here</div> to resend it.</Typography>
+                <Typography>
+                  A verification link has been sent to your email. Please verify
+                  yourself to login in the future!
+                </Typography>
+                <Typography>
+                  Didn't receive the email?{" "}
+                  <div
+                    className={classes.resendVerification}
+                    onClick={() => resendVerificationEmail()}
+                  >
+                    Click here
+                  </div>{" "}
+                  to resend it.
+                </Typography>
               </Fragment>
             )}
           </div>
