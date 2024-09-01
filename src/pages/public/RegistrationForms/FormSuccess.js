@@ -168,7 +168,7 @@ const FormSuccess = (props) => {
             <Typography className={classes.successMessageHeading}>
               Welcome to the BizTech community!
             </Typography>
-            <Typography>You've successfully become a {formType === "UserMember" && "BizTech Application user and "}member for the 2023/24 academic year.</Typography>
+            <Typography>You've successfully become a {formType === "UserMember" && "BizTech Application user and "}member for the 2024/2025 academic year.</Typography>
             {formType === "UserMember" && (
               <Fragment>
                 <Typography>A verification link has been sent to your email. Please verify yourself to login in the future!</Typography>
