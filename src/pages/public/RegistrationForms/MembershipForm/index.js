@@ -208,7 +208,7 @@ const MembershipFormContainer = (props) => {
       fname: first_name,
       lname: last_name,
       major: memberType === "UBC" || memberType === "UNI" ? major : "",
-      email: email.toLowerCase(),
+      email: user.email,
       year: memberType !== "NA" ? year : "",
       faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
       pronouns: pronouns || "Other/Prefer not to say",
