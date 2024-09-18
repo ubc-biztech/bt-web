@@ -390,5 +390,69 @@ export default [
         id: "Partners"
       }]
     }
+  },
+  {
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    activeUntil: new Date(new Date("2024-10-10").getTime() + (7 * 24 * 60 * 60 * 1000)),
+    /* id of event in dynamodb, used for queries */
+    eventID: "hello-hacks",
+    /* year of event in dynamodb, used for queries */
+    year: 2023,
+    /* component for event body */
+    ChildComponent: DataAndBeyond2023,
+    /* options defining params for the companionLayout */
+    options: {
+      /* Biztech logo for event */
+      BiztechLogo: BizTechDBLogo,
+      /* Logo for event */
+      Logo: DBLogo,
+      /* Displayed title of event */
+      title: "Hello Hacks 2024",
+      /* Displayed date of event */
+      date: "Saturday, October 5th",
+      /* Displayed location of event */
+      location: "Henry Angus Building",
+      /* color theme of event */
+      colors: {
+        primary: "linear-gradient(180deg, #614AD7, #719DF8)",
+        background: "linear-gradient(180deg, #e3edf7, #e3edf7)",
+      },
+      /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
+      getScheduleData: (regData) => [
+        {
+          date: "5:30 pm - 6:00 pm",
+          title: "Registration & Check in",
+        },
+        {
+          date: "6:00 pm - 6:15 pm",
+          title: "Opening (BizTech and BOLT Introduction)",
+        },
+        {
+          date: "6:15 pm - 6:30 pm",
+          title: "Keynote Speech",
+        },
+        {
+          date: "6:30 pm - 7:00 pm",
+          title: `Workshop: ${regData.dynamicResponses["a3f58578-219c-4e8f-b4be-8af8f6b9e1fb"]}`,
+        },
+        {
+          date: "7:30 pm - 8:00 pm",
+          title: "Data Challenge",
+        },
+        {
+          date: "8:00 pm - 9:00 pm",
+          title: "Boothing and Networking Session",
+        }
+      ],
+      /* Array of welcome paragraphs for event, each new index is a new paragraph */
+      welcomeData: [
+        "Welcome to Hello Hacks 2024!"
+      ],
+      /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
+      headers: [{
+        text: "Partners",
+        id: "Partners"
+      }]
+    }
   }
 ];
