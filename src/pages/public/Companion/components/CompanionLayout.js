@@ -9,7 +9,9 @@ import {
   useInView
 } from "react-intersection-observer";
 import {
-  TextField, Button, makeStyles, Typography, useMediaQuery
+  // TextField, 
+  // Button, 
+  makeStyles, Typography, useMediaQuery
 } from "@material-ui/core";
 import {
   useTheme
@@ -138,7 +140,7 @@ const CompanionLayout = (params) => {
       landing
     },
     email,
-    setEmail,
+    // setEmail,
     isLoading,
     error,
     userRegistration,
@@ -303,7 +305,7 @@ const CompanionLayout = (params) => {
     ...extraStyles
   };
 
-  const [input, setInput] = useState("");
+  // const [input, setInput] = useState("");
   const [transition, setShowTransition] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
@@ -403,8 +405,13 @@ const CompanionLayout = (params) => {
                     }}>Welcome!</Typography>
                     <Typography className={classes.centerText} style={{
                       color: constantStyles.textColor
-                    }}>Please enter the email you used to register for {title}</Typography>
-                    <TextField
+                      // HOT FIX old -> Please enter the email you used to register for {title} 
+                    }}>Thanks for applying to Hello Hacks 2024</Typography>
+                    <Typography className={classes.centerText} style={{
+                      color: constantStyles.textColor
+                      // HOT FIX 
+                    }}>Check back later for your application status! </Typography>
+                    {/* <TextField
                       className={classes.textfield}
                       onChange={(e) => setInput(e.target.value)}
                       value={input}
@@ -427,7 +434,7 @@ const CompanionLayout = (params) => {
                       }}
                     >
                       Confirm
-                    </Button>
+                    </Button> */}
                     <Typography className={classes.errorText} style={{
                       color: constantStyles.textColor
                     }}>{error}</Typography>
