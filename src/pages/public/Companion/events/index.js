@@ -397,7 +397,7 @@ export default [
     /* id of event in dynamodb, used for queries */
     eventID: "hello-hacks",
     /* year of event in dynamodb, used for queries */
-    year: 2024,
+    year: 2023,
     /* component for event body */
     ChildComponent: DataAndBeyond2023,
     /* options defining params for the companionLayout */

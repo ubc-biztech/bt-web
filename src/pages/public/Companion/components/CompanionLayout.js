@@ -403,8 +403,13 @@ const CompanionLayout = (params) => {
                     }}>Welcome!</Typography>
                     <Typography className={classes.centerText} style={{
                       color: constantStyles.textColor
-                    }}>Please enter the email you used to register for {title}</Typography>
-                    <TextField
+                      // HOT FIX old -> Please enter the email you used to register for {title} 
+                    }}>Thanks for applying to Hello Hacks 2024</Typography>
+                    <Typography className={classes.centerText} style={{
+                      color: constantStyles.textColor
+                      // HOT FIX 
+                    }}>Check back later for your application status! </Typography>
+                    {/* <TextField
                       className={classes.textfield}
                       onChange={(e) => setInput(e.target.value)}
                       value={input}
@@ -427,7 +432,7 @@ const CompanionLayout = (params) => {
                       }}
                     >
                       Confirm
-                    </Button>
+                    </Button> */}
                     <Typography className={classes.errorText} style={{
                       color: constantStyles.textColor
                     }}>{error}</Typography>
