@@ -9,7 +9,9 @@ import {
   useInView
 } from "react-intersection-observer";
 import {
-  TextField, Button, makeStyles, Typography, useMediaQuery
+  // TextField, 
+  // Button, 
+  makeStyles, Typography, useMediaQuery
 } from "@material-ui/core";
 import {
   useTheme
@@ -138,7 +140,7 @@ const CompanionLayout = (params) => {
       landing
     },
     email,
-    setEmail,
+    // setEmail,
     isLoading,
     error,
     userRegistration,
@@ -303,7 +305,7 @@ const CompanionLayout = (params) => {
     ...extraStyles
   };
 
-  const [input, setInput] = useState("");
+  // const [input, setInput] = useState("");
   const [transition, setShowTransition] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
