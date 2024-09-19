@@ -8,8 +8,8 @@ import {
   useInView
 } from "react-intersection-observer";
 import {
-  TextField, 
-  Button, 
+  TextField,
+  Button,
   makeStyles, Typography, useMediaQuery
 } from "@material-ui/core";
 import {
