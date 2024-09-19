@@ -467,7 +467,7 @@ const EventStatsTable = (props) => {
           color="primary"
           onClick={() => toggleMassUpdateModal()}
         >
-          Mass Update Status
+          Mass Update Application Status
         </Button>
 
         <MassUpdateModal
