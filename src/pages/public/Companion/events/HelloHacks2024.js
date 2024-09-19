@@ -4,23 +4,15 @@ import React, {
 import {
   Button
 } from "@material-ui/core";
-import Reviewing from "../../../../assets/2024/produhacks/reviewing.png";
-import Waitlist from "../../../../assets/2024/produhacks/waitlisted.png";
-import Accepted from "../../../../assets/2024/produhacks/accepted.png";
-import Rejected from "../../../../assets/2024/produhacks/rejected.png";
 import {
   constantStyles
 } from "../../../../constants/_constants/companion";
 import {
   COLORS
 } from "../../../../constants/_constants/theme";
-import CardMembershipIcon from "@material-ui/icons/CardMembership";
 import {
   fetchBackend
 } from "utils";
-import {
-  CLIENT_URL,
-} from "constants/index";
 
 const customStyles = {
   container: {
