@@ -79,7 +79,7 @@ const MassUpdateModal = ({
 
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Mass Update User Status</DialogTitle>
+      <DialogTitle id="form-dialog-title">Mass Update Application Status</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
