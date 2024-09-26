@@ -394,7 +394,7 @@ export default [
   },
   {
     /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
-    activeUntil: new Date(new Date("09-18-2024").getTime() + (7 * 24 * 60 * 60 * 1000)), // change 3 days after date
+    activeUntil: new Date(new Date("2024-10-08").getTime() + (7 * 24 * 60 * 60 * 1000)),
     /* id of event in dynamodb, used for queries */
     eventID: "hello-hacks",
     /* year of event in dynamodb, used for queries */
