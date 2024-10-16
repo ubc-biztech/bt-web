@@ -11,6 +11,9 @@ import {
 import {
   COLORS
 } from "constants/index";
+import {
+  values
+} from "react-vis";
 
 const useStyles = makeStyles((theme) => ({
   root: {

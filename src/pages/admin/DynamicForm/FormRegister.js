@@ -376,6 +376,13 @@ const FormRegister = (props) => {
     }
   }, [currEvent]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const emailValidation = (value) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value) && value !== "") {
+      alert("Please enter a valid email address");
+    }
+  };
+
   const updateField = useCallback(
     (index, value) => {
       const responses = responseData;
@@ -617,6 +624,7 @@ const FormRegister = (props) => {
                       }}
                       value={responseData[i]}
                       onChange={(e) => updateField(i, e.target.value)}
+                      onBlur={(e)=> emailValidation(e.target.value)}
                     />
                   </Tooltip>
                 ) : (
