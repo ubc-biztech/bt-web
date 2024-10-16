@@ -57,6 +57,9 @@ import OtherCheckbox from "./components/OtherCheckbox";
 import {
   APPLICATION_STATUS
 } from "constants/_constants/eventStatsStatusFields";
+import {
+  EMAIL_REGEX
+} from "constants/_constants/registration";
 
 const styles = {
   // Container for custom form image
@@ -376,13 +379,6 @@ const FormRegister = (props) => {
     }
   }, [currEvent]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const emailValidation = (value) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(value) && value !== "") {
-      alert("Please enter a valid email address");
-    }
-  };
-
   const updateField = useCallback(
     (index, value) => {
       const responses = responseData;
@@ -624,7 +620,6 @@ const FormRegister = (props) => {
                       }}
                       value={responseData[i]}
                       onChange={(e) => updateField(i, e.target.value)}
-                      onBlur={(e)=> emailValidation(e.target.value)}
                     />
                   </Tooltip>
                 ) : (
@@ -810,7 +805,11 @@ const FormRegister = (props) => {
             valid = false;
           }
         }
-        // other checks can go here...
+        // check if email is valid
+        if (!EMAIL_REGEX.test(responseData[0])) {
+          newErrors[0] = "This email address is invalid";
+          valid = false;
+        }
       }
     }
 
