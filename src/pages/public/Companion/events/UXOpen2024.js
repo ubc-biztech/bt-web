@@ -107,7 +107,6 @@ const UXOpen2024 = (params) => {
 
   const renderStatus = () => {
     const status = userRegistration.applicationStatus;
-    console.log(status);
     if (status === "reviewing") {
       return <img src={Reviewing} alt={"We are currently reviewing your application"} style={renderMobileOnly ? customStyles.backgroundMobile : customStyles.background} />;
     } else if (status === "waitlist") {
