@@ -1,17 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, Typography, Modal, Button } from "@material-ui/core";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  makeStyles, Typography, Modal, Button
+} from "@material-ui/core";
 import readSpreadsheet from "utils/_utils/sheets";
-import { ProgressBar, Step } from "react-step-progress-bar";
+import {
+  ProgressBar, Step
+} from "react-step-progress-bar";
 import Loading from "pages/Loading";
 
 import BizTechDBLogo from "../../../assets/2023/data&beyond/BizTechD&BLogo.png";
 import FirstPlace from "../../../assets/2023/data&beyond/firstplace.png";
 import SecondPlace from "../../../assets/2023/data&beyond/secondplace.png";
 import ThirdPlace from "../../../assets/2023/data&beyond/thirdplace.png";
-import Wave from "../../../assets/2023/data&beyond/wave.png"
-import "./animations.css"
+import Wave from "../../../assets/2023/data&beyond/wave.png";
+import "./animations.css";
 import Podium from "./components/Podium";
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 
 const styles = {
   container: {
@@ -111,119 +119,130 @@ const useStyles = makeStyles((theme) => ({
 
 const Leaderboard = () => {
   const classes = useStyles();
-  const [teamData, setTeamData] = useState([])
-  const [prevTeamData, setPrevTeamData] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [teamData, setTeamData] = useState([]);
+  const [prevTeamData, setPrevTeamData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [timer, setTimer] = useState(30)
+  const [timer, setTimer] = useState(30);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const TOTAL_POSSIBLE = 68 + 25
+  const TOTAL_POSSIBLE = 68 + 25;
   const colours = {
     "0": "#3CB371",
-  }
+  };
   const trophies = {
     "0": FirstPlace,
     "1": SecondPlace,
     "2": ThirdPlace,
-  }
+  };
 
-  window.addEventListener("resize", () => setWindowWidth(window.innerWidth))
+  window.addEventListener("resize", () => setWindowWidth(window.innerWidth));
 
-  function getSortOrder(prop) {    
-    return function(a, b) {    
-      if (a[prop] > b[prop]) {    
-          return -1;    
-      } else if (a[prop] < b[prop]) {    
-          return 1;    
-      }    
-      return 0;    
-    }    
+  function getSortOrder(prop) {
+    return function(a, b) {
+      if (a[prop] > b[prop]) {
+        return -1;
+      } else if (a[prop] < b[prop]) {
+        return 1;
+      }
+      return 0;
+    };
   }
 
   const fetchTeamData = async (first = false) => {
-    setPrevTeamData(teamData)
+    setPrevTeamData(teamData);
     const spreadsheet = await readSpreadsheet();
-    const teams = await fetchBackend("/team/data-and-beyond/2023", "GET", undefined, false)
-    const points = []
+    const teams = await fetchBackend("/team/data-and-beyond/2023", "GET", undefined, false);
+    const points = [];
     spreadsheet.forEach((entry) => {
       if (entry.Score) {
-        const result = entry.Score.split("/")
-        const score = Number(result[0].trim())
+        const result = entry.Score.split("/");
+        const score = Number(result[0].trim());
         if (!(points.find((obj) => obj.name === entry.Team))) {
-          points.push({name: entry.Team, current: 0})
+          points.push({
+            name: entry.Team,
+            current: 0
+          });
         }
-        const i = points.findIndex((obj) => obj.name === entry.Team)
-        points[i].current += isNaN(score) ? 0 : score
+        const i = points.findIndex((obj) => obj.name === entry.Team);
+        points[i].current += isNaN(score) ? 0 : score;
       }
-    })
+    });
     teams.forEach((team) => {
       if (!(points.find((obj) => obj.name === team.teamName))) {
-        points.push({name: team.teamName, current: 0})
+        points.push({
+          name: team.teamName,
+          current: 0
+        });
       }
-      const i = points.findIndex((obj) => obj.name === team.teamName)
-      points[i].current += team.points
-    })
-    points.sort(getSortOrder("current"))
-    setTeamData(points)
+      const i = points.findIndex((obj) => obj.name === team.teamName);
+      points[i].current += team.points;
+    });
+    points.sort(getSortOrder("current"));
+    setTeamData(points);
     if (first) {
-      setPrevTeamData(points)
+      setPrevTeamData(points);
     }
-    setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     fetchTeamData(true);
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-      setTimeout(() => {
-        if (timer === 1) {
-          setIsLoading(true)
-          fetchTeamData();
-          setTimer(30)
-        } else {
-          setTimer(timer - 1)
-        }
-      }, 1000)
-    }, [timer]) // eslint-disable-line react-hooks/exhaustive-deps
+    setTimeout(() => {
+      if (timer === 1) {
+        setIsLoading(true);
+        fetchTeamData();
+        setTimer(30);
+      } else {
+        setTimer(timer - 1);
+      }
+    }, 1000);
+  }, [timer]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderChangeIcon = (idx) => {
-    const oldIdx = prevTeamData.findIndex((team) => 
+    const oldIdx = prevTeamData.findIndex((team) =>
       team.name === teamData[idx].name
-    )
+    );
     if (idx < oldIdx) {
-      return <div style={styles.arrowUp} />
+      return <div style={styles.arrowUp} />;
     }
     if (idx > oldIdx) {
-      return <div style={styles.arrowDown} />
+      return <div style={styles.arrowDown} />;
     }
-    return <></>
-  }
-  
+    return <></>;
+  };
+
   const morePoints = (idx) => {
-    const oldData = prevTeamData.find((team) => 
+    const oldData = prevTeamData.find((team) =>
       team.name === teamData[idx].name
-    )
-    return oldData.current < teamData[idx].current
-  }
+    );
+    return oldData.current < teamData[idx].current;
+  };
 
   return (
     <div style={styles.container}>
       <Modal open={isModalOpen} onBackdropClick={() => setIsModalOpen(false)}>
         <div style={styles.modal}>
-          <Podium winners={teamData.slice(0, 3).map((winner, position) => ({ ...winner, position}))}/>
+          <Podium winners={teamData.slice(0, 3).map((winner, position) => ({
+            ...winner,
+            position
+          }))}/>
           <img src={Wave} alt="wave" style={styles.waveFooter}></img>
         </div>
       </Modal>
-      {isLoading ? <Loading /> : 
+      {isLoading ? <Loading /> :
         <>
           <div style={styles.title}>Data Challenge Leaderboard</div>
-          <div style={{marginBottom: "20px"}}>Next update in {timer} second{timer !== 1 && "s"}</div>
+          <div style={{
+            marginBottom: "20px"
+          }}>Next update in {timer} second{timer !== 1 && "s"}</div>
           <Button
             variant="contained"
             color="primary"
             onClick={() => {
-              setIsModalOpen(true)
+              setIsModalOpen(true);
             }}
           >
             Show Winners
@@ -231,11 +250,19 @@ const Leaderboard = () => {
           <div style={styles.column}>
             {teamData.map((team, idx) => (
               <>
-              {team.current !== 0 && 
+                {team.current !== 0 &&
                 <div style={styles.row} key={team.name + idx}>
-                  <Typography className={classes.boldText} style={{...(colours[idx] && {color: colours[idx]})}}>{team.name}</Typography>
+                  <Typography className={classes.boldText} style={{
+                    ...(colours[idx] && {
+                      color: colours[idx]
+                    })
+                  }}>{team.name}</Typography>
                   <div style={styles.icon}>
-                    {trophies[idx] && <img src={trophies[idx]} alt="trophy" style={{width: "100%", height: "100%", marginRight: "50%"}}/>}
+                    {trophies[idx] && <img src={trophies[idx]} alt="trophy" style={{
+                      width: "100%",
+                      height: "100%",
+                      marginRight: "50%"
+                    }}/>}
                   </div>
                   <ProgressBar
                     percent={team.current/TOTAL_POSSIBLE * 100}
@@ -247,7 +274,14 @@ const Leaderboard = () => {
                   >
                     <Step>
                       {() => (
-                        <div style={{...(morePoints(idx) && styles.glow), height: 25, width: `${((windowWidth - 150) * 0.70) * (team.current/TOTAL_POSSIBLE)}px`, borderRadius: 10, position: "absolute", right: "50%"}}></div>
+                        <div style={{
+                          ...(morePoints(idx) && styles.glow),
+                          height: 25,
+                          width: `${((windowWidth - 150) * 0.70) * (team.current/TOTAL_POSSIBLE)}px`,
+                          borderRadius: 10,
+                          position: "absolute",
+                          right: "50%"
+                        }}></div>
                       )}
                     </Step>
                     <Step>
@@ -259,16 +293,20 @@ const Leaderboard = () => {
                   <div style={styles.icon}>
                     {renderChangeIcon(idx)}
                   </div>
-                  <Typography className={classes.boldText} style={{...(colours[idx] && {color: colours[idx]})}}>{`${team.current} Points`}</Typography>
+                  <Typography className={classes.boldText} style={{
+                    ...(colours[idx] && {
+                      color: colours[idx]
+                    })
+                  }}>{`${team.current} Points`}</Typography>
                 </div>
-              }
+                }
               </>
             ))}
           </div>
         </>
       }
     </div>
-  )
-}
+  );
+};
 
 export default Leaderboard;

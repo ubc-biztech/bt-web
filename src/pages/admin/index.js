@@ -1,6 +1,12 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { Redirect, Switch } from "react-router-dom";
+import React, {
+  useEffect
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  Redirect, Switch
+} from "react-router-dom";
 
 import Route from "components/routing/Route";
 import Loading from "pages/Loading";
@@ -12,13 +18,17 @@ import EventStats from "./Event/EventStats";
 import Memberships from "./Memberships/Memberships";
 import Companion from "./Companion";
 
-import { fetchEvents } from "store/event/eventActions";
+import {
+  fetchEvents
+} from "store/event/eventActions";
 
 // Dynamic form for creating events
 import FormCreate from "./DynamicForm/FormCreate";
 
 const AdminRoutes = (props) => {
-  const { events, eventsLoading, user } = props;
+  const {
+    events, eventsLoading, user
+  } = props;
 
   useEffect(() => {
     fetchEvents();
@@ -64,4 +74,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {})(AdminRoutes);
+export default connect(mapStateToProps, {
+})(AdminRoutes);

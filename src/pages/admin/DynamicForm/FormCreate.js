@@ -1,20 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
-import { makeStyles } from "@material-ui/core/styles";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
-import { Checkbox, Button, Fab, Grid, TextField, Tooltip } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import {
+  Checkbox, Button, Fab, Grid, TextField, Tooltip
+} from "@material-ui/core";
+import {
+  Add
+} from "@material-ui/icons";
 import {
   KeyboardDateTimePicker,
   MuiPickersUtilsProvider
 } from "@material-ui/pickers";
-import { useParams, useHistory, Link } from "react-router-dom";
+import {
+  useParams, useHistory, Link
+} from "react-router-dom";
 import CustomQuestion from "./components/CustomQuestion";
 import FormCreatePreview from "./FormCreatePreview";
-import { FieldArray, Formik } from "formik";
+import {
+  FieldArray, Formik
+} from "formik";
 import * as Yup from "yup";
-import { fetchBackend, log } from "utils";
-import { fetchEvents } from "store/event/eventActions";
+import {
+  fetchBackend, log
+} from "utils";
+import {
+  fetchEvents
+} from "store/event/eventActions";
 
 
 // Styling Material UI Components
@@ -130,12 +148,18 @@ const styles = {
   },
   previewButton: {
     marginBottom: 24,
+  },
+  applicationBasedCheckbox: {
+    padding: "1rem",
+    color: "white",
   }
 };
 
 const FormCreateForm = (props) => {
   const classes = useStyles();
-  const { id: eventId, year: eventYear } = useParams();
+  const {
+    id: eventId, year: eventYear
+  } = useParams();
   const [viewUserForm, setViewUserForm] = useState(true);
 
   const {
@@ -153,6 +177,7 @@ const FormCreateForm = (props) => {
       price,
       nonMembersPrice,
       nonMembersAllowed,
+      isApplicationBased,
       feedback,
       registrationQuestions,
       partnerRegistrationQuestions,
@@ -166,8 +191,10 @@ const FormCreateForm = (props) => {
     setFieldTouched,
     submitCount,
     handlePublish,
+    handleComplete,
     isSaved,
-    isPublished
+    isPublished,
+    isCompleted
   } = props;
 
   const defaultQuestion = {
@@ -198,7 +225,9 @@ const FormCreateForm = (props) => {
 
   const CustomQuestions = (
     <FieldArray name="registrationQuestions">
-      {({ push, swap, remove }) => {
+      {({
+        push, swap, remove
+      }) => {
         return (
           <>
             {registrationQuestions.map((question, index) => {
@@ -209,6 +238,7 @@ const FormCreateForm = (props) => {
                   key={index}
                   index={index}
                   length={registrationQuestions.length}
+                  formType={"ATTENDEE"}
                   data={question}
                   fnMove={swap}
                   fnDelete={remove}
@@ -218,7 +248,10 @@ const FormCreateForm = (props) => {
             {/* Add question */}
             <div style={styles.addQuestion}>
               <Fab
-                onClick={() => push({ ...defaultQuestion })}
+                onClick={() => push({
+
+                  ...defaultQuestion
+                })}
                 className={classes.fab}
                 color="primary"
                 aria-label="add"
@@ -234,7 +267,9 @@ const FormCreateForm = (props) => {
 
   const partnerCustomQuestions = (
     <FieldArray name="partnerRegistrationQuestions">
-      {({ push, swap, remove }) => {
+      {({
+        push, swap, remove
+      }) => {
         return (
           <>
             {partnerRegistrationQuestions.map((question, index) => {
@@ -245,6 +280,7 @@ const FormCreateForm = (props) => {
                   key={index}
                   index={index}
                   length={partnerRegistrationQuestions.length}
+                  formType={"PARTNER"}
                   data={question}
                   fnMove={swap}
                   fnDelete={remove}
@@ -254,7 +290,9 @@ const FormCreateForm = (props) => {
             {/* Add question */}
             <div style={styles.addQuestion}>
               <Fab
-                onClick={() => push({ ...defaultQuestion })}
+                onClick={() => push({
+                  ...defaultQuestion
+                })}
                 className={classes.fab}
                 color="primary"
                 aria-label="add"
@@ -299,16 +337,16 @@ const FormCreateForm = (props) => {
                 description={description}
                 questionsData={registrationQuestions}
               />
-            ) : 
-            (
-              <FormCreatePreview
-                imageUrl={imageUrl}
-                type={"partner"}check
-                eventName={eventName}
-                description={partnerDescription}
-                questionsData={partnerRegistrationQuestions}
-              />
-            )
+            ) :
+              (
+                <FormCreatePreview
+                  imageUrl={imageUrl}
+                  type={"partner"} check
+                  eventName={eventName}
+                  description={partnerDescription}
+                  questionsData={partnerRegistrationQuestions}
+                />
+              )
             }
           </div>
         </Grid>
@@ -322,10 +360,20 @@ const FormCreateForm = (props) => {
           {/* Editor Pane */}
           <div style={styles.editor} className="discrete-scrollbar">
             {/* Editor Head */}
-            <div style={{ ...styles.editorSection, ...styles.editorHeadmast }}>
+            <div style={{
+              ...styles.editorSection,
+              ...styles.editorHeadmast
+            }}>
               <h3 style={styles.editorTitle}>{eventName || "New Event"}</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                <div style={{ display: "flex", gap: "1rem" }}>
+              <div style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem"
+              }}>
+                <div style={{
+                  display: "flex",
+                  gap: "1rem"
+                }}>
                   {isSaved &&
                     (isPublished ? (
                       <Button
@@ -345,6 +393,23 @@ const FormCreateForm = (props) => {
                       </Button>
                     ))
                   }
+                  {isSaved && (isCompleted ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleComplete(false)}
+                    >
+                      Mark as uncomplete
+                    </Button>
+                  ) : (
+                    <Button variant="contained"
+                      color="primary"
+                      onClick={() => handleComplete(true)}
+                    >
+                      Mark as Complete
+                    </Button>
+                  )
+                  )}
                   <Button
                     variant="contained"
                     color="primary"
@@ -353,24 +418,31 @@ const FormCreateForm = (props) => {
                     Save
                   </Button>
                 </div>
-                <div style={{ display: "flex", gap: "1rem" }}>
-                  {isSaved ? 
+                <div style={{
+                  display: "flex",
+                  gap: "1rem"
+                }}>
+                  {isSaved ?
                     <Link
                       variant="contained"
                       component={Button}
                       color="primary"
-                      to={{ pathname: `/event/${eventId}/${eventYear}/register`}}
+                      to={{
+                        pathname: `/event/${eventId}/${eventYear}/register`
+                      }}
                       target="_blank"
                     >
                       Event Link
                     </Link> : <></>
                   }
-                  {isSaved ? 
+                  {isSaved ?
                     <Link
                       variant="contained"
                       component={Button}
                       color="primary"
-                      to={{ pathname: `/event/${eventId}/${eventYear}/register/partner`}}
+                      to={{
+                        pathname: `/event/${eventId}/${eventYear}/register/partner`
+                      }}
                       target="_blank"
                     >
                       Partner Event Link
@@ -380,6 +452,22 @@ const FormCreateForm = (props) => {
               </div>
             </div>
             <div style={styles.editorDivider}></div>
+
+            {!eventId &&
+              <div style={styles.applicationBasedCheckbox}>
+                Is this an application based event (ie. will you accept/reject applicants)?
+                <Checkbox
+                  id='isApplicationBased'
+                  name='isApplicationBased'
+                  color="primary"
+                  aria-label="application based?"
+                  checked={isApplicationBased}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  required
+                />
+              </div>
+            }
 
             <div style={styles.editorSection}>
               <h3 style={styles.editorSectionTitle}>Event Cover Photo</h3>
@@ -432,14 +520,18 @@ const FormCreateForm = (props) => {
                 value={slug}
                 error={showError("slug")}
                 helperText={showError("slug") && errors.slug}
+                disabled={isSaved} // Don't allow changes if slug has been saved
               />
               {slug && (
-                <div style={{ color: "#FFFFFF", opacity: "0.7" }}>
+                <div style={{
+                  color: "#FFFFFF",
+                  opacity: "0.7"
+                }}>
                   <div>
                     {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register"}
                   </div>
                   <div>
-                  {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register/partner"}
+                    {"https://ubcbiztech.com/event/" + slug + "/" + start.getFullYear() + "/register/partner"}
                   </div>
                 </div>
               )}
@@ -527,7 +619,7 @@ const FormCreateForm = (props) => {
                 helperText={showError("location") && errors.location}
               />
 
-<MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
                     <KeyboardDateTimePicker
@@ -546,7 +638,7 @@ const FormCreateForm = (props) => {
                   </Grid>
                 </Grid>
               </MuiPickersUtilsProvider>
-              
+
               <Tooltip title="If left blank, the event is free." arrow>
                 <TextField
                   id="price"
@@ -629,8 +721,8 @@ const FormCreateForm = (props) => {
                 helperText={showError("partnerDescription") && errors.partnerDescription}
               />
               <h3 style={styles.editorSectionTitle}>Partner Form Custom Questions</h3>
-              {/* custom questions for partner*/}
-              {partnerCustomQuestions} 
+              {/* custom questions for partner */}
+              {partnerCustomQuestions}
             </div>
           </div>
         </Grid>
@@ -644,6 +736,9 @@ const FormCreateForm = (props) => {
    - TEXT
    - SELECT
    - CHECKBOX
+   - UPLOAD
+   - WORKSHOP SELECTION
+   - Skills question
 
   Below is the data struct for registrationQuestions
 
@@ -671,13 +766,13 @@ const dummyData = [
     questionImageUrl: "",
   },
   {
-    type: "SELECT",
-    label: "How interested are you in this event?",
-    choices: "1,2,3,4,5",
+    type: "UPLOAD",
+    label: "Upload a profile picture",
     required: true,
     questionImageUrl: "",
   }
 ];
+
 
 const partnerDummyData = [
   {
@@ -686,12 +781,25 @@ const partnerDummyData = [
     choices: "Keynote Speaker,Workshop Lead,Boothing,Networking Delegate",
     required: true,
     questionImageUrl: "",
+  },
+  {
+    type: "SKILLS",
+    label: "What skills are you familiar with?",
+    choices: "",
+    required: true,
+    charLimit: 200,
+    questionImageUrl: "",
+    isSkillsQuestion: true
   }
-]
+];
 
 const FormCreate = (props) => {
-  const { events } = props;
-  const { id: eventId, year: eventYear } = useParams();
+  const {
+    events
+  } = props;
+  const {
+    id: eventId, year: eventYear
+  } = useParams();
   const history = useHistory();
 
   const [event, setEvent] = useState(null);
@@ -709,47 +817,50 @@ const FormCreate = (props) => {
 
   const initialValues = event
     ? {
-        imageUrl: event.imageUrl || "",
-        eventName: event.ename || "",
-        slug: event.id || "",
-        description: event.description || "",
-        partnerDescription: event.partnerDescription || "",
-        capacity: event.capac || "",
-        start: event.startDate ? new Date(event.startDate) : new Date(),
-        end: event.endDate ? new Date(event.endDate) : new Date(),
-        location: event.elocation || "",
-        deadline: event.deadline ? new Date(event.deadline) : new Date(),
-        price: event.pricing?.members || 0,
-        nonMembersAllowed: event.pricing?.nonMembers !== undefined,
-        nonMembersPrice: event.pricing?.nonMembers || 0,
-        registrationQuestions: event.registrationQuestions || dummyData,
-        feedback: event.feedback || "",
-        partnerRegistrationQuestions: event.partnerRegistrationQuestions || partnerDummyData,
-      }
+      imageUrl: event.imageUrl || "",
+      eventName: event.ename || "",
+      slug: event.id || "",
+      description: event.description || "",
+      partnerDescription: event.partnerDescription || "",
+      capacity: event.capac || "",
+      start: event.startDate ? new Date(event.startDate) : new Date(),
+      end: event.endDate ? new Date(event.endDate) : new Date(),
+      location: event.elocation || "",
+      deadline: event.deadline ? new Date(event.deadline) : new Date(),
+      price: event.pricing?.members || 0,
+      nonMembersAllowed: event.pricing?.nonMembers !== undefined,
+      nonMembersPrice: event.pricing?.nonMembers || 0,
+      registrationQuestions: event.registrationQuestions || dummyData,
+      feedback: event.feedback || "",
+      partnerRegistrationQuestions: event.partnerRegistrationQuestions || partnerDummyData,
+      isApplicationBased: event?.isApplicationBased
+    }
     : {
-        imageUrl: "",
-        eventName: "",
-        slug: "",
-        description: "",
-        partnerDescription: "",
-        capacity: "",
-        start: new Date(),
-        end: new Date(),
-        location: "",
-        deadline: new Date(),
-        price: 0,
-        nonMembersAllowed: false,
-        nonMembersPrice: 0,
-        registrationQuestions: dummyData,
-        feedback: "",
-        partnerRegistrationQuestions: partnerDummyData,
-      };
+      imageUrl: "",
+      eventName: "",
+      slug: "",
+      description: "",
+      partnerDescription: "",
+      capacity: "",
+      start: new Date(),
+      end: new Date(),
+      location: "",
+      deadline: new Date(),
+      price: 0,
+      nonMembersAllowed: false,
+      nonMembersPrice: 0,
+      registrationQuestions: dummyData,
+      feedback: "",
+      partnerRegistrationQuestions: partnerDummyData,
+      isApplicationBased: false
+    };
 
   const regQuestionSchema = Yup.object({
-    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD"]).required(),
+    type: Yup.mixed().oneOf(["TEXT", "SELECT", "CHECKBOX", "UPLOAD", "WORKSHOP SELECTION", "SKILLS"]).required(),
     label: Yup.string().required("Question is a required field"),
     choices: Yup.string(),
-    required: Yup.boolean().required()
+    required: Yup.boolean().required(),
+    isSkillsQuestion: Yup.boolean()
   });
 
   const validationSchema = Yup.object({
@@ -763,22 +874,28 @@ const FormCreate = (props) => {
     capacity: Yup.number("Valid number required")
       .min(0, "Valid capacity required")
       .required(),
-    start: Yup.date().required(),
+    start: Yup.date().test("is-same-year", "Start date's year must be the same as eventYear", function (value) {
+      if (!eventYear || !value) {
+        return true; // Skip the test if eventYear or start date is not provided
+      }
+      const startYear = value.getFullYear();
+      return startYear === parseInt(eventYear);
+    }).required(),
     end: Yup.date()
       .min(Yup.ref("start"), "End must be later than Start")
       .required(),
     location: Yup.string().required(),
     deadline: Yup.date()
-    .max(Yup.ref("end"), "Deadline cannot be later than End")
-    .required(),
+      .max(Yup.ref("end"), "Deadline cannot be later than End")
+      .required(),
     price: Yup.number("Valid number required")
       .min(0, "Valid pricing required"),
-    nonMembersPrice: Yup.number("Valid number required").when("nonMembersAllowed", {
-      is: true,
-      then: Yup.number().min(Yup.ref("price"), "Non-members price must be greater or equal to members price")
-    }),
+    nonMembersAllowed: Yup.bool(),
+    nonMembersPrice: Yup.number("Valid number required")
+      .min(0, "Valid pricing required"),
     registrationQuestions: Yup.array().of(regQuestionSchema),
-    partnerRegistrationQuestions: Yup.array().of(regQuestionSchema)
+    partnerRegistrationQuestions: Yup.array().of(regQuestionSchema),
+    isApplicationBase: Yup.bool(),
   });
 
   async function submitValues(values) {
@@ -796,8 +913,10 @@ const FormCreate = (props) => {
 
     const pricing = {
       members: Number(values.price) || 0,
-      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0}
-    }
+      ...(values.nonMembersAllowed) && {
+        nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0
+      }
+    };
 
     const body = {
       ename: values.eventName,
@@ -812,7 +931,8 @@ const FormCreate = (props) => {
       pricing,
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback,
-      partnerRegistrationQuestions: values.partnerRegistrationQuestions
+      partnerRegistrationQuestions: values.partnerRegistrationQuestions,
+      isApplicationBased: values.isApplicationBased
     };
 
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
@@ -835,8 +955,10 @@ const FormCreate = (props) => {
 
     const pricing = {
       members: Number(values.price) || 0,
-      ...(values.nonMembersAllowed) && {nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0}
-    }
+      ...(values.nonMembersAllowed) && {
+        nonMembers: values.nonMembersPrice ? Number(values.nonMembersPrice) : Number(values.price) || 0
+      }
+    };
 
     const body = {
       id,
@@ -852,9 +974,11 @@ const FormCreate = (props) => {
       deadline: values.deadline,
       pricing,
       isPublished: false,
+      isCompleted: false,
       registrationQuestions: values.registrationQuestions,
       feedback: values.feedback,
-      partnerRegistrationQuestions: values.partnerRegistrationQuestions
+      partnerRegistrationQuestions: values.partnerRegistrationQuestions,
+      isApplicationBased: values.isApplicationBased
     };
 
     fetchBackend("/events", "POST", body)
@@ -872,10 +996,13 @@ const FormCreate = (props) => {
   }
 
   const isPublished = (event && event.isPublished) || false;
+  const isCompleted = (event && event.isCompleted) || false;
   const isSaved = !!(eventId && eventYear);
 
   async function handlePublish(publish = false) {
-    const body = { isPublished: publish };
+    const body = {
+      isPublished: publish
+    };
 
     fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
       .then((response) => {
@@ -891,10 +1018,30 @@ const FormCreate = (props) => {
       });
   }
 
+  async function handleComplete(complete = false) {
+    const body = {
+      isCompleted: complete
+    };
+
+    fetchBackend(`/events/${eventId}/${parseInt(eventYear)}`, "PATCH", body)
+      .then((response) => {
+        alert(response.message);
+        fetchEvents();
+        history.replace(`/admin/event/${eventId}/${eventYear}/edit`);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.message + " Please contact a dev");
+      });
+  }
+
   const formProps = {
     handlePublish,
+    handleComplete,
     isSaved,
-    isPublished
+    isPublished,
+    isCompleted
   };
 
   return (

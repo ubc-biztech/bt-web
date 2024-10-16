@@ -1,6 +1,12 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
+import React, {
+  useState
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  Auth
+} from "aws-amplify";
 import {
   Button,
   Card,
@@ -8,11 +14,19 @@ import {
   CssBaseline,
   Typography
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab"
-import { Link, useHistory } from "react-router-dom";
+import {
+  Alert
+} from "@material-ui/lab";
+import {
+  Link, useHistory
+} from "react-router-dom";
 import LoginImage from "assets/login.svg";
-import { COLORS } from "constants/index";
-import { setUser } from "store/user/userActions";
+import {
+  COLORS
+} from "constants/index";
+import {
+  setUser
+} from "store/user/userActions";
 
 const styles = {
   main: {
@@ -159,8 +173,8 @@ function ForgotPassword() {
     if (emailError || passwordError) {
       // if any errors with inputs, set state and rerender (don't call signin/signup)
       setErrors({
-        emailError: emailError,
-        passwordError: passwordError,
+        emailError,
+        passwordError,
         verificationError: verificationCodeError
       });
     } else if (confirmPassword !== password) {
@@ -199,7 +213,7 @@ function ForgotPassword() {
         sendResetEmail();
       }
     }
-  }
+  };
 
   return (
     <div style={styles.main}>
@@ -224,7 +238,6 @@ function ForgotPassword() {
                     <input
                       style={styles.inputText}
                       type="text"
-                      email="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       onKeyPress={handleKeyPress}
@@ -241,7 +254,9 @@ function ForgotPassword() {
                 </div>
               )}
               {/* return to login page */}
-              <div style={{ marginTop: "10px" }}>
+              <div style={{
+                marginTop: "10px"
+              }}>
                 <Typography>
                   <Link to="/login" style={styles.recoverPasswordLink}>
                     Return to login
@@ -291,7 +306,6 @@ function ForgotPassword() {
                 <input
                   style={styles.inputText}
                   type="email"
-                  email="verification code"
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -304,7 +318,6 @@ function ForgotPassword() {
                 <input
                   style={styles.inputText}
                   type="password"
-                  email="new password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -318,7 +331,6 @@ function ForgotPassword() {
                 <input
                   style={styles.inputText}
                   type="password"
-                  email="confirm new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -346,4 +358,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setUser })(ForgotPassword);
+export default connect(mapStateToProps, {
+  setUser
+})(ForgotPassword);

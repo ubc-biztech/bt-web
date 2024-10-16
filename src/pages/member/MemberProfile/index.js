@@ -1,6 +1,8 @@
-import React from 'react'
+import React from "react";
 
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import {
+  makeStyles, useTheme
+} from "@material-ui/core/styles";
 import {
   Button,
   Card,
@@ -12,24 +14,28 @@ import {
   TextField,
   Tooltip,
   Typography
-} from '@material-ui/core'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+} from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   InfoOutlined as InfoOutlinedIcon,
   CreateOutlined as OutlinedPencilIcon
-} from '@material-ui/icons'
+} from "@material-ui/icons";
 
-import House from 'assets/house.svg'
-import { COLORS } from 'constants/index'
-import { fetchBackend } from 'utils'
+import House from "assets/house.svg";
+import {
+  COLORS
+} from "constants/index";
+import {
+  fetchBackend
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   profilePageContainer: {
-    maxWidth: '1200px',
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: 'auto',
-    padding: '14px'
+    maxWidth: "1200px",
+    display: "flex",
+    flexWrap: "wrap",
+    margin: "auto",
+    padding: "14px"
   },
   column: {
     flex: 1
@@ -38,134 +44,134 @@ const useStyles = makeStyles((theme) => ({
     height: 680
   },
   profileBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   header: {
     color: COLORS.BIZTECH_GREEN,
-    width: '100%',
+    width: "100%",
     fontSize: 36,
-    fill: 'solid',
-    fontStyle: 'bold',
+    fill: "solid",
+    fontStyle: "bold",
     paddingBottom: 20
   },
   house: {
     paddingTop: 60
   },
   memberName: {
-    fontStyle: 'normal',
+    fontStyle: "normal",
     fontSize: 48,
-    fill: 'solid',
-    textAlign: 'center'
+    fill: "solid",
+    textAlign: "center"
   },
   label: {
-    fontStyle: 'normal',
+    fontStyle: "normal",
     fontSize: 36,
-    fill: 'solid',
-    fontWeight: 'bold'
+    fill: "solid",
+    fontWeight: "bold"
   },
   profileInformationContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between"
   },
   infoBox: {
     paddingLeft: 70,
     paddingBottom: 10,
-    display: 'flex',
-    flexdirection: 'row'
+    display: "flex",
+    flexdirection: "row"
   },
   infoLabel: {
-    fontStyle: 'normal',
-    fill: 'solid',
+    fontStyle: "normal",
+    fill: "solid",
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#AEC4F4'
+    fontWeight: "bold",
+    color: "#AEC4F4"
   },
   infoValue: {
-    fontStyle: 'normal',
-    fill: 'solid',
+    fontStyle: "normal",
+    fill: "solid",
     fontSize: 20,
-    color: '#AEC4F4'
+    color: "#AEC4F4"
   },
   pencilIcon: {
-    color: '#AEC4F4'
+    color: "#AEC4F4"
   },
   icon: {
-    marginLeft: 'auto',
+    marginLeft: "auto",
     paddingRight: 70
   },
   submitButton: {
-    color: '#AEC4F4',
-    variant: 'contained'
+    color: "#AEC4F4",
+    variant: "contained"
   },
   button: {
-    marginLeft: 'auto',
+    marginLeft: "auto",
     paddingRight: 70
   },
   infoIcon: {
-    color: '#AEC4F4',
-    variant: 'contained'
+    color: "#AEC4F4",
+    variant: "contained"
   },
 
   membershipCardContent: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     paddingLeft: 25,
     paddingTop: 30
   },
   membershipCardEventNumber: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20
   },
   membershipCardYear: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20
   },
   membershipCardEventNumberText: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     paddingTop: 30
   },
   eventsContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
     paddingLeft: 25,
     paddingTop: 30
   },
   eventLabel: {
-    color: '#96FF50',
+    color: "#96FF50",
     fontSize: 26,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     paddingTop: 40
   },
   eventValue: {
-    color: '#AEC4F4',
+    color: "#AEC4F4",
     fontSize: 26
   }
-}))
+}));
 
 function MemberProfile (props) {
   const {
     events,
     user
     // userEventsRegistered,
-  } = props
-  const [isEditing, setIsEditing] = React.useState(false)
-  const [ID] = React.useState(user.id)
-  const [Faculty, setFaculty] = React.useState(user.faculty)
-  const [Email, setEmail] = React.useState(user.email)
-  const [Diet, setDiet] = React.useState(user.diet)
-  const [eventsAttended, setEventsAttended] = React.useState()
-  const [recentEvent, setRecentEvent] = React.useState()
-  const [favouriteEventName1, setFavouriteEventName1] = React.useState()
+  } = props;
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [ID] = React.useState(user.id);
+  const [Faculty, setFaculty] = React.useState(user.faculty);
+  const [Email, setEmail] = React.useState(user.email);
+  const [Diet, setDiet] = React.useState(user.diet);
+  const [eventsAttended, setEventsAttended] = React.useState();
+  const [recentEvent, setRecentEvent] = React.useState();
+  const [favouriteEventName1, setFavouriteEventName1] = React.useState();
   // const [favouriteEventName2, setFavouriteEventName2] = React.useState()
   // Won't work unless I pass in Year param exactly like this
-  const Year = React.useState(user.level)
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
+  const Year = React.useState(user.level);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   const body = {
     email: Email,
@@ -176,72 +182,72 @@ function MemberProfile (props) {
     year: Year,
     diet: Diet,
     gender: user.gender
-  }
+  };
 
   const handleEdit = () => {
     if (isEditing) {
-      fetchBackend(`/users/${user.email}`, 'PATCH', body).then((response) =>
+      fetchBackend(`/users/${user.email}`, "PATCH", body).then((response) =>
         console.log(response)
-      )
+      );
     }
-    setIsEditing(!isEditing)
-  }
+    setIsEditing(!isEditing);
+  };
 
   const handleChange = (type, value) => {
-    if (type === 'Faculty') {
-      setFaculty(value)
-    } else if (type === 'Email') {
-      setEmail(value)
+    if (type === "Faculty") {
+      setFaculty(value);
+    } else if (type === "Email") {
+      setEmail(value);
     } else {
-      setDiet(value)
+      setDiet(value);
     }
-  }
+  };
 
   const getRecentEvent = async () => {
     const params = new URLSearchParams({
       id: user.id
-    })
-    fetchBackend(`/registrations?${params}`, 'GET')
+    });
+    fetchBackend(`/registrations?${params}`, "GET")
       .then(async (response) => {
         if (response && response.size > 0) {
           if (events) {
-            var recentEventChecker = ''
-            var eventsAttendedCounter = 0
+            let recentEventChecker = "";
+            let eventsAttendedCounter = 0;
             events.forEach((event) => {
               const index = response.data.findIndex(
                 (registration) => registration["eventID;year"] === event.id + ";" + event.year
-              )
+              );
               if (index !== -1) {
                 // checks if they have checked in at the event
-                var recentEventCheckedInChecker =
-                  response.data[index].registrationStatus === 'checkedIn'
+                const recentEventCheckedInChecker =
+                  response.data[index].registrationStatus === "checkedIn";
 
                 if (recentEventCheckedInChecker) {
-                  eventsAttendedCounter = eventsAttendedCounter + 1
-                  if (recentEventChecker === '') {
-                    setRecentEvent(event.ename)
+                  eventsAttendedCounter = eventsAttendedCounter + 1;
+                  if (recentEventChecker === "") {
+                    setRecentEvent(event.ename);
                   }
-                  recentEventChecker = 'exists'
+                  recentEventChecker = "exists";
                 }
               }
-            })
-            if (recentEventChecker === '') {
-              setRecentEvent('No events attended!')
+            });
+            if (recentEventChecker === "") {
+              setRecentEvent("No events attended!");
             }
-            setEventsAttended(eventsAttendedCounter)
+            setEventsAttended(eventsAttendedCounter);
           }
         } else {
-          setRecentEvent('No events attended!')
+          setRecentEvent("No events attended!");
         }
       })
       .catch(() => {
-        setRecentEvent('No events attended!')
-      })
-  }
+        setRecentEvent("No events attended!");
+      });
+  };
 
   const getFavouriteEvents = () => {
-    fetchBackend(`/users/${user.email}`, 'GET').then(async (response) => {
-      const favouriteEventIDs = response['favedEventsID;year']
+    fetchBackend(`/users/${user.email}`, "GET").then(async (response) => {
+      const favouriteEventIDs = response["favedEventsID;year"];
       events &&
         events.forEach((event) => {
           if (favouriteEventIDs) {
@@ -255,20 +261,20 @@ function MemberProfile (props) {
             //       Should be fixed to display a dynamic number of favourited events. 
             if (favouriteEventIDs.length >= 1) {
               if (event.id + ";" + event.year === favouriteEventIDs[0]) {
-                setFavouriteEventName1(event.ename)
+                setFavouriteEventName1(event.ename);
               }
-            } 
+            }
           }
-        })
-    })
-  }
+        });
+    });
+  };
 
   if (user.id && !recentEvent && !favouriteEventName1) {
-    getFavouriteEvents()
-    getRecentEvent()
+    getFavouriteEvents();
+    getRecentEvent();
   }
 
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <div className={classes.profilePageContainer}>
       <Typography className={classes.header} variant='h1'>
@@ -349,7 +355,9 @@ function MemberProfile (props) {
                           id='standard-read-only-input'
                           label='Student ID'
                           value={ID}
-                          inputProps={{ readOnly: true }}
+                          inputProps={{
+                            readOnly: true
+                          }}
                         />
                       </div>
                       <div className={classes.button}>
@@ -377,22 +385,22 @@ function MemberProfile (props) {
                             id='demo-simple-select'
                             value={Faculty}
                             onChange={(event) => {
-                              handleChange('Faculty', event.target.value)
+                              handleChange("Faculty", event.target.value);
                             }}
                           >
-                            <MenuItem value={'Arts'}>Arts</MenuItem>
-                            <MenuItem value={'Commerce'}>Commerce</MenuItem>
-                            <MenuItem value={'Science'}>Science</MenuItem>
-                            <MenuItem value={'Engineering'}>
+                            <MenuItem value={"Arts"}>Arts</MenuItem>
+                            <MenuItem value={"Commerce"}>Commerce</MenuItem>
+                            <MenuItem value={"Science"}>Science</MenuItem>
+                            <MenuItem value={"Engineering"}>
                               Engineering
                             </MenuItem>
-                            <MenuItem value={'Kinesiology'}>
+                            <MenuItem value={"Kinesiology"}>
                               Kinesiology
                             </MenuItem>
-                            <MenuItem value={'Land and Food Systems'}>
+                            <MenuItem value={"Land and Food Systems"}>
                               Land and Food Systems
                             </MenuItem>
-                            <MenuItem value={'Forestry'}>Forestry</MenuItem>
+                            <MenuItem value={"Forestry"}>Forestry</MenuItem>
                           </Select>
                         </FormControl>
                       </div>
@@ -403,7 +411,9 @@ function MemberProfile (props) {
                           id='standard-read-only-input'
                           label='Email'
                           value={Email}
-                          inputProps={{ readOnly: true }}
+                          inputProps={{
+                            readOnly: true
+                          }}
                         />
                       </div>
                     </div>
@@ -418,18 +428,18 @@ function MemberProfile (props) {
                             id='demo-simple-select'
                             value={Diet}
                             onChange={(event) => {
-                              handleChange('Diet', event.target.value)
+                              handleChange("Diet", event.target.value);
                             }}
                           >
-                            <MenuItem value={'None'}>None</MenuItem>
-                            <MenuItem value={'Vegetarian'}>Vegetarian</MenuItem>
-                            <MenuItem value={'Vegan'}>Vegan</MenuItem>
-                            <MenuItem value={'Gluten Free'}>
+                            <MenuItem value={"None"}>None</MenuItem>
+                            <MenuItem value={"Vegetarian"}>Vegetarian</MenuItem>
+                            <MenuItem value={"Vegan"}>Vegan</MenuItem>
+                            <MenuItem value={"Gluten Free"}>
                               Gluten Free
                             </MenuItem>
-                            <MenuItem value={'Pescetarian'}>Pescetarian</MenuItem>
-                            <MenuItem value={'Kosher'}>Kosher</MenuItem>
-                            <MenuItem value={'Halal'}>Halal</MenuItem>
+                            <MenuItem value={"Pescetarian"}>Pescetarian</MenuItem>
+                            <MenuItem value={"Kosher"}>Kosher</MenuItem>
+                            <MenuItem value={"Halal"}>Halal</MenuItem>
                           </Select>
                         </FormControl>
                       </div>
@@ -445,7 +455,12 @@ function MemberProfile (props) {
       <div className={classes.column}>
         <div
           style={
-            isMobile ? { marginLeft: 0, paddingTop: 20 } : { marginLeft: 40 }
+            isMobile ? {
+              marginLeft: 0,
+              paddingTop: 20
+            } : {
+              marginLeft: 40
+            }
           }
         >
           <Card>
@@ -455,12 +470,19 @@ function MemberProfile (props) {
                 <div className={classes.membershipCardEventNumberText}>
                   <Typography
                     className={classes.membershipCardEventNumber}
-                    style={{ color: '#96FF50' }}
+                    style={{
+                      color: "#96FF50"
+                    }}
                   >
                     {eventsAttended || 0}
                   </Typography>
-                  <div style={{ paddingLeft: 4 }}>
-                    <Typography style={{ color: '#AEC4F4', fontSize: 20 }}>
+                  <div style={{
+                    paddingLeft: 4
+                  }}>
+                    <Typography style={{
+                      color: "#AEC4F4",
+                      fontSize: 20
+                    }}>
                       events attended
                     </Typography>
                   </div>
@@ -470,12 +492,22 @@ function MemberProfile (props) {
           </Card>
         </div>
 
-        <div style={isMobile ? { paddingTop: 20 } : { paddingTop: 40 }}>
+        <div style={isMobile ? {
+          paddingTop: 20
+        } : {
+          paddingTop: 40
+        }}>
           <Card
             style={
               isMobile
-                ? { height: 535, marginLeft: 0 }
-                : { height: 495, marginLeft: 40 }
+                ? {
+                  height: 535,
+                  marginLeft: 0
+                }
+                : {
+                  height: 495,
+                  marginLeft: 40
+                }
             }
           >
             <div className={classes.eventsContent}>
@@ -488,7 +520,7 @@ function MemberProfile (props) {
                     Most Recent
                   </Typography>
                   <Typography className={classes.eventValue}>
-                    {recentEvent}                                 
+                    {recentEvent}
                   </Typography>
                 </div>
                 <div>
@@ -496,7 +528,7 @@ function MemberProfile (props) {
                     Favourites
                   </Typography>
                   <Typography className={classes.eventValue}>
-                    {favouriteEventName1 || 'None Favourited!'}
+                    {favouriteEventName1 || "None Favourited!"}
                   </Typography>
                 </div>
                 {/* <div>
@@ -513,7 +545,7 @@ function MemberProfile (props) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default MemberProfile
+export default MemberProfile;

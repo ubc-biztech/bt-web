@@ -2,7 +2,13 @@ export const constantStyles = {
   titleFontSize: 50,
   titleMobileFontSize: 25,
   fontSize: 16,
-  mobileFontSize: 12,
-  textColor: "#172442",
-  backgroundGradient: "linear-gradient(180deg, #e3edf7, #e3edf7)",
-}
+  mobileFontSize: 15,
+  textColor: "white",
+  backgroundGradient: "linear-gradient(0.5turn, #060818,  #0A0B25, #060818)"
+};
+
+export const QRCodeTypes = {
+  PARTNER: "Partner",
+  WORKSHOP: "Workshop",
+  BOOTH: "Booth",
+};

@@ -1,13 +1,25 @@
-import React, { useState, Fragment } from "react";
-import { Helmet } from "react-helmet";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography, Button } from "@material-ui/core";
+import React, {
+  useState, Fragment
+} from "react";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Typography, Button
+} from "@material-ui/core";
 import MembershipForm from "./MembershipForm/index";
 import UserMembershipForm from "./UserMembershipForm/index";
 import OAuthUserMembershipForm from "./OAuthUserMembershipForm/index";
-import { useParams } from "react-router-dom";
+import {
+  useParams
+} from "react-router-dom";
 
-import { COLORS } from "../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../constants/_constants/theme";
 import House from "assets/house.svg";
 import Login from "assets/login.svg";
 
@@ -66,9 +78,13 @@ const RegistrationFormContainer = (props) => {
 
   const [formType, setFormType] = useState("");
 
-  const { user } = props;
+  const {
+    user
+  } = props;
 
-  const { isOAuth: OAuthFlag } = useParams();
+  const {
+    isOAuth: OAuthFlag
+  } = useParams();
 
   // const testing = false;
 
@@ -80,7 +96,7 @@ const RegistrationFormContainer = (props) => {
         {!user && (
           <div className={classes.layout}>
             <Helmet>
-              <title>UBC BizTech Registration 2022/23</title>
+              <title>UBC BizTech Registration 2024/2025</title>
             </Helmet>
             {formType === "" && (
               <Fragment>
@@ -94,9 +110,11 @@ const RegistrationFormContainer = (props) => {
                       className={classes.selectButton}
                       onClick={() => setFormType("UserMember")}
                     >
-                      <div style={{ flexDirection: "column" }}>
+                      <div style={{
+                        flexDirection: "column"
+                      }}>
                         <Typography>
-                          User + Membership 2022/23 Registration
+                          User + Membership 2024/2025 Registration
                         </Typography>
                         <img src={House} alt="not-found" />
                         <Typography>
@@ -111,8 +129,10 @@ const RegistrationFormContainer = (props) => {
                     className={classes.selectButton}
                     onClick={() => setFormType("Member")}
                   >
-                    <div style={{ flexDirection: "column" }}>
-                      <Typography>Membership 2022/23 Registration</Typography>
+                    <div style={{
+                      flexDirection: "column"
+                    }}>
+                      <Typography>Membership 2024/2025 Registration</Typography>
                       <img
                         src={Login}
                         alt="not-found"
