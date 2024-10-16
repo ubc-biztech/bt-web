@@ -1364,7 +1364,7 @@ const FormRegister = (props) => {
     );
   };
 
-  if (user && (event?.pricing?.nonMembers === undefined && !user?.isMember && !user?.admin)) {
+  if (user && (currEvent?.pricing?.nonMembers === undefined && !user?.isMember && !user?.admin)) {
     return <Redirect to={"/signup"} />;
   }
 
