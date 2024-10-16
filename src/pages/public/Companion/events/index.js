@@ -16,6 +16,8 @@ import TechStyleLogo from "../../../../assets/2024/techstyle/techstyle_logo.png"
 import TechStyleTexture from "../../../../assets/2024/techstyle/techstyle_grid.png";
 import TSLogo from "../../../../assets/2024/techstyle/techstyle_biztech_logo.png";
 import HelloHacks2024 from "./HelloHacks2024";
+import UXOpen2024 from "./UXOpen2024";
+import UXOpenLogo from "../../../../assets/2024/ux-open/UXOpenLogo.png";
 
 export default [
   {
@@ -428,5 +430,42 @@ export default [
       headers: [
       ]
     }
-  }
+  },
+  {
+    /* Date indicating when event ends, this also indicates which app the companion app will render, to be safe, but a couple days after event ends */
+    activeUntil: new Date(new Date("2024-11-03").getTime() + (7 * 24 * 60 * 60 * 1000)),
+    /* id of event in dynamodb, used for queries */
+    eventID: "ux-open",
+    /* year of event in dynamodb, used for queries */
+    year: 2024,
+    /* component for event body */ // keep the same
+    ChildComponent: UXOpen2024,
+    /* options defining params for the companionLayout */
+    options: {
+      disableWelcomeHeader: true,
+      /* Biztech logo for event */
+      BiztechLogo: UXOpenLogo,
+      /* Logo for event */
+      Logo: UXOpenLogo,
+      /* Displayed title of event */
+      title: "UXOpen 2024",
+      /* Displayed date of event */
+      date: "Nov 2-3, 2024",
+      /* Displayed location of event */
+      location: "Henry Angus Building (Sauder)",
+      /* color theme of event */
+      colors: {
+        primary: "linear-gradient(180deg, white, white)",
+        background: "linear-gradient(0.5turn, #2A0538,  #744188, #CB679B, #FFAF40, #FFA26E )",
+      },
+      /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
+      getScheduleData: () => [],
+      /* Array of welcome paragraphs for event, each new index is a new paragraph */
+      welcomeData: [
+      ],
+      /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
+      headers: [
+      ]
+    }
+  },
 ];
