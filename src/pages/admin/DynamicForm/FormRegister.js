@@ -57,6 +57,9 @@ import OtherCheckbox from "./components/OtherCheckbox";
 import {
   APPLICATION_STATUS
 } from "constants/_constants/eventStatsStatusFields";
+import {
+  EMAIL_REGEX
+} from "constants/_constants/registration";
 
 const styles = {
   // Container for custom form image
@@ -802,7 +805,11 @@ const FormRegister = (props) => {
             valid = false;
           }
         }
-        // other checks can go here...
+        // check if email is valid
+        if (!EMAIL_REGEX.test(responseData[0])) {
+          newErrors[0] = "This email address is invalid";
+          valid = false;
+        }
       }
     }
 
