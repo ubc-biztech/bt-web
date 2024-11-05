@@ -103,23 +103,6 @@ const getDefaultColumns = (eventID, eventYear, refreshTable, tableType) => [
     )
   },
   {
-    title: "Last Updated",
-    field: "updatedAt",
-    customSort: (a, b) => {
-      const timestampA = Date.parse(a.updatedAt);
-      const timestampB = Date.parse(b.updatedAt);
-      return timestampA - timestampB;
-    },
-    cellStyle: {
-      whiteSpace: "nowrap"
-    },
-    render: (rowData) => (
-      <>
-        {rowData.updatedAt}
-      </>
-    )
-  },
-  {
     title: "Date Created",
     field: "createdAt",
     customSort: (a, b) => {
@@ -133,6 +116,23 @@ const getDefaultColumns = (eventID, eventYear, refreshTable, tableType) => [
     render: (rowData) => (
       <>
         {rowData.createdAt === "Invalid Date" ? "" : rowData.createdAt}
+      </>
+    )
+  },
+  {
+    title: "Last Updated",
+    field: "updatedAt",
+    customSort: (a, b) => {
+      const timestampA = Date.parse(a.updatedAt);
+      const timestampB = Date.parse(b.updatedAt);
+      return timestampA - timestampB;
+    },
+    cellStyle: {
+      whiteSpace: "nowrap"
+    },
+    render: (rowData) => (
+      <>
+        {rowData.updatedAt}
       </>
     )
   },
@@ -282,23 +282,6 @@ const getDefaultPartnerColumns = (eventID, eventYear, refreshTable) => [
     )
   },
   {
-    title: "Last Updated",
-    field: "updatedAt",
-    customSort: (a, b) => {
-      const timestampA = Date.parse(a.updatedAt);
-      const timestampB = Date.parse(b.updatedAt);
-      return timestampA - timestampB;
-    },
-    cellStyle: {
-      whiteSpace: "nowrap"
-    },
-    render: (rowData) => (
-      <>
-        {rowData.updatedAt}
-      </>
-    )
-  },
-  {
     title: "Date Created",
     field: "createdAt",
     customSort: (a, b) => {
@@ -312,6 +295,23 @@ const getDefaultPartnerColumns = (eventID, eventYear, refreshTable) => [
     render: (rowData) => (
       <>
         {rowData.createdAt === "Invalid Date" ? "" : rowData.createdAt}
+      </>
+    )
+  },
+  {
+    title: "Last Updated",
+    field: "updatedAt",
+    customSort: (a, b) => {
+      const timestampA = Date.parse(a.updatedAt);
+      const timestampB = Date.parse(b.updatedAt);
+      return timestampA - timestampB;
+    },
+    cellStyle: {
+      whiteSpace: "nowrap"
+    },
+    render: (rowData) => (
+      <>
+        {rowData.updatedAt}
       </>
     )
   },
