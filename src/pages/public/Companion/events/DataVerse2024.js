@@ -1,9 +1,8 @@
-// DataVerse2024.js
 import React, {
-  useState
+  useState, useEffect
 } from "react";
 import {
-  Button, TextField
+  Button, TextField, Typography
 } from "@material-ui/core";
 import {
   constantStyles
@@ -14,7 +13,7 @@ import {
 import {
   fetchBackend
 } from "utils";
-import Quiz from "../components/Quiz"; // Import the new QuizPage component
+import Quiz from "../components/Quiz"; // Import the new Quiz component
 
 const customStyles = {
   container: {
@@ -49,14 +48,39 @@ const DataVerse2024 = (params) => {
   const [isWithdrawing, setIsWithdrawing] = useState(false);
   const [accessKey, setAccessKey] = useState("");
   const [isAccessGranted, setIsAccessGranted] = useState(false);
+  const [teamData, setTeamData] = useState(null);
+  const [teamPoints, setTeamPoints] = useState(null);
+
+  useEffect(() => {
+    if (isAccessGranted && userRegistration) {
+      fetchTeamData();
+    }
+  }, [isAccessGranted, userRegistration]);
 
   const handleAccessKeySubmit = () => {
-    if (accessKey === "access") { // Replace with the actual key
+    if (accessKey === "access") { // Key placeholder
       setIsAccessGranted(true);
       alert("Access granted!");
     } else {
       alert("Invalid access key.");
     }
+  };
+
+  const fetchTeamData = async () => {
+    await fetchBackend("/team/getTeamFromUserID", "post", {
+      eventID: "dataverse",
+      year: 2024,
+      user_id: userRegistration.id,
+    }, false)
+      .then(async (response) => {
+        console.log(response);
+        setTeamData(response.response);
+        setTeamPoints(response.response.points);
+      })
+      .catch((err) => {
+        console.log(`Unable to fetch team data for user ${userRegistration.id}`);
+        console.log("Error:", err);
+      });
   };
 
   const withdrawApplication = async () => {
@@ -96,12 +120,26 @@ const DataVerse2024 = (params) => {
   return (
     <div style={customStyles.container}>
       {isAccessGranted ? (
-        // Render the QuizPage component if access is granted
-        <Quiz />
-      ) : (
-        // Original Content with Access Key Input
         <>
-          {/* Access Key Input Section */}
+          {teamData && teamPoints !== null && (
+            <>
+              <Typography variant="h6" style={{
+                marginBottom: "10px"
+              }}>
+                Your Team Is: {teamData.teamName}
+              </Typography>
+              <Typography variant="h6" style={{
+                marginBottom: "20px"
+              }}>
+                Current Points: {teamPoints}
+              </Typography>
+            </>
+          )}
+
+          <Quiz />
+        </>
+      ) : (
+        <>
           <div style={customStyles.accessKeyContainer}>
             <TextField
               label="Enter Access Key"
@@ -118,7 +156,6 @@ const DataVerse2024 = (params) => {
             </Button>
           </div>
 
-          {/* Withdrawal Section */}
           {userRegistration.applicationStatus !== "rejected" && (
             <span
               style={{
@@ -145,7 +182,6 @@ const DataVerse2024 = (params) => {
             </span>
           )}
 
-          {/* Contact Information */}
           <div
             style={{
               ...styles.text,
