@@ -18,6 +18,7 @@ import TSLogo from "../../../../assets/2024/techstyle/techstyle_biztech_logo.png
 import HelloHacks2024 from "./HelloHacks2024";
 import UXOpen2024 from "./UXOpen2024";
 import UXOpenLogo from "../../../../assets/2024/ux-open/UXOpenLogo.png";
+import DataverseLogo from "../../../../assets/2024/dataverse/Dataverse.png";
 import DataVerse2024 from "./DataVerse2024";
 
 export default [
@@ -482,9 +483,9 @@ export default [
     options: {
       disableWelcomeHeader: true,
       /* Biztech logo for event */
-      BiztechLogo: BiztechLogo,
+      BiztechLogo: DataverseLogo,
       /* Logo for event */
-      Logo: BiztechLogo,
+      Logo: DataverseLogo,
       /* Displayed title of event */
       title: "Dataverse 2024",
       /* Displayed date of event */
@@ -494,7 +495,7 @@ export default [
       /* color theme of event */
       colors: {
         primary: "linear-gradient(180deg, white, white)",
-        background: "linear-gradient(0.5turn, #98BEA2,  #98BEA2, #98BEA2)",
+        background: "linear-gradient(135deg, #3C1F62, #5A3D89, #2F3C53, #121C2C)"
       },
       /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
       getScheduleData: () => [],
