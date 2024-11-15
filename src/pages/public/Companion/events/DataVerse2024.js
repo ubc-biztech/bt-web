@@ -1,8 +1,8 @@
 import React, {
-  useState
+  useState, useEffect
 } from "react";
 import {
-  Button
+  Button, TextField, Typography
 } from "@material-ui/core";
 import {
   constantStyles
@@ -13,6 +13,7 @@ import {
 import {
   fetchBackend
 } from "utils";
+import Quiz from "../components/Quiz"; // Import the new Quiz component
 
 const customStyles = {
   container: {
@@ -20,29 +21,14 @@ const customStyles = {
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    gap: "5px"
+    gap: "10px",
   },
-  options: {
+  accessKeyContainer: {
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
     flexDirection: "column",
-    width: "100%",
-    marginBottom: "15px"
-  },
-  footer: {
-    left: "-10px",
-    width: "120%",
-    right: "-10px",
-    bottom: "0"
-  },
-  background: {
-    width: "120%",
-    height: "100%"
-  },
-  backgroundMobile: {
-    width: "150%",
-    height: "100%",
+    alignItems: "center",
+    gap: "10px",
+    margin: "20px 0",
   },
   registerButton: {
     textTransform: "none",
@@ -50,17 +36,9 @@ const customStyles = {
     color: COLORS.BACKGROUND_COLOR,
     "&:disabled": {
       backgroundColor: COLORS.FONT_GRAY,
-      color: COLORS.WHITE
-    }
-  },
-  mailToLink: {
-    color: COLORS.WHITE,
-    textDecoration: "none",
-    "&:hover": {
       color: COLORS.WHITE,
-    }
-  }
-
+    },
+  },
 };
 
 const DataVerse2024 = (params) => {
@@ -68,6 +46,42 @@ const DataVerse2024 = (params) => {
     event, registrations, styles, renderMobileOnly, userRegistration
   } = params;
   const [isWithdrawing, setIsWithdrawing] = useState(false);
+  const [accessKey, setAccessKey] = useState("");
+  const [isAccessGranted, setIsAccessGranted] = useState(false);
+  const [teamData, setTeamData] = useState(null);
+  const [teamPoints, setTeamPoints] = useState(null);
+
+  useEffect(() => {
+    if (isAccessGranted && userRegistration) {
+      fetchTeamData();
+    }
+  }, [isAccessGranted, userRegistration]);
+
+  const handleAccessKeySubmit = () => {
+    if (accessKey === "access") { // Key placeholder
+      setIsAccessGranted(true);
+      alert("Access granted!");
+    } else {
+      alert("Invalid access key.");
+    }
+  };
+
+  const fetchTeamData = async () => {
+    await fetchBackend("/team/getTeamFromUserID", "post", {
+      eventID: "dataverse",
+      year: 2024,
+      user_id: userRegistration.id,
+    }, false)
+      .then(async (response) => {
+        console.log(response);
+        setTeamData(response.response);
+        setTeamPoints(response.response.points);
+      })
+      .catch((err) => {
+        console.log(`Unable to fetch team data for user ${userRegistration.id}`);
+        console.log("Error:", err);
+      });
+  };
 
   const withdrawApplication = async () => {
     try {
@@ -75,12 +89,19 @@ const DataVerse2024 = (params) => {
         eventID: event.id,
         year: Number(event.year),
         registrationStatus: "cancelled",
-        applicationStatus: "rejected"
+        applicationStatus: "rejected",
       };
       setIsWithdrawing(true);
-      const isConfirmed = confirm("Are you sure? Once you've withdrawn you cannot resubmit your application");
+      const isConfirmed = confirm(
+        "Are you sure? Once you've withdrawn you cannot resubmit your application"
+      );
       if (isConfirmed) {
-        const result = await fetchBackend(`/registrations/${userRegistration.id}/${userRegistration.fname}`, "PUT", body, false);
+        const result = await fetchBackend(
+          `/registrations/${userRegistration.id}/${userRegistration.fname}`,
+          "PUT",
+          body,
+          false
+        );
         if (result) {
           console.log(result);
           setIsWithdrawing(false);
@@ -90,47 +111,99 @@ const DataVerse2024 = (params) => {
         setIsWithdrawing(false);
       }
     } catch (e) {
-      alert("an error has occured");
+      alert("An error has occurred");
       console.log(e);
       setIsWithdrawing(false);
     }
   };
 
+  return (
+    <div style={customStyles.container}>
+      {isAccessGranted ? (
+        <>
+          {teamData && teamPoints !== null && (
+            <>
+              <Typography variant="h6" style={{
+                marginBottom: "10px"
+              }}>
+                Your Team Is: {teamData.teamName}
+              </Typography>
+              <Typography variant="h6" style={{
+                marginBottom: "20px"
+              }}>
+                Current Points: {teamPoints}
+              </Typography>
+            </>
+          )}
 
-  return (<div style={customStyles.container}>
-    {event && registrations &&
-              <>
-                {userRegistration.applicationStatus !== "rejected" && <span style={{
-                  ...styles.text,
-                  ...(renderMobileOnly && {
-                    fontSize: constantStyles.mobileFontSize
-                  })
-                }}>Want to withdraw your application?<Button
-                    style={{
-                      ...customStyles.registerButton,
-                      marginLeft: "5px"
-                    }}
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    onClick={() => withdrawApplication()}
-                    disabled={isWithdrawing}
-                  >
-                          Click here
-                  </Button></span>}
-                <div style={{
-                  ...styles.text,
-                  width: "100%",
-                  marginBottom: "0px",
-                  ...(renderMobileOnly && {
-                    fontSize: constantStyles.mobileFontSize
-                  })
-                }}>
-                      Contact <a href="mailto:emily@ubcbiztech.com" style={customStyles.mailToLink}>emily@ubcbiztech.com</a> for any questions or concerns.
-                </div>
-              </>
-    }
-  </div>
+          <Quiz />
+        </>
+      ) : (
+        <>
+          <div style={customStyles.accessKeyContainer}>
+            <TextField
+              label="Enter Access Key"
+              variant="outlined"
+              value={accessKey}
+              onChange={(e) => setAccessKey(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAccessKeySubmit}
+            >
+              Submit Access Key
+            </Button>
+          </div>
+
+          {userRegistration.applicationStatus !== "rejected" && (
+            <span
+              style={{
+                ...styles.text,
+                ...(renderMobileOnly && {
+                  fontSize: constantStyles.mobileFontSize,
+                }),
+              }}
+            >
+              Want to withdraw your application?
+              <Button
+                style={{
+                  ...customStyles.registerButton,
+                  marginLeft: "5px",
+                }}
+                variant="contained"
+                color="primary"
+                type="submit"
+                onClick={() => withdrawApplication()}
+                disabled={isWithdrawing}
+              >
+                Click here
+              </Button>
+            </span>
+          )}
+
+          <div
+            style={{
+              ...styles.text,
+              width: "100%",
+              marginBottom: "0px",
+              ...(renderMobileOnly && {
+                fontSize: constantStyles.mobileFontSize,
+              }),
+            }}
+          >
+            Contact{" "}
+            <a
+              href="mailto:emily@ubcbiztech.com"
+              style={customStyles.mailToLink}
+            >
+              emily@ubcbiztech.com
+            </a>{" "}
+            for any questions or concerns.
+          </div>
+        </>
+      )}
+    </div>
   );
 };
 
