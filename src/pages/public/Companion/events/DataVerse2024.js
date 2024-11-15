@@ -1,19 +1,9 @@
-import React, {
-  useState, useEffect
-} from "react";
-import {
-  Button, TextField, Typography
-} from "@material-ui/core";
-import {
-  constantStyles
-} from "../../../../constants/_constants/companion";
-import {
-  COLORS
-} from "../../../../constants/_constants/theme";
-import {
-  fetchBackend
-} from "utils";
-import Quiz from "../components/Quiz"; // Import the new Quiz component
+import React, { useState, useEffect } from "react";
+import { Button, TextField, Typography } from "@material-ui/core";
+import { useHistory } from "react-router-dom"; // Use useHistory for React Router v5
+import { constantStyles } from "../../../../constants/_constants/companion";
+import { COLORS } from "../../../../constants/_constants/theme";
+import { fetchBackend } from "utils";
 
 const customStyles = {
   container: {
@@ -21,14 +11,14 @@ const customStyles = {
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    gap: "10px",
+    gap: "10px"
   },
   accessKeyContainer: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     gap: "10px",
-    margin: "20px 0",
+    margin: "20px 0"
   },
   registerButton: {
     textTransform: "none",
@@ -36,20 +26,22 @@ const customStyles = {
     color: COLORS.BACKGROUND_COLOR,
     "&:disabled": {
       backgroundColor: COLORS.FONT_GRAY,
-      color: COLORS.WHITE,
-    },
-  },
+      color: COLORS.WHITE
+    }
+  }
 };
 
 const DataVerse2024 = (params) => {
-  const {
-    event, registrations, styles, renderMobileOnly, userRegistration
-  } = params;
+  const { event, registrations, styles, renderMobileOnly, userRegistration } =
+    params;
+
   const [isWithdrawing, setIsWithdrawing] = useState(false);
   const [accessKey, setAccessKey] = useState("");
   const [isAccessGranted, setIsAccessGranted] = useState(false);
   const [teamData, setTeamData] = useState(null);
   const [teamPoints, setTeamPoints] = useState(null);
+
+  const history = useHistory(); // Initialize useHistory for React Router v5
 
   useEffect(() => {
     if (isAccessGranted && userRegistration) {
@@ -58,29 +50,35 @@ const DataVerse2024 = (params) => {
   }, [isAccessGranted, userRegistration]);
 
   const handleAccessKeySubmit = () => {
-    if (accessKey === "access") { // Key placeholder
+    if (accessKey === "access") {
       setIsAccessGranted(true);
-      alert("Access granted!");
+      // alert("Access granted!");
     } else {
       alert("Invalid access key.");
     }
   };
 
   const fetchTeamData = async () => {
-    await fetchBackend("/team/getTeamFromUserID", "post", {
-      eventID: "dataverse",
-      year: 2024,
-      user_id: userRegistration.id,
-    }, false)
-      .then(async (response) => {
-        console.log(response);
-        setTeamData(response.response);
-        setTeamPoints(response.response.points);
-      })
-      .catch((err) => {
-        console.log(`Unable to fetch team data for user ${userRegistration.id}`);
-        console.log("Error:", err);
+    try {
+      const response = await fetchBackend(
+        "/team/getTeamFromUserID",
+        "post",
+        { eventID: "dataverse", year: 2024, user_id: userRegistration.id },
+        false
+      );
+      console.log(response);
+      setTeamData(response.response);
+      setTeamPoints(response.response.points);
+
+      // Once team data is fetched, navigate to the dashboard with the team data
+      history.push("/companion/dashboard", {
+        teamName: response.response.teamName,
+        teamPoints: response.response.points,
       });
+    } catch (err) {
+      console.log(`Unable to fetch team data for user ${userRegistration.id}`);
+      console.log("Error:", err);
+    }
   };
 
   const withdrawApplication = async () => {
@@ -89,7 +87,7 @@ const DataVerse2024 = (params) => {
         eventID: event.id,
         year: Number(event.year),
         registrationStatus: "cancelled",
-        applicationStatus: "rejected",
+        applicationStatus: "rejected"
       };
       setIsWithdrawing(true);
       const isConfirmed = confirm(
@@ -121,55 +119,31 @@ const DataVerse2024 = (params) => {
     <div style={customStyles.container}>
       {isAccessGranted ? (
         <>
-          {teamData && teamPoints !== null && (
+          {/* Display team data after access key is granted */}
+          {teamData ? (
             <>
-              <Typography variant="h6" style={{
-                marginBottom: "10px"
-              }}>
-                Your Team Is: {teamData.teamName}
-              </Typography>
-              <Typography variant="h6" style={{
-                marginBottom: "20px"
-              }}>
-                Current Points: {teamPoints}
+              <Typography variant="h6">
+                  Redirecting to your team dashboard...
               </Typography>
             </>
+          ) : (
+            <Typography variant="h6">Loading your team data...</Typography>
           )}
-
-          <Quiz />
-        </>
-      ) : (
-        <>
-          <div style={customStyles.accessKeyContainer}>
-            <TextField
-              label="Enter Access Key"
-              variant="outlined"
-              value={accessKey}
-              onChange={(e) => setAccessKey(e.target.value)}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAccessKeySubmit}
-            >
-              Submit Access Key
-            </Button>
-          </div>
 
           {userRegistration.applicationStatus !== "rejected" && (
             <span
               style={{
                 ...styles.text,
                 ...(renderMobileOnly && {
-                  fontSize: constantStyles.mobileFontSize,
-                }),
+                  fontSize: constantStyles.mobileFontSize
+                })
               }}
             >
               Want to withdraw your application?
               <Button
                 style={{
                   ...customStyles.registerButton,
-                  marginLeft: "5px",
+                  marginLeft: "5px"
                 }}
                 variant="contained"
                 color="primary"
@@ -188,8 +162,8 @@ const DataVerse2024 = (params) => {
               width: "100%",
               marginBottom: "0px",
               ...(renderMobileOnly && {
-                fontSize: constantStyles.mobileFontSize,
-              }),
+                fontSize: constantStyles.mobileFontSize
+              })
             }}
           >
             Contact{" "}
@@ -200,6 +174,24 @@ const DataVerse2024 = (params) => {
               emily@ubcbiztech.com
             </a>{" "}
             for any questions or concerns.
+          </div>
+        </>
+      ) : (
+        <>
+          <div style={customStyles.accessKeyContainer}>
+            <TextField
+              label="Enter Access Key"
+              variant="outlined"
+              value={accessKey}
+              onChange={(e) => setAccessKey(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAccessKeySubmit}
+            >
+              Submit Access Key
+            </Button>
           </div>
         </>
       )}
