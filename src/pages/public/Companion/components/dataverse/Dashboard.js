@@ -1,6 +1,12 @@
-import React, { useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
-import { Typography } from "@material-ui/core";
+import React, {
+  useEffect
+} from "react";
+import {
+  useLocation, useHistory
+} from "react-router-dom";
+import {
+  Typography
+} from "@material-ui/core";
 import Quiz from "./Quiz";
 import Leaderboard from "./Leaderboard";
 
@@ -46,26 +52,24 @@ const useStyles = {
 const Dashboard = () => {
   const location = useLocation();
   const history = useHistory();
-  const { teamName, teamPoints, accessKey } = location.state || {};
+  const {
+    teamName, teamPoints, teamData, userRegistration
+  } = location.state || {
+  };
 
   useEffect(() => {
-    if (teamPoints == null || teamName == null) {
+    if (!teamPoints || !teamName) {
       history.push("/companion");
     }
   }, [teamPoints, teamName, history]);
 
   return (
     <div style={useStyles.root}>
-      {teamPoints == null || teamName == null ? (
-        <Typography style={useStyles.text} variant="h6">
-          Redirecting to Companion...
-        </Typography>
+      {!teamPoints || !teamName ? (
+        <Typography>Redirecting to Companion...</Typography>
       ) : (
         <>
-          <Typography style={useStyles.heading} variant="h4">
-            Team Dashboard
-          </Typography>
-          
+          <Typography style={useStyles.heading}>Team Dashboard</Typography>
           {/* Flex container for the Team Name and Current Points */}
           <div style={useStyles.infoRow}>
             <Typography style={useStyles.label} variant="h6">
@@ -81,9 +85,8 @@ const Dashboard = () => {
               {teamPoints}
             </Typography>
           </div>
-          <Quiz />
+          <Quiz teamData={teamData} userRegistration={userRegistration} />
           <Leaderboard teamName={teamName} teamScore={teamPoints} />
-          
         </>
       )}
     </div>
