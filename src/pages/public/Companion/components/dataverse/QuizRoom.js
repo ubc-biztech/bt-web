@@ -68,7 +68,7 @@ const QuizRoom = ({
         },
         false
       );
-      const scannedQRs = response.response.scannedQRs;
+      const completedQuestions = response.response.scannedQRs;
 
       let score = 0;
       const newlyScannedQuestions = [];
@@ -78,7 +78,7 @@ const QuizRoom = ({
         const isCorrect = answer.trim().toLowerCase() === correctAnswers[index].trim().toLowerCase();
 
         // Award points only if the question hasn't been answered correctly before
-        if (isCorrect && !scannedQRs.includes(question)) {
+        if (isCorrect && !completedQuestions.includes(question)) {
           score += 1;
           newlyScannedQuestions.push(question);
         }
@@ -91,21 +91,21 @@ const QuizRoom = ({
           {
             eventID: "dataverse",
             year: 2024,
-            user_id: "testDV@gmail.com",
+            user_id: userRegistration.id,
             change_points: score || 0
           },
           false
         );
 
         // NOTE: using the scannedQRs field to store already answered correctly questions
-        const addQRResponse = await fetchBackend(
-          "/team/addQRs",
+        const addQuestions = await fetchBackend(
+          "/team/addQuestions",
           "put",
           {
             eventID: "dataverse",
             year: 2024,
-            user_id: "testDV@gmail.com",
-            qr_code_ids: newlyScannedQuestions
+            user_id: userRegistration.id,
+            answered_questions: newlyScannedQuestions
           },
           false
         );
