@@ -2,12 +2,11 @@ import React, { useEffect } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import Quiz from "./Quiz";
-import Leaderboard from "./Leaderboard";
 
 const useStyles = {
   root: {
     position: "relative",
-    minHeight: "180vh",
+    minHeight: "100vh",
     background: "linear-gradient(135deg, #3C1F62, #5A3D89, #2F3C53, #121C2C)",
     color: "white",
     padding: "20px",
@@ -82,8 +81,6 @@ const Dashboard = () => {
             </Typography>
           </div>
           <Quiz />
-          <Leaderboard teamName={teamName} teamScore={teamPoints} />
-          
         </>
       )}
     </div>

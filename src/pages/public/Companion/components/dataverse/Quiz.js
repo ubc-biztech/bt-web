@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Typography, Button, TextField, FormControl } from "@material-ui/core";
+import { LocalLeaderboardExample } from "./Leaderboard";
 
 const QuizRoom = ({ roomNumber, goBack }) => {
   const [answers, setAnswers] = useState(Array(5).fill("")); // Array to hold answers for 5 questions
@@ -138,6 +139,7 @@ const QuizRoom = ({ roomNumber, goBack }) => {
 
 const buttonCardStyle = {
   margin: "10px",
+  marginBottom: "200px",
   padding: "25px 50px",
   fontSize: "18px",
   backgroundColor: "rgba(255, 255, 255, 0.05)", // Transparent background with 10% opacity
@@ -178,7 +180,7 @@ const QuizDashboard = () => {
     }
 
     return (
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
+      <div style={{ textAlign: "center", marginTop: "20px", marginBottom: "100px" }}>
         <Typography variant="h4" gutterBottom>
           Quizzes
         </Typography>
