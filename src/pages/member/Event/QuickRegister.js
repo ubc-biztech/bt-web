@@ -1,78 +1,60 @@
 import React from "react";
-import {
-  useHistory
-} from "react-router-dom";
-import {
-  Helmet
-} from "react-helmet";
-import {
-  Formik
-} from "formik";
+import { useHistory } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { Formik } from "formik";
 import * as Yup from "yup";
 
 import QuickRegisterForm from "./QuickRegisterForm";
 
-import {
-  useTheme
-} from "@material-ui/styles";
-import {
-  makeStyles
-} from "@material-ui/core/styles";
-import {
-  Grid, Paper, Typography
-} from "@material-ui/core";
-import {
-  Skeleton
-} from "@material-ui/lab";
+import { useTheme } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Paper, Typography } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import "./QuickRegister.scss";
 import House from "assets/house.svg";
-import {
-  COLORS
-} from "constants/index";
-import {
-  fetchBackend
-} from "utils";
+import { COLORS } from "constants/index";
+import { fetchBackend } from "utils";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     [theme.breakpoints.down("sm")]: {
-      backgroundColor: COLORS.BACKGROUND_COLOR,
-    },
+      backgroundColor: COLORS.BACKGROUND_COLOR
+    }
   },
   content: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(3)
   },
   container: {
     width: "33vw",
     padding: "55px 0 55px 80px",
     [theme.breakpoints.down("sm")]: {
       width: "80vw",
-      padding: "10px 0 10px 10px",
-    },
+      padding: "10px 0 10px 10px"
+    }
   },
   completeContainer: {
     position: "relative",
     width: "33vw",
     height: "78vh",
     [theme.breakpoints.down("sm")]: {
-      width: "80vw",
-    },
+      width: "80vw"
+    }
   },
   header: {
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   subHeader: {
-    fontSize: "24px",
+    fontSize: "24px"
   },
   house: {
     width: "80%",
     marginLeft: "-20px",
     marginBottom: "-5px",
     [theme.breakpoints.down("sm")]: {
-      width: "53%",
-    },
+      width: "53%"
+    }
   },
   message: {
     width: "40%",
@@ -82,24 +64,24 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     [theme.breakpoints.down("sm")]: {
       left: "15%",
-      width: "85%",
-    },
+      width: "85%"
+    }
   },
   done: {
     fontWeight: "bold",
-    fontSize: "36px",
+    fontSize: "36px"
   },
   returnMessage: {
-    fontSize: "24px",
+    fontSize: "24px"
   },
   houseContainer: {
-    borderBottom: "1px solid white",
+    borderBottom: "1px solid white"
   },
   divider: {
     border: "1px solid #496093",
     marginTop: "10px",
-    marginBottom: "20px",
-  },
+    marginBottom: "20px"
+  }
 }));
 
 const QuickRegister = ({
@@ -108,7 +90,7 @@ const QuickRegister = ({
   registration,
   registrationStatus,
   handleRegisterStateChangedCallback,
-  sendRegistrationDataCallback,
+  sendRegistrationDataCallback
 }) => {
   const theme = useTheme();
   const renderMobileOnly = useMediaQuery(theme.breakpoints.down("sm"));
@@ -118,6 +100,8 @@ const QuickRegister = ({
   const handleReturn = () => {
     history.push("/events");
   };
+
+  // DENNIS TOLD ME TO COMMENT - BENNY
 
   const submitValues = async (values) => {
     const {
@@ -129,7 +113,7 @@ const QuickRegister = ({
       year,
       diet,
       heardFrom,
-      gender,
+      gender
     } = values;
     const eventID = event.id;
     // TODO: Standardize the values passed to DB (right now it passes "1st Year" instead of 1)
@@ -141,7 +125,7 @@ const QuickRegister = ({
       year,
       faculty,
       gender,
-      diet,
+      diet
     };
     let isFirstTime = false;
     // if registration prop is not undefined, the event has been registered / unregistered before
@@ -192,7 +176,7 @@ const QuickRegister = ({
     lname: Yup.string().required("Last name is required"),
     year: Yup.string().required("Level of study is required"),
     diet: Yup.string().required("Dietary restriction is required"),
-    faculty: Yup.string().required("Faculty is required"),
+    faculty: Yup.string().required("Faculty is required")
   });
 
   const initialValues = {
@@ -204,7 +188,7 @@ const QuickRegister = ({
     year: user.year,
     diet: user.diet,
     gender: user.gender,
-    heardFrom: "",
+    heardFrom: ""
   };
 
   if (event) {
@@ -220,9 +204,11 @@ const QuickRegister = ({
             {registrationStatus ? (
               <div className={classes.completeContainer}>
                 {renderMobileOnly && (
-                  <div style={{
-                    paddingBottom: "10vh"
-                  }}>
+                  <div
+                    style={{
+                      paddingBottom: "10vh"
+                    }}
+                  >
                     <Typography variant="h2" className={classes.header}>
                       {event.ename}
                     </Typography>
