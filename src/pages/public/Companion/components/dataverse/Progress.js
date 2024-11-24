@@ -3,141 +3,139 @@ import { Box, IconButton, TextField } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CharacterInput = ({ onSubmit, numChars = 21 }) => {
-    const [chars, setChars] = useState(Array(numChars).fill("")); // Initialize with empty strings
-    const [isTyping, setIsTyping] = useState(false); // To track if any character is typed
-    const inputRefs = useRef([]);
-  
-    const placeholderText = "final question answer"; // Your placeholder phrase
-  
-    useEffect(() => {
-      // Dynamically adjust the number of refs based on numChars
-      inputRefs.current = inputRefs.current.slice(0, numChars);
-    }, [numChars]);
-  
-    const handleChange = (index, value) => {
-      if (value.length <= 1) {
-        const newChars = [...chars];
-        newChars[index] = value; // Set the current character
-        setChars(newChars);
-  
-        // Set isTyping to true when any input is typed
-        if (!isTyping && value !== "") {
-          setIsTyping(true);
-        }
-  
-        // Automatically focus on the next input if the current one is filled
-        if (index < numChars - 1 && value.length === 1) {
-          inputRefs.current[index + 1]?.focus();
-        }
-  
-        // Check if all characters are cleared, reset isTyping to false
-        if (newChars.every((char) => char === "")) {
-          setIsTyping(false);
-        }
+  const [chars, setChars] = useState(Array(numChars).fill("")); // Initialize with empty strings
+  const [isTyping, setIsTyping] = useState(false); // To track if any character is typed
+  const inputRefs = useRef([]);
+
+  const placeholderText = "final question answer"; // Your placeholder phrase
+
+  useEffect(() => {
+    // Dynamically adjust the number of refs based on numChars
+    inputRefs.current = inputRefs.current.slice(0, numChars);
+  }, [numChars]);
+
+  const handleChange = (index, value) => {
+    if (value.length <= 1) {
+      const newChars = [...chars];
+      newChars[index] = value; // Set the current character
+      setChars(newChars);
+
+      // Set isTyping to true when any input is typed
+      if (!isTyping && value !== "") {
+        setIsTyping(true);
       }
-    };
-  
-    const handleKeyDown = (index, e) => {
-      if (e.key === "Backspace") {
-        if (chars[index] === "" && index > 0) {
-          inputRefs.current[index - 1]?.focus();
-        } else {
-          const newChars = [...chars];
-          newChars[index] = ""; // Clear the current character
-          setChars(newChars);
-        }
-      } else if (e.key === "ArrowLeft" && index > 0) {
-        inputRefs.current[index - 1]?.focus();
-      } else if (e.key === "ArrowRight" && index < numChars - 1) {
+
+      // Automatically focus on the next input if the current one is filled
+      if (index < numChars - 1 && value.length === 1) {
         inputRefs.current[index + 1]?.focus();
       }
-    };
-  
-    const handleSubmit = () => {
-      const input = chars.join("");
-      if (input.length === numChars) {
-        onSubmit(input);
-        setChars(Array(numChars).fill("")); // Reset the input fields
-        setIsTyping(false); // Reset typing state
-        inputRefs.current[0]?.focus(); // Focus the first input
+
+      // Check if all characters are cleared, reset isTyping to false
+      if (newChars.every((char) => char === "")) {
+        setIsTyping(false);
       }
-    };
-  
-    return (
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 2,
-        }}
-      >
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-          {chars.map((char, index) => {
-            // If any input is typed, remove all placeholders; restore if all are cleared
-            const placeholderChar = isTyping && !chars.every((char) => char === "") 
-              ? "" 
-              : placeholderText[index] || "";
-  
-            return (
-              <TextField
-                key={index}
-                inputRef={(el) => (inputRefs.current[index] = el)}
-                value={char}
-                onChange={(e) => handleChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e)}
-                variant="standard"
-                autoComplete="off" // Disable autofill
-                inputProps={{
-                  maxLength: 1,
-                  style: {
-                    width: "25px",
-                    textAlign: "center",
-                    fontFamily: "monospace",
-                    fontSize: "1.5rem",
-                    padding: "2px 0px",
-                    color: "white",
-                  },
-                }}
-                placeholder={placeholderChar} // Set the placeholder as the corresponding character
-                sx={{
-                  width: "25px",
-                  "& .MuiInput-underline:before": {
-                    borderBottomWidth: "2px",
-                    borderBottomColor: char ? "#ffffff" : "#AAAAAA",
-                  },
-                  "& .MuiInput-underline:hover:before": {
-                    borderBottomColor: "#ffffff",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#ffffff",
-                  },
-                }}
-              />
-            );
-          })}
-          <IconButton
-            onClick={handleSubmit}
-            disabled={chars.some((char) => char === "")}
-            sx={{
-              color: "#ffffff",
-              "&:hover": {
-                backgroundColor: "#ffffff",
-                color: "#000000",
-              },
-              marginLeft: 2,
-            }}
-          >
-            <ArrowForwardIcon />
-          </IconButton>
-        </Box>
-      </Box>
-    );
+    }
   };
-  
-  
-  
+
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace") {
+      if (chars[index] === "" && index > 0) {
+        inputRefs.current[index - 1]?.focus();
+      } else {
+        const newChars = [...chars];
+        newChars[index] = ""; // Clear the current character
+        setChars(newChars);
+      }
+    } else if (e.key === "ArrowLeft" && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    } else if (e.key === "ArrowRight" && index < numChars - 1) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleSubmit = () => {
+    const input = chars.join("");
+    if (input.length === numChars) {
+      onSubmit(input);
+      setChars(Array(numChars).fill("")); // Reset the input fields
+      setIsTyping(false); // Reset typing state
+      inputRefs.current[0]?.focus(); // Focus the first input
+    }
+  };
+
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2
+      }}
+    >
+      <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+        {chars.map((char, index) => {
+          // If any input is typed, remove all placeholders; restore if all are cleared
+          const placeholderChar =
+            isTyping && !chars.every((char) => char === "")
+              ? ""
+              : placeholderText[index] || "";
+
+          return (
+            <TextField
+              key={index}
+              inputRef={(el) => (inputRefs.current[index] = el)}
+              value={char}
+              onChange={(e) => handleChange(index, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(index, e)}
+              variant="standard"
+              autoComplete="off" // Disable autofill
+              inputProps={{
+                maxLength: 1,
+                style: {
+                  width: "25px",
+                  textAlign: "center",
+                  fontFamily: "monospace",
+                  fontSize: "1.5rem",
+                  padding: "2px 0px",
+                  color: "white"
+                }
+              }}
+              placeholder={placeholderChar} // Set the placeholder as the corresponding character
+              sx={{
+                width: "25px",
+                "& .MuiInput-underline:before": {
+                  borderBottomWidth: "2px",
+                  borderBottomColor: char ? "#ffffff" : "#AAAAAA"
+                },
+                "& .MuiInput-underline:hover:before": {
+                  borderBottomColor: "#ffffff"
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#ffffff"
+                }
+              }}
+            />
+          );
+        })}
+        <IconButton
+          onClick={handleSubmit}
+          disabled={chars.some((char) => char === "")}
+          sx={{
+            color: "#ffffff",
+            "&:hover": {
+              backgroundColor: "#ffffff",
+              color: "#000000"
+            },
+            marginLeft: 2
+          }}
+        >
+          <ArrowForwardIcon />
+        </IconButton>
+      </Box>
+    </Box>
+  );
+};
 
 const ProgressBar = ({ teamScore, maxScore }) => {
   const percentage = (teamScore / maxScore) * 100;
@@ -157,14 +155,32 @@ const ProgressBar = ({ teamScore, maxScore }) => {
         style={{
           width: `${percentage}%`, // Fill based on percentage
           height: "100%",
-          background: "linear-gradient(to right, #FF00AE, #6CB5FF)", // Gradient background
+          background: "linear-gradient(to right, #FF00AE, #6CB5FF, #FF00AE)", // Gradient background
           borderRadius: "10px", // Rounded edges for the filled portion
-          transition: "width 0.3s ease-in-out" // Smooth transition
+          animation: "gradientMove 3s linear infinite", // Animation to move the gradient
+          backgroundSize: "200% 100%" // Expand the gradient to allow for smooth shifting
         }}
       />
     </div>
   );
 };
+
+// Add the CSS for the animation to transition through the colors
+const style = document.createElement("style");
+style.innerHTML = `
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 0%;
+      }
+      100% {
+        background-position: 200% 0%;
+      }
+    }
+  `;
+document.head.appendChild(style);
 
 const Percentage = ({ teamScore, maxScore }) => {
   const percentage = Math.round((teamScore / maxScore) * 100); // Round to the nearest percent

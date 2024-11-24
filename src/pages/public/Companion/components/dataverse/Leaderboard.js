@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import {
@@ -14,17 +14,19 @@ import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 
 const theme = createTheme({
-    components: {
-        MuiCssBaseline: {
-          styleOverrides: {
-            body: {
-              background: "linear-gradient(135deg, #3C1F62, #5A3D89, #2F3C53, #121C2C)",
-              minHeight: "100vh",
-              margin: 0,
-            },
-          },
-        },
-    },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          background:
+            "linear-gradient(135deg, #5a2fc7, #3b0f82, #0a143b, #081027, #000000)",
+
+          minHeight: "100vh",
+          margin: 0
+        }
+      }
+    }
+  },
   palette: {
     primary: {
       main: "#8b5cf6"
@@ -32,11 +34,25 @@ const theme = createTheme({
     secondary: {
       main: "#6366f1"
     }
-  },
+  }
 });
 
 function Leaderboard({ teams: initialTeams }) {
   const [teams, setTeams] = useState(initialTeams);
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
 
   const updateRandomTeams = () => {
     setTeams((prevTeams) => {
@@ -70,29 +86,44 @@ function Leaderboard({ teams: initialTeams }) {
     }
   };
 
+  const getDotWidth = (nameWidth, scoreWidth) => {
+    const totalWidth = containerWidth;
+    const fixedWidth = 32 + 12 + 16;
+    const availableWidth = totalWidth - fixedWidth - nameWidth - scoreWidth;
+    return Math.max(availableWidth, 0);
+  };
+
   return (
     <Box
+      ref={containerRef}
       sx={{
-        maxWidth: 400,
+        maxWidth: 600,
         margin: "0 auto",
-        bgcolor: "background.paper",
+        bgcolor: "rgba(255, 255, 255, 0.1)",
         borderRadius: 2,
         overflow: "hidden",
-        boxShadow: 3
+        boxShadow: 3,
+        border: "1px solid #828282",
+        paddingX: 2
       }}
     >
       <Box
         sx={{
-          background: "linear-gradient(to right, #8b5cf6, #6366f1)",
           p: 2.5
         }}
       >
         <Typography
           variant="h4"
           component="h2"
-          sx={{ color: "white", fontWeight: "bold", textAlign: "center" }}
+          sx={{
+            color: "white",
+            fontWeight: 400,
+            fontFamily: "Audiowide",
+            textAlign: "left",
+            marginBottom: 2
+          }}
         >
-          Leaderboard
+          LEADERBOARD
         </Typography>
       </Box>
       <List sx={{ p: 0 }}>
@@ -117,7 +148,8 @@ function Leaderboard({ teams: initialTeams }) {
                   alignItems: "center",
                   borderBottom: "1px solid",
                   borderColor: "divider",
-                  py: 1.5
+                  py: 1.5,
+                  backgroundColor: "transparent"
                 }}
               >
                 <Box
@@ -144,7 +176,9 @@ function Leaderboard({ teams: initialTeams }) {
                       exit={{ opacity: 0, transition: { duration: 0 } }}
                       transition={{ duration: 0.1 }}
                     >
-                      {getRankIcon(index) || index + 1}
+                      <span style={{ color: "#ffffff" }}>
+                        {getRankIcon(index) || index + 1 + "th"}
+                      </span>
                     </motion.div>
                   </AnimatePresence>
                 </Box>
@@ -153,24 +187,55 @@ function Leaderboard({ teams: initialTeams }) {
                   layout
                   variant="body1"
                   sx={{
-                    flexGrow: 1,
-                    fontWeight: "bold",
-                    color: "text.primary"
+                    flexShrink: 0,
+                    fontWeight: 500,
+                    color: "white",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    marginRight: 1.5
                   }}
                 >
                   {team.name}
                 </Typography>
+
                 <Typography
-                  component={motion.span}
-                  layout
-                  variant="body1"
-                  sx={{ fontWeight: "bold", color: "text.secondary" }}
-                  initial={{ scale: 1 }}
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 0.3 }}
+                  component="span"
+                  sx={{
+                    flexGrow: 1,
+                    color: "white",
+                    fontWeight: 500,
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textAlign: "center"
+                  }}
                 >
-                  {team.score}
+                  {".".repeat(Math.floor(getDotWidth(150, 100) / 4))}
                 </Typography>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    flexShrink: 0,
+                    marginLeft: 1.5
+                  }}
+                >
+                  <Typography
+                    component={motion.span}
+                    layout
+                    variant="body1"
+                    sx={{
+                      fontWeight: 500,
+                      color: "white"
+                    }}
+                    initial={{ scale: 1 }}
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {team.score} pts
+                  </Typography>
+                </Box>
               </ListItem>
             </motion.div>
           ))}
@@ -186,18 +251,18 @@ function Leaderboard({ teams: initialTeams }) {
 }
 
 function GlobalLeaderboardExample() {
-    const initialTeams = [
-        { id: "1", name: "Team Alpha", score: 100 },
-        { id: "2", name: "Team Beta", score: 85 },
-        { id: "3", name: "Team Gamma", score: 95 },
-        { id: "4", name: "Team Delta", score: 70 },
-        { id: "5", name: "Team Epsilon", score: 110 },
-        { id: "6", name: "Team Zeta", score: 90 },
-        { id: "7", name: "Team Eta", score: 75 },
-        { id: "8", name: "Team Theta", score: 105 },
-        { id: "9", name: "Team Iota", score: 80 },
-        { id: "10", name: "Team Omega", score: 95 },
-    ];
+  const initialTeams = [
+    { id: "1", name: "Team Alpha", score: 100 },
+    { id: "2", name: "Team Beta", score: 85 },
+    { id: "3", name: "Team Gamma", score: 95 },
+    { id: "4", name: "Team Delta", score: 70 },
+    { id: "5", name: "Team Epsilon", score: 110 },
+    { id: "6", name: "Team Zeta", score: 90 },
+    { id: "7", name: "Team Eta", score: 75 },
+    { id: "8", name: "Team Theta", score: 105 },
+    { id: "9", name: "Team Iota", score: 80 },
+    { id: "10", name: "Team Omega", score: 95 }
+  ];
 
   return (
     <ThemeProvider theme={theme}>
@@ -209,28 +274,4 @@ function GlobalLeaderboardExample() {
   );
 }
 
-function LocalLeaderboardExample() {
-    const initialTeams = [
-        { id: "1", name: "Team Alpha", score: 100 },
-        { id: "2", name: "Team Beta", score: 85 },
-        { id: "3", name: "Team Gamma", score: 95 },
-        { id: "4", name: "Team Delta", score: 70 },
-        { id: "5", name: "Team Epsilon", score: 110 },
-        { id: "6", name: "Team Zeta", score: 90 },
-        { id: "7", name: "Team Eta", score: 75 },
-        { id: "8", name: "Team Theta", score: 105 },
-        { id: "9", name: "Team Iota", score: 80 },
-        { id: "10", name: "Team Omega", score: 95 },
-    ];
-
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ p: 2 }}>
-        <Leaderboard teams={initialTeams} />
-      </Box>
-    </ThemeProvider>
-  );
-}
-
-export { GlobalLeaderboardExample, LocalLeaderboardExample };
+export { GlobalLeaderboardExample };
