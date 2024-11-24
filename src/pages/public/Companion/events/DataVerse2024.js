@@ -1,9 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Button, TextField, Typography } from "@material-ui/core";
-import { useHistory } from "react-router-dom"; // Use useHistory for React Router v5
-import { constantStyles } from "../../../../constants/_constants/companion";
-import { COLORS } from "../../../../constants/_constants/theme";
-import { fetchBackend } from "utils";
+import React, {
+  useState, useEffect
+} from "react";
+import {
+  Button, TextField, Typography
+} from "@material-ui/core";
+import {
+  useHistory
+} from "react-router-dom"; // Use useHistory for React Router v5
+import {
+  constantStyles
+} from "../../../../constants/_constants/companion";
+import {
+  COLORS
+} from "../../../../constants/_constants/theme";
+import {
+  fetchBackend
+} from "utils";
 
 const customStyles = {
   container: {
@@ -32,7 +44,9 @@ const customStyles = {
 };
 
 const DataVerse2024 = (params) => {
-  const { event, registrations, styles, renderMobileOnly, userRegistration } =
+  const {
+    event, registrations, styles, renderMobileOnly, userRegistration
+  } =
     params;
 
   const [isWithdrawing, setIsWithdrawing] = useState(false);
@@ -63,10 +77,13 @@ const DataVerse2024 = (params) => {
       const response = await fetchBackend(
         "/team/getTeamFromUserID",
         "post",
-        { eventID: "dataverse", year: 2024, user_id: userRegistration.id },
+        {
+          eventID: "dataverse",
+          year: 2024,
+          user_id: userRegistration.id
+        },
         false
       );
-      console.log(response);
       setTeamData(response.response);
       setTeamPoints(response.response.points);
 
@@ -74,6 +91,8 @@ const DataVerse2024 = (params) => {
       history.push("/companion/dashboard", {
         teamName: response.response.teamName,
         teamPoints: response.response.points,
+        teamData: response.response,
+        userRegistration: userRegistration
       });
     } catch (err) {
       console.log(`Unable to fetch team data for user ${userRegistration.id}`);

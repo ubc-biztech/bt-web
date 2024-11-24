@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { Typography, Button, TextField, FormControl } from "@material-ui/core";
+import React, {
+  useState
+} from "react";
+import {
+  Typography, Button, TextField, FormControl
+} from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
@@ -48,7 +52,9 @@ const useStyles = {
   }
 };
 
-const LeftHeader = ({ teamName, teamPoints }) => {
+const LeftHeader = ({
+  teamName, teamPoints
+}) => {
   return (
     <div
       style={{
@@ -63,8 +69,11 @@ const LeftHeader = ({ teamName, teamPoints }) => {
     >
       <img
         src={DataverseLogo}
-        alt={`Dataverse`}
-        style={{ width: "150px", marginBottom: "20px" }}
+        alt={"Dataverse"}
+        style={{
+          width: "150px",
+          marginBottom: "20px"
+        }}
       />
       <Typography style={useStyles.heading} variant="h4">
         DATA
@@ -110,7 +119,9 @@ const buttonCardStyle = {
   textAlign: "center" // Center text horizontally
 };
 
-const QuizDashboard = ({ teamName, teamPoints, startTime, endTime }) => {
+const QuizDashboard = ({
+  teamName, teamPoints, startTime, endTime, userRegistration
+}) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
 
   const renderContent = () => {
@@ -119,6 +130,7 @@ const QuizDashboard = ({ teamName, teamPoints, startTime, endTime }) => {
         <QuizRoom
           roomNumber={selectedRoom}
           goBack={() => setSelectedRoom(null)}
+          userRegistration={userRegistration}
         />
       );
     }

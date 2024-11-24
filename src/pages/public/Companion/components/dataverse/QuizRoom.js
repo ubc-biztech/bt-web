@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, {
+  useState
+} from "react";
 import {
   Typography,
   Button,
@@ -10,8 +12,13 @@ import {
   CardContent
 } from "@material-ui/core";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {
+  fetchBackend
+} from "utils";
 
-const QuizRoom = ({ roomNumber, goBack }) => {
+const QuizRoom = ({
+  roomNumber, goBack, userRegistration
+}) => {
   const [answers, setAnswers] = useState(Array(5).fill("")); // Array to hold answers for 5 questions
   const [selectedOptions, setSelectedOptions] = useState(Array(5).fill(null)); // To track selected options for multiple-choice questions
   const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null)); // To track the status of each question (null = not checked, 'correct' or 'incorrect')
@@ -128,21 +135,82 @@ const QuizRoom = ({ roomNumber, goBack }) => {
     setAnswers(newAnswers);
   };
 
-  const checkAnswers = () => {
-    const { correctAnswers } = quizData[roomNumber];
-    const newAnswerStatus = answers.map((answer, index) => {
-      if (answer.trim().toLowerCase() === correctAnswers[index].trim().toLowerCase()) {
-        return "correct"; // Correct answer
-      } else {
-        return "incorrect"; // Incorrect answer
+  const checkAnswers = async () => {
+    const {
+      correctAnswers, questions
+    } = quizData[roomNumber];
+    const newAnswerStatus = [...answerStatus]; // Copy the current answerStatus array
+
+    try {
+      const response = await fetchBackend(
+        "/team/getTeamFromUserID",
+        "post",
+        {
+          eventID: "dataverse",
+          year: 2024,
+          user_id: userRegistration.id
+        },
+        false
+      );
+      const completedQuestions = response.response.scannedQRs;
+
+      let score = 0;
+      const newlyScannedQuestions = [];
+
+      answers.forEach((answer, index) => {
+        const question = questions[index];
+        const isCorrect = answer.trim().toLowerCase() === correctAnswers[index].trim().toLowerCase();
+
+        // Update the status for this question
+        newAnswerStatus[index] = isCorrect ? "correct" : "incorrect";
+
+        // Award points only if the question hasn't been answered correctly before
+        if (isCorrect && !completedQuestions.includes(question)) {
+          score += 1;
+          newlyScannedQuestions.push(question);
+        }
+      });
+
+      // Update the answerStatus state
+      setAnswerStatus(newAnswerStatus);
+
+      if (score > 0) {
+        const updateResponse = await fetchBackend(
+          "/team/points",
+          "put",
+          {
+            eventID: "dataverse",
+            year: 2024,
+            user_id: userRegistration.id,
+            change_points: score || 0
+          },
+          false
+        );
+
+        const addQuestions = await fetchBackend(
+          "/team/addQuestions",
+          "put",
+          {
+            eventID: "dataverse",
+            year: 2024,
+            user_id: userRegistration.id,
+            answered_questions: newlyScannedQuestions
+          },
+          false
+        );
       }
-    });
-    setAnswerStatus(newAnswerStatus);
+    } catch (error) {
+      console.error("Error updating team points:", error);
+      alert("Failed to update team points. Please try again.");
+    }
   };
+
 
   // Render the questions based on the room number
   const renderQuiz = () => {
-    const { questions, questionType, options } = quizData[roomNumber];
+    const {
+      questions, questionType, options
+    } = quizData[roomNumber];
 
     return questions.map((question, index) => {
       const questionStatus = answerStatus[index];
@@ -163,7 +231,9 @@ const QuizRoom = ({ roomNumber, goBack }) => {
           }}
         >
           <CardContent>
-            <Typography variant="h6" style={{ marginBottom: "10px" }}>
+            <Typography variant="h6" style={{
+              marginBottom: "10px"
+            }}>
               {question.split("\n").map((part, i) => (
                 <React.Fragment key={i}>
                   {part}
@@ -252,7 +322,9 @@ const QuizRoom = ({ roomNumber, goBack }) => {
         <ArrowBackIcon />
       </IconButton>
 
-      <Typography variant="h4" style={{ marginBottom: "20px" }}>
+      <Typography variant="h4" style={{
+        marginBottom: "20px"
+      }}>
         Quiz {roomNumber}
       </Typography>
 
