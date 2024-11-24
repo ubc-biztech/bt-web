@@ -75,6 +75,14 @@
   font-display: auto;
 }
 
+@font-face {
+  font-family: 'Audiowide';
+  src: url('./assets/font/Audiowide-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 .content {
   padding-top: 14px;
   margin-left: 110px;
