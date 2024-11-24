@@ -139,6 +139,7 @@ const QuizRoom = ({
     const {
       correctAnswers, questions
     } = quizData[roomNumber];
+    const newAnswerStatus = [...answerStatus]; // Copy the current answerStatus array
 
     try {
       const response = await fetchBackend(
@@ -160,12 +161,18 @@ const QuizRoom = ({
         const question = questions[index];
         const isCorrect = answer.trim().toLowerCase() === correctAnswers[index].trim().toLowerCase();
 
+        // Update the status for this question
+        newAnswerStatus[index] = isCorrect ? "correct" : "incorrect";
+
         // Award points only if the question hasn't been answered correctly before
         if (isCorrect && !completedQuestions.includes(question)) {
           score += 1;
           newlyScannedQuestions.push(question);
         }
       });
+
+      // Update the answerStatus state
+      setAnswerStatus(newAnswerStatus);
 
       if (score > 0) {
         const updateResponse = await fetchBackend(
@@ -180,7 +187,6 @@ const QuizRoom = ({
           false
         );
 
-        // NOTE: using the scannedQRs field to store already answered correctly questions
         const addQuestions = await fetchBackend(
           "/team/addQuestions",
           "put",
@@ -192,16 +198,13 @@ const QuizRoom = ({
           },
           false
         );
-
-        alert(`Team points updated successfully: ${updateResponse.updatedPoints}`);
-      } else {
-        alert("No new points awarded :(");
       }
     } catch (error) {
       console.error("Error updating team points:", error);
       alert("Failed to update team points. Please try again.");
     }
   };
+
 
   // Render the questions based on the room number
   const renderQuiz = () => {
