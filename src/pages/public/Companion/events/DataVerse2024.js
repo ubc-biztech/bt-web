@@ -148,6 +148,24 @@ const DataVerse2024 = (params) => {
           ) : (
             <Typography variant="h6">Loading your team data...</Typography>
           )}
+        </>
+      ) : (
+        <>
+          <div style={customStyles.accessKeyContainer}>
+            <TextField
+              label="Enter Access Key"
+              variant="outlined"
+              value={accessKey}
+              onChange={(e) => setAccessKey(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAccessKeySubmit}
+            >
+              Submit Access Key
+            </Button>
+          </div>
 
           {userRegistration.applicationStatus !== "rejected" && (
             <span
@@ -193,24 +211,6 @@ const DataVerse2024 = (params) => {
               emily@ubcbiztech.com
             </a>{" "}
             for any questions or concerns.
-          </div>
-        </>
-      ) : (
-        <>
-          <div style={customStyles.accessKeyContainer}>
-            <TextField
-              label="Enter Access Key"
-              variant="outlined"
-              value={accessKey}
-              onChange={(e) => setAccessKey(e.target.value)}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAccessKeySubmit}
-            >
-              Submit Access Key
-            </Button>
           </div>
         </>
       )}
