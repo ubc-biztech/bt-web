@@ -5,7 +5,8 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const CharacterInput = ({
   onSubmit,
   numChars = 16,
-  correctAnswer = "ncss winner 2024",
+  correctAnswer = "NSCC winner 2024",
+  disabled = true,
   setAnswered
 }) => {
   const [chars, setChars] = useState(Array(numChars).fill(""));
@@ -116,6 +117,7 @@ const CharacterInput = ({
               onKeyDown={(e) => handleKeyDown(index, e)}
               variant="standard"
               autoComplete="off"
+              disabled={disabled}
               inputProps={{
                 maxLength: 1,
                 style: {
@@ -348,7 +350,7 @@ const Divider = () => {
   );
 };
 
-const Progress = ({ teamScore, maxScore, onCharacterSubmit, setAnswered }) => {
+const Progress = ({ teamScore, maxScore, onCharacterSubmit, setAnswered, disabled }) => {
   return (
     <>
       <Box
@@ -383,7 +385,7 @@ const Progress = ({ teamScore, maxScore, onCharacterSubmit, setAnswered }) => {
             gap: 2
           }}
         >
-          <CharacterInput onSubmit={onCharacterSubmit} setAnswered={setAnswered} />
+          <CharacterInput onSubmit={onCharacterSubmit} setAnswered={setAnswered} disabled={disabled} />
           <ProgressBar teamScore={teamScore} maxScore={maxScore} />
         </Box>
       </Box>

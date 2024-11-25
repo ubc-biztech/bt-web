@@ -99,24 +99,6 @@ const LeftHeader = ({ teamName, teamPoints }) => {
   );
 };
 
-const buttonCardStyle = {
-  width: "315px",
-  margin: "10px",
-  marginBottom: "200px",
-  padding: "25px 50px",
-  fontSize: "20px",
-  fontFamily: "Audiowide",
-  backgroundColor: "rgba(255, 255, 255, 0.05)",
-  borderColor: "rgba(255, 255, 255, 0.2)",
-  color: "white",
-  height: "300px",
-  transition: "transform 0.3s ease, translateY 0.3s ease, opacity 0.3s ease",
-  display: "inline-block",
-  textAlign: "center",
-  letterSpacing: "0.2em",
-  whiteSpace: "nowrap"
-};
-
 const MemoizedConfetti = React.memo(({ show }) => {
   useEffect(() => {
     if (show) {
@@ -173,7 +155,6 @@ const Congratulations = () => {
       }}
       className={useStyles.root}
     >
-          
       <img
         src={DataverseLogo}
         alt={"Dataverse"}
@@ -191,7 +172,15 @@ const Congratulations = () => {
           letterSpacing: "0.5em"
         }}
       >
-        <h1 style={{fontFamily: "Audiowide", fontWeight: 400, textShadow: "0px 0px 8px white"}}>Congratulations!!</h1>
+        <h1
+          style={{
+            fontFamily: "Audiowide",
+            fontWeight: 400,
+            textShadow: "0px 0px 8px white"
+          }}
+        >
+          Congratulations!!
+        </h1>
         <p style={{ fontSize: "1.5rem", letterSpacing: "0.1em" }}>
           You have completed the Dataverse data challenge!
           <br />
@@ -201,6 +190,47 @@ const Congratulations = () => {
     </div>
   );
 };
+
+const buttonCardStyle = {
+  width: "315px",
+  margin: "10px",
+  marginBottom: "200px",
+  padding: "25px 50px",
+  fontSize: "20px",
+  fontFamily: "Audiowide",
+  backgroundColor: "rgba(255, 255, 255, 0.05)",
+  borderColor: "rgba(255, 255, 255, 0.2)",
+  color: "white",
+  height: "300px",
+  transition: "transform 0.3s ease, translateY 0.3s ease, opacity 0.3s ease",
+  letterSpacing: "0.2em",
+  whiteSpace: "nowrap"
+};
+
+const QuizCard = ({
+  roomNumber,
+  setSelectedRoom,
+  completed = true,
+  letters
+}) => {
+  return (
+    <Button
+      variant="outlined"
+      style={buttonCardStyle}
+      onClick={() => setSelectedRoom(roomNumber)}
+      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+    >
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <span>{`Enter Room ${roomNumber}`}</span>
+        {completed && (
+          <span style={{ color: "#00FF00", marginTop: "10px", fontFamily: "Gilroy", textTransform: "none" }}>{letters}</span>
+        )}
+      </div>
+    </Button>
+  );
+};
+
 
 const QuizDashboard = ({
   teamName,
@@ -260,6 +290,7 @@ const QuizDashboard = ({
           teamScore={teamPoints}
           maxScore={100}
           setAnswered={setAnswered}
+          disabled={false}
         />
         <div
           style={{
@@ -268,39 +299,9 @@ const QuizDashboard = ({
             marginBottom: "100px"
           }}
         >
-          <Button
-            variant="outlined"
-            style={buttonCardStyle}
-            onClick={() => setSelectedRoom(1)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            Enter Room 1
-          </Button>
-          <Button
-            variant="outlined"
-            style={buttonCardStyle}
-            onClick={() => setSelectedRoom(2)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            Enter Room 2
-          </Button>
-          <Button
-            variant="outlined"
-            style={buttonCardStyle}
-            onClick={() => setSelectedRoom(3)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            Enter Room 3
-          </Button>
+          <QuizCard setSelectedRoom={setSelectedRoom} roomNumber={1} letters = "NSCC"/>
+          <QuizCard setSelectedRoom={setSelectedRoom} roomNumber={2} letters = "winner"/>
+          <QuizCard setSelectedRoom={setSelectedRoom} roomNumber={3} letters = "2024" />
         </div>
       </div>
     );
