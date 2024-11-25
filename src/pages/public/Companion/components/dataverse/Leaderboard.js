@@ -1,6 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import React, {
+  useState, useRef, useEffect
+} from "react";
+import {
+  motion, AnimatePresence
+} from "framer-motion";
+import {
+  ThemeProvider, createTheme
+} from "@mui/material/styles";
 import {
   CssBaseline,
   Box,
@@ -12,7 +18,9 @@ import {
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 
 const theme = createTheme({
@@ -38,7 +46,9 @@ const theme = createTheme({
   }
 });
 
-function Leaderboard({ apiEndpoint }) {
+function Leaderboard({
+  apiEndpoint
+}) {
   const [teams, setTeams] = useState([]);
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -102,32 +112,32 @@ function Leaderboard({ apiEndpoint }) {
 
   const getRankIcon = (index) => {
     switch (index) {
-      case 0:
-        return (
-          <EmojiEventsIcon
-            sx={{
-              color: "#FFD700"
-            }}
-          />
-        );
-      case 1:
-        return (
-          <MilitaryTechIcon
-            sx={{
-              color: "#C0C0C0"
-            }}
-          />
-        );
-      case 2:
-        return (
-          <WorkspacePremiumIcon
-            sx={{
-              color: "#CD7F32"
-            }}
-          />
-        );
-      default:
-        return null;
+    case 0:
+      return (
+        <EmojiEventsIcon
+          sx={{
+            color: "#FFD700"
+          }}
+        />
+      );
+    case 1:
+      return (
+        <MilitaryTechIcon
+          sx={{
+            color: "#C0C0C0"
+          }}
+        />
+      );
+    case 2:
+      return (
+        <WorkspacePremiumIcon
+          sx={{
+            color: "#CD7F32"
+          }}
+        />
+      );
+    default:
+      return null;
     }
   };
 
@@ -153,7 +163,7 @@ function Leaderboard({ apiEndpoint }) {
           p: 2.5
         }}
       >
-                <img
+        <img
           src={DataverseLogo}
           alt={"Dataverse"}
           style={{
@@ -353,4 +363,6 @@ function GlobalLeaderboardExample() {
   );
 }
 
-export { GlobalLeaderboardExample };
+export {
+  GlobalLeaderboardExample
+};
