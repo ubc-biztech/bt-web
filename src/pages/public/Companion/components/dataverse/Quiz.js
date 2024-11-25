@@ -2,7 +2,7 @@ import React, {
   useEffect, useState
 } from "react";
 import {
-  Typography, Button, TextField, FormControl
+  Typography, Button
 } from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
@@ -293,7 +293,6 @@ const QuizDashboard = ({
         );
 
         setQuestions(response.response.scannedQRs || []);
-        console.log(response.response.scannedQRs);
       } catch (error) {
         console.error("Error fetching completed questions:", error);
       }
@@ -364,19 +363,16 @@ const QuizDashboard = ({
             setSelectedRoom={setSelectedRoom}
             completed={areAllQuestionsInArray(1, questions)}
             roomNumber={1}
-            letters={"NSCC"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
             completed={areAllQuestionsInArray(2, questions)}
             roomNumber={2}
-            letters="winner"
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
             completed={areAllQuestionsInArray(3, questions)}
             roomNumber={3}
-            letters="2024"
           />
         </div>
       </div>

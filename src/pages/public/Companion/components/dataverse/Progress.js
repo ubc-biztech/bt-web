@@ -1,5 +1,5 @@
 import React, {
-  useState, useRef, useEffect, memo
+  useState, useRef, useEffect
 } from "react";
 import {
   Box, IconButton, TextField

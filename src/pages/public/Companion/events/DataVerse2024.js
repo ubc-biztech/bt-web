@@ -45,6 +45,7 @@ const customStyles = {
 
 const DataVerse2024 = (params) => {
   const {
+    // eslint-disable-next-line no-unused-vars
     event, registrations, styles, renderMobileOnly, userRegistration
   } =
     params;
@@ -53,6 +54,7 @@ const DataVerse2024 = (params) => {
   const [accessKey, setAccessKey] = useState("");
   const [isAccessGranted, setIsAccessGranted] = useState(false);
   const [teamData, setTeamData] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [teamPoints, setTeamPoints] = useState(null);
 
   const history = useHistory(); // Initialize useHistory for React Router v5
