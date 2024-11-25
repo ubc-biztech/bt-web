@@ -253,9 +253,8 @@ const Divider = () => {
               width="79"
               height="79"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"
@@ -316,9 +315,8 @@ const Divider = () => {
               width="79"
               height="79"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"
@@ -379,9 +377,8 @@ const Divider = () => {
               width="79"
               height="79"
               filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 type="matrix"
