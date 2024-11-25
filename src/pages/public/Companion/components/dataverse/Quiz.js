@@ -5,6 +5,7 @@ import {
   Typography, Button, TextField, FormControl
 } from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
+import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
 import QuizRoom from "./QuizRoom";
@@ -23,7 +24,7 @@ const useStyles = {
     fontWeight: "bold",
     marginTop: "0px",
     letterSpacing: "0.2em",
-    textShadow: "0px 0px 4px white"
+    textShadow: "0px 0px 8px white"
   },
   subheading: {
     fontSize: "1.5rem", // Increasing the font size for subheadings
@@ -64,7 +65,7 @@ const LeftHeader = ({
         justifyContent: "space-between",
         alignItems: "flex-start",
         width: "100%",
-        height: "300px"
+        height: "300px",
       }}
     >
       <img
@@ -110,22 +111,24 @@ const buttonCardStyle = {
   padding: "25px 50px",
   fontSize: "20px",
   fontFamily: "Audiowide",
-  backgroundColor: "rgba(255, 255, 255, 0.05)", // Transparent background with 10% opacity
-  borderColor: "white", // White borders
-  color: "white", // White text color
-  height: "300px", // Increased height to make the button taller
-  transition: "transform 0.3s ease, translateY 0.3s ease, opacity 0.3s ease", // Smooth transitions for transform and opacity
+  backgroundColor: "rgba(255, 255, 255, 0.05)",
+  borderColor: "rgba(255, 255, 255, 0.2)",
+  color: "white",
+  height: "300px",
+  transition: "transform 0.3s ease, translateY 0.3s ease, opacity 0.3s ease",
   display: "inline-block",
-  textAlign: "center" // Center text horizontally
+  textAlign: "center",
+  letterSpacing: "0.2em", 
+  whiteSpace: "nowrap"
 };
 
 const QuizDashboard = ({
-  teamName, teamPoints, startTime, endTime, userRegistration
+  teamName, teamPoints, startTime, endTime, userRegistration, disabled = false
 }) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
 
   const renderContent = () => {
-    if (selectedRoom) {
+    if (selectedRoom && !disabled)  {
       return (
         <QuizRoom
           roomNumber={selectedRoom}
@@ -137,14 +140,17 @@ const QuizDashboard = ({
 
     return (
       <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          background:
-            "linear-gradient(135deg, #0d1b61, #0a143b, #081027, #000000)"
-        }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundImage: `url(${BackgroundGradient})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh"
+      }}
         className={useStyles.root}
       >
         <div
@@ -160,7 +166,7 @@ const QuizDashboard = ({
           <LeftHeader teamName={teamName} teamPoints={teamPoints} />
           <TimerDonut startTime={startTime} endTime={endTime} />
         </div>
-        <Progress teamScore={teamPoints} maxScore={100000} />
+        <Progress teamScore={teamPoints} maxScore={100} />
         <div
           style={{
             textAlign: "center",
