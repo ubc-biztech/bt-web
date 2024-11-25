@@ -1,5 +1,5 @@
 import React, {
-  useState
+  useState, useEffect
 } from "react";
 import {
   Typography,
@@ -9,7 +9,7 @@ import {
   IconButton,
   Grid,
   Card,
-  CardContent
+  CardContent,
 } from "@material-ui/core";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
@@ -19,9 +19,10 @@ import {
 const QuizRoom = ({
   roomNumber, goBack, userRegistration
 }) => {
-  const [answers, setAnswers] = useState(Array(5).fill("")); // Array to hold answers for 5 questions
-  const [selectedOptions, setSelectedOptions] = useState(Array(5).fill(null)); // To track selected options for multiple-choice questions
-  const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null)); // To track the status of each question (null = not checked, 'correct' or 'incorrect')
+  const [answers, setAnswers] = useState(Array(5).fill(""));
+  const [selectedOptions, setSelectedOptions] = useState(Array(5).fill(null));
+  const [completedQuestions, setCompletedQuestions] = useState([]);
+  const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null)); // To track the current status of answers
 
   const quizData = {
     1: {
@@ -120,84 +121,118 @@ const QuizRoom = ({
     }
   };
 
+  useEffect(() => {
+    const fetchCompletedQuestions = async () => {
+      try {
+        const response = await fetchBackend(
+          "/team/getTeamFromUserID",
+          "post",
+          {
+            eventID: "dataverse",
+            year: 2024,
+            user_id: userRegistration.id,
+          },
+          false
+        );
+
+        setCompletedQuestions(response.response.scannedQRs || []);
+      } catch (error) {
+        console.error("Error fetching completed questions:", error);
+      }
+    };
+
+    fetchCompletedQuestions();
+  }, [userRegistration.id]);
+
   const handleAnswerChange = (index, value) => {
+    if (completedQuestions.includes(quizData[roomNumber].questions[index]) || answerStatus[index] === "correct") {
+      alert("This question has already been answered correctly!");
+      return;
+    }
+
     const newAnswers = [...answers];
     newAnswers[index] = value;
     setAnswers(newAnswers);
   };
 
   const handleMultipleChoiceAnswer = (index, option) => {
+    if (completedQuestions.includes(quizData[roomNumber].questions[index]) || answerStatus[index] === "correct") {
+      alert("This question has already been answered correctly!");
+      return;
+    }
+
     const newSelectedOptions = [...selectedOptions];
     newSelectedOptions[index] = option;
     setSelectedOptions(newSelectedOptions);
+
     const newAnswers = [...answers];
     newAnswers[index] = option;
     setAnswers(newAnswers);
   };
 
+
   const checkAnswers = async () => {
     const {
       correctAnswers, questions
     } = quizData[roomNumber];
-    const newAnswerStatus = [...answerStatus]; // Copy the current answerStatus array
+    const newAnswerStatus = [...answerStatus];
 
     try {
-      const response = await fetchBackend(
-        "/team/getTeamFromUserID",
-        "post",
-        {
-          eventID: "dataverse",
-          year: 2024,
-          user_id: userRegistration.id
-        },
-        false
-      );
-      const completedQuestions = response.response.scannedQRs;
-
       let score = 0;
       const newlyScannedQuestions = [];
 
       answers.forEach((answer, index) => {
         const question = questions[index];
-        const isCorrect = answer.trim().toLowerCase() === correctAnswers[index].trim().toLowerCase();
+        const isCorrect =
+          answer.trim().toLowerCase() === correctAnswers[index].trim().toLowerCase();
 
-        // Update the status for this question
-        newAnswerStatus[index] = isCorrect ? "correct" : "incorrect";
-
-        // Award points only if the question hasn't been answered correctly before
-        if (isCorrect && !completedQuestions.includes(question)) {
-          score += 1;
-          newlyScannedQuestions.push(question);
+        if (isCorrect) {
+          newAnswerStatus[index] = "correct";
+          if (!completedQuestions.includes(question)) {
+            score += 1;
+            newlyScannedQuestions.push(question);
+          }
+        } else {
+          newAnswerStatus[index] = "incorrect";
         }
       });
 
-      // Update the answerStatus state
       setAnswerStatus(newAnswerStatus);
 
       if (score > 0) {
-        const updateResponse = await fetchBackend(
+        await fetchBackend(
           "/team/points",
           "put",
           {
             eventID: "dataverse",
             year: 2024,
             user_id: userRegistration.id,
-            change_points: score || 0
+            change_points: score || 0,
           },
           false
         );
 
-        const addQuestions = await fetchBackend(
+        await fetchBackend(
           "/team/addQuestions",
           "put",
           {
             eventID: "dataverse",
             year: 2024,
             user_id: userRegistration.id,
-            answered_questions: newlyScannedQuestions
+            answered_questions: newlyScannedQuestions,
           },
           false
         );
+
+        setCompletedQuestions((prev) => [...prev, ...newlyScannedQuestions]);
+      }
+
+      const allGreen = questions.every((question, index) =>
+        completedQuestions.includes(question) || newAnswerStatus[index] === "correct"
+      );
+
+      if (allGreen) {
+        alert("Congratulations! All questions are marked correct!");
       }
     } catch (error) {
       console.error("Error updating team points:", error);
@@ -206,16 +241,26 @@ const QuizRoom = ({
   };
 
 
-  // Render the questions based on the room number
   const renderQuiz = () => {
     const {
       questions, questionType, options
     } = quizData[roomNumber];
 
     return questions.map((question, index) => {
-      const questionStatus = answerStatus[index];
-      const isCorrect = questionStatus === "correct";
-      const isIncorrect = questionStatus === "incorrect";
+      const isCompleted = completedQuestions.includes(question);
+      const isCorrect = answerStatus[index] === "correct";
+      const isDisabled = isCompleted || isCorrect;
+
+      let borderColor = "white";
+      let boxShadow = "none";
+
+      if (isCompleted) {
+        borderColor = "green";
+        boxShadow = "0px 0px 10px green";
+      } else if (answerStatus[index] === "incorrect") {
+        borderColor = "red";
+        boxShadow = "0px 0px 10px red";
+      }
 
       return (
         <Card
@@ -223,23 +268,16 @@ const QuizRoom = ({
           style={{
             width: "800px",
             marginBottom: "20px",
-            backgroundColor: "rgba(255, 255, 255, 0.1)", // White with 30% opacity
-            border: "2px solid white", // White border with 2px thickness
-            backdropFilter: "blur(10px)", // Optional: Add blur effect to the background behind the card
-            borderColor: isCorrect ? "green" : isIncorrect ? "red" : "white", // Set border color based on correctness
-            boxShadow: isCorrect ? "0px 0px 10px green" : isIncorrect ? "0px 0px 10px red" : "none" // Add box shadow for highlight effect
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            border: `2px solid ${borderColor}`,
+            boxShadow,
           }}
         >
           <CardContent>
             <Typography variant="h6" style={{
               marginBottom: "10px"
             }}>
-              {question.split("\n").map((part, i) => (
-                <React.Fragment key={i}>
-                  {part}
-                  {i < question.split("\n").length - 1 && <br />}
-                </React.Fragment>
-              ))}
+              {question}
             </Typography>
 
             {questionType[index] === "multiple-choice" ? (
@@ -250,23 +288,14 @@ const QuizRoom = ({
                       variant="outlined"
                       fullWidth
                       onClick={() => handleMultipleChoiceAnswer(index, option)}
+                      disabled={isDisabled}
                       style={{
                         height: "75px",
                         fontSize: "16px",
                         backgroundColor:
-                          selectedOptions[index] === option
-                            ? "white"
-                            : "transparent",
-                        color:
-                          selectedOptions[index] === option ? "black" : "white",
-                        border:
-                          selectedOptions[index] === option
-                            ? "2px solid white"
-                            : "2px solid white",
-                        boxShadow:
-                          selectedOptions[index] === option
-                            ? "0px 0px 10px rgba(255, 255, 255, 0.5)"
-                            : "none"
+                          selectedOptions[index] === option ? "white" : "transparent",
+                        color: selectedOptions[index] === option ? "black" : "white",
+                        border: "2px solid white",
                       }}
                     >
                       {option}
@@ -281,9 +310,10 @@ const QuizRoom = ({
                   variant="outlined"
                   value={answers[index]}
                   onChange={(e) => handleAnswerChange(index, e.target.value)}
+                  disabled={isDisabled}
                   style={{
                     marginTop: "10px",
-                    width: "100%"
+                    width: "100%",
                   }}
                 />
               </FormControl>
@@ -302,12 +332,11 @@ const QuizRoom = ({
         alignItems: "center",
         flexDirection: "column",
         minHeight: "120vh",
-        background:
-          "linear-gradient(135deg, #0d1b61, #0a143b, #081027, #000000)",
+        background: "linear-gradient(135deg, #0d1b61, #0a143b, #081027, #000000)",
         color: "#fff",
         padding: "20px",
         textAlign: "center",
-        position: "relative"
+        position: "relative",
       }}
     >
       <IconButton
@@ -338,7 +367,7 @@ const QuizRoom = ({
           color: "#fff",
           padding: "10px 20px",
           fontSize: "16px",
-          marginTop: "20px"
+          marginTop: "20px",
         }}
       >
         Check Answers
