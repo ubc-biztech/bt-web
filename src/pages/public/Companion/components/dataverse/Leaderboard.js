@@ -1,12 +1,6 @@
-import React, {
-  useState, useRef, useEffect
-} from "react";
-import {
-  motion, AnimatePresence
-} from "framer-motion";
-import {
-  ThemeProvider, createTheme
-} from "@mui/material/styles";
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import {
   CssBaseline,
   Box,
@@ -18,9 +12,8 @@ import {
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-import {
-  fetchBackend
-} from "utils";
+import { fetchBackend } from "utils";
+import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 
 const theme = createTheme({
   components: {
@@ -45,9 +38,7 @@ const theme = createTheme({
   }
 });
 
-function Leaderboard({
-  apiEndpoint
-}) {
+function Leaderboard({ apiEndpoint }) {
   const [teams, setTeams] = useState([]);
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -55,11 +46,14 @@ function Leaderboard({
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const response = await fetchBackend(apiEndpoint, "get", undefined, false);
+        const response = await fetchBackend(
+          apiEndpoint,
+          "get",
+          undefined,
+          false
+        );
         if (response && Array.isArray(response)) {
-          setTeams(
-            response.sort((a, b) => b.points - a.points)
-          );
+          setTeams(response.sort((a, b) => b.points - a.points));
         }
       } catch (error) {
         console.error("Error fetching teams:", error);
@@ -98,7 +92,7 @@ function Leaderboard({
       indices.forEach((index) => {
         newTeams[index] = {
           ...newTeams[index],
-          points: Math.floor(Math.random() * 150),
+          points: Math.floor(Math.random() * 150)
         };
       });
 
@@ -108,20 +102,32 @@ function Leaderboard({
 
   const getRankIcon = (index) => {
     switch (index) {
-    case 0:
-      return <EmojiEventsIcon sx={{
-        color: "#FFD700"
-      }} />;
-    case 1:
-      return <MilitaryTechIcon sx={{
-        color: "#C0C0C0"
-      }} />;
-    case 2:
-      return <WorkspacePremiumIcon sx={{
-        color: "#CD7F32"
-      }} />;
-    default:
-      return null;
+      case 0:
+        return (
+          <EmojiEventsIcon
+            sx={{
+              color: "#FFD700"
+            }}
+          />
+        );
+      case 1:
+        return (
+          <MilitaryTechIcon
+            sx={{
+              color: "#C0C0C0"
+            }}
+          />
+        );
+      case 2:
+        return (
+          <WorkspacePremiumIcon
+            sx={{
+              color: "#CD7F32"
+            }}
+          />
+        );
+      default:
+        return null;
     }
   };
 
@@ -138,19 +144,23 @@ function Leaderboard({
       sx={{
         maxWidth: 600,
         margin: "0 auto",
-        bgcolor: "rgba(255, 255, 255, 0.1)",
-        borderRadius: 2,
         overflow: "hidden",
-        boxShadow: 3,
-        border: "1px solid #828282",
-        paddingX: 2,
+        paddingX: 2
       }}
     >
       <Box
         sx={{
-          p: 2.5,
+          p: 2.5
         }}
       >
+                <img
+          src={DataverseLogo}
+          alt={"Dataverse"}
+          style={{
+            width: "150px",
+            marginBottom: "20px"
+          }}
+        />
         <Typography
           variant="h4"
           component="h2"
@@ -159,15 +169,17 @@ function Leaderboard({
             fontWeight: 400,
             fontFamily: "Audiowide",
             textAlign: "left",
-            marginBottom: 2,
+            marginBottom: 2
           }}
         >
           LEADERBOARD
         </Typography>
       </Box>
-      <List sx={{
-        p: 0
-      }}>
+      <List
+        sx={{
+          p: 0
+        }}
+      >
         <AnimatePresence>
           {teams.map((team, index) => (
             <motion.div
@@ -196,7 +208,7 @@ function Leaderboard({
                   borderBottom: "1px solid",
                   borderColor: "divider",
                   py: 1.5,
-                  backgroundColor: "transparent",
+                  backgroundColor: "transparent"
                 }}
               >
                 <Box
@@ -212,7 +224,7 @@ function Leaderboard({
                     borderRadius: "50%",
                     mr: 1.5,
                     fontWeight: "bold",
-                    color: "text.secondary",
+                    color: "text.secondary"
                   }}
                 >
                   <AnimatePresence mode="popLayout">
@@ -234,9 +246,11 @@ function Leaderboard({
                         duration: 0.1
                       }}
                     >
-                      <span style={{
-                        color: "#ffffff"
-                      }}>
+                      <span
+                        style={{
+                          color: "#ffffff"
+                        }}
+                      >
                         {getRankIcon(index) || index + 1 + "th"}
                       </span>
                     </motion.div>
@@ -253,7 +267,7 @@ function Leaderboard({
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
-                    marginRight: 1.5,
+                    marginRight: 1.5
                   }}
                 >
                   {team.teamName}
@@ -267,7 +281,7 @@ function Leaderboard({
                     fontWeight: 500,
                     overflow: "hidden",
                     whiteSpace: "nowrap",
-                    textAlign: "center",
+                    textAlign: "center"
                   }}
                 >
                   {".".repeat(Math.floor(getDotWidth(150, 100) / 4))}
@@ -278,7 +292,7 @@ function Leaderboard({
                     display: "flex",
                     justifyContent: "flex-end",
                     flexShrink: 0,
-                    marginLeft: 1.5,
+                    marginLeft: 1.5
                   }}
                 >
                   <Typography
@@ -287,7 +301,7 @@ function Leaderboard({
                     variant="body1"
                     sx={{
                       fontWeight: 500,
-                      color: "white",
+                      color: "white"
                     }}
                     initial={{
                       scale: 1
@@ -312,7 +326,7 @@ function Leaderboard({
           display: "flex",
           justifyContent: "center",
           mt: 2,
-          mb: 2,
+          mb: 2
         }}
       >
         <Button variant="contained" color="primary" onClick={updateRandomTeams}>
@@ -328,15 +342,15 @@ function GlobalLeaderboardExample() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{
-        p: 2
-      }}>
+      <Box
+        sx={{
+          p: 2
+        }}
+      >
         <Leaderboard apiEndpoint={apiEndpoint} />
       </Box>
     </ThemeProvider>
   );
 }
 
-export {
-  GlobalLeaderboardExample
-};
+export { GlobalLeaderboardExample };
