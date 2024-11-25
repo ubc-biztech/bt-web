@@ -97,9 +97,13 @@ const quizData = {
   }
 };
 
-const areAllQuestionsInArray = ({ quizNumber, checkArray }) => {
+const areAllQuestionsInArray = ({
+  quizNumber, checkArray
+}) => {
   const quizQuestions = quizData[quizNumber]?.questions || [];
   return quizQuestions.every((question) => checkArray.includes(question));
 };
 
-export { areAllQuestionsInArray, quizData };
+export {
+  areAllQuestionsInArray, quizData
+};
