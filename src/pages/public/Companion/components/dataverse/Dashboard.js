@@ -45,7 +45,6 @@ const Dashboard = () => {
 
         const data = await response.response;
         if (data && data.points !== undefined) {
-          console.log(data.points);
           setTeamPoints(data.points);
         }
       } catch (error) {

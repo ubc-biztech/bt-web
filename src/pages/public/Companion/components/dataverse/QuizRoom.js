@@ -10,6 +10,10 @@ import {
   Grid,
   Card,
   CardContent,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@material-ui/core";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
@@ -17,12 +21,32 @@ import {
 } from "utils";
 
 const QuizRoom = ({
-  roomNumber, goBack, userRegistration, setQuestions, quizData
+  roomNumber,
+  goBack,
+  userRegistration,
+  setQuestions,
+  quizData,
 }) => {
   const [answers, setAnswers] = useState(Array(5).fill(""));
   const [selectedOptions, setSelectedOptions] = useState(Array(5).fill(null));
   const [completedQuestions, setCompletedQuestions] = useState([]);
   const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null)); // To track the current status of answers
+  const [openPopup, setOpenPopup] = useState(false); // State to control popup visibility
+
+  const popupContent = {
+    1: {
+      title: "🏆 Room 1 Complete!",
+      message: "Great job! Your string is: NSCC",
+    },
+    2: {
+      title: "🎯 Room 2 Mastered!",
+      message: "Fantastic! Your string is: winner",
+    },
+    3: {
+      title: "🚀 Room 3 Achieved!",
+      message: "Outstanding! Your string is: 2024",
+    },
+  };
 
   useEffect(() => {
     const fetchCompletedQuestions = async () => {
@@ -49,7 +73,10 @@ const QuizRoom = ({
   }, [userRegistration.id]);
 
   const handleAnswerChange = (index, value) => {
-    if (completedQuestions.includes(quizData[roomNumber].questions[index]) || answerStatus[index] === "correct") {
+    if (
+      completedQuestions.includes(quizData[roomNumber].questions[index]) ||
+      answerStatus[index] === "correct"
+    ) {
       alert("This question has already been answered correctly!");
       return;
     }
@@ -60,7 +87,10 @@ const QuizRoom = ({
   };
 
   const handleMultipleChoiceAnswer = (index, option) => {
-    if (completedQuestions.includes(quizData[roomNumber].questions[index]) || answerStatus[index] === "correct") {
+    if (
+      completedQuestions.includes(quizData[roomNumber].questions[index]) ||
+      answerStatus[index] === "correct"
+    ) {
       alert("This question has already been answered correctly!");
       return;
     }
@@ -73,7 +103,6 @@ const QuizRoom = ({
     newAnswers[index] = option;
     setAnswers(newAnswers);
   };
-
 
   const checkAnswers = async () => {
     const {
@@ -88,7 +117,8 @@ const QuizRoom = ({
       answers.forEach((answer, index) => {
         const question = questions[index];
         const isCorrect =
-          answer.trim().toLowerCase() === correctAnswers[index].trim().toLowerCase();
+          answer.trim().toLowerCase() ===
+          correctAnswers[index].trim().toLowerCase();
 
         if (isCorrect) {
           newAnswerStatus[index] = "correct";
@@ -131,19 +161,20 @@ const QuizRoom = ({
         setCompletedQuestions((prev) => [...prev, ...newlyScannedQuestions]);
       }
 
-      const allGreen = questions.every((question, index) =>
-        completedQuestions.includes(question) || newAnswerStatus[index] === "correct"
+      const allGreen = questions.every(
+        (question, index) =>
+          completedQuestions.includes(question) ||
+          newAnswerStatus[index] === "correct"
       );
 
       if (allGreen) {
-        alert("Congratulations! All questions are marked correct!");
+        setOpenPopup(true);
       }
     } catch (error) {
       console.error("Error updating team points:", error);
       alert("Failed to update team points. Please try again.");
     }
   };
-
 
   const renderQuiz = () => {
     const {
@@ -197,8 +228,11 @@ const QuizRoom = ({
                         height: "75px",
                         fontSize: "16px",
                         backgroundColor:
-                          selectedOptions[index] === option ? "white" : "transparent",
-                        color: selectedOptions[index] === option ? "black" : "white",
+                          selectedOptions[index] === option
+                            ? "white"
+                            : "transparent",
+                        color:
+                          selectedOptions[index] === option ? "black" : "white",
                         border: "2px solid white",
                       }}
                     >
@@ -248,7 +282,7 @@ const QuizRoom = ({
           position: "absolute",
           top: "10px",
           left: "10px",
-          color: "#fff"
+          color: "#fff",
         }}
         onClick={goBack}
       >
@@ -276,6 +310,18 @@ const QuizRoom = ({
       >
         Check Answers
       </Button>
+
+      <Dialog open={openPopup} onClose={() => setOpenPopup(false)}>
+        <DialogTitle>{popupContent[roomNumber]?.title}</DialogTitle>
+        <DialogContent>
+          <Typography>{popupContent[roomNumber]?.message}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenPopup(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
