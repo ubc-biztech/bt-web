@@ -1,14 +1,11 @@
-import React, {
-  useState
-} from "react";
-import {
-  Typography, Button, TextField, FormControl
-} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Typography, Button, TextField, FormControl } from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
 import QuizRoom from "./QuizRoom";
+import confetti from "canvas-confetti";
 
 const useStyles = {
   root: {
@@ -53,9 +50,7 @@ const useStyles = {
   }
 };
 
-const LeftHeader = ({
-  teamName, teamPoints
-}) => {
+const LeftHeader = ({ teamName, teamPoints }) => {
   return (
     <div
       style={{
@@ -65,7 +60,7 @@ const LeftHeader = ({
         justifyContent: "space-between",
         alignItems: "flex-start",
         width: "100%",
-        height: "300px",
+        height: "300px"
       }}
     >
       <img
@@ -118,17 +113,112 @@ const buttonCardStyle = {
   transition: "transform 0.3s ease, translateY 0.3s ease, opacity 0.3s ease",
   display: "inline-block",
   textAlign: "center",
-  letterSpacing: "0.2em", 
+  letterSpacing: "0.2em",
   whiteSpace: "nowrap"
 };
 
+const MemoizedConfetti = React.memo(({ show }) => {
+  useEffect(() => {
+    if (show) {
+      const duration = 1 * 1000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 50,
+          spread: 100,
+          origin: { x: Math.random(), y: 1.05 },
+          ticks: 500,
+          startVelocity: 80
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+
+      frame();
+    }
+  }, [show]);
+  if (!show) return null;
+  return null;
+});
+
+MemoizedConfetti.displayName = "MemoizedConfetti";
+
+const Congratulations = () => {
+  const [showConfetti, setShowConfetti] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowConfetti(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundImage: `url(${BackgroundGradient})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        color: "white"
+      }}
+      className={useStyles.root}
+    >
+          
+      <img
+        src={DataverseLogo}
+        alt={"Dataverse"}
+        style={{
+          width: "300px",
+          marginBottom: "20px"
+        }}
+      />
+      <MemoizedConfetti show={showConfetti} />
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "20px",
+          fontSize: "2rem",
+          letterSpacing: "0.5em"
+        }}
+      >
+        <h1 style={{fontFamily: "Audiowide", fontWeight: 400, textShadow: "0px 0px 8px white"}}>Congratulations!!</h1>
+        <p style={{ fontSize: "1.5rem", letterSpacing: "0.1em" }}>
+          You have completed the Dataverse data challenge!
+          <br />
+          Check out the leaderboard to see how you placed!
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const QuizDashboard = ({
-  teamName, teamPoints, startTime, endTime, userRegistration, disabled = false
+  teamName,
+  teamPoints,
+  startTime,
+  endTime,
+  userRegistration,
+  disabled = false
 }) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [Answered, setAnswered] = useState(false);
 
   const renderContent = () => {
-    if (selectedRoom && !disabled)  {
+    if (Answered) {
+      return <Congratulations />;
+    }
+
+    if (selectedRoom && !disabled) {
       return (
         <QuizRoom
           roomNumber={selectedRoom}
@@ -140,17 +230,17 @@ const QuizDashboard = ({
 
     return (
       <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundImage: `url(${BackgroundGradient})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh"
-      }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundImage: `url(${BackgroundGradient})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          minHeight: "100vh"
+        }}
         className={useStyles.root}
       >
         <div
@@ -166,7 +256,11 @@ const QuizDashboard = ({
           <LeftHeader teamName={teamName} teamPoints={teamPoints} />
           <TimerDonut startTime={startTime} endTime={endTime} />
         </div>
-        <Progress teamScore={teamPoints} maxScore={100} />
+        <Progress
+          teamScore={teamPoints}
+          maxScore={100}
+          setAnswered={setAnswered}
+        />
         <div
           style={{
             textAlign: "center",

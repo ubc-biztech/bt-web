@@ -13,6 +13,7 @@
     "@material-ui/styles": "^4.10.0",
     "@trendyol-js/react-carousel": "^3.0.2",
     "aws-amplify": "^2.1.0",
+    "canvas-confetti": "^1.9.3",
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.7.0",
     "formik": "^2.4.0",
