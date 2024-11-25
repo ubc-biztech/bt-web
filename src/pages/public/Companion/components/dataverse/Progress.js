@@ -1,13 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, memo } from "react";
 import { Box, IconButton, TextField } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const CharacterInput = ({ onSubmit, numChars = 21 }) => {
+const CharacterInput = ({
+  onSubmit,
+  numChars = 16,
+  correctAnswer = "ncss winner 2024",
+  setAnswered
+}) => {
   const [chars, setChars] = useState(Array(numChars).fill(""));
   const [isTyping, setIsTyping] = useState(false);
+  const [letterColors, setLetterColors] = useState(Array(numChars).fill(""));
   const inputRefs = useRef([]);
 
-  const placeholderText = "final question answer";
+  const placeholderText = "final answer";
 
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, numChars);
@@ -49,13 +55,35 @@ const CharacterInput = ({ onSubmit, numChars = 21 }) => {
     }
   };
 
+  const updateColors = () => {
+    const newColors = chars.map((char, index) => {
+      if (char === correctAnswer[index]) {
+        return "green";
+      } else if (correctAnswer.includes(char)) {
+        return "red";
+      } else {
+        return "gray";
+      }
+    });
+    setLetterColors(newColors);
+  };
+
   const handleSubmit = () => {
     const input = chars.join("");
     if (input.length === numChars) {
-      onSubmit(input);
+      updateColors();
+      const isAnswerCorrect = input === correctAnswer;
+      if (isAnswerCorrect) {
+        setAnswered(true);
+        onSubmit(input);
+      }
+
       setChars(Array(numChars).fill(""));
       setIsTyping(false);
-      inputRefs.current[0]?.focus();
+
+      setTimeout(() => {
+        inputRefs.current[0]?.focus();
+      }, 0);
     }
   };
 
@@ -66,7 +94,8 @@ const CharacterInput = ({ onSubmit, numChars = 21 }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 2
+        gap: 2,
+        overflowX: "hidden"
       }}
     >
       <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
@@ -75,6 +104,8 @@ const CharacterInput = ({ onSubmit, numChars = 21 }) => {
             isTyping && !chars.every((char) => char === "")
               ? ""
               : placeholderText[index] || "";
+
+          const inputColor = letterColors[index];
 
           return (
             <TextField
@@ -101,13 +132,27 @@ const CharacterInput = ({ onSubmit, numChars = 21 }) => {
                 width: "25px",
                 "& .MuiInput-underline:before": {
                   borderBottomWidth: "2px",
-                  borderBottomColor: char ? "#ffffff" : "#AAAAAA"
+                  borderBottomColor:
+                    inputColor === "green"
+                      ? "green"
+                      : inputColor === "red"
+                      ? "red"
+                      : inputColor === "gray"
+                      ? "#AAAAAA"
+                      : "#ffffff" // Default color before submission
                 },
                 "& .MuiInput-underline:hover:before": {
                   borderBottomColor: "#ffffff"
                 },
                 "& .MuiInput-underline:after": {
-                  borderBottomColor: "#ffffff"
+                  borderBottomColor:
+                    inputColor === "green"
+                      ? "green"
+                      : inputColor === "red"
+                      ? "red"
+                      : inputColor === "gray"
+                      ? "#AAAAAA"
+                      : "#ffffff" // Default color after submission
                 }
               }}
             />
@@ -229,7 +274,7 @@ const Divider = () => {
           left: "calc(16% - 39.5px)",
           width: "0px",
           height: "0px",
-          display: "block",
+          display: "block"
         }}
       >
         <svg
@@ -255,7 +300,7 @@ const Divider = () => {
           left: "calc(50% - 39.5px)",
           width: "0px",
           height: "0px",
-          display: "block",
+          display: "block"
         }}
       >
         <svg
@@ -281,7 +326,7 @@ const Divider = () => {
           left: "calc(84% - 39.5px)",
           width: "0px",
           height: "0px",
-          display: "block",
+          display: "block"
         }}
       >
         <svg
@@ -303,7 +348,7 @@ const Divider = () => {
   );
 };
 
-const Progress = ({ teamScore, maxScore, onCharacterSubmit }) => {
+const Progress = ({ teamScore, maxScore, onCharacterSubmit, setAnswered }) => {
   return (
     <>
       <Box
@@ -338,7 +383,7 @@ const Progress = ({ teamScore, maxScore, onCharacterSubmit }) => {
             gap: 2
           }}
         >
-          <CharacterInput onSubmit={onCharacterSubmit} />
+          <CharacterInput onSubmit={onCharacterSubmit} setAnswered={setAnswered} />
           <ProgressBar teamScore={teamScore} maxScore={maxScore} />
         </Box>
       </Box>
