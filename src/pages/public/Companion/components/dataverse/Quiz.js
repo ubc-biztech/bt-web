@@ -4,8 +4,10 @@ import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
+import { areAllQuestionsInArray, quizData } from "./QuizData";
 import QuizRoom from "./QuizRoom";
 import confetti from "canvas-confetti";
+import { fetchBackend } from "utils";
 
 const useStyles = {
   root: {
@@ -221,16 +223,30 @@ const QuizCard = ({
       onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
       onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
     >
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+      >
         <span>{`Enter Room ${roomNumber}`}</span>
         {completed && (
-          <span style={{ color: "#00FF00", marginTop: "10px", fontFamily: "Gilroy", textTransform: "none" }}>{letters}</span>
+          <span
+            style={{
+              color: "#00FF00",
+              marginTop: "10px",
+              fontFamily: "Gilroy",
+              textTransform: "none"
+            }}
+          >
+            {letters}
+          </span>
         )}
       </div>
     </Button>
   );
 };
-
 
 const QuizDashboard = ({
   teamName,
@@ -242,6 +258,31 @@ const QuizDashboard = ({
 }) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [Answered, setAnswered] = useState(false);
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    const fetchCompletedQuestions = async () => {
+      try {
+        const response = await fetchBackend(
+          "/team/getTeamFromUserID",
+          "post",
+          {
+            eventID: "dataverse",
+            year: 2024,
+            user_id: userRegistration.id
+          },
+          false
+        );
+
+        setQuestions(response.response.scannedQRs || []);
+        console.log(response.response.scannedQRs);
+      } catch (error) {
+        console.error("Error fetching completed questions:", error);
+      }
+    };
+
+    fetchCompletedQuestions();
+  }, [userRegistration.id]);
 
   const renderContent = () => {
     if (Answered) {
@@ -254,6 +295,8 @@ const QuizDashboard = ({
           roomNumber={selectedRoom}
           goBack={() => setSelectedRoom(null)}
           userRegistration={userRegistration}
+          setQuestions={setQuestions}
+          quizData={quizData}
         />
       );
     }
@@ -288,7 +331,7 @@ const QuizDashboard = ({
         </div>
         <Progress
           teamScore={teamPoints}
-          maxScore={100}
+          maxScore={15}
           setAnswered={setAnswered}
           disabled={false}
         />
@@ -299,9 +342,24 @@ const QuizDashboard = ({
             marginBottom: "100px"
           }}
         >
-          <QuizCard setSelectedRoom={setSelectedRoom} roomNumber={1} letters = "NSCC"/>
-          <QuizCard setSelectedRoom={setSelectedRoom} roomNumber={2} letters = "winner"/>
-          <QuizCard setSelectedRoom={setSelectedRoom} roomNumber={3} letters = "2024" />
+          <QuizCard
+            setSelectedRoom={setSelectedRoom}
+            completed={areAllQuestionsInArray(1, questions)}
+            roomNumber={1}
+            letters={"NSCC"}
+          />
+          <QuizCard
+            setSelectedRoom={setSelectedRoom}
+            completed={areAllQuestionsInArray(2, questions)}
+            roomNumber={2}
+            letters="winner"
+          />
+          <QuizCard
+            setSelectedRoom={setSelectedRoom}
+            completed={areAllQuestionsInArray(3, questions)}
+            roomNumber={3}
+            letters="2024"
+          />
         </div>
       </div>
     );
