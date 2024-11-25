@@ -1,11 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Button, TextField, FormControl } from "@material-ui/core";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  Typography, Button, TextField, FormControl
+} from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
+import {
+  areAllQuestionsInArray, quizData
+} from "./QuizData";
 import QuizRoom from "./QuizRoom";
 import confetti from "canvas-confetti";
+import {
+  fetchBackend
+} from "utils";
 
 const useStyles = {
   root: {
@@ -50,7 +60,9 @@ const useStyles = {
   }
 };
 
-const LeftHeader = ({ teamName, teamPoints }) => {
+const LeftHeader = ({
+  teamName, teamPoints
+}) => {
   return (
     <div
       style={{
@@ -99,25 +111,9 @@ const LeftHeader = ({ teamName, teamPoints }) => {
   );
 };
 
-const buttonCardStyle = {
-  width: "315px",
-  margin: "10px",
-  marginBottom: "200px",
-  padding: "25px 50px",
-  fontSize: "20px",
-  fontFamily: "Audiowide",
-  backgroundColor: "rgba(255, 255, 255, 0.05)",
-  borderColor: "rgba(255, 255, 255, 0.2)",
-  color: "white",
-  height: "300px",
-  transition: "transform 0.3s ease, translateY 0.3s ease, opacity 0.3s ease",
-  display: "inline-block",
-  textAlign: "center",
-  letterSpacing: "0.2em",
-  whiteSpace: "nowrap"
-};
-
-const MemoizedConfetti = React.memo(({ show }) => {
+const MemoizedConfetti = React.memo(({
+  show
+}) => {
   useEffect(() => {
     if (show) {
       const duration = 1 * 1000;
@@ -127,7 +123,10 @@ const MemoizedConfetti = React.memo(({ show }) => {
         confetti({
           particleCount: 50,
           spread: 100,
-          origin: { x: Math.random(), y: 1.05 },
+          origin: {
+            x: Math.random(),
+            y: 1.05
+          },
           ticks: 500,
           startVelocity: 80
         });
@@ -173,7 +172,6 @@ const Congratulations = () => {
       }}
       className={useStyles.root}
     >
-          
       <img
         src={DataverseLogo}
         alt={"Dataverse"}
@@ -191,14 +189,80 @@ const Congratulations = () => {
           letterSpacing: "0.5em"
         }}
       >
-        <h1 style={{fontFamily: "Audiowide", fontWeight: 400, textShadow: "0px 0px 8px white"}}>Congratulations!!</h1>
-        <p style={{ fontSize: "1.5rem", letterSpacing: "0.1em" }}>
+        <h1
+          style={{
+            fontFamily: "Audiowide",
+            fontWeight: 400,
+            textShadow: "0px 0px 8px white"
+          }}
+        >
+          Congratulations!!
+        </h1>
+        <p style={{
+          fontSize: "1.5rem",
+          letterSpacing: "0.1em"
+        }}>
           You have completed the Dataverse data challenge!
           <br />
           Check out the leaderboard to see how you placed!
         </p>
       </div>
     </div>
+  );
+};
+
+const buttonCardStyle = {
+  width: "315px",
+  margin: "10px",
+  marginBottom: "200px",
+  padding: "25px 50px",
+  fontSize: "20px",
+  fontFamily: "Audiowide",
+  backgroundColor: "rgba(255, 255, 255, 0.05)",
+  borderColor: "rgba(255, 255, 255, 0.2)",
+  color: "white",
+  height: "300px",
+  transition: "transform 0.3s ease, translateY 0.3s ease, opacity 0.3s ease",
+  letterSpacing: "0.2em",
+  whiteSpace: "nowrap"
+};
+
+const QuizCard = ({
+  roomNumber,
+  setSelectedRoom,
+  completed = true,
+  letters
+}) => {
+  return (
+    <Button
+      variant="outlined"
+      style={buttonCardStyle}
+      onClick={() => setSelectedRoom(roomNumber)}
+      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}
+      >
+        <span>{`Enter Room ${roomNumber}`}</span>
+        {completed && (
+          <span
+            style={{
+              color: "#00FF00",
+              marginTop: "10px",
+              fontFamily: "Gilroy",
+              textTransform: "none"
+            }}
+          >
+            {letters}
+          </span>
+        )}
+      </div>
+    </Button>
   );
 };
 
@@ -212,6 +276,31 @@ const QuizDashboard = ({
 }) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [Answered, setAnswered] = useState(false);
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    const fetchCompletedQuestions = async () => {
+      try {
+        const response = await fetchBackend(
+          "/team/getTeamFromUserID",
+          "post",
+          {
+            eventID: "dataverse",
+            year: 2024,
+            user_id: userRegistration.id
+          },
+          false
+        );
+
+        setQuestions(response.response.scannedQRs || []);
+        console.log(response.response.scannedQRs);
+      } catch (error) {
+        console.error("Error fetching completed questions:", error);
+      }
+    };
+
+    fetchCompletedQuestions();
+  }, [userRegistration.id]);
 
   const renderContent = () => {
     if (Answered) {
@@ -224,6 +313,8 @@ const QuizDashboard = ({
           roomNumber={selectedRoom}
           goBack={() => setSelectedRoom(null)}
           userRegistration={userRegistration}
+          setQuestions={setQuestions}
+          quizData={quizData}
         />
       );
     }
@@ -258,8 +349,9 @@ const QuizDashboard = ({
         </div>
         <Progress
           teamScore={teamPoints}
-          maxScore={100}
+          maxScore={15}
           setAnswered={setAnswered}
+          disabled={false}
         />
         <div
           style={{
@@ -268,39 +360,24 @@ const QuizDashboard = ({
             marginBottom: "100px"
           }}
         >
-          <Button
-            variant="outlined"
-            style={buttonCardStyle}
-            onClick={() => setSelectedRoom(1)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            Enter Room 1
-          </Button>
-          <Button
-            variant="outlined"
-            style={buttonCardStyle}
-            onClick={() => setSelectedRoom(2)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            Enter Room 2
-          </Button>
-          <Button
-            variant="outlined"
-            style={buttonCardStyle}
-            onClick={() => setSelectedRoom(3)}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            Enter Room 3
-          </Button>
+          <QuizCard
+            setSelectedRoom={setSelectedRoom}
+            completed={areAllQuestionsInArray(1, questions)}
+            roomNumber={1}
+            letters={"NSCC"}
+          />
+          <QuizCard
+            setSelectedRoom={setSelectedRoom}
+            completed={areAllQuestionsInArray(2, questions)}
+            roomNumber={2}
+            letters="winner"
+          />
+          <QuizCard
+            setSelectedRoom={setSelectedRoom}
+            completed={areAllQuestionsInArray(3, questions)}
+            roomNumber={3}
+            letters="2024"
+          />
         </div>
       </div>
     );

@@ -17,109 +17,12 @@ import {
 } from "utils";
 
 const QuizRoom = ({
-  roomNumber, goBack, userRegistration
+  roomNumber, goBack, userRegistration, setQuestions, quizData
 }) => {
   const [answers, setAnswers] = useState(Array(5).fill(""));
   const [selectedOptions, setSelectedOptions] = useState(Array(5).fill(null));
   const [completedQuestions, setCompletedQuestions] = useState([]);
   const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null)); // To track the current status of answers
-
-  const quizData = {
-    1: {
-      questions: [
-        "Which player had the most rebounds in a single game?",
-        "Which of the following teams scored the most points?",
-        "Based on historical outcomes, if the Boston Celtics and Charlotte Hornets play against each other, who would you predict would win?",
-        "Which of the following attributes is most positively correlated with Total Points Scored?",
-        "What is this SQL query trying to do? \n\nSELECT player \nFROM NBA \nWHERE team = 'NYK' AND total_points >= 20"
-      ],
-      questionType: [
-        "text", // Free text question
-        "multiple-choice", // Free text question
-        "multiple-choice", // Free text question
-        "multiple-choice", // Free text question
-        "multiple-choice" // Free text question
-      ],
-      correctAnswers: [
-        "Victor Wembanyama",
-        "TOR",
-        "BOS",
-        "Field Goal Attempts",
-        "Retrieve all players who play for the New York Knicks and scored at least 20 points in a game"
-      ],
-      options: [
-        [],
-        ["ATL", "TOR", "WAS"],
-        ["BOS", "CHO"],
-        ["Field Goal Attempts", "3 Pointer Attempts", "Free Throw Attempts"],
-        [
-          "Retrieve all players who scored at least 20 points in a game",
-          "Retrieve the total points scored by New York Knicks players who scored more than 20 points in a game",
-          "Retrieve all players who play for the New York Knicks and scored at least 20 points in a game"
-        ]
-      ] // No multiple choice questions for this quiz
-    },
-    2: {
-      questions: [
-        "Which planet is known as the Red Planet?",
-        "What gas do plants absorb from the atmosphere?",
-        "What is the chemical symbol for water?",
-        "Who developed the theory of relativity?",
-        "What is the speed of light?"
-      ],
-      questionType: [
-        "multiple-choice", // Multiple choice question
-        "multiple-choice", // Multiple choice question
-        "text", // Free text question
-        "text", // Free text question
-        "text" // Free text question
-      ],
-      correctAnswers: [
-        "Mars",
-        "Carbon dioxide",
-        "H2O",
-        "Albert Einstein",
-        "299,792,458 m/s"
-      ],
-      options: [
-        ["Mars", "Earth", "Venus", "Jupiter"],
-        ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"],
-        [], // No options for this text question
-        [], // No options for this text question
-        [] // No options for this text question
-      ]
-    },
-    3: {
-      questions: [
-        "Which planet is known as the Red Planet?",
-        "What gas do plants absorb from the atmosphere?",
-        "What is the chemical symbol for water?",
-        "Who developed the theory of relativity?",
-        "What is the speed of light?"
-      ],
-      questionType: [
-        "multiple-choice", // Multiple choice question
-        "multiple-choice", // Multiple choice question
-        "text", // Free text question
-        "text", // Free text question
-        "text" // Free text question
-      ],
-      correctAnswers: [
-        "Mars",
-        "Carbon dioxide",
-        "H2O",
-        "Albert Einstein",
-        "299,792,458 m/s"
-      ],
-      options: [
-        ["Mars", "Earth", "Venus", "Jupiter"],
-        ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"],
-        [], // No options for this text question
-        [], // No options for this text question
-        [] // No options for this text question
-      ]
-    }
-  };
 
   useEffect(() => {
     const fetchCompletedQuestions = async () => {
@@ -136,6 +39,7 @@ const QuizRoom = ({
         );
 
         setCompletedQuestions(response.response.scannedQRs || []);
+        setQuestions(response.response.scannedQRs || []);
       } catch (error) {
         console.error("Error fetching completed questions:", error);
       }

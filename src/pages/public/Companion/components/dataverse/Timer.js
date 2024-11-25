@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState, useEffect
+} from "react";
 
-const TimerDonut = ({ startTime, endTime }) => {
+const TimerDonut = ({
+  startTime, endTime
+}) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const totalDuration = endTime.getTime() - startTime.getTime();
 
@@ -43,7 +47,7 @@ const TimerDonut = ({ startTime, endTime }) => {
     alignItems: "center",
     justifyContent: "center",
     border: "1px solid white",  // Added 2px white border
-  };  
+  };
 
   const svgStyle = {
     width: "80%",

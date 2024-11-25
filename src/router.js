@@ -27,7 +27,9 @@ import RegistrationForm from "pages/public/RegistrationForms";
 import Companion from "pages/public/Companion";
 import CompanionReset from "./pages/public/Companion/ResetPage";
 import Dashboard from "pages/public/Companion/components/dataverse/Dashboard";
-import { GlobalLeaderboardExample } from "pages/public/Companion/components/dataverse/Leaderboard";
+import {
+  GlobalLeaderboardExample
+} from "pages/public/Companion/components/dataverse/Leaderboard";
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
 

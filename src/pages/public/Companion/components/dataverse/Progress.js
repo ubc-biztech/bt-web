@@ -1,11 +1,16 @@
-import React, { useState, useRef, useEffect, memo } from "react";
-import { Box, IconButton, TextField } from "@mui/material";
+import React, {
+  useState, useRef, useEffect, memo
+} from "react";
+import {
+  Box, IconButton, TextField
+} from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CharacterInput = ({
   onSubmit,
   numChars = 16,
-  correctAnswer = "ncss winner 2024",
+  correctAnswer = "NSCC winner 2024",
+  disabled = true,
   setAnswered
 }) => {
   const [chars, setChars] = useState(Array(numChars).fill(""));
@@ -98,7 +103,11 @@ const CharacterInput = ({
         overflowX: "hidden"
       }}
     >
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+      <Box sx={{
+        display: "flex",
+        gap: 1,
+        alignItems: "center"
+      }}>
         {chars.map((char, index) => {
           const placeholderChar =
             isTyping && !chars.every((char) => char === "")
@@ -116,6 +125,7 @@ const CharacterInput = ({
               onKeyDown={(e) => handleKeyDown(index, e)}
               variant="standard"
               autoComplete="off"
+              disabled={disabled}
               inputProps={{
                 maxLength: 1,
                 style: {
@@ -136,10 +146,10 @@ const CharacterInput = ({
                     inputColor === "green"
                       ? "green"
                       : inputColor === "red"
-                      ? "red"
-                      : inputColor === "gray"
-                      ? "#AAAAAA"
-                      : "#ffffff" // Default color before submission
+                        ? "red"
+                        : inputColor === "gray"
+                          ? "#AAAAAA"
+                          : "#ffffff" // Default color before submission
                 },
                 "& .MuiInput-underline:hover:before": {
                   borderBottomColor: "#ffffff"
@@ -149,10 +159,10 @@ const CharacterInput = ({
                     inputColor === "green"
                       ? "green"
                       : inputColor === "red"
-                      ? "red"
-                      : inputColor === "gray"
-                      ? "#AAAAAA"
-                      : "#ffffff" // Default color after submission
+                        ? "red"
+                        : inputColor === "gray"
+                          ? "#AAAAAA"
+                          : "#ffffff" // Default color after submission
                 }
               }}
             />
@@ -177,7 +187,9 @@ const CharacterInput = ({
   );
 };
 
-const ProgressBar = ({ teamScore, maxScore }) => {
+const ProgressBar = ({
+  teamScore, maxScore
+}) => {
   const percentage = (teamScore / maxScore) * 100;
 
   return (
@@ -221,7 +233,9 @@ style.innerHTML = `
   `;
 document.head.appendChild(style);
 
-const Percentage = ({ teamScore, maxScore }) => {
+const Percentage = ({
+  teamScore, maxScore
+}) => {
   const percentage = Math.round((teamScore / maxScore) * 100);
 
   return (
@@ -348,7 +362,9 @@ const Divider = () => {
   );
 };
 
-const Progress = ({ teamScore, maxScore, onCharacterSubmit, setAnswered }) => {
+const Progress = ({
+  teamScore, maxScore, onCharacterSubmit, setAnswered, disabled
+}) => {
   return (
     <>
       <Box
@@ -383,7 +399,7 @@ const Progress = ({ teamScore, maxScore, onCharacterSubmit, setAnswered }) => {
             gap: 2
           }}
         >
-          <CharacterInput onSubmit={onCharacterSubmit} setAnswered={setAnswered} />
+          <CharacterInput onSubmit={onCharacterSubmit} setAnswered={setAnswered} disabled={disabled} />
           <ProgressBar teamScore={teamScore} maxScore={maxScore} />
         </Box>
       </Box>
