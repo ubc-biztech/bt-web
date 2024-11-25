@@ -3,34 +3,30 @@ import { Box, IconButton, TextField } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CharacterInput = ({ onSubmit, numChars = 21 }) => {
-  const [chars, setChars] = useState(Array(numChars).fill("")); // Initialize with empty strings
-  const [isTyping, setIsTyping] = useState(false); // To track if any character is typed
+  const [chars, setChars] = useState(Array(numChars).fill(""));
+  const [isTyping, setIsTyping] = useState(false);
   const inputRefs = useRef([]);
 
-  const placeholderText = "final question answer"; // Your placeholder phrase
+  const placeholderText = "final question answer";
 
   useEffect(() => {
-    // Dynamically adjust the number of refs based on numChars
     inputRefs.current = inputRefs.current.slice(0, numChars);
   }, [numChars]);
 
   const handleChange = (index, value) => {
     if (value.length <= 1) {
       const newChars = [...chars];
-      newChars[index] = value; // Set the current character
+      newChars[index] = value;
       setChars(newChars);
 
-      // Set isTyping to true when any input is typed
       if (!isTyping && value !== "") {
         setIsTyping(true);
       }
 
-      // Automatically focus on the next input if the current one is filled
       if (index < numChars - 1 && value.length === 1) {
         inputRefs.current[index + 1]?.focus();
       }
 
-      // Check if all characters are cleared, reset isTyping to false
       if (newChars.every((char) => char === "")) {
         setIsTyping(false);
       }
@@ -43,7 +39,7 @@ const CharacterInput = ({ onSubmit, numChars = 21 }) => {
         inputRefs.current[index - 1]?.focus();
       } else {
         const newChars = [...chars];
-        newChars[index] = ""; // Clear the current character
+        newChars[index] = "";
         setChars(newChars);
       }
     } else if (e.key === "ArrowLeft" && index > 0) {
@@ -57,9 +53,9 @@ const CharacterInput = ({ onSubmit, numChars = 21 }) => {
     const input = chars.join("");
     if (input.length === numChars) {
       onSubmit(input);
-      setChars(Array(numChars).fill("")); // Reset the input fields
-      setIsTyping(false); // Reset typing state
-      inputRefs.current[0]?.focus(); // Focus the first input
+      setChars(Array(numChars).fill(""));
+      setIsTyping(false);
+      inputRefs.current[0]?.focus();
     }
   };
 
@@ -75,7 +71,6 @@ const CharacterInput = ({ onSubmit, numChars = 21 }) => {
     >
       <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
         {chars.map((char, index) => {
-          // If any input is typed, remove all placeholders; restore if all are cleared
           const placeholderChar =
             isTyping && !chars.every((char) => char === "")
               ? ""
@@ -89,7 +84,7 @@ const CharacterInput = ({ onSubmit, numChars = 21 }) => {
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
               variant="standard"
-              autoComplete="off" // Disable autofill
+              autoComplete="off"
               inputProps={{
                 maxLength: 1,
                 style: {
@@ -101,7 +96,7 @@ const CharacterInput = ({ onSubmit, numChars = 21 }) => {
                   color: "white"
                 }
               }}
-              placeholder={placeholderChar} // Set the placeholder as the corresponding character
+              placeholder={placeholderChar}
               sx={{
                 width: "25px",
                 "& .MuiInput-underline:before": {
@@ -143,29 +138,28 @@ const ProgressBar = ({ teamScore, maxScore }) => {
   return (
     <div
       style={{
-        width: "100%", // Full width
-        height: "20px", // Set a fixed height
-        borderRadius: "10px", // Rounded edges for the outer container
-        backgroundColor: "transparent", // Transparent background for the unfiller portion
-        border: "1px solid rgba(255, 255, 255, 0.5)", // Slightly transparent white border
-        overflow: "hidden" // Clip the bar if it exceeds container width
+        width: "100%",
+        height: "20px",
+        borderRadius: "10px",
+        backgroundColor: "transparent",
+        border: "1px solid rgba(255, 255, 255, 0.8)",
+        overflow: "hidden"
       }}
     >
       <div
         style={{
-          width: `${percentage}%`, // Fill based on percentage
+          width: `${percentage}%`,
           height: "100%",
-          background: "linear-gradient(to right, #FF00AE, #6CB5FF, #FF00AE)", // Gradient background
-          borderRadius: "10px", // Rounded edges for the filled portion
-          animation: "gradientMove 3s linear infinite", // Animation to move the gradient
-          backgroundSize: "200% 100%" // Expand the gradient to allow for smooth shifting
+          background: "linear-gradient(to right, #FF00AE, #6CB5FF, #FF00AE)",
+          borderRadius: "10px",
+          animation: "gradientMove 3s linear infinite",
+          backgroundSize: "200% 100%"
         }}
       />
     </div>
   );
 };
 
-// Add the CSS for the animation to transition through the colors
 const style = document.createElement("style");
 style.innerHTML = `
     @keyframes gradientMove {
@@ -183,7 +177,7 @@ style.innerHTML = `
 document.head.appendChild(style);
 
 const Percentage = ({ teamScore, maxScore }) => {
-  const percentage = Math.round((teamScore / maxScore) * 100); // Round to the nearest percent
+  const percentage = Math.round((teamScore / maxScore) * 100);
 
   return (
     <div
@@ -198,7 +192,7 @@ const Percentage = ({ teamScore, maxScore }) => {
     >
       <span
         style={{
-          fontSize: "3rem", // Make percentage text much bigger
+          fontSize: "3rem",
           fontWeight: "bold"
         }}
       >
@@ -206,7 +200,7 @@ const Percentage = ({ teamScore, maxScore }) => {
       </span>
       <span
         style={{
-          fontSize: "1.5rem", // Make "Completed" text smaller
+          fontSize: "1.5rem",
           color: "#FFFFFF",
           marginLeft: "5px"
         }}
@@ -217,10 +211,212 @@ const Percentage = ({ teamScore, maxScore }) => {
   );
 };
 
+const Divider = () => {
+  return (
+    <Box
+      sx={{
+        position: "relative",
+        width: "1000px",
+        height: "1px",
+        backgroundColor: "#FFFFFF",
+        marginTop: "50px"
+      }}
+    >
+      <Box
+        sx={{
+          position: "absolute",
+          top: "-37px",
+          left: "calc(16% - 39.5px)",
+          width: "0px",
+          height: "0px",
+          display: "block",
+        }}
+      >
+        <svg
+          width="79"
+          height="79"
+          viewBox="0 0 79 79"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g filter="url(#filter0_d_563_161)">
+            <path
+              d="M39.5 18L40.8789 36.1211L59 37.5L40.8789 38.8789L39.5 57L38.1211 38.8789L20 37.5L38.1211 36.1211L39.5 18Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <filter
+              id="filter0_d_563_161"
+              x="0"
+              y="0"
+              width="79"
+              height="79"
+              filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB"
+            >
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feColorMatrix
+                in="SourceAlpha"
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha"
+              />
+              <feOffset dy="2" />
+              <feGaussianBlur stdDeviation="10" />
+              <feComposite in2="hardAlpha" operator="out" />
+              <feColorMatrix
+                type="matrix"
+                values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"
+              />
+              <feBlend
+                mode="normal"
+                in2="BackgroundImageFix"
+                result="effect1_dropShadow_563_161"
+              />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="effect1_dropShadow_563_161"
+                result="shape"
+              />
+            </filter>
+          </defs>
+        </svg>
+      </Box>
+
+      <Box
+        sx={{
+          position: "absolute",
+          top: "-37px",
+          left: "calc(50% - 39.5px)",
+          width: "0px",
+          height: "0px",
+          display: "block",
+        }}
+      >
+        <svg
+          width="79"
+          height="79"
+          viewBox="0 0 79 79"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g filter="url(#filter0_d_563_161)">
+            <path
+              d="M39.5 18L40.8789 36.1211L59 37.5L40.8789 38.8789L39.5 57L38.1211 38.8789L20 37.5L38.1211 36.1211L39.5 18Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <filter
+              id="filter0_d_563_161"
+              x="0"
+              y="0"
+              width="79"
+              height="79"
+              filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB"
+            >
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feColorMatrix
+                in="SourceAlpha"
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha"
+              />
+              <feOffset dy="2" />
+              <feGaussianBlur stdDeviation="10" />
+              <feComposite in2="hardAlpha" operator="out" />
+              <feColorMatrix
+                type="matrix"
+                values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"
+              />
+              <feBlend
+                mode="normal"
+                in2="BackgroundImageFix"
+                result="effect1_dropShadow_563_161"
+              />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="effect1_dropShadow_563_161"
+                result="shape"
+              />
+            </filter>
+          </defs>
+        </svg>
+      </Box>
+
+      <Box
+        sx={{
+          position: "absolute",
+          top: "-37px",
+          left: "calc(84% - 39.5px)",
+          width: "0px",
+          height: "0px",
+          display: "block",
+        }}
+      >
+        <svg
+          width="79"
+          height="79"
+          viewBox="0 0 79 79"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g filter="url(#filter0_d_563_161)">
+            <path
+              d="M39.5 18L40.8789 36.1211L59 37.5L40.8789 38.8789L39.5 57L38.1211 38.8789L20 37.5L38.1211 36.1211L39.5 18Z"
+              fill="white"
+            />
+          </g>
+          <defs>
+            <filter
+              id="filter0_d_563_161"
+              x="0"
+              y="0"
+              width="79"
+              height="79"
+              filterUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB"
+            >
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feColorMatrix
+                in="SourceAlpha"
+                type="matrix"
+                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                result="hardAlpha"
+              />
+              <feOffset dy="2" />
+              <feGaussianBlur stdDeviation="10" />
+              <feComposite in2="hardAlpha" operator="out" />
+              <feColorMatrix
+                type="matrix"
+                values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"
+              />
+              <feBlend
+                mode="normal"
+                in2="BackgroundImageFix"
+                result="effect1_dropShadow_563_161"
+              />
+              <feBlend
+                mode="normal"
+                in="SourceGraphic"
+                in2="effect1_dropShadow_563_161"
+                result="shape"
+              />
+            </filter>
+          </defs>
+        </svg>
+      </Box>
+    </Box>
+  );
+};
+
 const Progress = ({ teamScore, maxScore, onCharacterSubmit }) => {
   return (
     <>
-      {" "}
       <Box
         sx={{
           width: "1000px",
@@ -258,14 +454,7 @@ const Progress = ({ teamScore, maxScore, onCharacterSubmit }) => {
         </Box>
       </Box>
       {/* White Divider Line */}
-      <Box
-        sx={{
-          width: "80%",
-          height: "1px",
-          backgroundColor: "#FFFFFF",
-          marginTop: "50px"
-        }}
-      />
+      <Divider />
     </>
   );
 };
