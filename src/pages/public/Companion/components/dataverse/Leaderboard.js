@@ -13,7 +13,6 @@ import {
   Typography,
   List,
   ListItem,
-  Button
 } from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
@@ -91,6 +90,7 @@ function Leaderboard({
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
+  // eslint-disable-next-line no-unused-vars
   const updateRandomTeams = () => {
     setTeams((prevTeams) => {
       const newTeams = [...prevTeams];

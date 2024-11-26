@@ -1,23 +1,23 @@
-import React, { 
-  useEffect, 
-  useState 
+import React, {
+  useEffect,
+  useState
 } from "react";
-import { 
-  Typography, 
-  Button 
+import {
+  Typography,
+  Button
 } from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
-import { 
-  areAllQuestionsInArray, 
-  quizData 
+import {
+  areAllQuestionsInArray,
+  quizData
 } from "./QuizData";
 import QuizRoom from "./QuizRoom";
 import confetti from "canvas-confetti";
-import { 
-  fetchBackend 
+import {
+  fetchBackend
 } from "utils";
 
 const useStyles = {
@@ -63,7 +63,9 @@ const useStyles = {
   }
 };
 
-const LeftHeader = ({ teamName, teamPoints }) => {
+const LeftHeader = ({
+  teamName, teamPoints
+}) => {
   return (
     <div
       style={{
@@ -112,7 +114,9 @@ const LeftHeader = ({ teamName, teamPoints }) => {
   );
 };
 
-const MemoizedConfetti = React.memo(({ show }) => {
+const MemoizedConfetti = React.memo(({
+  show
+}) => {
   useEffect(() => {
     if (show) {
       const duration = 1 * 1000;
@@ -313,15 +317,15 @@ const QuizDashboard = ({
       })
     );
     setShowScrambled2(
-      areAllQuestionsInArray({ 
-        quizNumber: 2, 
-        checkArray: questions 
+      areAllQuestionsInArray({
+        quizNumber: 2,
+        checkArray: questions
       })
     );
     setShowScrambled3(
-      areAllQuestionsInArray({ 
-        quizNumber: 3, 
-        checkArray: questions 
+      areAllQuestionsInArray({
+        quizNumber: 3,
+        checkArray: questions
       })
     );
   }, [questions]);
@@ -330,7 +334,7 @@ const QuizDashboard = ({
     1: "https://docs.google.com/spreadsheets/d/1WhAhoVA-m7BQpuNgk3VuWAXb4MbirD7V/export?format=xlsx",
     2: "https://docs.google.com/spreadsheets/d/1S_YJCkbY0EOmh1X3Sd6JKJkHguN3Z2kT/export?format=xlsx",
     3: "https://docs.google.com/spreadsheets/d/1YR3pZPjnP-InGG3MifOcGd4WpAIR2fX0/export?format=xlsx"
-  };  
+  };
 
   const renderContent = () => {
     if (Answered) {
