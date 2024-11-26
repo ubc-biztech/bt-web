@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState, useEffect
+} from "react";
 import {
   Typography,
   Button,
@@ -14,7 +16,9 @@ import {
   DialogActions
 } from "@material-ui/core";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 
 const QuizRoom = ({
   roomNumber,
@@ -102,7 +106,9 @@ const QuizRoom = ({
   };
 
   const checkAnswers = async () => {
-    const { correctAnswers, questions } = quizData[roomNumber];
+    const {
+      correctAnswers, questions
+    } = quizData[roomNumber];
     const newAnswerStatus = [...answerStatus];
 
     try {
@@ -172,7 +178,9 @@ const QuizRoom = ({
   };
 
   const renderQuiz = () => {
-    const { questions, questionType, options } = quizData[roomNumber];
+    const {
+      questions, questionType, options
+    } = quizData[roomNumber];
 
     return questions.map((question, index) => {
       const isCompleted = completedQuestions.includes(question);
@@ -202,7 +210,9 @@ const QuizRoom = ({
           }}
         >
           <CardContent>
-            <Typography variant="h6" style={{ marginBottom: "10px" }}>
+            <Typography variant="h6" style={{
+              marginBottom: "10px"
+            }}>
               {question}
             </Typography>
 
@@ -304,7 +314,9 @@ const QuizRoom = ({
         Open Dataset
       </Button>
 
-      <Typography variant="h4" style={{ marginBottom: "20px" }}>
+      <Typography variant="h4" style={{
+        marginBottom: "20px"
+      }}>
         Quiz {roomNumber}
       </Typography>
 

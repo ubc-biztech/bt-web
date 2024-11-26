@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  useLocation, useHistory
+} from "react-router-dom";
 import Quiz from "./Quiz";
-import { fetchBackend } from "utils";
+import {
+  fetchBackend
+} from "utils";
 
 const Dashboard = () => {
   const startTime = new Date();
@@ -13,7 +19,8 @@ const Dashboard = () => {
     teamName,
     teamPoints: initialTeamPoints,
     userRegistration
-  } = location.state || {};
+  } = location.state || {
+  };
 
   const [teamPoints, setTeamPoints] = useState(initialTeamPoints || 0);
 
