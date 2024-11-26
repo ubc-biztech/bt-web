@@ -339,9 +339,9 @@ function Leaderboard({
           mb: 2
         }}
       >
-        <Button variant="contained" color="primary" onClick={updateRandomTeams}>
+        {/* <Button variant="contained" color="primary" onClick={updateRandomTeams}>
           Update Random Teams
-        </Button>
+        </Button> */}
       </Box>
     </Box>
   );

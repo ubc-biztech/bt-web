@@ -1,23 +1,19 @@
-import React, {
-  useEffect, useState
-} from "react";
-import {
-  useLocation, useHistory
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import Quiz from "./Quiz";
-import {
-  fetchBackend
-} from "utils";
+import { fetchBackend } from "utils";
 
 const Dashboard = () => {
   const startTime = new Date();
-  const endTime = new Date(startTime.getTime() + 5 * 60000);
+  const endTime = new Date();
+  endTime.setHours(19, 50, 0, 0);
   const location = useLocation();
   const history = useHistory();
   const {
-    teamName, teamPoints: initialTeamPoints, userRegistration
-  } = location.state || {
-  };
+    teamName,
+    teamPoints: initialTeamPoints,
+    userRegistration
+  } = location.state || {};
 
   const [teamPoints, setTeamPoints] = useState(initialTeamPoints || 0);
 
@@ -38,7 +34,7 @@ const Dashboard = () => {
           {
             eventID: "dataverse",
             year: 2024,
-            user_id: userRegistration.id,
+            user_id: userRegistration.id
           },
           false
         );

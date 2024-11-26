@@ -1,20 +1,23 @@
-import React, {
-  useEffect, useState
+import React, { 
+  useEffect, 
+  useState 
 } from "react";
-import {
-  Typography, Button
+import { 
+  Typography, 
+  Button 
 } from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
-import {
-  areAllQuestionsInArray, quizData
+import { 
+  areAllQuestionsInArray, 
+  quizData 
 } from "./QuizData";
 import QuizRoom from "./QuizRoom";
 import confetti from "canvas-confetti";
-import {
-  fetchBackend
+import { 
+  fetchBackend 
 } from "utils";
 
 const useStyles = {
@@ -60,9 +63,7 @@ const useStyles = {
   }
 };
 
-const LeftHeader = ({
-  teamName, teamPoints
-}) => {
+const LeftHeader = ({ teamName, teamPoints }) => {
   return (
     <div
       style={{
@@ -111,9 +112,7 @@ const LeftHeader = ({
   );
 };
 
-const MemoizedConfetti = React.memo(({
-  show
-}) => {
+const MemoizedConfetti = React.memo(({ show }) => {
   useEffect(() => {
     if (show) {
       const duration = 1 * 1000;
@@ -198,10 +197,12 @@ const Congratulations = () => {
         >
           Congratulations!!
         </h1>
-        <p style={{
-          fontSize: "1.5rem",
-          letterSpacing: "0.1em"
-        }}>
+        <p
+          style={{
+            fontSize: "1.5rem",
+            letterSpacing: "0.1em"
+          }}
+        >
           You have completed the Dataverse data challenge!
           <br />
           Check out the leaderboard to see how you placed!
@@ -230,7 +231,7 @@ const buttonCardStyle = {
 const QuizCard = ({
   roomNumber,
   setSelectedRoom,
-  completed = true,
+  completed = false,
   letters
 }) => {
   return (
@@ -277,6 +278,9 @@ const QuizDashboard = ({
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [Answered, setAnswered] = useState(false);
   const [questions, setQuestions] = useState([]);
+  const [showScrambled1, setShowScrambled1] = useState(false);
+  const [showScrambled2, setShowScrambled2] = useState(false);
+  const [showScrambled3, setShowScrambled3] = useState(false);
 
   useEffect(() => {
     const fetchCompletedQuestions = async () => {
@@ -300,6 +304,27 @@ const QuizDashboard = ({
 
     fetchCompletedQuestions();
   }, [userRegistration.id]);
+
+  useEffect(() => {
+    setShowScrambled1(
+      areAllQuestionsInArray({
+        quizNumber: 1,
+        checkArray: questions
+      })
+    );
+    setShowScrambled2(
+      areAllQuestionsInArray({ 
+        quizNumber: 2, 
+        checkArray: questions 
+      })
+    );
+    setShowScrambled3(
+      areAllQuestionsInArray({ 
+        quizNumber: 3, 
+        checkArray: questions 
+      })
+    );
+  }, [questions]);
 
   const renderContent = () => {
     if (Answered) {
@@ -361,18 +386,21 @@ const QuizDashboard = ({
         >
           <QuizCard
             setSelectedRoom={setSelectedRoom}
-            completed={areAllQuestionsInArray(1, questions)}
+            completed={showScrambled1}
             roomNumber={1}
+            // letters={"NSCC"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
-            completed={areAllQuestionsInArray(2, questions)}
+            completed={showScrambled2}
             roomNumber={2}
+            // letters={"winner"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
-            completed={areAllQuestionsInArray(3, questions)}
+            completed={showScrambled3}
             roomNumber={3}
+            // letters={"2024"}
           />
         </div>
       </div>
