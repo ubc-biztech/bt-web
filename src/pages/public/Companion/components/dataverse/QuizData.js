@@ -83,7 +83,7 @@ const quizData = {
     correctAnswers: [
       "3",
       "9.9",
-      "a) True",
+      "True",
       "0.015",
       "b) physical_hours_daily, MAX"
     ],
