@@ -326,6 +326,12 @@ const QuizDashboard = ({
     );
   }, [questions]);
 
+  const urlMap = {
+    1: "https://docs.google.com/spreadsheets/d/1WhAhoVA-m7BQpuNgk3VuWAXb4MbirD7V/export?format=xlsx",
+    2: "https://docs.google.com/spreadsheets/d/1S_YJCkbY0EOmh1X3Sd6JKJkHguN3Z2kT/export?format=xlsx",
+    3: "https://docs.google.com/spreadsheets/d/1YR3pZPjnP-InGG3MifOcGd4WpAIR2fX0/export?format=xlsx"
+  };  
+
   const renderContent = () => {
     if (Answered) {
       return <Congratulations />;
@@ -339,6 +345,7 @@ const QuizDashboard = ({
           userRegistration={userRegistration}
           setQuestions={setQuestions}
           quizData={quizData}
+          datasetLink={urlMap[selectedRoom]}
         />
       );
     }
