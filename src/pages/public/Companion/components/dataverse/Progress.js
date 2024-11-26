@@ -77,7 +77,7 @@ const CharacterInput = ({
     const input = chars.join("");
     if (input.length === numChars) {
       updateColors();
-      const isAnswerCorrect = input === correctAnswer;
+      const isAnswerCorrect = input.toLowerCase() === correctAnswer.toLowerCase();
       if (isAnswerCorrect) {
         setAnswered(true);
         onSubmit(input);

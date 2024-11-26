@@ -1,15 +1,18 @@
 import React, {
-  useEffect, useState
+  useEffect,
+  useState
 } from "react";
 import {
-  Typography, Button
+  Typography,
+  Button
 } from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
 import {
-  areAllQuestionsInArray, quizData
+  areAllQuestionsInArray,
+  quizData
 } from "./QuizData";
 import QuizRoom from "./QuizRoom";
 import confetti from "canvas-confetti";
@@ -198,10 +201,12 @@ const Congratulations = () => {
         >
           Congratulations!!
         </h1>
-        <p style={{
-          fontSize: "1.5rem",
-          letterSpacing: "0.1em"
-        }}>
+        <p
+          style={{
+            fontSize: "1.5rem",
+            letterSpacing: "0.1em"
+          }}
+        >
           You have completed the Dataverse data challenge!
           <br />
           Check out the leaderboard to see how you placed!
@@ -230,7 +235,7 @@ const buttonCardStyle = {
 const QuizCard = ({
   roomNumber,
   setSelectedRoom,
-  completed = true,
+  completed = false,
   letters
 }) => {
   return (
@@ -277,6 +282,9 @@ const QuizDashboard = ({
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [Answered, setAnswered] = useState(false);
   const [questions, setQuestions] = useState([]);
+  const [showScrambled1, setShowScrambled1] = useState(false);
+  const [showScrambled2, setShowScrambled2] = useState(false);
+  const [showScrambled3, setShowScrambled3] = useState(false);
 
   useEffect(() => {
     const fetchCompletedQuestions = async () => {
@@ -301,6 +309,33 @@ const QuizDashboard = ({
     fetchCompletedQuestions();
   }, [userRegistration.id]);
 
+  useEffect(() => {
+    setShowScrambled1(
+      areAllQuestionsInArray({
+        quizNumber: 1,
+        checkArray: questions
+      })
+    );
+    setShowScrambled2(
+      areAllQuestionsInArray({
+        quizNumber: 2,
+        checkArray: questions
+      })
+    );
+    setShowScrambled3(
+      areAllQuestionsInArray({
+        quizNumber: 3,
+        checkArray: questions
+      })
+    );
+  }, [questions]);
+
+  const urlMap = {
+    1: "https://docs.google.com/spreadsheets/d/1WhAhoVA-m7BQpuNgk3VuWAXb4MbirD7V/export?format=xlsx",
+    2: "https://docs.google.com/spreadsheets/d/1S_YJCkbY0EOmh1X3Sd6JKJkHguN3Z2kT/export?format=xlsx",
+    3: "https://docs.google.com/spreadsheets/d/1YR3pZPjnP-InGG3MifOcGd4WpAIR2fX0/export?format=xlsx"
+  };
+
   const renderContent = () => {
     if (Answered) {
       return <Congratulations />;
@@ -314,6 +349,7 @@ const QuizDashboard = ({
           userRegistration={userRegistration}
           setQuestions={setQuestions}
           quizData={quizData}
+          datasetLink={urlMap[selectedRoom]}
         />
       );
     }
@@ -361,18 +397,21 @@ const QuizDashboard = ({
         >
           <QuizCard
             setSelectedRoom={setSelectedRoom}
-            completed={areAllQuestionsInArray(1, questions)}
+            completed={showScrambled1}
             roomNumber={1}
+            // letters={"NSCC"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
-            completed={areAllQuestionsInArray(2, questions)}
+            completed={showScrambled2}
             roomNumber={2}
+            // letters={"winner"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
-            completed={areAllQuestionsInArray(3, questions)}
+            completed={showScrambled3}
             roomNumber={3}
+            // letters={"2024"}
           />
         </div>
       </div>

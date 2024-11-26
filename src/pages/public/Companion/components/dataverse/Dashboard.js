@@ -11,11 +11,14 @@ import {
 
 const Dashboard = () => {
   const startTime = new Date();
-  const endTime = new Date(startTime.getTime() + 5 * 60000);
+  const endTime = new Date();
+  endTime.setHours(19, 50, 0, 0);
   const location = useLocation();
   const history = useHistory();
   const {
-    teamName, teamPoints: initialTeamPoints, userRegistration
+    teamName,
+    teamPoints: initialTeamPoints,
+    userRegistration
   } = location.state || {
   };
 
@@ -38,7 +41,7 @@ const Dashboard = () => {
           {
             eventID: "dataverse",
             year: 2024,
-            user_id: userRegistration.id,
+            user_id: userRegistration.id
           },
           false
         );

@@ -2,28 +2,28 @@ const quizData = {
   1: {
     questions: [
       "Which player had the most rebounds in a single game?",
-      "Which of the following teams scored the most points?",
+      "How many points did the players on ATL score in total?",
       "Based on historical outcomes, if the Boston Celtics and Charlotte Hornets play against each other, who would you predict would win?",
       "Which of the following attributes is most positively correlated with Total Points Scored?",
       "What is this SQL query trying to do? \n\nSELECT player \nFROM NBA \nWHERE team = 'NYK' AND total_points >= 20"
     ],
     questionType: [
       "text", // Free text question
-      "multiple-choice", // Free text question
+      "text", // Free text question
       "multiple-choice", // Free text question
       "multiple-choice", // Free text question
       "multiple-choice" // Free text question
     ],
     correctAnswers: [
       "Victor Wembanyama",
-      "TOR",
+      "703",
       "BOS",
       "Field Goal Attempts",
       "Retrieve all players who play for the New York Knicks and scored at least 20 points in a game"
     ],
     options: [
       [],
-      ["ATL", "TOR", "WAS"],
+      [],
       ["BOS", "CHO"],
       ["Field Goal Attempts", "3 Pointer Attempts", "Free Throw Attempts"],
       [

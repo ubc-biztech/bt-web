@@ -13,7 +13,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
+  DialogActions
 } from "@material-ui/core";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
@@ -26,6 +26,7 @@ const QuizRoom = ({
   userRegistration,
   setQuestions,
   quizData,
+  datasetLink // Added DatasetLink as a prop
 }) => {
   const [answers, setAnswers] = useState(Array(5).fill(""));
   const [selectedOptions, setSelectedOptions] = useState(Array(5).fill(null));
@@ -36,16 +37,16 @@ const QuizRoom = ({
   const popupContent = {
     1: {
       title: "🏆 Room 1 Complete!",
-      message: "Great job! Your string is: NSCC",
+      message: "Great job! Your string is: NSCC"
     },
     2: {
       title: "🎯 Room 2 Mastered!",
-      message: "Fantastic! Your string is: winner",
+      message: "Fantastic! Your string is: winner"
     },
     3: {
       title: "🚀 Room 3 Achieved!",
-      message: "Outstanding! Your string is: 2024",
-    },
+      message: "Outstanding! Your string is: 2024"
+    }
   };
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const QuizRoom = ({
           {
             eventID: "dataverse",
             year: 2024,
-            user_id: userRegistration.id,
+            user_id: userRegistration.id
           },
           false
         );
@@ -141,7 +142,7 @@ const QuizRoom = ({
             eventID: "dataverse",
             year: 2024,
             user_id: userRegistration.id,
-            change_points: score || 0,
+            change_points: score || 0
           },
           false
         );
@@ -153,7 +154,7 @@ const QuizRoom = ({
             eventID: "dataverse",
             year: 2024,
             user_id: userRegistration.id,
-            answered_questions: newlyScannedQuestions,
+            answered_questions: newlyScannedQuestions
           },
           false
         );
@@ -205,7 +206,7 @@ const QuizRoom = ({
             marginBottom: "20px",
             backgroundColor: "rgba(255, 255, 255, 0.1)",
             border: `2px solid ${borderColor}`,
-            boxShadow,
+            boxShadow
           }}
         >
           <CardContent>
@@ -233,7 +234,7 @@ const QuizRoom = ({
                             : "transparent",
                         color:
                           selectedOptions[index] === option ? "black" : "white",
-                        border: "2px solid white",
+                        border: "2px solid white"
                       }}
                     >
                       {option}
@@ -251,7 +252,7 @@ const QuizRoom = ({
                   disabled={isDisabled}
                   style={{
                     marginTop: "10px",
-                    width: "100%",
+                    width: "100%"
                   }}
                 />
               </FormControl>
@@ -270,11 +271,12 @@ const QuizRoom = ({
         alignItems: "center",
         flexDirection: "column",
         minHeight: "120vh",
-        background: "linear-gradient(135deg, #0d1b61, #0a143b, #081027, #000000)",
+        background:
+          "linear-gradient(135deg, #0d1b61, #0a143b, #081027, #000000)",
         color: "#fff",
         padding: "20px",
         textAlign: "center",
-        position: "relative",
+        position: "relative"
       }}
     >
       <IconButton
@@ -282,12 +284,35 @@ const QuizRoom = ({
           position: "absolute",
           top: "10px",
           left: "10px",
-          color: "#fff",
+          color: "#fff"
         }}
         onClick={goBack}
       >
         <ArrowBackIcon />
       </IconButton>
+
+      {/* Added Dataset Button */}
+      <Button
+        variant="contained"
+        color="primary"
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          backgroundColor: "#1976d2",
+          color: "#fff"
+        }}
+        onClick={() => {
+          const anchor = document.createElement("a");
+          anchor.href = datasetLink;
+          anchor.download = `dataset${roomNumber}.xlsx`;
+          document.body.appendChild(anchor);
+          anchor.click();
+          document.body.removeChild(anchor);
+        }}
+      >
+        Open Dataset
+      </Button>
 
       <Typography variant="h4" style={{
         marginBottom: "20px"
@@ -305,7 +330,7 @@ const QuizRoom = ({
           color: "#fff",
           padding: "10px 20px",
           fontSize: "16px",
-          marginTop: "20px",
+          marginTop: "20px"
         }}
       >
         Check Answers
