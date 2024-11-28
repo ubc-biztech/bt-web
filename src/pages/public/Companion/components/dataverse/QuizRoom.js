@@ -257,7 +257,11 @@ export default function QuizRoom({
             width: "100%",
             marginBottom: "20px",
             backgroundColor: "#00000000",
-            boxShadow: "none"
+            boxShadow: "none",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start"
           }}
         >
           <CardContent>
@@ -369,6 +373,9 @@ export default function QuizRoom({
     <div
       style={{
         display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
         minHeight: "100vh",
         backgroundImage: `url(${BackgroundGradient})`,
         backgroundSize: "cover",
@@ -377,129 +384,138 @@ export default function QuizRoom({
         color: "#fff"
       }}
     >
-      {/* Left Panel */}
-      <div
-        style={{
-          width: "40%",
-          position: "fixed",
-          height: "100vh",
-          padding: "32px",
-          display: "flex",
-          flexDirection: "column"
-        }}
-      >
-        <IconButton
-          sx={{ position: "absolute", top: 16, left: 16, color: "white" }}
-          onClick={goBack}
-        >
-          <ArrowBack />
-        </IconButton>
-
-        <Button
-          variant="outlined"
-          sx={{
-            mb: 4,
-            mt: 8,
-            width: 200,
-            color: "white",
-            borderColor: "white",
-            textTransform: "none"
-          }}
-          startIcon={<Download />}
-          onClick={() => {
-            const anchor = document.createElement("a");
-            anchor.href = datasetLink;
-            anchor.download = `dataset${roomNumber}.xlsx`;
-            document.body.appendChild(anchor);
-            anchor.click();
-            document.body.removeChild(anchor);
+      <div style={{width: "100%", maxWidth: "1500px"}}>
+        {/* Left Panel */}
+        <div
+          style={{
+            width: "40%",
+            position: "fixed",
+            height: "100vh",
+            padding: "32px",
+            marginLeft: "100",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start"
           }}
         >
-          Download Dataset
-        </Button>
-
-        <Typography
-          variant="h2"
-          sx={{ mb: 4, fontWeight: "light", fontFamily: "Audiowide" }}
-        >
-          ROOM {roomNumber}
-        </Typography>
-
-        <Button
-          variant="outlined"
-          disabled={cooldown > 0}
-          onClick={checkAnswers}
-          startIcon={<CheckCircle />}
-          sx={{
-            width: 200,
-            mb: 2,
-            color: "white",
-            borderColor: "white",
-            textTransform: "none",
-            "&:disabled": {
-              color: "grey.500",
-              borderColor: "grey.500"
-            }
-          }}
-        >
-          Check Answers
-        </Button>
-
-        {cooldown > 0 && (
-          <div
-            style={{ display: "flex", alignItems: "center", marginBottom: 16 }}
+          <IconButton
+            sx={{ position: "absolute", top: 16, left: 16, color: "white" }}
+            onClick={goBack}
           >
-            <TimerIcon sx={{ mr: 1, fontSize: 16 }} />
-            <Typography variant="body2" sx={{ color: "grey.400" }}>
-              You can resubmit in {formatTime(cooldown)}
-            </Typography>
+            <ArrowBack />
+          </IconButton>
+
+          <Button
+            variant="outlined"
+            sx={{
+              mb: 4,
+              mt: 8,
+              width: 200,
+              color: "white",
+              borderColor: "white",
+              textTransform: "none"
+            }}
+            startIcon={<Download />}
+            onClick={() => {
+              const anchor = document.createElement("a");
+              anchor.href = datasetLink;
+              anchor.download = `dataset${roomNumber}.xlsx`;
+              document.body.appendChild(anchor);
+              anchor.click();
+              document.body.removeChild(anchor);
+            }}
+          >
+            Download Dataset
+          </Button>
+
+          <Typography
+            variant="h2"
+            sx={{ mb: 4, fontWeight: "light", fontFamily: "Audiowide" }}
+          >
+            ROOM {roomNumber}
+          </Typography>
+
+          <Button
+            variant="outlined"
+            disabled={cooldown > 0}
+            onClick={checkAnswers}
+            startIcon={<CheckCircle />}
+            sx={{
+              width: 200,
+              mb: 2,
+              color: "white",
+              borderColor: "white",
+              textTransform: "none",
+              "&:disabled": {
+                color: "grey.500",
+                borderColor: "grey.500"
+              }
+            }}
+          >
+            Check Answers
+          </Button>
+
+          {cooldown > 0 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: 16
+              }}
+            >
+              <TimerIcon sx={{ mr: 1, fontSize: 16 }} />
+              <Typography variant="body2" sx={{ color: "grey.400" }}>
+                You can resubmit in {formatTime(cooldown)}
+              </Typography>
+            </div>
+          )}
+
+          <div style={{ display: "flex", marginBottom: 8 }}>
+            {[...Array(getScoreCount().correct)].map((_, i) => (
+              <ScoreBox
+                key={`correct-${i}`}
+                style={{ backgroundColor: "#00FFC6" }}
+              />
+            ))}
+            {[...Array(getScoreCount().incorrect)].map((_, i) => (
+              <ScoreBox
+                key={`incorrect-${i}`}
+                style={{ backgroundColor: "#FF4E4E" }}
+              />
+            ))}
           </div>
-        )}
 
-        <div style={{ display: "flex", marginBottom: 8 }}>
-          {[...Array(getScoreCount().correct)].map((_, i) => (
-            <ScoreBox
-              key={`correct-${i}`}
-              style={{ backgroundColor: "#00FFC6" }}
-            />
-          ))}
-          {[...Array(getScoreCount().incorrect)].map((_, i) => (
-            <ScoreBox
-              key={`incorrect-${i}`}
-              style={{ backgroundColor: "#FF4E4E" }}
-            />
-          ))}
+          <Typography variant="body2">
+            {getScoreCount().correct} correct, {getScoreCount().incorrect}{" "}
+            incorrect
+          </Typography>
         </div>
 
-        <Typography variant="body2">
-          {getScoreCount().correct} correct, {getScoreCount().incorrect}{" "}
-          incorrect
-        </Typography>
-      </div>
-
-      {/* Right Panel - Scrollable Questions */}
-      <div
-        style={{
-          marginLeft: "40%",
-          width: "60%",
-          minHeight: "100vh",
-          padding: "32px"
-        }}
-      >
-        <div style={{ maxWidth: "768px", margin: "0 auto" }}>
-          {renderQuiz()}
+        {/* Right Panel - Scrollable Questions */}
+        <div
+          style={{
+            marginLeft: "40%",
+            width: "60%",
+            minHeight: "100vh",
+            padding: "32px"
+          }}
+        >
+          <div style={{ maxWidth: "768px", margin: "0 auto" }}>
+            {renderQuiz()}
+          </div>
         </div>
-      </div>
 
-      <Dialog open={openPopup} onClose={() => setOpenPopup(false)}>
-        <DialogTitle>{popupContent[roomNumber]?.title}</DialogTitle>
-        <DialogContent>
-          <Typography>{popupContent[roomNumber]?.message}</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenPopup(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
+        <Dialog open={openPopup} onClose={() => setOpenPopup(false)}>
+          <DialogTitle>{popupContent[roomNumber]?.title}</DialogTitle>
+          <DialogContent>
+            <Typography>{popupContent[roomNumber]?.message}</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenPopup(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </div>
   );
 }
