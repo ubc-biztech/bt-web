@@ -1,38 +1,45 @@
-import React, {
-  useState, useEffect
-} from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Typography,
   Button,
   TextField,
-  FormControl,
-  IconButton,
-  Grid,
   Card,
   CardContent,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
-} from "@material-ui/core";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import {
-  fetchBackend
-} from "utils";
+  DialogActions,
+  Typography,
+  IconButton,
+  Grid,
+  FormControl
+} from "@mui/material";
+import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
+import { ArrowBack, Download, Timer as TimerIcon, CheckCircle } from "@mui/icons-material";
+import { styled } from "@mui/material/styles";
+import { fetchBackend } from "utils";
+import { CheckCircle as CheckCircleMaterialUI } from "@material-ui/icons"; // Added import for CheckCircle from @material-ui/icons
 
-const QuizRoom = ({
+const ScoreBox = styled("div")(({ theme, color }) => ({
+  width: 18,
+  height: 24,
+  borderRadius: theme.shape.borderRadius,
+  marginRight: theme.spacing(0.5)
+}));
+
+export default function QuizRoom({
   roomNumber,
   goBack,
   userRegistration,
   setQuestions,
   quizData,
-  datasetLink // Added DatasetLink as a prop
-}) => {
+  datasetLink
+}) {
   const [answers, setAnswers] = useState(Array(5).fill(""));
   const [selectedOptions, setSelectedOptions] = useState(Array(5).fill(null));
   const [completedQuestions, setCompletedQuestions] = useState([]);
-  const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null)); // To track the current status of answers
-  const [openPopup, setOpenPopup] = useState(false); // State to control popup visibility
+  const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
+  const [openPopup, setOpenPopup] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
 
   const popupContent = {
     1: {
@@ -62,40 +69,42 @@ const QuizRoom = ({
           },
           false
         );
-
         setCompletedQuestions(response.response.scannedQRs || []);
         setQuestions(response.response.scannedQRs || []);
       } catch (error) {
         console.error("Error fetching completed questions:", error);
       }
     };
-
     fetchCompletedQuestions();
-  }, [userRegistration.id]);
+  }, [userRegistration.id, setQuestions]);
+
+  useEffect(() => {
+    let timer;
+    if (cooldown > 0) {
+      timer = setInterval(() => {
+        setCooldown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   const handleAnswerChange = (index, value) => {
-    if (
-      completedQuestions.includes(quizData[roomNumber].questions[index]) ||
-      answerStatus[index] === "correct"
-    ) {
-      alert("This question has already been answered correctly!");
+    // Only allow changes if the answer was incorrect or not yet answered
+    if (completedQuestions.includes(quizData[roomNumber].questions[index]) || 
+        answerStatus[index] === "correct") {
       return;
     }
-
     const newAnswers = [...answers];
     newAnswers[index] = value;
     setAnswers(newAnswers);
   };
 
   const handleMultipleChoiceAnswer = (index, option) => {
-    if (
-      completedQuestions.includes(quizData[roomNumber].questions[index]) ||
-      answerStatus[index] === "correct"
-    ) {
-      alert("This question has already been answered correctly!");
+    // Only allow changes if the answer was incorrect or not yet answered
+    if (completedQuestions.includes(quizData[roomNumber].questions[index]) || 
+        answerStatus[index] === "correct") {
       return;
     }
-
     const newSelectedOptions = [...selectedOptions];
     newSelectedOptions[index] = option;
     setSelectedOptions(newSelectedOptions);
@@ -106,9 +115,9 @@ const QuizRoom = ({
   };
 
   const checkAnswers = async () => {
-    const {
-      correctAnswers, questions
-    } = quizData[roomNumber];
+    if (cooldown > 0) return;
+
+    const { correctAnswers, questions } = quizData[roomNumber];
     const newAnswerStatus = [...answerStatus];
 
     try {
@@ -116,17 +125,20 @@ const QuizRoom = ({
       const newlyScannedQuestions = [];
 
       answers.forEach((answer, index) => {
-        const question = questions[index];
+        // Skip already correct answers
+        if (answerStatus[index] === "correct" || completedQuestions.includes(questions[index])) {
+          newAnswerStatus[index] = "correct";
+          return;
+        }
+
         const isCorrect =
           answer.trim().toLowerCase() ===
           correctAnswers[index].trim().toLowerCase();
 
         if (isCorrect) {
           newAnswerStatus[index] = "correct";
-          if (!completedQuestions.includes(question)) {
-            score += 1;
-            newlyScannedQuestions.push(question);
-          }
+          score += 1;
+          newlyScannedQuestions.push(questions[index]);
         } else {
           newAnswerStatus[index] = "incorrect";
         }
@@ -171,30 +183,51 @@ const QuizRoom = ({
       if (allGreen) {
         setOpenPopup(true);
       }
+
+      setCooldown(10);
     } catch (error) {
       console.error("Error updating team points:", error);
       alert("Failed to update team points. Please try again.");
     }
   };
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
+
+  const getScoreCount = () => {
+    const correct = answerStatus.filter(
+      (status) => status === "correct"
+    ).length;
+    const incorrect = answerStatus.filter(
+      (status) => status === "incorrect"
+    ).length;
+    return { correct, incorrect };
+  };
+
   const renderQuiz = () => {
-    const {
-      questions, questionType, options
-    } = quizData[roomNumber];
+    const { questions, questionType, options } = quizData[roomNumber];
 
     return questions.map((question, index) => {
       const isCompleted = completedQuestions.includes(question);
       const isCorrect = answerStatus[index] === "correct";
+      const isIncorrect = answerStatus[index] === "incorrect";
+      // Only disable if completed or correct, allow re-answering if incorrect
       const isDisabled = isCompleted || isCorrect;
 
+      let bgcolor = "#00000000";
       let borderColor = "white";
       let boxShadow = "none";
 
-      if (isCompleted) {
-        borderColor = "green";
-        boxShadow = "0px 0px 10px green";
-      } else if (answerStatus[index] === "incorrect") {
+      if (isCompleted || isCorrect) {
+        borderColor = "#00FFC6";
+        bgcolor = "linear-gradient(to bottom, #00FFC666, #00FFC622)";
+        boxShadow = "0px 0px 10px #00FFC6";
+      } else if (isIncorrect) {
         borderColor = "red";
+        bgcolor = "linear-gradient(to bottom, #FF4E4E66, #FF4E4E22)";
         boxShadow = "0px 0px 10px red";
       }
 
@@ -202,45 +235,54 @@ const QuizRoom = ({
         <Card
           key={index}
           style={{
-            width: "800px",
+            width: "100%",
             marginBottom: "20px",
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-            border: `2px solid ${borderColor}`,
-            boxShadow
+            backgroundColor: "#00000000",
+            boxShadow: "none"
           }}
         >
           <CardContent>
-            <Typography variant="h6" style={{
-              marginBottom: "10px"
-            }}>
+            <Typography
+              variant="h6"
+              style={{
+                marginBottom: "10px",
+                color: "white",
+                fontWeight: "bold",
+                letterSpacing: "0.5px",
+                whiteSpace: "pre-line"
+              }}
+            >
               {question}
             </Typography>
 
             {questionType[index] === "multiple-choice" ? (
               <Grid container spacing={2}>
-                {options[index].map((option, i) => (
-                  <Grid item xs={6} key={i}>
-                    <Button
-                      variant="outlined"
-                      fullWidth
-                      onClick={() => handleMultipleChoiceAnswer(index, option)}
-                      disabled={isDisabled}
-                      style={{
-                        height: "75px",
-                        fontSize: "16px",
-                        backgroundColor:
-                          selectedOptions[index] === option
-                            ? "white"
-                            : "transparent",
-                        color:
-                          selectedOptions[index] === option ? "black" : "white",
-                        border: "2px solid white"
-                      }}
-                    >
-                      {option}
-                    </Button>
-                  </Grid>
-                ))}
+                {options[index].map((option, i) => {
+                  const isSelected = selectedOptions[index] === option;
+
+                  return (
+                    <Grid item xs={6} key={i}>
+                      <Button
+                        variant="outlined"
+                        fullWidth
+                        onClick={() =>
+                          handleMultipleChoiceAnswer(index, option)
+                        }
+                        disabled={isDisabled}
+                        style={{
+                          height: "75px",
+                          fontSize: "16px",
+                          backgroundColor: bgcolor,
+                          color: "white",
+                          border: `2px solid ${borderColor}`,
+                          boxShadow: boxShadow
+                        }}
+                      >
+                        {option}
+                      </Button>
+                    </Grid>
+                  );
+                })}
               </Grid>
             ) : (
               <FormControl fullWidth>
@@ -253,6 +295,43 @@ const QuizRoom = ({
                   style={{
                     marginTop: "10px",
                     width: "100%"
+                  }}
+                  inputProps={{
+                    style: {
+                      color: "white",
+                      caretColor: "white"
+                    },
+                    autoComplete: "off",
+                    spellCheck: "false"
+                  }}
+                  InputLabelProps={{
+                    style: {
+                      color: "white"
+                    }
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      backgroundColor: isDisabled
+                        ? "transparent"
+                        : "transparent",
+                      backgroundImage: isDisabled ? bgcolor : "none",
+                      "& fieldset": {
+                        borderColor: borderColor,
+                        boxShadow: boxShadow
+                      },
+                      "&:hover fieldset": {
+                        borderColor: borderColor
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: borderColor
+                      },
+                      "&.Mui-disabled": {
+                        backgroundImage: bgcolor
+                      }
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      borderColor: borderColor
+                    }
                   }}
                 />
               </FormControl>
@@ -267,74 +346,127 @@ const QuizRoom = ({
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        minHeight: "120vh",
-        background:
-          "linear-gradient(135deg, #0d1b61, #0a143b, #081027, #000000)",
-        color: "#fff",
-        padding: "20px",
-        textAlign: "center",
-        position: "relative"
+        minHeight: "100vh",
+        backgroundImage: `url(${BackgroundGradient})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        color: "#fff"
       }}
     >
-      <IconButton
+      {/* Left Panel */}
+      <div
         style={{
-          position: "absolute",
-          top: "10px",
-          left: "10px",
-          color: "#fff"
-        }}
-        onClick={goBack}
-      >
-        <ArrowBackIcon />
-      </IconButton>
-
-      {/* Added Dataset Button */}
-      <Button
-        variant="contained"
-        color="primary"
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          backgroundColor: "#1976d2",
-          color: "#fff"
-        }}
-        onClick={() => {
-          const anchor = document.createElement("a");
-          anchor.href = datasetLink;
-          anchor.download = `dataset${roomNumber}.xlsx`;
-          document.body.appendChild(anchor);
-          anchor.click();
-          document.body.removeChild(anchor);
+          width: "40%",
+          position: "fixed",
+          height: "100vh",
+          padding: "32px",
+          display: "flex",
+          flexDirection: "column"
         }}
       >
-        Open Dataset
-      </Button>
+        <IconButton
+          sx={{ position: "absolute", top: 16, left: 16, color: "white" }}
+          onClick={goBack}
+        >
+          <ArrowBack />
+        </IconButton>
 
-      <Typography variant="h4" style={{
-        marginBottom: "20px"
-      }}>
-        Quiz {roomNumber}
-      </Typography>
+        <Button
+          variant="outlined"
+          sx={{
+            mb: 4,
+            mt: 8,
+            width: 200,
+            color: "white",
+            borderColor: "white",
+            textTransform: "none"
+          }}
+          startIcon={<Download />}
+          onClick={() => {
+            const anchor = document.createElement("a");
+            anchor.href = datasetLink;
+            anchor.download = `dataset${roomNumber}.xlsx`;
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+          }}
+        >
+          Download Dataset
+        </Button>
 
-      {renderQuiz()}
+        <Typography
+          variant="h2"
+          sx={{ mb: 4, fontWeight: "light", fontFamily: "Audiowide" }}
+        >
+          ROOM {roomNumber}
+        </Typography>
 
-      <Button
-        variant="contained"
-        onClick={checkAnswers}
+        <Button
+          variant="outlined"
+          disabled={cooldown > 0}
+          onClick={checkAnswers}
+          startIcon={<CheckCircle />}
+          sx={{
+            width: 200,
+            mb: 2,
+            color: "white",
+            borderColor: "white",
+            textTransform: "none",
+            "&:disabled": {
+              color: "grey.500",
+              borderColor: "grey.500"
+            }
+          }}
+        >
+          Check Answers
+        </Button>
+
+        {cooldown > 0 && (
+          <div
+            style={{ display: "flex", alignItems: "center", marginBottom: 16 }}
+          >
+            <TimerIcon sx={{ mr: 1, fontSize: 16 }} />
+            <Typography variant="body2" sx={{ color: "grey.400" }}>
+              You can resubmit in {formatTime(cooldown)}
+            </Typography>
+          </div>
+        )}
+
+        <div style={{ display: "flex", marginBottom: 8 }}>
+          {[...Array(getScoreCount().correct)].map((_, i) => (
+            <ScoreBox
+              key={`correct-${i}`}
+              style={{ backgroundColor: "#00FFC6" }}
+            />
+          ))}
+          {[...Array(getScoreCount().incorrect)].map((_, i) => (
+            <ScoreBox
+              key={`incorrect-${i}`}
+              style={{ backgroundColor: "#FF4E4E" }}
+            />
+          ))}
+        </div>
+
+        <Typography variant="body2">
+          {getScoreCount().correct} correct, {getScoreCount().incorrect}{" "}
+          incorrect
+        </Typography>
+      </div>
+
+      {/* Right Panel - Scrollable Questions */}
+      <div
         style={{
-          backgroundColor: "#0a143b",
-          color: "#fff",
-          padding: "10px 20px",
-          fontSize: "16px",
-          marginTop: "20px"
+          marginLeft: "40%",
+          width: "60%",
+          minHeight: "100vh",
+          padding: "32px"
         }}
       >
-        Check Answers
-      </Button>
+        <div style={{ maxWidth: "768px", margin: "0 auto" }}>
+          {renderQuiz()}
+        </div>
+      </div>
 
       <Dialog open={openPopup} onClose={() => setOpenPopup(false)}>
         <DialogTitle>{popupContent[roomNumber]?.title}</DialogTitle>
@@ -342,13 +474,10 @@ const QuizRoom = ({
           <Typography>{popupContent[roomNumber]?.message}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenPopup(false)} color="primary">
-            Close
-          </Button>
+          <Button onClick={() => setOpenPopup(false)}>Close</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-};
+}
 
-export default QuizRoom;
