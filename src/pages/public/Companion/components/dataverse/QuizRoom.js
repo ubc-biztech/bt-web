@@ -258,8 +258,6 @@ export default function QuizRoom({
             {questionType[index] === "multiple-choice" ? (
               <Grid container spacing={2}>
                 {options[index].map((option, i) => {
-                  const isSelected = selectedOptions[index] === option;
-
                   return (
                     <Grid item xs={6} key={i}>
                       <Button
@@ -270,7 +268,7 @@ export default function QuizRoom({
                         }
                         disabled={isDisabled}
                         style={{
-                          height: "75px",
+                          height: "125px",
                           fontSize: "16px",
                           backgroundColor: bgcolor,
                           color: "white",
