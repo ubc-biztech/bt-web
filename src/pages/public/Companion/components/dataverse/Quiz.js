@@ -1,18 +1,15 @@
 import React, {
-  useEffect,
-  useState
+  useEffect, useState
 } from "react";
 import {
-  Typography,
-  Button
+  Typography, Button
 } from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
 import {
-  areAllQuestionsInArray,
-  quizData
+  areAllQuestionsInArray, quizData
 } from "./QuizData";
 import QuizRoom from "./QuizRoom";
 import confetti from "canvas-confetti";
@@ -253,18 +250,19 @@ const QuizCard = ({
           alignItems: "center"
         }}
       >
-        <span>{`Enter Room ${roomNumber}`}</span>
-        {completed && (
+        {completed ? (
           <span
             style={{
               color: "#00FF00",
               marginTop: "10px",
-              fontFamily: "Gilroy",
+              fontFamily: "Audiowide",
               textTransform: "none"
             }}
           >
-            {letters}
+            "{letters}"
           </span>
+        ) : (
+          <span>{`Enter Room ${roomNumber}`}</span>
         )}
       </div>
     </Button>
@@ -386,7 +384,7 @@ const QuizDashboard = ({
           teamScore={teamPoints}
           maxScore={15}
           setAnswered={setAnswered}
-          disabled={false}
+          disabled={!(showScrambled1 && showScrambled2 && showScrambled3)}
         />
         <div
           style={{
@@ -399,19 +397,19 @@ const QuizDashboard = ({
             setSelectedRoom={setSelectedRoom}
             completed={showScrambled1}
             roomNumber={1}
-            // letters={"NSCC"}
+            letters={"NSCC"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
             completed={showScrambled2}
             roomNumber={2}
-            // letters={"winner"}
+            letters={"winner"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
             completed={showScrambled3}
             roomNumber={3}
-            // letters={"2024"}
+            letters={"2024"}
           />
         </div>
       </div>
