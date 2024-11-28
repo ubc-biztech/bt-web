@@ -52,6 +52,11 @@ function Leaderboard({
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(0);
 
+  /*
+    NOTE: There is a double counting issue with points. Therefore, working
+    around using length of the unique questions completed field in the teams
+    table. Will resolve in the future.
+  */
   useEffect(() => {
     const fetchTeams = async () => {
       try {
@@ -62,7 +67,7 @@ function Leaderboard({
           false
         );
         if (response && Array.isArray(response)) {
-          setTeams(response.sort((a, b) => b.points - a.points));
+          setTeams(response.sort((a, b) => b.scannedQRs.length - a.scannedQRs.length));
         }
       } catch (error) {
         console.error("Error fetching teams:", error);
@@ -323,7 +328,7 @@ function Leaderboard({
                       duration: 0.3
                     }}
                   >
-                    {team.points} pts
+                    {team.scannedQRs.length} pts
                   </Typography>
                 </Box>
               </ListItem>
