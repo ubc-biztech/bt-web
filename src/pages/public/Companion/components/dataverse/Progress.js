@@ -9,7 +9,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const CharacterInput = ({
   onSubmit,
   numChars = 16,
-  correctAnswer = "NSCC winner 2024",
+  correctAnswer = "nscc winner 2024",
   disabled = true,
   setAnswered
 }) => {
@@ -61,36 +61,59 @@ const CharacterInput = ({
   };
 
   const updateColors = () => {
-    const newColors = chars.map((char, index) => {
-      if (char === correctAnswer[index]) {
-        return "green";
-      } else if (correctAnswer.includes(char)) {
-        return "red";
-      } else {
-        return "gray";
+    const correctLetters = Array(numChars).fill(false);
+    const newColors = Array(numChars).fill("red");
+    
+    // Mark green letters
+    for (let i = 0; i < numChars; i++) {
+      if (chars[i].toLowerCase() === correctAnswer[i].toLowerCase()) {
+        newColors[i] = "green";
+        correctLetters[i] = true;
       }
-    });
+    }
+  
+    // Mark yellow letters
+    for (let i = 0; i < numChars; i++) {
+      if (newColors[i] === "green") continue;
+  
+      const letter = chars[i].toLowerCase();
+      const remainingCount = correctAnswer.toLowerCase().split(letter).length - 1;
+  
+      // both green and yellow matches
+      let usedCount = 0;
+      for (let j = 0; j < numChars; j++) {
+        if (chars[j].toLowerCase() === letter && newColors[j] !== "red") {
+          usedCount++;
+        }
+      }
+  
+      if (remainingCount > usedCount) {
+        newColors[i] = "yellow";
+      }
+    }
+  
     setLetterColors(newColors);
   };
+  
 
   const handleSubmit = () => {
-    const input = chars.join("");
+    const input = chars.join("")
     if (input.length === numChars) {
       updateColors();
-      const isAnswerCorrect = input === correctAnswer;
+      const isAnswerCorrect = input.toLowerCase() === correctAnswer.toLowerCase();
       if (isAnswerCorrect) {
         setAnswered(true);
         onSubmit(input);
       }
-
+  
       setChars(Array(numChars).fill(""));
       setIsTyping(false);
-
+  
       setTimeout(() => {
         inputRefs.current[0]?.focus();
       }, 0);
     }
-  };
+  };  
 
   return (
     <Box
@@ -144,11 +167,11 @@ const CharacterInput = ({
                   borderBottomWidth: "2px",
                   borderBottomColor:
                     inputColor === "green"
-                      ? "green"
+                      ? "#6ca965"
                       : inputColor === "red"
-                        ? "red"
-                        : inputColor === "gray"
-                          ? "#AAAAAA"
+                        ? "#787c7f"
+                        : inputColor === "yellow"
+                          ? "#c8b653"
                           : "#ffffff" // Default color before submission
                 },
                 "& .MuiInput-underline:hover:before": {
@@ -157,11 +180,11 @@ const CharacterInput = ({
                 "& .MuiInput-underline:after": {
                   borderBottomColor:
                     inputColor === "green"
-                      ? "green"
+                      ? "#6ca965"
                       : inputColor === "red"
-                        ? "red"
-                        : inputColor === "gray"
-                          ? "#AAAAAA"
+                        ? "#787c7f"
+                        : inputColor === "yellow"
+                          ? "#c8b653"
                           : "#ffffff" // Default color after submission
                 }
               }}
