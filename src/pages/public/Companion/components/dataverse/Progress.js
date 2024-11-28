@@ -63,7 +63,7 @@ const CharacterInput = ({
   const updateColors = () => {
     const correctLetters = Array(numChars).fill(false);
     const newColors = Array(numChars).fill("red");
-    
+
     // Mark green letters
     for (let i = 0; i < numChars; i++) {
       if (chars[i].toLowerCase() === correctAnswer[i].toLowerCase()) {
@@ -71,14 +71,14 @@ const CharacterInput = ({
         correctLetters[i] = true;
       }
     }
-  
+
     // Mark yellow letters
     for (let i = 0; i < numChars; i++) {
       if (newColors[i] === "green") continue;
-  
+
       const letter = chars[i].toLowerCase();
       const remainingCount = correctAnswer.toLowerCase().split(letter).length - 1;
-  
+
       // both green and yellow matches
       let usedCount = 0;
       for (let j = 0; j < numChars; j++) {
@@ -86,18 +86,18 @@ const CharacterInput = ({
           usedCount++;
         }
       }
-  
+
       if (remainingCount > usedCount) {
         newColors[i] = "yellow";
       }
     }
-  
+
     setLetterColors(newColors);
   };
-  
+
 
   const handleSubmit = () => {
-    const input = chars.join("")
+    const input = chars.join("");
     if (input.length === numChars) {
       updateColors();
       const isAnswerCorrect = input.toLowerCase() === correctAnswer.toLowerCase();
@@ -105,15 +105,15 @@ const CharacterInput = ({
         setAnswered(true);
         onSubmit(input);
       }
-  
+
       setChars(Array(numChars).fill(""));
       setIsTyping(false);
-  
+
       setTimeout(() => {
         inputRefs.current[0]?.focus();
       }, 0);
     }
-  };  
+  };
 
   return (
     <Box
