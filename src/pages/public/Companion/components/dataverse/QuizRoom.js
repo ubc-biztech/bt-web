@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState, useEffect
+} from "react";
 import {
   Button,
   TextField,
@@ -20,11 +22,16 @@ import {
   Timer as TimerIcon,
   CheckCircle
 } from "@mui/icons-material";
-import { styled } from "@mui/material/styles";
-import { fetchBackend } from "utils";
-import { CheckCircle as CheckCircleMaterialUI } from "@material-ui/icons"; // Added import for CheckCircle from @material-ui/icons
+import {
+  styled
+} from "@mui/material/styles";
+import {
+  fetchBackend
+} from "utils";
 
-const ScoreBox = styled("div")(({ theme, color }) => ({
+const ScoreBox = styled("div")(({
+  theme, color
+}) => ({
   width: 18,
   height: 24,
   borderRadius: theme.shape.borderRadius,
@@ -126,7 +133,9 @@ export default function QuizRoom({
   const checkAnswers = async () => {
     if (cooldown > 0) return;
 
-    const { correctAnswers, questions } = quizData[roomNumber];
+    const {
+      correctAnswers, questions
+    } = quizData[roomNumber];
     const newAnswerStatus = [...answerStatus];
 
     try {
@@ -223,11 +232,16 @@ export default function QuizRoom({
     const incorrect = answerStatus.filter(
       (status) => status === "incorrect"
     ).length;
-    return { correct, incorrect };
+    return {
+      correct,
+      incorrect
+    };
   };
 
   const renderQuiz = () => {
-    const { questions, questionType, options } = quizData[roomNumber];
+    const {
+      questions, questionType, options
+    } = quizData[roomNumber];
 
     return questions.map((question, index) => {
       const isCompleted = completedQuestions.includes(question);
@@ -384,7 +398,10 @@ export default function QuizRoom({
         color: "#fff"
       }}
     >
-      <div style={{width: "100%", maxWidth: "1500px"}}>
+      <div style={{
+        width: "100%",
+        maxWidth: "1500px"
+      }}>
         {/* Left Panel */}
         <div
           style={{
@@ -400,7 +417,12 @@ export default function QuizRoom({
           }}
         >
           <IconButton
-            sx={{ position: "absolute", top: 16, left: 16, color: "white" }}
+            sx={{
+              position: "absolute",
+              top: 16,
+              left: 16,
+              color: "white"
+            }}
             onClick={goBack}
           >
             <ArrowBack />
@@ -431,7 +453,11 @@ export default function QuizRoom({
 
           <Typography
             variant="h2"
-            sx={{ mb: 4, fontWeight: "light", fontFamily: "Audiowide" }}
+            sx={{
+              mb: 4,
+              fontWeight: "light",
+              fontFamily: "Audiowide"
+            }}
           >
             ROOM {roomNumber}
           </Typography>
@@ -464,24 +490,36 @@ export default function QuizRoom({
                 marginBottom: 16
               }}
             >
-              <TimerIcon sx={{ mr: 1, fontSize: 16 }} />
-              <Typography variant="body2" sx={{ color: "grey.400" }}>
+              <TimerIcon sx={{
+                mr: 1,
+                fontSize: 16
+              }} />
+              <Typography variant="body2" sx={{
+                color: "grey.400"
+              }}>
                 You can resubmit in {formatTime(cooldown)}
               </Typography>
             </div>
           )}
 
-          <div style={{ display: "flex", marginBottom: 8 }}>
+          <div style={{
+            display: "flex",
+            marginBottom: 8
+          }}>
             {[...Array(getScoreCount().correct)].map((_, i) => (
               <ScoreBox
                 key={`correct-${i}`}
-                style={{ backgroundColor: "#00FFC6" }}
+                style={{
+                  backgroundColor: "#00FFC6"
+                }}
               />
             ))}
             {[...Array(getScoreCount().incorrect)].map((_, i) => (
               <ScoreBox
                 key={`incorrect-${i}`}
-                style={{ backgroundColor: "#FF4E4E" }}
+                style={{
+                  backgroundColor: "#FF4E4E"
+                }}
               />
             ))}
           </div>
@@ -501,7 +539,10 @@ export default function QuizRoom({
             padding: "32px"
           }}
         >
-          <div style={{ maxWidth: "768px", margin: "0 auto" }}>
+          <div style={{
+            maxWidth: "768px",
+            margin: "0 auto"
+          }}>
             {renderQuiz()}
           </div>
         </div>
