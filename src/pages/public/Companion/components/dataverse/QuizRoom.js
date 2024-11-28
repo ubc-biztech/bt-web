@@ -14,7 +14,12 @@ import {
   FormControl
 } from "@mui/material";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
-import { ArrowBack, Download, Timer as TimerIcon, CheckCircle } from "@mui/icons-material";
+import {
+  ArrowBack,
+  Download,
+  Timer as TimerIcon,
+  CheckCircle
+} from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { fetchBackend } from "utils";
 import { CheckCircle as CheckCircleMaterialUI } from "@material-ui/icons"; // Added import for CheckCircle from @material-ui/icons
@@ -90,8 +95,10 @@ export default function QuizRoom({
 
   const handleAnswerChange = (index, value) => {
     // Only allow changes if the answer was incorrect or not yet answered
-    if (completedQuestions.includes(quizData[roomNumber].questions[index]) || 
-        answerStatus[index] === "correct") {
+    if (
+      completedQuestions.includes(quizData[roomNumber].questions[index]) ||
+      answerStatus[index] === "correct"
+    ) {
       return;
     }
     const newAnswers = [...answers];
@@ -101,8 +108,10 @@ export default function QuizRoom({
 
   const handleMultipleChoiceAnswer = (index, option) => {
     // Only allow changes if the answer was incorrect or not yet answered
-    if (completedQuestions.includes(quizData[roomNumber].questions[index]) || 
-        answerStatus[index] === "correct") {
+    if (
+      completedQuestions.includes(quizData[roomNumber].questions[index]) ||
+      answerStatus[index] === "correct"
+    ) {
       return;
     }
     const newSelectedOptions = [...selectedOptions];
@@ -126,14 +135,20 @@ export default function QuizRoom({
 
       answers.forEach((answer, index) => {
         // Skip already correct answers
-        if (answerStatus[index] === "correct" || completedQuestions.includes(questions[index])) {
+        if (
+          answerStatus[index] === "correct" ||
+          completedQuestions.includes(questions[index])
+        ) {
           newAnswerStatus[index] = "correct";
           return;
         }
 
-        const isCorrect =
-          answer.trim().toLowerCase() ===
-          correctAnswers[index].trim().toLowerCase();
+        const sanitizedAnswer = answer ? answer.trim().toLowerCase() : "";
+        const sanitizedCorrectAnswer = correctAnswers[index]
+          ? correctAnswers[index].trim().toLowerCase()
+          : "";
+
+        const isCorrect = sanitizedAnswer === sanitizedCorrectAnswer;
 
         if (isCorrect) {
           newAnswerStatus[index] = "correct";
@@ -192,6 +207,10 @@ export default function QuizRoom({
   };
 
   const formatTime = (seconds) => {
+    if (isNaN(seconds) || seconds < 0) {
+      return "0:00";
+    }
+
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
@@ -270,8 +289,14 @@ export default function QuizRoom({
                         style={{
                           height: "125px",
                           fontSize: "16px",
-                          backgroundColor: bgcolor,
-                          color: "white",
+                          backgroundColor:
+                            selectedOptions[index] === option
+                              ? "white"
+                              : "transparent",
+                          color:
+                            selectedOptions[index] === option
+                              ? "black"
+                              : "white",
                           border: `2px solid ${borderColor}`,
                           boxShadow: boxShadow
                         }}
@@ -478,4 +503,3 @@ export default function QuizRoom({
     </div>
   );
 }
-

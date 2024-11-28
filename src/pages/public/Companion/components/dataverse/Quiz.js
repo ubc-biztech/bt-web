@@ -372,7 +372,7 @@ const QuizDashboard = ({
           teamScore={teamPoints}
           maxScore={15}
           setAnswered={setAnswered}
-          disabled={(showScrambled1 && showScrambled2 && showScrambled3)}
+          disabled={!(showScrambled1 && showScrambled2 && showScrambled3)}
         />
         <div
           style={{

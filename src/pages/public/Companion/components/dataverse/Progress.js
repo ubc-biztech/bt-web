@@ -97,7 +97,7 @@ const CharacterInput = ({
   
 
   const handleSubmit = () => {
-    const input = chars.join("").trim();
+    const input = chars.join("")
     if (input.length === numChars) {
       updateColors();
       const isAnswerCorrect = input.toLowerCase() === correctAnswer.toLowerCase();
