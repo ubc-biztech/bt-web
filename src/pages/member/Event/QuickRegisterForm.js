@@ -11,7 +11,6 @@ import {
 import {
   COLORS
 } from "constants/index";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     "& label.Mui-focused": {
