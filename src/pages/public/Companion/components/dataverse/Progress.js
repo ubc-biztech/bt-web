@@ -8,8 +8,8 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const CharacterInput = ({
   onSubmit,
-  numChars = 16,
-  correctAnswer = "nscc winner 2024",
+  numChars = 23,
+  correctAnswer = "never gonna give you up",
   disabled = true,
   setAnswered
 }) => {
@@ -18,7 +18,7 @@ const CharacterInput = ({
   const [letterColors, setLetterColors] = useState(Array(numChars).fill(""));
   const inputRefs = useRef([]);
 
-  const placeholderText = "final answer";
+  const placeholderText = "final question answer";
 
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, numChars);
