@@ -103,6 +103,23 @@ const getDefaultColumns = (eventID, eventYear, refreshTable, tableType) => [
     )
   },
   {
+    title: "Date Created",
+    field: "createdAt",
+    customSort: (a, b) => {
+      const timestampA = Date.parse(a.createdAt);
+      const timestampB = Date.parse(b.createdAt);
+      return timestampA - timestampB;
+    },
+    cellStyle: {
+      whiteSpace: "nowrap"
+    },
+    render: (rowData) => (
+      <>
+        {rowData.createdAt === "Invalid Date" ? "" : rowData.createdAt}
+      </>
+    )
+  },
+  {
     title: "Last Updated",
     field: "updatedAt",
     customSort: (a, b) => {
@@ -261,6 +278,23 @@ const getDefaultPartnerColumns = (eventID, eventYear, refreshTable) => [
     render: (rowData) => (
       <>
         {rowData.id}
+      </>
+    )
+  },
+  {
+    title: "Date Created",
+    field: "createdAt",
+    customSort: (a, b) => {
+      const timestampA = Date.parse(a.createdAt);
+      const timestampB = Date.parse(b.createdAt);
+      return timestampA - timestampB;
+    },
+    cellStyle: {
+      whiteSpace: "nowrap"
+    },
+    render: (rowData) => (
+      <>
+        {rowData.createdAt === "Invalid Date" ? "" : rowData.createdAt}
       </>
     )
   },
