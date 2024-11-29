@@ -11,7 +11,7 @@ import {
 
 const CharacterInput = ({
   onSubmit,
-  correctAnswer = "never gonna give you up",
+  correctAnswer = "stay tuned for blueprint",
   disabled = true,
   setAnswered,
   userRegistration

@@ -13,7 +13,7 @@ const Dashboard = () => {
   const startTime = new Date();
   const endTimeAt3PM = new Date();
   endTimeAt3PM.setHours(15, 0, 0, 0);
-  const endTimeIn50Minutes = new Date(startTime.getTime() + 5 * 60 * 1000);
+  const endTimeIn50Minutes = new Date(startTime.getTime() + 50 * 60 * 1000);
   const endTime = (endTimeIn50Minutes < endTimeAt3PM) ? endTimeIn50Minutes : endTimeAt3PM;
   const location = useLocation();
   const history = useHistory();
