@@ -398,10 +398,12 @@ export default function QuizRoom({
         color: "#fff"
       }}
     >
-      <div style={{
-        width: "100%",
-        maxWidth: "1500px"
-      }}>
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1500px"
+        }}
+      >
         {/* Left Panel */}
         <div
           style={{
@@ -431,12 +433,19 @@ export default function QuizRoom({
           <Button
             variant="outlined"
             sx={{
-              mb: 4,
               mt: 8,
-              width: 200,
+              width: 225,
               color: "white",
               borderColor: "white",
-              textTransform: "none"
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: "white",
+                color: "black"
+              },
+              "&:focus": {
+                backgroundColor: "white",
+                color: "black"
+              }
             }}
             startIcon={<Download />}
             onClick={() => {
@@ -448,7 +457,39 @@ export default function QuizRoom({
               document.body.removeChild(anchor);
             }}
           >
-            Download Dataset
+            Download Dataset {roomNumber}
+          </Button>
+
+          <Button
+            variant="outlined"
+            sx={{
+              mb: 4,
+              mt: 2,
+              width: 250,
+              color: "white",
+              borderColor: "white",
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: "white",
+                color: "black"
+              },
+              "&:focus": {
+                backgroundColor: "white",
+                color: "black"
+              }
+            }}
+            startIcon={<Download />}
+            onClick={() => {
+              const anchor = document.createElement("a");
+              anchor.href =
+                "https://docs.google.com/spreadsheets/d/1SsS7c6xxHAOmzaKM-lqXttRHDOo8xgR6/export?format=xlsx";
+              anchor.download = "crashcourse.xlsx";
+              document.body.appendChild(anchor);
+              anchor.click();
+              document.body.removeChild(anchor);
+            }}
+          >
+            Download Crash Course
           </Button>
 
           <Typography
@@ -490,22 +531,29 @@ export default function QuizRoom({
                 marginBottom: 16
               }}
             >
-              <TimerIcon sx={{
-                mr: 1,
-                fontSize: 16
-              }} />
-              <Typography variant="body2" sx={{
-                color: "grey.400"
-              }}>
+              <TimerIcon
+                sx={{
+                  mr: 1,
+                  fontSize: 16
+                }}
+              />
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "grey.400"
+                }}
+              >
                 You can resubmit in {formatTime(cooldown)}
               </Typography>
             </div>
           )}
 
-          <div style={{
-            display: "flex",
-            marginBottom: 8
-          }}>
+          <div
+            style={{
+              display: "flex",
+              marginBottom: 8
+            }}
+          >
             {[...Array(getScoreCount().correct)].map((_, i) => (
               <ScoreBox
                 key={`correct-${i}`}
@@ -539,10 +587,12 @@ export default function QuizRoom({
             padding: "32px"
           }}
         >
-          <div style={{
-            maxWidth: "768px",
-            margin: "0 auto"
-          }}>
+          <div
+            style={{
+              maxWidth: "768px",
+              margin: "0 auto"
+            }}
+          >
             {renderQuiz()}
           </div>
         </div>

@@ -331,9 +331,9 @@ const QuizDashboard = ({
   }, [questions]);
 
   const urlMap = {
-    1: "https://docs.google.com/spreadsheets/d/1WhAhoVA-m7BQpuNgk3VuWAXb4MbirD7V/export?format=xlsx",
-    2: "https://docs.google.com/spreadsheets/d/1S_YJCkbY0EOmh1X3Sd6JKJkHguN3Z2kT/export?format=xlsx",
-    3: "https://docs.google.com/spreadsheets/d/1YR3pZPjnP-InGG3MifOcGd4WpAIR2fX0/export?format=xlsx"
+    1: "https://docs.google.com/spreadsheets/d/1DvzVr6X0NSVMktyPqf6hFgYS5Js5th5G/export?format=xlsx",
+    2: "https://docs.google.com/spreadsheets/d/1EdCkTcxGe_9twMGtDeGy_7-k8kDJb62N/export?format=xlsx",
+    3: "https://docs.google.com/spreadsheets/d/1ZxzuMxjPysSH5IaCs8JggoD2Aw3GRGfP/export?format=xlsx"
   };
 
   useEffect(() => {
