@@ -11,12 +11,12 @@ import {
 
 const CharacterInput = ({
   onSubmit,
-  numChars = 23,
   correctAnswer = "never gonna give you up",
   disabled = true,
   setAnswered,
   userRegistration
 }) => {
+  const numChars = correctAnswer.length;
   const [chars, setChars] = useState(Array(numChars).fill(""));
   const [isTyping, setIsTyping] = useState(false);
   const [letterColors, setLetterColors] = useState(Array(numChars).fill(""));
