@@ -284,7 +284,7 @@ const QuizDashboard = ({
   const [showScrambled1, setShowScrambled1] = useState(false);
   const [showScrambled2, setShowScrambled2] = useState(false);
   const [showScrambled3, setShowScrambled3] = useState(false);
-  const [timeout, setTimeout] = useState(false);
+  // const [timeout, setTimeout] = useState(false);
 
   useEffect(() => {
     const fetchCompletedQuestions = async () => {

@@ -505,7 +505,7 @@ export default function QuizRoom({
 
           <Button
             variant="outlined"
-            disabled={cooldown > 0 && !disabled}
+            disabled={cooldown > 0}
             onClick={checkAnswers}
             startIcon={<CheckCircle />}
             sx={{
