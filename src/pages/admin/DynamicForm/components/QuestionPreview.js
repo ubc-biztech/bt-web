@@ -1,5 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import {
   Checkbox,
   FormControlLabel,
@@ -10,8 +12,9 @@ import {
   Typography,
   Button,
 } from "@material-ui/core";
-import CloudUpload from '@material-ui/icons/CloudUpload';
+import CloudUpload from "@material-ui/icons/CloudUpload";
 import ImagePlaceholder from "../../../../assets/placeholder.jpg";
+import OtherCheckbox from "./OtherCheckbox";
 
 const styles = {
   imageContainer: {
@@ -28,7 +31,11 @@ const styles = {
     height: 300,
     objectFit: "cover",
   },
-}
+  disabled: {
+    pointerEvents: "none",
+    color: "grey",
+  }
+};
 
 // LIVE PREVIEW QUESTION component
 const QuestionPreview = (props) => {
@@ -47,16 +54,32 @@ const QuestionPreview = (props) => {
   }));
   const classes = useStyles();
 
-  const { type, label, choices, questionImageUrl, required } = props;
+  const {
+    type, label, choices, questionImageUrl, required
+  } = props;
 
   const choicesArr = choices ? choices.split(",") : [];
 
-  // types: CHECKBOX, SELECT, TEXT
-  if (type === "CHECKBOX") {
+  const workshopChoicesArr = choices
+    ? choices.split(",").map((choice) => ({
+      value: choice,
+      label: choice,
+      isDisabled: false, // Set to true for items you want to be unselectable
+    }))
+    : [];
+
+  // types: CHECKBOX, SELECT, TEXT, UPLOAD, WORKSHOP SELECTION, SKILLS
+  if (type === "CHECKBOX" || type === "SKILLS") {
     return (
       label && (
-        <div style={{ paddingBottom: "1.5rem" }}>
-          <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
             {label}
             {label && required && "*"}
           </p>
@@ -71,6 +94,10 @@ const QuestionPreview = (props) => {
           )}
           <FormGroup>
             {choicesArr.map((item) => {
+              if (item === "...") {
+                return <OtherCheckbox key={item} otherData={{
+                }} onChange={() => {}}/>;
+              }
               return (
                 <FormControlLabel
                   key={item}
@@ -86,8 +113,14 @@ const QuestionPreview = (props) => {
   } else if (type === "SELECT") {
     return (
       label && (
-        <div style={{ paddingBottom: "1.5rem" }}>
-          <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
             {label}
             {label && required && "*"}
           </p>
@@ -120,8 +153,14 @@ const QuestionPreview = (props) => {
   } else if (type === "TEXT") {
     return (
       label && (
-        <div style={{ paddingBottom: "1.5rem" }}>
-          <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
             {label}
             {label && required && "*"}
           </p>
@@ -147,8 +186,14 @@ const QuestionPreview = (props) => {
   } else if (type === "UPLOAD") {
     return (
       label && (
-        <div style={{ paddingBottom: "1.5rem" }}>
-          <p style={{ opacity: "0.7", fontSize: "1rem", margin: "0.5rem 0" }}>
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
             {label}
             {label && required && "*"}
           </p>
@@ -166,8 +211,53 @@ const QuestionPreview = (props) => {
           </Typography>
           <Button variant="contained" color="primary" component="label">
             Upload
-            <CloudUpload style={{ color: "black", marginLeft: 6 }}/>
+            <CloudUpload style={{
+              color: "black",
+              marginLeft: 6
+            }}/>
           </Button>
+        </div>
+      )
+    );
+  } else if (type === "WORKSHOP SELECTION") {
+    return (
+      label && (
+        <div style={{
+          paddingBottom: "1.5rem"
+        }}>
+          <p style={{
+            opacity: "0.7",
+            fontSize: "1rem",
+            margin: "0.5rem 0"
+          }}>
+            {label}
+            {label && required && "*"}
+          </p>
+          {questionImageUrl && (
+            <div style={styles.imageContainer}>
+              <img
+                style={styles.image}
+                src={questionImageUrl || ImagePlaceholder}
+                alt="Registration Form"
+              />
+            </div>
+          )}
+          <Select
+            className={classes.select}
+            labelId="q-type"
+            variant="outlined"
+            margin="dense"
+          >
+
+            {workshopChoicesArr.map((item) => {
+              return (
+                <MenuItem key={item.value} value={item.value} style={item.isDisabled ? styles.disabled : null}>
+                  {item.label}
+                  {item.isDisabled ? " (- workshop is full)" : ""}
+                </MenuItem>
+              );
+            })}
+          </Select>
         </div>
       )
     );

@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
-import { fetchUserRegisteredEvents } from "store/user/userActions";
+import React, {
+  useEffect, useState
+} from "react";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  fetchUserRegisteredEvents
+} from "store/user/userActions";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Card, Typography, CardContent } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Card, Typography, CardContent
+} from "@material-ui/core";
 
 import House from "assets/house.svg";
 // import Calendar from "assets/calendar.png";
 import UserProgress from "./UserProgress";
-import { COLORS } from "constants/index";
+import {
+  COLORS
+} from "constants/index";
 // import { green } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
@@ -62,17 +74,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MemberHome(props) {
-  const { user, registered, events } = props;
+  const {
+    user, registered, events
+  } = props;
 
   const userName = user.admin ? "Biztech exec!" : user.fname;
 
   const classes = useStyles();
 
-  const [featuredEvent, setFeaturedEvent] = useState({});
-  const [nextEvent, setNextEvent] = useState({});
+  const [featuredEvent, setFeaturedEvent] = useState({
+  });
+  const [nextEvent, setNextEvent] = useState({
+  });
 
   useEffect(() => {
-    if (user && user.email) fetchUserRegisteredEvents({ userId: user.email });
+    if (user && user.email) fetchUserRegisteredEvents({
+      userId: user.email
+    });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getFeaturedEvent = () => {
@@ -119,7 +137,9 @@ function MemberHome(props) {
    */
   const getNextEvent = async () => {
     if (!user || !registered || registered.length === 0) {
-      setNextEvent({ ename: "None Registered!" });
+      setNextEvent({
+        ename: "None Registered!"
+      });
       return;
     }
     events.forEach((event) => {
@@ -131,7 +151,9 @@ function MemberHome(props) {
         // if the event has not passed yet
         if (new Date(event.startDate).getTime() > new Date().getTime())
           return setNextEvent(event);
-        else return setNextEvent({ ename: "None Registered!" });
+        else return setNextEvent({
+          ename: "None Registered!"
+        });
       }
     });
   };
@@ -148,7 +170,9 @@ function MemberHome(props) {
     getFeaturedEvent();
   }, [nextEvent]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function CardComponent({ children }) {
+  function CardComponent({
+    children
+  }) {
     return (
       <Card className={classes.card}>
         <CardContent>{children}</CardContent>
@@ -157,7 +181,9 @@ function MemberHome(props) {
   }
 
   function FeaturedEventsCard(props) {
-    const { eventName, eventDate, eventDeadline } = props;
+    const {
+      eventName, eventDate, eventDeadline
+    } = props;
 
     if (eventDeadline) {
       return (

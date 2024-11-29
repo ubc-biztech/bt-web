@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, {
+  useState
+} from "react";
 import Markdown from "components/layout/Markdown";
-import { COLORS } from "../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../constants/_constants/theme";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Typography
+} from "@material-ui/core";
 import ArrowRight from "@material-ui/icons/ArrowRight";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 import DateComponent from "../../components/icons/DateComponent";
@@ -76,12 +84,16 @@ function formatAMPM(date) {
   return hour + ":" + minute + " " + ampm;
 }
 
-const EventView = ({ event, children }) => {
+const EventView = ({
+  event, children
+}) => {
   const classes = useStyles();
   const [showDescription, setShowDescription] = useState(false);
 
   const startDate = new Date(event.startDate);
-  const month = startDate.toLocaleDateString("default", { month: "short" });
+  const month = startDate.toLocaleDateString("default", {
+    month: "short"
+  });
   const dayOfMonth = startDate.getDate();
   const dayOfWeek = startDate.toLocaleDateString("default", {
     weekday: "long",
@@ -92,7 +104,9 @@ const EventView = ({ event, children }) => {
   const endTime = formatAMPM(endDate);
   return (
     <React.Fragment>
-      <div style={{ position: "relative" }}>
+      <div style={{
+        position: "relative"
+      }}>
         <img
           src={event.imageUrl || require("assets/placeholder.jpg")}
           className={classes.banner}
@@ -128,10 +142,14 @@ const EventView = ({ event, children }) => {
 
         {showDescription ? (
           <div className={classes.desc}>
-            <div style={{ display: "flex" }}>
+            <div style={{
+              display: "flex"
+            }}>
               <EventIcon
                 fontSize="small"
-                style={{ color: COLORS.BIZTECH_GREEN }}
+                style={{
+                  color: COLORS.BIZTECH_GREEN
+                }}
               />
               <Typography className={classes.descDate}>
                 {dayOfWeek}, {month}. {dayOfMonth} {startTime}-{endTime}

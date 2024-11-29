@@ -1,15 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Amplify from "aws-amplify";
+import Amplify, {
+  Auth
+} from "aws-amplify";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 import "./index.scss";
 import "./overwrites.scss";
-import { AWS_CONFIG } from "./constants";
+import {
+  AWS_CONFIG
+} from "./constants";
 
 Amplify.configure(AWS_CONFIG);
+Auth.configure(AWS_CONFIG);
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

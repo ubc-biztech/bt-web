@@ -1,8 +1,18 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Checkbox, MenuItem, Select, TextField, Tooltip } from "@material-ui/core";
-import { Delete, KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
-import { useFormikContext } from "formik";
+import React, {
+  useEffect
+} from "react";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Checkbox, MenuItem, Select, TextField, Tooltip
+} from "@material-ui/core";
+import {
+  Delete, KeyboardArrowDown, KeyboardArrowUp
+} from "@material-ui/icons";
+import {
+  useFormikContext
+} from "formik";
 
 // Styling Material UI Components
 const useStyles = makeStyles((theme) => ({
@@ -41,12 +51,18 @@ const CustomQuestion = (props) => {
     handleBlur,
     errors,
     touched,
-    submitCount
+    submitCount,
+    setFieldValue,
+    values
   } = useFormikContext();
 
-  const { id, name, index, length } = props;
+  const {
+    id, name, index, length, formType
+  } = props;
 
-  const { type, label, choices, questionImageUrl, charLimit, required } = props.data;
+  const {
+    type, label, choices, questionImageUrl, charLimit, required, participantCap
+  } = props.data;
   const questionStyles = {
     // -------- QUESTION COMPONENT STYLES ----------
     card: {
@@ -88,11 +104,16 @@ const CustomQuestion = (props) => {
       flexDirection: "column",
       justifyContent: "center"
     },
-    requiredContainer: {
+    checkboxContainer: {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
       color: "rgba(255,255,255,0.8)"
+    },
+    checkboxWrapper: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "flex-end"
     }
   };
 
@@ -108,6 +129,17 @@ const CustomQuestion = (props) => {
     );
   };
 
+  // handle new fields for changing custom questions per type
+  useEffect(() => {
+    values.partnerRegistrationQuestions.forEach((question, index) => {
+      const type = question.type;
+      switch (type) {
+      case "SKILLS":
+        setFieldValue(`partnerRegistrationQuestions[${index}].isSkillsQuestion`, true);
+      };
+    });
+  }, [values.partnerRegistrationQuestions]);
+
   return (
     <div style={questionStyles.card}>
       <div style={questionStyles.cardActions}>
@@ -119,13 +151,17 @@ const CustomQuestion = (props) => {
           variant="outlined"
           margin="dense"
           value={type}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e)}
           onBlur={handleBlur}
         >
           <MenuItem value="TEXT">Text</MenuItem>
           <MenuItem value="CHECKBOX">Checkbox</MenuItem>
           <MenuItem value="SELECT">Selection</MenuItem>
           <MenuItem value="UPLOAD">Upload</MenuItem>
+          <MenuItem value="WORKSHOP SELECTION">Workshop Selection</MenuItem>
+          { formType === "PARTNER" &&
+            <MenuItem value="SKILLS">Skills</MenuItem>
+          }
         </Select>
         <div style={questionStyles.iconsContainer}>
           <div style={questionStyles.move}>
@@ -209,37 +245,87 @@ const CustomQuestion = (props) => {
           </Tooltip>
         )}
 
-        {(type === "SELECT" || type === "CHECKBOX") && (
-          <TextField
-            id={`${id}.choices`}
-            name={`${name}.choices`}
-            label="Options"
-            fullWidth
-            required
-            margin="normal"
-            variant="filled"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={showError("choices")}
-            helperText={
-              showError("choices") &&
+        {(type === "SELECT" || type === "CHECKBOX" || type === "SKILLS") && (
+          <>
+            <TextField
+              id={`${id}.choices`}
+              name={`${name}.choices`}
+              label="Options"
+              fullWidth
+              required
+              margin="normal"
+              variant="filled"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={showError("choices")}
+              helperText={
+                showError("choices") &&
               errors.registrationQuestions[index].choices
-            }
-            value={choices}
-          />
+              }
+              value={choices}
+            />
+            <p style={{
+              color: "#FFFFFF",
+              opacity: "0.7"
+            }}>{"Separate options by comma, no spaces (Option 1,Option 2)"} <br/> {"To use the 'Other' option, add an ellipsis (Option 1,Option 2,...)"}</p>
+          </>
+        )}
+
+        {type === "WORKSHOP SELECTION" && (
+          <div>
+            <TextField
+              id={`${id}.choices`}
+              name={`${name}.choices`}
+              label="Workshop Choices"
+              fullWidth
+              required
+              margin="normal"
+              variant="filled"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={showError("choices)")}
+              helperText={
+                showError("choices")
+              }
+              value={choices}
+            />
+            <Tooltip title="Items must match number of workshops." arrow>
+              <TextField
+                id={`${id}.participantCap`}
+                name={`${name}.participantCap`}
+                label="Maximum Participants for each Workshop"
+                fullWidth
+                required
+                margin="normal"
+                variant="filled"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={showError("participantCap")}
+                helperText={
+                  showError("participantCap") &&
+                  errors.registrationQuestions[index].participantCap
+                }
+                value={participantCap}
+              />
+            </Tooltip>
+          </div>
         )}
 
         <div style={questionStyles.requiredContainer}>
+          <div style={questionStyles.checkboxWrapper}>
+            <div style={questionStyles.checkboxContainer}>
           Required?
-          <Checkbox
-            id={`${id}.required`}
-            name={`${name}.required`}
-            color="primary"
-            aria-label="Required question?"
-            checked={required}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
+              <Checkbox
+                id={`${id}.required`}
+                name={`${name}.required`}
+                color="primary"
+                aria-label="Required question?"
+                checked={required}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

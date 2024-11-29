@@ -1,5 +1,7 @@
 import Storage from "@aws-amplify/storage";
-import { log } from "./log";
+import {
+  log
+} from "./log";
 
 export const STORAGE_PRIZES = "prizes";
 export const STORAGE_SPONSORS = "sponsors";
@@ -19,7 +21,9 @@ export function uploadFile(directory, file, name, type) {
     return "";
   }
 
-  Storage.put(`${directory}/${name}`, file, { contentType: type })
+  Storage.put(`${directory}/${name}`, file, {
+    contentType: type
+  })
     .then((result) => {
       return result.key;
     })
