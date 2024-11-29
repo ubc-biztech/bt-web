@@ -1,21 +1,13 @@
-import React, {
-  useEffect, useState
-} from "react";
-import {
-  Typography, Button
-} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Typography, Button } from "@material-ui/core";
 import DataverseLogo from "../../../../../assets/2024/dataverse/Dataverse.png";
 import BackgroundGradient from "../../../../../assets/2024/dataverse/bg.png";
 import TimerDonut from "./Timer";
 import Progress from "./Progress";
-import {
-  areAllQuestionsInArray, quizData
-} from "./QuizData";
+import { areAllQuestionsInArray, quizData } from "./QuizData";
 import QuizRoom from "./QuizRoom";
 import confetti from "canvas-confetti";
-import {
-  fetchBackend
-} from "utils";
+import { fetchBackend } from "utils";
 
 const useStyles = {
   root: {
@@ -60,9 +52,7 @@ const useStyles = {
   }
 };
 
-const LeftHeader = ({
-  teamName, teamPoints
-}) => {
+const LeftHeader = ({ teamName, teamPoints }) => {
   return (
     <div
       style={{
@@ -111,9 +101,7 @@ const LeftHeader = ({
   );
 };
 
-const MemoizedConfetti = React.memo(({
-  show
-}) => {
+const MemoizedConfetti = React.memo(({ show }) => {
   useEffect(() => {
     if (show) {
       const duration = 1 * 1000;
@@ -278,6 +266,7 @@ const QuizDashboard = ({
   disabled = false
 }) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [refreshCounter, setRefreshCounter] = useState(0);
   const [Answered, setAnswered] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [showScrambled1, setShowScrambled1] = useState(false);
@@ -305,7 +294,7 @@ const QuizDashboard = ({
     };
 
     fetchCompletedQuestions();
-  }, [userRegistration.id]);
+  }, [userRegistration.id, refreshCounter]);
 
   useEffect(() => {
     setShowScrambled1(
@@ -326,6 +315,7 @@ const QuizDashboard = ({
         checkArray: questions
       })
     );
+    console.log("gautham vescwhanatham");
   }, [questions]);
 
   const urlMap = {
@@ -333,6 +323,10 @@ const QuizDashboard = ({
     2: "https://docs.google.com/spreadsheets/d/1S_YJCkbY0EOmh1X3Sd6JKJkHguN3Z2kT/export?format=xlsx",
     3: "https://docs.google.com/spreadsheets/d/1YR3pZPjnP-InGG3MifOcGd4WpAIR2fX0/export?format=xlsx"
   };
+
+  useEffect(() => {
+    console.log('showScrambled1 updated:', showScrambled1);
+  }, [showScrambled1]);
 
   const renderContent = () => {
     if (Answered) {
@@ -343,7 +337,10 @@ const QuizDashboard = ({
       return (
         <QuizRoom
           roomNumber={selectedRoom}
-          goBack={() => setSelectedRoom(null)}
+          goBack={() => {
+            setSelectedRoom(null);
+            setRefreshCounter(refreshCounter + 1);
+          }}
           userRegistration={userRegistration}
           setQuestions={setQuestions}
           quizData={quizData}
