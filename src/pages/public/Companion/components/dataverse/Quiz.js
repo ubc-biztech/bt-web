@@ -387,7 +387,7 @@ const QuizDashboard = ({
         </div>
         <Progress
           teamScore={teamPoints}
-          maxScore={13}
+          maxScore={16}
           setAnswered={setAnswered}
           disabled={!(showScrambled1 && showScrambled2 && showScrambled3)}
           userRegistration={userRegistration}
@@ -403,19 +403,19 @@ const QuizDashboard = ({
             setSelectedRoom={setSelectedRoom}
             completed={showScrambled1}
             roomNumber={1}
-            letters={"ervne"}
+            letters={"yats"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
             completed={showScrambled2}
             roomNumber={2}
-            letters={"uyo"}
+            letters={"dentu"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
             completed={showScrambled3}
             roomNumber={3}
-            letters={"nngao"}
+            letters={"rof"}
           />
         </div>
       </div>

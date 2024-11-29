@@ -11,12 +11,12 @@ import {
 
 const CharacterInput = ({
   onSubmit,
-  correctAnswer = "never gonna give you up",
+  promo = "stay tuned for blueprint",
   disabled = true,
   setAnswered,
   userRegistration
 }) => {
-  const numChars = correctAnswer.length;
+  const numChars = promo.length;
   const [chars, setChars] = useState(Array(numChars).fill(""));
   const [isTyping, setIsTyping] = useState(false);
   const [letterColors, setLetterColors] = useState(Array(numChars).fill(""));
@@ -70,7 +70,7 @@ const CharacterInput = ({
 
     // Mark green letters
     for (let i = 0; i < numChars; i++) {
-      if (chars[i].toLowerCase() === correctAnswer[i].toLowerCase()) {
+      if (chars[i].toLowerCase() === promo[i].toLowerCase()) {
         newColors[i] = "green";
         correctLetters[i] = true;
       }
@@ -81,7 +81,7 @@ const CharacterInput = ({
       if (newColors[i] === "green") continue;
 
       const letter = chars[i].toLowerCase();
-      const remainingCount = correctAnswer.toLowerCase().split(letter).length - 1;
+      const remainingCount = promo.toLowerCase().split(letter).length - 1;
 
       // both green and yellow matches
       let usedCount = 0;
@@ -104,7 +104,7 @@ const CharacterInput = ({
     const input = chars.join("");
     if (input.length === numChars) {
       updateColors();
-      const isAnswerCorrect = input.toLowerCase() === correctAnswer.toLowerCase();
+      const isAnswerCorrect = input.toLowerCase() === promo.toLowerCase();
       if (isAnswerCorrect) {
         const toAddQuestion = [];
         toAddQuestion.push("Final Question");
@@ -120,7 +120,6 @@ const CharacterInput = ({
           false
         );
         setAnswered(true);
-        onSubmit(input);
       }
 
       setChars(Array(numChars).fill(""));
