@@ -56,15 +56,15 @@ export default function QuizRoom({
   const popupContent = {
     1: {
       title: "🏆 Room 1 Complete!",
-      message: "Great job! Your string is: NSCC"
+      message: "Great job! Your string is: ervne"
     },
     2: {
       title: "🎯 Room 2 Mastered!",
-      message: "Fantastic! Your string is: winner"
+      message: "Fantastic! Your string is: uyo"
     },
     3: {
       title: "🚀 Room 3 Achieved!",
-      message: "Outstanding! Your string is: 2024"
+      message: "Outstanding! Your string is: nngao"
     }
   };
 
@@ -505,7 +505,7 @@ export default function QuizRoom({
 
           <Button
             variant="outlined"
-            disabled={cooldown > 0}
+            disabled={cooldown > 0 && !disabled}
             onClick={checkAnswers}
             startIcon={<CheckCircle />}
             sx={{

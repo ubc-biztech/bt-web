@@ -284,6 +284,7 @@ const QuizDashboard = ({
   const [showScrambled1, setShowScrambled1] = useState(false);
   const [showScrambled2, setShowScrambled2] = useState(false);
   const [showScrambled3, setShowScrambled3] = useState(false);
+  const [timeout, setTimeout] = useState(false);
 
   useEffect(() => {
     const fetchCompletedQuestions = async () => {
@@ -327,7 +328,6 @@ const QuizDashboard = ({
         checkArray: questions
       })
     );
-    console.log("gautham vescwhanatham");
   }, [questions]);
 
   const urlMap = {
@@ -335,10 +335,6 @@ const QuizDashboard = ({
     2: "https://docs.google.com/spreadsheets/d/1EdCkTcxGe_9twMGtDeGy_7-k8kDJb62N/export?format=xlsx",
     3: "https://docs.google.com/spreadsheets/d/1ZxzuMxjPysSH5IaCs8JggoD2Aw3GRGfP/export?format=xlsx"
   };
-
-  useEffect(() => {
-    console.log("showScrambled1 updated:", showScrambled1);
-  }, [showScrambled1]);
 
   const renderContent = () => {
     if (Answered) {
@@ -387,7 +383,7 @@ const QuizDashboard = ({
           }}
         >
           <LeftHeader teamName={teamName} teamPoints={teamPoints} />
-          <TimerDonut startTime={startTime} endTime={endTime} />
+          <TimerDonut startTime={startTime} endTime={endTime} setTimeout={setTimeout}/>
         </div>
         <Progress
           teamScore={teamPoints}
@@ -406,19 +402,19 @@ const QuizDashboard = ({
             setSelectedRoom={setSelectedRoom}
             completed={showScrambled1}
             roomNumber={1}
-            letters={"NSCC"}
+            letters={"ervne"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
             completed={showScrambled2}
             roomNumber={2}
-            letters={"winner"}
+            letters={"uyo"}
           />
           <QuizCard
             setSelectedRoom={setSelectedRoom}
             completed={showScrambled3}
             roomNumber={3}
-            letters={"2024"}
+            letters={"nngao"}
           />
         </div>
       </div>
