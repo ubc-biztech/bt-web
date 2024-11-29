@@ -67,7 +67,16 @@ function Leaderboard({
           false
         );
         if (response && Array.isArray(response)) {
-          setTeams(response.sort((a, b) => b.scannedQRs.length - a.scannedQRs.length));
+          setTeams(
+            response.sort((a, b) => {
+              if (a.submission && b.submission) {
+                return new Date(a.submission) - new Date(b.submission);
+              }
+              if (a.submission) return -1;
+              if (b.submission) return 1;
+              return b.scannedQRs.length - a.scannedQRs.length;
+            })
+          );
         }
       } catch (error) {
         console.error("Error fetching teams:", error);
@@ -307,7 +316,7 @@ function Leaderboard({
                     display: "flex",
                     justifyContent: "flex-end",
                     flexShrink: 0,
-                    marginLeft: 1.5
+                    marginLeft: 1.5,
                   }}
                 >
                   <Typography
@@ -316,19 +325,19 @@ function Leaderboard({
                     variant="body1"
                     sx={{
                       fontWeight: 500,
-                      color: "white"
+                      color: "white",
                     }}
                     initial={{
-                      scale: 1
+                      scale: 1,
                     }}
                     animate={{
-                      scale: [1, 1.2, 1]
+                      scale: [1, 1.2, 1],
                     }}
                     transition={{
-                      duration: 0.3
+                      duration: 0.3,
                     }}
                   >
-                    {team.scannedQRs.length} pts
+                    {team.submission ? "Completed" : `${team.scannedQRs.length} pts`}
                   </Typography>
                 </Box>
               </ListItem>

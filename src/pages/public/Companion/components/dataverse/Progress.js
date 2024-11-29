@@ -5,13 +5,17 @@ import {
   Box, IconButton, TextField
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import {
+  fetchBackend
+} from "utils";
 
 const CharacterInput = ({
   onSubmit,
   numChars = 16,
   correctAnswer = "nscc winner 2024",
   disabled = true,
-  setAnswered
+  setAnswered,
+  userRegistration
 }) => {
   const [chars, setChars] = useState(Array(numChars).fill(""));
   const [isTyping, setIsTyping] = useState(false);
@@ -96,12 +100,25 @@ const CharacterInput = ({
   };
 
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const input = chars.join("");
     if (input.length === numChars) {
       updateColors();
       const isAnswerCorrect = input.toLowerCase() === correctAnswer.toLowerCase();
       if (isAnswerCorrect) {
+        const toAddQuestion = [];
+        toAddQuestion.push("Final Question");
+        await fetchBackend(
+          "/team/addQuestions",
+          "put",
+          {
+            eventID: "dataverse",
+            year: 2024,
+            user_id: userRegistration.id,
+            answered_questions: toAddQuestion
+          },
+          false
+        );
         setAnswered(true);
         onSubmit(input);
       }
@@ -386,7 +403,7 @@ const Divider = () => {
 };
 
 const Progress = ({
-  teamScore, maxScore, onCharacterSubmit, setAnswered, disabled
+  teamScore, maxScore, onCharacterSubmit, setAnswered, disabled, userRegistration
 }) => {
   return (
     <>
@@ -422,7 +439,7 @@ const Progress = ({
             gap: 2
           }}
         >
-          <CharacterInput onSubmit={onCharacterSubmit} setAnswered={setAnswered} disabled={disabled} />
+          <CharacterInput onSubmit={onCharacterSubmit} setAnswered={setAnswered} disabled={disabled} userRegistration={userRegistration}/>
           <ProgressBar teamScore={teamScore} maxScore={maxScore} />
         </Box>
       </Box>
