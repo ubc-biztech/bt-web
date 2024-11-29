@@ -15,11 +15,11 @@ const quizData = {
       "multiple-choice" // Free text question
     ],
     correctAnswers: [
-      "Victor Wembanyama",
-      "703",
-      "0.89",
-      "Retrieve all players who play for the New York Knicks and scored at least 20 points in a game",
-      "BOS"
+      "VmljdG9yIFdlbWJhbnlhbWE=",
+      "NzAz",
+      "MC44OQ==",
+      "UmV0cmlldmUgYWxsIHBsYXllcnMgd2hvIHBsYXkgZm9yIHRoZSBOZXcgWW9yayBLbmlja3MgYW5kIHNjb3JlZCBhdCBsZWFzdCAyMCBwb2ludHMgaW4gYSBnYW1l",
+      "Qk9T"
     ],
     options: [
       [],
@@ -48,7 +48,7 @@ const quizData = {
       "text", // Free text question
       "multiple-choice"
     ],
-    correctAnswers: ["Scatter Plot", "188", "325", "63", "Friday"],
+    correctAnswers: ["U2NhdHRlciBQbG90", "MTg4", "MzI1", "NjM=", "RnJpZGF5"],
     options: [
       ["Bar Chart", "Pie Chart", "Scatter Plot"], // Multiple choice options for the first question
       [], // No options for this text question
@@ -72,7 +72,7 @@ const quizData = {
       "text", // Free text question
       "text"
     ],
-    correctAnswers: ["3", "0.015", "physical_hours_daily, MAX", "52", "0.03"],
+    correctAnswers: ["Mw==", "MC4wMTU=", "cGh5c2ljYWxfaG91cnNfZGFpbHksIE1BWA==", "NTI=", "MC4wMw=="],
     options: [
       [], // No options for this text question
       [], // No options for this text question

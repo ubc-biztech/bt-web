@@ -130,6 +130,7 @@ export default function QuizRoom({
     setAnswers(newAnswers);
   };
 
+  // Define the function outside useEffect to make it reusable
   const checkAnswers = async () => {
     if (cooldown > 0) return;
 
@@ -137,6 +138,7 @@ export default function QuizRoom({
       correctAnswers, questions
     } = quizData[roomNumber];
     const newAnswerStatus = [...answerStatus];
+    let isMounted = true; // Local flag for cleanup
 
     try {
       let score = 0;
@@ -153,9 +155,9 @@ export default function QuizRoom({
         }
 
         const sanitizedAnswer = answer ? answer.trim().toLowerCase() : "";
-        const sanitizedCorrectAnswer = correctAnswers[index]
-          ? correctAnswers[index].trim().toLowerCase()
-          : "";
+        const sanitizedCorrectAnswer = atob(correctAnswers[index])
+          .trim()
+          .toLowerCase();
 
         const isCorrect = sanitizedAnswer === sanitizedCorrectAnswer;
 
@@ -168,7 +170,9 @@ export default function QuizRoom({
         }
       });
 
-      setAnswerStatus(newAnswerStatus);
+      if (isMounted) {
+        setAnswerStatus(newAnswerStatus);
+      }
 
       if (score > 0) {
         await fetchBackend(
@@ -195,7 +199,9 @@ export default function QuizRoom({
           false
         );
 
-        setCompletedQuestions((prev) => [...prev, ...newlyScannedQuestions]);
+        if (isMounted) {
+          setCompletedQuestions((prev) => [...prev, ...newlyScannedQuestions]);
+        }
       }
 
       const allGreen = questions.every(
@@ -204,16 +210,32 @@ export default function QuizRoom({
           newAnswerStatus[index] === "correct"
       );
 
-      if (allGreen) {
+      if (isMounted && allGreen) {
         setOpenPopup(true);
       }
 
-      setCooldown(10);
+      if (isMounted) {
+        setCooldown(10);
+      }
     } catch (error) {
-      console.error("Error updating team points:", error);
-      alert("Failed to update team points. Please try again.");
+      if (isMounted) {
+        console.error("Error updating team points:", error);
+        alert("Failed to update team points. Please try again.");
+      }
     }
+
+    // Cleanup when function completes
+    return () => {
+      isMounted = false;
+    };
   };
+
+  // Attach cleanup logic in useEffect
+  useEffect(() => {
+    return () => {
+      // Cleanup any ongoing asynchronous tasks
+    };
+  }, []);
 
   const formatTime = (seconds) => {
     if (isNaN(seconds) || seconds < 0) {
