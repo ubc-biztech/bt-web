@@ -387,9 +387,10 @@ const QuizDashboard = ({
         </div>
         <Progress
           teamScore={teamPoints}
-          maxScore={12}
+          maxScore={13}
           setAnswered={setAnswered}
           disabled={!(showScrambled1 && showScrambled2 && showScrambled3)}
+          userRegistration={userRegistration}
         />
         <div
           style={{
