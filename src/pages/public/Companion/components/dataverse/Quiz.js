@@ -278,6 +278,7 @@ const QuizDashboard = ({
   disabled = false
 }) => {
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [refreshCounter, setRefreshCounter] = useState(0);
   const [Answered, setAnswered] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [showScrambled1, setShowScrambled1] = useState(false);
@@ -305,7 +306,7 @@ const QuizDashboard = ({
     };
 
     fetchCompletedQuestions();
-  }, [userRegistration.id]);
+  }, [userRegistration.id, refreshCounter]);
 
   useEffect(() => {
     setShowScrambled1(
@@ -326,6 +327,7 @@ const QuizDashboard = ({
         checkArray: questions
       })
     );
+    console.log("gautham vescwhanatham");
   }, [questions]);
 
   const urlMap = {
@@ -333,6 +335,10 @@ const QuizDashboard = ({
     2: "https://docs.google.com/spreadsheets/d/1S_YJCkbY0EOmh1X3Sd6JKJkHguN3Z2kT/export?format=xlsx",
     3: "https://docs.google.com/spreadsheets/d/1YR3pZPjnP-InGG3MifOcGd4WpAIR2fX0/export?format=xlsx"
   };
+
+  useEffect(() => {
+    console.log("showScrambled1 updated:", showScrambled1);
+  }, [showScrambled1]);
 
   const renderContent = () => {
     if (Answered) {
@@ -343,7 +349,10 @@ const QuizDashboard = ({
       return (
         <QuizRoom
           roomNumber={selectedRoom}
-          goBack={() => setSelectedRoom(null)}
+          goBack={() => {
+            setSelectedRoom(null);
+            setRefreshCounter(refreshCounter + 1);
+          }}
           userRegistration={userRegistration}
           setQuestions={setQuestions}
           quizData={quizData}
