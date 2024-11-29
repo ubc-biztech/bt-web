@@ -48,7 +48,7 @@ const Dashboard = () => {
 
         const data = await response.response;
         if (data && data.points !== undefined) {
-          setTeamPoints(data.points);
+          setTeamPoints(data.scannedQRs.length);
         }
       } catch (error) {
         console.error("Error fetching team points:", error);
