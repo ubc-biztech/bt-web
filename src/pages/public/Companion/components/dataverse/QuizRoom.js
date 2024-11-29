@@ -46,10 +46,10 @@ export default function QuizRoom({
   quizData,
   datasetLink
 }) {
-  const [answers, setAnswers] = useState(Array(4).fill(""));
-  const [selectedOptions, setSelectedOptions] = useState(Array(4).fill(null));
+  const [answers, setAnswers] = useState(Array(5).fill(""));
+  const [selectedOptions, setSelectedOptions] = useState(Array(5).fill(null));
   const [completedQuestions, setCompletedQuestions] = useState([]);
-  const [answerStatus, setAnswerStatus] = useState(Array(4).fill(null));
+  const [answerStatus, setAnswerStatus] = useState(Array(5).fill(null));
   const [openPopup, setOpenPopup] = useState(false);
   const [cooldown, setCooldown] = useState(0);
 
