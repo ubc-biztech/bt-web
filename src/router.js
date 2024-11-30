@@ -26,8 +26,10 @@ import FormSuccess from "pages/public/RegistrationForms/FormSuccess";
 import RegistrationForm from "pages/public/RegistrationForms";
 import Companion from "pages/public/Companion";
 import CompanionReset from "./pages/public/Companion/ResetPage";
-import Leaderboard from "pages/public/Companion/Leaderboard";
-
+import Dashboard from "pages/public/Companion/components/dataverse/Dashboard";
+import {
+  GlobalLeaderboardExample
+} from "pages/public/Companion/components/dataverse/Leaderboard";
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
 
@@ -142,6 +144,7 @@ class Router extends Component {
       "/redeem",
       "/redemption",
       "/companion",
+      "/companion/dashboard",
       "/leaderboard"
     ];
 
@@ -158,8 +161,9 @@ class Router extends Component {
           path="/companion/reset"
           render={() => <CompanionReset />}
         />
-        <Route path="/companion" render={() => <Companion />} />
-        <Route path="/leaderboard" render={() => <Leaderboard />} />
+        <Route exact path="/companion" render={() => <Companion />} />
+        <Route exact path="/companion/dashboard" render={() => <Dashboard />} />
+        <Route path="/leaderboard" render={() => <GlobalLeaderboardExample />} />
         {/* ADMIN ROUTES */}
         {user && <Route path="/admin" component={AdminRoutes} />}
 
