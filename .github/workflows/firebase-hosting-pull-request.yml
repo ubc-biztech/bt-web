@@ -28,6 +28,16 @@ jobs:
           REACT_APP_SHEET_ID: ${{ secrets.REACT_APP_SHEET_ID }}
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
+          REACT_APP_BYPASS_EMAIL_1: '${{ secrets.REACT_APP_BYPASS_EMAIL_1 }}'
+          REACT_APP_BYPASS_EMAIL_2: '${{ secrets.REACT_APP_BYPASS_EMAIL_2 }}'
+          REACT_APP_BYPASS_EMAIL_3: '${{ secrets.REACT_APP_BYPASS_EMAIL_3 }}'
+          REACT_APP_BYPASS_EMAIL_4: '${{ secrets.REACT_APP_BYPASS_EMAIL_4 }}'
+          REACT_APP_BYPASS_EMAIL_5: '${{ secrets.REACT_APP_BYPASS_EMAIL_5 }}'
+          REACT_APP_BYPASS_EMAIL_6: '${{ secrets.REACT_APP_BYPASS_EMAIL_6 }}'
+          REACT_APP_BYPASS_EMAIL_7: '${{ secrets.REACT_APP_BYPASS_EMAIL_7 }}'
+          REACT_APP_BYPASS_EMAIL_8: '${{ secrets.REACT_APP_BYPASS_EMAIL_8 }}'
+          REACT_APP_BYPASS_EMAIL_9: '${{ secrets.REACT_APP_BYPASS_EMAIL_9 }}'
+          REACT_APP_BYPASS_EMAIL_10: '${{ secrets.REACT_APP_BYPASS_EMAIL_10 }}'
 
       - name: Dev Firebase Preview
         if: github.event.pull_request.base.ref == 'dev'
@@ -52,6 +62,16 @@ jobs:
           REACT_APP_SHEET_ID: ${{ secrets.REACT_APP_SHEET_ID }}
           REACT_APP_CLIENT_EMAIL: '${{ secrets.REACT_APP_CLIENT_EMAIL }}'
           REACT_APP_PRIVATE_KEY: '${{ secrets.REACT_APP_PRIVATE_KEY }}'
+          REACT_APP_BYPASS_EMAIL_1: '${{ secrets.REACT_APP_BYPASS_EMAIL_1 }}'
+          REACT_APP_BYPASS_EMAIL_2: '${{ secrets.REACT_APP_BYPASS_EMAIL_2 }}'
+          REACT_APP_BYPASS_EMAIL_3: '${{ secrets.REACT_APP_BYPASS_EMAIL_3 }}'
+          REACT_APP_BYPASS_EMAIL_4: '${{ secrets.REACT_APP_BYPASS_EMAIL_4 }}'
+          REACT_APP_BYPASS_EMAIL_5: '${{ secrets.REACT_APP_BYPASS_EMAIL_5 }}'
+          REACT_APP_BYPASS_EMAIL_6: '${{ secrets.REACT_APP_BYPASS_EMAIL_6 }}'
+          REACT_APP_BYPASS_EMAIL_7: '${{ secrets.REACT_APP_BYPASS_EMAIL_7 }}'
+          REACT_APP_BYPASS_EMAIL_8: '${{ secrets.REACT_APP_BYPASS_EMAIL_8 }}'
+          REACT_APP_BYPASS_EMAIL_9: '${{ secrets.REACT_APP_BYPASS_EMAIL_9 }}'
+          REACT_APP_BYPASS_EMAIL_10: '${{ secrets.REACT_APP_BYPASS_EMAIL_10 }}'
 
       - name: Prod Firebase Preview
         if: github.event.pull_request.base.ref == 'master'
