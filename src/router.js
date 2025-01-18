@@ -1,7 +1,15 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
-import { BrowserRouter, Switch, Redirect } from "react-router-dom";
+import React, {
+  Component
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  Auth
+} from "aws-amplify";
+import {
+  BrowserRouter, Switch, Redirect
+} from "react-router-dom";
 
 import Nav from "components/layout/Navigation";
 import ScrollToTop from "components/layout/ScrollToTop";
@@ -18,8 +26,10 @@ import FormSuccess from "pages/public/RegistrationForms/FormSuccess";
 import RegistrationForm from "pages/public/RegistrationForms";
 import Companion from "pages/public/Companion";
 import CompanionReset from "./pages/public/Companion/ResetPage";
-import Leaderboard from "pages/public/Companion/Leaderboard";
-
+import Dashboard from "pages/public/Companion/components/dataverse/Dashboard";
+import {
+  GlobalLeaderboardExample
+} from "pages/public/Companion/components/dataverse/Leaderboard";
 // import Signup from '../pages/public/Signup'
 import EventsDashboard from "pages/public/EventsDashboard";
 
@@ -38,7 +48,9 @@ import {
   fetchUser,
   fetchUserRegisteredEvents
 } from "store/user/userActions";
-import { log } from "utils";
+import {
+  log
+} from "utils";
 
 class Router extends Component {
   constructor() {
@@ -49,7 +61,9 @@ class Router extends Component {
   }
 
   getAuthenticatedUser() {
-    return Auth.currentAuthenticatedUser({ bypassCache: true })
+    return Auth.currentAuthenticatedUser({
+      bypassCache: true
+    })
       .then(async (authUser) => {
         const email = authUser.attributes.email;
         if (
@@ -65,8 +79,12 @@ class Router extends Component {
           if (email) {
             // Perform redux actions to update user and registration states at the same time
             await Promise.all([
-              fetchUser({ userId: email }),
-              fetchUserRegisteredEvents({ userId: email })
+              fetchUser({
+                userId: email
+              }),
+              fetchUserRegisteredEvents({
+                userId: email
+              })
             ]);
           } else {
             // Parse first name and last name
@@ -76,7 +94,7 @@ class Router extends Component {
 
             // save only essential info to redux
             await setUser({
-              email: email,
+              email,
               fname,
               lname
             });
@@ -90,8 +108,7 @@ class Router extends Component {
   // (otherwise, the login page will initially show on every refresh)
   componentDidMount() {
     log(
-      `Running biztech app in '${
-        process.env.REACT_APP_STAGE || "local"
+      `Running biztech app in '${process.env.REACT_APP_STAGE || "local"
       }' environment`
     );
 
@@ -100,17 +117,25 @@ class Router extends Component {
       // also get events at the same time
       Promise.all([this.getAuthenticatedUser()]).then(() => {
         // Ultimately, after all is loaded, set the "loaded" state and render the component
-        this.setState({ loaded: true });
+        this.setState({
+          loaded: true
+        });
       });
     } else {
       // If the user already exists, update the events and render the page
-      this.setState({ loaded: true });
+      this.setState({
+        loaded: true
+      });
     }
   }
 
   render() {
-    const { user } = this.props;
-    const { loaded } = this.state;
+    const {
+      user
+    } = this.props;
+    const {
+      loaded
+    } = this.state;
     const pathname = window.location.pathname;
     // Alert the user about the need to register if they haven't
     const userNotMember = user && !user.isMember && !user.admin;
@@ -119,6 +144,7 @@ class Router extends Component {
       "/redeem",
       "/redemption",
       "/companion",
+      "/companion/dashboard",
       "/leaderboard"
     ];
 
@@ -135,8 +161,9 @@ class Router extends Component {
           path="/companion/reset"
           render={() => <CompanionReset />}
         />
-        <Route path="/companion" render={() => <Companion />} />
-        <Route path="/leaderboard" render={() => <Leaderboard />} />
+        <Route exact path="/companion" render={() => <Companion />} />
+        <Route exact path="/companion/dashboard" render={() => <Dashboard />} />
+        <Route path="/leaderboard" render={() => <GlobalLeaderboardExample />} />
         {/* ADMIN ROUTES */}
         {user && <Route path="/admin" component={AdminRoutes} />}
 
@@ -242,7 +269,7 @@ class Router extends Component {
     else {
       return (
         // eslint-disable-line curly
-        <BrowserRouter>
+        <BrowserRouter forceRefresh={true}>
           <ScrollToTop />
           {!companionPaths.find((p) => pathname.includes(p)) ? (
             <>
@@ -250,9 +277,9 @@ class Router extends Component {
               <div className="content">
                 {!user && <UserAlert />}
                 {userNotMember && <MemberAlert />}
-                {pathname === "/" || pathname === "" ? null : <Header />}
+                <Header />
                 {routes}
-                {pathname === "/" || pathname === "" ? null : <Footer />}
+                <Footer />
               </div>
             </>
           ) : (
@@ -270,4 +297,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { setUser })(Router);
+export default connect(mapStateToProps, {
+  setUser
+})(Router);

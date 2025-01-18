@@ -1,9 +1,13 @@
-import React, { createContext, useState } from "react"
+import React, {
+  createContext, useState
+} from "react";
 import {
-  createMuiTheme,
+  createTheme,
   ThemeProvider as MuiThemeProvider
-} from "@material-ui/core/styles"
-import { COLORS } from "constants/index"
+} from "@material-ui/core/styles";
+import {
+  COLORS
+} from "constants/index";
 
 export const fontFamily = [
   "Gilroy",
@@ -11,9 +15,9 @@ export const fontFamily = [
   "\"Helvetica Neue\"",
   "Arial",
   "sans-serif"
-].join(",")
+].join(",");
 
-const darkTheme = createMuiTheme({
+const darkTheme = createTheme({
   overrides: {
     MuiPickersCalendarHeader: {
       iconButton: {
@@ -197,7 +201,7 @@ const darkTheme = createMuiTheme({
     "0px 8px 12px rgba(34, 34, 34, 0.12)",
     "0px 8px 12px rgba(34, 34, 34, 0.12)"
   ]
-})
+});
 
 // context allows us to change "darkMode" state from anywhere in the app
 // to do this, import and use "ThemeConsumer" like so:
@@ -210,16 +214,16 @@ const darkTheme = createMuiTheme({
 const ThemeContext = createContext({
   darkMode: true,
   setDarkMode: () => {}
-})
+});
 
 // Provider is used to initialize at the root of the app
 function ThemeProvider (props) {
-  const [darkMode, setDarkMode] = useState(true)
+  const [darkMode, setDarkMode] = useState(true);
 
   const value = {
     darkMode,
     setDarkMode
-  }
+  };
   return (
     <MuiThemeProvider theme={darkTheme}>
       <ThemeContext.Provider value={value}>
@@ -227,9 +231,11 @@ function ThemeProvider (props) {
         <div className={darkMode ? "DarkMode" : ""}>{props.children}</div>
       </ThemeContext.Provider>
     </MuiThemeProvider>
-  )
+  );
 }
 
-const ThemeConsumer = ThemeContext.Consumer
+const ThemeConsumer = ThemeContext.Consumer;
 
-export { ThemeProvider, ThemeConsumer }
+export {
+  ThemeProvider, ThemeConsumer
+};

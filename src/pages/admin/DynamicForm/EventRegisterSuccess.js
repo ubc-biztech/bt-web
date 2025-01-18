@@ -1,14 +1,27 @@
-import React, { useState } from "react";
-import { withRouter, useParams } from "react-router-dom";
+import React, {
+  useState
+} from "react";
+import {
+  withRouter, useParams
+} from "react-router-dom";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Grid, Typography
+} from "@material-ui/core";
 
 import LinkIcon from "@material-ui/icons/Link";
 import HouseChef from "assets/housechef.svg";
 import SpeechBubble from "assets/registrationpagespeech.svg";
 
-import { COLORS } from "../../../constants/_constants/theme";
+import {
+  COLORS
+} from "../../../constants/_constants/theme";
+import {
+  Link
+} from "react-router-dom/cjs/react-router-dom.min";
 
 const ICON_SIZE = "24px";
 const FLASH_TIME = "50";
@@ -82,7 +95,8 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     color: `${COLORS.FONT_COLOR}`
   },
-  upcomingEventsDate: {},
+  upcomingEventsDate: {
+  },
   imageContainer: {
     display: "flex",
     justifyContent: "flex-end"
@@ -112,7 +126,9 @@ const EventRegisterSuccess = ({
 }) => {
   const classes = useStyles();
 
-  const { type } = useParams();
+  const {
+    type
+  } = useParams();
 
   const [displayLinkMessage, setDisplayLinkMessage] = useState(false);
 
@@ -138,7 +154,7 @@ const EventRegisterSuccess = ({
     <Grid container spacing={4} className={classes.main}>
       <Grid item xs={12} lg={7} className={classes.leftColumn}>
         <div className={classes.successMessageContainer}>
-          
+
           {type === "partner" ? (
             <div>
               <Typography className={classes.successMessageHeading}>
@@ -147,18 +163,32 @@ const EventRegisterSuccess = ({
               <Typography>
                 You've successfully registered to the event. Our directors will review the information and coordinate with you further.
               </Typography>
+              {/* <Typography>We've sent you an email with a confirmation and a QR code to check-in to our event! <br/><b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography> */}
+              <Typography>
+                Thank you for your registration and support in BizTech's events! We'll be in touch with you soon.
+              </Typography>
             </div>
-          ) : (
+          ) : type === "application" ?
             <div>
               <Typography className={classes.successMessageHeading}>
-                  See you soon!
+                We've got your application!
               </Typography>
               <Typography>
-                  You've successfully registered to the event.
+                Thanks for applying! We'll be reviewing your application soon and will email you soon about your application status!
               </Typography>
+              <Typography><br />Click <b><Link to="/companion" reloadDocument>here</Link></b> to view your application status </Typography>
             </div>
-          )}
-          <Typography>We've sent you two emails, one with a calendar invite and one with a QR code to check-in to our event! <b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
+            : (
+              <div>
+                <Typography className={classes.successMessageHeading}>
+                  See you soon!
+                </Typography>
+                <Typography>
+                  You've successfully registered to the event.
+                </Typography>
+                <Typography>We've sent you two emails, one with a calendar invite and one with a QR code to check-in to our event! <br /><b>Please be sure to check your Spam or Promotions inboxes as well.</b></Typography>
+              </div>
+            )}
         </div>
         {type !== "partner" && (
           <div>
@@ -191,65 +221,65 @@ const EventRegisterSuccess = ({
           </div>
         )}
       </Grid>
-        <Grid item xs={12} lg={5} className={classes.rightColumn}>
-          <div className={classes.imageContainer}>
-            <img
-              src={SpeechBubble}
-              alt="Speech Bubble"
-              className={classes.speechBubble}
-            />
-            <img
-              src={HouseChef}
-              alt="House with Chef Hat"
-              className={classes.houseChefImage}
-            />
-          </div>
-          {type !== "partner" && upcomingEvents.length > 0 && (
-            <div className={classes.upcomingEventsContainer}>
-              <Typography className={classes.upcomingEventsHeading}>
-                Upcoming Events:
-              </Typography>
+      <Grid item xs={12} lg={5} className={classes.rightColumn}>
+        <div className={classes.imageContainer}>
+          <img
+            src={SpeechBubble}
+            alt="Speech Bubble"
+            className={classes.speechBubble}
+          />
+          <img
+            src={HouseChef}
+            alt="House with Chef Hat"
+            className={classes.houseChefImage}
+          />
+        </div>
+        {type !== "partner" && upcomingEvents.length > 0 && (
+          <div className={classes.upcomingEventsContainer}>
+            <Typography className={classes.upcomingEventsHeading}>
+              Upcoming Events:
+            </Typography>
 
-              {upcomingEvents.map((event) => {
-                const eventStart =
-                  event.startDate &&
-                  new Date(event.startDate).toLocaleDateString("en-US", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                  });
-                const eventEnd =
-                  event.endDate &&
-                  new Date(event.endDate).toLocaleDateString("en-US", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                  });
+            {upcomingEvents.map((event) => {
+              const eventStart =
+                event.startDate &&
+                new Date(event.startDate).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+                });
+              const eventEnd =
+                event.endDate &&
+                new Date(event.endDate).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+                });
 
-                return (
-                  <div
-                    key={`${event.id};${event.year}`}
-                    className={classes.upcomingEventsItem}
+              return (
+                <div
+                  key={`${event.id};${event.year}`}
+                  className={classes.upcomingEventsItem}
+                >
+                  <Typography
+                    className={classes.upcomingEventsEname}
+                    onClick={() => redirectEvent(event.id, event.year)}
                   >
-                    <Typography
-                      className={classes.upcomingEventsEname}
-                      onClick={() => redirectEvent(event.id, event.year)}
-                    >
-                      {event.ename}
-                    </Typography>
-                    <Typography
-                      className={classes.upcomingEventsDate}
-                      variant="caption"
-                    >
-                      {eventStart}
-                      {eventEnd && eventEnd !== eventStart ? ` - ${eventEnd}` : ""}
-                    </Typography>
-                  </div>
+                    {event.ename}
+                  </Typography>
+                  <Typography
+                    className={classes.upcomingEventsDate}
+                    variant="caption"
+                  >
+                    {eventStart}
+                    {eventEnd && eventEnd !== eventStart ? ` - ${eventEnd}` : ""}
+                  </Typography>
+                </div>
               );
             })}
           </div>
-          )}
-        </Grid>
+        )}
+      </Grid>
     </Grid>
   );
 };

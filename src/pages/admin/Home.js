@@ -1,8 +1,14 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import {
+  useHistory
+} from "react-router-dom";
+import {
+  Helmet
+} from "react-helmet";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 import {
   Box,
   Card,
@@ -15,10 +21,16 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import { MoreVert as MoreVertIcon } from "@material-ui/icons";
+import {
+  MoreVert as MoreVertIcon
+} from "@material-ui/icons";
 
-import { COLORS } from "constants/index";
-import { deleteEvent } from "store/event/eventActions";
+import {
+  COLORS
+} from "constants/index";
+import {
+  deleteEvent
+} from "store/event/eventActions";
 
 const useStyles = makeStyles({
   card: {
@@ -44,15 +56,17 @@ const useStyles = makeStyles({
 });
 
 function AdminHome(props) {
-  const { events } = props;
+  const {
+    events
+  } = props;
   const classes = useStyles();
 
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [eventMenuClicked, setEventMenuClicked] = React.useState(null);
-  const filteredEvents = events.sort((a, b) => { 
-    return new Date(b.startDate) - new Date(a.startDate)
-  })
+  const filteredEvents = events.sort((a, b) => {
+    return new Date(b.startDate) - new Date(a.startDate);
+  });
 
   const handleClick = (e, event) => {
     setAnchorEl(e.currentTarget);
@@ -99,9 +113,9 @@ function AdminHome(props) {
   };
 
   const isEventPassed = (event) => {
-    const startDate = new Date(event.startDate).getTime()
-    return startDate < new Date().getTime()
-  }
+    const startDate = new Date(event.startDate).getTime();
+    return startDate < new Date().getTime();
+  };
 
   function createEventCard(event) {
     const image = event.imageUrl || require("assets/placeholder.jpg");
@@ -118,16 +132,18 @@ function AdminHome(props) {
           />
         </CardActionArea>
         <CardHeader
-          classes={{ subheader: classes.cardHeader }}
+          classes={{
+            subheader: classes.cardHeader
+          }}
           title={event.ename}
           subheader={
             event.startDate
               ? new Date(event.startDate).toLocaleDateString("en-US", {
-                  day: "numeric",
-                  weekday: "long",
-                  month: "long",
-                  year: "numeric",
-                })
+                day: "numeric",
+                weekday: "long",
+                month: "long",
+                year: "numeric",
+              })
               : ""
           }
           action={
@@ -153,7 +169,9 @@ function AdminHome(props) {
 
       <div className={classes.row}>
         <div className={classes.columnLeft}>
-          <Typography variant="h1" style={{ color: COLORS.BIZTECH_GREEN }}>
+          <Typography variant="h1" style={{
+            color: COLORS.BIZTECH_GREEN
+          }}>
             BizTech Admins
           </Typography>
         </div>

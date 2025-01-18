@@ -1,6 +1,6 @@
 # bt-web
 
-Biztech's web application.
+Biztech's web application. 
 
 ## Getting Started
 

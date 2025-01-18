@@ -1,26 +1,36 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { Redirect, Switch } from 'react-router-dom'
+import React, {
+  useEffect
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  Redirect, Switch
+} from "react-router-dom";
 
-import Route from 'components/routing/Route'
+import Route from "components/routing/Route";
 
-import MemberProfile from './MemberProfile'
-import MemberHome from './Home'
-import { fetchEvents } from 'store/event/eventActions'
+import MemberProfile from "./MemberProfile";
+import MemberHome from "./Home";
+import {
+  fetchEvents
+} from "store/event/eventActions";
 
 const MemberRoutes = (props) => {
-  const { events, user, userEventsRegistered } = props
+  const {
+    events, user, userEventsRegistered
+  } = props;
 
   useEffect(() => {
-    fetchEvents()
-  }, [])
+    fetchEvents();
+  }, []);
 
   return (
     <Switch>
       <Route
         exact
         path='/member/profile'
-        featureFlag={'REACT_APP_SHOW_MAXVP'}
+        featureFlag={"REACT_APP_SHOW_MAXVP"}
         render={() => (
           <MemberProfile
             user={user}
@@ -32,7 +42,7 @@ const MemberRoutes = (props) => {
       <Route
         exact
         path='/member/home'
-        featureFlag={'REACT_APP_SHOW_MAXVP'}
+        featureFlag={"REACT_APP_SHOW_MAXVP"}
         render={() => (
           <MemberHome
             user={user}
@@ -44,19 +54,20 @@ const MemberRoutes = (props) => {
 
       <Redirect to='/404' />
     </Switch>
-  )
-}
+  );
+};
 const mapStateToProps = (state) => {
-  console.log('reg', state);
+  console.log("reg", state);
   return {
     events: state.eventState.events.data,
     user: state.userState.user.data,
     userEventsRegistered: state.userState.userRegisteredEvents.data != null ?
       state.userState.userRegisteredEvents.data.data : null,
-      
-  }
-}
+
+  };
+};
 
 
 
-export default connect(mapStateToProps, {})(MemberRoutes)
+export default connect(mapStateToProps, {
+})(MemberRoutes);

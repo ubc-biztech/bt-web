@@ -1,21 +1,39 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
+import {
+  useHistory
+} from "react-router-dom";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Formik
+} from "formik";
 import * as Yup from "yup";
 
 import QuickRegisterForm from "./QuickRegisterForm";
 
-import { useTheme } from "@material-ui/styles";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
+import {
+  useTheme
+} from "@material-ui/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Grid, Paper, Typography
+} from "@material-ui/core";
+import {
+  Skeleton
+} from "@material-ui/lab";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import "./QuickRegister.scss";
 import House from "assets/house.svg";
-import { COLORS } from "constants/index";
-import { fetchBackend } from "utils";
+import {
+  COLORS
+} from "constants/index";
+import {
+  fetchBackend
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -202,7 +220,9 @@ const QuickRegister = ({
             {registrationStatus ? (
               <div className={classes.completeContainer}>
                 {renderMobileOnly && (
-                  <div style={{ paddingBottom: "10vh" }}>
+                  <div style={{
+                    paddingBottom: "10vh"
+                  }}>
                     <Typography variant="h2" className={classes.header}>
                       {event.ename}
                     </Typography>
@@ -222,7 +242,9 @@ const QuickRegister = ({
                     You are now registered, click{" "}
                     <strong
                       onClick={handleReturn}
-                      style={{ cursor: "pointer" }}
+                      style={{
+                        cursor: "pointer"
+                      }}
                     >
                       here
                     </strong>{" "}

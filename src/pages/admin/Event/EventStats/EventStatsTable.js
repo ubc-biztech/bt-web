@@ -1,7 +1,14 @@
-import React, { useState, Component, useEffect } from "react";
+import React, {
+  useState, useEffect
+} from "react";
 import QRIcon from "../../../../components/icons/qr-icon.png";
 
-import MaterialTable, { MTableCell } from "material-table";
+import MaterialTable, {
+  MTableCell
+} from "@material-table/core";
+import {
+  ExportCsv, ExportPdf
+} from "@material-table/exporters";
 import {
   RadialChart,
   XYPlot,
@@ -18,25 +25,40 @@ import {
   makeStyles,
   Link,
   Button,
-  Popover, TextField
+  Popover,
+  TextField
 } from "@material-ui/core";
 
-import { Alert } from "@material-ui/lab";
-import QrReader from "react-web-qr-reader";
+import {
+  Alert
+} from "@material-ui/lab";
+import {
+  QrReader
+} from "react-qr-reader";
 
 import {
   REGISTRATION_STATUS,
   REGISTRATION_LABELS,
-  COLORS
+  COLORS,
+  APPLICATION_TABLE_TYPE,
+  ATTENDEE_TABLE_TYPE,
+  PARTNER_TABLE_TYPE
 } from "constants/index";
-import { fetchBackend } from "utils";
 import {
-  REGISTRATIONSTATUSLABEL,
-  prepareRowData,
-  POINTSLABEL
+  fetchBackend
+} from "utils";
+import {
+  REGISTRATIONSTATUSLABEL, flattenRowData, POINTSLABEL
 } from "./utils";
-import { getDefaultColumns, getDefaultPartnerColumns, getDynamicQuestionColumns } from "./TableColumns";
-import {Field, Form, Formik} from "formik";
+import {
+  getDefaultColumns,
+  getDefaultPartnerColumns,
+  getDynamicQuestionColumns
+} from "./TableColumns";
+import {
+  Field, Form, Formik
+} from "formik";
+import MassUpdateModal from "./MassUpdateModal";
 
 const styles = {
   stats: {
@@ -50,7 +72,7 @@ const styles = {
   },
   container: {
     marginRight: "30px",
-    "& .MuiTable-root": {
+    "& .MuiTableRoot": {
       position: "sticky"
     },
     width: "100%",
@@ -59,7 +81,9 @@ const styles = {
   },
   table: {
     display: "grid",
-    overflowX: "auto"
+    overflowX: "auto",
+    color: COLORS.FONT_COLOR,
+    background: COLORS.LIGHT_BACKGROUND_COLOR,
   },
   qrCodeVideo: {
     width: "300px",
@@ -95,103 +119,140 @@ const styles = {
   }
 };
 
-/**
- * Class component that displays event user table populated from the backend
- * When a user check-in status is changed, the backend is updated and it fetches new data
- */
-export class EventStatsTable extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      columns: {},
-      presentedColumns: [],
-      partnerColumns: {},
-      presentedPartnerColumns: [],
-      registrationNumbers: {},
-      faculties: {},
-      years: {},
-      dietary: {},
-      genders: {},
-      heardFrom: {},
-      teamID: {},
-      isWaitlistShown: false,
-      isAdminTeamFormationShown: false,
-      registrationVisible: { visible: false, style: { display: "none" } },
-      facultyVisible: { visible: false, style: { display: "none" } },
-      yearVisible: { visible: false, style: { display: "none" } },
-      dietaryVisible: { visible: false, style: { display: "none" } },
-      gendersVisible: { visible: false, style: { display: "none" } },
-      heardFromVisible: { visible: false, style: { display: "none" } },
-      tableType: "attendee",
-    };
-  }
+const EventStatsTable = (props) => {
+  const [rows, setRows] = useState([]);
+  const [fnames, setFnames] = useState([]);
+  const [presentedColumns, setPresentedColumns] = useState([]);
+  const [presentedPartnerColumns, setPresentedPartnerColumns] = useState([]);
+  const [presentedApplicationViewColumns, setPresentedApplicationViewColumns] = useState([]);
+  const [registrationNumbers, setRegistrationNumbers] = useState({
+  });
+  const [faculties, setFaculties] = useState({
+  });
+  const [years, setYears] = useState({
+  });
+  const [dietary, setDietary] = useState({
+  });
+  const [genders, setGenders] = useState({
+  });
+  const [heardFrom, setHeardFrom] = useState({
+  });
+  const [teamID, setTeamID] = useState({
+  });
+  const [isWaitlistShown, setIsWaitlistShown] = useState(false);
+  const [isAdminTeamFormationShown, setIsAdminTeamFormationShown] = useState(false);
+  const [tableType, setTableType] = useState(ATTENDEE_TABLE_TYPE);
+  const [isMassUpdateModalOpen, setIsMassUpdateModalOpen] = useState(false);
 
-  refreshTable = () => {
-    this.getEventTableData(this.props.event.id, this.props.event.year);
+  const toggleMassUpdateModal = () => {
+    setIsMassUpdateModalOpen(prevState => !prevState);
   };
 
-  async initializeTableColumns() {
-    const { id: eventID, year: eventYear} = this.props.event;
-    await fetchBackend(
-      `/events/${eventID}/${eventYear.toString()}`,
-      "GET"
-    ).then(async (event) => {
-      const defaultColumns = getDefaultColumns(this.props.event.id, this.props.event.year, this.refreshTable);
+  const refreshTable = async () => {
+    if (props.event !== null) {
+      // Assuming getEventTableData is an async function
+      setRows([]);
+      await getEventTableData(props.event.id, props.event.year);
+    };
+  };
+
+  const initializeTableColumns = async () => {
+    const {
+      id: eventID, year: eventYear
+    } = props.event;
+
+    try {
+      const event = await fetchBackend(`/events/${eventID}/${eventYear.toString()}`, "GET");
+
+      const defaultColumns = getDefaultColumns(
+        props.event.id,
+        props.event.year,
+        refreshTable,
+        ATTENDEE_TABLE_TYPE
+      );
       const dynamicQuestionColumns = getDynamicQuestionColumns(event.registrationQuestions);
 
-      const defaultPartnerColumns = getDefaultPartnerColumns(this.props.event.id, this.props.event.year, this.refreshTable);
-      // dynamic Partner questions not implemented yet.
+      const defaultApplicationViewColumns = getDefaultColumns(
+        props.event.id,
+        props.event.year,
+        refreshTable,
+        APPLICATION_TABLE_TYPE
+      );
+
+      const defaultPartnerColumns = getDefaultPartnerColumns(
+        props.event.id,
+        props.event.year,
+        refreshTable
+      );
+      const dynamicPartnerQuestionColumns = getDynamicQuestionColumns(
+        event.partnerRegistrationQuestions
+      );
 
       const presentedColumns = defaultColumns.concat(dynamicQuestionColumns);
-      this.setState({
-        presentedColumns,
-        presentedPartnerColumns: defaultPartnerColumns
-      });
-    });
-  }
+      const presentedPartnerColumns = defaultPartnerColumns.concat(dynamicPartnerQuestionColumns);
+      const presentedApplicationViewColumns =
+        defaultApplicationViewColumns.concat(dynamicQuestionColumns);
 
-  refreshTable = () => {
-    this.getEventTableData(this.props.event.id, this.props.event.year);
+      setPresentedColumns(presentedColumns);
+      setPresentedPartnerColumns(presentedPartnerColumns);
+      setPresentedApplicationViewColumns(presentedApplicationViewColumns);
+    } catch (error) {
+      // Handle error, e.g., log it or show a notification
+      console.error("Error fetching data:", error);
+    }
   };
 
-  /* updates stats and the rows in the table
-     faculty, gender, dietary, and year stats are only computed on the initial render of the component
-     # of registered/checkedin etc. is computed every single time this function is called
-  */
-  async getEventTableData(eventID, eventYear) {
+  useEffect(() => {
+    initializeTableColumns();
+  }, [props.event]);
+
+  useEffect(() => {
+    const temp = {
+    };
+    rows.forEach((row) => {
+      temp[row.id] = row.fname;
+    });
+    setFnames(temp);
+  }, [rows]);
+
+  // row changes -> fnames is a dict w/ email to fname
+  const getEventTableData = async () => {
+    const {
+      id: eventID, year: eventYear
+    } = props.event;
+
     const params = new URLSearchParams({
-      eventID: eventID,
+      eventID,
       year: eventYear
     });
 
-    await fetchBackend(`/registrations?${params}`, "GET")
-      .then((response) => {
-        const heardFrom = this.heardFromNumbers(response.data);
-        const registrationNumbers = this.registrationNumbers(response.data);
-        const {
-          faculties,
-          years,
-          genders,
-          dietary,
-          teamID
-        } = this.notRegistrationNumbers(response.data);
-        const rows = prepareRowData(response.data);
+    try {
+      const response = await fetchBackend(`/registrations?${params}`, "GET");
+      const rowsData = flattenRowData(response.data);
+      const heardFromData = heardFromNumbers(rowsData);
+      const registrationNumbersData = getRegistrationNumbers(rowsData);
+      const {
+        faculties: facultiesData,
+        years: yearsData,
+        genders: gendersData,
+        dietary: dietaryData,
+        teamID: teamIDData
+      } = notRegistrationNumbers(rowsData);
 
-        this.setState({
-          rows,
-          heardFrom,
-          registrationNumbers,
-          faculties,
-          years,
-          genders,
-          dietary,
-          teamID
-        });
-      })
-      .catch((err) => {
-        console.log("No registrations for this event");
-      });
-  }
+      setRows(rowsData);
+      setHeardFrom(heardFromData);
+      setRegistrationNumbers(registrationNumbersData);
+      setFaculties(facultiesData);
+      setYears(yearsData);
+      setGenders(gendersData);
+      setDietary(dietaryData);
+      setTeamID(teamIDData);
+    } catch (error) {
+      // Handle error, e.g., log it or show a notification
+      console.error("Error fetching data:", error);
+    }
+  };
+
 
   /**
    *
@@ -200,35 +261,45 @@ export class EventStatsTable extends Component {
    * each data set is an array of data (arrays) sets b/c different charts accept different data
    */
 
-  heardFromNumbers(users) {
-    const heardFrom = {};
+  const heardFromNumbers = (users) => {
+    const heardFrom = {
+    };
     users.forEach((user) => {
-      if (user.basicInformation?.heardFrom) {
-        heardFrom[user.basicInformation?.heardFrom] = heardFrom[
-          user.basicInformation?.heardFrom
-        ]
-          ? heardFrom[user.basicInformation?.heardFrom] + 1
+      if (user.heardFrom) {
+        heardFrom[user.heardFrom] = heardFrom[user.heardFrom]
+          ? heardFrom[user.heardFrom] + 1
           : 1;
       }
     });
 
     return heardFrom;
-  }
+  };
 
-  registrationNumbers(users) {
-    const registrationNumbers = {};
-    users.forEach((user) => {
-      if (user.registrationStatus) {
-        registrationNumbers[user.registrationStatus] = registrationNumbers[
-          user.registrationStatus
-        ]
-          ? registrationNumbers[user.registrationStatus] + 1
-          : 1;
-      }
-    });
+  const filterUserByTableType = (user) => {
+    if (tableType === ATTENDEE_TABLE_TYPE) {
+      return user.isPartner === false;
+    } else {
+      return user.isPartner === true;
+    }
+  };
+
+  const getRegistrationNumbers = (users) => {
+    const registrationNumbers = {
+    };
+    users
+      .filter((user) => filterUserByTableType(user))
+      .forEach((user) => {
+        if (user.registrationStatus) {
+          registrationNumbers[user.registrationStatus] = registrationNumbers[
+            user.registrationStatus
+          ]
+            ? registrationNumbers[user.registrationStatus] + 1
+            : 1;
+        }
+      });
 
     return registrationNumbers;
-  }
+  };
 
   /**
    *
@@ -236,40 +307,38 @@ export class EventStatsTable extends Component {
    * calculates any stats that aren't registration stats
    * each data set is an array of data (arrays) sets b/c different charts accept different data
    */
-  notRegistrationNumbers(users) {
-    const faculties = {};
-    const years = {};
-    const dietary = {};
-    const genders = {};
-    users.forEach((user) => {
-      if (user.basicInformation?.faculty) {
-        faculties[user.basicInformation?.faculty] = faculties[
-          user.basicInformation?.faculty
-        ]
-          ? faculties[user.basicInformation?.faculty] + 1
-          : 1;
-      }
-      if (user.basicInformation?.year) {
-        const yearInt = parseInt(user.basicInformation?.year);
-        if (yearInt) {
-          years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1;
+  const notRegistrationNumbers = (users) => {
+    const faculties = {
+    };
+    const years = {
+    };
+    const dietary = {
+    };
+    const genders = {
+    };
+    users
+      .filter((user) => filterUserByTableType(user))
+      .forEach((user) => {
+        if (user.faculty) {
+          faculties[user.faculty] = faculties[user.faculty]
+            ? faculties[user.faculty] + 1
+            : 1;
         }
-      }
-      if (user.basicInformation?.diet) {
-        dietary[user.basicInformation?.diet] = dietary[
-          user.basicInformation?.diet
-        ]
-          ? dietary[user.basicInformation?.diet] + 1
-          : 1;
-      }
-      if (user.basicInformation?.gender) {
-        genders[user.basicInformation?.gender] = genders[
-          user.basicInformation?.gender
-        ]
-          ? genders[user.basicInformation?.gender] + 1
-          : 1;
-      }
-    });
+        if (user.year) {
+          const yearInt = parseInt(user.year);
+          if (yearInt) {
+            years[yearInt] = years[yearInt] ? years[yearInt] + 1 : 1;
+          }
+        }
+        if (user.diet) {
+          dietary[user.diet] = dietary[user.diet] ? dietary[user.diet] + 1 : 1;
+        }
+        if (user.gender) {
+          genders[user.gender] = genders[user.gender]
+            ? genders[user.gender] + 1
+            : 1;
+        }
+      });
 
     return {
       faculties,
@@ -277,311 +346,421 @@ export class EventStatsTable extends Component {
       genders,
       dietary
     };
-  }
-
-  async updateEventTableData(eventID) {
-    const params = new URLSearchParams({
-      users: true
-    });
-
-    await fetchBackend(`/events/${eventID}?${params}`, "GET").then(
-      async (users) => {
-        this.registrationNumbers(users);
-      }
-    );
-  }
-
-  showWaitlist = () => {
-    this.setState({
-      isWaitlistShown: !this.state.isWaitlistShown
-    });
   };
 
-  showAdminTeamFormation = () => {
-    this.setState({
-      isAdminTeamFormationShown: !this.state.isAdminTeamFormationShown
-    });
+  const showWaitlist = () => {
+    setIsWaitlistShown(!isWaitlistShown);
   };
 
-  componentDidMount() {
-    this.initializeTableColumns();
-    this.refreshTable();
-  }
+  const showAdminTeamFormation = () => {
+    setIsAdminTeamFormationShown(!isAdminTeamFormationShown);
+  };
 
-  /*
-    the if statement is only used if an exec goes from one event directly to another event (not implemented right now)
-  */
-  componentDidUpdate(prevProps) {
-    if (prevProps.event.id !== this.props.event.id) {
-      this.updateEventTableData(this.props.event.id);
+  useEffect(() => {
+    initializeTableColumns();
+    refreshTable();
+  }, []);
+
+  useEffect(() => {
+    const registrationNumbersData = getRegistrationNumbers(rows);
+    const nonRegistrationStats = notRegistrationNumbers(rows);
+
+    setRegistrationNumbers(registrationNumbersData);
+    setFaculties(nonRegistrationStats.faculties);
+    setYears(nonRegistrationStats.years);
+    setGenders(nonRegistrationStats.genders);
+    setDietary(nonRegistrationStats.dietary);
+    setTeamID(nonRegistrationStats.teamID);
+    // purely placeholder for eslint errors lol
+    if (teamID) {
+      console.log("using teamID");
     }
-  }
+  }, [tableType, rows]);
 
-  render() {
-    let registrationColumns = this.state.presentedColumns;
-    let registrationPartnerColumns = this.state.presentedPartnerColumns;
+  const handleColumnDrag = (sourceIndex, destinationIndex) => {
+    const registrationColumns = presentedColumns;
+    const sourceColumn = registrationColumns[sourceIndex];
+    const destinationColumn = registrationColumns[destinationIndex];
 
-    function handleColumnDrag(sourceIndex, destinationIndex) {
-      const sourceColumn = registrationColumns[sourceIndex];
-      const destinationColumn = registrationColumns[destinationIndex];
+    // Swapping the column order
+    registrationColumns[sourceIndex] = destinationColumn;
+    registrationColumns[destinationIndex] = sourceColumn;
+    setPresentedColumns(registrationColumns);
+  };
 
-      // Swapping the column order
-      registrationColumns[sourceIndex] = destinationColumn;
-      registrationColumns[destinationIndex] = sourceColumn;
-      this.setState({ presentedColumns: registrationColumns });
+  const handleApplicationViewColumnDrag = (sourceIndex, destinationIndex) => {
+    const registrationApplicationViewColumns = presentedApplicationViewColumns;
+    const sourceColumn = registrationApplicationViewColumns[sourceIndex];
+    const destinationColumn =
+      registrationApplicationViewColumns[destinationIndex];
+
+    // Swapping the column order
+    registrationApplicationViewColumns[sourceIndex] = destinationColumn;
+    registrationApplicationViewColumns[destinationIndex] = sourceColumn;
+    setPresentedApplicationViewColumns(registrationApplicationViewColumns);
+  };
+
+  const handlePartnerColumnDrag = (sourceIndex, destinationIndex) => {
+    const registrationPartnerColumns = presentedPartnerColumns;
+    const sourceColumn = registrationPartnerColumns[sourceIndex];
+    const destinationColumn = registrationPartnerColumns[destinationIndex];
+
+    // Swapping the column order
+    registrationPartnerColumns[sourceIndex] = destinationColumn;
+    registrationPartnerColumns[destinationIndex] = sourceColumn;
+    setPresentedPartnerColumns(registrationPartnerColumns);
+  };
+
+
+  const filterRows = (rows, isPartner) => {
+    if (rows) {
+      return rows.filter((row) => Boolean(row.isPartner) === isPartner);
+    } else {
+      return [];
     }
+  };
+  /**
+   * Creates stats + graphs/charts
+   * Creates event table using MaterialTable library
+   */
+  return (
+    <div style={styles.container}>
+      {/* QR code scanner */}
+      <QrCheckIn
+        event={props.event}
+        refresh={refreshTable}
+        rows={rows}
+      />
 
-    function handlePartnerColumnDrag(sourceIndex, destinationIndex) {
-      const sourceColumn = registrationPartnerColumns[sourceIndex];
-      const destinationColumn = registrationPartnerColumns[destinationIndex];
-
-      // Swapping the column order
-      registrationPartnerColumns[sourceIndex] = destinationColumn;
-      registrationPartnerColumns[destinationIndex] = sourceColumn;
-      this.setState({ presentedPartnerColumns: registrationPartnerColumns });
-    }
-
-    function filterRows(rows, isPartner) {
-      if (rows) {
-        return rows.filter((row) => (
-          Boolean(row.isPartner) === isPartner
-        ))
-      } else {
-        return []
-      }
-    }
-    /**
-     * Creates stats + graphs/charts
-     * Creates event table using MaterialTable library
-     */
-    return (
-      <div style={styles.container}>
-        {/* QR code scanner */}
-        <QrCheckIn event={this.props.event} refresh={this.refreshTable} rows={this.state.rows}/>
-
-        {/* padding for visual separation */}
-        <div style={{ padding: "10px" }}>
-          {/* refresh button */}
+      {/* padding for visual separation */}
+      <div
+        style={{
+          padding: "10px"
+        }}
+      >
+        {/* Toggle Competitions Acceptance View button */}
+        {props.event?.isApplicationBased && (
           <Button
             variant="contained"
             color="primary"
             onClick={() =>
-              this.refreshTable()
+              setTableType(tableType === APPLICATION_TABLE_TYPE
+                ? ATTENDEE_TABLE_TYPE
+                : APPLICATION_TABLE_TYPE)
             }
           >
-            Refresh Table Data
+            Toggle Application View
           </Button>
+        )}
 
-          {/* waitlist button */}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              this.showWaitlist()
-            }
-          >
-            Show Waitlist
-          </Button>
+        {/* refresh button */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => refreshTable()}
+        >
+          Refresh Table Data
+        </Button>
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              this.setState({
-                tableType: this.state.tableType === "attendee" ? "partner" : "attendee"
-              })
-            }
-          >
-            {this.state.tableType === "attendee" ? "Show Partners Table" : "Show Attendees Table"}
-          </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => toggleMassUpdateModal()}
+        >
+          Mass Update Application Status
+        </Button>
 
-          <Button
-              variant="contained"
-              color="primary"
-              onClick={() =>
-                  this.showAdminTeamFormation()
-              }
-          >
-            Make Team
-          </Button>
-        </div>
-        {
-          this.state.isWaitlistShown &&
-            <div>
-              <div style={{ padding: "10px" }} />
-              {/* text to say hello */}
-              <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
-                To view the waitlist: 1) apply a Filter on the Registration Status column for "Waitlist". 2) Sort the table by Last Updated.
-              </Typography>
-            </div>
-        }
-        {
-            this.state.isAdminTeamFormationShown &&
-            <div>
-              <div style={{ padding: "10px" }} />
-            {/*  Formik form for team formation, up to 4 members */}
-                <Formik
-                    initialValues={{
-                        teamName: "",
-                        teamMember: "",
-                        teamMember2: "",
-                        teamMember3: "",
-                        teamMember4: "",
-                    }}
-                    onSubmit={async (values, { setSubmitting }) => {
-                        setSubmitting(true);
-
-                        const teamMembersArrayAppend = [];
-
-                        if (values.teamMember)  teamMembersArrayAppend.push(values.teamMember);
-                        if (values.teamMember2) teamMembersArrayAppend.push(values.teamMember2);
-                        if (values.teamMember3) teamMembersArrayAppend.push(values.teamMember3);
-                        if (values.teamMember4) teamMembersArrayAppend.push(values.teamMember4);
-
-                        const response = {
-                            team_name: values.teamName ? values.teamName : "Placeholder",
-                            eventID: this.props.event.id,
-                            year: parseInt(this.props.event.year),
-                            memberIDs: teamMembersArrayAppend,
-                        }
-
-                        await fetchBackend(`/team/make`, "POST", response, true);
-                        // alert the user that the team has been made
-                        alert("Team has been made: " + values.teamName + " with members: " + teamMembersArrayAppend);
-
-                        setSubmitting(false);
-                        this.refreshTable();
-                    }}
-                >
-                    {({ isSubmitting, values }) => (
-                        <Form>
-                            <Field
-                                name="teamName"
-                                type="text"
-                                placeholder="Team Name"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Field
-                                name="teamMember"
-                                type="text"
-                                placeholder="Team Member Email 1"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Field
-                                name="teamMember2"
-                                type="text"
-                                placeholder="Team Member Email 2"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Field
-                                name="teamMember3"
-                                type="text"
-                                placeholder="Team Member Email 3"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Field
-                                name="teamMember4"
-                                type="text"
-                                placeholder="Team Member Email 4"
-                                as={TextField}
-                                variant="filled"
-                                style={{ margin: "10px" }}
-                            />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                Submit New Team
-                            </Button>
-                        </Form>
-                    )}
-                </Formik>
-
-                <Typography variant="h5" style={{ color: COLORS.FONT_COLOR }}>
-                    To view the teams or to make Team point changes, contact a member of the dev team
-                </Typography>
-            </div>
-        }
-
-        <MaterialTable
-          title={`${this.props.event.ename} Attendance`}
-          columns = {this.state.tableType === "attendee" ? this.state.presentedColumns : this.state.presentedPartnerColumns}
-          data={filterRows(this.state.rows, this.state.tableType === "partner")}
-          handleColumnDrag={this.state.tableType === "attendee" ? handleColumnDrag : handlePartnerColumnDrag}
-          // Configure options for the table
-          style={styles.table}
-          options={{
-            search: true,
-            draggable: true,
-            filtering: true,
-            padding: "default",
-            pageSize: 25,
-            pageSizeOptions: [25, 50, 100, 200, 1000],
-            actionsColumnIndex: 5,
-            exportButton: true,
-            exportAllData: true,
-            headerStyle: {
-              fontWeight: "bold",
-              backgroundColor: COLORS.CARD_PAPER_COLOR,
-              color: COLORS.FONT_COLOR,
-              whiteSpace: "nowrap"
-            },
-            rowStyle: (rowData) => ({}),
-            filterCellStyle: {
-              backgroundColor: COLORS.CARD_PAPER_COLOR
-            }
-          }}
-          localization={{
-            body: {
-              emptyDataSourceMessage: (
-                <h1
-                  style={{
-                    color: COLORS.WHITE
-                  }}
-                >
-                  No attendees to display.
-                </h1>
-              ),
-              filterRow: {
-                filterTooltip: "Filter (type in to search)"
-              }
-            }
-          }}
-          components={{
-            Cell: (props) => <PopoverCell {...props} />
-          }}
+        <MassUpdateModal
+          open={isMassUpdateModalOpen}
+          onClose={toggleMassUpdateModal}
+          eventID={props.event.id}
+          eventYear={props.event.year}
+          refreshTable={refreshTable}
+          fnames={fnames}
         />
 
-        {/* padding for visual separation */}
-        <div style={{ padding: "10px" }} />
+        {/* waitlist button */}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => showWaitlist()}
+        >
+          Show Waitlist
+        </Button>
 
-        <Statistic
-          statName="Registration status: "
-          statObj={this.state.registrationNumbers}
-        />
-        <Statistic statName="Faculty: " statObj={this.state.faculties} />
-        <Statistic statName="Year level: " statObj={this.state.years} />
-        {/* <Statistic statName='Dietary: ' statObj={this.state.dietary} /> */}
-        <Statistic statName="Gender: " statObj={this.state.genders} />
-        <Statistic statName="Diet: " statObj={this.state.dietary} />
-        <Statistic
-          statName="Heard about event from: "
-          statObj={this.state.heardFrom}
-        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() =>
+            setTableType(tableType === ATTENDEE_TABLE_TYPE
+              ? PARTNER_TABLE_TYPE
+              : ATTENDEE_TABLE_TYPE)
+          }
+        >
+          {tableType === ATTENDEE_TABLE_TYPE
+            ? "Show Partners Table"
+            : "Show Attendees Table"}
+        </Button>
+
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => showAdminTeamFormation()}
+        >
+          Make Team
+        </Button>
       </div>
-    );
-  }
-}
+      {isWaitlistShown && (
+        <div>
+          <div
+            style={{
+              padding: "10px"
+            }}
+          />
+          {/* text to say hello */}
+          <Typography
+            variant="h5"
+            style={{
+              color: COLORS.FONT_COLOR
+            }}
+          >
+            To view the waitlist: 1) apply a Filter on the Registration Status
+            column for "Waitlist". 2) Sort the table by Last Updated.
+          </Typography>
+        </div>
+      )}
+      {isAdminTeamFormationShown && (
+        <div>
+          <div
+            style={{
+              padding: "10px"
+            }}
+          />
+          {/*  Formik form for team formation, up to 4 members */}
+          <Formik
+            initialValues={{
+              teamName: "",
+              teamMember: "",
+              teamMember2: "",
+              teamMember3: "",
+              teamMember4: ""
+            }}
+            onSubmit={async (values, {
+              setSubmitting
+            }) => {
+              setSubmitting(true);
+
+              const teamMembersArrayAppend = [];
+
+              if (values.teamMember)
+                teamMembersArrayAppend.push(values.teamMember);
+              if (values.teamMember2)
+                teamMembersArrayAppend.push(values.teamMember2);
+              if (values.teamMember3)
+                teamMembersArrayAppend.push(values.teamMember3);
+              if (values.teamMember4)
+                teamMembersArrayAppend.push(values.teamMember4);
+
+              const response = {
+                team_name: values.teamName ? values.teamName : "Placeholder",
+                eventID: props.event.id,
+                year: parseInt(props.event.year),
+                memberIDs: teamMembersArrayAppend
+              };
+
+              await fetchBackend("/team/make", "POST", response, true);
+              // alert the user that the team has been made
+              alert(
+                "Team has been made: " +
+                values.teamName +
+                " with members: " +
+                teamMembersArrayAppend
+              );
+
+              setSubmitting(false);
+              refreshTable();
+            }}
+          >
+            {({
+              isSubmitting, values
+            }) => (
+              <Form>
+                <Field
+                  name="teamName"
+                  type="text"
+                  placeholder="Team Name"
+                  as={TextField}
+                  variant="filled"
+                  style={{
+                    margin: "10px"
+                  }}
+                />
+                <Field
+                  name="teamMember"
+                  type="text"
+                  placeholder="Team Member Email 1"
+                  as={TextField}
+                  variant="filled"
+                  style={{
+                    margin: "10px"
+                  }}
+                />
+                <Field
+                  name="teamMember2"
+                  type="text"
+                  placeholder="Team Member Email 2"
+                  as={TextField}
+                  variant="filled"
+                  style={{
+                    margin: "10px"
+                  }}
+                />
+                <Field
+                  name="teamMember3"
+                  type="text"
+                  placeholder="Team Member Email 3"
+                  as={TextField}
+                  variant="filled"
+                  style={{
+                    margin: "10px"
+                  }}
+                />
+                <Field
+                  name="teamMember4"
+                  type="text"
+                  placeholder="Team Member Email 4"
+                  as={TextField}
+                  variant="filled"
+                  style={{
+                    margin: "10px"
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  Submit New Team
+                </Button>
+              </Form>
+            )}
+          </Formik>
+
+          <Typography
+            variant="h5"
+            style={{
+              color: COLORS.FONT_COLOR
+            }}
+          >
+            To view the teams or to make Team point changes, contact a member
+            of the dev team
+          </Typography>
+        </div>
+      )}
+
+      <MaterialTable
+        title={
+          tableType === APPLICATION_TABLE_TYPE
+            ? `${props.event.ename} Application View`
+            : `${props.event.ename} Attendance`
+        }
+        columns={
+          tableType === ATTENDEE_TABLE_TYPE
+            ? presentedColumns
+            : tableType === APPLICATION_TABLE_TYPE
+              ? presentedApplicationViewColumns
+              : presentedPartnerColumns
+        }
+        data={filterRows(
+          rows,
+          tableType === PARTNER_TABLE_TYPE
+        )}
+        handleColumnDrag={
+          tableType === ATTENDEE_TABLE_TYPE
+            ? handleColumnDrag
+            : tableType === APPLICATION_TABLE_TYPE
+              ? handleApplicationViewColumnDrag
+              : handlePartnerColumnDrag
+        }
+        // Configure options for the table
+        style={styles.table}
+        options={{
+          sorting: true,
+          search: true,
+          draggable: true,
+          filtering: true,
+          padding: "default",
+          pageSize: 25,
+          pageSizeOptions: [25, 50, 100, 200, 1000],
+          actionsColumnIndex: 5,
+          exportMenu: [
+            {
+              label: "Export PDF",
+              exportFunc: (cols, datas) => ExportPdf(cols, datas, `${props.event.id}${props.event.year}${tableType}`),
+            },
+            {
+              label: "Export CSV",
+              exportFunc: (cols, datas) => ExportCsv(cols, datas, `${props.event.id}${props.event.year}${tableType}`),
+            }
+          ],
+          exportAllData: true,
+          headerStyle: {
+            fontWeight: "bold",
+            backgroundColor: COLORS.CARD_PAPER_COLOR,
+            color: COLORS.FONT_COLOR,
+            whiteSpace: "nowrap"
+          },
+          rowStyle: (rowData) => ({
+          }),
+          filterCellStyle: {
+            backgroundColor: COLORS.CARD_PAPER_COLOR
+          }
+        }}
+        localization={{
+          body: {
+            emptyDataSourceMessage: (
+              <h1
+                style={{
+                  color: COLORS.WHITE
+                }}
+              >
+                No attendees to display.
+              </h1>
+            ),
+            filterRow: {
+              filterTooltip: "Filter (type in to search)"
+            }
+          }
+        }}
+        components={{
+          Cell: (props) => <PopoverCell {...props} />
+        }}
+      />
+
+      {/* padding for visual separation */}
+      <div
+        style={{
+          padding: "10px"
+        }}
+      />
+
+      <Statistic
+        statName="Registration status: "
+        statObj={registrationNumbers}
+      />
+      <Statistic statName="Faculty: " statObj={faculties} />
+      <Statistic statName="Year level: " statObj={years} />
+      {/* <Statistic statName='Dietary: ' statObj={dietary} /> */}
+      <Statistic statName="Gender: " statObj={genders} />
+      <Statistic statName="Diet: " statObj={dietary} />
+      <Statistic
+        statName="Heard about event from: "
+        statObj={heardFrom}
+      />
+    </div>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   paperRoot: {
@@ -607,8 +786,13 @@ const PopoverCell = (props) => {
   const handlePopoverOpen = (event) => {
     setPopoverText(event.target.getAttribute("value"));
 
-    const { top, left } = event.currentTarget.getBoundingClientRect();
-    setAnchorPosition({ top, left });
+    const {
+      top, left
+    } = event.currentTarget.getBoundingClientRect();
+    setAnchorPosition({
+      top,
+      left
+    });
   };
 
   const handlePopoverClose = () => {
@@ -627,7 +811,10 @@ const PopoverCell = (props) => {
 
   const open = Boolean(anchorPosition);
 
-  const excludeFromOnclickPopoverColumns = [REGISTRATIONSTATUSLABEL, POINTSLABEL];
+  const excludeFromOnclickPopoverColumns = [
+    REGISTRATIONSTATUSLABEL,
+    POINTSLABEL
+  ];
 
   return (
     <>
@@ -673,7 +860,13 @@ const PopoverCell = (props) => {
               {popoverText}
             </Link>
           ) : (
-            <Typography sx={{ p: 1 }}>{popoverText?.split("<br/>").join("\n")}</Typography>
+            <Typography
+              sx={{
+                p: 1
+              }}
+            >
+              {popoverText?.split("<br/>").join("\n")}
+            </Typography>
           )}
         </Popover>
       )}
@@ -728,8 +921,14 @@ const Statistic = (props) => {
       <div
         style={
           visible
-            ? { display: "flex", paddingBottom: "20px", paddingLeft: "50px" }
-            : { display: "none" }
+            ? {
+              display: "flex",
+              paddingBottom: "20px",
+              paddingLeft: "50px"
+            }
+            : {
+              display: "none"
+            }
         }
       >
         <RadialChart
@@ -741,7 +940,12 @@ const Statistic = (props) => {
           innerRadius={100}
         />
         <XYPlot
-          margin={{ left: 40, right: 30, top: 30, bottom: 70 }}
+          margin={{
+            left: 40,
+            right: 30,
+            top: 30,
+            bottom: 70
+          }}
           xType="ordinal"
           width={300}
           height={300}
@@ -773,7 +977,9 @@ const CAMERA_FACING_MODE = {
 const QrCheckIn = (props) => {
   const classes = useStyles();
   const [visible, setVisible] = useState(false);
-  const defaultQrCode = { data: "" };
+  const defaultQrCode = {
+    data: ""
+  };
   const [qrCode, setQrCode] = useState(defaultQrCode);
   const [qrScanStage, setQrScanStage] = useState(QR_SCAN_STAGE.SCANNING);
   const [cameraFacingMode, setCameraFacingMode] = useState(
@@ -789,13 +995,22 @@ const QrCheckIn = (props) => {
       setCameraFacingMode(CAMERA_FACING_MODE.FRONT);
     }
   };
-
+  const [qrCodeText, setQrCodeText] = useState("");
   const handleScanQR = (data) => {
     // conditional check may be necessary to prevent re-scans of the same QR code, but this implementation is unintuitive
     // when wanting to re-scan (requires a manual reset)
     // if (data.data !== qrCode.data) setQrCode(data);
-
-    setQrCode(data);
+    if (data) {
+      console.log("Scanned QR Code Data: ", data);
+      if ("text" in data) {
+        console.log("Scanned QR Code Text: ", data.text);
+        setQrCodeText(data.text); // Update qrCodeText state
+      } else {
+        console.log("Scanned QR Code does not contain text property");
+      }
+    } else {
+      console.log("No QR Code Scanned Data");
+    }
   };
 
   // puts the QR code scanner in a scanning state after a grace period, like tapping your Compass Card
@@ -809,7 +1024,7 @@ const QrCheckIn = (props) => {
 
   const emailCheck = (email) => {
     return /(.+)@(.+){2,}\.(.+){2,}/.test(email);
-  }
+  };
 
   // checks if the QR code is valid whenever the QR code is changed
   useEffect(() => {
@@ -829,25 +1044,30 @@ const QrCheckIn = (props) => {
       cycleQrScanStage(QR_SCAN_STAGE.SUCCESS, 8000);
 
       // refresh the entire table to reflect change
-      props.refresh();
+      // props.refresh();
     };
 
-    if (!qrCode || qrCode.data === "" || qrScanStage !== QR_SCAN_STAGE.SCANNING)
+    if (
+      !qrCode ||
+      qrCodeText === "" ||
+      typeof qrCodeText !== "string" ||
+      qrScanStage !== QR_SCAN_STAGE.SCANNING
+    )
       return;
 
     // data is arranged: email;event_id;year
     // id is the array of the data split by ";"
-    const id = qrCode.data.split(";");
+    const id = qrCodeText.split(";");
     const userID = id[0];
     const eventIDAndYear = id[1] + ";" + id[2];
-    const userFName = id[3]
+    const userFName = id[3];
 
     // validate event ID and year as the current event
     if (eventIDAndYear !== props.event.id + ";" + props.event.year) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 8000);
 
-      // if there are not 3 items and first item is not an email, then the QR code is invalid
-      if (id.length !== 3 && !emailCheck(userID)) {
+      // if there are not 4 and first item is not an email, then the QR code is invalid
+      if (id.length !== 4 && !emailCheck(userID)) {
         setError("Invalid BizTech QR code.");
       } else {
         setError("Please check that your QR code is for this event.");
@@ -877,34 +1097,34 @@ const QrCheckIn = (props) => {
     //     }
 
     // get the person's name
-    setCheckInName(`${user.firstName ? user.firstName : user.fname} ${user.lastName ? user.lastName : user.lname} (${userID})`);
+    setCheckInName(
+      `${user.firstName ? user.firstName : user.fname} ${user.lastName ? user.lastName : user.lname
+      } (${userID})`
+    );
 
     // If the user is already checked in, show an error
     if (user.registrationStatus === REGISTRATION_STATUS.CHECKED_IN) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
-      setError(`Person is already checked in.`);
+      setError("Person is already checked in.");
       return;
     } else if (user.registrationStatus === REGISTRATION_STATUS.CANCELLED) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
-      setError(`Person had their registration cancelled. Cannot check-in.`);
+      setError("Person had their registration cancelled. Cannot check-in.");
       return;
     } else if (user.registrationStatus === REGISTRATION_STATUS.WAITLISTED) {
       cycleQrScanStage(QR_SCAN_STAGE.FAILED, 5000);
-      setError(`Person is on the waitlist. Cannot check-in.`);
+      setError("Person is on the waitlist. Cannot check-in.");
       return;
     }
-
     checkInUser(userID, userFName);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qrCode]);
+  }, [qrCodeText]);
 
   return (
-    <Paper className={[classes.qrRoot]}>
+    <Paper className={classes.qrRoot}>
       {/* Toggle QR Scanner */}
-      <div
-        style={styles.toggleContainer}
-      >
+      <div style={styles.toggleContainer}>
         <Link
           onClick={() => setVisible(!visible)}
           style={styles.toggleQrScanner}
@@ -922,15 +1142,15 @@ const QrCheckIn = (props) => {
               qrScanStage === QR_SCAN_STAGE.SUCCESS
                 ? "success"
                 : qrScanStage === QR_SCAN_STAGE.SCANNING
-                ? "info"
-                : "error"
+                  ? "info"
+                  : "error"
             }
           >
             {qrScanStage === QR_SCAN_STAGE.SUCCESS
               ? `Checked-in successfully for ${checkInName}! Your attendance table will be updated shortly.`
               : qrScanStage === QR_SCAN_STAGE.SCANNING
-              ? "Ready to scan a QR code to check-in. 😎"
-              : `🚨 ERROR: ${error}`}
+                ? "Ready to scan a QR code to check-in. 😎"
+                : `🚨 ERROR: ${error}`}
           </Alert>
 
           <div
@@ -941,10 +1161,12 @@ const QrCheckIn = (props) => {
             }}
           >
             <QrReader
-              style={styles.qrCodeVideo}
-              onScan={handleScanQR}
-              facingMode={cameraFacingMode}
-              delay={250}
+              containerStyle={styles.qrCodeVideo}
+              onResult={handleScanQR}
+              constraints={{
+                facingMode: cameraFacingMode
+              }}
+              scanDelay={250}
             />
           </div>
 
@@ -976,6 +1198,5 @@ const QrCheckIn = (props) => {
     </Paper>
   );
 };
-
 
 export default EventStatsTable;

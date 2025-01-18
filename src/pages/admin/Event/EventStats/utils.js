@@ -1,9 +1,8 @@
-import React from 'react';
-import DraggableTitle from "./DraggableTitle";
+import React from "react";
 
 // Constants
-const REGISTRATIONSTATUSLABEL = "registrationStatus"
-const POINTSLABEL = "points"
+const REGISTRATIONSTATUSLABEL = "registrationStatus";
+const POINTSLABEL = "points";
 
 
 /**
@@ -12,12 +11,17 @@ const POINTSLABEL = "points"
  * @param {*} registrations the response from the registration endpoint
  */
 const parseDynamicResponses = (registrations) => {
-  const { data } = registrations;
+  const {
+    data
+  } = registrations;
   const parsedData = [];
 
   data.forEach((user) => {
-    const { dynamicResponses } = user;
-    const userResponse = {};
+    const {
+      dynamicResponses
+    } = user;
+    const userResponse = {
+    };
 
     userResponse.id = user.id;
     userResponse.dynamicResponses = dynamicResponses;
@@ -32,7 +36,7 @@ const parseDynamicResponses = (registrations) => {
  * Helper function to flatten the registration data into a format suitable for the MaterialTable
  * @param {*} users the response from the registration backend
  */
-const prepareRowData = (users) => {
+const flattenRowData = (users) => {
   const idToUserMap = new Map();
 
   users.forEach((user) => {
@@ -42,8 +46,10 @@ const prepareRowData = (users) => {
       studentId: user.studentId,
       id: user.id,
       registrationStatus: user.registrationStatus,
+      applicationStatus: user.applicationStatus,
       // convert the date to something more readable
       updatedAt: new Date(user.updatedAt).toLocaleString(),
+      createdAt: new Date(user.createdAt).toLocaleString(),
       isPartner: user.isPartner,
       points: user.points,
       teamID: user.teamID,
@@ -64,9 +70,10 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
   }
 
   registrationQuestions.forEach((question) => {
-    const column = {};
+    const column = {
+    };
 
-    column.title = <DraggableTitle title={question.label} />;
+    column.title = question.label;
     column.field = question.questionId;
     column.type = question.type;
     column.sorting = true;
@@ -75,8 +82,8 @@ const appendRegistrationQuestions = (columns, registrationQuestions) => {
         <>
           {rowData[question.questionId]}
         </>
-      )
-    }
+      );
+    };
 
     columns.push(column);
   });
@@ -86,6 +93,6 @@ export {
   REGISTRATIONSTATUSLABEL,
   POINTSLABEL,
   parseDynamicResponses,
-  prepareRowData,
+  flattenRowData,
   appendRegistrationQuestions,
 };

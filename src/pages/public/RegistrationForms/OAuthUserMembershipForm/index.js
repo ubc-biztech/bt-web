@@ -1,19 +1,40 @@
-import React, { useState, Fragment } from "react";
-import { CLIENT_URL } from "constants/index";
-import { Auth } from "aws-amplify";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
+import React, {
+  useState, Fragment
+} from "react";
+import {
+  CLIENT_URL
+} from "constants/index";
+import {
+  Auth
+} from "aws-amplify";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Formik
+} from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
+import {
+  useHistory
+} from "react-router-dom";
 import OAuthUserMembershipForm from "./OAuthUserMembershipForm";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-import { MEMBER_TYPES } from "constants/_constants/memberTypes";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Typography
+} from "@material-ui/core";
+import {
+  MEMBER_TYPES
+} from "constants/_constants/memberTypes";
 
-import { COLORS } from "constants/_constants/theme";
+import {
+  COLORS
+} from "constants/_constants/theme";
 
-import { fetchBackend } from "utils";
-import { log, updateUser, updateRegisteredEvents } from "utils";
+import {
+  fetchBackend, log
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -99,31 +120,28 @@ const OAuthUserMembershipFormContainer = (props) => {
 
   const [userEmail, setUserEmail] = useState("");
   async function getOAuthAttributes() {
-    // let user = await Auth.currentAuthenticatedUser();
-    Auth.currentAuthenticatedUser({ bypassCache: true })
+    Auth.currentAuthenticatedUser({
+      bypassCache: true
+    })
       .then(async (authUser) => {
         setUserEmail(authUser.attributes.email);
-        console.log("has set useremail to authuser.attributes:" + userEmail);
       })
       .catch(() => log("Couldn't fetch user email from Cognito"));
   }
 
   const RenderForm = () => {
-    console.log("entered renderform function");
-    if (userEmail == "") {
-      console.log("no useremail");
+    if (userEmail === "") {
       return null;
     } else {
-      console.log("about to return formik");
       return (
         <Fragment>
           <Typography className={classes.registrationText}>
-            UBC BizTech User Registration &amp; 2022/23 Membership
+            UBC BizTech User Registration &amp; 2024/2025 Membership
           </Typography>
           <div className={classes.registrationHeader}>
             <Typography className={classes.description}>
               Thank you for signing up to be a BizTech Application user
-              and 2022/23 member! By signing up for membership, you will also be
+              and 2023/24 member! By signing up for membership, you will also be
               a part of our mailing list!
             </Typography>
             <Typography className={classes.description}>
@@ -132,6 +150,10 @@ const OAuthUserMembershipFormContainer = (props) => {
               would like to continue being part of the BizTech Network, kindly
               renew your membership by filling out this form and completing the
               payment.
+            </Typography>
+            <Typography className={classes.description}>
+            Please be aware that membership does not guarantee your admission to all of our events.
+            Some events may specify competitive application processes where not all applicants are accepted.
             </Typography>
             <Typography>
               Submitting this form will automatically create your new account
@@ -147,10 +169,10 @@ const OAuthUserMembershipFormContainer = (props) => {
               memberType === MEMBER_TYPES.UBC
                 ? UBCValidationSchema
                 : memberType === MEMBER_TYPES.UNIVERSITY
-                ? UniversityValidationSchema
-                : memberType === MEMBER_TYPES.HIGH_SCHOOL
-                ? HighSchoolValidationSchema
-                : validationSchema
+                  ? UniversityValidationSchema
+                  : memberType === MEMBER_TYPES.HIGH_SCHOOL
+                    ? HighSchoolValidationSchema
+                    : validationSchema
             }
             onSubmit={submitValues}
           >
@@ -187,8 +209,6 @@ const OAuthUserMembershipFormContainer = (props) => {
     high_school: ""
   };
 
-  console.log(initialValues.email);
-
   async function adminSkipPayment(values) {
     const {
       email,
@@ -209,7 +229,7 @@ const OAuthUserMembershipFormContainer = (props) => {
       fname: first_name,
       lname: last_name,
       major: memberType === "UBC" || memberType === "UNI" ? major : "",
-      email: email,
+      email,
       year: memberType !== "NA" ? year : "",
       faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
       gender: pronouns || "Other/Prefer not to say",
@@ -220,7 +240,6 @@ const OAuthUserMembershipFormContainer = (props) => {
 
     fetchBackend("/users", "POST", userBody, false)
       .then(async () => {
-        console.log(userBody);
         history.push({
           pathname: `/signup/success/UserMember/${email}`
         });
@@ -268,7 +287,7 @@ const OAuthUserMembershipFormContainer = (props) => {
       paymentName: "BizTech Membership",
       paymentImages: ["https://imgur.com/TRiZYtG.png"],
       paymentPrice: 1000,
-      paymentType: 'OAuthMember',
+      paymentType: "OAuthMember",
       success_url: `${
         process.env.REACT_APP_STAGE === "local"
           ? "http://localhost:3000/"
@@ -284,7 +303,7 @@ const OAuthUserMembershipFormContainer = (props) => {
       fname: first_name,
       lname: last_name,
       major: memberType === "UBC" || memberType === "UNI" ? major : "",
-      email: email,
+      email,
       year: memberType !== "NA" ? year : "",
       faculty: memberType === "UBC" || memberType === "UNI" ? faculty : "",
       pronouns: pronouns || "Other/Prefer not to say",
@@ -297,7 +316,6 @@ const OAuthUserMembershipFormContainer = (props) => {
       high_school: memberType === "HS" ? high_school : ""
     };
 
-    console.log("put together payment body and sent to backend")
     fetchBackend("/payments", "POST", paymentBody, false)
       .then(async (response) => {
         setIsSubmitting(false);
@@ -309,19 +327,18 @@ const OAuthUserMembershipFormContainer = (props) => {
         );
         setIsSubmitting(false);
       });
-    console.log("posted to backend")
   }
 
   async function submitValues(values) {
     setIsSubmitting(true);
     // checks to see if email already exists 
     // tangent: doesnt even work, but it's okay its a feature 
-    
+
     fetchBackend(`/users/check/${values.email}`, "GET", undefined, false)
       .then((response) => {
         if (response) {
           alert(
-            'A user with the given email already exists! Please log in and choose the "Membership Renewal" signup option instead. If you are still experiencing issues, contact an exec for support.'
+            "A user with the given email already exists! Please log in and choose the \"Membership Renewal\" signup option instead. If you are still experiencing issues, contact an exec for support."
           );
           setIsSubmitting(false);
         } else {
@@ -340,7 +357,7 @@ const OAuthUserMembershipFormContainer = (props) => {
     <div className={classes.layout}>
       <Fragment>
         <Helmet>
-          <title>UBC BizTech User Registration &amp; 2022/23 Membership</title>
+          <title>UBC BizTech User Registration &amp; 2024/2025 Membership</title>
         </Helmet>
         {RenderForm()}
       </Fragment>

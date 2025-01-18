@@ -1,20 +1,32 @@
-import React, { useMemo, useEffect } from "react";
-import { connect } from "react-redux";
-import { Redirect, Switch, useParams } from "react-router-dom";
+import React, {
+  useMemo, useEffect
+} from "react";
+import {
+  connect
+} from "react-redux";
+import {
+  Redirect, Switch, useParams
+} from "react-router-dom";
 
 import Route from "components/routing/Route";
 import NotFound from "pages/NotFound";
 
 // import EventDetails from './EventDetails'
-import { fetchEvents } from "store/event/eventActions";
+import {
+  fetchEvents
+} from "store/event/eventActions";
 import FormRegister from "pages/admin/DynamicForm/FormRegister";
 import FormRegisterPartner from "pages/admin/DynamicForm/FormRegisterPartner";
-import EventRegisterSuccess from 'pages/admin/DynamicForm/EventRegisterSuccess'
+import EventRegisterSuccess from "pages/admin/DynamicForm/EventRegisterSuccess";
 
 const MemberRoutes = (props) => {
-  const { user, events, eventsFetched, eventsLoading } = props;
+  const {
+    user, events, eventsFetched, eventsLoading
+  } = props;
 
-  const { id: eventId, year: eventYear } = useParams();
+  const {
+    id: eventId, year: eventYear
+  } = useParams();
 
   useEffect(() => {
     // extra check if eventId not provided
@@ -90,7 +102,7 @@ const MemberRoutes = (props) => {
           />
         )}
       />
-      <Route 
+      <Route
         exact
         path='/event/:id/:year/register/success/:type?'
         render={() => (
@@ -122,4 +134,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {})(MemberRoutes);
+export default connect(mapStateToProps, {
+})(MemberRoutes);

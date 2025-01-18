@@ -36,7 +36,7 @@ export const BASIC_QUESTIONS = [
     required: true,
   },
   {
-    questionType: "SELECT",
+    questionType: "CHECKBOX",
     question: "Preferred Pronouns",
     choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
     required: true,
@@ -53,10 +53,10 @@ export const BASIC_QUESTIONS = [
     choices: "Boothing,Facebook,Instagram,LinkedIn,Friends/Word of Mouth,BizTech Newsletter,Other",
     required: true,
   },
-]
+];
 
 export const QUESTION_DOMAINS = {
   SWE: "SWE",
   PM: "PM",
   UX: "UX"
-}
+};

@@ -12,13 +12,18 @@ import {
   Radio
 } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
 
-import { COLORS } from "constants/_constants/theme";
+import {
+  COLORS
+} from "constants/_constants/theme";
 import CustomTextField from "components/inputs/CustomTextField";
 import CustomSelect from "components/inputs/CustomSelect";
-import { MEMBER_TYPES, MEMBER_LABELS } from "constants/_constants/memberTypes";
-import { useParams } from "react-router-dom";
+import {
+  MEMBER_TYPES, MEMBER_LABELS
+} from "constants/_constants/memberTypes";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -51,8 +56,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MembershipForm(props) {
-  const { isOauth: OAuthFlag } = useParams();
-
   const classes = useStyles();
 
   const {
@@ -146,7 +149,6 @@ export default function MembershipForm(props) {
           <Grid item xs={12}>
             <CustomTextField
               {...props}
-              readOnly={true}
               label="Student Number *"
               groupName="student_number"
               autoComplete="student_number"
@@ -155,17 +157,15 @@ export default function MembershipForm(props) {
         )}
 
         <Grid item xs={12}>
-          <CustomSelect
-            {...props}
-            label="Preferred Pronouns"
-            listOfOptions={[
-              "He/Him/His",
-              "She/Her/Hers",
-              "They/Them/Their",
-              "Other/Prefer not to say"
-            ]}
-            groupName="pronouns"
-          />
+          <FormControl>
+            <FormLabel>Preferred Pronouns</FormLabel>
+            <FormGroup>
+              <FormControlLabel control={<Checkbox name="He/Him/His" />} label="He/Him/His" />
+              <FormControlLabel control={<Checkbox name="She/Her/Hers" />} label="She/Her/Hers" />
+              <FormControlLabel control={<Checkbox name="They/Them/Theirs" />} label="They/Them/Theirs" />
+              <FormControlLabel control={<Checkbox name="Other/Prefer not to say" />} label="Other/Prefer not to say" />
+            </FormGroup>
+          </FormControl>
         </Grid>
 
         {memberType === MEMBER_TYPES.UNIVERSITY && (
@@ -411,6 +411,6 @@ export default function MembershipForm(props) {
         <CardMembershipIcon className={classes.registerIcon} />
         Proceed to Payment
       </Button>
-    </form>
+    </form >
   );
 }

@@ -1,15 +1,27 @@
-import React, { useState } from "react";
-import { Helmet } from "react-helmet";
-import { Formik } from "formik";
+import React, {
+  useState
+} from "react";
+import {
+  Helmet
+} from "react-helmet";
+import {
+  Formik
+} from "formik";
 import * as Yup from "yup";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Typography } from "@material-ui/core";
+import {
+  makeStyles
+} from "@material-ui/core/styles";
+import {
+  Paper, Typography
+} from "@material-ui/core";
 
 import EventView from "components/Event/EventView";
 import EventCreateForm from "./EventCreateForm";
 
-import { fetchBackend, log } from "utils";
+import {
+  fetchBackend, log
+} from "utils";
 
 const useStyles = makeStyles((theme) => ({
   layout: {
@@ -31,7 +43,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EventCreate() {
   const classes = useStyles();
-  const [previewEvent, setPreviewEvent] = useState({});
+  const [previewEvent, setPreviewEvent] = useState({
+  });
 
   const validationSchema = Yup.object({
     ename: Yup.string().required(),

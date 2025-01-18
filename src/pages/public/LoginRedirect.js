@@ -1,12 +1,22 @@
 import React from "react";
-import { connect } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
-import { Auth } from "aws-amplify";
+import {
+  connect
+} from "react-redux";
+import {
+  useHistory, useLocation
+} from "react-router-dom";
+import {
+  Auth
+} from "aws-amplify";
 
 import Loading from "pages/Loading";
 
-import { setUser, logout } from "store/user/userActions";
-import { log, fetchBackend, checkFeatureFlag } from "utils";
+import {
+  setUser, logout
+} from "store/user/userActions";
+import {
+  log, fetchBackend, checkFeatureFlag
+} from "utils";
 
 function LoginRedirect(props) {
   const history = useHistory();
@@ -27,15 +37,15 @@ function LoginRedirect(props) {
     // save only essential info to redux
     const userObject = admin
       ? {
-          email: authUser.email,
-          admin
-        }
+        email: authUser.email,
+        admin
+      }
       : {
-          email: authUser.email,
-          fname,
-          lname,
-          admin
-        };
+        email: authUser.email,
+        fname,
+        lname,
+        admin
+      };
     props.setUser(userObject);
     history.push(redirectRoute);
     console.log("AUTH USER HERE", authUser);
@@ -43,10 +53,14 @@ function LoginRedirect(props) {
 
   const pollForAuthenticatedUser = () => {
     // currentSession includes more auth information (such as token) than currentAuthenticatedUser
-    Auth.currentSession({ bypassCache: true })
+    Auth.currentSession({
+      bypassCache: true
+    })
       .then(async (session) => {
         const authUser = session.idToken.payload;
-        const { email } = authUser;
+        const {
+          email
+        } = authUser;
 
         // might have already set them to be an admin
         const isAdminGroup = authUser["cognito:groups"]?.includes("admin");
@@ -130,7 +144,7 @@ function LoginRedirect(props) {
                   "custom:student_id": ""
                 });
                 authUser["custom:student_id"] = null;
-                //add query string const
+                // add query string const
               }
               populateUserAndRedirect(authUser, `/signup/${isOauthGroup}`);
               // console.log("congratulations, your code doesn't work");
@@ -161,4 +175,7 @@ function LoginRedirect(props) {
   return <Loading message="Signing in..." />;
 }
 
-export default connect(null, { setUser, logout })(LoginRedirect);
+export default connect(null, {
+  setUser,
+  logout
+})(LoginRedirect);

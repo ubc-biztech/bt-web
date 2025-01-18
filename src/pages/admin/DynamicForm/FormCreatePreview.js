@@ -1,5 +1,7 @@
 import React from "react";
-import { Container, Paper } from "@material-ui/core";
+import {
+  Container, Paper
+} from "@material-ui/core";
 import ImagePlaceholder from "../../../assets/placeholder.jpg";
 import QuestionPreview from "./components/QuestionPreview";
 
@@ -96,7 +98,9 @@ const formStyles = {
 };
 
 const FormCreatePreview = (props) => {
-  const { imageUrl, type, eventName, description, questionsData } = props;
+  const {
+    imageUrl, type, eventName, description, questionsData
+  } = props;
 
   const basicQuestions = {
     "attendee": [
@@ -137,7 +141,7 @@ const FormCreatePreview = (props) => {
         required: true,
       },
       {
-        type: "SELECT",
+        type: "CHECKBOX",
         label: "Preferred Pronouns",
         choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
         required: true,
@@ -155,7 +159,7 @@ const FormCreatePreview = (props) => {
         required: true,
       },
     ],
-  "partner": [
+    "partner": [
       {
         type: "TEXT",
         label: "Email Address",
@@ -175,10 +179,10 @@ const FormCreatePreview = (props) => {
         required: true
       },
       {
-        type: "TEXT",
-        label: "Pronouns",
-        choices: "",
-        required: true
+        type: "CHECKBOX",
+        label: "Preferred Pronouns",
+        choices: "He/Him/His,She/Her/Hers,They/Them/Their,Other/Prefer not to say",
+        required: true,
       },
       {
         type: "TEXT",
@@ -193,9 +197,9 @@ const FormCreatePreview = (props) => {
         required: true,
       },
     ]
-  }
+  };
 
-  const allQuestions = basicQuestions[type].concat(questionsData)
+  const allQuestions = basicQuestions[type].concat(questionsData);
 
   const displayQuestions = allQuestions.map((question, index) => {
     return (
@@ -223,9 +227,16 @@ const FormCreatePreview = (props) => {
             />
           </div>
           {(eventName || description) && (
-            <div style={{ ...formStyles.section, ...formStyles.divider }}>
-              <h2 style={{ marginTop: 0 }}>{eventName}{type === "partner" ? " Partner Confirmation Form" : ""}</h2>
-              <p style={{ whiteSpace: "pre-line" }}>{description.split("<br/>").join("\n")}</p>
+            <div style={{
+              ...formStyles.section,
+              ...formStyles.divider
+            }}>
+              <h2 style={{
+                marginTop: 0
+              }}>{eventName}{type === "partner" ? " Partner Confirmation Form" : ""}</h2>
+              <p style={{
+                whiteSpace: "pre-line"
+              }}>{description.split("<br/>").join("\n")}</p>
             </div>
           )}
           <div style={formStyles.section}>{displayQuestions}</div>
