@@ -1050,6 +1050,19 @@ const FormRegister = (props) => {
     );
   };
 
+  const isSpecialBypassEmail = (email) => {
+    const bypassEmails = [
+      process.env.REACT_APP_BYPASS_EMAIL_1,
+      process.env.REACT_APP_BYPASS_EMAIL_2,
+      process.env.REACT_APP_BYPASS_EMAIL_3,
+      process.env.REACT_APP_BYPASS_EMAIL_4,
+      process.env.REACT_APP_BYPASS_EMAIL_5,
+      process.env.REACT_APP_BYPASS_EMAIL_6,
+      process.env.REACT_APP_BYPASS_EMAIL_7
+    ].filter(Boolean);
+    return bypassEmails.includes(email?.toLowerCase());
+  };
+
   const isDeadlinePassed = () => {
     const deadline = new Date(event.deadline).getTime();
     return deadline < new Date().getTime();
@@ -1330,7 +1343,7 @@ const FormRegister = (props) => {
         <div style={styles.section}>{loadQuestions()}</div>
         <div style={styles.divider}></div>
         <div style={styles.submitSection}>
-          {!user?.admin &&
+          {!user?.admin && !isSpecialBypassEmail(responseData[0]) &&
             ((user?.isMember && currEvent.pricing?.members > 0) ||
               (!user?.isMember && currEvent.pricing?.nonMembers)) ? (
               currEvent.isApplicationBased ? (
