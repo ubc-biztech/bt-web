@@ -36,6 +36,9 @@ jobs:
           REACT_APP_BYPASS_EMAIL_5: '${{ secrets.REACT_APP_BYPASS_EMAIL_5 }}'
           REACT_APP_BYPASS_EMAIL_6: '${{ secrets.REACT_APP_BYPASS_EMAIL_6 }}'
           REACT_APP_BYPASS_EMAIL_7: '${{ secrets.REACT_APP_BYPASS_EMAIL_7 }}'
+          REACT_APP_BYPASS_EMAIL_8: '${{ secrets.REACT_APP_BYPASS_EMAIL_8 }}'
+          REACT_APP_BYPASS_EMAIL_9: '${{ secrets.REACT_APP_BYPASS_EMAIL_9 }}'
+          REACT_APP_BYPASS_EMAIL_10: '${{ secrets.REACT_APP_BYPASS_EMAIL_10 }}'
 
       - name: Dev Firebase Deploy
         if: github.ref == 'refs/heads/dev'
@@ -68,6 +71,9 @@ jobs:
           REACT_APP_BYPASS_EMAIL_5: '${{ secrets.REACT_APP_BYPASS_EMAIL_5 }}'
           REACT_APP_BYPASS_EMAIL_6: '${{ secrets.REACT_APP_BYPASS_EMAIL_6 }}'
           REACT_APP_BYPASS_EMAIL_7: '${{ secrets.REACT_APP_BYPASS_EMAIL_7 }}'
+          REACT_APP_BYPASS_EMAIL_8: '${{ secrets.REACT_APP_BYPASS_EMAIL_8 }}'
+          REACT_APP_BYPASS_EMAIL_9: '${{ secrets.REACT_APP_BYPASS_EMAIL_9 }}'
+          REACT_APP_BYPASS_EMAIL_10: '${{ secrets.REACT_APP_BYPASS_EMAIL_10 }}'
 
       - name: Prod Firebase Deploy
         if: github.ref == 'refs/heads/master'

@@ -1058,7 +1058,10 @@ const FormRegister = (props) => {
       process.env.REACT_APP_BYPASS_EMAIL_4,
       process.env.REACT_APP_BYPASS_EMAIL_5,
       process.env.REACT_APP_BYPASS_EMAIL_6,
-      process.env.REACT_APP_BYPASS_EMAIL_7
+      process.env.REACT_APP_BYPASS_EMAIL_7,
+      process.env.REACT_APP_BYPASS_EMAIL_8,
+      process.env.REACT_APP_BYPASS_EMAIL_9,
+      process.env.REACT_APP_BYPASS_EMAIL_10
     ].filter(Boolean);
     return bypassEmails.includes(email?.toLowerCase());
   };
@@ -1343,7 +1346,7 @@ const FormRegister = (props) => {
         <div style={styles.section}>{loadQuestions()}</div>
         <div style={styles.divider}></div>
         <div style={styles.submitSection}>
-          {!user?.admin && !isSpecialBypassEmail(responseData[0]) &&
+          {!user?.admin && !isSpecialBypassEmail(user?.email) && !isSpecialBypassEmail(responseData[0]) &&
             ((user?.isMember && currEvent.pricing?.members > 0) ||
               (!user?.isMember && currEvent.pricing?.nonMembers)) ? (
               currEvent.isApplicationBased ? (
