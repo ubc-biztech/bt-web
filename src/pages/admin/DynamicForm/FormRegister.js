@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import CardMembershipIcon from "@material-ui/icons/CardMembership";
 import {
-  Redirect
+  Redirect, Link
 } from "react-router-dom/cjs/react-router-dom.min";
 import {
   Alert
@@ -1095,20 +1095,29 @@ const FormRegister = (props) => {
   const renderRegMessage = (status) => {
     switch (status) {
     case REGISTRATION_STATUS.CANCELLED:
-      return `You have cancelled your registration for ${currEvent.ename || "this event"
-      }.`;
+      return (
+        <>You have cancelled your registration for ${currEvent.ename || "this event"}.</>
+      );
     case REGISTRATION_STATUS.WAITLISTED:
-      return `You are currently waitlisted for ${currEvent.ename || "this event"
-      }.`;
+      return (
+        <>
+            You are currently waitlisted for {currEvent.ename || "this event"}.
+          <br />Click <b><Link to="/companion" reloadDocument>here</Link></b> to view your application status
+        </>
+      );
     case REGISTRATION_STATUS.INCOMPLETE:
-      if (currEvent?.isApplicationBased) {
-        return `You have submitted your application for ${currEvent.ename || "this event"
-        }. You can check your application status for updates below!`;
-      } else {
-        return "You have not completed your payment yet!";
-      }
+      return (
+        <>
+            You have not completed your payment yet!
+        </>
+      );
     default:
-      return `Already registered for ${currEvent.ename || "this event"}!`;
+      return (
+        <>
+            Already registered for {currEvent.ename || "this event"}!
+          <br />Click <b><Link to="/companion" reloadDocument>here</Link></b> to view your application status.
+        </>
+      );
     }
   };
 
