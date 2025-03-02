@@ -44,7 +44,7 @@ export const BASIC_QUESTIONS = [
   {
     questionType: "SELECT",
     question: "Any dietary restrictions?",
-    choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
+    choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal,Other",
     required: true,
   },
   {

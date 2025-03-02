@@ -149,7 +149,7 @@ const FormCreatePreview = (props) => {
       {
         type: "SELECT",
         label: "Any dietary restrictions?",
-        choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal",
+        choices: "None,Vegetarian,Vegan,Gluten Free,Pescetarian,Kosher,Halal,Other",
         required: true,
       },
       {
