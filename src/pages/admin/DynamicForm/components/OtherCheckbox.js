@@ -65,11 +65,6 @@ const OtherCheckbox = ({
           />
         )}
       </div>
-      <p style={{
-        color: "#FFFFFF",
-        opacity: "0.7",
-        margin: 0
-      }}>To add multiple options, separate by comma, no spaces (Opion 1,Option 2)</p>
     </>
   );
 };
