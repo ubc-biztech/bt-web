@@ -948,7 +948,7 @@ const FormRegister = (props) => {
         studentId: user?.id,
         eventID: currEvent.id,
         year: currEvent.year,
-        registrationStatus: currEvent.id === "ux-open" ? "waitlist" : "registered",
+        registrationStatus: (currEvent.id === "productx" || currEvent.id === "ux-open" || currEvent.id === "hello-hacks") ? "waitlist" : "registered",
         isPartner: false,
         points: 0,
         basicInformation: {
