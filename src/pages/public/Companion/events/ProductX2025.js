@@ -221,4 +221,4 @@ const ProductX2025 = (params) => {
   );
 };
 
-export default ProductX2025; 
+export default ProductX2025;

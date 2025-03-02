@@ -54,9 +54,9 @@ export default [
       /* function to return schedule of event, schedule is an array of date and title, regData is the responses of a registration */
       getScheduleData: () => [],
       /* Array of welcome paragraphs for event, each new index is a new paragraph */
-      welcomeData: [ ],
+      welcomeData: [],
       /* Array of header tabs to navigate for event, id is the id of the div in app, and text is the heaidng text */
-      headers: [ ]
+      headers: []
     }
   },
   {
