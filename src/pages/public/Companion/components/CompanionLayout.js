@@ -397,7 +397,7 @@ const CompanionLayout = (params) => {
                   }}>
                     <img src={BiztechLogo} alt={`${title} Logo`} style={{
                       ...styles.introLogo,
-                      width: renderMobileOnly ? "60%" : "50%"
+                      width: renderMobileOnly ? "40%" : "30%"
                     }} />
                     <Typography variant="h1" className={classes.boldText} style={{
                       color: constantStyles.textColor
